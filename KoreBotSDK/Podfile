@@ -1,0 +1,26 @@
+workspace 'KoreBotSDK'
+project 'KoreBotSDK.xcodeproj'
+project 'KoreBotSDKDemo/KoreBotSDKDemo.xcodeproj'
+
+inhibit_all_warnings!
+
+def import_pods
+    pod 'Mantle', '2.0.2'
+    pod 'AFNetworking', '2.5.4'
+end
+
+target 'KoreBotSDK' do
+    platform :ios, '8.0'
+    use_frameworks!
+    project 'KoreBotSDK.xcodeproj'
+end
+
+target 'KoreBotSDKDemo' do
+    platform :ios, '8.0'
+    use_frameworks!
+    import_pods
+    pod 'ActiveLabel'
+    pod 'TOWebViewController'
+    pod 'KoreBotSDK', :path =>  '.'
+    project 'KoreBotSDKDemo/KoreBotSDKDemo.xcodeproj'
+end
