@@ -5,10 +5,13 @@ Pod::Spec.new do |s|
     s.homepage = "https://kore.com"
 
     s.license = "MIT (KoreBotSDK)"
-#s.license  = {:type => "MIT", :file => "FILE_LICENSE" }
+    s.license  = {:type => "MIT", :file => "LICENSE" }
 
-    s.author = {"Srinivas Vasadi" => ""}
-    s.source = {:git => "", :tag => "0.0.1"}
+    s.platform = :ios
+    s.platform = :ios, "8.0"
+
+    s.author = {"Srinivas Vasadi" => "srinivas.vasadi@kore.com"}
+    s.source = {:git => "https://github.com/Koredotcom/iOS-kore-sdk.git", :tag => "0.0.1"}
 
     s.source_files = "KoreBotSDK/**/*.{swift}"
     s.exclude_files = "KoreBotSDK/KoreBotSDK.{h}"
