@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class ServerConfigs: NSObject {
+public class ServerConfigs: NSObject {
     struct ServerAPIVersion {
         static let version: String = "1.1"
     }

@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
     s.platform = :ios, "8.0"
 
     s.author = {"Srinivas Vasadi" => "srinivas.vasadi@kore.com"}
-    s.source = {:git => "https://github.com/Koredotcom/iOS-kore-sdk.git", :tag => "0.0.1"}
+    s.source = {:git => "https://github.com/Koredotcom/iOS-kore-sdk.git"}
 
     s.source_files = "KoreBotSDK/**/*.{swift}"
     s.exclude_files = "KoreBotSDK/KoreBotSDK.{h}"
@@ -19,6 +19,10 @@ Pod::Spec.new do |s|
     s.dependency 'Mantle', '2.0.2'
     s.dependency 'AFNetworking', '2.5.4'
     s.dependency 'SwiftWebSocket'
+    s.dependency 'ActiveLabel'
+    s.dependency 'TOWebViewController'
 
+    s.framework = 'SystemConfiguration'
+    s.framework = 'XCTest'
     s.requires_arc = true
 end
