@@ -158,9 +158,9 @@ public class RTMPersistentConnection : NSObject, WebSocketDelegate {
             if (self.botInfoParameters != nil) {
                 parameters.setObject(self.botInfoParameters, forKey: "botInfo")
             }
-            let dateUUID: String = Constants.getUUID()
-            parameters.setObject(dateUUID, forKey: "id")
-            parameters.setObject(dateUUID, forKey: "clientMessageId")
+            let uuid: String = Constants.getUUID()
+            parameters.setObject(uuid, forKey: "id")
+            parameters.setObject(uuid, forKey: "clientMessageId")
             print("send: \(parameters)")
 
             var error : NSError?
