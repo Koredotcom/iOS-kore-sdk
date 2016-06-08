@@ -24,7 +24,7 @@ public class HTTPRequestManager : NSObject {
     
     // MARK: requests
     public func authorizeWithToken(accessToken: String!, success:((token: String!) -> Void)?, failure:((error: NSError) -> Void)?) {
-        let urlString: String = Constants.URL.getJWTUrl
+        let urlString: String = Constants.URL.jwtUrl
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.HTTPMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")        

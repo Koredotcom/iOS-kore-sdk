@@ -45,6 +45,8 @@ class MessageBubbleCell : UITableViewCell {
                 
                 self.dateLabelLeadingConstraint.priority = 999
                 self.dateLabelTrailingConstraint.priority = 1
+                self.senderImageView.hidden = false
+
             } else {
                 self.bubbleLeadingConstraint.priority = 1
                 self.bubbleTrailingConstraint.priority = 999

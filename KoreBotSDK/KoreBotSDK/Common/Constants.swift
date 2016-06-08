@@ -14,7 +14,7 @@ class Constants: NSObject {
     }
     struct URL {
         static let baseUrl = "http://devbots.kore.com/"
-        static let getJWTUrl = String(format: "%@api/users/sts", Constants.ServerConfigs.KORE_BOT_SERVER)
+        static let jwtUrl = String(format: "%@api/users/sts", Constants.ServerConfigs.KORE_BOT_SERVER)
         static let jwtAuthorizationUrl = String(format: "%@api/oAuth/token/jwtgrant", Constants.ServerConfigs.KORE_BOT_SERVER)
         static let rtmUrl = String(format: "%@api/rtm/start", Constants.ServerConfigs.KORE_BOT_SERVER)
         static let signInUrl = String(format: "%@api/oAuth/token/jwtgrant/anonymous", Constants.ServerConfigs.KORE_BOT_SERVER)

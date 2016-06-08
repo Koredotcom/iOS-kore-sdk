@@ -153,6 +153,48 @@ public class BotClient: NSObject, RTMPersistentConnectionDelegate {
         })
     }
     
+    public func rtmConnection(user: UserModel, authInfo: AuthInfoModel!,  success:((connection: RTMPersistentConnection!) -> Void)?, failure:((error: NSError) -> Void)?)  {
+        self.authInfoModel = authInfo
+        self.userInfoModel = user
+
+        var rtmError: NSError!
+        var rtmBotInfoModel: BotInfoModel!
+        var status: Bool = true
+        var isReconnect = false
+        
+        let group: dispatch_group_t  = dispatch_group_create()
+        let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
+        
+        dispatch_group_enter(group) // -- 1
+        if (self.reconnecting) {
+            isReconnect = true
+        }
+        dispatch_group_enter(group) // -- 2
+        requestManager.getRtmUrlWithAuthInfoModel(self.authInfoModel, botInfo: self.botInfoParameters, success: { [weak self] (botInfo) in
+            rtmBotInfoModel = botInfo
+            dispatch_group_leave(group) // -- 2
+            
+            }, failure: { (error) in
+                status = status && false
+                rtmError = error
+                dispatch_group_leave(group) // -- 2
+        })
+        dispatch_group_leave(group) // -- 1
+        
+        dispatch_group_notify(group, dispatch_get_main_queue(), {
+            if (rtmError != nil && !status) {
+                if (failure != nil) {
+                    failure!(error: rtmError)
+                }
+            } else {
+                if (success != nil) {
+                    self.connection = self.rtmConnectionWithBotInfoModel(rtmBotInfoModel, isReconnect: isReconnect)
+                    success!(connection: self.connection)
+                }
+            }
+        })
+    }
+    
     // MARK: WebSocketDelegate methods
     
     public func rtmConnectionWillOpen() {

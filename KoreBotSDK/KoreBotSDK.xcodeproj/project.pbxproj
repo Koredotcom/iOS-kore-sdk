@@ -113,9 +113,6 @@
 				D14AAC971CFD897300AEF5FD /* Library */,
 				D14AAC9D1CFD897300AEF5FD /* Models */,
 				D1AA2A2F1CF3448300BE9789 /* Common */,
-				D1D37DEE1CC9F934006A3A8A /* Private */,
-				D1D37DF01CC9F934006A3A8A /* Response */,
-				D1D37DF41CC9F934006A3A8A /* UIKit */,
 				D1200F181CC9F721009BBB1A /* KoreBotSDK.h */,
 				D1200F1A1CC9F721009BBB1A /* Info.plist */,
 			);
@@ -176,83 +173,6 @@
 				D1AA2A301CF3449800BE9789 /* Constants.swift */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		D1D37DEE1CC9F934006A3A8A /* Private */ = {
-			isa = PBXGroup;
-			children = (
-				D1D37DEF1CC9F934006A3A8A /* Network */,
-			);
-			path = Private;
-			sourceTree = "<group>";
-		};
-		D1D37DEF1CC9F934006A3A8A /* Network */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Network;
-			sourceTree = "<group>";
-		};
-		D1D37DF01CC9F934006A3A8A /* Response */ = {
-			isa = PBXGroup;
-			children = (
-				D1D37DF11CC9F934006A3A8A /* Classes */,
-				D1D37DF21CC9F934006A3A8A /* Private */,
-			);
-			path = Response;
-			sourceTree = "<group>";
-		};
-		D1D37DF11CC9F934006A3A8A /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
-		D1D37DF21CC9F934006A3A8A /* Private */ = {
-			isa = PBXGroup;
-			children = (
-				D1D37DF31CC9F934006A3A8A /* Formatters */,
-			);
-			path = Private;
-			sourceTree = "<group>";
-		};
-		D1D37DF31CC9F934006A3A8A /* Formatters */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Formatters;
-			sourceTree = "<group>";
-		};
-		D1D37DF41CC9F934006A3A8A /* UIKit */ = {
-			isa = PBXGroup;
-			children = (
-				D1D37DF51CC9F934006A3A8A /* Classes */,
-				D1D37DF61CC9F934006A3A8A /* Images */,
-				D1D37DF71CC9F934006A3A8A /* Private */,
-			);
-			path = UIKit;
-			sourceTree = "<group>";
-		};
-		D1D37DF51CC9F934006A3A8A /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
-		D1D37DF61CC9F934006A3A8A /* Images */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Images;
-			sourceTree = "<group>";
-		};
-		D1D37DF71CC9F934006A3A8A /* Private */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Private;
 			sourceTree = "<group>";
 		};
 		DB656AD2952DCB1FF8287946 /* Frameworks */ = {

@@ -48,23 +48,26 @@ class AppLaunchViewController: UIViewController {
     
     // MARK: button action
     @IBAction func signInButtonAction(sender: UIButton!) {
+        
         // -------------------------------------------------------------- //
         // INFO: YOU MUST SET 'clientId'
         let clientId: String = "5a37bf24-fea0-4e6b-a816-f9602db08149"
         if clientId.characters.count > 0 {
+            let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+            activityIndicatorView.center = view.center
+            view.addSubview(activityIndicatorView)
+            activityIndicatorView.startAnimating()
+            
             BotClient.anonymousUserSignIn(clientId, success: { [weak self] (user, authInfo) in
-                let accessToken: String = String(format: "%@ %@", authInfo.tokenType!, authInfo.accessToken!)
-                Common.setAccessToken(accessToken)
+                activityIndicatorView.stopAnimating()
 
-                let userId: String = user.userId!
-                Common.setUserId(userId)
-
-                let botsViewController:BotsViewController = BotsViewController(userId: userId, accessToken: accessToken)
-                botsViewController.title = "Bots"
-                self!.navigationController?.pushViewController(botsViewController, animated: true)
+                let botViewController:KoraBotChatMessagesViewController = KoraBotChatMessagesViewController(user: user, authInfo: authInfo)
+                botViewController.title = "Kora"
+                self!.navigationController?.pushViewController(botViewController, animated: true)
 
                 }, failure: { (error) in
-                    
+                    activityIndicatorView.stopAnimating()
+
             })
         } else {
             print("YOU MUST SET 'clientId', Please check documentation.")
