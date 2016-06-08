@@ -166,7 +166,7 @@ class BotsViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         let parameters: NSDictionary = [:]
         
-        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: NSURL.init(string: ServerConfigs.ServerConfig.KORE_SERVER))
+        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: NSURL.init(string: ServerConfigs.KORE_SERVER))
         operationManager.responseSerializer = AFJSONResponseSerializer.init()
         operationManager.requestSerializer = requestSerializer
         operationManager.GET(urlString, parameters: parameters, success: { (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) in

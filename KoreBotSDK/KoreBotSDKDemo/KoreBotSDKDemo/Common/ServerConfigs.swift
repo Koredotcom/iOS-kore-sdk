@@ -10,20 +10,10 @@ import UIKit
 import Foundation
 
 public class ServerConfigs: NSObject {
-    struct ServerAPIVersion {
-        static let version: String = "1.1"
-    }
-    struct ServerConfig {
-#if DEV_ENV
-#if ENABLE_SSL
-        static let KORE_SERVER = String(format: "https://devbots.kore.com/")
-#else
-        static let KORE_SERVER = String(format: "http://devbots.kore.com/")
-#endif
-#endif
-    }
-    static func getAllStreamsURL(userId: String!) -> String {
-        return  String(format: "%@api/%@/users/%@/builder/streams", ServerConfig.KORE_SERVER, ServerAPIVersion.version, userId)
+    public static let API_Version: String = "1.1"
+    public static let KORE_SERVER = String(format: "http://devbots.kore.com/")
+    public static func getAllStreamsURL(userId: String!) -> String {
+        return  String(format: "%@api/%@/users/%@/builder/streams", KORE_SERVER, API_Version, userId)
     }
 }
 
