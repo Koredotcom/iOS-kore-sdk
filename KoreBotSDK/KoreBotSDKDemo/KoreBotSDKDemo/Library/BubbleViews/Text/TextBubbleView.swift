@@ -78,18 +78,7 @@ class TextBubbleView : BubbleView {
         super.layoutSubviews()
         
         let textSize: CGSize = self.textSizeThatFits()
-        self.textLabel.frame = CGRectMake(self.kLeftMargin(), self.kVerticalMargin, textSize.width, textSize.height + self.kVerticalMargin)
-        self.addConstraint(NSLayoutConstraint(
-            item:self, attribute:NSLayoutAttribute.Top,
-            relatedBy:NSLayoutRelation.Equal,
-            toItem:self.textLabel, attribute:.Top,
-            multiplier:1.0, constant:5))
-        self.addConstraint(NSLayoutConstraint(
-            item:self, attribute:.Bottom,
-            relatedBy:NSLayoutRelation.Equal,
-            toItem:self.textLabel, attribute:NSLayoutAttribute.Bottom,
-            multiplier:1.0, constant:5))
-
+        self.textLabel.frame = CGRectMake(self.kLeftMargin(), self.kVerticalMargin - 4, textSize.width, textSize.height + self.kVerticalMargin)
     }
 
     override func intrinsicContentSize() -> CGSize {

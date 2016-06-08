@@ -107,11 +107,16 @@ public class ChatMessagesViewController : UIViewController {
             self.botClient.onMessage = { [weak self] (object) in
                 let message: Message = Message()
                 message.messageType = .Reply
-                message.sentDate = NSDate()
-                
+                if (object.createdOn != nil) {
+                    message.sentDate = object.createdOn
+                }
+
+                if (object.iconUrl != nil) {
+                    message.iconUrl = object.iconUrl
+                }
+
                 var currentGroup: ComponentGroup!
                 let messageObject = object.messages[0]
-                
                 if (messageObject.component == nil) {
                 
                 } else {

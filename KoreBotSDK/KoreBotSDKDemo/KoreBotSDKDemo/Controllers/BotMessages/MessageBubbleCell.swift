@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFNetworking
 
 class MessageBubbleCell : UITableViewCell {
     var bubbleContainerView: UIView!
@@ -50,6 +51,7 @@ class MessageBubbleCell : UITableViewCell {
                 
                 self.dateLabelLeadingConstraint.priority = 1
                 self.dateLabelTrailingConstraint.priority = 999
+                self.senderImageView.hidden = true
             }
             
             self.bubbleView.tailPosition = tailPosition
@@ -209,8 +211,25 @@ class MessageBubbleCell : UITableViewCell {
         self.tailPosition = self.bubbleView.tailPosition
         self.maskType = maskType
         
-        if (componentGroup.message().messageType == .Default) {
+        let message: Message = componentGroup.message()
+        if (message.messageType == .Default) {
             
+        }
+        
+        if (message.sentDate != nil) {
+            let dateFormatter: NSDateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "EEE, MMM d, h:mm a"
+            self.dateLabel.text = dateFormatter.stringFromDate(message.sentDate)
+        }
+        
+        let placeHolderIcon : UIImage = UIImage(named:"kora")!
+        self.senderImageView.image = placeHolderIcon;
+        
+        if (message.iconUrl != nil) {
+            if (message.iconUrl != nil) {
+                let fileUrl = NSURL(string: message.iconUrl)
+                self.senderImageView.setImageWithURL(fileUrl, placeholderImage: placeHolderIcon)
+            }
         }
         
         let bubbleView: BubbleView  = self.bubbleView

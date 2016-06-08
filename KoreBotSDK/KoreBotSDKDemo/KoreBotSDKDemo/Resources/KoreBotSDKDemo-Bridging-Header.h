@@ -10,6 +10,7 @@
 #define KoreBotSDKDemo_Bridging_Header_h
 
 #import <AFNetworking/AFNetworking.h>
+#import <AFNetworking/UIImageView+AFNetworking.h>
 #import <CommonCrypto/CommonCrypto.h>
 #import <TOWebViewController>
 #import "ServerConfigs.h"

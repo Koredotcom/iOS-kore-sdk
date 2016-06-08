@@ -15,6 +15,7 @@ enum MessageType : Int {
 class Message : NSObject {
     var messageType: MessageType = .Default
     var sender: String!
+    var iconUrl: String!
     var sentDate: NSDate!
     var groupedComponents: NSMutableArray!
     var thread: Thread!
@@ -52,7 +53,7 @@ class Message : NSObject {
             // did we already have a group? If so then add it
             if (currentGroup != nil) {
                 self.groupedComponents.addObject(currentGroup)
-                currentGroup = nil;
+                currentGroup = nil
             }
             
             let group: ComponentGroup = ComponentGroup()
