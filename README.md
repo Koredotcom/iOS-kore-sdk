@@ -15,17 +15,36 @@
     Run pod install in your project folder.
     pod 'KoreBotSDK'
     
-#### 2. Iniitializing the RTM client
+#### 2. Iniitializing the Bot client
     import KoreBotSDK
     var self.botClient: BotClient!
     let token: String = "bearer Y6w*******************"
     let botInfo: NSDictionary = ["chatBot":"Kora","taskBotId":"st-******"]
-    self.botClient = BotClient(token: token, botInfoParameters: botInfo)
+    self.botClient = BotClient(botInfoParameters: botInfo)
 
-#### 4. Send message
+#### 3. Logged in user
+    a. You need to have secure token service hosted in your environment which returns the JWT token.
+    b. Replace "jwtUrl" variable value with your STS endpoint in constants.swift file
+    c. self.botClient.connectAsAuthenticatedUser(jwtToken, success: { [weak self] (botClient) in
+            // listen to RTM events
+
+            }, failure: { (error) in
+
+        })
+
+#### 4. Anonymous user login
+    let clientId: String = "YOUR_SDK_CLIENTID"
+    self.botClient.connectAsAnonymousUser(clientId, success: { [weak self] (client) in
+            // listen to RTM events
+ 
+        }, failure: { (error) in
+
+    })
+
+#### 5. Send message
     botClient.sendMessage("Tweet hello", options: [])
     
-#### 5. Listen to events
+#### 6. Listen to events
     self.botClient.onMessage = { [weak self] (object) in
     }
     self.botClient.onMessageAck = { (ack) in
@@ -35,37 +54,84 @@
     self.botClient.connectionDidEnd = { (code, reason, error) in
     }
     
-#### 6. Subscribe to push notifications
+#### 7. Subscribe to push notifications
     self.botClient.subscribeToNotifications(deviceToken, success: { (staus) in
         // do something
     }, failure: { (error) in
     })
     
-#### 7. Unsubscribe to push notifications
+#### 8. Unsubscribe to push notifications
     self.botClient.unsubscribeToNotifications(deviceToken, success: { (staus) in
         // do something
     }, failure: { (error) in
     })
 
-#### 8. Anonymous user login
-    let clientId: String = "YOUR_SDK_CLIENTID"
-    BotClient.anonymousUserSignIn(clientId, success: { [weak self] (user, authInfo) in
-        // Obtain the accessToken from auth info
-        let accessToken: String = String(format: "%@ %@", authInfo.tokenType!, authInfo.accessToken!)
-    }, failure: { (error) in
-    });
-     self.botClient.rtmConnection({ (connection) in {
-        // listen to RTM events
-     }
+#### 9. Example
+    a. As a logged in user
+        self.botClient.connectAsAuthenticatedUser(jwtToken, success: { [weak self] (botClient) in
+                botClient.connectionWillOpen = { () in
+                    
+                }
+                
+                botClient.connectionDidOpen = { () in
+                    
+                }
+                
+                botClient.onConnectionError = { (error) in
+                    
+                }
+                
+                botClient.onMessage = { (object) in
+                    
+                }
+                
+                botClient.onMessageAck = { (ack) in
+                    
+                }
+                
+                botClient.connectionDidClose = { (code) in
+                    
+                }
+                
+                botClient.connectionDidEnd = { (code, reason, error) in
+                    
+                }
+            }, failure: { (error) in
 
-#### 9. Logged in user
-    a. You need to have secure token service hosted in your environment which returns the JWT token.
-    b. Replace "jwtUrl" variable value with your STS endpoint in constants.swift file
-    c. self.botClient.rtmConnection({ (connection) in {
-        // listen to RTM events
-     }
-    
-    
+        })
+
+    b. As a anonymous user
+        self.botClient.connectAsAnonymousUser(clientId, success: { [weak self] (botClient) in
+            botClient.connectionWillOpen = { () in
+                
+            }
+            
+            botClient.connectionDidOpen = { () in
+                
+            }
+            
+            botClient.onConnectionError = { (error) in
+                
+            }
+            
+            botClient.onMessage = { (object) in
+                
+            }
+            
+            botClient.onMessageAck = { (ack) in
+                
+            }
+            
+            botClient.connectionDidClose = { (code) in
+                
+            }
+            
+            botClient.connectionDidEnd = { (code, reason, error) in
+                
+            } 
+        }, failure: { (error) in
+
+        })
 
 
 
