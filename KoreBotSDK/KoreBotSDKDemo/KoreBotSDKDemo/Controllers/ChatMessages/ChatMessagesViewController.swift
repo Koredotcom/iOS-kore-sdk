@@ -43,7 +43,63 @@ public class ChatMessagesViewController : UIViewController {
     var disableKeyboardAdjustmentAnimationDuration: Bool = false
     var quickSelectData: NSArray!
     
-    var botClient: BotClient!
+    var botClient: BotClient! {
+        didSet {
+            // events
+            botClient.connectionWillOpen = { () in
+                
+            }
+            
+            botClient.connectionDidOpen = { () in
+                
+            }
+            
+            botClient.onConnectionError = { (error) in
+                
+            }
+            
+            botClient.onMessage = { [weak self] (object) in
+                let message: Message = Message()
+                message.messageType = .Reply
+                if (object.createdOn != nil) {
+                    message.sentDate = object.createdOn
+                }
+                
+                if (object.iconUrl != nil) {
+                    message.iconUrl = object.iconUrl
+                }
+                
+                var currentGroup: ComponentGroup!
+                let messageObject = object.messages[0]
+                if (messageObject.component == nil) {
+                    
+                } else {
+                    let componentModel: ComponentModel = messageObject.component!
+                    
+                    let textComponent: TextComponent = TextComponent()
+                    if (componentModel.body != nil) {
+                        textComponent.text = componentModel.body
+                    }
+                    message.addComponent(textComponent, currentGroup:&currentGroup)
+                    
+                    self!.thread.addMessage(message)
+                    self!.threadTableViewController.thread = self!.thread
+                }
+            }
+            
+            botClient.onMessageAck = { (ack) in
+                
+            }
+            
+            botClient.connectionDidClose = { (code) in
+                
+            }
+            
+            botClient.connectionDidEnd = { (code, reason, error) in
+                
+            }
+        }
+    }
     
     // MARK: properties with observers
     var thread: Thread! = nil {
@@ -103,68 +159,17 @@ public class ChatMessagesViewController : UIViewController {
     
     // MARK: setup bot client
     func setupBotClient() {
-        
-        let token: String = self.botInfoParameters["authorization"] as! String
-        let botInfo: NSDictionary = (self.botInfoParameters["botInfo"] as? NSDictionary)!
-        self.botClient = BotClient(token: token, botInfoParameters: botInfo)
-        self.botClient.rtmConnection({ (connection) in
-            // events
-            self.botClient.connectionWillOpen = { () in
-                
-            }
-            
-            self.botClient.connectionDidOpen = { () in
-                
-            }
-            
-            self.botClient.onConnectionError = { (error) in
-                
-            }
-            
-            self.botClient.onMessage = { [weak self] (object) in
-                let message: Message = Message()
-                message.messageType = .Reply
-                if (object.createdOn != nil) {
-                    message.sentDate = object.createdOn
-                }
-                
-                if (object.iconUrl != nil) {
-                    message.iconUrl = object.iconUrl
-                }
-                
-                var currentGroup: ComponentGroup!
-                let messageObject = object.messages[0]
-                if (messageObject.component == nil) {
-                    
-                } else {
-                    let componentModel: ComponentModel = messageObject.component!
-                    
-                    let textComponent: TextComponent = TextComponent()
-                    if (componentModel.body != nil) {
-                        textComponent.text = componentModel.body
-                    }
-                    message.addComponent(textComponent, currentGroup:&currentGroup)
-                    
-                    self!.thread.addMessage(message)
-                    self!.threadTableViewController.thread = self!.thread
-                }
-            }
-            
-            self.botClient.onMessageAck = { (ack) in
-                
-            }
-            
-            self.botClient.connectionDidClose = { (code) in
-                
-            }
-            
-            self.botClient.connectionDidEnd = { (code, reason, error) in
-                
-            }
-            }, failure: { (error) in
-                
-        })
+        if self.botClient == nil {
+            let token: String = self.botInfoParameters["authorization"] as! String
+            let botInfo: NSDictionary = (self.botInfoParameters["botInfo"] as? NSDictionary)!
+            let client: BotClient = BotClient(botInfoParameters: botInfo)
+            client.connectAsAuthenticatedUser(token, success: { [weak self] (botClient) in
+                self!.botClient = client
+                }, failure: { (error) in
+            })
+        }
     }
+
     
     // MARK: cancel
     func cancel(sender: AnyObject) {
@@ -392,87 +397,5 @@ public class ChatMessagesViewController : UIViewController {
         let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("MessageThreadCell", forIndexPath: indexPath)
         
         return cell
-    }
-}
-
-public class KoraBotChatMessagesViewController : ChatMessagesViewController {
-    var user: UserModel!
-    var authInfo: AuthInfoModel!
-
-    init(user: UserModel!, authInfo: AuthInfoModel!) {
-        super.init(nibName: "ChatMessagesViewController", bundle: nil)
-        self.authInfo = authInfo
-        self.user = user
-    }
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: "ChatMessagesViewController", bundle: nil)
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func setupBotClient() {
-    
-        let token: String = String(format: "%@ %@", authInfo.tokenType!, authInfo.accessToken!)
-        let botInfo: NSDictionary = ["chatBot":"Kora"]
-        self.botClient = BotClient(token: token, botInfoParameters: botInfo)
-        self.botClient.rtmConnection(self.user, authInfo: self.authInfo, success: { (connection) in
-            // events
-            self.botClient.connectionWillOpen = { () in
-                
-            }
-            
-            self.botClient.connectionDidOpen = { () in
-                
-            }
-            
-            self.botClient.onConnectionError = { (error) in
-                
-            }
-            
-            self.botClient.onMessage = { [weak self] (object) in
-                let message: Message = Message()
-                message.messageType = .Reply
-                if (object.createdOn != nil) {
-                    message.sentDate = object.createdOn
-                }
-                
-                if (object.iconUrl != nil) {
-                    message.iconUrl = object.iconUrl
-                }
-                
-                var currentGroup: ComponentGroup!
-                let messageObject = object.messages[0]
-                if (messageObject.component == nil) {
-                    
-                } else {
-                    let componentModel: ComponentModel = messageObject.component!
-                    
-                    let textComponent: TextComponent = TextComponent()
-                    if (componentModel.body != nil) {
-                        textComponent.text = componentModel.body
-                    }
-                    message.addComponent(textComponent, currentGroup:&currentGroup)
-                    
-                    self!.thread.addMessage(message)
-                    self!.threadTableViewController.thread = self!.thread
-                }
-            }
-            
-            self.botClient.onMessageAck = { (ack) in
-                
-            }
-            
-            self.botClient.connectionDidClose = { (code) in
-                
-            }
-            
-            self.botClient.connectionDidEnd = { (code, reason, error) in
-                
-            }
-            }, failure: { (error) in
-        })
     }
 }

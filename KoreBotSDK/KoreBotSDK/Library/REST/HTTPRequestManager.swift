@@ -15,7 +15,7 @@ public class HTTPRequestManager : NSObject {
     static var instance: HTTPRequestManager!
 
     // MARK: request manager shared instance
-    static let sharedManager : HTTPRequestManager = {
+    public static let sharedManager : HTTPRequestManager = {
         if (instance == nil) {
             instance = HTTPRequestManager()
         }
@@ -23,17 +23,18 @@ public class HTTPRequestManager : NSObject {
     }()
     
     // MARK: requests
-    public func authorizeWithToken(accessToken: String!, success:((token: String!) -> Void)?, failure:((error: NSError) -> Void)?) {
+    public func authorizeWithToken(accessToken: String!, botInfo: AnyObject!, success:((token: String!) -> Void)?, failure:((error: NSError) -> Void)?) {
         let urlString: String = Constants.URL.jwtUrl
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.HTTPMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")        
         requestSerializer.setValue(accessToken, forHTTPHeaderField:"Authorization")
-        
+        let parameters: NSDictionary = ["botInfo": botInfo]
+
         let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: NSURL.init(string: Constants.URL.baseUrl))
         operationManager.responseSerializer = AFJSONResponseSerializer.init()
         operationManager.requestSerializer = requestSerializer
-        operationManager.POST(urlString, parameters: [], success: { (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) in
+        operationManager.POST(urlString, parameters: parameters, success: { (operation: AFHTTPRequestOperation!, responseObject: AnyObject!) in
             let error: NSError?
             let jwt: JwtModel = try! (MTLJSONAdapter.modelOfClass(JwtModel.self, fromJSONDictionary: responseObject! as! [NSObject : AnyObject]) as! JwtModel)
             
@@ -44,13 +45,13 @@ public class HTTPRequestManager : NSObject {
         }
     }
     
-    public func signInWithToken(token: AnyObject!, success:((user: UserModel!, authInfo: AuthInfoModel!) -> Void)?, failure:((error: NSError) -> Void)?)  {
+    public func signInWithToken(token: AnyObject!, botInfo: AnyObject!, success:((user: UserModel!, authInfo: AuthInfoModel!) -> Void)?, failure:((error: NSError) -> Void)?)  {
         let urlString: String = Constants.URL.jwtAuthorizationUrl
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.HTTPMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-        let parameters: NSDictionary = ["assertion":token!]
-        
+        let parameters: NSDictionary = ["assertion":token!, "botInfo": botInfo]
+
         let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: NSURL.init(string: Constants.URL.baseUrl))
         operationManager.responseSerializer = AFJSONResponseSerializer.init()
         operationManager.requestSerializer = requestSerializer
@@ -65,6 +66,7 @@ public class HTTPRequestManager : NSObject {
             if (operation.responseObject != nil) {
                 print(operation.responseObject)
             }
+            failure?(error: error)
         }
     }
     
@@ -92,6 +94,7 @@ public class HTTPRequestManager : NSObject {
             if (operation.responseObject != nil) {
                 print(operation.responseObject)
             }
+            failure?(error: error)
         }
     }
     

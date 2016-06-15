@@ -57,11 +57,14 @@ class AppLaunchViewController: UIViewController {
             activityIndicatorView.center = view.center
             view.addSubview(activityIndicatorView)
             activityIndicatorView.startAnimating()
-            
-            BotClient.anonymousUserSignIn(clientId, success: { [weak self] (user, authInfo) in
+
+            let botInfo: NSDictionary = ["chatBot":"Kora"]
+            let botClient: BotClient = BotClient(botInfoParameters: botInfo)
+            botClient.connectAsAnonymousUser(clientId, success: { [weak self] (client) in
                 activityIndicatorView.stopAnimating()
 
-                let botViewController:KoraBotChatMessagesViewController = KoraBotChatMessagesViewController(user: user, authInfo: authInfo)
+                let botViewController: ChatMessagesViewController = ChatMessagesViewController()
+                botViewController.botClient = client
                 botViewController.title = "Kora"
                 self!.navigationController?.pushViewController(botViewController, animated: true)
 
