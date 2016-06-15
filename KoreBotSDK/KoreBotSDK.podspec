@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name = "KoreBotSDK"
-    s.version = "0.0.4"
+    s.version = "0.0.5"
     s.summary = "KoreBotSDK lets a user interact with Kore bots"
     s.homepage = "https://kore.com"
 
@@ -22,6 +22,5 @@ Pod::Spec.new do |s|
     s.dependency 'SwiftWebSocket'
 
     s.framework = 'SystemConfiguration'
-    s.framework = 'XCTest'
     s.requires_arc = true
 end
