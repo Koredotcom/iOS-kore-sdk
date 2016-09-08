@@ -95,7 +95,9 @@ class MessageBubbleCell : UITableViewCell {
             }
         }
     }
-    
+    override func prepareForReuse() {
+        self.textLabel?.text = nil
+    }
     // MARK:
 
     func initialize() {

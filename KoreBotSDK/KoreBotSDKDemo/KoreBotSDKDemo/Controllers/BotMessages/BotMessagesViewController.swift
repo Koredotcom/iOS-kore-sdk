@@ -110,23 +110,32 @@ class BotMessagesViewController : UITableViewController {
         switch (cell.bubbleView.bubbleType!) {
         case .Text:
             let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
-            
-            bubbleView.textLabel.customize { label in
-                label.handleURLTap({ (url) in
+            bubbleView.textLabel.detectionBlock = {(hotword, string) in
+
+                switch hotword {
+                case KREAttributedHotWordMention:
+                    break
+                case KREAttributedHotWordHashtag:
+                    break
+                case KREAttributedHotWordLink:
+                    let url: NSURL = NSURL(string: string)!
                     let webViewController: TOWebViewController = TOWebViewController(URL: url)
                     let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
                     webNavigationController.tabBarItem.title = "Bots"
-                    
+    
                     self.presentViewController(webNavigationController, animated: true, completion: {
                         
                     })
-                })
-                label.handleMentionTap({ (mention) in
-                    
-                })
-                label.handleHashtagTap({ (hashtag) in
-                    
-                })
+                    break
+                case KREAttributedHotWordPhoneNumber:
+                    break
+                case KREAttributedHotWordUserDefined:
+                    break
+                case KREAttributedHotWordPlainText:
+                    break
+                default:
+                    break
+                }
             }
             break
         case .Image:

@@ -10,6 +10,10 @@
 		2E1E49F68222AAA4C970168B /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E1812F1242FE88925056F7C /* Pods_KoreBotSDKDemo.framework */; };
 		D10A245A1CF72FD400E2732C /* TextBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10A24591CF72FD400E2732C /* TextBubbleView.swift */; };
 		D10A24741CF808A300E2732C /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10A24731CF808A300E2732C /* Identity.swift */; };
+		D1132F661D8181130083FC10 /* KREAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D1132F5F1D8181130083FC10 /* KREAttributedLabel.m */; };
+		D1132F671D8181130083FC10 /* KRELayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D1132F611D8181130083FC10 /* KRELayoutManager.m */; };
+		D1132F681D8181130083FC10 /* KREUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D1132F631D8181130083FC10 /* KREUtilities.m */; };
+		D1132F691D8181130083FC10 /* NSMutableAttributedString+KREUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D1132F651D8181130083FC10 /* NSMutableAttributedString+KREUtils.m */; };
 		D137B0A81D009285005E938E /* BotsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D137B09E1D009285005E938E /* BotsViewController.swift */; };
 		D137B0A91D009285005E938E /* BotsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D137B09F1D009285005E938E /* BotsViewController.xib */; };
 		D137B0AA1D009285005E938E /* QuickSelectCommandCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D137B0A21D009285005E938E /* QuickSelectCommandCell.swift */; };
@@ -47,6 +51,14 @@
 		7092CBEB046F0BC9247CE8CE /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		D10A24591CF72FD400E2732C /* TextBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextBubbleView.swift; sourceTree = "<group>"; };
 		D10A24731CF808A300E2732C /* Identity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identity.swift; sourceTree = "<group>"; };
+		D1132F5E1D8181130083FC10 /* KREAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KREAttributedLabel.h; sourceTree = "<group>"; };
+		D1132F5F1D8181130083FC10 /* KREAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KREAttributedLabel.m; sourceTree = "<group>"; };
+		D1132F601D8181130083FC10 /* KRELayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRELayoutManager.h; sourceTree = "<group>"; };
+		D1132F611D8181130083FC10 /* KRELayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRELayoutManager.m; sourceTree = "<group>"; };
+		D1132F621D8181130083FC10 /* KREUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KREUtilities.h; sourceTree = "<group>"; };
+		D1132F631D8181130083FC10 /* KREUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KREUtilities.m; sourceTree = "<group>"; };
+		D1132F641D8181130083FC10 /* NSMutableAttributedString+KREUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+KREUtils.h"; sourceTree = "<group>"; };
+		D1132F651D8181130083FC10 /* NSMutableAttributedString+KREUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+KREUtils.m"; sourceTree = "<group>"; };
 		D137B09E1D009285005E938E /* BotsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotsViewController.swift; sourceTree = "<group>"; };
 		D137B09F1D009285005E938E /* BotsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BotsViewController.xib; sourceTree = "<group>"; };
 		D137B0A21D009285005E938E /* QuickSelectCommandCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickSelectCommandCell.swift; sourceTree = "<group>"; };
@@ -116,6 +128,21 @@
 				D10A24591CF72FD400E2732C /* TextBubbleView.swift */,
 			);
 			path = Text;
+			sourceTree = "<group>";
+		};
+		D1132F5D1D8181130083FC10 /* AttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				D1132F5E1D8181130083FC10 /* KREAttributedLabel.h */,
+				D1132F5F1D8181130083FC10 /* KREAttributedLabel.m */,
+				D1132F601D8181130083FC10 /* KRELayoutManager.h */,
+				D1132F611D8181130083FC10 /* KRELayoutManager.m */,
+				D1132F621D8181130083FC10 /* KREUtilities.h */,
+				D1132F631D8181130083FC10 /* KREUtilities.m */,
+				D1132F641D8181130083FC10 /* NSMutableAttributedString+KREUtils.h */,
+				D1132F651D8181130083FC10 /* NSMutableAttributedString+KREUtils.m */,
+			);
+			path = AttributedLabel;
 			sourceTree = "<group>";
 		};
 		D11499E11CF5899B003F5CC5 /* MessageComposeBar */ = {
@@ -232,6 +259,7 @@
 		D1CAF08E1CF0AEA3001BCAEF /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				D1132F5D1D8181130083FC10 /* AttributedLabel */,
 				D1F4E5021CF70A720044C093 /* BubbleViews */,
 				D11499E11CF5899B003F5CC5 /* MessageComposeBar */,
 				D1CAF0941CF0AEA3001BCAEF /* Models */,
@@ -296,7 +324,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D175AD5C1CEF0CD500BB9442 /* Build configuration list for PBXNativeTarget "KoreBotSDKDemo" */;
 			buildPhases = (
-				D5260BF35086AACB720425BA /* 📦 Check Pods Manifest.lock */,
+				D5260BF35086AACB720425BA /* [CP] Check Pods Manifest.lock */,
 				64BAE8CF4B9BCE4CA01C22D9 /* [CP] Check Pods Manifest.lock */,
 				D175AD461CEF0CD500BB9442 /* Sources */,
 				D175AD471CEF0CD500BB9442 /* Frameworks */,
@@ -445,14 +473,14 @@
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D5260BF35086AACB720425BA /* 📦 Check Pods Manifest.lock */ = {
+		D5260BF35086AACB720425BA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -470,9 +498,11 @@
 				D1F4E5001CF709C40044C093 /* BotMessagesViewController.swift in Sources */,
 				D1AA2A351CF3489000BE9789 /* ServerConfigs.swift in Sources */,
 				D1F4E5261CF716640044C093 /* Component.swift in Sources */,
+				D1132F661D8181130083FC10 /* KREAttributedLabel.m in Sources */,
 				D137B0AA1D009285005E938E /* QuickSelectCommandCell.swift in Sources */,
 				D10A245A1CF72FD400E2732C /* TextBubbleView.swift in Sources */,
 				D1F4E5041CF70A8E0044C093 /* BubbleView.swift in Sources */,
+				D1132F691D8181130083FC10 /* NSMutableAttributedString+KREUtils.m in Sources */,
 				D1F4E4FB1CF709C40044C093 /* MessageBubbleCell.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
 				D137B0AE1D009285005E938E /* ChatMessagesViewController.swift in Sources */,
@@ -484,6 +514,8 @@
 				D10A24741CF808A300E2732C /* Identity.swift in Sources */,
 				D16D62E21CF5B7BC00752FC8 /* MessageComposeBar.swift in Sources */,
 				D1CAF15E1CF0AEA3001BCAEF /* AppLaunchViewController.swift in Sources */,
+				D1132F671D8181130083FC10 /* KRELayoutManager.m in Sources */,
+				D1132F681D8181130083FC10 /* KREUtilities.m in Sources */,
 				D137B0A81D009285005E938E /* BotsViewController.swift in Sources */,
 				D1F4E52B1CF716640044C093 /* SectionedThread.swift in Sources */,
 				D1B944AD1D04463F000AADA9 /* MultiImageBubbleView.swift in Sources */,
@@ -600,6 +632,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.Kore.KoreBotSDKDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/srinivasvasadi/Code/iOS-KoreBotSDK/KoreBotSDK/KoreBotSDKDemo/KoreBotSDKDemo/Resources/KoreBotSDKDemo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -615,6 +648,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.Kore.KoreBotSDKDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/srinivasvasadi/Code/iOS-KoreBotSDK/KoreBotSDK/KoreBotSDKDemo/KoreBotSDKDemo/Resources/KoreBotSDKDemo-Bridging-Header.h";
 			};
 			name = Release;
 		};

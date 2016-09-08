@@ -201,7 +201,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D1200F291CC9F721009BBB1A /* Build configuration list for PBXNativeTarget "KoreBotSDK" */;
 			buildPhases = (
-				BC8AFFC3305BB4B176763796 /* 📦 Check Pods Manifest.lock */,
+				BC8AFFC3305BB4B176763796 /* [CP] Check Pods Manifest.lock */,
 				83F6EA91A865416DCB4AB6E2 /* [CP] Check Pods Manifest.lock */,
 				D1200F101CC9F721009BBB1A /* Sources */,
 				D1200F111CC9F721009BBB1A /* Frameworks */,
@@ -322,14 +322,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KoreBotSDK/Pods-KoreBotSDK-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BC8AFFC3305BB4B176763796 /* 📦 Check Pods Manifest.lock */ = {
+		BC8AFFC3305BB4B176763796 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

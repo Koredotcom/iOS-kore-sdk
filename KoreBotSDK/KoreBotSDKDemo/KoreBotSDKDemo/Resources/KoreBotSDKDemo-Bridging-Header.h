@@ -12,7 +12,12 @@
 #import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import <CommonCrypto/CommonCrypto.h>
-#import <TOWebViewController>
-#import "ServerConfigs.h"
+#import <TOWebViewController/TOWebViewController.h>
+//#import "ServerConfigs.h"
+
+#import "KREAttributedLabel.h"
+#import "KRELayoutManager.h"
+#import "KREUtilities.h"
+#import "NSMutableAttributedString+KREUtils.h"
 
 #endif /* KoreBotSDKDemo_Bridging_Header_h */

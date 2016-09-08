@@ -17,10 +17,12 @@ end
 
 target 'KoreBotSDKDemo' do
     platform :ios, '8.0'
+    pod 'DTCoreText','1.6.15'
+
     use_frameworks!
     import_pods
     pod 'ActiveLabel'
     pod 'TOWebViewController'
-    pod 'KoreBotSDK', :path =>  '.'
+    pod 'KoreBotSDK'
     project 'KoreBotSDKDemo/KoreBotSDKDemo.xcodeproj'
 end

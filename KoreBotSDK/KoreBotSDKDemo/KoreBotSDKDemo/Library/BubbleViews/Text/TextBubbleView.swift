@@ -22,11 +22,12 @@ class TextBubbleView : BubbleView {
     }
     let kVerticalMargin: CGFloat = 10.0
     let kMaxTextWidth: CGFloat = (BubbleViewMaxWidth)
-    
-    var textLabel: ActiveLabel!
+
+    var textLabel: KREAttributedLabel!
     var text: String! {
         didSet {
-            self.textLabel.text = text
+//            self.textLabel.setString(text, withHotwords: [])
+            self.textLabel.setHTMLString(text, withWidth: self.textLabel.frame.size.width)
             self.invalidateIntrinsicContentSize()
         }
     }
@@ -63,11 +64,17 @@ class TextBubbleView : BubbleView {
     override func initialize() {
         super.initialize()
         
-        self.textLabel = ActiveLabel()
-        self.textLabel.font = UIFont(name:"HelveticaNeue", size:16.0)
-        self.textLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        self.textLabel.numberOfLines = 0;
-        self.textLabel.text = ""
+        self.textLabel = KREAttributedLabel(frame: CGRect.zero)
+        self.textLabel.textColor = Common.UIColorRGB(0x444444)
+        self.textLabel.mentionTextColor = Common.UIColorRGB(0x8ac85a)
+        self.textLabel.hashtagTextColor = Common.UIColorRGB(0x8ac85a)
+        self.textLabel.linkTextColor = Common.UIColorRGB(0x8ac85a)
+        self.textLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
+        self.textLabel.numberOfLines = 0
+        self.textLabel.lineBreakMode = NSLineBreakMode.ByCharWrapping
+        self.textLabel.userInteractionEnabled = true
+        self.textLabel.contentMode = UIViewContentMode.TopLeft
+//        self.textLabel.text = ""
         
 //        self.bubbleTrailingConstraint = NSLayoutConstraint(item:self.contentView, attribute:.Trailing, relatedBy:.Equal, toItem:self.bubbleContainerView, attribute:.Trailing, multiplier:1.0, constant:16.0)
 

@@ -10,10 +10,10 @@ import UIKit
 
 class Constants: NSObject {
     struct ServerConfigs {
-        static let KORE_BOT_SERVER = String(format: "https://devbots.kore.com/")
+        static let KORE_BOT_SERVER = String(format: "https://pilot-bots.kore.com/")
     }
     struct URL {
-        static let baseUrl = "https://devbots.kore.com/"
+        static let baseUrl = "https://pilot-bots.kore.com/"
         static let jwtUrl = String(format: "%@api/users/sts", Constants.ServerConfigs.KORE_BOT_SERVER)
         static let jwtAuthorizationUrl = String(format: "%@api/oAuth/token/jwtgrant", Constants.ServerConfigs.KORE_BOT_SERVER)
         static let rtmUrl = String(format: "%@api/rtm/start", Constants.ServerConfigs.KORE_BOT_SERVER)
