@@ -53,6 +53,7 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         }
     }
     
+    @IBOutlet weak var containterViewLeadingConstriant: NSLayoutConstraint!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var attachmentsCollectionView: UICollectionView!
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
@@ -86,6 +87,9 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         self.textView.font = self.composeBarFont()
 
         self.enableSendButton = false
+        self.closeAccessoryButton.hidden = true;
+        self.showAccessoryButton.hidden = true;
+        self.containterViewLeadingConstriant.constant = 10;
     }
     
     func composeBarFont() -> UIFont {
@@ -113,6 +117,9 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         self.closeAccessoryButton.alpha = 0.0
         
         self.showAccessoryButton.transform = CGAffineTransformIdentity
+        self.closeAccessoryButton.hidden = true;
+        self.showAccessoryButton.hidden = true;
+
 //        self.closeAccessoryButton.transform = CGAffineTransformScale(CGAffineTransformMakeRotation(DEG_TO_RAD(-45.0)), 0.4722, 0.4722)
     }
     
