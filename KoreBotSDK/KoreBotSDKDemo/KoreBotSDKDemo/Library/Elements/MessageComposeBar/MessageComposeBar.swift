@@ -153,7 +153,7 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
             // is there any text?
             if (self.textView.text.characters.count > 0) {
                 let textComponent: TextComponent = TextComponent()
-                textComponent.text = self.textView.text;
+                textComponent.text = self.textView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
                 
                 message.addComponent(textComponent, currentGroup:&currentGroup)
             }

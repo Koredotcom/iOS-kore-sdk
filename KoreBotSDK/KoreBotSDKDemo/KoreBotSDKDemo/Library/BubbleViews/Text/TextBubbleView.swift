@@ -26,8 +26,10 @@ class TextBubbleView : BubbleView {
     var textLabel: KREAttributedLabel!
     var text: String! {
         didSet {
-//            self.textLabel.setString(text, withHotwords: [])
-            self.textLabel.setHTMLString(text, withWidth: self.textLabel.frame.size.width)
+            self.textLabel.setHTMLString(text, withWidth: self.textSizeThatFitsWithString(text).width)
+            if (self.tailPosition == BubbleMaskTailPosition.Right) {
+                self.textLabel.textColor = self.kTextColor()
+            }
             self.invalidateIntrinsicContentSize()
         }
     }
@@ -40,6 +42,7 @@ class TextBubbleView : BubbleView {
                     return;
                 }
                 
+                self.textLabel.textColor = self.kTextColor()
                 self.text = component.text! as String
             }
         }
@@ -48,7 +51,6 @@ class TextBubbleView : BubbleView {
     override var tailPosition: BubbleMaskTailPosition! {
         didSet {
             self.setNeedsLayout()
-            self.textLabel.textColor = self.kTextColor()
         }
     }
     
@@ -68,15 +70,12 @@ class TextBubbleView : BubbleView {
         self.textLabel.textColor = Common.UIColorRGB(0x444444)
         self.textLabel.mentionTextColor = Common.UIColorRGB(0x8ac85a)
         self.textLabel.hashtagTextColor = Common.UIColorRGB(0x8ac85a)
-        self.textLabel.linkTextColor = Common.UIColorRGB(0x8ac85a)
+        self.textLabel.linkTextColor = Common.UIColorRGB(0x0076FF)
         self.textLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
         self.textLabel.numberOfLines = 0
-        self.textLabel.lineBreakMode = NSLineBreakMode.ByCharWrapping
+        self.textLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         self.textLabel.userInteractionEnabled = true
         self.textLabel.contentMode = UIViewContentMode.TopLeft
-//        self.textLabel.text = ""
-        
-//        self.bubbleTrailingConstraint = NSLayoutConstraint(item:self.contentView, attribute:.Trailing, relatedBy:.Equal, toItem:self.bubbleContainerView, attribute:.Trailing, multiplier:1.0, constant:16.0)
 
         self.addSubview(self.textLabel);
     }
@@ -104,6 +103,15 @@ class TextBubbleView : BubbleView {
                                                                     options: NSStringDrawingOptions.UsesLineFragmentOrigin,
                                                                     attributes: [NSFontAttributeName: self.textLabel.font],
                                                                     context: nil)
+        return rect.size;
+    }
+    
+    func textSizeThatFitsWithString(string:NSString) -> CGSize {
+        let limitingSize: CGSize  = CGSizeMake(kMaxTextWidth , CGFloat.max)
+        let rect: CGRect = string.boundingRectWithSize(limitingSize,
+                                                                     options: NSStringDrawingOptions.UsesLineFragmentOrigin,
+                                                                     attributes: [NSFontAttributeName: self.textLabel.font],
+                                                                     context: nil)
         return rect.size;
     }
 }

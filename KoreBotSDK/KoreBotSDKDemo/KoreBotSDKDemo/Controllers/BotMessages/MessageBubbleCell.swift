@@ -194,15 +194,15 @@ class MessageBubbleCell : UITableViewCell {
     }
 
     static func setComponentGroup(componentGroup: ComponentGroup, bubbleView: BubbleView) {
-        bubbleView.components = componentGroup.components
-        
-        bubbleView.translatesAutoresizingMaskIntoConstraints = false
         
         if (componentGroup.message().messageType == .Default) {
             bubbleView.tailPosition = .Right
         } else {
             bubbleView.tailPosition = .Left
         }
+        
+        bubbleView.components = componentGroup.components
+        bubbleView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     func configureWithComponentGroup(componentGroup: ComponentGroup, maskType: BubbleMaskType) {

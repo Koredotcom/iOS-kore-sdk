@@ -323,7 +323,7 @@
         }
         //setting attributed text on main thread
 //        dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.attributedText = attrString;
+            self.attributedText = attrString;
 //        });
 //    });
 }
@@ -335,8 +335,8 @@
 //        CALayer *layer = [CALayer layer];
 //        layer.frame = rect;
 //        layer.backgroundColor = UIColorRGBA(0xffff00, 0.5).CGColor;
-//        [weakSelf.layer addSublayer:layer];
-//        [weakSelf.touchableLayers addObject:layer];
+//        [self.layer addSublayer:layer];
+//        [self.touchableLayers addObject:layer];
 //    });
 }
 
