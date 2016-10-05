@@ -223,7 +223,7 @@ public class ChatMessagesViewController : UIViewController {
     }
     
     func createComposeBar() {
-        self.composeBar = NSBundle.mainBundle().loadNibNamed("MessageComposeBar", owner: self, options: nil)[0] as? MessageComposeBar
+        self.composeBar = NSBundle.mainBundle().loadNibNamed("MessageComposeBar", owner: self, options: nil)![0] as? MessageComposeBar
         self.composeBar.translatesAutoresizingMaskIntoConstraints = false
         
 //        self.composeBar.isKora = self.composeMode == ComposeMode.Kora

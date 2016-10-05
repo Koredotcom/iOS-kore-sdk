@@ -67,7 +67,7 @@ class MaskedBorderView : UIView {
             
             let mask: CAShapeLayer = bubbleView.layer.mask as! CAShapeLayer
             
-            CGContextAddPath(context, mask.path)
+            CGContextAddPath(context, mask.path!)
             CGContextStrokePath(context)
         }
     }
@@ -83,7 +83,7 @@ class BubbleView: UIView {
     var maskType: BubbleMaskType! 
     var bubbleType: BubbleType!
     var borderView: MaskedBorderView!
-    var didSelectComponentAtIndex:((index: Int) -> Void)!
+    var didSelectComponentAtIndex:((Int) -> Void)!
 
     var components:NSArray! {
         didSet(c) {
@@ -122,7 +122,7 @@ class BubbleView: UIView {
             break
             
         case .Image:
-            bubbleView = NSBundle.mainBundle().loadNibNamed("MultiImageBubbleView", owner: self, options: nil)[0] as! BubbleView
+            bubbleView = NSBundle.mainBundle().loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as! BubbleView
             break
         }
         

@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
 
     s.dependency 'Mantle', '2.0.2'
     s.dependency 'AFNetworking', '2.5.4'
-    s.dependency 'SwiftWebSocket'
+    s.dependency 'SocketRocket'
 
     s.framework = 'SystemConfiguration'
     s.requires_arc = true

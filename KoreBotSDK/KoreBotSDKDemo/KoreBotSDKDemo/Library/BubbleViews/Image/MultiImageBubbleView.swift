@@ -105,7 +105,7 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         if ((self.didSelectComponentAtIndex) != nil) {
-            self.didSelectComponentAtIndex(index: indexPath.row)
+            self.didSelectComponentAtIndex(indexPath.row)
         }
     }
     

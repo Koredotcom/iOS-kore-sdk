@@ -192,7 +192,7 @@ public class HTTPRequestManager : NSObject {
 
         let stringBuffer: NSMutableString = NSMutableString(capacity: (data.length*2))
         let dataBuffer = UnsafeBufferPointer<UInt8>(start:UnsafePointer<UInt8>(data.bytes), count:data.length)
-        for var i = 0; i < data.length; i++ {
+        for i in 0 ..< data.length {
             stringBuffer.appendFormat("%02lx", Int(dataBuffer[i]))
         }
         return String(dataBuffer)

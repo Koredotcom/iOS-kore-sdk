@@ -21,7 +21,6 @@ target 'KoreBotSDKDemo' do
 
     use_frameworks!
     import_pods
-    pod 'ActiveLabel'
     pod 'TOWebViewController'
     pod 'KoreBotSDK'
     project 'KoreBotSDKDemo/KoreBotSDKDemo.xcodeproj'
