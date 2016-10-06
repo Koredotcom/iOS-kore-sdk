@@ -27,14 +27,14 @@ class SectionedThread : NSObject {
                         self.sections.append(currentSegment)
                     }
                     
-                    currentSegment.groups.addObject(groupedComponents)
+                    currentSegment.groups.add(groupedComponents)
                 }
             }
         }
     }
     var sections: Array<ThreadSection>!
     
-    static func sectionedThread(thread: Thread) -> SectionedThread {
+    static func sectionedThread(_ thread: Thread) -> SectionedThread {
         let sectionThread: SectionedThread = SectionedThread(thread: thread)
         sectionThread.thread = thread
         return sectionThread
@@ -55,7 +55,7 @@ class ThreadSection : NSObject {
         self.groups = NSMutableArray()
     }
     
-    func isRelatedToComponentGroup(group: ComponentGroup) -> Bool {
+    func isRelatedToComponentGroup(_ group: ComponentGroup) -> Bool {
         return false
     }
     

@@ -39,13 +39,13 @@ class MessageBubbleCell : UITableViewCell {
             return self.bubbleView.tailPosition
         }
         set {
-            if (tailPosition == .Left) {
+            if (tailPosition == .left) {
                 self.bubbleLeadingConstraint.priority = 999
                 self.bubbleTrailingConstraint.priority = 1
                 
                 self.dateLabelLeadingConstraint.priority = 999
                 self.dateLabelTrailingConstraint.priority = 1
-                self.senderImageView.hidden = false
+                self.senderImageView.isHidden = false
 
             } else {
                 self.bubbleLeadingConstraint.priority = 1
@@ -53,7 +53,7 @@ class MessageBubbleCell : UITableViewCell {
                 
                 self.dateLabelLeadingConstraint.priority = 1
                 self.dateLabelTrailingConstraint.priority = 999
-                self.senderImageView.hidden = true
+                self.senderImageView.isHidden = true
             }
             
             self.bubbleView.tailPosition = tailPosition
@@ -62,35 +62,35 @@ class MessageBubbleCell : UITableViewCell {
         }
     }
     
-    var maskType: BubbleMaskType = .Full {
+    var maskType: BubbleMaskType = .full {
         didSet {
             self.bubbleView.maskType = self.maskType
             switch (maskType) {
-            case .Top:
+            case .top:
                 self.bubbleBottomConstraint.constant = 1
                 break
                 
-            case .Middle:
+            case .middle:
                 self.bubbleBottomConstraint.constant = 1
                 break
                 
-            case .Bottom:
+            case .bottom:
                 self.bubbleBottomConstraint.constant = 8
                 break
                 
-            case .Full:
+            case .full:
                 self.bubbleBottomConstraint.constant = 8
                 break
             }
         }
     }
     
-    var didSelectComponentAtIndex: ((sender: MessageBubbleCell, index: NSInteger) -> Void)! {
+    var didSelectComponentAtIndex: ((_ sender: MessageBubbleCell, _ index: NSInteger) -> Void)! {
         didSet {
             // pass the selection on to the TableView controller
             self.bubbleView.didSelectComponentAtIndex = { [weak self] (index: Int) in
                 if ((self!.didSelectComponentAtIndex) != nil) {
-                    self!.didSelectComponentAtIndex(sender: self!, index: index)
+                    self?.didSelectComponentAtIndex(self!, index)
                 }
             }
         }
@@ -101,38 +101,38 @@ class MessageBubbleCell : UITableViewCell {
     // MARK:
 
     func initialize() {
-        self.selectionStyle = .None
+        self.selectionStyle = .none
         
         self.dateLabel = UILabel()
         self.dateLabel.numberOfLines = 0
         self.dateLabel.translatesAutoresizingMaskIntoConstraints = false
         self.dateLabel.font = UIFont(name: "HelveticaNeue", size: 13)
-        self.dateLabel.textColor = .lightGrayColor()
+        self.dateLabel.textColor = .lightGray
         
         // Create the sender imageView
         self.senderImageView = UIImageView()
-        self.senderImageView.contentMode = .ScaleAspectFit
+        self.senderImageView.contentMode = .scaleAspectFit
         self.senderImageView.clipsToBounds = true
         self.senderImageView.layer.cornerRadius = 15
         self.senderImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        self.senderImageView.setContentHuggingPriority(251, forAxis:.Horizontal)
-        self.senderImageView.setContentHuggingPriority(251, forAxis:.Vertical)
-        self.senderImageView.setContentCompressionResistancePriority(750, forAxis:.Horizontal)
-        self.senderImageView.setContentCompressionResistancePriority(750, forAxis:.Vertical)
+        self.senderImageView.setContentHuggingPriority(251, for:.horizontal)
+        self.senderImageView.setContentHuggingPriority(251, for:.vertical)
+        self.senderImageView.setContentCompressionResistancePriority(750, for:.horizontal)
+        self.senderImageView.setContentCompressionResistancePriority(750, for:.vertical)
         
         self.contentView.addSubview(self.senderImageView)
         self.contentView.addSubview(self.dateLabel)
-        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[senderImageView(30)]", options:[], metrics:nil, views:["senderImageView":self.senderImageView!]))
-        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[senderImageView(30)]-8-|", options:[], metrics:nil, views:["senderImageView":self.senderImageView!]))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(30)]", options:[], metrics:nil, views:["senderImageView":self.senderImageView!]))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[senderImageView(30)]-8-|", options:[], metrics:nil, views:["senderImageView":self.senderImageView!]))
         
-        self.dateLabelLeadingConstraint = NSLayoutConstraint(item: self.dateLabel, attribute:.Leading, relatedBy:.Equal, toItem:self.contentView, attribute:.Leading, multiplier:1.0, constant:40.0)
+        self.dateLabelLeadingConstraint = NSLayoutConstraint(item: self.dateLabel, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier:1.0, constant:40.0)
         self.dateLabelLeadingConstraint.priority = 999
 
-        self.dateLabelTrailingConstraint = NSLayoutConstraint(item: self.dateLabel, attribute:.Trailing, relatedBy:.Equal, toItem:self.contentView, attribute:.Trailing, multiplier:1.0, constant:-20)
+        self.dateLabelTrailingConstraint = NSLayoutConstraint(item: self.dateLabel, attribute:.trailing, relatedBy:.equal, toItem:self.contentView, attribute:.trailing, multiplier:1.0, constant:-20)
         self.dateLabelTrailingConstraint.priority = 1
 
-        self.dateLabelTopConstraint = NSLayoutConstraint(item: self.dateLabel, attribute:.Top, relatedBy:.Equal, toItem:self.contentView, attribute:.Top, multiplier:1.0, constant:0.0)
+        self.dateLabelTopConstraint = NSLayoutConstraint(item: self.dateLabel, attribute:.top, relatedBy:.equal, toItem:self.contentView, attribute:.top, multiplier:1.0, constant:0.0)
         self.dateLabelTopConstraint.priority = 999
 
         
@@ -146,66 +146,66 @@ class MessageBubbleCell : UITableViewCell {
          */
 
         self.bubbleContainerView = UIView()
-        self.bubbleContainerView.backgroundColor = UIColor.clearColor()
+        self.bubbleContainerView.backgroundColor = UIColor.clear
         self.bubbleContainerView.translatesAutoresizingMaskIntoConstraints = false
         
-        self.bubbleContainerView.setContentHuggingPriority(250, forAxis:.Horizontal)
-        self.bubbleContainerView.setContentHuggingPriority(250, forAxis:.Vertical)
-        self.bubbleContainerView.setContentCompressionResistancePriority(750, forAxis:.Horizontal)
-        self.bubbleContainerView.setContentCompressionResistancePriority(750, forAxis:.Vertical)
+        self.bubbleContainerView.setContentHuggingPriority(250, for:.horizontal)
+        self.bubbleContainerView.setContentHuggingPriority(250, for:.vertical)
+        self.bubbleContainerView.setContentCompressionResistancePriority(750, for:.horizontal)
+        self.bubbleContainerView.setContentCompressionResistancePriority(750, for:.vertical)
         
         self.contentView.addSubview(self.bubbleContainerView)
         
-        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[dateLabel]-4-[bubbleContainerView]", options:[], metrics:nil, views:["dateLabel":self.dateLabel!, "bubbleContainerView": self.bubbleContainerView]))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[dateLabel]-4-[bubbleContainerView]", options:[], metrics:nil, views:["dateLabel":self.dateLabel!, "bubbleContainerView": self.bubbleContainerView]))
 
-        self.bubbleBottomConstraint = NSLayoutConstraint(item:self.contentView, attribute:.Bottom, relatedBy:.Equal, toItem:self.bubbleContainerView, attribute:.Bottom, multiplier:1.0, constant:16.0)
+        self.bubbleBottomConstraint = NSLayoutConstraint(item:self.contentView, attribute:.bottom, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.bottom, multiplier:1.0, constant:16.0)
         self.bubbleBottomConstraint.priority = 999
 
-        self.bubbleLeadingConstraint = NSLayoutConstraint(item:self.bubbleContainerView, attribute:.Leading, relatedBy:.Equal, toItem:self.contentView, attribute:.Leading, multiplier:1.0, constant:35.0)
+        self.bubbleLeadingConstraint = NSLayoutConstraint(item:self.bubbleContainerView, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier:1.0, constant:35.0)
         self.bubbleLeadingConstraint.priority = 999
         
-        self.bubbleTrailingConstraint = NSLayoutConstraint(item:self.contentView, attribute:.Trailing, relatedBy:.Equal, toItem:self.bubbleContainerView, attribute:.Trailing, multiplier:1.0, constant:16.0)
+        self.bubbleTrailingConstraint = NSLayoutConstraint(item:self.contentView, attribute:.trailing, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.trailing, multiplier:1.0, constant:16.0)
         self.bubbleTrailingConstraint.priority = 1
         
         self.contentView.addConstraints([self.bubbleTrailingConstraint, self.bubbleLeadingConstraint, self.bubbleBottomConstraint, self.dateLabelTopConstraint, self.dateLabelLeadingConstraint, self.dateLabelTrailingConstraint])
     }
 
     func bubbleType() -> BubbleType {
-        return BubbleType.View
+        return BubbleType.view
     }
 
-    static func bubbleViewForComponentGroup(componentGroup: ComponentGroup) -> BubbleView {
+    static func bubbleViewForComponentGroup(_ componentGroup: ComponentGroup) -> BubbleView {
         var bubbleView: BubbleView!
         
         switch (componentGroup.componentKind()) {
-        case .Text:
-            bubbleView = BubbleView.bubbleWithType(.Text)
+        case .text:
+            bubbleView = BubbleView.bubbleWithType(.text)
             break
             
-        case .Image:
-            bubbleView = BubbleView.bubbleWithType(.Image)
+        case .image:
+            bubbleView = BubbleView.bubbleWithType(.image)
             break
             
-        case .Unknown:
-            bubbleView = BubbleView.bubbleWithType(.Text)
+        case .unknown:
+            bubbleView = BubbleView.bubbleWithType(.text)
             break
         }
         return bubbleView
     }
 
-    static func setComponentGroup(componentGroup: ComponentGroup, bubbleView: BubbleView) {
+    static func setComponentGroup(_ componentGroup: ComponentGroup, bubbleView: BubbleView) {
         
-        if (componentGroup.message().messageType == .Default) {
-            bubbleView.tailPosition = .Right
+        if (componentGroup.message().messageType == .default) {
+            bubbleView.tailPosition = .right
         } else {
-            bubbleView.tailPosition = .Left
+            bubbleView.tailPosition = .left
         }
         
         bubbleView.components = componentGroup.components
         bubbleView.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func configureWithComponentGroup(componentGroup: ComponentGroup, maskType: BubbleMaskType) {
+    func configureWithComponentGroup(_ componentGroup: ComponentGroup, maskType: BubbleMaskType) {
         if (self.bubbleView == nil) {
             self.bubbleView = MessageBubbleCell.bubbleViewForComponentGroup(componentGroup)
         }
@@ -216,14 +216,14 @@ class MessageBubbleCell : UITableViewCell {
         self.maskType = maskType
         
         let message: Message = componentGroup.message()
-        if (message.messageType == .Default) {
+        if (message.messageType == .default) {
             
         }
         
         if (message.sentDate != nil) {
-            let dateFormatter: NSDateFormatter = NSDateFormatter()
+            let dateFormatter: DateFormatter = DateFormatter()
             dateFormatter.dateFormat = "EEE, MMM d, h:mm a"
-            self.dateLabel.text = dateFormatter.stringFromDate(message.sentDate)
+            self.dateLabel.text = dateFormatter.string(from: message.sentDate as Date)
         }
         
         let placeHolderIcon : UIImage = UIImage(named:"kora")!
@@ -231,16 +231,16 @@ class MessageBubbleCell : UITableViewCell {
         
         if (message.iconUrl != nil) {
             if (message.iconUrl != nil) {
-                let fileUrl = NSURL(string: message.iconUrl)
-                self.senderImageView.setImageWithURL(fileUrl, placeholderImage: placeHolderIcon)
+                let fileUrl = URL(string: message.iconUrl)
+                self.senderImageView.setImageWith(fileUrl, placeholderImage: placeHolderIcon)
             }
         }
         
         let bubbleView: BubbleView  = self.bubbleView
         self.bubbleContainerView.addSubview(bubbleView)
         
-        let horizontal: Array<NSLayoutConstraint> = NSLayoutConstraint.constraintsWithVisualFormat("H:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": bubbleView])
-        let vertical: Array<NSLayoutConstraint> = NSLayoutConstraint.constraintsWithVisualFormat("V:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": bubbleView])
+        let horizontal: Array<NSLayoutConstraint> = NSLayoutConstraint.constraints(withVisualFormat: "H:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": bubbleView])
+        let vertical: Array<NSLayoutConstraint> = NSLayoutConstraint.constraints(withVisualFormat: "V:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": bubbleView])
         
         self.bubbleContainerView.addConstraints(horizontal)
         self.bubbleContainerView.addConstraints(vertical)
@@ -254,12 +254,12 @@ class MessageBubbleCell : UITableViewCell {
 
 class TextBubbleCell : MessageBubbleCell {
     override func bubbleType() -> BubbleType {
-        return BubbleType.Text
+        return BubbleType.text
     }
 }
 
 class ImageBubbleCell : MessageBubbleCell {
     override func bubbleType() -> BubbleType {
-        return BubbleType.Image
+        return BubbleType.image
     }
 }

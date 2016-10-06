@@ -15,7 +15,7 @@ public class ComponentModel: MTLModel, MTLJSONSerializing {
     public var body: String?
 
     // MARK: MTLJSONSerializing methods
-    public static func JSONKeyPathsByPropertyKey() -> [NSObject : AnyObject]! {
+    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["body":"body",
                 "type":"body"]
     }

@@ -9,23 +9,23 @@
 import UIKit
 import Foundation
 
-public class ServerConfigs: NSObject {
-    public static let API_Version: String = "1.1"
-    public static let KORE_SERVER = String(format: "https://pilot-bots.kore.com/")
-    public static func getAllStreamsURL(userId: String!) -> String {
+open class ServerConfigs: NSObject {
+    open static let API_Version: String = "1.1"
+    open static let KORE_SERVER = String(format: "https://pilot-bots.kore.com/")
+    open static func getAllStreamsURL(_ userId: String!) -> String {
         return  String(format: "%@api/%@/users/%@/builder/streams", KORE_SERVER, API_Version, userId)
     }
 }
 
-public class Common : NSObject {
-    public static func UIColorRGB(rgb: Int) -> UIColor {
+open class Common : NSObject {
+    open static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)
         let green = CGFloat((rgb >> 8) & 0xFF)
         let red = CGFloat((rgb >> 16) & 0xFF)
         return UIColor(red: red / 255.0, green: green / 255.0, blue: blue / 255.0, alpha: 1)
     }
     
-    public static func UIColorRGBA(rgb: Int, a: CGFloat) -> UIColor {
+    open static func UIColorRGBA(_ rgb: Int, a: CGFloat) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)
         let green = CGFloat((rgb >> 8) & 0xFF)
         let red = CGFloat((rgb >> 16) & 0xFF)
@@ -33,20 +33,20 @@ public class Common : NSObject {
     }
     
     // MARK: set access token
-    public static func setAccessToken(token: String!) {
-        let userDefauls: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    open static func setAccessToken(_ token: String!) {
+        let userDefauls: UserDefaults = UserDefaults.standard
         if (token != nil && token.characters.count > 0) {
-            userDefauls.setObject(token, forKey: "TOKEN_FOR_AUTHORIZATION")
+            userDefauls.set(token, forKey: "TOKEN_FOR_AUTHORIZATION")
         } else {
             print("Please set valid token to interact with bots api")
         }
     }
     
     // MARK: set userId
-    public static func setUserId(userId: String!) {
-        let userDefauls: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    open static func setUserId(_ userId: String!) {
+        let userDefauls: UserDefaults = UserDefaults.standard
         if (userId != nil && userId.characters.count > 0) {
-            userDefauls.setObject(userId, forKey: "USER_ID")
+            userDefauls.set(userId, forKey: "USER_ID")
         } else {
             print("Please set valid token to interact with bots api")
         }

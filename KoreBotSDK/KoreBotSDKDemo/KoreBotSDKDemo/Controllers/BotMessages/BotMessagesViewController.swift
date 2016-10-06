@@ -11,7 +11,7 @@ import TOWebViewController
 import AFNetworking
 
 enum MessageThreadHeaderType : Int {
-    case None = 1, Sender = 2, Date = 3, SenderAndDate = 4
+    case none = 1, sender = 2, date = 3, senderAndDate = 4
 }
 
 class BotMessagesViewController : UITableViewController {
@@ -23,12 +23,12 @@ class BotMessagesViewController : UITableViewController {
 
             self.tableView.alpha = 0
             
-            UIView.animateWithDuration(0, animations: {
+            UIView.animate(withDuration: 0, animations: {
                 self.tableView.reloadData()
-            }) { (completion) in
+            }, completion: { (completion) in
                 self.scrollToBottom()
                 self.tableView.alpha = 1
-            }
+            }) 
         }
     }
     
@@ -40,11 +40,11 @@ class BotMessagesViewController : UITableViewController {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 200
 
-        self.tableView.separatorStyle = .None
+        self.tableView.separatorStyle = .none
 
-        self.tableView.registerClass(TextBubbleCell.self, forCellReuseIdentifier:"TextBubbleCell")
-        self.tableView.registerClass(ImageBubbleCell.self, forCellReuseIdentifier:"ImageBubbleCell")
-        self.tableView.registerClass(MessageBubbleCell.self, forCellReuseIdentifier:"MessageBubbleCell")
+        self.tableView.register(TextBubbleCell.self, forCellReuseIdentifier:"TextBubbleCell")
+        self.tableView.register(ImageBubbleCell.self, forCellReuseIdentifier:"ImageBubbleCell")
+        self.tableView.register(MessageBubbleCell.self, forCellReuseIdentifier:"MessageBubbleCell")
     }
 
 
@@ -55,60 +55,60 @@ class BotMessagesViewController : UITableViewController {
             
             let lastRow: Int = threadSection.groups.count - 1
 //            if (lastRow > 0) {
-                let indexPath: NSIndexPath = NSIndexPath(forRow:lastRow, inSection:lastSection)
-                self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Bottom, animated: false)
+                let indexPath: IndexPath = IndexPath(row:lastRow, section:lastSection)
+                self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
 //            }
         }
     }
     
     // MARK: UITable view data source
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return self.sectionedThread.sections.count
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let threadSection: ThreadSection = self.sectionedThread.sections[section]
         return threadSection.groups.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let threadSection: ThreadSection = self.sectionedThread.sections[indexPath.section]
-        let componentGroup: ComponentGroup = threadSection.groups[indexPath.row] as! ComponentGroup
+        let threadSection: ThreadSection = self.sectionedThread.sections[(indexPath as NSIndexPath).section]
+        let componentGroup: ComponentGroup = threadSection.groups[(indexPath as NSIndexPath).row] as! ComponentGroup
         
         let maskType: BubbleMaskType!
         
         if (threadSection.groups.count == 1) {
-            maskType = .Full
-        } else if (indexPath.row == 0) {
-            maskType = .Top
-        } else if (indexPath.row == threadSection.groups.count - 1) {
-            maskType = .Bottom
+            maskType = .full
+        } else if ((indexPath as NSIndexPath).row == 0) {
+            maskType = .top
+        } else if ((indexPath as NSIndexPath).row == threadSection.groups.count - 1) {
+            maskType = .bottom
         } else {
-            maskType = .Middle
+            maskType = .middle
         }
         
         var cellIdentifier: String!
         switch (componentGroup.componentKind()) {
-        case .Text:
+        case .text:
             cellIdentifier = "TextBubbleCell"
             break
             
-        case .Image:
+        case .image:
             cellIdentifier = "ImageBubbleCell"
             break
             
-        case .Unknown:
+        case .unknown:
             cellIdentifier = "MessageBubbleCell"
             break
         }
         
-        let cell: MessageBubbleCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! MessageBubbleCell
+        let cell: MessageBubbleCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! MessageBubbleCell
         
         cell.configureWithComponentGroup(componentGroup, maskType:maskType)
         
         switch (cell.bubbleView.bubbleType!) {
-        case .Text:
+        case .text:
             let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
             bubbleView.textLabel.detectionBlock = {(hotword, string) in
 
@@ -118,12 +118,12 @@ class BotMessagesViewController : UITableViewController {
                 case KREAttributedHotWordHashtag:
                     break
                 case KREAttributedHotWordLink:
-                    let url: NSURL = NSURL(string: string)!
-                    let webViewController: TOWebViewController = TOWebViewController(URL: url)
+                    let url: URL = URL(string: string!)!
+                    let webViewController: TOWebViewController = TOWebViewController(url: url)
                     let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
                     webNavigationController.tabBarItem.title = "Bots"
     
-                    self.presentViewController(webNavigationController, animated: true, completion: {
+                    self.present(webNavigationController, animated: true, completion: {
                         
                     })
                     break
@@ -138,7 +138,7 @@ class BotMessagesViewController : UITableViewController {
                 }
             }
             break
-        case .Image:
+        case .image:
             cell.didSelectComponentAtIndex = { (sender, index) in
                 
             }
@@ -151,11 +151,11 @@ class BotMessagesViewController : UITableViewController {
         return cell
     }
 
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat.min
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat.leastNormalMagnitude
     }
 
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.min
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return CGFloat.leastNormalMagnitude
     }
 }

@@ -9,6 +9,6 @@
 import UIKit
 import Foundation
 
-public class QuickSelectIdentityCell : UITableViewCell {
+open class QuickSelectIdentityCell : UITableViewCell {
     
 }

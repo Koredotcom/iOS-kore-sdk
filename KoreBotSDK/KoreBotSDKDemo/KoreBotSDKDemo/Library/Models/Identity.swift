@@ -10,7 +10,7 @@ import UIKit
 
 
 enum IdentityType: Int {
-    case User = 1, Bot = 2
+    case user = 1, bot = 2
 }
 
 class Identity: NSObject {
@@ -25,10 +25,10 @@ class Identity: NSObject {
     var accountName: NSString!
     
     
-    func identityDictionary(identifier: NSString) -> NSDictionary {
+    func identityDictionary(_ identifier: NSString) -> NSDictionary {
         return [:]
     }
-    func identity(identity: NSString) -> Identity {
+    func identity(_ identity: NSString) -> Identity {
         return Identity()
     }
     func allUserIdentities() -> NSArray {
@@ -42,7 +42,7 @@ class Identity: NSObject {
         return ""
     }
     
-    func uniqueNameInList(identityList: NSArray) -> String {
+    func uniqueNameInList(_ identityList: NSArray) -> String {
         return ""
     }
 }
@@ -53,7 +53,7 @@ class BotIdentity : Identity {
     var thumbnailImageName: String!
     var botCommands: NSArray!
     
-    static func identityWithDictionary(dictionary: NSDictionary) -> BotIdentity {
+    static func identityWithDictionary(_ dictionary: NSDictionary) -> BotIdentity {
         return BotIdentity()
     }
 }
@@ -65,7 +65,7 @@ class UserIdentity : Identity {
     var imageFilename: String!
     var email: String!
 
-    static func identityWithDictionary(dictionary: NSDictionary) -> UserIdentity {
+    static func identityWithDictionary(_ dictionary: NSDictionary) -> UserIdentity {
         return UserIdentity()
     }
     

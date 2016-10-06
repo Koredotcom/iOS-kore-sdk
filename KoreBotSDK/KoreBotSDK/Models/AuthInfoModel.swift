@@ -26,7 +26,7 @@ public class AuthInfoModel : MTLModel, MTLJSONSerializing {
     public var issuedDate: NSDate?
     
     // MARK: MTLJSONSerializing methods
-    public static func JSONKeyPathsByPropertyKey() -> [NSObject : AnyObject]! {
+    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["identity":"identity",
                 "resourceOwnerID":"resourceOwnerID",
                 "orgID":"orgID",

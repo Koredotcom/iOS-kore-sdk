@@ -19,7 +19,7 @@ public class UserModel: MTLModel, MTLJSONSerializing {
     public var emailId: String?
 
     // MARK: MTLJSONSerializing methods
-    public static func JSONKeyPathsByPropertyKey() -> [NSObject : AnyObject]! {
+    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["userId":"id",
                 "resourceOwnerID":"resourceOwnerID",
                 "enrollType":"enrollType",

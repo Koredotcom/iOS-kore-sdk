@@ -37,8 +37,8 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
     var animationWindow: UIWindow!
     var updatingTextPosition: Bool!
     
-    var sendButtonAction: ((composeBar: MessageComposeBar!, composedMessage: Message!) -> Void)!
-    var valueDidChange: ((composeBar: MessageComposeBar!) -> Void)!
+    var sendButtonAction: ((_ composeBar: MessageComposeBar?, _ composedMessage: Message?) -> Void)!
+    var valueDidChange: ((_ composeBar: MessageComposeBar?) -> Void)!
 
     var enableSendButton: Bool! {
         didSet(enableButton) {
@@ -49,7 +49,7 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
                 
                 self.attachmentsCollectionView.reloadData()
             }
-            self.sendButton.enabled = self.enableSendButton
+            self.sendButton.isEnabled = self.enableSendButton
         }
     }
     
@@ -62,21 +62,21 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
     
     // MARK: init
     override func awakeFromNib() {
-        self.containerView.layer.borderColor = Common.UIColorRGB(0xCCCFD0).CGColor
+        self.containerView.layer.borderColor = Common.UIColorRGB(0xCCCFD0).cgColor
         self.containerView.layer.borderWidth = 0.5
         self.containerView.layer.cornerRadius = 6.0
         self.topLineHeightConstraint.constant = 0.5
         self.bottomLineHeightConstraint.constant = 0.5
         
-        self.attachmentsCollectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier:"Cell")
+        self.attachmentsCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier:"Cell")
         
         self.promptLabel.text = "Say Something..."
         self.attachments = NSMutableArray()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MessageComposeBar.willShowKeyboard(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MessageComposeBar.willHideKeyboard(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MessageComposeBar.didShowKeyboard(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MessageComposeBar.didHideKeyboard(_:)), name: UIKeyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MessageComposeBar.willShowKeyboard(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MessageComposeBar.willHideKeyboard(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MessageComposeBar.didShowKeyboard(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MessageComposeBar.didHideKeyboard(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         
         
         self.showingActionKeyboard = false;
@@ -87,8 +87,8 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         self.textView.font = self.composeBarFont()
 
         self.enableSendButton = false
-        self.closeAccessoryButton.hidden = true;
-        self.showAccessoryButton.hidden = true;
+        self.closeAccessoryButton.isHidden = true;
+        self.showAccessoryButton.isHidden = true;
         self.containterViewLeadingConstriant.constant = 10;
     }
     
@@ -96,7 +96,7 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         return UIFont(name: "HelveticaNeue", size: 14.0)!
     }
     
-    func setAlternateInputView(alternateInputView: UIView!) {
+    func setAlternateInputView(_ alternateInputView: UIView!) {
         
     }
     
@@ -116,9 +116,9 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         self.showAccessoryButton.alpha = 1.0
         self.closeAccessoryButton.alpha = 0.0
         
-        self.showAccessoryButton.transform = CGAffineTransformIdentity
-        self.closeAccessoryButton.hidden = true;
-        self.showAccessoryButton.hidden = true;
+        self.showAccessoryButton.transform = CGAffineTransform.identity
+        self.closeAccessoryButton.isHidden = true;
+        self.showAccessoryButton.isHidden = true;
 
 //        self.closeAccessoryButton.transform = CGAffineTransformScale(CGAffineTransformMakeRotation(DEG_TO_RAD(-45.0)), 0.4722, 0.4722)
     }
@@ -129,7 +129,7 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         self.valueChanged()
     }
     
-    func insertText(text: NSString!) {
+    func insertText(_ text: NSString!) {
         
     }
     
@@ -138,57 +138,57 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         self.enableSendButton = (self.textView.text.characters.count > 0) || (self.attachments.count > 0)
         
         if (self.valueDidChange != nil) {
-            self.valueDidChange(composeBar: self)
+//            self.valueDidChange(composeBar: self)
         }
     }
 
     // MARK: event handlers
-    @IBAction func accessoryButtonPressed(sender: AnyObject!) {
+    @IBAction func accessoryButtonPressed(_ sender: AnyObject!) {
         self.textView.becomeFirstResponder()
         self.showingActionKeyboard = !self.showingActionKeyboard;
     }
     
-    @IBAction func sendButtonPressed(sender: AnyObject!) {
+    @IBAction func sendButtonPressed(_ sender: AnyObject!) {
         if (self.sendButtonAction != nil) {
             
             let message: Message = Message()
-            message.messageType = .Default
-            message.sentDate = NSDate()
+            message.messageType = .default
+            message.sentDate = Date()
             
             var currentGroup: ComponentGroup!
             
             // is there any text?
             if (self.textView.text.characters.count > 0) {
                 let textComponent: TextComponent = TextComponent()
-                textComponent.text = self.textView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                textComponent.text = self.textView.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) as NSString!
                 
                 message.addComponent(textComponent, currentGroup:&currentGroup)
             }
             
-            self.sendButtonAction!(composeBar: self, composedMessage: message)
+            self.sendButtonAction!(self, message)
         }
     }
     
-    func willShowKeyboard(notification: NSNotification!) {
-        keyboardUserInfo = notification.userInfo!
+    func willShowKeyboard(_ notification: Notification!) {
+        keyboardUserInfo = notification.userInfo! as NSDictionary!
     }
     
-    func didShowKeyboard(notification: NSNotification!) {
+    func didShowKeyboard(_ notification: Notification!) {
         // This is done to keep updating the keyboard image
         if (!self.isSwitchingKeyboards && !self.showingActionKeyboard) {
             keyboardImage = UIImageView.init(image: self.getKeyboardImage())
-            keyboardImage.frame = keyboardUserInfo[UIKeyboardFrameEndUserInfoKey]!.CGRectValue
+            keyboardImage.frame = (keyboardUserInfo[UIKeyboardFrameEndUserInfoKey]! as AnyObject).cgRectValue
         }
     }
     
-    func willHideKeyboard(notification: NSNotification!) {
-        keyboardUserInfo = notification.userInfo!
+    func willHideKeyboard(_ notification: Notification!) {
+        keyboardUserInfo = notification.userInfo! as NSDictionary!
         if (!self.isSwitchingKeyboards) {
             let durationValue = keyboardUserInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
             let duration = durationValue.doubleValue
-            let options = UIViewAnimationOptions(rawValue: UInt((keyboardUserInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).integerValue << 16))
+            let options = UIViewAnimationOptions(rawValue: UInt((keyboardUserInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
 
-            UIView.animateWithDuration(duration, delay: 0, options: options, animations: {
+            UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
                 self.resetKeyboard()
                 }, completion: { (Bool) in
                     
@@ -196,7 +196,7 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         }
     }
     
-    func didHideKeyboard(notification: NSNotification!) {
+    func didHideKeyboard(_ notification: Notification!) {
         if (!self.isSwitchingKeyboards) {
             self.textView.inputView = nil;
             self.oldKeyWindow = nil;
@@ -206,17 +206,17 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
     }
     
     // MARK: UICollectionViewDataSource
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 0
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell: UICollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath)
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
         return cell
     }
     
     // MARK: UITextViewDelegate
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         self.valueChanged()
     }
 
@@ -234,8 +234,8 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         if (range.location >= self.textView.text.characters.count) {
             // scroll to the bottom
             self.textView.scrollRangeToVisible(NSMakeRange(self.textView.text.characters.count, 0))
-            self.textView.scrollEnabled = false
-            self.textView.scrollEnabled = true
+            self.textView.isScrollEnabled = false
+            self.textView.isScrollEnabled = true
         }
     }
     
@@ -244,19 +244,19 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         super.updateConstraints()
     }
     
-    override func intrinsicContentSize() -> CGSize {
+    override var intrinsicContentSize : CGSize {
         let collectionHeight: CGFloat = (kAttachmentCellHeight + 4.0) * ceil(CGFloat(self.attachments.count) / 2.0) + (self.attachments.count > 0 ? 4 : 0);
         
-        return CGSizeMake(UIViewNoIntrinsicMetric, self.calculatedTextHeight() + collectionHeight + 12)
+        return CGSize(width: UIViewNoIntrinsicMetric, height: self.calculatedTextHeight() + collectionHeight + 12)
     }
     
     func calculatedTextHeight() -> CGFloat {
         let sizingString: NSString = "\n\n\n\n\n\n\n";
-        let rect: CGRect = sizingString.boundingRectWithSize(CGSize(width: self.textView.bounds.size.width, height: CGFloat.max),
-                                                              options: NSStringDrawingOptions.UsesLineFragmentOrigin,
+        let rect: CGRect = sizingString.boundingRect(with: CGSize(width: self.textView.bounds.size.width, height: CGFloat.greatestFiniteMagnitude),
+                                                              options: NSStringDrawingOptions.usesLineFragmentOrigin,
                                                               attributes: [NSFontAttributeName: self.composeBarFont()],
                                                               context: nil)
-        let textSize: CGSize = self.textView.sizeThatFits(CGSizeMake(self.textView.bounds.size.width, CGFloat.max))
+        let textSize: CGSize = self.textView.sizeThatFits(CGSize(width: self.textView.bounds.size.width, height: CGFloat.greatestFiniteMagnitude))
         return min(textSize.height, rect.size.height + 5);
     }
 }

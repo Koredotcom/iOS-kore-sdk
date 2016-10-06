@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-public class QuickSelectCommandCell : UITableViewCell {
+open class QuickSelectCommandCell : UITableViewCell {
     
 }
 

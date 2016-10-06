@@ -8,14 +8,14 @@
 
 import Foundation
 enum ThreadKind: Int {
-    case Chat = 1, Email = 2, Bot = 3
+    case chat = 1, email = 2, bot = 3
 }
 
 class Thread : NSObject {
     
     var subject: String!
     var bot: String!
-    var threadKind: ThreadKind! = .Bot
+    var threadKind: ThreadKind! = .bot
     var messages: Array<Message>!
 
     // MARK: init
@@ -24,11 +24,11 @@ class Thread : NSObject {
         self.messages = Array()
     }
     
-    func loadThread(messages: NSArray) {
+    func loadThread(_ messages: NSArray) {
         
     }
     
-    func addMessage(message: Message) {
+    func addMessage(_ message: Message) {
         message.thread = self;
         self.messages.append(message)
     }
@@ -49,10 +49,10 @@ class Thread : NSObject {
         // Now check for duplicate first name
         for identity in participants {
             if (string.length > 0) {
-                string.appendString(", ")
+                string.append(", ")
             }
             
-            string.appendString(identity.uniqueNameInList(participants));
+            string.append(identity.uniqueNameInList(participants as NSArray));
         }
         
         return string as String

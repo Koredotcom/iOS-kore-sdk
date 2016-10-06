@@ -12,9 +12,9 @@ class ImageComponentView : UIImageView {
 
     var component: ImageComponent!
     var block: (() -> Void)!
-    func setupImageView(component: ImageComponent!, completion: (() -> Void)?) {
-        if (component.isKindOfClass(ImageComponent)) {
-            self.contentMode = .ScaleAspectFill
+    func setupImageView(_ component: ImageComponent!, completion: (() -> Void)?) {
+        if (component.isKind(of: ImageComponent.self)) {
+            self.contentMode = .scaleAspectFill
             self.component = component as ImageComponent!
             
             self.setupImageView(completion)
@@ -26,8 +26,8 @@ class ImageComponentView : UIImageView {
         self.clipsToBounds = true
     }
     
-    func setupImageView(completion:(() -> Void)?) {
-        self.contentMode = .ScaleAspectFill
+    func setupImageView(_ completion:(() -> Void)?) {
+        self.contentMode = .scaleAspectFill
         
         self.image = UIImage(named: self.component.imageFile)
         if (completion != nil) {
@@ -49,14 +49,14 @@ class ImageComponentCollectionViewCell : UICollectionViewCell {
             self.imageComponent.setupImageView(component) { 
                 
             }
-            self.backgroundColor = UIColor.clearColor()
+            self.backgroundColor = UIColor.clear
         }
     }
 
     var isViewing: Bool = false {
         didSet {
-            self.displayView.hidden = isViewing
-            self.backgroundColor = isViewing ? UIColor.init(white:0.0, alpha:0.1) : UIColor.clearColor()
+            self.displayView.isHidden = isViewing
+            self.backgroundColor = isViewing ? UIColor.init(white:0.0, alpha:0.1) : UIColor.clear
         }
     }
 
@@ -65,23 +65,23 @@ class ImageComponentCollectionViewCell : UICollectionViewCell {
     }
     
     func transitionContentMode() -> UIViewContentMode {
-        return .ScaleAspectFill
+        return .scaleAspectFill
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         
         self.contentView.layer.borderWidth = 0.5
-        self.contentView.layer.borderColor = UIColor.whiteColor().CGColor
-        self.dimmingView.hidden = true
-        self.displayView.hidden = false
+        self.contentView.layer.borderColor = UIColor.white.cgColor
+        self.dimmingView.isHidden = true
+        self.displayView.isHidden = false
     }
     
     override func prepareForReuse() {
         self.imageComponent.image = nil
         self.plusCountLabel.text = "";
-        self.plusCountLabel.hidden = true
-        self.dimmingView.hidden = true
-        self.displayView.hidden = false
+        self.plusCountLabel.isHidden = true
+        self.dimmingView.isHidden = true
+        self.displayView.isHidden = false
     }
 }

@@ -27,7 +27,7 @@ class Constants: NSObject {
     }
     
     public static func getUUID() -> String {
-        let uuid = NSUUID().UUIDString
+        let uuid = NSUUID().uuidString
         let date: NSDate = NSDate()
         return String(format: "%@-%.0f", uuid, date.timeIntervalSince1970)
     }

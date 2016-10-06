@@ -23,17 +23,17 @@ class AppLaunchViewController: UIViewController {
         self.automaticallyAdjustsScrollViewInsets = false
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setInitialState()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
@@ -42,25 +42,25 @@ class AppLaunchViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
     
     // MARK: button action
-    @IBAction func signInButtonAction(sender: UIButton!) {
+    @IBAction func signInButtonAction(_ sender: UIButton!) {
         
         // -------------------------------------------------------------- //
         // INFO: YOU MUST SET 'clientId'
         let clientId: String = "5a37bf24-fea0-4e6b-a816-f9602db08149"
         if clientId.characters.count > 0 {
-            let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+            let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
             activityIndicatorView.center = view.center
             view.addSubview(activityIndicatorView)
             activityIndicatorView.startAnimating()
 
             let botInfo: NSDictionary = ["chatBot": "Kore Banking Assistant", "taskBotId":"st-cad4ff23-3679-57e3-9b51-f6251c2ba9da"]
             let botClient: BotClient = BotClient(botInfoParameters: botInfo)
-            botClient.connectAsAnonymousUser(clientId, success: { [weak self] (client) in
+            botClient.connectAsAnonymousUser(clientId: clientId, success: { [weak self] (client) in
                 activityIndicatorView.stopAnimating()
 
                 let botViewController: ChatMessagesViewController = ChatMessagesViewController()
@@ -78,14 +78,14 @@ class AppLaunchViewController: UIViewController {
         // -------------------------------------------------------------- //
     }
     
-    @IBAction func authenticateButtonAction(sender: UIButton!) {
+    @IBAction func authenticateButtonAction(_ sender: UIButton!) {
         var status: Bool = false
-        let accessToken = NSUserDefaults.standardUserDefaults().valueForKey("TOKEN_FOR_AUTHORIZATION") as! String
-        let userId: String = NSUserDefaults.standardUserDefaults().valueForKey("USER_ID") as! String
+        let accessToken = UserDefaults.standard.value(forKey: "TOKEN_FOR_AUTHORIZATION") as! String
+        let userId: String = UserDefaults.standard.value(forKey: "USER_ID") as! String
 
         if (accessToken.characters.count > 0 && userId.characters.count > 0) {
             status = true
-            authenticateButton.enabled = false
+            authenticateButton.isEnabled = false
 
             let botsViewController:BotsViewController = BotsViewController(userId: userId, accessToken: accessToken)
             botsViewController.title = "Bots"
@@ -99,9 +99,9 @@ class AppLaunchViewController: UIViewController {
     
     func setInitialState() {
         authenticateButton.alpha = 1.0
-        authenticateButton.enabled = true
+        authenticateButton.isEnabled = true
         
         signInButton.alpha = 1.0
-        signInButton.enabled = true
+        signInButton.isEnabled = true
     }
 }

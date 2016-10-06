@@ -9,15 +9,15 @@
 import UIKit
 
 enum BubbleMaskTailPosition : Int {
-    case None = 1, Left = 2, Right = 3
+    case none = 1, left = 2, right = 3
 }
 
 enum BubbleMaskType : Int {
-    case Full = 1, Top = 2, Middle = 3, Bottom = 4
+    case full = 1, top = 2, middle = 3, bottom = 4
 }
 
 enum BubbleType : Int  {
-    case View = 1, Text = 2, Image = 3
+    case view = 1, text = 2, image = 3
 }
 
 let BubbleViewRightTint: UIColor = Common.UIColorRGB(0x0578FE)
@@ -39,36 +39,36 @@ let BubbleViewTailHeight: CGFloat = 14.0
 let BubbleViewTailControlPointY: CGFloat = 6.0
 let BubbleViewTailControlPointX: CGFloat = 5.0
 
-let  BubbleViewMaxWidth: CGFloat = (UIScreen.mainScreen().bounds.size.width - 110.0)
+let  BubbleViewMaxWidth: CGFloat = (UIScreen.main.bounds.size.width - 110.0)
 
 
 class MaskedBorderView : UIView {
 
     init() {
-        super.init(frame: CGRectZero)
-        self.backgroundColor = UIColor.clearColor()
+        super.init(frame: CGRect.zero)
+        self.backgroundColor = UIColor.clear
     }
 
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
     }
     
-    override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
         
-        if (self.superview!.layer.mask != nil && self.superview!.layer.mask!.isKindOfClass(CAShapeLayer) == true && self.superview!.isKindOfClass(BubbleView) == true) {
+        if (self.superview!.layer.mask != nil && self.superview!.layer.mask!.isKind(of: CAShapeLayer.self) == true && self.superview!.isKind(of: BubbleView.self) == true) {
             
             let bubbleView: BubbleView = self.superview as! BubbleView
             
-            let context:CGContextRef = UIGraphicsGetCurrentContext()!
+            let context:CGContext = UIGraphicsGetCurrentContext()!
             
-            CGContextSetStrokeColorWithColor(context, bubbleView.borderColor().CGColor)
-            CGContextSetLineWidth(context, 1.5)
+            context.setStrokeColor(bubbleView.borderColor().cgColor)
+            context.setLineWidth(1.5)
             
             let mask: CAShapeLayer = bubbleView.layer.mask as! CAShapeLayer
             
-            CGContextAddPath(context, mask.path!)
-            CGContextStrokePath(context)
+            context.addPath(mask.path!)
+            context.strokePath()
         }
     }
 }
@@ -100,8 +100,8 @@ class BubbleView: UIView {
     
     // MARK: init
     init() {
-        super.init(frame: CGRectZero)
-        self.backgroundColor = UIColor.clearColor()
+        super.init(frame: CGRect.zero)
+        self.backgroundColor = UIColor.clear
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -109,20 +109,20 @@ class BubbleView: UIView {
     }
     
     // MARK: bubbleWithType
-    static func bubbleWithType(bubbleType: BubbleType) -> BubbleView{
+    static func bubbleWithType(_ bubbleType: BubbleType) -> BubbleView{
         var bubbleView: BubbleView!
         
         switch (bubbleType) {
-        case .View:
+        case .view:
             bubbleView = BubbleView()
             break
             
-        case .Text:
+        case .text:
             bubbleView = TextBubbleView()
             break
             
-        case .Image:
-            bubbleView = NSBundle.mainBundle().loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as! BubbleView
+        case .image:
+            bubbleView = Bundle.main.loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as! BubbleView
             break
         }
         
@@ -146,17 +146,17 @@ class BubbleView: UIView {
         self.applyBubbleMask()
     }
     
-    override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
         
-        let context: CGContextRef = UIGraphicsGetCurrentContext()!
-        CGContextSetFillColorWithColor(context, self.borderColor().CGColor)
-        CGContextFillRect(context, rect)
+        let context: CGContext = UIGraphicsGetCurrentContext()!
+        context.setFillColor(self.borderColor().cgColor)
+        context.fill(rect)
     }
     
     func contentRect() -> CGRect {
         var rect: CGRect = self.bounds
-        rect.origin.x += self.tailPosition == BubbleMaskTailPosition.Left ? BubbleViewTailWidth + BubbleViewCurveRadius / 2.0 : BubbleViewCurveRadius / 2.0
+        rect.origin.x += self.tailPosition == BubbleMaskTailPosition.left ? BubbleViewTailWidth + BubbleViewCurveRadius / 2.0 : BubbleViewCurveRadius / 2.0
         rect.origin.y += BubbleViewCurveRadius / 2.0
         rect.size.height -= BubbleViewCurveRadius
         rect.size.width -= BubbleViewCurveRadius + BubbleViewTailWidth
@@ -165,7 +165,7 @@ class BubbleView: UIView {
     }
     
     func contrastTintColor() -> UIColor {
-        if (self.tailPosition == BubbleMaskTailPosition.Left) {
+        if (self.tailPosition == BubbleMaskTailPosition.left) {
             return BubbleViewLeftContrastTint
         }
         
@@ -173,7 +173,7 @@ class BubbleView: UIView {
     }
     
     func borderColor() -> UIColor {
-        if (self.tailPosition == BubbleMaskTailPosition.Left) {
+        if (self.tailPosition == BubbleMaskTailPosition.left) {
             return BubbleViewLeftTint
         }
         
@@ -190,17 +190,17 @@ class BubbleView: UIView {
         var rOffset: CGFloat = 0.0
         
         switch (self.tailPosition!) {
-        case .None:
+        case .none:
             lOffset = 0
             rOffset = 0
             break
             
-        case .Left:
+        case .left:
             lOffset = BubbleViewTailWidth
             rOffset = 0
             break
             
-        case .Right:
+        case .right:
             lOffset = 0
             rOffset = BubbleViewTailWidth
             break
@@ -215,20 +215,20 @@ class BubbleView: UIView {
         let leftOuterMargin: CGFloat = lOffset
         let rightOuterMargin: CGFloat = width - rOffset
         
-        let isUpperMaskType: Bool = (self.maskType == BubbleMaskType.Full) || (self.maskType == BubbleMaskType.Top)
-        let isLowerMaskType: Bool = (self.maskType == BubbleMaskType.Full) || (self.maskType == BubbleMaskType.Bottom)
+        let isUpperMaskType: Bool = (self.maskType == BubbleMaskType.full) || (self.maskType == BubbleMaskType.top)
+        let isLowerMaskType: Bool = (self.maskType == BubbleMaskType.full) || (self.maskType == BubbleMaskType.bottom)
         
-        var upperRadiusLeft: CGFloat = self.tailPosition == BubbleMaskTailPosition.Left ? smallRadius : largeRadius
-        var upperControlPointLeft: CGFloat = self.tailPosition == BubbleMaskTailPosition.Left ? smallRadiusControlPoint : largeRadiusControlPoint
+        var upperRadiusLeft: CGFloat = self.tailPosition == BubbleMaskTailPosition.left ? smallRadius : largeRadius
+        var upperControlPointLeft: CGFloat = self.tailPosition == BubbleMaskTailPosition.left ? smallRadiusControlPoint : largeRadiusControlPoint
         
-        var upperRadiusRight: CGFloat = self.tailPosition != BubbleMaskTailPosition.Left ? smallRadius : largeRadius
-        var upperControlPointRight: CGFloat = self.tailPosition != BubbleMaskTailPosition.Left ? smallRadiusControlPoint : largeRadiusControlPoint
+        var upperRadiusRight: CGFloat = self.tailPosition != BubbleMaskTailPosition.left ? smallRadius : largeRadius
+        var upperControlPointRight: CGFloat = self.tailPosition != BubbleMaskTailPosition.left ? smallRadiusControlPoint : largeRadiusControlPoint
         
-        let lowerRadiusLeft: CGFloat = self.tailPosition == BubbleMaskTailPosition.Left ? smallRadius : largeRadius
-        let lowerControlPointLeft: CGFloat = self.tailPosition == BubbleMaskTailPosition.Left ? smallRadiusControlPoint : largeRadiusControlPoint
+        let lowerRadiusLeft: CGFloat = self.tailPosition == BubbleMaskTailPosition.left ? smallRadius : largeRadius
+        let lowerControlPointLeft: CGFloat = self.tailPosition == BubbleMaskTailPosition.left ? smallRadiusControlPoint : largeRadiusControlPoint
         
-        let lowerRadiusRight: CGFloat = self.tailPosition != BubbleMaskTailPosition.Left ? smallRadius : largeRadius
-        let lowerControlPointRight: CGFloat = self.tailPosition != BubbleMaskTailPosition.Left ? smallRadiusControlPoint : largeRadiusControlPoint
+        let lowerRadiusRight: CGFloat = self.tailPosition != BubbleMaskTailPosition.left ? smallRadius : largeRadius
+        let lowerControlPointRight: CGFloat = self.tailPosition != BubbleMaskTailPosition.left ? smallRadiusControlPoint : largeRadiusControlPoint
         
         
         if (isUpperMaskType) {
@@ -240,48 +240,48 @@ class BubbleView: UIView {
         }
         
         // top left
-        path.moveToPoint(CGPointMake(leftOuterMargin, upperRadiusLeft))
-        path.addCurveToPoint(CGPointMake(leftOuterMargin + upperRadiusLeft, 0),
-            controlPoint1:CGPointMake(leftOuterMargin, upperControlPointLeft),
-            controlPoint2:CGPointMake(leftOuterMargin + upperControlPointLeft, 0))
+        path.move(to: CGPoint(x: leftOuterMargin, y: upperRadiusLeft))
+        path.addCurve(to: CGPoint(x: leftOuterMargin + upperRadiusLeft, y: 0),
+            controlPoint1:CGPoint(x: leftOuterMargin, y: upperControlPointLeft),
+            controlPoint2:CGPoint(x: leftOuterMargin + upperControlPointLeft, y: 0))
         
         // top right
-        path.addLineToPoint(CGPointMake(rightOuterMargin - upperRadiusRight, 0))
-        path.addCurveToPoint(CGPointMake(rightOuterMargin, upperRadiusRight),
-            controlPoint1:CGPointMake(rightOuterMargin - upperControlPointRight, 0),
-            controlPoint2:CGPointMake(rightOuterMargin, upperControlPointRight))
+        path.addLine(to: CGPoint(x: rightOuterMargin - upperRadiusRight, y: 0))
+        path.addCurve(to: CGPoint(x: rightOuterMargin, y: upperRadiusRight),
+            controlPoint1:CGPoint(x: rightOuterMargin - upperControlPointRight, y: 0),
+            controlPoint2:CGPoint(x: rightOuterMargin, y: upperControlPointRight))
         
         // bottom right
-        if ((self.tailPosition == BubbleMaskTailPosition.Right) && isLowerMaskType == true) {
-            path.addLineToPoint(CGPointMake(rightOuterMargin, height - BubbleViewTailHeight))
-            path.addCurveToPoint(CGPointMake(rightOuterMargin + BubbleViewTailWidth, height),
-                controlPoint1:CGPointMake(rightOuterMargin, height - BubbleViewTailControlPointY),
-                controlPoint2:CGPointMake(rightOuterMargin + BubbleViewTailControlPointX, height))
+        if ((self.tailPosition == BubbleMaskTailPosition.right) && isLowerMaskType == true) {
+            path.addLine(to: CGPoint(x: rightOuterMargin, y: height - BubbleViewTailHeight))
+            path.addCurve(to: CGPoint(x: rightOuterMargin + BubbleViewTailWidth, y: height),
+                controlPoint1:CGPoint(x: rightOuterMargin, y: height - BubbleViewTailControlPointY),
+                controlPoint2:CGPoint(x: rightOuterMargin + BubbleViewTailControlPointX, y: height))
         } else {
             
-            path.addLineToPoint(CGPointMake(rightOuterMargin, height - lowerRadiusRight))
-            path.addCurveToPoint(CGPointMake(rightOuterMargin - lowerRadiusRight, height),
-                controlPoint1:CGPointMake(rightOuterMargin, height - lowerControlPointRight),
-                controlPoint2:CGPointMake(rightOuterMargin - lowerControlPointRight, height))
+            path.addLine(to: CGPoint(x: rightOuterMargin, y: height - lowerRadiusRight))
+            path.addCurve(to: CGPoint(x: rightOuterMargin - lowerRadiusRight, y: height),
+                controlPoint1:CGPoint(x: rightOuterMargin, y: height - lowerControlPointRight),
+                controlPoint2:CGPoint(x: rightOuterMargin - lowerControlPointRight, y: height))
         }
         
         // bottom left
-        if ((self.tailPosition == BubbleMaskTailPosition.Left) && isLowerMaskType == true) {
-            path.addLineToPoint(CGPointMake(leftOuterMargin - BubbleViewTailWidth, height))
-            path.addCurveToPoint(CGPointMake(leftOuterMargin, height - BubbleViewTailHeight),
-                controlPoint1:CGPointMake(leftOuterMargin - BubbleViewTailControlPointX, height),
-                controlPoint2:CGPointMake(leftOuterMargin, height - BubbleViewTailControlPointY))
+        if ((self.tailPosition == BubbleMaskTailPosition.left) && isLowerMaskType == true) {
+            path.addLine(to: CGPoint(x: leftOuterMargin - BubbleViewTailWidth, y: height))
+            path.addCurve(to: CGPoint(x: leftOuterMargin, y: height - BubbleViewTailHeight),
+                controlPoint1:CGPoint(x: leftOuterMargin - BubbleViewTailControlPointX, y: height),
+                controlPoint2:CGPoint(x: leftOuterMargin, y: height - BubbleViewTailControlPointY))
         } else {
-            path.addLineToPoint(CGPointMake(leftOuterMargin + lowerRadiusLeft, height))
-            path.addCurveToPoint(CGPointMake(leftOuterMargin, height - lowerRadiusLeft),
-                controlPoint1:CGPointMake(leftOuterMargin + lowerControlPointLeft, height),
-                controlPoint2:CGPointMake(leftOuterMargin, height - lowerControlPointLeft))
+            path.addLine(to: CGPoint(x: leftOuterMargin + lowerRadiusLeft, y: height))
+            path.addCurve(to: CGPoint(x: leftOuterMargin, y: height - lowerRadiusLeft),
+                controlPoint1:CGPoint(x: leftOuterMargin + lowerControlPointLeft, y: height),
+                controlPoint2:CGPoint(x: leftOuterMargin, y: height - lowerControlPointLeft))
         }
         
-        path.closePath()
+        path.close()
         
         let mask: CAShapeLayer = CAShapeLayer()
-        mask.path = path.CGPath
+        mask.path = path.cgPath
         
         self.layer.mask = mask
         

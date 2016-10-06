@@ -10,11 +10,11 @@ import Foundation
 import UIKit
 
 enum ComponentKind : Int {
-    case Unknown = 1, Text = 2, Image = 3
+    case unknown = 1, text = 2, image = 3
 }
 
 class Component : NSObject {
-    var componentKind: ComponentKind = .Unknown
+    var componentKind: ComponentKind = .unknown
     var message: Message!
     var group: ComponentGroup!
 }

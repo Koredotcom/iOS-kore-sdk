@@ -13,7 +13,7 @@ public class JwtModel: MTLModel, MTLJSONSerializing {
     public var jwtToken: String?
     
     // MARK: MTLJSONSerializing methods
-    public static func JSONKeyPathsByPropertyKey() -> [NSObject : AnyObject]! {
+    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["jwtToken":"jwt"]
     }
 }

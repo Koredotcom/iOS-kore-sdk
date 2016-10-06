@@ -21,7 +21,7 @@ class ComponentGroup : NSObject {
             let component: Component = self.components.firstObject as! Component
             return component.componentKind
         }
-        return .Unknown
+        return .unknown
     }
 
     func message() -> Message {
