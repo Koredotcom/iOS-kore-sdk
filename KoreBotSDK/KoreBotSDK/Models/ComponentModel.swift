@@ -9,13 +9,13 @@
 import UIKit
 import Mantle
 
-public class ComponentModel: MTLModel, MTLJSONSerializing {
+open class ComponentModel: MTLModel, MTLJSONSerializing {
     // MARK: properties
-    public var type: String?
-    public var body: String?
+    open var type: String?
+    open var body: String?
 
     // MARK: MTLJSONSerializing methods
-    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
+    open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["body":"body",
                 "type":"body"]
     }

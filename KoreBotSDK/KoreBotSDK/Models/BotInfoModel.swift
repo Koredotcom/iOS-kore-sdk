@@ -9,11 +9,11 @@
 import UIKit
 import Mantle
 
-public class BotInfoModel: MTLModel, MTLJSONSerializing {
-    public var botUrl: String?
+open class BotInfoModel: MTLModel, MTLJSONSerializing {
+    open var botUrl: String?
     
     // MARK: MTLJSONSerializing methods
-    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
+    open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["botUrl":"url"]
     }
 }

@@ -21,7 +21,7 @@ enum RTMConnectionStatus : Int {
     case closed = 3
     // connection is not initialized yet
     case none = 4
-    private var isClosed : Bool {
+    fileprivate var isClosed : Bool {
         switch self {
         case .closing, .closed:
             return true
@@ -45,20 +45,20 @@ enum RTMConnectionStatus : Int {
 @objc public protocol RTMPersistentConnectionDelegate {
     func rtmConnectionWillOpen()
     func rtmConnectionDidOpen()
-    func rtmConnectionDidClose(code: Int, reason: String)
-    func rtmConnectionDidFailWithError(error: NSError)
-    @objc optional func didReceiveMessage(message: BotMessageModel)
-    @objc optional func didReceiveMessageAck(ack: Ack)
-    @objc optional func rtmConnectionDidEnd(code: Int, reason: String, wasClean: Bool, error: NSError?)
+    func rtmConnectionDidClose(_ code: Int, reason: String)
+    func rtmConnectionDidFailWithError(_ error: NSError)
+    @objc optional func didReceiveMessage(_ message: BotMessageModel)
+    @objc optional func didReceiveMessageAck(_ ack: Ack)
+    @objc optional func rtmConnectionDidEnd(_ code: Int, reason: String, wasClean: Bool, error: NSError?)
 }
 
-public class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
+open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     var botInfo: BotInfoModel!
-    private var botInfoParameters: NSDictionary! = nil
+    fileprivate var botInfoParameters: NSDictionary! = nil
     var websocket: SRWebSocket! = nil
     var connectionDelegate: RTMPersistentConnectionDelegate?
 
-    public var tryReconnect = false
+    open var tryReconnect = false
     
     var connectionStatus: RTMConnectionStatus {
         get {
@@ -83,53 +83,53 @@ public class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
         self.tryReconnect = tryReconnect
     }
     
-    public func start() {
+    open func start() {
         var url: String = self.botInfo.botUrl!
         if (self.tryReconnect == true) {
             url.append("&isReconnect=true")
         }
-        self.websocket = SRWebSocket(urlRequest: NSURLRequest(url: NSURL(string: url)! as URL) as URLRequest!)
+        self.websocket = SRWebSocket(urlRequest: URLRequest(url: URL(string: url)! as URL) as URLRequest!)
         self.websocket.delegate = self
         self.websocket.open()
     }
     
-    public func disconnect() {
+    open func disconnect() {
         if (self.websocket != nil) {
             self.websocket.close()
         }
     }
     
     // MARK: WebSocketDelegate methods
-    public func webSocketDidOpen() {
+    open func webSocketDidOpen() {
         self.connectionDelegate?.rtmConnectionWillOpen()
     }
     
-    public func webSocketShouldConvertTextFrameToString() -> ObjCBool {
+    open func webSocketShouldConvertTextFrameToString() -> ObjCBool {
         return true
     }
     
-    public func webSocket(_ webSocket: SRWebSocket!, didCloseWithCode code: NSInteger!, reason: NSString!, wasClean: ObjCBool) {
-        self.connectionDelegate?.rtmConnectionDidClose(code: code, reason: reason as String)
+    open func webSocket(_ webSocket: SRWebSocket!, didCloseWithCode code: NSInteger!, reason: NSString!, wasClean: ObjCBool) {
+        self.connectionDelegate?.rtmConnectionDidClose(code, reason: reason as String)
     }
     
-    public func webSocket(_ webSocket: SRWebSocket!, didFailWithError error: NSError!) {
-        self.connectionDelegate?.rtmConnectionDidFailWithError(error: error)
+    open func webSocket(_ webSocket: SRWebSocket!, didFailWithError error: NSError!) {
+        self.connectionDelegate?.rtmConnectionDidFailWithError(error)
     }
 
-    public func webSocket(_ webSocket: SRWebSocket!, didReceiveMessage message: Any!) {
-        let responseObject = self.convertStringToDictionary(text: message as! String)!
+    open func webSocket(_ webSocket: SRWebSocket!, didReceiveMessage message: Any!) {
+        let responseObject = self.convertStringToDictionary(message as! String)!
         if (responseObject["type"]! as!  String == "ready") {
             self.connectionDelegate?.self.rtmConnectionDidOpen()
         } else if (responseObject["ok"] != nil) {
             let ack: Ack = try! (MTLJSONAdapter.model(of: Ack.self, fromJSONDictionary: responseObject ) as! Ack)
-            self.connectionDelegate?.didReceiveMessageAck!(ack: ack)
+            self.connectionDelegate?.didReceiveMessageAck!(ack)
         } else if (responseObject["type"]! as! String == "bot_response") {
             let botMessageModel: BotMessageModel = try! (MTLJSONAdapter.model(of: BotMessageModel.self, fromJSONDictionary: responseObject ) as! BotMessageModel)
-            self.connectionDelegate?.didReceiveMessage!(message: botMessageModel)
+            self.connectionDelegate?.didReceiveMessage!(botMessageModel)
         }
     }
 
-    public func webSocket(_ webSocket: SRWebSocket!, didReceivePong pongPayload: NSData!) {
+    open func webSocket(_ webSocket: SRWebSocket!, didReceivePong pongPayload: Data!) {
 
     }
 
@@ -138,7 +138,7 @@ public class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
 //    }
     
     // MARK:
-    public func sendMessageModel(message: String, options: AnyObject?) {
+    open func sendMessageModel(_ message: String, options: AnyObject?) {
         switch (self.connectionStatus) {
         case .connecting:
             print("Socket is in CONNECTING state")
@@ -174,7 +174,7 @@ public class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     }
     
     // MARK: helpers
-    func convertStringToDictionary(text: String) -> [String:AnyObject]? {
+    func convertStringToDictionary(_ text: String) -> [String:AnyObject]? {
         if let data = text.data(using: String.Encoding.utf8) {
             do {
                 return try! JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]

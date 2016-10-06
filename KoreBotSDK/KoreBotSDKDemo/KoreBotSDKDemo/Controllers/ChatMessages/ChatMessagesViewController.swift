@@ -166,7 +166,7 @@ open class ChatMessagesViewController : UIViewController {
             let token: String = self.botInfoParameters["authorization"] as! String
             let botInfo: NSDictionary = (self.botInfoParameters["botInfo"] as? NSDictionary)!
             let client: BotClient = BotClient(botInfoParameters: botInfo)
-            client.connectAsAuthenticatedUser(token: token, success: { [weak self] (botClient) in
+            client.connectAsAuthenticatedUser(token, success: { [weak self] (botClient) in
                 self!.botClient = client
                 }, failure: { (error) in
             })
@@ -247,7 +247,7 @@ open class ChatMessagesViewController : UIViewController {
                 if (group.components.count > 0) {
                     let textComponent: TextComponent = group.components[0] as! TextComponent
                     let text: String = textComponent.text as String
-                    self!.botClient.sendMessage(message: text, options: [] as AnyObject)
+                    self!.botClient.sendMessage(text, options: [] as AnyObject)
                     if (self!.composeMode == .thread) {
                         self!.composeBar.clear()
                         self!.thread.addMessage(composedMessage)

@@ -9,11 +9,11 @@
 import UIKit
 import Mantle
 
-public class JwtModel: MTLModel, MTLJSONSerializing {
-    public var jwtToken: String?
+open class JwtModel: MTLModel, MTLJSONSerializing {
+    open var jwtToken: String?
     
     // MARK: MTLJSONSerializing methods
-    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
+    open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["jwtToken":"jwt"]
     }
 }

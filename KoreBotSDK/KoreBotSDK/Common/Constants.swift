@@ -18,17 +18,17 @@ class Constants: NSObject {
         static let jwtAuthorizationUrl = String(format: "%@api/oAuth/token/jwtgrant", Constants.ServerConfigs.KORE_BOT_SERVER)
         static let rtmUrl = String(format: "%@api/rtm/start", Constants.ServerConfigs.KORE_BOT_SERVER)
         static let signInUrl = String(format: "%@api/oAuth/token/jwtgrant/anonymous", Constants.ServerConfigs.KORE_BOT_SERVER)
-        static func subscribeUrl(userId: String!) -> String {
+        static func subscribeUrl(_ userId: String!) -> String {
             return  String(format: "%@api/users/%@/sdknotifications/subscribe", ServerConfigs.KORE_BOT_SERVER, userId)
         }
-        static func unSubscribeUrl(userId: String!) -> String {
+        static func unSubscribeUrl(_ userId: String!) -> String {
             return  String(format: "%@api/users/%@/sdknotifications/unsubscribe", ServerConfigs.KORE_BOT_SERVER, userId)
         }
     }
     
-    public static func getUUID() -> String {
-        let uuid = NSUUID().uuidString
-        let date: NSDate = NSDate()
+    open static func getUUID() -> String {
+        let uuid = UUID().uuidString
+        let date: Date = Date()
         return String(format: "%@-%.0f", uuid, date.timeIntervalSince1970)
     }
     

@@ -9,17 +9,17 @@
 import UIKit
 import Mantle
 
-public class UserModel: MTLModel, MTLJSONSerializing {
+open class UserModel: MTLModel, MTLJSONSerializing {
     
     // MARK: properties
-    public var userId: String?
-    public var resourceOwnerID: String?
-    public var enrollType: String?
-    public var orgID: String?
-    public var emailId: String?
+    open var userId: String?
+    open var resourceOwnerID: String?
+    open var enrollType: String?
+    open var orgID: String?
+    open var emailId: String?
 
     // MARK: MTLJSONSerializing methods
-    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
+    open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["userId":"id",
                 "resourceOwnerID":"resourceOwnerID",
                 "enrollType":"enrollType",

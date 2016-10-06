@@ -9,24 +9,24 @@
 import UIKit
 import Mantle
 
-public class AuthInfoModel : MTLModel, MTLJSONSerializing {
+open class AuthInfoModel : MTLModel, MTLJSONSerializing {
     // MARK: properties
-    public var identity: String?
-    public var resourceOwnerID: String?
-    public var orgID: String?
-    public var clientID: String?
-    public var sesId: String?
-    public var accountId: String?
-    public var managedBy: String?
-    public var accessToken: String?
-    public var refreshToken: String?
-    public var tokenType: String?
-    public var expiresDate: NSDate?
-    public var refreshExpiresDate: NSDate?
-    public var issuedDate: NSDate?
+    open var identity: String?
+    open var resourceOwnerID: String?
+    open var orgID: String?
+    open var clientID: String?
+    open var sesId: String?
+    open var accountId: String?
+    open var managedBy: String?
+    open var accessToken: String?
+    open var refreshToken: String?
+    open var tokenType: String?
+    open var expiresDate: Date?
+    open var refreshExpiresDate: Date?
+    open var issuedDate: Date?
     
     // MARK: MTLJSONSerializing methods
-    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
+    open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["identity":"identity",
                 "resourceOwnerID":"resourceOwnerID",
                 "orgID":"orgID",
