@@ -186,7 +186,7 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         if (!self.isSwitchingKeyboards) {
             let durationValue = keyboardUserInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
             let duration = durationValue.doubleValue
-            let options = UIViewAnimationOptions(rawValue: UInt((keyboardUserInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
+            let options = UIViewAnimationOptions(rawValue: UInt((keyboardUserInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).int32Value << 16))
 
             UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
                 self.resetKeyboard()
