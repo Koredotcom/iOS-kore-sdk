@@ -10,13 +10,13 @@ def import_pods
 end
 
 target 'KoreBotSDK' do
-    platform :ios, '8.0'
+    platform :ios, '10.0'
     use_frameworks!
     project 'KoreBotSDK.xcodeproj'
 end
 
 target 'KoreBotSDKDemo' do
-    platform :ios, '8.0'
+    platform :ios, '10.0'
     pod 'DTCoreText','1.6.15'
 
     use_frameworks!
