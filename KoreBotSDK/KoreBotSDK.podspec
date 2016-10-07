@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
     s.license  = {:type => "MIT", :file => "LICENSE" }
 
     s.platform = :ios
-    s.platform = :ios, "8.0"
+    s.platform = :ios, "10.0"
 
     s.author = {"Srinivas Vasadi" => "srinivas.vasadi@kore.com"}
     s.source = {:git => "https://github.com/Koredotcom/iOS-kore-sdk.git"}
