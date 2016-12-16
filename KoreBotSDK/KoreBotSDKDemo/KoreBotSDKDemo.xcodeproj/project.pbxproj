@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2E1E49F68222AAA4C970168B /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E1812F1242FE88925056F7C /* Pods_KoreBotSDKDemo.framework */; };
+		BBD07F171E040F9400A68FB6 /* SDKConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD07F161E040F9400A68FB6 /* SDKConfiguration.swift */; };
 		D10A245A1CF72FD400E2732C /* TextBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10A24591CF72FD400E2732C /* TextBubbleView.swift */; };
 		D10A24741CF808A300E2732C /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10A24731CF808A300E2732C /* Identity.swift */; };
 		D1132F661D8181130083FC10 /* KREAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D1132F5F1D8181130083FC10 /* KREAttributedLabel.m */; };
@@ -49,6 +50,7 @@
 		51D2300D7315E548B03ED7F4 /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		6E1812F1242FE88925056F7C /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7092CBEB046F0BC9247CE8CE /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		BBD07F161E040F9400A68FB6 /* SDKConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDKConfiguration.swift; sourceTree = "<group>"; };
 		D10A24591CF72FD400E2732C /* TextBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextBubbleView.swift; sourceTree = "<group>"; };
 		D10A24731CF808A300E2732C /* Identity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identity.swift; sourceTree = "<group>"; };
 		D1132F5E1D8181130083FC10 /* KREAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KREAttributedLabel.h; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				D1AA2A341CF3489000BE9789 /* ServerConfigs.swift */,
+				BBD07F161E040F9400A68FB6 /* SDKConfiguration.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -514,6 +517,7 @@
 				D1F4E5271CF716640044C093 /* ComponentGroup.swift in Sources */,
 				D10A24741CF808A300E2732C /* Identity.swift in Sources */,
 				D16D62E21CF5B7BC00752FC8 /* MessageComposeBar.swift in Sources */,
+				BBD07F171E040F9400A68FB6 /* SDKConfiguration.swift in Sources */,
 				D1CAF15E1CF0AEA3001BCAEF /* AppLaunchViewController.swift in Sources */,
 				D1132F671D8181130083FC10 /* KRELayoutManager.m in Sources */,
 				D1132F681D8181130083FC10 /* KREUtilities.m in Sources */,

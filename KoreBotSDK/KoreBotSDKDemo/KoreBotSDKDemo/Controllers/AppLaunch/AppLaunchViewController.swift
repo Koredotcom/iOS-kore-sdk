@@ -51,21 +51,23 @@ class AppLaunchViewController: UIViewController {
         
         // -------------------------------------------------------------- //
         // INFO: YOU MUST SET 'clientId'
-        let clientId: String = "5a37bf24-fea0-4e6b-a816-f9602db08149"
+        let clientId: String = SDKConfiguration.botConfig.demoClientId
+        
         if clientId.characters.count > 0 {
             let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
             activityIndicatorView.center = view.center
             view.addSubview(activityIndicatorView)
             activityIndicatorView.startAnimating()
 
-            let botInfo: NSDictionary = ["chatBot": "Kore Banking Assistant", "taskBotId":"st-cad4ff23-3679-57e3-9b51-f6251c2ba9da"]
+            let botInfo: NSDictionary = ["chatBot": SDKConfiguration.botConfig.chatBotName, "taskBotId":SDKConfiguration.botConfig.taskBotId]
+
             let botClient: BotClient = BotClient(botInfoParameters: botInfo)
             botClient.connectAsAnonymousUser(clientId, success: { [weak self] (client) in
                 activityIndicatorView.stopAnimating()
 
                 let botViewController: ChatMessagesViewController = ChatMessagesViewController()
                 botViewController.botClient = client
-                botViewController.title = "Kore Banking Assistant"
+                botViewController.title = SDKConfiguration.botConfig.chatBotName
                 self!.navigationController?.pushViewController(botViewController, animated: true)
 
                 }, failure: { (error) in
