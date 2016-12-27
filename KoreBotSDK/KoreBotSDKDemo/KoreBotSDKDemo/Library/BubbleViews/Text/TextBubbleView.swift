@@ -25,7 +25,8 @@ class TextBubbleView : BubbleView {
     var textLabel: KREAttributedLabel!
     var text: String! {
         didSet {
-            self.textLabel.setHTMLString(text, withWidth: self.textSizeThatFitsWithString(text as NSString).width)
+            let parsedString:String = KREUtilities.formatHTMLEscapedString(text);
+            self.textLabel.setHTMLString(parsedString, withWidth: self.textSizeThatFitsWithString(text as NSString).width)
             if (self.tailPosition == BubbleMaskTailPosition.right) {
                 self.textLabel.textColor = self.kTextColor()
             }

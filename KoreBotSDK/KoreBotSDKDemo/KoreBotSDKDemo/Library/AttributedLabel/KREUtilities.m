@@ -11,6 +11,16 @@
 
 @implementation KREUtilities
 
++ (NSString *) formatHTMLEscapedString: (NSString *)string {
+    if(string.length == 0)
+    return string;
+    NSMutableString *str = [string mutableCopy];
+    [str replaceOccurrencesOfString:@"&gt;" withString:@">" options:NSLiteralSearch range:NSMakeRange(0, [string length])];
+    [str replaceOccurrencesOfString:@"&lt;" withString:@"<" options:NSLiteralSearch range:NSMakeRange(0, [str length])];
+    
+    return str;
+}
+
 + (NSString *)getStringToDisplayFromString:(NSString *)string{
     if(!string) return @"";
     NSString *objUnicodeRemovedString = [self removeOBJUniCodeFromString:string];
