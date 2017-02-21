@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name = "KoreBotSDK"
-    s.version = "0.0.6"
+    s.version = "0.0.7"
     s.summary = "KoreBotSDK lets a user interact with Kore bots"
     s.homepage = "https://kore.com"
 
