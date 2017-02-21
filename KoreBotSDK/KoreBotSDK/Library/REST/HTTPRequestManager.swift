@@ -23,28 +23,6 @@ open class HTTPRequestManager : NSObject {
     }()
     
     // MARK: requests
-    open func authorizeWithToken(_ accessToken: String!, botInfo: AnyObject!, success:((_ token: String?) -> Void)?, failure:((_ error: Error) -> Void)?) {
-        let urlString: String = Constants.URL.jwtUrl
-        let requestSerializer = AFJSONRequestSerializer()
-        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")        
-        requestSerializer.setValue(accessToken, forHTTPHeaderField:"Authorization")
-        let parameters: NSDictionary = ["botInfo": botInfo]
-
-        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: URL.init(string: Constants.URL.baseUrl) as URL!)
-        operationManager.responseSerializer = AFJSONResponseSerializer.init()
-        operationManager.requestSerializer = requestSerializer
-        operationManager.post(urlString, parameters: parameters, success: { (operation, responseObject) in
-            let error: NSError?
-            let jwt: JwtModel = try! (MTLJSONAdapter.model(of: JwtModel.self, fromJSONDictionary: responseObject! as! [AnyHashable: Any]) as! JwtModel)
-            
-            success?(jwt.jwtToken)
-
-        }) { (operation, error) in
-            failure?(error!)
-        }
-    }
-    
     open func signInWithToken(_ token: AnyObject!, botInfo: AnyObject!, success:((_ user: UserModel?, _ authInfo: AuthInfoModel?) -> Void)?, failure:((_ error: Error) -> Void)?)  {
         let urlString: String = Constants.URL.jwtAuthorizationUrl
         let requestSerializer = AFJSONRequestSerializer()
@@ -101,40 +79,6 @@ open class HTTPRequestManager : NSObject {
                 print(operation?.responseObject)
             }
             failure?(requestError!)
-        }
-    }
-    
-    // MARK: anonymous user login
-    open func anonymousUserSignIn(_ clientId: String!, success:((_ user: UserModel?, _ authInfo: AuthInfoModel?) -> Void)?, failure:((_ error: NSError) -> Void)?) {
-        let urlString: String = Constants.URL.signInUrl
-        let requestSerializer = AFJSONRequestSerializer()
-        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-        
-        let uuid = Constants.getUUID()
-        let parameters: NSDictionary = ["assertion":["subject":uuid, "issuer": clientId!]]
-        
-        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: URL.init(string: Constants.URL.baseUrl) as URL!)
-        operationManager.responseSerializer = AFJSONResponseSerializer.init()
-        operationManager.requestSerializer = requestSerializer
-        operationManager.post(urlString, parameters: parameters, success: { (operation, responseObject) in
-            let error: NSError?
-            
-            if responseObject is [AnyHashable: Any] {
-                let dictionary = responseObject as! [String : AnyObject]
-                let authorization: [AnyHashable: Any] = dictionary["authorization"] as! [AnyHashable: Any]
-                let userInfo: [AnyHashable: Any] = dictionary["userInfo"] as! [AnyHashable: Any]
-                let authInfo: AuthInfoModel = try! (MTLJSONAdapter.model(of: AuthInfoModel.self, fromJSONDictionary: authorization) as! AuthInfoModel)
-                let user: UserModel = try! (MTLJSONAdapter.model(of: UserModel.self, fromJSONDictionary: userInfo) as! UserModel)
-                success?(user, authInfo)
-            } else {
-                failure?(NSError(domain: "", code: 0, userInfo: [:]))
-            }
-        }) { (operation, error) in
-            if (operation?.responseObject != nil) {
-                print(operation?.responseObject)
-            }
-            failure?(error as! NSError)
         }
     }
     

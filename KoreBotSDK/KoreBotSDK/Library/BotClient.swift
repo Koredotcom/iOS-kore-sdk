@@ -8,20 +8,14 @@
 
 import UIKit
 
-enum SignInType : Int {
-    case authenticatedUser = 0
-    case anonymousUser = 1
-    case none = 2
-}
-
 open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     
     // MARK: properties
     fileprivate var connection: RTMPersistentConnection! = nil
-    fileprivate var token: String! = nil
+    fileprivate var jwToken: String! = nil
     fileprivate var clientId: String! = nil
     fileprivate var botInfoParameters: NSDictionary! = nil
-    fileprivate var authInfoModel: AuthInfoModel! = nil
+    public var authInfoModel: AuthInfoModel! = nil
     fileprivate var userInfoModel: UserModel! = nil
     fileprivate var reconnecting = false
     fileprivate var currentReconnectAttempt = 0
@@ -29,8 +23,6 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     
     fileprivate var reconnects = false
     fileprivate var reconnectWait = 10
-    
-    fileprivate var signInType: SignInType = .none
     
     open var connectionWillOpen: ((Void) -> Void)!
     open var connectionDidOpen: ((Void) -> Void)!
@@ -52,38 +44,16 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     // MARK:
     fileprivate func connect() {
         if (self.authInfoModel == nil) {
-            switch self.signInType {
-            case .authenticatedUser:
-                self.connectAsAuthenticatedUser(token, success: { [weak self] (client) in
-                    if (self!.successClosure != nil) {
-                        self!.successClosure(client)
-                    }
-                    }, failure: { [weak self] (error) in
-                        self!.reconnecting = false
-                        if (self?.failureClosure != nil) {
-                            self?.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as! [AnyHashable : Any]?))
-                        }
-                })
-                break
-            case .anonymousUser:
-                self.connectAsAnonymousUser(clientId, success: { [weak self] (client) in
-                    if (self!.successClosure != nil) {
-                        self!.successClosure(client)
-                    }
-                    }, failure: { [weak self] (error) in
-                        self!.reconnecting = false
-                        if (self!.failureClosure != nil) {
-                            self!.failureClosure(NSError(domain: "RTM", code: 0, userInfo: error.userInfo))
-                        }
-                })
-                break
-            case .none:
-                self.reconnecting = false
-                if (self.failureClosure != nil) {
-                    self.failureClosure(NSError(domain: "RTM", code: 0, userInfo: [:]))
+            self.connectWithJwToken(jwToken, success: { [weak self] (client) in
+                if (self!.successClosure != nil) {
+                    self!.successClosure(client)
                 }
-                break
-            }
+                }, failure: { [weak self] (error) in
+                    self!.reconnecting = false
+                    if (self?.failureClosure != nil) {
+                        self?.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as! [AnyHashable : Any]?))
+                    }
+            })
         } else {
             let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
             requestManager.getRtmUrlWithAuthInfoModel(self.authInfoModel, botInfo: self.botInfoParameters, success: { (botInfo) in
@@ -138,9 +108,8 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     }
     
     // MARK: make connection
-    open func connectAsAuthenticatedUser(_ token: String!, success:((BotClient?) -> Void)?, failure:((Error) -> Void)?)  {
-        self.signInType = .authenticatedUser
-        self.token = token
+    open func connectWithJwToken(_ jwtToken: String!, success:((BotClient?) -> Void)?, failure:((Error) -> Void)?)  {
+        self.jwToken = jwtToken
         
         var rtmError: Error!
         var rtmBotInfoModel: BotInfoModel!
@@ -161,26 +130,15 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         
         if (self.authInfoModel == nil) {
             group.enter() // -- 2
-            requestManager.authorizeWithToken(token, botInfo: self.botInfoParameters, success: { (jwToken) in
-                
-                group.enter() // -- 3
-                requestManager.signInWithToken(jwToken as AnyObject!, botInfo: self.botInfoParameters, success: { [weak self] (user, authInfo) in
-                    self?.authInfoModel = authInfo
-                    self?.userInfoModel = user
-                    
-                    group.leave() // -- 3
-                    
-                    }, failure: { (error) in
-                        status = status && false
-                        rtmError = error
-                        group.leave() // -- 3
-                })
+            requestManager.signInWithToken(jwtToken as AnyObject!, botInfo: self.botInfoParameters, success: { [weak self] (user, authInfo) in
+                self?.authInfoModel = authInfo
+                self?.userInfoModel = user
                 group.leave() // -- 2
-            }) { (error) in
-                status = status && false
-                rtmError = error
-                group.leave() // -- 2
-            }
+                }, failure: { (error) in
+                    status = status && false
+                    rtmError = error
+                    group.leave() // -- 2
+            })
         } else {
             isReconnect = true
         }
@@ -194,33 +152,6 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             } else {
                 self.connect()
             }
-        })
-    }
-    
-    open func connectAsAnonymousUser(_ clientId: String!,  success:((BotClient?) -> Void)?, failure:((NSError) -> Void)?)  {
-        self.signInType = .anonymousUser
-        self.clientId = clientId
-
-        var rtmError: NSError!
-        var rtmBotInfoModel: BotInfoModel!
-        var status: Bool = true
-        var isReconnect = false
-        
-        if (self.successClosure == nil) {
-            self.successClosure = success
-        }
-        if (self.failureClosure == nil) {
-            self.failureClosure = failure
-        }
-        
-        self.anonymousUserSignIn(clientId, success: { (user, authInfo) in
-            self.authInfoModel = authInfo
-            self.userInfoModel = user
-            self.connect()
-            }, failure: { (error) in
-                if (failure != nil) {
-                    failure!(error)
-                }
         })
     }
     
@@ -296,12 +227,6 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                 break
             }
         }
-    }
-    
-    // MARK: anonymous user sign-in
-    open func anonymousUserSignIn(_ clientId: String!, success:((UserModel?, AuthInfoModel?) -> Void)?, failure:((NSError) -> Void)?) {
-        let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-        requestManager.anonymousUserSignIn(clientId, success: success, failure: failure)
     }
     
     // MARK: subscribe/ unsubscribe to push notifications
