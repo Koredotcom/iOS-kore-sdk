@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
     s.platform = :ios, "8.0"
 
     s.author = {"Srinivas Vasadi" => "srinivas.vasadi@kore.com"}
-    s.source = {:git => "https://github.com/Koredotcom/iOS-kore-sdk.git"}
+    s.source = {:git => "https://github.com/Koredotcom/iOS-kore-sdk.git", :commit => "bf2bdf5ebf247dc4073bf42023b2abd3a038c86a"}
 
     s.source_files = "KoreBotSDK/KoreBotSDK/**/*.{swift}"
     s.exclude_files = "KoreBotSDK/KoreBotSDK.{h}"
