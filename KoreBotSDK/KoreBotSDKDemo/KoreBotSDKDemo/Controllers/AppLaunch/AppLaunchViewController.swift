@@ -111,7 +111,9 @@ class AppLaunchViewController: UIViewController {
         }
     }
     
-    // MARK: request
+    // MARK: get JWT token request
+    // NOTE: Invokes a webservice and gets the JWT token.
+    //       Developer has to host a webservice, which generates the JWT and that should be called from this method.
     func getJwTokenWithClientId(_ clientId: String!, clientSecret: String!, identity: String!, isAnonymous: Bool!, success:((_ jwToken: String?) -> Void)?, failure:((_ error: Error) -> Void)?) {
         // NOTE: You must set your URL to generate JWT. 
         let urlString: String = ServerConfigs.koreJwtUrl()

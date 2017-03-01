@@ -11,8 +11,6 @@ import Foundation
 
 open class ServerConfigs: NSObject {
     open static let API_Version: String = "1.1"
-    // NOTE: You must set your URL to generate JWT.
-    open static let JWT_KORE_SERVER = String(format: "http://50.19.64.173:4000/")
     
 //    open static let KORE_SERVER = String(format: "https://qa1-bots.kore.com/")
     open static let KORE_SERVER = String(format: "pilot-bots.kore.com")
@@ -27,7 +25,7 @@ open class ServerConfigs: NSObject {
         return String(format: "%@api/users/sts", KORE_SERVER)
     }
     open static func koreJwtUrl() -> String {
-        return String(format: "%@api/users/sts", JWT_KORE_SERVER)
+        return String(format: "http://50.19.64.173:4000/api/users/sts")
     }
 }
 
