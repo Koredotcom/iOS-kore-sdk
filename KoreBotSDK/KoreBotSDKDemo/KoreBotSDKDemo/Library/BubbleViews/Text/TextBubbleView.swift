@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import KoreTextParser
 
 class TextBubbleView : BubbleView {
-
+    let markdownParser: MarkdownParser = MarkdownParser()
     func kTextColor() -> UIColor {
         return (self.tailPosition == BubbleMaskTailPosition.left ? Common.UIColorRGB(0x484848) : Common.UIColorRGB(0xFFFFFF))
     }
@@ -23,10 +24,10 @@ class TextBubbleView : BubbleView {
     let kMaxTextWidth: CGFloat = (BubbleViewMaxWidth)
 
     var textLabel: KREAttributedLabel!
-    var text: String! {
+    var text: NSAttributedString! {
         didSet {
-            let parsedString:String = KREUtilities.formatHTMLEscapedString(text);
-            self.textLabel.setHTMLString(parsedString, withWidth: self.textSizeThatFitsWithString(text as NSString).width)
+//            self.textLabel.setHTMLString(text, withWidth: self.textSizeThatFitsWithString(text as NSString).width)
+//            self.textLabel.attributedText = self.text
             if (self.tailPosition == BubbleMaskTailPosition.right) {
                 self.textLabel.textColor = self.kTextColor()
             }
@@ -36,14 +37,22 @@ class TextBubbleView : BubbleView {
     override var components: NSArray! {
         didSet {
             if (components.count > 0) {
-                let component: TextComponent = components[0] as! TextComponent
+                let component: KREComponent = components[0] as! KREComponent
                 
-                if (!component.isKind(of: TextComponent.self)) {
+                if (!component.isKind(of: KREComponent.self)) {
                     return;
                 }
                 
                 self.textLabel.textColor = self.kTextColor()
-                self.text = component.text! as String
+                if((component.componentDesc) != nil){
+                    let string: String = component.componentDesc! as String
+                    let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
+                    self.text = markdownParser.attributedString(from: htmlStrippedString!)
+                    let parsedString:String = KREUtilities.formatHTMLEscapedString(string);
+
+                    self.textLabel.setHTMLString(parsedString, withWidth: self.textSizeThatFitsWithString(string as NSString).width)
+
+                }
             }
         }
     }
@@ -77,7 +86,7 @@ class TextBubbleView : BubbleView {
         self.textLabel.isUserInteractionEnabled = true
         self.textLabel.contentMode = UIViewContentMode.topLeft
 
-        self.addSubview(self.textLabel);
+        self.addSubview(self.textLabel)
     }
 
     override func layoutSubviews() {

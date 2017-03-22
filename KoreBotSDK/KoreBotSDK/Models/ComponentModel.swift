@@ -13,10 +13,20 @@ open class ComponentModel: MTLModel, MTLJSONSerializing {
     // MARK: properties
     open var type: String?
     open var body: String?
+    open var payload: Any?
 
     // MARK: MTLJSONSerializing methods
     open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
-        return ["body":"body",
-                "type":"body"]
+        return ["type":"type",
+                "payload":"payload"
+                ]
+    }
+    
+    open static func payloadJSONTransformer() -> ValueTransformer {
+        return MTLValueTransformer.reversibleTransformer(forwardBlock: { (payload) in
+                return payload
+            }, reverse: { (payload) in
+                return nil
+        })
     }
 }

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1EDBDD599C450F1295B07890 /* Pods_KoreBotSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B67EB11CAA6E8647EA822D9F /* Pods_KoreBotSDK.framework */; };
+		37BBE78780451A770F694C4C /* Pods_KoreBotSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2AE598CFED53D8403BCD98 /* Pods_KoreBotSDK.framework */; };
 		D1200F191CC9F721009BBB1A /* KoreBotSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = D1200F181CC9F721009BBB1A /* KoreBotSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D1200F201CC9F721009BBB1A /* KoreBotSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1200F151CC9F721009BBB1A /* KoreBotSDK.framework */; };
 		D1200F251CC9F721009BBB1A /* KoreBotSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1200F241CC9F721009BBB1A /* KoreBotSDKTests.swift */; };
@@ -35,9 +35,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		452DE2F43AE2C1807370F4D0 /* Pods-KoreBotSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDK/Pods-KoreBotSDK.debug.xcconfig"; sourceTree = "<group>"; };
-		B67EB11CAA6E8647EA822D9F /* Pods_KoreBotSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D099B636D4CABCE726BD4CF3 /* Pods-KoreBotSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDK.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDK/Pods-KoreBotSDK.release.xcconfig"; sourceTree = "<group>"; };
+		0357552329110C3624797E2A /* Pods-KoreBotSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDK.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDK/Pods-KoreBotSDK.release.xcconfig"; sourceTree = "<group>"; };
+		061DA5063014F993A829742A /* Pods-KoreBotSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDK/Pods-KoreBotSDK.debug.xcconfig"; sourceTree = "<group>"; };
+		AE2AE598CFED53D8403BCD98 /* Pods_KoreBotSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1200F151CC9F721009BBB1A /* KoreBotSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KoreBotSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1200F181CC9F721009BBB1A /* KoreBotSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KoreBotSDK.h; sourceTree = "<group>"; };
 		D1200F1A1CC9F721009BBB1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -62,7 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1EDBDD599C450F1295B07890 /* Pods_KoreBotSDK.framework in Frameworks */,
+				37BBE78780451A770F694C4C /* Pods_KoreBotSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,13 +77,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C78165B2A593C3F7E423ACE7 /* Pods */ = {
+		99927B5155B7E4A7A0F17F6C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				452DE2F43AE2C1807370F4D0 /* Pods-KoreBotSDK.debug.xcconfig */,
-				D099B636D4CABCE726BD4CF3 /* Pods-KoreBotSDK.release.xcconfig */,
+				061DA5063014F993A829742A /* Pods-KoreBotSDK.debug.xcconfig */,
+				0357552329110C3624797E2A /* Pods-KoreBotSDK.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		A32E403E1F23BDA99C0BE746 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AE2AE598CFED53D8403BCD98 /* Pods_KoreBotSDK.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D1200F0B1CC9F721009BBB1A = {
@@ -93,8 +101,8 @@
 				D1200F171CC9F721009BBB1A /* KoreBotSDK */,
 				D1200F231CC9F721009BBB1A /* KoreBotSDKTests */,
 				D1200F161CC9F721009BBB1A /* Products */,
-				C78165B2A593C3F7E423ACE7 /* Pods */,
-				DB656AD2952DCB1FF8287946 /* Frameworks */,
+				99927B5155B7E4A7A0F17F6C /* Pods */,
+				A32E403E1F23BDA99C0BE746 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -175,14 +183,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		DB656AD2952DCB1FF8287946 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				B67EB11CAA6E8647EA822D9F /* Pods_KoreBotSDK.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -201,15 +201,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D1200F291CC9F721009BBB1A /* Build configuration list for PBXNativeTarget "KoreBotSDK" */;
 			buildPhases = (
-				894280FBC22E28B171540C4F /* 📦 Check Pods Manifest.lock */,
-				BC8AFFC3305BB4B176763796 /* [CP] Check Pods Manifest.lock */,
-				83F6EA91A865416DCB4AB6E2 /* [CP] Check Pods Manifest.lock */,
+				A67B2E0C968669913CA10372 /* 📦 Check Pods Manifest.lock */,
 				D1200F101CC9F721009BBB1A /* Sources */,
 				D1200F111CC9F721009BBB1A /* Frameworks */,
 				D1200F121CC9F721009BBB1A /* Headers */,
 				D1200F131CC9F721009BBB1A /* Resources */,
-				DB144C55383580B43D2FCC0C /* [CP] Copy Pods Resources */,
-				8C07AC0C28BADF48856BE5BE /* 📦 Copy Pods Resources */,
+				0C36FA434BE6F16F212A0EEF /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -250,11 +247,9 @@
 				TargetAttributes = {
 					D1200F141CC9F721009BBB1A = {
 						CreatedOnToolsVersion = 7.3;
-						LastSwiftMigration = 0820;
 					};
 					D1200F1E1CC9F721009BBB1A = {
 						CreatedOnToolsVersion = 7.3;
-						LastSwiftMigration = 0820;
 					};
 				};
 			};
@@ -295,37 +290,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		83F6EA91A865416DCB4AB6E2 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		894280FBC22E28B171540C4F /* 📦 Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "📦 Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		8C07AC0C28BADF48856BE5BE /* 📦 Copy Pods Resources */ = {
+		0C36FA434BE6F16F212A0EEF /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -340,34 +305,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KoreBotSDK/Pods-KoreBotSDK-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BC8AFFC3305BB4B176763796 /* [CP] Check Pods Manifest.lock */ = {
+		A67B2E0C968669913CA10372 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		DB144C55383580B43D2FCC0C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KoreBotSDK/Pods-KoreBotSDK-resources.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -504,7 +454,7 @@
 		};
 		D1200F2A1CC9F721009BBB1A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 452DE2F43AE2C1807370F4D0 /* Pods-KoreBotSDK.debug.xcconfig */;
+			baseConfigurationReference = 061DA5063014F993A829742A /* Pods-KoreBotSDK.debug.xcconfig */;
 			buildSettings = {
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -522,7 +472,7 @@
 		};
 		D1200F2B1CC9F721009BBB1A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D099B636D4CABCE726BD4CF3 /* Pods-KoreBotSDK.release.xcconfig */;
+			baseConfigurationReference = 0357552329110C3624797E2A /* Pods-KoreBotSDK.release.xcconfig */;
 			buildSettings = {
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -545,7 +495,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.Kore.KoreBotSDKTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -556,7 +505,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.Kore.KoreBotSDKTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

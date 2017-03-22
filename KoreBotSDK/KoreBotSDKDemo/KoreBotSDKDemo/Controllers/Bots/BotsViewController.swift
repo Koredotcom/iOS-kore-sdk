@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import AFNetworking
 import KoreBotSDK
+import CoreData
 
 class BotsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -123,38 +124,78 @@ class BotsViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let chatMessagesViewController: ChatMessagesViewController = ChatMessagesViewController(nibName: "ChatMessagesViewController", bundle: nil
-        )
         
         switch ((indexPath as NSIndexPath).section) {
         case 0:
-            if(self.accessToken.characters.count > 0) {
+            if (self.accessToken.characters.count > 0) {
                 let parameters = ["botInfo":["chatBot":"Kora"], "authorization": self.accessToken] as [String : Any]
+                let chatMessagesViewController: ChatMessagesViewController = ChatMessagesViewController()
                 chatMessagesViewController.botInfoParameters = parameters as NSDictionary!
                 self.navigationController?.pushViewController(chatMessagesViewController, animated: true)
             }
-
             break
         default:
+            var chatBotName: String! = nil
+            var taskBotId: String! = nil
+            var clientId: String! = nil
             let stream: NSDictionary = self.streams[(indexPath as NSIndexPath).row] as! NSDictionary
-            let botInfoObject: NSMutableDictionary = NSMutableDictionary()
-            if(stream["name"] != nil) {
-                botInfoObject.setObject(stream["name"] as! String, forKey: "chatBot" as NSCopying)
+            if (stream["name"] != nil) {
+                chatBotName = stream["name"] as? String
             }
             
-            if(stream["_id"] != nil) {
-                botInfoObject.setObject(stream["_id"] as! String, forKey: "taskBotId" as NSCopying)
+            if (stream["_id"] != nil) {
+                taskBotId = stream["_id"] as! String
             }
             
-            if(self.accessToken.characters.count > 0) {
-                let parameters = ["botInfo":botInfoObject, "authorization": self.accessToken] as [String : Any]
-                chatMessagesViewController.botInfoParameters = parameters as NSDictionary!
-                self.navigationController?.pushViewController(chatMessagesViewController, animated: true)
+            if (stream["channels"] != nil) {
+                let channels = stream["channels"] as! Array<NSDictionary>
+                let typePredicate = NSPredicate(format: "type LIKE %@", "rtm");
+                
+                let array = channels.filter {
+                    typePredicate.evaluate(with: $0)
+                }
+                if (array.count > 0) {
+                    let channel: NSDictionary = array.first!
+                    let app = channel["app"] as! NSDictionary
+                    clientId = app["clientId"] as! String
+                    print("client Id  = ,\(clientId)");
+                }
+            }
+            
+            let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+            activityIndicatorView.center = view.center
+            view.addSubview(activityIndicatorView)
+            activityIndicatorView.startAnimating()
+
+            let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
+            let botInfoObject: NSDictionary = ["chatBot": chatBotName, "taskBotId": taskBotId]
+            let context: NSManagedObjectContext = dataStoreManager.coreDataManager.workerContext
+
+            context.perform {
+                let resources: Dictionary<String, AnyObject> = ["threadId": taskBotId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
+                let thread: KREThread = dataStoreManager.insertOrUpdateThread(dictionary: resources, withContext: context)
+                try! context.save()
+                dataStoreManager.coreDataManager.saveChanges()
+                
+                print("Thread Id: " + thread.threadId! + "Subject: " + thread.subject!)
+
+                let botClient: BotClient = BotClient(botInfoParameters: botInfoObject)
+                let chatMessagesViewController: ChatMessagesViewController = ChatMessagesViewController(thread: thread)
+                let botViewController: ChatMessagesViewController = ChatMessagesViewController(thread: thread)
+                botViewController.botClient = botClient
+                botViewController.title = chatBotName
+                
+                if (self.accessToken.characters.count > 0) {
+                    let parameters = ["botInfo":botInfoObject, "authorization": self.accessToken] as [String : Any]
+                    chatMessagesViewController.botInfoParameters = parameters as NSDictionary!
+                    self.navigationController?.pushViewController(chatMessagesViewController, animated: true)
+                }
+                activityIndicatorView.stopAnimating()
             }
         }
     }
     
-    // MARK: get all streams
+    // MARK:- get all streams
     func getStreams(_ userId: String!, accessToken: String!) {
         let urlString: String = ServerConfigs.getAllStreamsURL(userId)
         let requestSerializer = AFJSONRequestSerializer()
@@ -176,7 +217,7 @@ class BotsViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
             print(operation?.responseObject)
         }) { (operation, error) in
-//            print(operation.responseObject)
+            print(operation?.responseObject)
         }
     }
 }

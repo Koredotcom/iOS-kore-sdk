@@ -19,7 +19,7 @@ open class MessageModel: MTLModel, MTLJSONSerializing {
     // MARK: MTLJSONSerializing methods
     open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["type":"type",
-                "component":"cInfo"]
+                "component":"component"]
     }
     open static func componentJSONTransformer() -> ValueTransformer {
         return ValueTransformer.mtl_JSONDictionaryTransformer(withModelClass: ComponentModel.self)

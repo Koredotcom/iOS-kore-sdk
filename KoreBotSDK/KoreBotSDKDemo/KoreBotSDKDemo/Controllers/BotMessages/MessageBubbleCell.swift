@@ -97,6 +97,16 @@ class MessageBubbleCell : UITableViewCell {
     }
     override func prepareForReuse() {
         self.textLabel?.text = nil
+        self.bubbleContainerView.layoutSubviews()
+        self.bubbleContainerView.invalidateIntrinsicContentSize()
+        self.bubbleContainerView.layoutIfNeeded()
+        self.bubbleContainerView.setNeedsDisplay()
+        self.senderImageView.image = nil;
+        self.dateLabel.text = nil;
+        self.bubbleView.layoutSubviews();
+        self.bubbleView.invalidateIntrinsicContentSize()
+        self.bubbleView.layoutIfNeeded()
+        self.bubbleView.setNeedsDisplay()
     }
     // MARK:
 
@@ -174,10 +184,10 @@ class MessageBubbleCell : UITableViewCell {
         return BubbleType.view
     }
 
-    static func bubbleViewForComponentGroup(_ componentGroup: ComponentGroup) -> BubbleView {
+    static func bubbleViewForComponent(_ component: Component) -> BubbleView {
         var bubbleView: BubbleView!
         
-        switch (componentGroup.componentKind()) {
+        switch (component.componentType) {
         case .text:
             bubbleView = BubbleView.bubbleWithType(.text)
             break
@@ -185,37 +195,88 @@ class MessageBubbleCell : UITableViewCell {
         case .image:
             bubbleView = BubbleView.bubbleWithType(.image)
             break
-            
+        case .options:
+            bubbleView = BubbleView.bubbleWithType(.options)
+            break
+        case .quickReply:
+            bubbleView = BubbleView.bubbleWithType(.options)
+            break
+        case .list:
+            bubbleView = BubbleView.bubbleWithType(.list)
+            break
         case .unknown:
             bubbleView = BubbleView.bubbleWithType(.text)
             break
         }
         return bubbleView
     }
-
-    static func setComponentGroup(_ componentGroup: ComponentGroup, bubbleView: BubbleView) {
+    
+    static func bubbleViewForComponents(_ components: Array<KREComponent>, templateType: ComponentType) -> BubbleView {
+        var bubbleView: BubbleView!
         
-        if (componentGroup.message().messageType == .default) {
+        switch (templateType) {
+        case .image:
+            bubbleView = BubbleView.bubbleWithType(.image)
+            break
+        case .options:
+            bubbleView = BubbleView.bubbleWithType(.options)
+            break
+        case .list:
+            bubbleView = BubbleView.bubbleWithType(.list)
+            break
+
+        default:
+            bubbleView = BubbleView.bubbleWithType(.text)
+            break
+            
+        }
+        return bubbleView
+    }
+
+    static func setComponents(_ components: Array<KREComponent>, bubbleView: BubbleView) {
+        let component: KREComponent = components.first!
+        if (component.message?.isSender == true) {
+            bubbleView.tailPosition = .right
+        } else {
+            bubbleView.tailPosition = .left
+        }
+    
+        bubbleView.components = components as NSArray!
+        bubbleView.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    static func setComponent(_ component: Component, bubbleView: BubbleView) {
+        
+        if (component.message.messageType == .default) {
             bubbleView.tailPosition = .right
         } else {
             bubbleView.tailPosition = .left
         }
         
-        bubbleView.components = componentGroup.components
+        bubbleView.components = component.message.components
         bubbleView.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func configureWithComponentGroup(_ componentGroup: ComponentGroup, maskType: BubbleMaskType) {
+    func configureWithComponentGroup(_ component: Component, maskType: BubbleMaskType) {
+        let bubbleView: BubbleView!
         if (self.bubbleView == nil) {
-            self.bubbleView = MessageBubbleCell.bubbleViewForComponentGroup(componentGroup)
+            self.bubbleView = MessageBubbleCell.bubbleViewForComponent(component)
+            
+        }else{
+            self.bubbleView = nil;
+            self.bubbleView = MessageBubbleCell.bubbleViewForComponent(component)
         }
-        
-        MessageBubbleCell.setComponentGroup(componentGroup, bubbleView:self.bubbleView)
+        bubbleView = self.bubbleView
+        bubbleView.removeFromSuperview()
+        self.bubbleContainerView.addSubview(bubbleView!)
+
+
+        MessageBubbleCell.setComponent(component, bubbleView:self.bubbleView)
         
         self.tailPosition = self.bubbleView.tailPosition
         self.maskType = maskType
         
-        let message: Message = componentGroup.message()
+        let message: Message = component.message
         if (message.messageType == .default) {
             
         }
@@ -235,6 +296,46 @@ class MessageBubbleCell : UITableViewCell {
                 self.senderImageView.setImageWith(fileUrl, placeholderImage: placeHolderIcon)
             }
         }
+        
+        
+        let horizontal: Array<NSLayoutConstraint> = NSLayoutConstraint.constraints(withVisualFormat: "H:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": bubbleView])
+        let vertical: Array<NSLayoutConstraint> = NSLayoutConstraint.constraints(withVisualFormat: "V:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": bubbleView])
+        
+        self.bubbleContainerView.addConstraints(horizontal)
+        self.bubbleContainerView.addConstraints(vertical)
+    }
+    
+    func configureWithComponents(_ components: Array<KREComponent>, maskType: BubbleMaskType, templateType: ComponentType) {
+        if (self.bubbleView == nil) {
+            self.bubbleView = MessageBubbleCell.bubbleViewForComponents(components, templateType: templateType)
+        }
+        
+        MessageBubbleCell.setComponents(components, bubbleView:self.bubbleView)
+        
+        self.tailPosition = self.bubbleView.tailPosition
+        self.maskType = maskType
+        
+        let component: KREComponent = components.first!
+        let message: KREMessage = component.message!
+//        if (message.messageType == .default) {
+//            
+//        }
+        
+        if (message.sentOn != nil) {
+            let dateFormatter: DateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "EEE, MMM d, h:mm a"
+            self.dateLabel.text = dateFormatter.string(from: message.sentOn! as Date)
+        }
+        
+        let placeHolderIcon : UIImage = UIImage(named:"kora")!
+        self.senderImageView.image = placeHolderIcon;
+        
+//        if (message.iconUrl != nil) {
+//            if (message.iconUrl != nil) {
+//                let fileUrl = URL(string: message.iconUrl)
+//                self.senderImageView.setImageWith(fileUrl, placeholderImage: placeHolderIcon)
+//            }
+//        }
         
         let bubbleView: BubbleView  = self.bubbleView
         self.bubbleContainerView.addSubview(bubbleView)
@@ -263,3 +364,15 @@ class ImageBubbleCell : MessageBubbleCell {
         return BubbleType.image
     }
 }
+
+class OptionsBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> BubbleType {
+        return BubbleType.options
+    }
+}
+class ListBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> BubbleType {
+        return BubbleType.list
+    }
+}
+

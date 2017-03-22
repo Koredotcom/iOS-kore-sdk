@@ -11,27 +11,7 @@ import UIKit
 
 class SectionedThread : NSObject {
     
-    var thread: Thread! {
-        didSet {
-            self.sections = Array()
-            
-            var currentSegment: ThreadSection!
-        
-            // Loop through the messages
-            for message in thread.messages {
-                // loop through the grouped components
-                for groupedComponents in message.groupedComponents {
-                    
-                    if (currentSegment == nil || currentSegment.isRelatedToComponentGroup(groupedComponents as! ComponentGroup) == false) {
-                        currentSegment = ThreadSection()
-                        self.sections.append(currentSegment)
-                    }
-                    
-                    currentSegment.groups.add(groupedComponents)
-                }
-            }
-        }
-    }
+    var thread: Thread! = nil
     var sections: Array<ThreadSection>!
     
     static func sectionedThread(_ thread: Thread) -> SectionedThread {
@@ -54,9 +34,4 @@ class ThreadSection : NSObject {
         super.init()
         self.groups = NSMutableArray()
     }
-    
-    func isRelatedToComponentGroup(_ group: ComponentGroup) -> Bool {
-        return false
-    }
-    
 }

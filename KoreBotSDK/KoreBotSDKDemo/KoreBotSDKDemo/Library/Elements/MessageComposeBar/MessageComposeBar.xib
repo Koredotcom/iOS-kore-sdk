@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -12,7 +13,6 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zxF-dd-Fd6">
-                    <rect key="frame" x="0.0" y="83" width="41" height="44"/>
                     <state key="normal" image="AddItemButtonGray20"/>
                     <state key="highlighted" image="AddItemButtonGray20"/>
                     <connections>
@@ -20,7 +20,6 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9dO-0a-9O5">
-                    <rect key="frame" x="0.0" y="83" width="41" height="44"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="41" id="Fdq-xi-5No"/>
                         <constraint firstAttribute="height" constant="44" id="JSH-d5-u59"/>
@@ -32,7 +31,6 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VeH-Vp-wj5">
-                    <rect key="frame" x="333" y="90" width="34" height="29"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
                     <state key="normal" title="Send"/>
                     <connections>
@@ -40,16 +38,13 @@
                     </connections>
                 </button>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="epT-BA-XoZ" userLabel="containerView">
-                    <rect key="frame" x="41" y="6" width="287" height="115"/>
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cem-JD-fN9">
-                            <rect key="frame" x="0.0" y="0.0" width="287" height="34"/>
                             <attributedString key="attributedText"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
                         <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lxK-iz-8Tw">
-                            <rect key="frame" x="0.0" y="0.0" width="287" height="34"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="34" id="ekW-lA-cT6"/>
                             </constraints>
@@ -60,14 +55,12 @@
                             </connections>
                         </textView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2TW-vs-Wv6">
-                            <rect key="frame" x="5" y="8" width="57" height="17"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                            <color key="textColor" red="0.70980392160000005" green="0.72549019609999998" blue="0.72941176470000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" red="0.70980392160000005" green="0.72549019609999998" blue="0.72941176470000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="l7l-ip-gAb">
-                            <rect key="frame" x="4" y="34" width="279" height="81"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="4" minimumInteritemSpacing="4" id="jbo-vL-R21">
                                 <size key="itemSize" width="138" height="74"/>
                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -80,7 +73,7 @@
                             </connections>
                         </collectionView>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="lxK-iz-8Tw" firstAttribute="leading" secondItem="epT-BA-XoZ" secondAttribute="leading" id="0s3-5L-luO"/>
                         <constraint firstAttribute="bottom" secondItem="l7l-ip-gAb" secondAttribute="bottom" id="4ie-wF-JiH"/>
@@ -98,24 +91,29 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ynu-lR-dsW" userLabel="TopLine">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
-                    <color key="backgroundColor" red="0.84313726430000002" green="0.85098040100000005" blue="0.85490196939999996" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.84313726430000002" green="0.85098040100000005" blue="0.85490196939999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="mFF-yU-fAf"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p7z-uW-PZf" userLabel="BottomLine">
-                    <rect key="frame" x="0.0" y="126" width="375" height="1"/>
-                    <color key="backgroundColor" red="0.84313726430000002" green="0.85098040100000005" blue="0.85490196939999996" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.84313726430000002" green="0.85098040100000005" blue="0.85490196939999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="IdX-Cx-h58"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s4M-QJ-fs5">
+                    <state key="normal" image="audio_icon_select"/>
+                    <connections>
+                        <action selector="SpeechToTextButtonAction:" destination="xqe-aH-nkj" eventType="touchUpInside" id="SX9-Ag-wPw"/>
+                    </connections>
+                </button>
             </subviews>
-            <color key="backgroundColor" red="0.98039215800000001" green="0.98039215800000001" blue="0.98039215800000001" alpha="1" colorSpace="deviceRGB"/>
+            <color key="backgroundColor" red="0.97530043125152588" green="0.97527122497558594" blue="0.9752877950668335" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="p7z-uW-PZf" secondAttribute="trailing" id="E3S-R5-rVx"/>
                 <constraint firstAttribute="bottom" secondItem="epT-BA-XoZ" secondAttribute="bottom" constant="6" id="EZ9-sE-mhc"/>
+                <constraint firstItem="p7z-uW-PZf" firstAttribute="top" secondItem="s4M-QJ-fs5" secondAttribute="bottom" constant="9" id="FjH-ol-DJ6"/>
                 <constraint firstItem="9dO-0a-9O5" firstAttribute="bottom" secondItem="zxF-dd-Fd6" secondAttribute="bottom" id="Gjt-B4-I0z"/>
                 <constraint firstAttribute="bottom" secondItem="VeH-Vp-wj5" secondAttribute="bottom" constant="8" id="JMu-oW-WBL"/>
                 <constraint firstAttribute="trailing" secondItem="Ynu-lR-dsW" secondAttribute="trailing" id="NoH-di-NxK"/>
@@ -127,7 +125,10 @@
                 <constraint firstItem="VeH-Vp-wj5" firstAttribute="leading" secondItem="epT-BA-XoZ" secondAttribute="trailing" priority="999" constant="5" id="bSj-4D-eiX"/>
                 <constraint firstItem="epT-BA-XoZ" firstAttribute="leading" secondItem="xqe-aH-nkj" secondAttribute="leading" constant="41" id="ebB-2y-8oZ"/>
                 <constraint firstAttribute="bottom" secondItem="zxF-dd-Fd6" secondAttribute="bottom" id="i6i-ZG-bgE"/>
+                <constraint firstItem="p7z-uW-PZf" firstAttribute="top" secondItem="s4M-QJ-fs5" secondAttribute="bottom" constant="9" id="ihD-vz-0Cu"/>
                 <constraint firstAttribute="trailing" secondItem="VeH-Vp-wj5" secondAttribute="trailing" constant="8" id="ihc-KG-zIs"/>
+                <constraint firstItem="s4M-QJ-fs5" firstAttribute="leading" secondItem="epT-BA-XoZ" secondAttribute="trailing" constant="5" id="jZk-U4-wf7"/>
+                <constraint firstAttribute="trailing" secondItem="s4M-QJ-fs5" secondAttribute="trailing" constant="8" id="kt6-iD-aN1"/>
                 <constraint firstItem="9dO-0a-9O5" firstAttribute="leading" secondItem="zxF-dd-Fd6" secondAttribute="leading" id="lV1-Po-K1G"/>
                 <constraint firstItem="epT-BA-XoZ" firstAttribute="top" secondItem="xqe-aH-nkj" secondAttribute="top" constant="6" id="sTd-6O-ZgG"/>
                 <constraint firstItem="p7z-uW-PZf" firstAttribute="leading" secondItem="xqe-aH-nkj" secondAttribute="leading" id="vSc-au-G62"/>
@@ -143,6 +144,7 @@
                 </mask>
             </variation>
             <connections>
+                <outlet property="SpeechToTextButton" destination="s4M-QJ-fs5" id="8tR-84-MUS"/>
                 <outlet property="attachmentsCollectionView" destination="l7l-ip-gAb" id="8zo-rT-w9n"/>
                 <outlet property="bottomLineHeightConstraint" destination="IdX-Cx-h58" id="gUX-Ng-ySN"/>
                 <outlet property="closeAccessoryButton" destination="9dO-0a-9O5" id="Iu4-8v-vPT"/>
@@ -162,5 +164,6 @@
     <resources>
         <image name="AddItemButtonGray20" width="20" height="20"/>
         <image name="XButtonGray20" width="20" height="20"/>
+        <image name="audio_icon_select" width="27" height="44"/>
     </resources>
 </document>

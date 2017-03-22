@@ -12,18 +12,8 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
     // MARK: app delegate methos
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
-        // -------------------------------------------------------------- //
-        // INFO: YOU MUST CALL 'setAccessToken(:)' WITH VALID TOKEN
-        let token: String = "bearer Y6w_0YGDSEbamsjTlKRg7qfyJVkI_aovwDHP-puBN61AYKU_1lvcJMJ5bXlk-8K2"
-        Common.setAccessToken(token)
-        
-        let userId: String = "u-73364365-f98d-571d-8e8e-022186cde3bc"
-        Common.setUserId(userId)
-        // -------------------------------------------------------------- //
         
         window = UIWindow(frame: UIScreen.main.bounds)
         if let window = window {

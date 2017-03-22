@@ -25,4 +25,5 @@
 + (NSDictionary*)getSearchHighlightAttributesForTableCell:(NSUInteger)type;
 + (NSDictionary*)getSearchHighlightAttributes:(NSUInteger)type;
 + (NSString *) formatHTMLEscapedString: (NSString *)string;
+
 @end

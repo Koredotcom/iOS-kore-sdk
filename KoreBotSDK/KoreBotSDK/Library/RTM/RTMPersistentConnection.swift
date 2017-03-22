@@ -124,8 +124,12 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             let ack: Ack = try! (MTLJSONAdapter.model(of: Ack.self, fromJSONDictionary: responseObject ) as! Ack)
             self.connectionDelegate?.didReceiveMessageAck!(ack)
         } else if (responseObject["type"]! as! String == "bot_response") {
-            let botMessageModel: BotMessageModel = try! (MTLJSONAdapter.model(of: BotMessageModel.self, fromJSONDictionary: responseObject ) as! BotMessageModel)
-            self.connectionDelegate?.didReceiveMessage!(botMessageModel)
+            print(responseObject)
+            let array: NSArray = responseObject["message"] as! NSArray
+            if (array.count > 0) {
+                let botMessageModel: BotMessageModel = try! (MTLJSONAdapter.model(of: BotMessageModel.self, fromJSONDictionary: responseObject ) as! BotMessageModel)
+                self.connectionDelegate?.didReceiveMessage!(botMessageModel)
+            }
         }
     }
 

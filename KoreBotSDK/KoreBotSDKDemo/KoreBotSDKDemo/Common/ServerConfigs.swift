@@ -11,8 +11,7 @@ import Foundation
 
 open class ServerConfigs: NSObject {
     open static let API_Version: String = "1.1"
-    
-//    open static let KORE_SERVER = String(format: "https://qa1-bots.kore.com/")
+
     open static let KORE_SERVER = String(format: "pilot-bots.kore.com")
     
     open static func getAllStreamsURL(_ userId: String!) -> String {
@@ -65,3 +64,28 @@ open class Common : NSObject {
     }
 }
 
+open class Utilities: NSObject {
+    // MARK:-
+    open static func stringFromJSONObject(object: Any) -> NSString {
+        var jsonString: NSString!
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: object, options: .prettyPrinted)
+            jsonString = NSString(data: jsonData, encoding: String.Encoding.ascii.rawValue)
+        } catch {
+            print(error.localizedDescription)
+        }
+        return jsonString
+    }
+    
+    open static func jsonObjectFromString(jsonString: String) -> Any {
+        var jsonObject: Any! = nil
+        do {
+            let data: Data = jsonString.data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))! as Data
+            jsonObject = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+            return jsonObject!
+        } catch {
+            print(error.localizedDescription)
+        }
+        return jsonObject
+    }
+}

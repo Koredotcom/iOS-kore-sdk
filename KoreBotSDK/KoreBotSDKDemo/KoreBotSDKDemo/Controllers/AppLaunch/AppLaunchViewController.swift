@@ -7,8 +7,9 @@
 //
 
 import UIKit
-import KoreBotSDK
 import AFNetworking
+import KoreBotSDK
+import CoreData
 
 class AppLaunchViewController: UIViewController {
     
@@ -57,20 +58,33 @@ class AppLaunchViewController: UIViewController {
             activityIndicatorView.center = view.center
             view.addSubview(activityIndicatorView)
             activityIndicatorView.startAnimating()
+            
+            let chatBotName: String = SDKConfiguration.botConfig.chatBotName
+            let taskBotId: String = SDKConfiguration.botConfig.taskBotId
+            let botInfo: NSDictionary = ["chatBot": chatBotName, "taskBotId": taskBotId]
 
-            let botInfo: NSDictionary = ["chatBot": SDKConfiguration.botConfig.chatBotName, "taskBotId":SDKConfiguration.botConfig.taskBotId]
             self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: true, success: { [weak self] (jwToken) in
-                activityIndicatorView.stopAnimating()
                 
-                let botClient: BotClient = BotClient(botInfoParameters: botInfo)
-                botClient.connectWithJwToken(jwToken, success: { (client) in
-                    let botViewController: ChatMessagesViewController = ChatMessagesViewController()
-                    botViewController.botClient = client
-                    botViewController.title = SDKConfiguration.botConfig.chatBotName
-                    self!.navigationController?.pushViewController(botViewController, animated: true)
-                }, failure: { (error) in
+                let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
+                let context: NSManagedObjectContext = dataStoreManager.coreDataManager.workerContext
+                context.perform {
+                    let resources: Dictionary<String, AnyObject> = ["threadId": taskBotId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
+                    let thread: KREThread = dataStoreManager.insertOrUpdateThread(dictionary: resources, withContext: context)
+                    try! context.save()
+                    dataStoreManager.coreDataManager.saveChanges()
+                    print(thread.threadId!)
                     
-                })
+                    let botClient: BotClient = BotClient(botInfoParameters: botInfo)
+                    botClient.connectWithJwToken(jwToken, success: { (client) in
+                        activityIndicatorView.stopAnimating()
+                        let botViewController: ChatMessagesViewController = ChatMessagesViewController(thread: thread)
+                        botViewController.botClient = client
+                        botViewController.title = SDKConfiguration.botConfig.chatBotName
+                        self!.navigationController?.pushViewController(botViewController, animated: true)
+                    }, failure: { (error) in
+                        activityIndicatorView.stopAnimating()
+                    })
+                }
             }, failure: { (error) in
                 activityIndicatorView.stopAnimating()
             })
@@ -90,21 +104,34 @@ class AppLaunchViewController: UIViewController {
             view.addSubview(activityIndicatorView)
             activityIndicatorView.startAnimating()
             
-            let botInfo: NSDictionary = ["chatBot": SDKConfiguration.botConfig.chatBotName, "taskBotId":SDKConfiguration.botConfig.taskBotId]
+            let chatBotName: String = SDKConfiguration.botConfig.chatBotName
+            let taskBotId: String = SDKConfiguration.botConfig.taskBotId
+            let botInfo: NSDictionary = ["chatBot": chatBotName, "taskBotId": taskBotId]
+            
             self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: false, success: { [weak self] (jwToken) in
-                activityIndicatorView.stopAnimating()
                 
-                let botClient: BotClient = BotClient(botInfoParameters: botInfo)
-                botClient.connectWithJwToken(jwToken, success: { (client) in
-                    let botViewController: ChatMessagesViewController = ChatMessagesViewController()
-                    botViewController.botClient = client
-                    botViewController.title = SDKConfiguration.botConfig.chatBotName
-                    self!.navigationController?.pushViewController(botViewController, animated: true)
-                }, failure: { (error) in
+                let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
+                let context: NSManagedObjectContext = dataStoreManager.coreDataManager.workerContext
+                context.perform {
+                    let resources: Dictionary<String, AnyObject> = ["threadId": taskBotId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
+                    let thread: KREThread = dataStoreManager.insertOrUpdateThread(dictionary: resources, withContext: context)
+                    try! context.save()
+                    dataStoreManager.coreDataManager.saveChanges()
+                    print(thread.threadId!)
                     
-                })
-                }, failure: { (error) in
-                    activityIndicatorView.stopAnimating()
+                    let botClient: BotClient = BotClient(botInfoParameters: botInfo)
+                    botClient.connectWithJwToken(jwToken, success: { (client) in
+                        activityIndicatorView.stopAnimating()
+                        let botViewController: ChatMessagesViewController = ChatMessagesViewController(thread: thread)
+                        botViewController.botClient = client
+                        botViewController.title = SDKConfiguration.botConfig.chatBotName
+                        self!.navigationController?.pushViewController(botViewController, animated: true)
+                    }, failure: { (error) in
+                        activityIndicatorView.stopAnimating()
+                    })
+                }
+            }, failure: { (error) in
+                activityIndicatorView.stopAnimating()
             })
         } else {
             print("YOU MUST SET 'clientId', 'clientSecret', Please check documentation.")

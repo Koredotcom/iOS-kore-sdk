@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:TextParser/TextParser.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Widgets/Widgets.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:KoreBotSDKDemo/KoreBotSDKDemo.xcodeproj">
    </FileRef>
    <FileRef
@@ -9,5 +15,8 @@
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:SpeechToText/SpeechToText.xcodeproj">
    </FileRef>
 </Workspace>

@@ -9,21 +9,55 @@
 import Foundation
 import UIKit
 
-enum ComponentKind : Int {
-    case unknown = 1, text = 2, image = 3
+enum ComponentType : Int {
+    case unknown = 1, text = 2, image = 3, options = 4, quickReply = 5, list = 6
 }
 
 class Component : NSObject {
-    var componentKind: ComponentKind = .unknown
+    var componentType: ComponentType = .unknown
     var message: Message!
-    var group: ComponentGroup!
+    override init() {
+        super.init()
+    }
 }
 
 class TextComponent : Component {
     var text: NSString!
+    override init() {
+        super.init()
+        componentType = .text
+    }
 }
-
 
 class ImageComponent : Component {
     var imageFile: String!
+    override init() {
+        super.init()
+        componentType = .image
+    }
 }
+
+class OptionsComponent : Component {
+    var payload: NSString!
+    override init() {
+        super.init()
+        componentType = .options
+    }
+}
+
+class QuickRepliesComponent : Component {
+    var payload: NSString!
+    override init() {
+        super.init()
+        componentType = .quickReply
+    }
+}
+
+class ListComponent : Component {
+    var payload: NSString!
+    override init() {
+        super.init()
+        componentType = .list
+    }
+}
+
