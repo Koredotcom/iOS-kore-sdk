@@ -2,7 +2,7 @@
 //  NSMutableAttributedString+KREUtils.h
 //  KoreApp
 //
-//  Created by Edwin on 11/02/15.
+//  Created by developer@kore.com on 11/02/15.
 //  Copyright (c) 2015 Kore Inc. All rights reserved.
 //
 

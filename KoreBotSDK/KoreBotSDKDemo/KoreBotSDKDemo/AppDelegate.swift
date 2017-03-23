@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  KoreBotSDKDemo
 //
-//  Created by Srinivas Vasadi on 20/05/16.
-//  Copyright © 2016 Kore. All rights reserved.
+//  Created by developer@kore.com on 20/05/16.
+//  Copyright © 2016 Kore Inc. All rights reserved.
 //
 
 import UIKit

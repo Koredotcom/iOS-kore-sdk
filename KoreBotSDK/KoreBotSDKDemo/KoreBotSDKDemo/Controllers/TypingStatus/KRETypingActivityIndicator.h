@@ -2,7 +2,7 @@
 //  KRETypingActivityIndicator.h
 //  Kore
 //
-//  Created by Amar on 12/06/15.
+//  Created by developer@kore.com on 12/06/15.
 //  Copyright (c) 2015 Kore. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  KREWebSocket.h
 //  KoreApp
 //
-//  Created by Krishna Rachuri on 9/1/16.
+//  Created by developer@kore.com on 9/1/16.
 //  Copyright © 2016 Kore Inc. All rights reserved.
 //
 

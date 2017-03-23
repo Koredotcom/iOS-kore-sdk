@@ -2,8 +2,8 @@
 //  DataStoreManager.swift
 //  KoreBotSDKDemo
 //
-//  Created by Srinivas Vasadi on 21/11/16.
-//  Copyright © 2016 Kore. All rights reserved.
+//  Created by developer@kore.com on 21/11/16.
+//  Copyright © 2016 Kore Inc. All rights reserved.
 //
 
 import UIKit

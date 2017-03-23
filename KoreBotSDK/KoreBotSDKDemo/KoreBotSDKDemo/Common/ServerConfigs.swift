@@ -2,7 +2,7 @@
 //  ServerConfigs.swift
 //  KoreBotSDKDemo
 //
-//  Created by Srinivas Vasadi on 10/25/14.
+//  Created by developer@kore.com on 10/25/14.
 //  Copyright (c) 2014 Kore Inc. All rights reserved.
 //
 

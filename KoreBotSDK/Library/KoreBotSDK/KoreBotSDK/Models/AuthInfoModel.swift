@@ -2,8 +2,8 @@
 //  AuthInfoModel.swift
 //  KoreBotSDK
 //
-//  Created by Srinivas Vasadi on 24/05/16.
-//  Copyright © 2016 Kore. All rights reserved.
+//  Created by developer@kore.com on 24/05/16.
+//  Copyright © 2016 Kore Inc. All rights reserved.
 //
 
 import UIKit

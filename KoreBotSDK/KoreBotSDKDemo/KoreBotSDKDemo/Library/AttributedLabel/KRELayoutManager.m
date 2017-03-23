@@ -2,7 +2,7 @@
 //  KRELayoutManager.m
 //  KoreApp
 //
-//  Created by Anoop on 03/02/16.
+//  Created by developer@kore.com on 03/02/16.
 //  Copyright © 2016 Kore Inc. All rights reserved.
 //
 

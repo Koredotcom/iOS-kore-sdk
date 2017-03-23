@@ -2,8 +2,8 @@
 //  RequestManager.m
 //  SpeechToText
 //
-//  Created by Shylaja Mamidala on 11/21/16.
-//  Copyright © 2016 Kore. All rights reserved.
+//  Created by developer@kore.com on 11/21/16.
+//  Copyright © 2016 Kore Inc. All rights reserved.
 //
 
 #import "RequestManager.h"

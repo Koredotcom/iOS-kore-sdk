@@ -2,7 +2,7 @@
 //  KREAttributedLabel.m
 //  KoreApp
 //
-//  Created by Anoop on 21/11/14.
+//  Created by developer@kore.com on 21/11/14.
 //  Copyright (c) 2014 Kore Inc. All rights reserved.
 //
 
