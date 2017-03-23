@@ -1,8 +1,5 @@
 workspace 'KoreBotSDK'
-project 'KoreBotSDK.xcodeproj'
 project 'KoreBotSDKDemo/KoreBotSDKDemo.xcodeproj'
-project 'SpeechToText/SpeechToText.xcodeproj'
-project 'Widgets/Widgets.xcodeproj'
 
 inhibit_all_warnings!
 
@@ -11,13 +8,6 @@ def import_pods
     pod 'AFNetworking', '2.5.4'
 end
 
-target 'KoreBotSDK' do
-    platform :ios, '8.0'
-    use_frameworks!
-    project 'KoreBotSDK.xcodeproj'
-end
-
-
 target 'KoreBotSDKDemo' do
     platform :ios, '8.0'
     pod 'DTCoreText','1.6.15'
@@ -25,17 +15,9 @@ target 'KoreBotSDKDemo' do
     use_frameworks!
     import_pods
     pod 'TOWebViewController'
-    pod 'KoreBotSDK', :path => '.'
-    pod 'KoreWidgets', :path=> './Widgets/'
-    pod 'KoreTextParser', :path=> './TextParser/'
-    pod 'SpeechToText', :path=>'./SpeechToText/'
+    pod 'KoreBotSDK', :path => './Library/KoreBotSDK/'
+    pod 'KoreWidgets', :path=> './Library/Widgets/'
+    pod 'KoreTextParser', :path=> './Library/TextParser/'
+    pod 'SpeechToText', :path=>'./Library/SpeechToText/'
     project 'KoreBotSDKDemo/KoreBotSDKDemo.xcodeproj'
-end
-
-target 'Widgets' do
-    platform :ios, '8.0'
-    pod 'AFNetworking', '2.5.4'
-    
-    use_frameworks!
-    project 'Widgets/Widgets.xcodeproj'
 end

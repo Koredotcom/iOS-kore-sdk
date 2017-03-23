@@ -53,7 +53,7 @@ class AppLaunchViewController: UIViewController {
         let clientId: String = SDKConfiguration.botConfig.clientId
         let clientSecret: String = SDKConfiguration.botConfig.clientSecret
         let identity: String = SDKConfiguration.botConfig.identity
-        if clientId.characters.count > 0 && clientSecret.characters.count > 0 {
+        if clientId.indexOfCharacter(char: "<") == -1 && clientSecret.indexOfCharacter(char: "<") == -1 {
             let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
             activityIndicatorView.center = view.center
             view.addSubview(activityIndicatorView)
@@ -89,7 +89,7 @@ class AppLaunchViewController: UIViewController {
                 activityIndicatorView.stopAnimating()
             })
         } else {
-            print("YOU MUST SET 'clientId', 'clientSecret', Please check documentation.")
+            self.showAlert(title: "Bot SDK Demo", message: "YOU MUST SET 'clientId', 'clientSecret'. Please check the documentation.")
         }
     }
     
@@ -98,7 +98,7 @@ class AppLaunchViewController: UIViewController {
         let clientId: String = SDKConfiguration.botConfig.clientId
         let clientSecret: String = SDKConfiguration.botConfig.clientSecret
         let identity: String = SDKConfiguration.botConfig.identity
-        if clientId.characters.count > 0 && clientSecret.characters.count > 0 {
+        if clientId.indexOfCharacter(char: "<") == -1 && clientSecret.indexOfCharacter(char: "<") == -1 {
             let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
             activityIndicatorView.center = view.center
             view.addSubview(activityIndicatorView)
@@ -134,7 +134,7 @@ class AppLaunchViewController: UIViewController {
                 activityIndicatorView.stopAnimating()
             })
         } else {
-            print("YOU MUST SET 'clientId', 'clientSecret', Please check documentation.")
+            self.showAlert(title: "Bot SDK Demo", message: "YOU MUST SET 'clientId', 'clientSecret'. Please check the documentation.")
         }
     }
     
@@ -175,11 +175,27 @@ class AppLaunchViewController: UIViewController {
         }
     }
     
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(defaultAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     func setInitialState() {
         authenticateButton.alpha = 1.0
         authenticateButton.isEnabled = true
         
         signInButton.alpha = 1.0
         signInButton.isEnabled = true
+    }
+}
+
+extension String {
+    public func indexOfCharacter(char: Character) -> Int? {
+        if let idx = characters.index(of: char) {
+            return characters.distance(from: startIndex, to: idx)
+        }
+        return -1
     }
 }

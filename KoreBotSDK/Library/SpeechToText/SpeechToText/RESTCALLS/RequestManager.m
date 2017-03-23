@@ -30,7 +30,7 @@
 }
 
 -(void)intializeSocket{
-    self.webSocket = [[KREWebSocket alloc] initWithURLString:[NSString stringWithFormat:kreSpeechServer, PRESENCE_SERVER, VOICE_CONTENT_TYPE, @"shylaja.mamidala@kore.com"]];
+    self.webSocket = [[KREWebSocket alloc] initWithURLString:[NSString stringWithFormat:kreSpeechServer, SPEECH_SERVER, VOICE_CONTENT_TYPE, @"shylaja.mamidala@kore.com"]];
     self.webSocket.delegate = self;
     [self.webSocket connect];
     [self setUpAudioQueueFormat];
@@ -106,7 +106,7 @@
     self.webSocket.delegate = nil;
     self.webSocket = nil;
     if (self.isAudioQueueRecordingInProgress) {
-        self.webSocket = [[KREWebSocket alloc] initWithURLString:[NSString stringWithFormat:kreSpeechServer, PRESENCE_SERVER, VOICE_CONTENT_TYPE, @"shylaja.mamidala@kore.com"]];
+        self.webSocket = [[KREWebSocket alloc] initWithURLString:[NSString stringWithFormat:kreSpeechServer, SPEECH_SERVER, VOICE_CONTENT_TYPE, @"shylaja.mamidala@kore.com"]];
         self.webSocket.delegate = self;
         [self.webSocket connect];
     }
@@ -118,7 +118,7 @@
     self.webSocket.delegate = nil;
     self.webSocket = nil;
     if(self.isAudioQueueRecordingInProgress){
-        self.webSocket = [[KREWebSocket alloc] initWithURLString:[NSString stringWithFormat:kreSpeechServer, PRESENCE_SERVER, VOICE_CONTENT_TYPE, @"shylaja.mamidala@kore.com"]];
+        self.webSocket = [[KREWebSocket alloc] initWithURLString:[NSString stringWithFormat:kreSpeechServer, SPEECH_SERVER, VOICE_CONTENT_TYPE, @"shylaja.mamidala@kore.com"]];
         self.webSocket.delegate = self;
         [self.webSocket connect];
         
