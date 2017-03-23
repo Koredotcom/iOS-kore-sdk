@@ -42,26 +42,6 @@ open class Common : NSObject {
         let red = CGFloat((rgb >> 16) & 0xFF)
         return UIColor(red: red / 255.0, green: green / 255.0, blue: blue / 255.0, alpha: a)
     }
-    
-    // MARK: set access token
-    open static func setAccessToken(_ token: String!) {
-        let userDefauls: UserDefaults = UserDefaults.standard
-        if (token != nil && token.characters.count > 0) {
-            userDefauls.set(token, forKey: "TOKEN_FOR_AUTHORIZATION")
-        } else {
-            print("Please set valid token to interact with bots api")
-        }
-    }
-    
-    // MARK: set userId
-    open static func setUserId(_ userId: String!) {
-        let userDefauls: UserDefaults = UserDefaults.standard
-        if (userId != nil && userId.characters.count > 0) {
-            userDefauls.set(userId, forKey: "USER_ID")
-        } else {
-            print("Please set valid token to interact with bots api")
-        }
-    }
 }
 
 open class Utilities: NSObject {
