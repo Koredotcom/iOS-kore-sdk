@@ -16,7 +16,8 @@ class SDKConfiguration: NSObject {
         static let identity = "riz@testadmin3.xyz"
         
         static let chatBotName = "BBCConsu"
-        static let taskBotId = "st-a03b7d94-8823-568f-b3aa-a0bf80a91e16"
+        static let botId = "st-a03b7d94-8823-568f-b3aa-a0bf80a91e16"
+        static let isAnonymous = false
     }
 }
 

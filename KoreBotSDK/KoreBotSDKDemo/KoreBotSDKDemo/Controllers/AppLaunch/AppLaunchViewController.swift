@@ -14,13 +14,14 @@ import CoreData
 class AppLaunchViewController: UIViewController {
     
     // MARK: properties
-    @IBOutlet weak var signInButton: UIButton!
-    @IBOutlet weak var authenticateButton: UIButton!
+    @IBOutlet weak var chatButton: UIButton!
     
     // MARK: life-cycle events
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let chatBotName: String = SDKConfiguration.botConfig.chatBotName
+        self.chatButton.setTitle(String(format: "Chat with %@", chatBotName), for: .normal)
         setInitialState()
         self.automaticallyAdjustsScrollViewInsets = false
     }
@@ -48,75 +49,35 @@ class AppLaunchViewController: UIViewController {
         return true
     }
     
-    // MARK: anonymous user
-    @IBAction func signInButtonAction(_ sender: UIButton!) {
+    // MARK: known user
+    @IBAction func chatButtonAction(_ sender: UIButton!) {
         let clientId: String = SDKConfiguration.botConfig.clientId
         let clientSecret: String = SDKConfiguration.botConfig.clientSecret
-        let identity: String = SDKConfiguration.botConfig.identity
-        if clientId.indexOfCharacter(char: "<") == -1 && clientSecret.indexOfCharacter(char: "<") == -1 {
-            let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-            activityIndicatorView.center = view.center
-            view.addSubview(activityIndicatorView)
-            activityIndicatorView.startAnimating()
-            
-            let chatBotName: String = SDKConfiguration.botConfig.chatBotName
-            let taskBotId: String = SDKConfiguration.botConfig.taskBotId
-            let botInfo: NSDictionary = ["chatBot": chatBotName, "taskBotId": taskBotId]
+        let isAnonymous: Bool = SDKConfiguration.botConfig.isAnonymous
+        let chatBotName: String = SDKConfiguration.botConfig.chatBotName
+        let botId: String = SDKConfiguration.botConfig.botId
 
-            self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: true, success: { [weak self] (jwToken) in
-                
-                let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
-                let context: NSManagedObjectContext = dataStoreManager.coreDataManager.workerContext
-                context.perform {
-                    let resources: Dictionary<String, AnyObject> = ["threadId": taskBotId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
-                    let thread: KREThread = dataStoreManager.insertOrUpdateThread(dictionary: resources, withContext: context)
-                    try! context.save()
-                    dataStoreManager.coreDataManager.saveChanges()
-                    print(thread.threadId!)
-                    
-                    let botClient: BotClient = BotClient(botInfoParameters: botInfo)
-                    if (ServerConfigs.BOT_SERVER.characters.count > 0) {
-                        botClient.setKoreBotServerUrl(url: ServerConfigs.BOT_SERVER)
-                    }
-                    botClient.connectWithJwToken(jwToken, success: { (client) in
-                        activityIndicatorView.stopAnimating()
-                        let botViewController: ChatMessagesViewController = ChatMessagesViewController(thread: thread)
-                        botViewController.botClient = client
-                        botViewController.title = SDKConfiguration.botConfig.chatBotName
-                        self!.navigationController?.pushViewController(botViewController, animated: true)
-                    }, failure: { (error) in
-                        activityIndicatorView.stopAnimating()
-                    })
-                }
-            }, failure: { (error) in
-                activityIndicatorView.stopAnimating()
-            })
+        var identity: String! = nil
+        if (isAnonymous) {
+            identity = self.getUUID()
         } else {
-            self.showAlert(title: "Bot SDK Demo", message: "YOU MUST SET 'clientId', 'clientSecret'. Please check the documentation.")
+            identity = SDKConfiguration.botConfig.identity
         }
-    }
-    
-    // MARK: authenticated user
-    @IBAction func authenticateButtonAction(_ sender: UIButton!) {
-        let clientId: String = SDKConfiguration.botConfig.clientId
-        let clientSecret: String = SDKConfiguration.botConfig.clientSecret
-        let identity: String = SDKConfiguration.botConfig.identity
-        if clientId.indexOfCharacter(char: "<") == -1 && clientSecret.indexOfCharacter(char: "<") == -1 {
+        
+        if clientId.indexOfCharacter(char: "<") == -1 && clientSecret.indexOfCharacter(char: "<") == -1 && chatBotName.indexOfCharacter(char: "<") == -1 && botId.indexOfCharacter(char: "<") == -1 && identity.indexOfCharacter(char: "<") == -1 {
             let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
             activityIndicatorView.center = view.center
             view.addSubview(activityIndicatorView)
             activityIndicatorView.startAnimating()
             
-            let chatBotName: String = SDKConfiguration.botConfig.chatBotName
-            let taskBotId: String = SDKConfiguration.botConfig.taskBotId
-            let botInfo: NSDictionary = ["chatBot": chatBotName, "taskBotId": taskBotId]
+            let botInfo: NSDictionary = ["chatBot": chatBotName, "taskBotId": botId]
             
             self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: false, success: { [weak self] (jwToken) in
                 
                 let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
                 let context: NSManagedObjectContext = dataStoreManager.coreDataManager.workerContext
                 context.perform {
-                    let resources: Dictionary<String, AnyObject> = ["threadId": taskBotId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
+                    let resources: Dictionary<String, AnyObject> = ["threadId": botId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
                     let thread: KREThread = dataStoreManager.insertOrUpdateThread(dictionary: resources, withContext: context)
                     try! context.save()
                     dataStoreManager.coreDataManager.saveChanges()
@@ -140,7 +101,7 @@ class AppLaunchViewController: UIViewController {
                 activityIndicatorView.stopAnimating()
             })
         } else {
-            self.showAlert(title: "Bot SDK Demo", message: "YOU MUST SET 'clientId', 'clientSecret'. Please check the documentation.")
+            self.showAlert(title: "Bot SDK Demo", message: "YOU MUST SET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
         }
     }
     
@@ -188,12 +149,15 @@ class AppLaunchViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    func setInitialState() {
-        authenticateButton.alpha = 1.0
-        authenticateButton.isEnabled = true
-        
-        signInButton.alpha = 1.0
-        signInButton.isEnabled = true
+    func setInitialState() {        
+        chatButton.alpha = 1.0
+        chatButton.isEnabled = true
+    }
+    
+    func getUUID() -> String {
+        let uuid = UUID().uuidString
+        let date: Date = Date()
+        return String(format: "%@-%.0f", uuid, date.timeIntervalSince1970)
     }
 }
 

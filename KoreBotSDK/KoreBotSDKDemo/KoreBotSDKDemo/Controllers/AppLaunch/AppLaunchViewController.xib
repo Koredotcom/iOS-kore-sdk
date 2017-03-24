@@ -11,8 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AppLaunchViewController">
             <connections>
-                <outlet property="authenticateButton" destination="65X-3b-8FV" id="c5x-Ia-Xn1"/>
-                <outlet property="signInButton" destination="17E-ZR-uVC" id="HT0-SC-hQZ"/>
+                <outlet property="chatButton" destination="17E-ZR-uVC" id="xnX-bS-0rW"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -31,7 +30,7 @@
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="17E-ZR-uVC" userLabel="Anonymous User Sign In Button">
+                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="17E-ZR-uVC" userLabel="Chat with Bot">
                     <rect key="frame" x="42" y="297" width="237" height="50"/>
                     <color key="backgroundColor" red="0.17254902420000001" green="0.78039217000000005" blue="0.85490196939999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -39,7 +38,7 @@
                         <constraint firstAttribute="width" constant="237" id="tTK-Bv-RwV"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <state key="normal" title="Anonymous User Sign In">
+                    <state key="normal" title="Chat with Bot">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <userDefinedRuntimeAttributes>
@@ -48,35 +47,12 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="signInButtonAction:" destination="-2" eventType="touchUpInside" id="nXv-Tg-VVx"/>
-                    </connections>
-                </button>
-                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="65X-3b-8FV" userLabel="Authenticate User Button">
-                    <rect key="frame" x="42" y="382" width="237" height="50"/>
-                    <color key="backgroundColor" red="0.17254902422428131" green="0.78039216995239258" blue="0.85490196943283081" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="L42-Np-66y"/>
-                        <constraint firstAttribute="width" constant="237" id="bxe-lB-CwT"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <state key="normal" title="Authenticated User">
-                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="8"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="authenticateButtonAction:" destination="-2" eventType="touchUpInside" id="tAT-FT-yk0"/>
+                        <action selector="chatButtonAction:" destination="-1" eventType="touchUpInside" id="hxy-YT-WwB"/>
                     </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="65X-3b-8FV" secondAttribute="trailing" constant="41" id="0oH-dB-MWD"/>
-                <constraint firstItem="65X-3b-8FV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="42" id="5wq-12-wx7"/>
-                <constraint firstItem="65X-3b-8FV" firstAttribute="top" secondItem="17E-ZR-uVC" secondAttribute="bottom" constant="35" id="5yu-rh-Bn2"/>
                 <constraint firstAttribute="trailing" secondItem="17E-ZR-uVC" secondAttribute="trailing" constant="41" id="9fj-d6-sTa"/>
                 <constraint firstItem="17E-ZR-uVC" firstAttribute="top" secondItem="t8H-H5-pFc" secondAttribute="bottom" constant="102" id="MIU-XZ-txL"/>
                 <constraint firstItem="t8H-H5-pFc" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="iS0-TU-ARM"/>
