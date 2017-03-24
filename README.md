@@ -1,25 +1,27 @@
 # Kore Bot SDK
 Kore offers Bots SDKs as a set of platform-specific client libraries that provide a quick and convenient way to integrate Kore Bots chat capability into custom applications.
 
-With just few lines of code, you can embed our Kore chat widget into your applications to enable end-users to interact with your applications using Natural Language 
+With just few lines of code, you can embed our Kore chat widget into your applications to enable end-users to interact with your applications using Natural Language. For more information, refer to https://developer.kore.com/docs/bots/kore-web-sdk/ 
 
 # Kore Bot SDK for iOS developers
 
 Kore Bot SDK for iOS enables you to talk to Kore bots over a web socket. This repo also comes with the code for sample application that developers can modify according to their Bot configuration.
 
 # Setting up
-
 ### Prerequisites
+* Service to generate JWT (JSON Web Tokens)- SDK uses this to send the user identity to Kore Platform.
 * SDK app credentials 
-	* Navigate to the bot and enable *Web / Mobile Client* channel against the bot
-	
+	* Login to the Bots platform
+	* Navigate to the Bot builder
+	* Search and click on the bot 
+	* Enable *Web / Mobile Client* channel against the bot as shown in the screen below.	
 	![Add bot to Web/Mobile Client channel](https://github.com/Koredotcom/iOS-kore-sdk/blob/feature/1.0/channels.png)
 	
 	* create new or use existing SDK app to obtain client id and client secret
-	
 	![Obtain Client id and Client secret](https://github.com/Koredotcom/iOS-kore-sdk/blob/feature/1.0/web-mobile-client-channel.png)
 
-* Service to generate JWT (JSON Web Tokens) - this service will be used in the assertion function injected to obtain the connection.
+
+
 
 ## Instructions
 
