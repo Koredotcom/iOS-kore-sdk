@@ -26,6 +26,7 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var hintTextView: UITextView!
     
+    @IBOutlet weak var clearTextButton: UIButton!
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var promptLabel: UILabel!;
     
@@ -87,7 +88,7 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         
         self.attachmentsCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier:"Cell")
         
-        self.promptLabel.text = "Say Something..."
+        self.promptLabel.text = " Say Something..."
         self.attachments = NSMutableArray()
 
         NotificationCenter.default.addObserver(self, selector: #selector(MessageComposeBar.willShowKeyboard(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -112,8 +113,16 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         self.isSpeechModeEnabled=false;
         self.SpeechToTextButton.isSelected=false;
         self.SpeechToTextButton.isExclusiveTouch=true;
+        self.textView.textContainerInset = UIEdgeInsetsMake(8, 5, 8, 20);
+        self.clearTextButton.setImage(UIImage(named: "clear_icon")!, for: .normal)
+        self.clearTextButton.setImage(UIImage(named: "clear_icon")!, for: .selected)
+
+
     }
     
+    @IBAction func clearTextButtonAction(_ sender: Any) {
+        self.clear();
+    }
     func composeBarFont() -> UIFont {
         return UIFont(name: "HelveticaNeue", size: 14.0)!
     }
@@ -161,8 +170,10 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         self.invalidateIntrinsicContentSize()
         self.setNeedsLayout()
         self.layoutIfNeeded()
+//        self.textView.text = self.textView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
 
         self.enableSendButton = (self.textView.text.characters.count > 0) || (self.attachments.count > 0)
+        self.clearTextButton.isHidden = !(self.textView.text.characters.count > 0)
         self.SpeechToTextButton.isHidden = (self.textView.text.characters.count > 0) || (self.attachments.count > 0);
         self.sendButton.isHidden = !(self.textView.text.characters.count > 0) || (self.attachments.count > 0)
         if((self.viewWillResizeSubViews) != nil){
@@ -175,6 +186,9 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         }
     }
 
+    func disabledSpeech(){
+        self.textView.becomeFirstResponder()
+    }
     // MARK: event handlers
     @IBAction func accessoryButtonPressed(_ sender: AnyObject!) {
         self.textView.becomeFirstResponder()

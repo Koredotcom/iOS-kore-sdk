@@ -385,6 +385,11 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
             self.composeBar.enableSendButton = (self.composeBar.textView.text.characters.count > 0)
             self.composeBar.textView.isEditable = true
             self.composeBar.valueChanged()
+//            self.composeBar.disabledSpeech()
+
+        }
+        self.audioComposer.showCursorForSpeechDone = { [weak self]() in
+            self?.composeBar.disabledSpeech()
         }
 
     }

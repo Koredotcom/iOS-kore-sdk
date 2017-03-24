@@ -36,6 +36,7 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     var cancelledSpeechToText: (() -> ())?
     var viewWillResizeSubViews: (() -> ())?
     var keyBoardActivated: ((_ composedMessage: NSString?) -> ())!
+    var showCursorForSpeechDone: (() -> ())?
 
     var audioPeakOutput:Float = 0.3
     var tapAudioGestureRecognizer: UITapGestureRecognizer!
@@ -120,9 +121,11 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
         if(textView.text.characters.count == 0){
             self.placeHolderTF.text = nil;
             self.sendButton.isEnabled = false;
+            self.cancelButton.setImage(UIImage.init(named: "policy_close"), for: UIControlState.normal)
         }else{
             self.placeHolderTF.text = " ";
             self.sendButton.isEnabled = true;
+            self.cancelButton.setImage(UIImage.init(named: "done_icon"), for: UIControlState.normal)
         }
     }
     // MARK: Height Calculation
@@ -224,7 +227,11 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     // MARK: Cancel SpeechToText
 
     @IBAction func cancelButtonAction(_ sender: Any) {
-        self.cancelSpeech()
+        if((self.showCursorForSpeechDone) != nil){
+            self.showCursorForSpeechDone!()
+        }
+        
+        self.disableSpeech()
     }
 
     func cancelSpeech(){
@@ -389,6 +396,11 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     }
 
     func willShowKeyboard(_ notification: Notification!) {
+        self.disableSpeech()
+    }
+    
+    func disableSpeech(){
+        
         if((self.keyBoardActivated) != nil){
             if(self.textView.text.characters.count > 0){
                 self.keyBoardActivated(self.textView.text as NSString?)
@@ -398,4 +410,5 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
             
         }
     }
-   }
+    
+}
