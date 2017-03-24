@@ -108,7 +108,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
         return true
     }
     
-    open func webSocket(_ webSocket: SRWebSocket!, didCloseWithCode code: NSInteger!, reason: NSString!, wasClean: ObjCBool) {
+    open func webSocket(_ webSocket: SRWebSocket, didCloseWithCode code: Int, reason: String, wasClean: Bool) {
         self.connectionDelegate?.rtmConnectionDidClose(code, reason: reason as String)
     }
     

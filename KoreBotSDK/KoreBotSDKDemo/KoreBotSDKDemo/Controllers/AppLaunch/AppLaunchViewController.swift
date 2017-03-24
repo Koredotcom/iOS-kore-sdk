@@ -15,7 +15,7 @@ class AppLaunchViewController: UIViewController {
     
     // MARK: properties
     @IBOutlet weak var chatButton: UIButton!
-    
+    var botViewController: ChatMessagesViewController! = nil
     // MARK: life-cycle events
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +28,7 @@ class AppLaunchViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.botViewController = nil
         setInitialState()
     }
     
@@ -87,12 +88,14 @@ class AppLaunchViewController: UIViewController {
                     if (ServerConfigs.BOT_SERVER.characters.count > 0) {
                         botClient.setKoreBotServerUrl(url: ServerConfigs.BOT_SERVER)
                     }
-                    botClient.connectWithJwToken(jwToken, success: { (client) in
+                    botClient.connectWithJwToken(jwToken, success: { [weak self] (client) in
                         activityIndicatorView.stopAnimating()
-                        let botViewController: ChatMessagesViewController = ChatMessagesViewController(thread: thread)
-                        botViewController.botClient = client
-                        botViewController.title = SDKConfiguration.botConfig.chatBotName
-                        self!.navigationController?.pushViewController(botViewController, animated: true)
+                        if (self!.botViewController == nil) {
+                            self!.botViewController = ChatMessagesViewController(thread: thread)
+                            self!.botViewController.botClient = client
+                            self!.botViewController.title = SDKConfiguration.botConfig.chatBotName
+                            self!.navigationController?.pushViewController(self!.botViewController, animated: true)
+                        }
                     }, failure: { (error) in
                         activityIndicatorView.stopAnimating()
                     })
