@@ -75,6 +75,9 @@ class AppLaunchViewController: UIViewController {
                     print(thread.threadId!)
                     
                     let botClient: BotClient = BotClient(botInfoParameters: botInfo)
+                    if (ServerConfigs.BOT_SERVER.characters.count > 0) {
+                        botClient.setKoreBotServerUrl(url: ServerConfigs.BOT_SERVER)
+                    }
                     botClient.connectWithJwToken(jwToken, success: { (client) in
                         activityIndicatorView.stopAnimating()
                         let botViewController: ChatMessagesViewController = ChatMessagesViewController(thread: thread)
@@ -120,6 +123,9 @@ class AppLaunchViewController: UIViewController {
                     print(thread.threadId!)
                     
                     let botClient: BotClient = BotClient(botInfoParameters: botInfo)
+                    if (ServerConfigs.BOT_SERVER.characters.count > 0) {
+                        botClient.setKoreBotServerUrl(url: ServerConfigs.BOT_SERVER)
+                    }
                     botClient.connectWithJwToken(jwToken, success: { (client) in
                         activityIndicatorView.stopAnimating()
                         let botViewController: ChatMessagesViewController = ChatMessagesViewController(thread: thread)
@@ -158,7 +164,7 @@ class AppLaunchViewController: UIViewController {
                                         "aud": "https://idproxy.kore.com/authorize",
                                         "isAnonymous": isAnonymous]
         
-        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: URL.init(string: ServerConfigs.KORE_SERVER) as URL!)
+        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: URL.init(string: ServerConfigs.JWT_SERVER) as URL!)
         operationManager.responseSerializer = AFJSONResponseSerializer.init()
         operationManager.requestSerializer = requestSerializer
         operationManager.post(urlString, parameters: parameters, success: { (operation, responseObject) in

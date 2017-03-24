@@ -24,9 +24,10 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     var speechToTextToolBarString: NSMutableString!
     var speechToTextIntermediateString: NSMutableString!
     var speechToTextTempString: NSMutableString!
-
+    var speechServerUrl: String!
+    var identity: String!
     var audioIconButton:UIButton!
-    var  myTimer:Timer!;
+    var myTimer:Timer!;
     var animationTimer:Timer!
     var audioRecorderTimer:Timer!
     var waveRadius:Float = 25
@@ -295,7 +296,7 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     func startVoiceRecording()  {
         
         self.textView.resignFirstResponder()
-        reuqestManager.intializeSocket();
+        reuqestManager.intializeSocket(withUrl: ServerConfigs.BOT_SPEECH_SERVER, identity: "");
         reuqestManager.sttdelegate=self;
         self.audioIconSize = 20;
         self.animateBGView.isUserInteractionEnabled = false

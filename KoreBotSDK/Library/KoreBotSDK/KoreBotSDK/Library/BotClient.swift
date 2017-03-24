@@ -16,7 +16,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     fileprivate var clientId: String! = nil
     fileprivate var botInfoParameters: NSDictionary! = nil
     public var authInfoModel: AuthInfoModel! = nil
-    fileprivate var userInfoModel: UserModel! = nil
+    public var userInfoModel: UserModel! = nil
     fileprivate var reconnecting = false
     fileprivate var currentReconnectAttempt = 0
     fileprivate(set) var reconnectAttempts = 5
@@ -238,5 +238,10 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     open func unsubscribeToNotifications(_ deviceToken: Data!, success:((Bool) -> Void)?, failure:((NSError) -> Void)?) {
         let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
         requestManager.unsubscribeToNotifications(deviceToken as Data!, userInfo: self.userInfoModel, authInfo: self.authInfoModel, success: success, failure: failure as! ((Error) -> Void)?)
+    }
+    
+    // MARK: 
+    open func setKoreBotServerUrl(url: String) {
+        Constants.KORE_BOT_SERVER = url
     }
 }

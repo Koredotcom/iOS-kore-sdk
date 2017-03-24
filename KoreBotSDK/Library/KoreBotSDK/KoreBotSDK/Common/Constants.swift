@@ -8,20 +8,18 @@
 
 import UIKit
 
-class Constants: NSObject {
-    struct ServerConfigs {
-        static let KORE_BOT_SERVER = String(format: "https://pilot-bots.kore.com/")
-    }
+open class Constants: NSObject {
+    open static var KORE_BOT_SERVER = String(format: "https://pilot-bots.kore.com/")
     struct URL {
-        static let baseUrl = "https://pilot-bots.kore.com/"
+        static let baseUrl = KORE_BOT_SERVER
         
-        static let jwtAuthorizationUrl = String(format: "%@api/1.1/oAuth/token/jwtgrant", Constants.ServerConfigs.KORE_BOT_SERVER)
-        static let rtmUrl = String(format: "%@api/rtm/start", Constants.ServerConfigs.KORE_BOT_SERVER)
+        static let jwtAuthorizationUrl = String(format: "%@api/1.1/oAuth/token/jwtgrant", KORE_BOT_SERVER)
+        static let rtmUrl = String(format: "%@api/rtm/start", KORE_BOT_SERVER)
         static func subscribeUrl(_ userId: String!) -> String {
-            return  String(format: "%@api/users/%@/sdknotifications/subscribe", ServerConfigs.KORE_BOT_SERVER, userId)
+            return  String(format: "%@api/users/%@/sdknotifications/subscribe", KORE_BOT_SERVER, userId)
         }
         static func unSubscribeUrl(_ userId: String!) -> String {
-            return  String(format: "%@api/users/%@/sdknotifications/unsubscribe", ServerConfigs.KORE_BOT_SERVER, userId)
+            return  String(format: "%@api/users/%@/sdknotifications/unsubscribe", KORE_BOT_SERVER, userId)
         }
     }
     

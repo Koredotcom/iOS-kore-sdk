@@ -9,25 +9,6 @@
 import UIKit
 import Foundation
 
-open class ServerConfigs: NSObject {
-    open static let API_Version: String = "1.1"
-
-    open static let KORE_SERVER = String(format: "pilot-bots.kore.com")
-    
-    open static func getAllStreamsURL(_ userId: String!) -> String {
-        return  String(format: "%@api/%@/users/%@/builder/streams", KORE_SERVER, API_Version, userId)
-    }
-    open static func oAuthUrl() -> String {
-        return String(format: "%@api/%@/oauth/token", KORE_SERVER, API_Version)
-    }
-    open static func jwtUrl() -> String {
-        return String(format: "%@api/users/sts", KORE_SERVER)
-    }
-    open static func koreJwtUrl() -> String {
-        return String(format: "http://50.19.64.173:4000/api/users/sts")
-    }
-}
-
 open class Common : NSObject {
     open static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)

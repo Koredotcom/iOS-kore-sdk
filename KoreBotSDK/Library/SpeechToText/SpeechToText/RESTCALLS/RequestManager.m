@@ -19,6 +19,8 @@
 
 @interface RequestManager()<MCAudioInputQueueDelegate>
 
+@property (nonatomic, strong) NSString* speechServer;
+@property (nonatomic, strong) NSString* identity;
 @end
 
 
@@ -29,8 +31,18 @@
     return self;
 }
 
--(void)intializeSocket{
-    self.webSocket = [[KREWebSocket alloc] initWithURLString:[NSString stringWithFormat:kreSpeechServer, SPEECH_SERVER, VOICE_CONTENT_TYPE, @"shylaja.mamidala@kore.com"]];
+-(void) intializeSocketWithUrl:(NSString*) url identity:(NSString*) identity {
+    if (url.length > 0) {
+        self.speechServer = url;
+    } else {
+        self.speechServer = SPEECH_SERVER;
+    }
+    if (identity.length > 0) {
+        self.identity = identity;
+    } else {
+        self.identity = @"developer@kore.com";
+    }
+    self.webSocket = [[KREWebSocket alloc] initWithURLString:[self getSpeechServerUrl]];
     self.webSocket.delegate = self;
     [self.webSocket connect];
     [self setUpAudioQueueFormat];
@@ -106,7 +118,7 @@
     self.webSocket.delegate = nil;
     self.webSocket = nil;
     if (self.isAudioQueueRecordingInProgress) {
-        self.webSocket = [[KREWebSocket alloc] initWithURLString:[NSString stringWithFormat:kreSpeechServer, SPEECH_SERVER, VOICE_CONTENT_TYPE, @"shylaja.mamidala@kore.com"]];
+        self.webSocket = [[KREWebSocket alloc] initWithURLString:[self getSpeechServerUrl]];
         self.webSocket.delegate = self;
         [self.webSocket connect];
     }
@@ -118,7 +130,7 @@
     self.webSocket.delegate = nil;
     self.webSocket = nil;
     if(self.isAudioQueueRecordingInProgress){
-        self.webSocket = [[KREWebSocket alloc] initWithURLString:[NSString stringWithFormat:kreSpeechServer, SPEECH_SERVER, VOICE_CONTENT_TYPE, @"shylaja.mamidala@kore.com"]];
+        self.webSocket = [[KREWebSocket alloc] initWithURLString:[self getSpeechServerUrl]];
         self.webSocket.delegate = self;
         [self.webSocket connect];
         
@@ -166,6 +178,12 @@
         [self.audioBuffer appendData:data];
     }
 
+}
+
+#pragma mark - get speech server url 
+
+- (NSString*) getSpeechServerUrl {
+    return [NSString stringWithFormat:kreSpeechServer, self.speechServer, VOICE_CONTENT_TYPE, self.identity];
 }
 
 -(void)dealloc{

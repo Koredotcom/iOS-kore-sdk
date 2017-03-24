@@ -17,6 +17,7 @@ open class UserModel: MTLModel, MTLJSONSerializing {
     open var enrollType: String?
     open var orgID: String?
     open var emailId: String?
+    open var identity: String?
 
     // MARK: MTLJSONSerializing methods
     open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
@@ -24,6 +25,7 @@ open class UserModel: MTLModel, MTLJSONSerializing {
                 "resourceOwnerID":"resourceOwnerID",
                 "enrollType":"enrollType",
                 "orgID":"orgID",
-                "emailId":"emailId"]
+                "emailId":"emailId",
+                "identity":"identity"]
     }
 }

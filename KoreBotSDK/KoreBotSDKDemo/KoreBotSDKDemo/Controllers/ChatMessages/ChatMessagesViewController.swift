@@ -65,9 +65,10 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     var quickSelectData: NSArray!
     var isSpeechToTextActive: Bool = false
     var typingStatusView:KRETypingStatusView?
-
+    var identity: String!
     var botClient: BotClient! {
         didSet {
+            self.identity = botClient.userInfoModel.identity
             // events
             botClient.connectionWillOpen = { () in
                 
@@ -227,53 +228,9 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     
     // MARK: setup bot client
     func setupBotClient() {
-        if self.botClient == nil {
-            let token: String = self.botInfoParameters["authorization"] as! String
-            let botInfo: NSDictionary = (self.botInfoParameters["botInfo"] as? NSDictionary)!
-            let client: BotClient = BotClient(botInfoParameters: botInfo)
-            
-            var status: Bool = true
-            if (client.authInfoModel == nil) {
-                self.authorizeWithToken(token, success: { (jwToken) in
-                    client.connectWithJwToken(jwToken, success: { [weak self] (botClient) in
-                        self!.botClient = client
-                        }, failure: {
-                            (error) in
-                            print(error)
-                    })
-                }) { (error) in
-                    status = status && false
-                    print(error)
-                }
-            }
-        }
+        
     }
     
-    func authorizeWithToken(_ accessToken: String!, success:((_ token: String?) -> Void)?, failure:((_ error: Error) -> Void)?) {
-        let urlString: String = ServerConfigs.jwtUrl()
-        let requestSerializer = AFJSONRequestSerializer()
-        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-        requestSerializer.setValue(accessToken, forHTTPHeaderField:"Authorization")
-        let parameters: NSDictionary = [:]
-        
-        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: URL.init(string: ServerConfigs.KORE_SERVER) as URL!)
-        operationManager.responseSerializer = AFJSONResponseSerializer.init()
-        operationManager.requestSerializer = requestSerializer
-        operationManager.post(urlString, parameters: parameters, success: { (operation, responseObject) in
-            if (responseObject is NSDictionary) {
-                let dictionary: NSDictionary = responseObject as! NSDictionary
-                let jwToken: String = dictionary["jwt"] as! String
-                success?(jwToken)
-            } else {
-                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
-                failure?(error)
-            }
-        }) { (operation, error) in
-            failure?(error!)
-        }
-    }
-
     // MARK: cancel
     func cancel(_ sender: AnyObject) {
         if(self.botClient != nil){
@@ -360,6 +317,9 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         }
         self.audioComposer.sendButtonAction = { [weak self] (composeBar, message) in
             self?.sendMessage(message!)
+        }
+        if (self.identity != nil && self.identity.characters.count > 0) {
+            self.audioComposer.identity = self.identity
         }
         
         self.audioComposer.cancelledSpeechToText = {

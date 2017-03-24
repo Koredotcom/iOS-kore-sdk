@@ -32,7 +32,7 @@
 
 -(instancetype)init;
 
--(void)intializeSocket;
+-(void)intializeSocketWithUrl:(NSString*) url identity:(NSString*) identity;
 -(void)intializeAudioQueue;
 -(void) setUpAudioQueueFormat;
 -(void)doAudioQueueRecording;
