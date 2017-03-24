@@ -2,12 +2,14 @@
     This SDK allows you to talk to Bots over a web socket.
 
 # Prerequisites
-    - SDK app credentials (Create your SDk app in bot admin console to aquire the client id and client secret.
+    - SDK app credentials (Create your SDk app in bot admin console to aquire the client id, client secret, bot identifier.
     - jwt assertion generation methodology. ex: service which will be used in the assertion function injected as part of obtaining the connection.
 
+# Set clientId, clientSecret, botId, chatBotName and identity in KoreBotSDK/KoreBotSDKDemo/SDKConfiguration.
+# Set JWT_SERVER in ServerConfigs at KoreBotSDK/KoreBotSDKDemo/SDKConfiguration.
 # Running the Demo app
-    Run pod install in the KoreBotSDKDemo project folder.
-    Open KoreBotSDKDemo.xworkspace in Xcode.
+    Run "pod install" in the KoreBotSDK project folder.
+    Open KoreBotSDK.xworkspace in Xcode.
     Run the app in xcode
 
 # Integrating into your app
@@ -18,7 +20,7 @@
 #### 2. Iniitializing the Bot client
     import KoreBotSDK
     var self.botClient: BotClient!
-    let botInfo: NSDictionary = ["chatBot":"Kora","taskBotId":"st-******"]
+    let botInfo: NSDictionary = ["chatBot":"<bot-name>", "taskBotId":"<bot-identifier>"]
     self.botClient = BotClient(botInfoParameters: botInfo)
 
 #### 3. JWT genration
@@ -28,7 +30,6 @@
 NOTE: Please refer about JWT signing and verification at - https://developer.kore.com/docs/bots/kore-web-sdk/
 
 #### 4. Connect with JWT
-    let clientId: String = "YOUR_SDK_CLIENTID"
     self.botClient.connectWithJwToken(jwToken, success: { (client) in
         // listen to RTM events
  
