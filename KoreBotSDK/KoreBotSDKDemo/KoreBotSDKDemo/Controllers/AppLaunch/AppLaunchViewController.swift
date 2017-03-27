@@ -73,7 +73,7 @@ class AppLaunchViewController: UIViewController {
             
             let botInfo: NSDictionary = ["chatBot": chatBotName, "taskBotId": botId]
             
-            self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: false, success: { [weak self] (jwToken) in
+            self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: isAnonymous, success: { [weak self] (jwToken) in
                 
                 let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
                 let context: NSManagedObjectContext = dataStoreManager.coreDataManager.workerContext
@@ -158,9 +158,8 @@ class AppLaunchViewController: UIViewController {
     }
     
     func getUUID() -> String {
-        let uuid = UUID().uuidString
         let date: Date = Date()
-        return String(format: "%@-%.0f", uuid, date.timeIntervalSince1970)
+        return String(format: "email%@%@", date.timeIntervalSince1970, "@domain.com")
     }
 }
 
