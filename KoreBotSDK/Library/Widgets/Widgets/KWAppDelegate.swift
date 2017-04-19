@@ -9,7 +9,7 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class KWAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let window = window {
             window.backgroundColor = UIColor.white
             
-            let appLaunchViewController: AppLaunchViewController = AppLaunchViewController()
+            let appLaunchViewController: KWAppLaunchViewController = KWAppLaunchViewController()
             let navigationController: UINavigationController = UINavigationController(rootViewController: appLaunchViewController)
             
             window.rootViewController = navigationController

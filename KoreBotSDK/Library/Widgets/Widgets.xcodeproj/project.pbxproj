@@ -12,11 +12,11 @@
 		BBB4F95D1E0D260800C2A53A /* KREListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4F95B1E0D260800C2A53A /* KREListTableViewCell.swift */; };
 		BBB4F95E1E0D260800C2A53A /* KREListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBB4F95C1E0D260800C2A53A /* KREListTableViewCell.xib */; };
 		CA280627BF843A99A0C3CD54 /* Pods_Widgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E387210F3AC29F881D0C02C /* Pods_Widgets.framework */; };
-		D1365FDA1DDC2B170017D80E /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1365FD91DDC2B170017D80E /* AppLaunchViewController.swift */; };
+		D1365FDA1DDC2B170017D80E /* KWAppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1365FD91DDC2B170017D80E /* KWAppLaunchViewController.swift */; };
 		D1365FDE1DDC2F0F0017D80E /* ListViewWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1365FDD1DDC2F0F0017D80E /* ListViewWidgetViewController.swift */; };
 		D1365FE01DDC2F240017D80E /* ButtonWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1365FDF1DDC2F240017D80E /* ButtonWidgetViewController.swift */; };
 		D150E0FC1DDDADE400E674FE /* KoreWidgets.podspec in Resources */ = {isa = PBXBuildFile; fileRef = D150E0FB1DDDADE400E674FE /* KoreWidgets.podspec */; };
-		D1832B591DDC1EE700FDFB93 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1832B581DDC1EE700FDFB93 /* AppDelegate.swift */; };
+		D1832B591DDC1EE700FDFB93 /* KWAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1832B581DDC1EE700FDFB93 /* KWAppDelegate.swift */; };
 		D1832B601DDC1EE700FDFB93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1832B5F1DDC1EE700FDFB93 /* Assets.xcassets */; };
 		D1832B631DDC1EE700FDFB93 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1832B611DDC1EE700FDFB93 /* LaunchScreen.storyboard */; };
 		D1CE673C1DE713B0009B8AB9 /* KRECollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE67371DE713B0009B8AB9 /* KRECollectionView.swift */; };
@@ -38,12 +38,12 @@
 		BBB4F95B1E0D260800C2A53A /* KREListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREListTableViewCell.swift; sourceTree = "<group>"; };
 		BBB4F95C1E0D260800C2A53A /* KREListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KREListTableViewCell.xib; sourceTree = "<group>"; };
 		BBCC6BA71E123D8200629BB5 /* Widgets-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Widgets-Bridging-Header.h"; sourceTree = "<group>"; };
-		D1365FD91DDC2B170017D80E /* AppLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchViewController.swift; sourceTree = "<group>"; };
+		D1365FD91DDC2B170017D80E /* KWAppLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KWAppLaunchViewController.swift; sourceTree = "<group>"; };
 		D1365FDD1DDC2F0F0017D80E /* ListViewWidgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewWidgetViewController.swift; sourceTree = "<group>"; };
 		D1365FDF1DDC2F240017D80E /* ButtonWidgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonWidgetViewController.swift; sourceTree = "<group>"; };
 		D150E0FB1DDDADE400E674FE /* KoreWidgets.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KoreWidgets.podspec; sourceTree = "<group>"; };
 		D1832B551DDC1EE700FDFB93 /* Widgets.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Widgets.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D1832B581DDC1EE700FDFB93 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D1832B581DDC1EE700FDFB93 /* KWAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KWAppDelegate.swift; sourceTree = "<group>"; };
 		D1832B5F1DDC1EE700FDFB93 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D1832B621DDC1EE700FDFB93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D1832B641DDC1EE700FDFB93 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -90,7 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				D1CE67411DE714BF009B8AB9 /* QuickSelectWidgetViewController.swift */,
-				D1365FD91DDC2B170017D80E /* AppLaunchViewController.swift */,
+				D1365FD91DDC2B170017D80E /* KWAppLaunchViewController.swift */,
 				D1365FDD1DDC2F0F0017D80E /* ListViewWidgetViewController.swift */,
 				D1365FDF1DDC2F240017D80E /* ButtonWidgetViewController.swift */,
 			);
@@ -124,7 +124,7 @@
 				D1CE67431DE717D5009B8AB9 /* Options */,
 				D1CE67361DE713B0009B8AB9 /* QuickSelect */,
 				D1365FD81DDC2B170017D80E /* Controllers */,
-				D1832B581DDC1EE700FDFB93 /* AppDelegate.swift */,
+				D1832B581DDC1EE700FDFB93 /* KWAppDelegate.swift */,
 				D1832B5F1DDC1EE700FDFB93 /* Assets.xcassets */,
 				D1832B611DDC1EE700FDFB93 /* LaunchScreen.storyboard */,
 				D1832B641DDC1EE700FDFB93 /* Info.plist */,
@@ -344,9 +344,9 @@
 				D1CE673E1DE713B0009B8AB9 /* KRETokenCollectionViewCell.swift in Sources */,
 				BBB4F95D1E0D260800C2A53A /* KREListTableViewCell.swift in Sources */,
 				D1CE673D1DE713B0009B8AB9 /* KREQuickSelectView.swift in Sources */,
-				D1832B591DDC1EE700FDFB93 /* AppDelegate.swift in Sources */,
+				D1832B591DDC1EE700FDFB93 /* KWAppDelegate.swift in Sources */,
 				D1CE673C1DE713B0009B8AB9 /* KRECollectionView.swift in Sources */,
-				D1365FDA1DDC2B170017D80E /* AppLaunchViewController.swift in Sources */,
+				D1365FDA1DDC2B170017D80E /* KWAppLaunchViewController.swift in Sources */,
 				D1CE674B1DE718EE009B8AB9 /* KREImagesCollectionView.swift in Sources */,
 				D1365FDE1DDC2F0F0017D80E /* ListViewWidgetViewController.swift in Sources */,
 				D1CE67451DE717F2009B8AB9 /* KREOptionsView.swift in Sources */,
