@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AppLaunchViewController: UITableViewController {
+class KWAppLaunchViewController: UITableViewController {
     var widgets: Array<String>!
     override func viewDidLoad() {
         super.viewDidLoad()
