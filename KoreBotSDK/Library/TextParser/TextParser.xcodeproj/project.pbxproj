@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D19ABFED1DDDB10500CA6A99 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ABFEC1DDDB10500CA6A99 /* AppDelegate.swift */; };
+		D19ABFED1DDDB10500CA6A99 /* KMAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ABFEC1DDDB10500CA6A99 /* KMAppDelegate.swift */; };
 		D19ABFEF1DDDB10500CA6A99 /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ABFEE1DDDB10500CA6A99 /* TextViewController.swift */; };
 		D19ABFF41DDDB10500CA6A99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D19ABFF31DDDB10500CA6A99 /* Assets.xcassets */; };
 		D19ABFF71DDDB10500CA6A99 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D19ABFF51DDDB10500CA6A99 /* LaunchScreen.storyboard */; };
@@ -19,7 +19,7 @@
 
 /* Begin PBXFileReference section */
 		D19ABFE91DDDB10500CA6A99 /* TextParser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextParser.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D19ABFEC1DDDB10500CA6A99 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D19ABFEC1DDDB10500CA6A99 /* KMAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMAppDelegate.swift; sourceTree = "<group>"; };
 		D19ABFEE1DDDB10500CA6A99 /* TextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewController.swift; sourceTree = "<group>"; };
 		D19ABFF31DDDB10500CA6A99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D19ABFF61DDDB10500CA6A99 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -66,7 +66,7 @@
 			children = (
 				D19AC0071DDDF0B700CA6A99 /* Resources */,
 				D19AC0001DDDB16800CA6A99 /* Library */,
-				D19ABFEC1DDDB10500CA6A99 /* AppDelegate.swift */,
+				D19ABFEC1DDDB10500CA6A99 /* KMAppDelegate.swift */,
 				D19ABFEE1DDDB10500CA6A99 /* TextViewController.swift */,
 				D19ABFF31DDDB10500CA6A99 /* Assets.xcassets */,
 				D19ABFF51DDDB10500CA6A99 /* LaunchScreen.storyboard */,
@@ -172,7 +172,7 @@
 				D19ABFEF1DDDB10500CA6A99 /* TextViewController.swift in Sources */,
 				D19AC0061DDDB16800CA6A99 /* KMTextParser.m in Sources */,
 				D19AC0051DDDB16800CA6A99 /* MarkdownParser.m in Sources */,
-				D19ABFED1DDDB10500CA6A99 /* AppDelegate.swift in Sources */,
+				D19ABFED1DDDB10500CA6A99 /* KMAppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
