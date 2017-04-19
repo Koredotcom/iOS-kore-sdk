@@ -68,7 +68,7 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
             self.textView.isScrollEnabled = true
         }
         if(self.audioIconButton != nil){
-            self.audioIconButton.frame = (frame: CGRect(x: self.animateBGView.frame.size.width/2 - self.audioIconSize/2, y: self.animateBGView.frame.size.height/2 - self.audioIconSize/2, width: self.audioIconSize, height: self.audioIconSize))
+            self.audioIconButton.frame = CGRect(x: self.animateBGView.frame.size.width/2 - self.audioIconSize/2, y: self.animateBGView.frame.size.height/2 - self.audioIconSize/2, width: self.audioIconSize, height: self.audioIconSize)
         }
     }
     
@@ -251,7 +251,7 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
 
         if(self.audioIconButton == nil){
             self.audioIconButton = UIButton(type: UIButtonType.custom) as UIButton
-            self.audioIconButton.frame = (frame: CGRect(x: self.animateBGView.frame.size.width/2 - 7, y: self.animateBGView.frame.size.height/2 - 7, width: CGFloat(15), height: CGFloat(15)))
+            self.audioIconButton.frame = CGRect(x: self.animateBGView.frame.size.width/2 - 7, y: self.animateBGView.frame.size.height/2 - 7, width: CGFloat(15), height: CGFloat(15))
             self.animateBGView.addSubview(self.audioIconButton)
             self.audioIconButton.isUserInteractionEnabled = false
             self.tapAudioGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(AudioComposer.startVoiceRecording))
@@ -264,7 +264,7 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     
     func showCircleWaveAnimation() {
         let circleView = UIView()
-        circleView.frame = (frame: CGRect(x: self.animateBGView.frame.size.width/2 - 2.5, y: self.animateBGView.frame.size.height/2 - 2.5, width: CGFloat(5), height: CGFloat(5)))
+        circleView.frame = CGRect(x: self.animateBGView.frame.size.width/2 - 2.5, y: self.animateBGView.frame.size.height/2 - 2.5, width: CGFloat(5), height: CGFloat(5))
 
         self.animateBGView.addSubview(circleView)
         circleView.backgroundColor = Common.UIColorRGB(0x009FA7)
