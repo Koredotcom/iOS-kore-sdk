@@ -13,8 +13,8 @@ Pod::Spec.new do |s|
     s.author = {"Srinivas Vasadi" => "srinivas.vasadi@kore.com"}
     s.source = {:git => "https://github.com/Koredotcom/iOS-kore-sdk.git"}
 
-    s.source_files = "Library/KoreBotSDK/**/*.{h,m,swift}"
-    s.exclude_files = "Library/KoreBotSDK/KoreBotSDK.{h}"
+    s.source_files = "KoreBotSDK/**/*.{h,m,swift}"
+    s.exclude_files = "KoreBotSDK/KoreBotSDK.{h}"
     s.exclude_files = "KoreBotSDK/KoreBotSDKDemo/*.{*}"
 
     s.dependency 'Mantle', '2.0.2'
