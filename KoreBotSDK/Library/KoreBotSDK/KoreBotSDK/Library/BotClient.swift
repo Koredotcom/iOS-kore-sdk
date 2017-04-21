@@ -45,6 +45,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     fileprivate func connect() {
         if (self.authInfoModel == nil) {
             self.connectWithJwToken(jwToken, success: { [weak self] (client) in
+                self!.reconnecting = false
                 if (self!.successClosure != nil) {
                     self!.successClosure(client)
                 }
@@ -58,6 +59,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
             requestManager.getRtmUrlWithAuthInfoModel(self.authInfoModel, botInfo: self.botInfoParameters, success: { (botInfo) in
                 self.connection = self.rtmConnectionWithBotInfoModel(botInfo!, isReconnect: self.reconnects)
+                self.reconnecting = false
                 if (self.reconnects == false) {
                     if (self.successClosure != nil) {
                         self.successClosure(self)
