@@ -34,12 +34,12 @@ class AppLaunchViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.isNavigationBarHidden = true
+//        self.navigationController?.isNavigationBarHidden = true
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
+//        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -159,7 +159,7 @@ class AppLaunchViewController: UIViewController {
     
     func getUUID() -> String {
         let date: Date = Date()
-        return String(format: "email%@%@", date.timeIntervalSince1970, "@domain.com")
+        return String(format: "email%ld%@", date.timeIntervalSince1970, "@domain.com")
     }
 }
 

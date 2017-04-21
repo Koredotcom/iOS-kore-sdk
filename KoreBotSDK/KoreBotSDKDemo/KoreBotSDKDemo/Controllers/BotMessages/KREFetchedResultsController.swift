@@ -26,13 +26,13 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
         }
     }
     var tableView: UITableView?
-    var animateChanges: Bool = true
+    var animateChanges: Bool = false
     var ignoreUpdates: Bool = false
     var shouldReload: Bool = false
     var maybePreMoveUpdateIndexPath: IndexPath? = nil
 
-    var insertedSectionIndexes: NSMutableIndexSet?
-    var deletedSectionIndexes: NSMutableIndexSet?
+    var insertedSectionIndexes: IndexSet?
+    var deletedSectionIndexes: IndexSet?
     var insertedRowIndexPaths: Array<IndexPath>?
     var deletedRowIndexPaths: Array<IndexPath>?
     var updatedRowIndexPaths: Array<IndexPath>?
@@ -46,8 +46,8 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
     
     // MARK:- 
     func initSectionsAndRowsCache() {
-        insertedSectionIndexes = NSMutableIndexSet()
-        deletedSectionIndexes = NSMutableIndexSet()
+        insertedSectionIndexes = IndexSet()
+        deletedSectionIndexes = IndexSet()
         insertedRowIndexPaths = Array<IndexPath>()
         deletedRowIndexPaths = Array<IndexPath>()
         updatedRowIndexPaths = Array<IndexPath>()
@@ -72,12 +72,18 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
         if (self.shouldReload == true) {
             self.tableView?.reloadData()
         } else {
-         
-            UIView.performWithoutAnimation {
-                self.tableView?.reloadData()
-                self.tableView?.beginUpdates()
-                self.tableView?.endUpdates()
-            }
+            let animation: UITableViewRowAnimation = self.animateChanges ? .fade : .none
+            self.tableView?.beginUpdates()
+            
+            self.tableView?.deleteSections(self.deletedSectionIndexes!, with: animation)
+            self.tableView?.insertSections(self.insertedSectionIndexes!, with: animation)
+
+            self.tableView?.deleteRows(at: self.deletedRowIndexPaths!, with: animation)
+            self.tableView?.insertRows(at: self.insertedRowIndexPaths!, with: animation)
+            self.tableView?.reloadRows(at: self.updatedRowIndexPaths!, with: animation)
+
+            self.tableView?.endUpdates()
+            
             self.kreDelegate?.fetchedControllerDidChangeContent()
             clearSectionsAndRowsCache()
         }
@@ -85,10 +91,10 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
             switch (type) {
             case .insert:
-                self.insertedSectionIndexes?.add(sectionIndex)
+                self.insertedSectionIndexes?.insert(sectionIndex)
                 break
             case .delete:
-                self.deletedSectionIndexes?.add(sectionIndex)
+                self.deletedSectionIndexes?.insert(sectionIndex)
                 if let i = self.deletedRowIndexPaths?.index(where: {$0.section == sectionIndex}) {
                     self.deletedRowIndexPaths?.remove(at: i)
                 }

@@ -47,7 +47,7 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
             UIView.animate(withDuration: 0, animations: {
                 self.tableView.reloadData()
             }, completion: { (completion) in
-                self.scrollToBottom()
+                self.scrollToBottom(animated: true)
                 self.tableView.alpha = 1
             })
         }
@@ -78,21 +78,9 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
             let results = try mainContext.fetch(request)
             if(results.count > 0){
                 self.lastMessage = results.last!
-                print(self.lastMessage)
             }
         } catch let error {
             print(error.localizedDescription)
-        }
-    }
-    func scrollToBottom() {
-        
-        let numberOfSections: Int = self.tableView.numberOfSections
-        if (numberOfSections >= 0) {
-            let numberOfRows: Int = self.tableView.numberOfRows(inSection: numberOfSections-1)
-            if (numberOfRows > 0) {
-                let indexPath: IndexPath = IndexPath(row:numberOfRows-1, section:numberOfSections-1)
-                self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
-            }
         }
     }
     
@@ -200,16 +188,11 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
     
     // MARK:- KREFetchedResultsControllerDelegate methods
     func fetchedControllerDidChangeContent() {
-
-    
-        if(self.shouldScrollToBottom && !self.tableView.isDragging){
-            self.shouldScrollToBottom = false;
-            self.scrollToBottom(animated: true);
+        if (self.shouldScrollToBottom && !self.tableView.isDragging) {
+            self.shouldScrollToBottom = false
+            self.scrollToBottom(animated: true)
         }
-
     }
-   
-    
     
     func fetchedControllerWillChangeContent() {
         let visibleCelIndexPath: [IndexPath]? = self.tableView.indexPathsForVisibleRows
@@ -221,9 +204,10 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
     }
     // MARK: - scrollTo related methods
     func scrollToBottom(animated animate: Bool) {
+        print("scrollToBottom")
         let indexPath: NSIndexPath = self.getIndexPathForLastItem()
-        if( indexPath.row > 0 || indexPath.section > 0){
-            self.tableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: animate)
+        if (indexPath.row > 0 || indexPath.section > 0) {
+            self.tableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: animate)
         }
     }
     
@@ -234,7 +218,6 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
             let numberOfRows: Int = self.tableView.numberOfRows(inSection: numberOfSections - 1)
             if numberOfRows > 0 {
                 indexPath = NSIndexPath(row: numberOfRows - 1, section: numberOfSections - 1)
-                
             }
         }
         return indexPath
