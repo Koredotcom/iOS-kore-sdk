@@ -217,8 +217,8 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     }
     
     override open func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews();
-        self.typingStatusView?.frame = CGRect(x:0, y:self.composeBarContainer.frame.origin.y-40.0, width:self.view.bounds.size.width-50.0, height:40.0);
+        super.viewWillLayoutSubviews()
+        self.typingStatusView?.frame = CGRect(x:0, y:self.composeBarContainer.frame.origin.y-40.0, width:self.view.bounds.size.width-50.0, height:40.0)
     }
 
     func  viewLayoutUpdated() {
@@ -341,7 +341,7 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         
         self.audioComposer.keyBoardActivated  = { (composedMessage) in
             self.composeBar.textView.isUserInteractionEnabled = true;
-            self.composeBar.textView.text = composedMessage as! String;
+            self.composeBar.textView.text = composedMessage! as String;
             self.composeBar.enableSendButton = (self.composeBar.textView.text.characters.count > 0)
             self.composeBar.textView.isEditable = true
             self.composeBar.valueChanged()
@@ -375,12 +375,8 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
                 self.audioComposer.animateBGView.isHidden = false;
                 self.audioComposer.cancelButton.isHidden = false;
                 self.viewLayoutUpdated();
-
-
             })
-
-        };
-        
+        }
         
 //        self.composeBar.isKora = self.composeMode == ComposeMode.Kora
         
@@ -526,8 +522,8 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
             let c: CGFloat = self.view.frame.height - newFrame.origin.y
             self.bottomConstraint.constant = c
             self.view.layoutIfNeeded()
+            self.threadTableViewController.scrollToBottom(animated: true)
             }, completion: { (Bool) in
-                
         })
     }
 
