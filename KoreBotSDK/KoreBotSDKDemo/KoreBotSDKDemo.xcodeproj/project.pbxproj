@@ -59,6 +59,8 @@
 		D1CAF15E1CF0AEA3001BCAEF /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CAF07D1CF0AEA3001BCAEF /* AppLaunchViewController.swift */; };
 		D1CAF15F1CF0AEA3001BCAEF /* AppLaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1CAF07E1CF0AEA3001BCAEF /* AppLaunchViewController.xib */; };
 		D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1CAF1531CF0AEA3001BCAEF /* Assets.xcassets */; };
+		D1F086801EACB6CB00A75AD6 /* TSBaseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F0867C1EACB6CB00A75AD6 /* TSBaseParser.m */; };
+		D1F086811EACB6CB00A75AD6 /* TSMarkdownParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F0867F1EACB6CB00A75AD6 /* TSMarkdownParser.m */; };
 		D1F4E4FB1CF709C40044C093 /* MessageBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F4E4F21CF709C40044C093 /* MessageBubbleCell.swift */; };
 		D1F4E5001CF709C40044C093 /* BotMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F4E4F91CF709C40044C093 /* BotMessagesViewController.swift */; };
 		D1F4E5011CF709C40044C093 /* BotMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F4E4FA1CF709C40044C093 /* BotMessagesViewController.xib */; };
@@ -137,6 +139,10 @@
 		D1CAF07E1CF0AEA3001BCAEF /* AppLaunchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppLaunchViewController.xib; sourceTree = "<group>"; };
 		D1CAF1531CF0AEA3001BCAEF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D1CAF1541CF0AEA3001BCAEF /* KoreBotSDKDemo-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KoreBotSDKDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		D1F0867B1EACB6CB00A75AD6 /* TSBaseParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSBaseParser.h; sourceTree = "<group>"; };
+		D1F0867C1EACB6CB00A75AD6 /* TSBaseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSBaseParser.m; sourceTree = "<group>"; };
+		D1F0867E1EACB6CB00A75AD6 /* TSMarkdownParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMarkdownParser.h; sourceTree = "<group>"; };
+		D1F0867F1EACB6CB00A75AD6 /* TSMarkdownParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMarkdownParser.m; sourceTree = "<group>"; };
 		D1F4E4F21CF709C40044C093 /* MessageBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleCell.swift; sourceTree = "<group>"; };
 		D1F4E4F91CF709C40044C093 /* BotMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotMessagesViewController.swift; sourceTree = "<group>"; };
 		D1F4E4FA1CF709C40044C093 /* BotMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BotMessagesViewController.xib; sourceTree = "<group>"; };
@@ -398,6 +404,7 @@
 		D1CAF08E1CF0AEA3001BCAEF /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				D1F086791EACB6CB00A75AD6 /* Vendors */,
 				BB4D2DEC1E28AE4600A97E99 /* Animation */,
 				BB361E1A1DF5501900D2F0DB /* AudioComposer */,
 				D1132F5D1D8181130083FC10 /* AttributedLabel */,
@@ -436,6 +443,25 @@
 				D1CAF1531CF0AEA3001BCAEF /* Assets.xcassets */,
 			);
 			path = Images;
+			sourceTree = "<group>";
+		};
+		D1F086791EACB6CB00A75AD6 /* Vendors */ = {
+			isa = PBXGroup;
+			children = (
+				D1F0867A1EACB6CB00A75AD6 /* TSMarkdownParser */,
+			);
+			path = Vendors;
+			sourceTree = "<group>";
+		};
+		D1F0867A1EACB6CB00A75AD6 /* TSMarkdownParser */ = {
+			isa = PBXGroup;
+			children = (
+				D1F0867B1EACB6CB00A75AD6 /* TSBaseParser.h */,
+				D1F0867C1EACB6CB00A75AD6 /* TSBaseParser.m */,
+				D1F0867E1EACB6CB00A75AD6 /* TSMarkdownParser.h */,
+				D1F0867F1EACB6CB00A75AD6 /* TSMarkdownParser.m */,
+			);
+			path = TSMarkdownParser;
 			sourceTree = "<group>";
 		};
 		D1F4E4F01CF708850044C093 /* BotMessages */ = {
@@ -652,7 +678,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		D5260BF35086AACB720425BA /* [CP] Check Pods Manifest.lock */ = {
@@ -713,9 +739,11 @@
 				D1132F671D8181130083FC10 /* KRELayoutManager.m in Sources */,
 				D1132F681D8181130083FC10 /* KREUtilities.m in Sources */,
 				D150415A1DE2CD0D00F2F92E /* KREComponent+CoreDataClass.swift in Sources */,
+				D1F086811EACB6CB00A75AD6 /* TSMarkdownParser.m in Sources */,
 				D1F4E52B1CF716640044C093 /* SectionedThread.swift in Sources */,
 				BB361E1C1DF5503300D2F0DB /* AudioComposer.swift in Sources */,
 				D14BD4B81DDED95C0032BD80 /* DataModel.xcdatamodeld in Sources */,
+				D1F086801EACB6CB00A75AD6 /* TSBaseParser.m in Sources */,
 				D1B944AD1D04463F000AADA9 /* MultiImageBubbleView.swift in Sources */,
 				BB4D2DE61E289FA000A97E99 /* KRETypingActivityIndicator.m in Sources */,
 				D15041631DE2F93D00F2F92E /* DataStoreManager.swift in Sources */,

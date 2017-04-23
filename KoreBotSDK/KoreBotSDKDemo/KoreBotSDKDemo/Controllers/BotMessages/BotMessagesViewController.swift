@@ -129,7 +129,7 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
         case .text:
             let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
             self.textLinkDetection(textLabel: bubbleView.textLabel);
-                       break
+            break
         case .image:
             cell.didSelectComponentAtIndex = { (sender, index) in
                 
@@ -204,7 +204,6 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
     }
     // MARK: - scrollTo related methods
     func scrollToBottom(animated animate: Bool) {
-        print("scrollToBottom")
         let indexPath: NSIndexPath = self.getIndexPathForLastItem()
         if (indexPath.row > 0 || indexPath.section > 0) {
             self.tableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: animate)
