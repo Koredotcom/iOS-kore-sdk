@@ -68,6 +68,11 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
         self.tableView.register(OptionsBubbleCell.self, forCellReuseIdentifier:"OptionsBubbleCell")
         self.tableView.register(ListBubbleCell.self, forCellReuseIdentifier:"ListBubbleCell")
         self.tableView.register(MessageBubbleCell.self, forCellReuseIdentifier:"MessageBubbleCell")
+        
+        if (self.tableView.contentSize.height > self.tableView.frame.size.height) {
+            let point:CGPoint = CGPoint(x:0, y:self.tableView.contentSize.height - self.tableView.frame.size.height);
+            self.tableView.setContentOffset(point, animated:true);
+        }
     }
 
     func getLastQuickReplyMessage()  {
@@ -128,8 +133,11 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
         switch (cell.bubbleView.bubbleType!) {
         case .text:
             let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
-            self.textLinkDetection(textLabel: bubbleView.textLabel);
-                       break
+            bubbleView.onChange = { (reload) in
+                self.tableView?.reloadRows(at: [indexPath], with: .none)
+            }
+            self.textLinkDetection(textLabel: bubbleView.textLabel)
+            break
         case .image:
             cell.didSelectComponentAtIndex = { (sender, index) in
                 
@@ -254,15 +262,16 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
     }
     
     func launchWebViewWithURLLink(urlString:String)  {
-        let url: URL = URL(string: urlString)!
-        let webViewController: TOWebViewController = TOWebViewController(url: url)
-        let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
-        webNavigationController.tabBarItem.title = "Bots"
-        
-        self.present(webNavigationController, animated: true, completion: {
+        if (urlString.characters.count > 0) {
+            let url: URL = URL(string: urlString)!
+            let webViewController: TOWebViewController = TOWebViewController(url: url)
+            let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
+            webNavigationController.tabBarItem.title = "Bots"
             
-        })
-
+            self.present(webNavigationController, animated: true, completion: {
+                
+            })
+        }
     }
     
     func clearAssociateObjects()  {

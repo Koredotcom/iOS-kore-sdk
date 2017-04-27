@@ -58,6 +58,9 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     var websocket: SRWebSocket! = nil
     var connectionDelegate: RTMPersistentConnectionDelegate?
 
+    fileprivate let timerSource: DispatchSourceTimer
+    fileprivate let pingInterval: TimeInterval
+    fileprivate var receivedLastPong = true
     open var tryReconnect = false
     
     var connectionStatus: RTMConnectionStatus {
@@ -77,6 +80,8 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     
     // MARK: init
     public init(botInfo: BotInfoModel!, botInfoParameters: NSDictionary!, tryReconnect: Bool) {
+        self.pingInterval = 10
+        self.timerSource = DispatchSource.makeTimerSource(flags: [], queue: .main)
         super.init()
         self.botInfo = botInfo
         self.botInfoParameters = botInfoParameters
@@ -100,8 +105,27 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     }
     
     // MARK: WebSocketDelegate methods
-    open func webSocketDidOpen() {
-        self.connectionDelegate?.rtmConnectionWillOpen()
+    open func webSocketDidOpen(_ webSocket: SRWebSocket!) {
+    self.connectionDelegate?.rtmConnectionWillOpen()
+        let intervalInNSec = pingInterval * Double(NSEC_PER_SEC)
+        let startTime = DispatchTime.now() + Double(intervalInNSec) / Double(NSEC_PER_SEC)
+        
+        timerSource.scheduleRepeating(deadline: startTime, interval: pingInterval, leeway: .nanoseconds(Int(NSEC_PER_SEC / 10)))
+        timerSource.setEventHandler { [unowned self] in
+            if self.receivedLastPong == false {
+                // we did not receive the last pong
+                // abort the socket so that we can spin up a new connection
+                self.websocket.close()
+            } else if self.websocket.readyState == .CLOSED || self.websocket.readyState == .CLOSING {
+                self.websocket.close()
+            } else {
+                // we got a pong recently
+                // send another ping
+                self.receivedLastPong = false
+                try? self.websocket.sendPing(nil)
+            }
+        }
+        timerSource.resume()
     }
     
     open func webSocketShouldConvertTextFrameToString() -> ObjCBool {
@@ -134,7 +158,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     }
 
     open func webSocket(_ webSocket: SRWebSocket!, didReceivePong pongPayload: Data!) {
-
+        self.receivedLastPong = true
     }
 
 //    public func webSocketEnd(code: Int, reason: String, wasClean: Bool, error: NSError?) {

@@ -20,8 +20,8 @@
 @property(assign, nonatomic) KREAttributedHotWord currentSelectedType;
 @property(strong, nonatomic) NSString *currentSelectedString;
 
-@property(strong, nonatomic) NSMutableArray *touchableLayers;
-
+@property (strong, nonatomic) NSMutableArray *touchableLayers;
+@property (strong, nonatomic) TSMarkdownParser* markdownParser;
 @end
 
 @implementation KREAttributedLabel
@@ -53,7 +53,9 @@
     return self;
 }
 
-- (void) setUpView{
+- (void) setUpView {
+    self.markdownParser = [TSMarkdownParser standardParser];
+
     if(self.textColor == nil)
         self.textColor = [UIColor lightGrayColor];
     _focusedHighlighting = NO;
@@ -242,90 +244,87 @@
     [_touchableLocations removeAllObjects];
     [self removeAllTouchableLayers];
     
-    if(sString.length == 0)
+    if (sString.length == 0)
         return;
-    
+
     __weak typeof(self) weakSelf = self;
-
-    //converting and setting attributed string asyncronously
-//    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        self.attributedText =  [[NSAttributedString alloc] initWithString:[KREUtilities getHTMLStrippedStringFromString:sString]];
-
-        NSString *originalString = sString;
-        NSString *string = [KREUtilities getHTMLStrippedStringFromString:sString];
+    
+    NSString *originalString = sString;
+    NSString *string = [KREUtilities getHTMLStrippedStringFromString:sString];
+    
+    NSMutableAttributedString *attributedString = [[self.markdownParser attributedStringFromMarkdown:string] mutableCopy];
+//    [attributedString addAttribute:NSForegroundColorAttributeName value:self.textColor range:[string rangeOfString:string]];
+    
+    //initialize layout manager
+    NSMutableAttributedString *layoutManagerString = [attributedString mutableCopy];
+//    [layoutManagerString addAttributes:@{NSFontAttributeName:self.font} range:[string rangeOfString:string]];
+    KRELayoutManager *layoutManager = [[KRELayoutManager alloc] initWithAttributedString:layoutManagerString andWidth:width];
+    layoutManager.edgeInset = self.edgeInset;
+    
+    // get valid href links from the string
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<a href\\s*=(['\"]|)+([^'\"]+)[^<>]+>([^<>]+)<\\/a>" options:NSRegularExpressionCaseInsensitive error:nil];
+    NSArray *result = [regex matchesInString:originalString options:0 range:NSMakeRange(0, [originalString length])];
+    [result enumerateObjectsUsingBlock:^(NSTextCheckingResult *match, NSUInteger idx, BOOL *stop) {
+        NSString *url = [originalString substringWithRange:(NSRange)[match rangeAtIndex:2]];
+        NSString *tempString = [[originalString substringWithRange:(NSRange)[match rangeAtIndex:3]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
-        NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:string];
-        [attrString addAttribute:NSForegroundColorAttributeName value:self.textColor range:[string rangeOfString:string]];
-        
-        //initialize layout manager
-        NSMutableAttributedString *layoutManagerString = [attrString mutableCopy];
-        [layoutManagerString addAttributes:@{NSFontAttributeName:self.font} range:[string rangeOfString:string]];
-        KRELayoutManager *layoutManager = [[KRELayoutManager alloc] initWithAttributedString:layoutManagerString andWidth:width];
-        layoutManager.edgeInset = self.edgeInset;
-        
-        // get valid href links from the string
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<a href\\s*=(['\"]|)+([^'\"]+)[^<>]+>([^<>]+)<\\/a>" options:NSRegularExpressionCaseInsensitive error:nil];
-        NSArray *result = [regex matchesInString:originalString options:0 range:NSMakeRange(0, [originalString length])];
-        [result enumerateObjectsUsingBlock:^(NSTextCheckingResult *match, NSUInteger idx, BOOL *stop) {
-            NSString *url = [originalString substringWithRange:(NSRange)[match rangeAtIndex:2]];
-            NSString *tempString = [[originalString substringWithRange:(NSRange)[match rangeAtIndex:3]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            
-            if(tempString.length){
-                NSRange range = [string rangeOfString:[KREUtilities getHTMLStrippedStringFromString:tempString]];
-                if(range.length){
-                    [attrString addAttribute:NSForegroundColorAttributeName value:_linkTextColor range:range];
-                    [attrString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:range];
-                    
-                    CGRect pos = [layoutManager boundingRectForCharacterRange:range];
-                    
-                    //extended region
-                    pos.origin.x -= 10;
-                    pos.origin.y -= 5;
-                    pos.size.width += 14;
-                    pos.size.height += 10;
-                    [_touchableWords addObject:url];
-                    [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
-                    [_touchableLocations addObject:[NSValue valueWithCGRect:pos]];
-                    [weakSelf addTouchableLayerWithRect:pos];
-                }
-            }
-        }];
-        //end
-        
-        // get URL links from the string
-        regex = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink|NSTextCheckingTypePhoneNumber error:nil];
-        result = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
-        [result enumerateObjectsUsingBlock:^(NSTextCheckingResult *match, NSUInteger idx, BOOL *stop) {
-            [attrString addAttribute:NSForegroundColorAttributeName value:_linkTextColor range:match.range];
-            [attrString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:match.range];
-            
-            CGRect pos = [layoutManager boundingRectForCharacterRange:match.range];
-            if ([match resultType] == NSTextCheckingTypeLink) {
-                [_touchableWords addObject:[[match URL] absoluteString]];
+        if(tempString.length){
+            NSRange range = [string rangeOfString:[KREUtilities getHTMLStrippedStringFromString:tempString]];
+            if(range.length){
+                [attributedString addAttribute:NSForegroundColorAttributeName value:_linkTextColor range:range];
+                [attributedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:range];
+                
+                CGRect pos = [layoutManager boundingRectForCharacterRange:range];
+                
+                //extended region
+                pos.origin.x -= 10;
+                pos.origin.y -= 5;
+                pos.size.width += 14;
+                pos.size.height += 10;
+                [_touchableWords addObject:url];
                 [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
-            } else if ([match resultType] == NSTextCheckingTypePhoneNumber) {
-                [_touchableWords addObject:[match phoneNumber]];
-                [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordPhoneNumber]];
+                [_touchableLocations addObject:[NSValue valueWithCGRect:pos]];
+                [weakSelf addTouchableLayerWithRect:pos];
             }
-            [_touchableLocations addObject:[NSValue valueWithCGRect:pos]];
-            [weakSelf addTouchableLayerWithRect:pos];
-        }];
-        //end
-        
-        if(weakSelf.searchString != nil){
-            NSDictionary *highlightAttributes;
-            if(weakSelf.searchHighlightAttributes){
-                highlightAttributes = weakSelf.searchHighlightAttributes;
-            }else{
-                highlightAttributes = [KREUtilities getSearchHighlightAttributes:0];
-            }
-            [attrString applySearchStringHighlighting:weakSelf.searchString highlightedAttributes:highlightAttributes range:NSMakeRange(0,[attrString length]) beginsWithSearch:NO withPhraseSearch:YES];
         }
-        //setting attributed text on main thread
-//        dispatch_async(dispatch_get_main_queue(), ^{
-            self.attributedText = attrString;
-//        });
-//    });
+    }];
+    //end
+    
+    self.markdownParser.imageDetectionBlock = ^(BOOL reload) {
+        if (weakSelf.imageDetectionBlock) {
+            weakSelf.imageDetectionBlock(reload);
+        }
+    };
+    // get URL links from the string
+//    regex = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink|NSTextCheckingTypePhoneNumber error:nil];
+//    result = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
+//    [result enumerateObjectsUsingBlock:^(NSTextCheckingResult *match, NSUInteger idx, BOOL *stop) {
+//        [attributedString addAttribute:NSForegroundColorAttributeName value:_linkTextColor range:match.range];
+//        [attributedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:match.range];
+//        
+//        CGRect pos = [layoutManager boundingRectForCharacterRange:match.range];
+//        if ([match resultType] == NSTextCheckingTypeLink) {
+//            [_touchableWords addObject:[[match URL] absoluteString]];
+//            [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
+//        } else if ([match resultType] == NSTextCheckingTypePhoneNumber) {
+//            [_touchableWords addObject:[match phoneNumber]];
+//            [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordPhoneNumber]];
+//        }
+//        [_touchableLocations addObject:[NSValue valueWithCGRect:pos]];
+//        [weakSelf addTouchableLayerWithRect:pos];
+//    }];
+    //end
+    
+    if (weakSelf.searchString != nil) {
+        NSDictionary *highlightAttributes;
+        if(weakSelf.searchHighlightAttributes){
+            highlightAttributes = weakSelf.searchHighlightAttributes;
+        }else{
+            highlightAttributes = [KREUtilities getSearchHighlightAttributes:0];
+        }
+        [attributedString applySearchStringHighlighting:weakSelf.searchString highlightedAttributes:highlightAttributes range:NSMakeRange(0,[attributedString length]) beginsWithSearch:NO withPhraseSearch:YES];
+    }
+    self.attributedText = attributedString;
 }
 
 //for debugging purpose

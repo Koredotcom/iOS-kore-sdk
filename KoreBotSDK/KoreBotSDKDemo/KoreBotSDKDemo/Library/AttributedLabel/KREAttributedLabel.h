@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreText/CoreText.h>
+#import "TSMarkdownParser.h"
 
 typedef enum {
     KREAttributedHotWordMention = 0,
@@ -37,6 +38,7 @@ typedef enum {
 @property (nonatomic, assign) BOOL enableCopy;
 
 @property (nonatomic, copy) void (^detectionBlock)(KREAttributedHotWord hotWord, NSString *string);
+@property (nonatomic, copy) void (^imageDetectionBlock)(BOOL reload);
 
 - (void) prepareForReuse;
 - (void) setString:(NSString *)string;
