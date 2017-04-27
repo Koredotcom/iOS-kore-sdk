@@ -10,7 +10,7 @@ import UIKit
 import KoreTextParser
 
 class TextBubbleView : BubbleView {
-    let markdownParser: MarkdownParser = MarkdownParser()
+    var onChange: ((_ reload: Bool) -> ())!
     func kTextColor() -> UIColor {
         return (self.tailPosition == BubbleMaskTailPosition.left ? Common.UIColorRGB(0x484848) : Common.UIColorRGB(0xFFFFFF))
     }
@@ -26,8 +26,6 @@ class TextBubbleView : BubbleView {
     var textLabel: KREAttributedLabel!
     var text: NSAttributedString! {
         didSet {
-//            self.textLabel.setHTMLString(text, withWidth: self.textSizeThatFitsWithString(text as NSString).width)
-//            self.textLabel.attributedText = self.text
             if (self.tailPosition == BubbleMaskTailPosition.right) {
                 self.textLabel.textColor = self.kTextColor()
             }
@@ -44,14 +42,13 @@ class TextBubbleView : BubbleView {
                 }
                 
                 self.textLabel.textColor = self.kTextColor()
-                if((component.componentDesc) != nil){
+                if ((component.componentDesc) != nil) {
                     let string: String = component.componentDesc! as String
                     let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
-                    self.text = markdownParser.attributedString(from: htmlStrippedString!)
-                    let parsedString:String = KREUtilities.formatHTMLEscapedString(string);
+                    let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
 
-                    self.textLabel.setHTMLString(parsedString, withWidth: self.textSizeThatFitsWithString(string as NSString).width)
-
+                    self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
+                    self.textSizeThatFitsWithString(self.textLabel.attributedText!)
                 }
             }
         }
@@ -85,6 +82,9 @@ class TextBubbleView : BubbleView {
         self.textLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.textLabel.isUserInteractionEnabled = true
         self.textLabel.contentMode = UIViewContentMode.topLeft
+        self.textLabel.imageDetectionBlock = { (reload) in
+            self.onChange(reload)
+        }
 
         self.addSubview(self.textLabel)
     }
@@ -108,18 +108,13 @@ class TextBubbleView : BubbleView {
 
     func textSizeThatFits() -> CGSize {
         let limitingSize: CGSize  = CGSize(width: kMaxTextWidth , height: CGFloat.greatestFiniteMagnitude)
-        let rect: CGRect = self.textLabel.text!.boundingRect(with: limitingSize,
-                                                                    options: NSStringDrawingOptions.usesLineFragmentOrigin,
-                                                                    attributes: [NSFontAttributeName: self.textLabel.font],
-                                                                    context: nil)
+        let rect: CGRect = self.textLabel.attributedText!.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
         return rect.size;
     }
     
-    func textSizeThatFitsWithString(_ string:NSString) -> CGSize {
+    func textSizeThatFitsWithString(_ string: NSAttributedString) -> CGSize {
         let limitingSize: CGSize  = CGSize(width: kMaxTextWidth , height: CGFloat.greatestFiniteMagnitude)
-        let rect: CGRect = string.boundingRect(with: limitingSize,
-                                                                     options: NSStringDrawingOptions.usesLineFragmentOrigin,
-                                                                     attributes: [NSFontAttributeName: self.textLabel.font],
+        let rect: CGRect = string.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin,
                                                                      context: nil)
         return rect.size;
     }

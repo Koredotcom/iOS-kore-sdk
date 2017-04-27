@@ -29,6 +29,7 @@ typedef void (^TSMarkdownParserLinkFormattingBlock)(NSMutableAttributedString *a
 @property (nonatomic, strong) NSDictionary<NSString *, id> *strongAttributes;
 @property (nonatomic, strong) NSDictionary<NSString *, id> *emphasisAttributes;
 @property (nonatomic, strong) NSDictionary<NSString *, id> *underlineAttributes;
+@property (nonatomic, copy) void (^imageDetectionBlock)(BOOL reload);
 
 /**
  * standardParser setting for NSLinkAttributeName

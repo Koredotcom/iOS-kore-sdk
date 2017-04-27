@@ -290,24 +290,29 @@
     }];
     //end
     
-    // get URL links from the string
-    regex = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink|NSTextCheckingTypePhoneNumber error:nil];
-    result = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
-    [result enumerateObjectsUsingBlock:^(NSTextCheckingResult *match, NSUInteger idx, BOOL *stop) {
-        [attributedString addAttribute:NSForegroundColorAttributeName value:_linkTextColor range:match.range];
-        [attributedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:match.range];
-        
-        CGRect pos = [layoutManager boundingRectForCharacterRange:match.range];
-        if ([match resultType] == NSTextCheckingTypeLink) {
-            [_touchableWords addObject:[[match URL] absoluteString]];
-            [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
-        } else if ([match resultType] == NSTextCheckingTypePhoneNumber) {
-            [_touchableWords addObject:[match phoneNumber]];
-            [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordPhoneNumber]];
+    self.markdownParser.imageDetectionBlock = ^(BOOL reload) {
+        if (weakSelf.imageDetectionBlock) {
+            weakSelf.imageDetectionBlock(reload);
         }
-        [_touchableLocations addObject:[NSValue valueWithCGRect:pos]];
-        [weakSelf addTouchableLayerWithRect:pos];
-    }];
+    };
+    // get URL links from the string
+//    regex = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink|NSTextCheckingTypePhoneNumber error:nil];
+//    result = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
+//    [result enumerateObjectsUsingBlock:^(NSTextCheckingResult *match, NSUInteger idx, BOOL *stop) {
+//        [attributedString addAttribute:NSForegroundColorAttributeName value:_linkTextColor range:match.range];
+//        [attributedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:match.range];
+//        
+//        CGRect pos = [layoutManager boundingRectForCharacterRange:match.range];
+//        if ([match resultType] == NSTextCheckingTypeLink) {
+//            [_touchableWords addObject:[[match URL] absoluteString]];
+//            [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
+//        } else if ([match resultType] == NSTextCheckingTypePhoneNumber) {
+//            [_touchableWords addObject:[match phoneNumber]];
+//            [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordPhoneNumber]];
+//        }
+//        [_touchableLocations addObject:[NSValue valueWithCGRect:pos]];
+//        [weakSelf addTouchableLayerWithRect:pos];
+//    }];
     //end
     
     if (weakSelf.searchString != nil) {

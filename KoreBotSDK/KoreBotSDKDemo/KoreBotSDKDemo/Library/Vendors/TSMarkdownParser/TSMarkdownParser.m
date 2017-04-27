@@ -110,24 +110,57 @@ typedef NSFont UIFont;
     /* bracket parsing */
     
     [defaultParser addImageParsingWithLinkFormattingBlock:^(NSMutableAttributedString *attributedString, NSRange range, NSString * _Nullable link) {
-        UIImage *image = [UIImage imageNamed:link];
-        if (image) {
-            NSTextAttachment *imageAttachment = [NSTextAttachment new];
-            imageAttachment.image = image;
-            imageAttachment.bounds = CGRectMake(0, -5, image.size.width, image.size.height);
-            NSAttributedString *imgStr = [NSAttributedString attributedStringWithAttachment:imageAttachment];
-            [attributedString replaceCharactersInRange:range withAttributedString:imgStr];
-        } else {
-            if (!weakParser.skipLinkAttribute) {
-                NSURL *url = [NSURL URLWithString:link] ?: [NSURL URLWithString:
-                                                            [link stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-                if (url.scheme) {
-                    [attributedString addAttribute:NSLinkAttributeName
-                                             value:url
-                                             range:range];
-                }
+        NSURL *url = [NSURL URLWithString:link];
+        
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *imagePath = [documentsDirectory stringByAppendingPathComponent:[url lastPathComponent]];
+        
+        if ([[NSFileManager defaultManager] fileExistsAtPath:imagePath]) {
+            NSData* data = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:imagePath]];
+            UIImage* image = [UIImage imageWithData:data];
+
+            if (image) {
+                CGFloat width = [[UIScreen mainScreen] bounds].size.width - 110.0;
+                UIImage* resizedImage = [weakParser imageWithImage:image scaledToWidth:width];
+
+                NSTextAttachment *imageAttachment = [NSTextAttachment new];
+                imageAttachment.image = resizedImage;
+                imageAttachment.bounds = CGRectMake(0, -5, resizedImage.size.width, resizedImage.size.height);
+                NSAttributedString *imgStr = [NSAttributedString attributedStringWithAttachment:imageAttachment];
+                [attributedString replaceCharactersInRange:range withAttributedString:imgStr];
             }
-            [attributedString addAttributes:weakParser.imageAttributes range:range];
+        } else {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSData *data = [NSData dataWithContentsOfURL:url];
+                UIImage *image = [UIImage imageWithData:data];
+                if ([data writeToFile:imagePath atomically:NO]) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (image) {
+                            NSTextAttachment *imageAttachment = [NSTextAttachment new];
+                            imageAttachment.image = image;
+                            imageAttachment.bounds = CGRectMake(0, -5, image.size.width, image.size.height);
+                            NSAttributedString *imgStr = [NSAttributedString attributedStringWithAttachment:imageAttachment];
+                            [attributedString replaceCharactersInRange:range withAttributedString:imgStr];
+                            
+                            if (weakParser.imageDetectionBlock) {
+                                weakParser.imageDetectionBlock(TRUE);
+                            }
+                        } else {
+//                            if (!weakParser.skipLinkAttribute) {
+//                                NSURL *url = [NSURL URLWithString:link] ?: [NSURL URLWithString:
+//                                                                            [link stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//                                if (url.scheme) {
+//                                    [attributedString addAttribute:NSLinkAttributeName
+//                                                             value:url
+//                                                             range:range];
+//                                }
+//                            }
+//                            [attributedString addAttributes:weakParser.imageAttributes range:range];
+                        }
+                    });
+                }
+            });
         }
     }];
     
@@ -298,30 +331,40 @@ static NSString *const TSMarkdownEmRegex            = @"(\\~)(.+?)(\\1)";
 #pragma mark bracket parsing
 
 - (void)addImageParsingWithImageFormattingBlock:(TSMarkdownParserFormattingBlock)formattingBlock alternativeTextFormattingBlock:(TSMarkdownParserFormattingBlock)alternativeFormattingBlock {
+    __weak __typeof(self) weakSelf = self;
     NSRegularExpression *headerExpression = [NSRegularExpression regularExpressionWithPattern:TSMarkdownImageRegex options:NSRegularExpressionDotMatchesLineSeparators error:nil];
     [self addParsingRuleWithRegularExpression:headerExpression block:^(NSTextCheckingResult *match, NSMutableAttributedString *attributedString) {
         NSUInteger imagePathStart = [attributedString.string rangeOfString:@"(" options:(NSStringCompareOptions)0 range:match.range].location;
         NSRange linkRange = NSMakeRange(imagePathStart, match.range.length + match.range.location - imagePathStart - 1);
         NSString *imagePath = [attributedString.string substringWithRange:NSMakeRange(linkRange.location + 1, linkRange.length - 1)];
-        UIImage *image = [UIImage imageNamed:imagePath];
-        if (image) {
-            NSTextAttachment *imageAttachment = [NSTextAttachment new];
-            imageAttachment.image = image;
-            imageAttachment.bounds = CGRectMake(0, -5, image.size.width, image.size.height);
-            NSAttributedString *imgStr = [NSAttributedString attributedStringWithAttachment:imageAttachment];
-            [attributedString replaceCharactersInRange:match.range withAttributedString:imgStr];
-            if (formattingBlock) {
-                formattingBlock(attributedString, NSMakeRange(match.range.location, imgStr.length));
-            }
-        } else {
-            NSUInteger linkTextEndLocation = [attributedString.string rangeOfString:@"]" options:(NSStringCompareOptions)0 range:match.range].location;
-            NSRange linkTextRange = NSMakeRange(match.range.location + 2, linkTextEndLocation - match.range.location - 2);
-            NSString *alternativeText = [attributedString.string substringWithRange:linkTextRange];
-            [attributedString replaceCharactersInRange:match.range withString:alternativeText];
-            if (alternativeFormattingBlock) {
-                alternativeFormattingBlock(attributedString, NSMakeRange(match.range.location, alternativeText.length));
-            }
-        }
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSURL *url = [NSURL URLWithString:imagePath];
+            NSData *data = [NSData dataWithContentsOfURL:url];
+            UIImage *image = [UIImage imageWithData:data];
+            
+            CGFloat width = [[UIScreen mainScreen] bounds].size.width - 110.0;
+            UIImage* resizedImage = [weakSelf imageWithImage:image scaledToWidth:width];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (resizedImage) {
+                    NSTextAttachment *imageAttachment = [NSTextAttachment new];
+                    imageAttachment.image = resizedImage;
+                    imageAttachment.bounds = CGRectMake(0, -5, resizedImage.size.width, resizedImage.size.height);
+                    NSAttributedString *imgStr = [NSAttributedString attributedStringWithAttachment:imageAttachment];
+                    [attributedString replaceCharactersInRange:match.range withAttributedString:imgStr];
+                    if (formattingBlock) {
+                        formattingBlock(attributedString, NSMakeRange(match.range.location, imgStr.length));
+                    }
+                } else {
+                    NSUInteger linkTextEndLocation = [attributedString.string rangeOfString:@"]" options:(NSStringCompareOptions)0 range:match.range].location;
+                    NSRange linkTextRange = NSMakeRange(match.range.location + 2, linkTextEndLocation - match.range.location - 2);
+                    NSString *alternativeText = [attributedString.string substringWithRange:linkTextRange];
+                    [attributedString replaceCharactersInRange:match.range withString:alternativeText];
+                    if (alternativeFormattingBlock) {
+                        alternativeFormattingBlock(attributedString, NSMakeRange(match.range.location, alternativeText.length));
+                    }
+                }
+            });
+        });
     }];
 }
 
@@ -478,6 +521,20 @@ static NSString *const TSMarkdownEmRegex            = @"(\\~)(.+?)(\\1)";
         NSString *unescapedString = [TSMarkdownParser stringWithHexaString:matchString atIndex:0];
         [attributedString replaceCharactersInRange:match.range withString:unescapedString];
     }];
+}
+
+- (UIImage*) imageWithImage: (UIImage*) sourceImage scaledToWidth: (float) i_width {
+    float oldWidth = sourceImage.size.width;
+    float scaleFactor = i_width / oldWidth;
+    
+    float newHeight = sourceImage.size.height * scaleFactor;
+    float newWidth = oldWidth * scaleFactor;
+    
+    UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight));
+    [sourceImage drawInRect:CGRectMake(0, 0, newWidth, newHeight)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
 }
 
 @end
