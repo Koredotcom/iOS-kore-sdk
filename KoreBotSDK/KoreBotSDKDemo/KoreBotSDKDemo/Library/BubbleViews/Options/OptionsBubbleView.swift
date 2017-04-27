@@ -104,7 +104,10 @@ class OptionsBubbleView: BubbleView {
                     let buttons: Array<Dictionary<String, Any>> = jsonObject["buttons"] as! Array<Dictionary<String, Any>>
                     let index: Int = 0
                     for dictionary in buttons  {
-                        let option: KREOption = KREOption(name: dictionary["title"] as! String, desc: dictionary["title"] as! String, type: dictionary["type"] as! String, index: index)
+                        let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
+                        let type: String = dictionary["type"] != nil ? dictionary["type"] as! String : ""
+                        
+                        let option: KREOption = KREOption(name: title, desc: title, type: type, index: index)
                         option.setButtonInfo(info: dictionary as! Dictionary<String, String>)
                         options.append(option)
                     }

@@ -261,15 +261,16 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
     }
     
     func launchWebViewWithURLLink(urlString:String)  {
-        let url: URL = URL(string: urlString)!
-        let webViewController: TOWebViewController = TOWebViewController(url: url)
-        let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
-        webNavigationController.tabBarItem.title = "Bots"
-        
-        self.present(webNavigationController, animated: true, completion: {
+        if (urlString.characters.count > 0) {
+            let url: URL = URL(string: urlString)!
+            let webViewController: TOWebViewController = TOWebViewController(url: url)
+            let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
+            webNavigationController.tabBarItem.title = "Bots"
             
-        })
-
+            self.present(webNavigationController, animated: true, completion: {
+                
+            })
+        }
     }
     
     func clearAssociateObjects()  {

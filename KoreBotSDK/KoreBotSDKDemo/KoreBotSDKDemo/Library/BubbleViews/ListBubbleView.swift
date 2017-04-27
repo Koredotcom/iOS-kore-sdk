@@ -98,7 +98,7 @@ class ListBubbleView: BubbleView {
             }
         }
         self.optionsView.detailLinkAction = {[weak self] (text) in
-            if(self?.linkAction != nil){
+            if (self?.linkAction != nil && (text?.characters.count)! > 0) {
                 self?.linkAction(text)
             }
         }
@@ -126,14 +126,21 @@ class ListBubbleView: BubbleView {
                     for dictionary in elements  {
                         let option: KREOption = KREOption.init()
                         
-                        option.setOptionData(name: dictionary["title"] as! String, subTitle: dictionary["subtitle"] as! String, imgURL: dictionary["image_url"] as! String, index: index)
+                        let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
+                        let subtitle: String = dictionary["subtitle"] != nil ? dictionary["subtitle"] as! String : ""
+                        let imageUrl: String = dictionary["image_url"] != nil ? dictionary["image_url"] as! String : ""
+                    
+                        option.setOptionData(name: title, subTitle: subtitle, imgURL: imageUrl, index: index)
                         
                         let buttons: Array<Dictionary<String, Any>> = dictionary["buttons"] as! Array<Dictionary<String, Any>>
                         if(buttons.count > 0){
                             let buttonElement: NSDictionary = buttons.first! as NSDictionary
+                            let buttonTitle: String = buttonElement["title"] != nil ? buttonElement["title"] as! String : ""
+                            let url: String = buttonElement["url"] != nil ? buttonElement["url"] as! String : ""
+
                             option.setButtonDesc(info: [
-                                "title":buttonElement["title"] as! String,
-                                "url":buttonElement["url"] as! String
+                                "title": buttonTitle,
+                                "url": url
                                 ])
                         }
                         options.append(option)
