@@ -133,15 +133,9 @@ class ListBubbleView: BubbleView {
                         option.setOptionData(name: title, subTitle: subtitle, imgURL: imageUrl, index: index)
                         
                         let buttons: Array<Dictionary<String, Any>> = dictionary["buttons"] as! Array<Dictionary<String, Any>>
-                        if(buttons.count > 0){
-                            let buttonElement: NSDictionary = buttons.first! as NSDictionary
-                            let buttonTitle: String = buttonElement["title"] != nil ? buttonElement["title"] as! String : ""
-                            let url: String = buttonElement["url"] != nil ? buttonElement["url"] as! String : ""
-
-                            option.setButtonDesc(info: [
-                                "title": buttonTitle,
-                                "url": url
-                                ])
+                        if (buttons.count > 0) {
+                            let buttonElement: Dictionary<String, Any> = buttons.first! as Dictionary<String, Any>
+                            option.setButtonDesc(info: buttonElement as! Dictionary<String, String>)
                         }
                         options.append(option)
 

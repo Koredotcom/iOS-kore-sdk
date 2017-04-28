@@ -181,8 +181,19 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
             }
             
             cell.labelAction = {[weak self] (text) in
-                if((self?.detailLinkAction) != nil){
-                    self?.detailLinkAction(option.optionWithButtonDesc?["url"])
+                let buttonInfo:Dictionary<String,String>? = option.optionWithButtonDesc
+                if (buttonInfo?["type"] == "web_url") {
+                    if ((self?.detailLinkAction) != nil) {
+                        self?.detailLinkAction(buttonInfo?["url"])
+                    }
+                } else if (buttonInfo?["type"] == "postback") {
+                    if (self?.optionsButtonAction != nil) {
+                        self?.optionsButtonAction(buttonInfo?["payload"])
+                    }
+                } else {
+                    if (self?.optionsButtonAction != nil) {
+                        self?.optionsButtonAction(cell.nameLabel.text)
+                    }
                 }
             }
             
