@@ -330,12 +330,12 @@ class MessageBubbleCell : UITableViewCell {
         let placeHolderIcon : UIImage = UIImage(named:"kora")!
         self.senderImageView.image = placeHolderIcon;
         
-//        if (message.iconUrl != nil) {
-//            if (message.iconUrl != nil) {
-//                let fileUrl = URL(string: message.iconUrl)
-//                self.senderImageView.setImageWith(fileUrl, placeholderImage: placeHolderIcon)
-//            }
-//        }
+        if (message.iconUrl != nil) {
+            if (message.iconUrl != nil) {
+                let fileUrl = URL(string: message.iconUrl!)
+                self.senderImageView.setImageWith(fileUrl, placeholderImage: placeHolderIcon)
+            }
+        }
         
         let bubbleView: BubbleView  = self.bubbleView
         self.bubbleContainerView.addSubview(bubbleView)

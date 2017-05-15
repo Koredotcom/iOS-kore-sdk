@@ -182,6 +182,10 @@ class DataStoreManager: NSObject {
                 nMessage.isSender = false
             }
             
+            if (message.iconUrl != nil) {
+                nMessage.iconUrl = message.iconUrl
+            }
+            
             if (message.components.count > 0) {
                 let components: NSArray = message.components
                 for component in components as! [Component] {

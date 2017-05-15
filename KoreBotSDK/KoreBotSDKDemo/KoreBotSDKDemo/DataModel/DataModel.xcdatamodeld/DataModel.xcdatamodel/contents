@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="16A323" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16A323" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="KREComponent" representedClassName="KREComponent" versionHashModifier="1" syncable="YES">
         <attribute name="componentDesc" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="componentId" optional="YES" attributeType="String" syncable="YES"/>
@@ -13,6 +13,7 @@
     </entity>
     <entity name="KREMessage" representedClassName="KREMessage" versionHashModifier="1" syncable="YES">
         <attribute name="clientId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="iconUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isSender" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="messageId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="messageType" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -30,7 +31,7 @@
     <elements>
         <element name="KREComponent" positionX="-27" positionY="36" width="128" height="90"/>
         <element name="KREContact" positionX="-63" positionY="-18" width="128" height="105"/>
-        <element name="KREMessage" positionX="-45" positionY="27" width="128" height="180"/>
+        <element name="KREMessage" positionX="-45" positionY="27" width="128" height="195"/>
         <element name="KREThread" positionX="-9" positionY="45" width="128" height="90"/>
     </elements>
 </model>

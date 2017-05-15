@@ -18,6 +18,7 @@ extension KREMessage {
     }
 
     @NSManaged public var clientId: String?
+    @NSManaged public var iconUrl: String?
     @NSManaged public var messageId: String?
     @NSManaged public var messageType: NSNumber?
     @NSManaged public var templateType: NSNumber?
