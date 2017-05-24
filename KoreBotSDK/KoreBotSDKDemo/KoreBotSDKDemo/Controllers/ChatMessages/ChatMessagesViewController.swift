@@ -134,7 +134,7 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
                     if (message.components.count > 0) {
                         let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
                         dataStoreManager.createNewMessageIn(thread: self!.thread, message: message, completionBlock: { (success) in
-                           self?.populateQuickReplyCards()
+                            self?.populateQuickReplyCards(with: nil)
                         })
                     }
                 }
@@ -195,7 +195,6 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
                 
         self.initialize(.kora)
         self.setupBotClient()
-        self.populateQuickReplyCards()
         self.typingStatusView = KRETypingStatusView.init()
         self.view.addSubview(self.typingStatusView!)
         self.typingStatusView?.isHidden = true
@@ -275,26 +274,23 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     }
     
     
-    func populateQuickReplyCards() {
-        self.threadTableViewController.getLastQuickReplyMessage()
-        if(self.threadTableViewController.lastMessage != nil){
-            let lastMessage:KREMessage = (self.threadTableViewController.lastMessage)!;
-            if(self.threadTableViewController.lastMessage.templateType == 5){
-                let component: KREComponent = lastMessage.components![0] as! KREComponent
-                if (!component.isKind(of: KREComponent.self)) {
-                    return;
-                }
-                if((component.componentDesc) != nil){
-                    let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
-                    let quickRepliesArr:NSArray = jsonObject.value(forKey: "quick_replies") as! NSArray;
-                    if(self.isSpeechToTextActive == false){
-                        self.updateQuickSelectViewConstraints()
-                    }
-                    let quickRepliesWordsArr:NSArray = quickRepliesArr.value(forKeyPath: "title") as! NSArray
-                    print(quickRepliesWordsArr);
-                    self.quickReplyView.setWordsList(words: quickRepliesWordsArr)
-                }
+    func populateQuickReplyCards(with message: KREMessage?) {
+        if (message?.templateType == 5) {
+            let component: KREComponent = message!.components![0] as! KREComponent
+            if (!component.isKind(of: KREComponent.self)) {
+                return;
             }
+            if ((component.componentDesc) != nil) {
+                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
+                let quickRepliesArr:NSArray = jsonObject.value(forKey: "quick_replies") as! NSArray;
+                if (self.isSpeechToTextActive == false) {
+                    self.updateQuickSelectViewConstraints()
+                }
+                let quickRepliesWordsArr:NSArray = quickRepliesArr.value(forKeyPath: "title") as! NSArray
+                self.quickReplyView.setWordsList(words: quickRepliesWordsArr)
+            }
+        } else {
+            self.closeQuickSelectViewConstraints()
         }
     }
 

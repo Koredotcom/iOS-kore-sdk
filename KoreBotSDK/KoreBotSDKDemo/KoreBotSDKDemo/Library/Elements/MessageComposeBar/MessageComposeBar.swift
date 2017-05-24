@@ -232,7 +232,7 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         self.textView.becomeFirstResponder();
 
         // This is done to keep updating the keyboard image
-        if (!self.isSwitchingKeyboards && !self.showingActionKeyboard) {
+        if (!self.isSwitchingKeyboards && !self.showingActionKeyboard && keyboardUserInfo != nil) {
             keyboardImage = UIImageView.init(image: self.getKeyboardImage())
             keyboardImage.frame = (keyboardUserInfo[UIKeyboardFrameEndUserInfoKey]! as AnyObject).cgRectValue
         }
@@ -240,7 +240,7 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
     
     func willHideKeyboard(_ notification: Notification!) {
         keyboardUserInfo = notification.userInfo! as NSDictionary!
-        if (!self.isSwitchingKeyboards) {
+        if (!self.isSwitchingKeyboards && keyboardUserInfo != nil) {
             let durationValue = keyboardUserInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
             let duration = durationValue.doubleValue
             let options = UIViewAnimationOptions(rawValue: UInt((keyboardUserInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).int32Value << 16))

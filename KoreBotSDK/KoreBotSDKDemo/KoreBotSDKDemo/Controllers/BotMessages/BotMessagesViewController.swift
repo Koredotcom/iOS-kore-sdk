@@ -18,6 +18,7 @@ enum MessageThreadHeaderType : Int {
 
 protocol BotMessagesDelegate {
     func optionsButtonTapAction(text:String)
+    func populateQuickReplyCards(with message: KREMessage?)
 }
 
 
@@ -26,13 +27,12 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
     var fetchedResultsController: KREFetchedResultsController? = nil
     var messagesArray:NSArray!
     var mainContext: NSManagedObjectContext = DataStoreManager.sharedManager.coreDataManager.mainContext
-    var lastMessage:KREMessage!
     var delegate:BotMessagesDelegate?
     var shouldScrollToBottom:Bool = false
     var thread: KREThread! {
         didSet {
             let request = NSFetchRequest<KREMessage>(entityName: "KREMessage")
-            request.predicate = NSPredicate(format: "thread.threadId == %@ && templateType != 5", self.thread.threadId!)
+            request.predicate = NSPredicate(format: "thread.threadId == %@", self.thread.threadId!)
 
             request.sortDescriptors = [NSSortDescriptor(key: "sentOn", ascending: true)]
             fetchedResultsController = KREFetchedResultsController(fetchRequest: request as! NSFetchRequest<NSManagedObject>, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -68,24 +68,11 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
         self.tableView.register(OptionsBubbleCell.self, forCellReuseIdentifier:"OptionsBubbleCell")
         self.tableView.register(ListBubbleCell.self, forCellReuseIdentifier:"ListBubbleCell")
         self.tableView.register(MessageBubbleCell.self, forCellReuseIdentifier:"MessageBubbleCell")
-        
+        self.tableView.register(QuickReplyBubbleCell.self, forCellReuseIdentifier:"QuickReplyBubbleCell")
+
         if (self.tableView.contentSize.height > self.tableView.frame.size.height) {
             let point:CGPoint = CGPoint(x:0, y:self.tableView.contentSize.height - self.tableView.frame.size.height);
             self.tableView.setContentOffset(point, animated:true);
-        }
-    }
-
-    func getLastQuickReplyMessage()  {
-        let request = NSFetchRequest<KREMessage>(entityName: "KREMessage")
-        request.predicate = NSPredicate(format: "thread.threadId == %@", self.thread.threadId!)
-
-        do {
-            let results = try mainContext.fetch(request)
-            if(results.count > 0){
-                self.lastMessage = results.last!
-            }
-        } catch let error {
-            print(error.localizedDescription)
         }
     }
     
@@ -116,12 +103,11 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
                 cellIdentifier = "OptionsBubbleCell"
                 break
             case .quickReply:
-                cellIdentifier = "TextBubbleCell"
+                cellIdentifier = "QuickReplyBubbleCell"
                 break
             case .list:
                 cellIdentifier = "ListBubbleCell"
                 break
-
             default:
                 cellIdentifier = "TextBubbleCell"
             }
@@ -178,6 +164,12 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
             }
             cell.bubbleView.drawBorder = true
             break
+        case .quickReply:
+            let lastIndexPath = getIndexPathForLastItem()
+            if (lastIndexPath.isEqual(indexPath)) {
+                self.delegate?.populateQuickReplyCards(with: message)
+            }
+            break
         default:
             cell.didSelectComponentAtIndex = nil
             break
@@ -212,7 +204,6 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
     }
     // MARK: - scrollTo related methods
     func scrollToBottom(animated animate: Bool) {
-        print("scrollToBottom")
         let indexPath: NSIndexPath = self.getIndexPathForLastItem()
         if (indexPath.row > 0 || indexPath.section > 0) {
             self.tableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: animate)

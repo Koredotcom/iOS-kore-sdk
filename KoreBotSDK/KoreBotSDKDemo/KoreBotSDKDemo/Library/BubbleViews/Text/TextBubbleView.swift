@@ -119,3 +119,31 @@ class TextBubbleView : BubbleView {
         return rect.size;
     }
 }
+
+class QuickReplyBubbleView : TextBubbleView {
+    override var components: NSArray! {
+        didSet {
+            if (components.count > 0) {
+                let component: KREComponent = components[0] as! KREComponent
+                
+                if (!component.isKind(of: KREComponent.self)) {
+                    return;
+                }
+                
+                self.textLabel.textColor = self.kTextColor()
+                if (component.componentDesc != nil) {
+                    let jsonString = component.componentDesc
+                    let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
+                        if (jsonObject["text"] != nil) {
+                            let string: String = jsonObject["text"] as! String
+                            let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
+                            let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
+        
+                            self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
+                            self.textSizeThatFitsWithString(self.textLabel.attributedText!)
+                        }
+                }
+            }
+        }
+    }
+}

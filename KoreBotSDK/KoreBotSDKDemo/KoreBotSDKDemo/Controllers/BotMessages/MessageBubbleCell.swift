@@ -199,7 +199,7 @@ class MessageBubbleCell : UITableViewCell {
             bubbleView = BubbleView.bubbleWithType(.options)
             break
         case .quickReply:
-            bubbleView = BubbleView.bubbleWithType(.options)
+            bubbleView = BubbleView.bubbleWithType(.quickReply)
             break
         case .list:
             bubbleView = BubbleView.bubbleWithType(.list)
@@ -224,7 +224,9 @@ class MessageBubbleCell : UITableViewCell {
         case .list:
             bubbleView = BubbleView.bubbleWithType(.list)
             break
-
+        case .quickReply:
+            bubbleView = BubbleView.bubbleWithType(.quickReply)
+            break
         default:
             bubbleView = BubbleView.bubbleWithType(.text)
             break
@@ -356,6 +358,12 @@ class MessageBubbleCell : UITableViewCell {
 class TextBubbleCell : MessageBubbleCell {
     override func bubbleType() -> BubbleType {
         return BubbleType.text
+    }
+}
+
+class QuickReplyBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> BubbleType {
+        return BubbleType.quickReply
     }
 }
 
