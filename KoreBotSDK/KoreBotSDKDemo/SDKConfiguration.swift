@@ -30,12 +30,12 @@ class SDKConfiguration: NSObject {
 }
 
 class ServerConfigs: NSObject {
-    open static let JWT_SERVER = String(format: "http://50.19.64.173:4000/") // Replace it with your on-premise server URL, if required.
+    open static let JWT_SERVER = String(format: "https://<jwt-server-host>/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
     
     open static func koreJwtUrl() -> String {
         return String(format: "%@api/users/sts", JWT_SERVER)
     }
     
-    open static let BOT_SERVER = String(format: "https://pilot-bots.kore.com/")
-    open static let BOT_SPEECH_SERVER = String(format: "wss://speech.kore.ai/speechcntxt/verizon")
+    open static let BOT_SERVER = String(format: "https://bots.kore.ai/")
+    open static let BOT_SPEECH_SERVER = String(format: "<speech-server-url>") //Example wss://speech.kore.ai/speechcontext/bot
 }
