@@ -15,10 +15,10 @@ Kore Bot SDK for iOS enables you to talk to Kore bots over a web socket. This re
 	* Navigate to the Bot builder
 	* Search and click on the bot 
 	* Enable *Web / Mobile Client* channel against the bot as shown in the screen below.	
-	![Add bot to Web/Mobile Client channel](https://github.com/Koredotcom/iOS-kore-sdk/blob/feature/1.0/channels.png)
+	![Add bot to Web/Mobile Client channel](https://github.com/Koredotcom/iOS-kore-sdk/blob/master/channels.png)
 	
 	* create new or use existing SDK app to obtain client id and client secret
-	![Obtain Client id and Client secret](https://github.com/Koredotcom/iOS-kore-sdk/blob/feature/1.0/web-mobile-client-channel.png)
+	![Obtain Client id and Client secret](https://github.com/Koredotcom/iOS-kore-sdk/blob/master/web-mobile-client-channel.png)
 
 
 
