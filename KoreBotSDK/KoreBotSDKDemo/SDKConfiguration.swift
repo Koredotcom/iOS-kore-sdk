@@ -25,7 +25,7 @@ class SDKConfiguration: NSObject {
     }
     
     struct dataStoreConfig {
-        static let resetDataStoreOnConnect = true // This should be either true or false. Conversation with bot will be persisted, if it is true.
+        static let resetDataStoreOnConnect = true // This should be either true or false. Conversation with the bot will be persisted, if it is false.
     }
 }
 
