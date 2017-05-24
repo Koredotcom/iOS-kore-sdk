@@ -146,9 +146,32 @@ class DataStoreManager: NSObject {
         return context.object(with: id) as? KREThread
     }
     
-    func deleteThread(id: NSManagedObjectID, withContext context: NSManagedObjectContext) {
-        if let threadToDelete = getComponent(id: id, withContext: context) {
-            context.delete(threadToDelete)
+    // method delete or persist conversation history with bot based on 'SDKConfiguration.dataStoreConfig.resetDataStoreOnConnect'.
+    func deleteThreadIfRequired(with threadId: String, completionBlock: ((_ staus: Bool) -> Void)?) {
+        var success: Bool = false
+        if (SDKConfiguration.dataStoreConfig.resetDataStoreOnConnect == true) {
+            var thread: KREThread! = nil
+            let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
+            let context: NSManagedObjectContext = dataStoreManager.coreDataManager.workerContext
+            let request = NSFetchRequest<KREThread>(entityName: "KREThread")
+            request.predicate = NSPredicate(format: "threadId == %@", threadId)
+            let array: Array<KREThread> = try! context.fetch(request)
+            if (array.count > 0) {
+                thread = array.first
+                context.delete(thread)
+                do {
+                    try context.save()
+                    dataStoreManager.coreDataManager.saveChanges()
+                    success = true
+                } catch {
+                    
+                }
+            }
+        } else {
+            success = true
+        }
+        if (completionBlock != nil) {
+            completionBlock!(success)
         }
     }
     

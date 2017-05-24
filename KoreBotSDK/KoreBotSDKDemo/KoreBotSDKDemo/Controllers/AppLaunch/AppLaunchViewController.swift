@@ -79,6 +79,8 @@ class AppLaunchViewController: UIViewController {
                 let context: NSManagedObjectContext = dataStoreManager.coreDataManager.workerContext
                 context.perform {
                     let resources: Dictionary<String, AnyObject> = ["threadId": botId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
+                    dataStoreManager.deleteThreadIfRequired(with: botId, completionBlock: { (success) in
+                        
                     let thread: KREThread = dataStoreManager.insertOrUpdateThread(dictionary: resources, withContext: context)
                     try! context.save()
                     dataStoreManager.coreDataManager.saveChanges()
@@ -99,6 +101,7 @@ class AppLaunchViewController: UIViewController {
                     }, failure: { (error) in
                         activityIndicatorView.stopAnimating()
                     })
+                })
                 }
             }, failure: { (error) in
                 activityIndicatorView.stopAnimating()
