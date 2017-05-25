@@ -19,6 +19,7 @@ enum MessageThreadHeaderType : Int {
 protocol BotMessagesDelegate {
     func optionsButtonTapAction(text:String)
     func populateQuickReplyCards(with message: KREMessage?)
+    func closeQuickReplyCards()
 }
 
 
@@ -118,6 +119,7 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
         
         switch (cell.bubbleView.bubbleType!) {
         case .text:
+            self.delegate?.closeQuickReplyCards()
             let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
             bubbleView.onChange = { (reload) in
                 self.tableView?.reloadRows(at: [indexPath], with: .none)
@@ -125,11 +127,13 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
             self.textLinkDetection(textLabel: bubbleView.textLabel)
             break
         case .image:
+            self.delegate?.closeQuickReplyCards()
             cell.didSelectComponentAtIndex = { (sender, index) in
                 
             }
             break
         case .options:
+            self.delegate?.closeQuickReplyCards()
             let components: Array<KREComponent> = message.components?.array as! Array<KREComponent>
             let bubbleView: OptionsBubbleView = cell.bubbleView as! OptionsBubbleView
             self.textLinkDetection(textLabel: bubbleView.textLabel);
@@ -142,6 +146,7 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
             cell.bubbleView.drawBorder = true
             break
         case .list:
+            self.delegate?.closeQuickReplyCards()
             let components: Array<KREComponent> = message.components?.array as! Array<KREComponent>
             let bubbleView: ListBubbleView = cell.bubbleView as! ListBubbleView
             self.textLinkDetection(textLabel: bubbleView.textLabel);
@@ -171,6 +176,7 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
             }
             break
         default:
+            self.delegate?.closeQuickReplyCards()
             cell.didSelectComponentAtIndex = nil
             break
         }

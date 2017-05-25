@@ -289,11 +289,15 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
                 let quickRepliesWordsArr:NSArray = quickRepliesArr.value(forKeyPath: "title") as! NSArray
                 self.quickReplyView.setWordsList(words: quickRepliesWordsArr)
             }
-        } else {
+        } else if(message != nil) {
             self.closeQuickSelectViewConstraints()
         }
     }
-
+    
+    func closeQuickReplyCards(){
+        self.closeQuickSelectViewConstraints()
+    }
+    
     func createAddressBar() {
         
     }
