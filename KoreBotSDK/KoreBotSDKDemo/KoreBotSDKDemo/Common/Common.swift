@@ -38,8 +38,8 @@ open class Utilities: NSObject {
         return jsonString
     }
     
-    open static func jsonObjectFromString(jsonString: String) -> Any {
-        var jsonObject: Any! = nil
+    open static func jsonObjectFromString(jsonString: String) -> Any? {
+        var jsonObject: Any?
         do {
             let data: Data = jsonString.data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))! as Data
             jsonObject = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
