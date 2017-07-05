@@ -34,12 +34,11 @@ class AppLaunchViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        self.navigationController?.isNavigationBarHidden = true
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-//        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override func didReceiveMemoryWarning() {

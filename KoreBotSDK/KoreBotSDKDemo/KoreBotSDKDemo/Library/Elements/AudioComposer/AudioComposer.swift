@@ -183,6 +183,7 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     // MARK: Message Sending
     @IBAction func sendButtonAction(_ sender: Any) {
         initiateSendingMessage();
+        NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
     }
     func initiateSendingMessage(){
         let speechText:NSString = self.textView.text as NSString;
@@ -233,6 +234,7 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
         }
         
         self.disableSpeech()
+        NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
     }
 
     func cancelSpeech(){

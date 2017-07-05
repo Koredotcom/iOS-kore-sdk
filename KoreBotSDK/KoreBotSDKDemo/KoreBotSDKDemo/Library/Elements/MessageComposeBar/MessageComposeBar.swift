@@ -32,6 +32,8 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
     
     @IBOutlet weak var SpeechToTextButton: UIButton!
     weak var ownerViewController: UIViewController!
+    @IBOutlet weak var TextToSpeechButton: UIButton!
+
     
     var value: NSString!
     var actionKeyboardActions: NSArray!
@@ -116,8 +118,7 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         self.textView.textContainerInset = UIEdgeInsetsMake(8, 5, 8, 20);
         self.clearTextButton.setImage(UIImage(named: "clear_icon")!, for: .normal)
         self.clearTextButton.setImage(UIImage(named: "clear_icon")!, for: .selected)
-
-
+        isSpeakingEnabled = false
     }
     
     @IBAction func clearTextButtonAction(_ sender: Any) {
@@ -212,18 +213,31 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
                 
                 message.addComponent(textComponent)
             }
-            
+            NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
             self.sendButtonAction!(self, message)
         }
     }
     
-    
+    @IBAction func TextToSpeechButtonAction(_ sender: Any) {
+        if(self.TextToSpeechButton.tag == 0){
+            isSpeakingEnabled = true
+            self.TextToSpeechButton.tag = 1
+            self.TextToSpeechButton.setImage(UIImage(named: "SpeakerIcon.png"), for: .normal)
+        }else{
+            isSpeakingEnabled = false
+            self.TextToSpeechButton.tag = 0
+            self.TextToSpeechButton.setImage(UIImage(named: "SpeakerMuteIcon.png"), for: .normal)
+            NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
+        }
+    }
+
     @IBAction func SpeechToTextButtonAction(_ sender: AnyObject) {
         if((self.speechToTextButtonActionTriggered) != nil){
             self.speechToTextButtonActionTriggered!();
         }
-       
+        NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
     }
+    
     func willShowKeyboard(_ notification: Notification!) {
         keyboardUserInfo = notification.userInfo! as NSDictionary!
     }

@@ -9,6 +9,9 @@
 import UIKit
 import Foundation
 
+var stopSpeakingNotification = "StopSpeakingNowNotificationName"
+var isSpeakingEnabled = true
+
 open class Common : NSObject {
     open static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)

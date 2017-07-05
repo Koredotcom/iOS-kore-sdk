@@ -10,6 +10,7 @@ import UIKit
 import TOWebViewController
 import AFNetworking
 import CoreData
+import AVFoundation
 
 enum MessageThreadHeaderType : Int {
     case none = 1, sender = 2, date = 3, senderAndDate = 4
@@ -24,6 +25,8 @@ protocol BotMessagesDelegate {
 
 
 class BotMessagesViewController : UITableViewController, KREFetchedResultsControllerDelegate {
+    var speechSynthesizer = AVSpeechSynthesizer()
+    var insertedRowIndexPath : IndexPath? = nil
 
     var fetchedResultsController: KREFetchedResultsController? = nil
     var messagesArray:NSArray!
@@ -39,10 +42,8 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
             fetchedResultsController = KREFetchedResultsController(fetchRequest: request as! NSFetchRequest<NSManagedObject>, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
             fetchedResultsController?.tableView = self.tableView
             fetchedResultsController?.kreDelegate = self
-//            fetchedResultsController?.fetchRequest.fetchLimit = 20
             try! fetchedResultsController? .performFetch()
             
-//            self.getLastQuickReplyMessage()
             self.tableView.alpha = 0
             
             UIView.animate(withDuration: 0, animations: {
@@ -75,7 +76,18 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
             let point:CGPoint = CGPoint(x:0, y:self.tableView.contentSize.height - self.tableView.frame.size.height);
             self.tableView.setContentOffset(point, animated:true);
         }
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.stopSpeaking),
+            name: NSNotification.Name(rawValue: stopSpeakingNotification),
+            object: nil)
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(Any.self)
+    }
+
     
     // MARK: UITable view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -206,8 +218,34 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
         if (visibleCelIndexPath?.contains(indexPath!))!{
             self.shouldScrollToBottom = true
         }
-    
     }
+    
+    func fetchedControllerDidAddRowAt(indexPath:IndexPath){
+        if(!(indexPath == self.insertedRowIndexPath) && isSpeakingEnabled){
+            let message: KREMessage = fetchedResultsController!.object(at: indexPath) as! KREMessage
+            if (!message.isSender) {
+                if(self.speechSynthesizer.isSpeaking){
+                    self.stopTTS()
+                }
+                
+                let components = message.components
+                if ((components?.count)! > 0) {
+                    let component: KREComponent = components![0] as! KREComponent
+                    if (!component.isKind(of: KREComponent.self)) {
+                        return;
+                    }
+                    
+                    if ((component.componentDesc) != nil) {
+                        let string: String = component.componentDesc! as String
+                        let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
+                        let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
+                        self.readOutText(text: parsedString,indexPath:indexPath)
+                    }
+                }
+            }
+        }
+    }
+
     // MARK: - scrollTo related methods
     func scrollToBottom(animated animate: Bool) {
         let indexPath: NSIndexPath = self.getIndexPathForLastItem()
@@ -255,7 +293,6 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
                 break
             }
         }
-
     }
     
     func launchWebViewWithURLLink(urlString:String)  {
@@ -276,8 +313,27 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
             let messageObject: KREMessage = message as! KREMessage
             messageObject.showMore = false
         }
-
     }
+    
+    func readOutText(text:String, indexPath:IndexPath) {
+        if(indexPath != self.insertedRowIndexPath){
+            self.insertedRowIndexPath = indexPath
+            let string = text
+            let speechUtterance = AVSpeechUtterance(string: string)
+            self.speechSynthesizer.speak(speechUtterance)
+        }
+    }
+    
+    func stopSpeaking(notification:Notification) {
+        self.stopTTS()
+    }
+    
+    func stopTTS(){
+        if(self.speechSynthesizer.isSpeaking){
+            self.speechSynthesizer.stopSpeaking(at: AVSpeechBoundary.immediate)
+        }
+    }
+    
     // MARK:- deinit
     deinit {
         

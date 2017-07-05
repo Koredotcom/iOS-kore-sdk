@@ -204,6 +204,7 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.addKeyboardNotifications()
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     override open func viewDidAppear(_ animated: Bool) {
@@ -237,6 +238,7 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         }
         threadTableViewController.clearAssociateObjects()
         self.navigationController?.popViewController(animated: true)
+        NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
     }
     
     // MARK: initialize
