@@ -222,6 +222,7 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
     
     func fetchedControllerDidAddRowAt(indexPath:IndexPath){
         if(!(indexPath == self.insertedRowIndexPath) && isSpeakingEnabled){
+            self.insertedRowIndexPath = indexPath
             let message: KREMessage = fetchedResultsController!.object(at: indexPath) as! KREMessage
             if (!message.isSender) {
 //                if(self.speechSynthesizer.isSpeaking){
@@ -239,7 +240,7 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
                         let string: String = component.componentInfo! as String
                         let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
                         let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString)
-                        self.readOutText(text: parsedString, indexPath:indexPath)
+                        self.readOutText(text: parsedString)
                     }
                 }
             }
@@ -315,13 +316,11 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
         }
     }
     
-    func readOutText(text:String, indexPath:IndexPath) {
-        if(indexPath != self.insertedRowIndexPath){
-            self.insertedRowIndexPath = indexPath
-            let string = text
-            let speechUtterance = AVSpeechUtterance(string: string)
-            self.speechSynthesizer.speak(speechUtterance)
-        }
+    func readOutText(text:String) {
+        let string = text
+        print("Reading text: %@", text);
+        let speechUtterance = AVSpeechUtterance(string: string)
+        self.speechSynthesizer.speak(speechUtterance)
     }
     
     func stopSpeaking(notification:Notification) {
