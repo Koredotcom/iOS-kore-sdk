@@ -100,33 +100,45 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
                     
                 } else {
                     let componentModel: ComponentModel = messageObject!.component!
+                    let cInfo: NSDictionary = messageObject!.cInfo!
+                    let cInfoBody: NSString = cInfo["body"] as! NSString
+                    
                     if (componentModel.type == "text") {
                         self?.showTypingStatusForBotsAction()
+                        
                         let payload: NSDictionary = componentModel.payload! as! NSDictionary
+                        let text: NSString = payload["text"] as! NSString
                         let textComponent: TextComponent = TextComponent()
-                        if (payload["text"] != nil)  {
-                            textComponent.text = payload["text"] as! NSString
-                        }
+                        textComponent.text = text
+                        textComponent.cInfo = cInfoBody
+                        
                         message.addComponent(textComponent)
                     } else if (componentModel.type == "template") {
                         let payload: NSDictionary = componentModel.payload! as! NSDictionary
                         let dictionary: NSDictionary = payload["payload"] as! NSDictionary
                         let templateType: String = dictionary["template_type"] as! String
+                        
                         if (templateType == "quick_replies") {
                             let quickRepliesComponent: QuickRepliesComponent = QuickRepliesComponent()
                             quickRepliesComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                            quickRepliesComponent.cInfo = cInfoBody
+                            
                             message.addComponent(quickRepliesComponent)
                         } else if (templateType == "button") {
                             self?.showTypingStatusForBotsAction()
 
                             let optionsComponent: OptionsComponent = OptionsComponent()
                             optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                            optionsComponent.cInfo = cInfoBody
+                            
                             message.addComponent(optionsComponent)
                         }else if (templateType == "list") {
                             self?.showTypingStatusForBotsAction()
 
                             let optionsComponent: ListComponent = ListComponent()
                             optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                            optionsComponent.cInfo = cInfoBody
+                            
                             message.addComponent(optionsComponent)
                         }
                     }

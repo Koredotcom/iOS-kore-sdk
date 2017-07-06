@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:KoreBotSDKDemo/KoreBotSDKDemo/DataModel/KREComponent+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
       location = "group:KoreBotSDKDemo/KoreBotSDKDemo.xcodeproj">
    </FileRef>
    <FileRef

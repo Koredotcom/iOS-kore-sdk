@@ -113,7 +113,7 @@ class OptionsBubbleView: BubbleView {
                     }
                     self.optionsView.options = options
                     
-                    var headerText: String = jsonObject["text"] as! String
+                    var headerText: String = jsonObject["text"] != nil ? jsonObject["text"] as! String : ""
                     headerText = KREUtilities.formatHTMLEscapedString(headerText);
                     self.textLabel.setHTMLString(headerText, withWidth: self.textSizeThatFitsWithString(headerText as NSString).width)
 //                    self.textLabel.attributedText = markdownParser.attributedString(from: headerText)

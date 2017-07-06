@@ -16,6 +16,7 @@ enum ComponentType : Int {
 class Component : NSObject {
     var componentType: ComponentType = .unknown
     var message: Message!
+    var cInfo: NSString!
     override init() {
         super.init()
     }

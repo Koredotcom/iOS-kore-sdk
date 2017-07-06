@@ -224,9 +224,9 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
         if(!(indexPath == self.insertedRowIndexPath) && isSpeakingEnabled){
             let message: KREMessage = fetchedResultsController!.object(at: indexPath) as! KREMessage
             if (!message.isSender) {
-                if(self.speechSynthesizer.isSpeaking){
-                    self.stopTTS()
-                }
+//                if(self.speechSynthesizer.isSpeaking){
+//                    self.stopTTS()
+//                }
                 
                 let components = message.components
                 if ((components?.count)! > 0) {
@@ -235,11 +235,11 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
                         return;
                     }
                     
-                    if ((component.componentDesc) != nil) {
-                        let string: String = component.componentDesc! as String
+                    if ((component.componentInfo) != nil) {
+                        let string: String = component.componentInfo! as String
                         let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
-                        let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
-                        self.readOutText(text: parsedString,indexPath:indexPath)
+                        let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString)
+                        self.readOutText(text: parsedString, indexPath:indexPath)
                     }
                 }
             }
