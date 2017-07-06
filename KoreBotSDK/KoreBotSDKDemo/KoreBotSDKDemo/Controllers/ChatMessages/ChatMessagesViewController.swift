@@ -301,7 +301,8 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
                     self.updateQuickSelectViewConstraints()
                 }
                 let quickRepliesWordsArr:NSArray = quickRepliesArr.value(forKeyPath: "title") as! NSArray
-                self.quickReplyView.setWordsList(words: quickRepliesWordsArr)
+                let quickRepliesPayloadsArr:NSArray = quickRepliesArr.value(forKeyPath: "payload") as! NSArray
+                self.quickReplyView.setWordsList(words: quickRepliesWordsArr, payloads: quickRepliesPayloadsArr)
             }
         } else if(message != nil) {
             self.closeQuickSelectViewConstraints()
@@ -602,7 +603,8 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     
     func sendMessage(_ message:Message){
         let composedMessage: Message = message
-       
+        
+        NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
         if (composedMessage.components.count > 0) {
             let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
             dataStoreManager.createNewMessageIn(thread: self.thread, message: composedMessage, completionBlock: { (success) in

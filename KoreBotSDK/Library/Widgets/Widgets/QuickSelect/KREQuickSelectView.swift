@@ -66,8 +66,9 @@ public class KREQuickSelectView: UIView, UICollectionViewDelegate, UICollectionV
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[collectionView]|", options:[], metrics:nil, views:views))
     }
     
-    public func setWordsList(words:NSArray) {
-        self.wordList.words = words as! [String];
+    public func setWordsList(words:NSArray, payloads: NSArray) {
+        self.wordList.words = words as! [String]
+        self.wordList.payloads = payloads as! [String]
         self.collectionView.reloadData()
     }
     
@@ -83,7 +84,7 @@ public class KREQuickSelectView: UIView, UICollectionViewDelegate, UICollectionV
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "KRETokenCollectionViewCell", for: indexPath) as! KRETokenCollectionViewCell
         cell.labelText = wordList.words[(indexPath as NSIndexPath).row]
-                cell.krefocused = false
+        cell.krefocused = false
 
         return cell
     }
@@ -91,7 +92,8 @@ public class KREQuickSelectView: UIView, UICollectionViewDelegate, UICollectionV
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell: KRETokenCollectionViewCell = collectionView.cellForItem(at: indexPath) as! KRETokenCollectionViewCell
         if(self.sendQuickReplyAction != nil){
-            self.sendQuickReplyAction(cell.labelText)
+            let text: String = wordList.payloads[(indexPath as NSIndexPath).row]
+            self.sendQuickReplyAction(text)
         }
         cell.krefocused = true
     }

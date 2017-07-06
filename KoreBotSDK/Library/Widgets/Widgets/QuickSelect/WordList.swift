@@ -10,6 +10,7 @@ import UIKit
 
 public class WordList: NSObject {
     var words = [String]()
+    var payloads = [String]()
     
     convenience override init() {
         self.init(fileName: "Words")
