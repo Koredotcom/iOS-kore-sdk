@@ -9,6 +9,7 @@
 import UIKit
 import Foundation
 
+var startSpeakingNotification = "StartSpeakingNowNotificationName"
 var stopSpeakingNotification = "StopSpeakingNowNotificationName"
 var isSpeakingEnabled = true
 

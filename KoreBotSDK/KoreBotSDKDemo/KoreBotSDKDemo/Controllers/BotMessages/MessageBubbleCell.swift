@@ -95,6 +95,7 @@ class MessageBubbleCell : UITableViewCell {
             }
         }
     }
+    
     override func prepareForReuse() {
         self.textLabel?.text = nil
         self.bubbleContainerView.layoutSubviews()
@@ -108,7 +109,6 @@ class MessageBubbleCell : UITableViewCell {
         self.bubbleView.layoutIfNeeded()
         self.bubbleView.setNeedsDisplay()
     }
-    // MARK:
 
     func initialize() {
         self.selectionStyle = .none
@@ -188,25 +188,24 @@ class MessageBubbleCell : UITableViewCell {
         var bubbleView: BubbleView!
         
         switch (component.componentType) {
-        case .text:
-            bubbleView = BubbleView.bubbleWithType(.text)
-            break
-            
-        case .image:
-            bubbleView = BubbleView.bubbleWithType(.image)
-            break
-        case .options:
-            bubbleView = BubbleView.bubbleWithType(.options)
-            break
-        case .quickReply:
-            bubbleView = BubbleView.bubbleWithType(.quickReply)
-            break
-        case .list:
-            bubbleView = BubbleView.bubbleWithType(.list)
-            break
-        case .unknown:
-            bubbleView = BubbleView.bubbleWithType(.text)
-            break
+            case .text:
+                bubbleView = BubbleView.bubbleWithType(.text)
+                break
+            case .image:
+                bubbleView = BubbleView.bubbleWithType(.image)
+                break
+            case .options:
+                bubbleView = BubbleView.bubbleWithType(.options)
+                break
+            case .quickReply:
+                bubbleView = BubbleView.bubbleWithType(.quickReply)
+                break
+            case .list:
+                bubbleView = BubbleView.bubbleWithType(.list)
+                break
+            case .unknown:
+                bubbleView = BubbleView.bubbleWithType(.text)
+                break
         }
         return bubbleView
     }
@@ -215,22 +214,21 @@ class MessageBubbleCell : UITableViewCell {
         var bubbleView: BubbleView!
         
         switch (templateType) {
-        case .image:
-            bubbleView = BubbleView.bubbleWithType(.image)
-            break
-        case .options:
-            bubbleView = BubbleView.bubbleWithType(.options)
-            break
-        case .list:
-            bubbleView = BubbleView.bubbleWithType(.list)
-            break
-        case .quickReply:
-            bubbleView = BubbleView.bubbleWithType(.quickReply)
-            break
-        default:
-            bubbleView = BubbleView.bubbleWithType(.text)
-            break
-            
+            case .image:
+                bubbleView = BubbleView.bubbleWithType(.image)
+                break
+            case .options:
+                bubbleView = BubbleView.bubbleWithType(.options)
+                break
+            case .list:
+                bubbleView = BubbleView.bubbleWithType(.list)
+                break
+            case .quickReply:
+                bubbleView = BubbleView.bubbleWithType(.quickReply)
+                break
+            default:
+                bubbleView = BubbleView.bubbleWithType(.text)
+                break
         }
         return bubbleView
     }
@@ -299,7 +297,6 @@ class MessageBubbleCell : UITableViewCell {
             }
         }
         
-        
         let horizontal: Array<NSLayoutConstraint> = NSLayoutConstraint.constraints(withVisualFormat: "H:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": bubbleView])
         let vertical: Array<NSLayoutConstraint> = NSLayoutConstraint.constraints(withVisualFormat: "V:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": bubbleView])
         
@@ -319,9 +316,6 @@ class MessageBubbleCell : UITableViewCell {
         
         let component: KREComponent = components.first!
         let message: KREMessage = component.message!
-//        if (message.messageType == .default) {
-//            
-//        }
         
         if (message.sentOn != nil) {
             let dateFormatter: DateFormatter = DateFormatter()
@@ -352,7 +346,20 @@ class MessageBubbleCell : UITableViewCell {
     func components() -> NSArray {
         return self.bubbleView.components
     }
-
+    
+    // MARK:- deinit
+    deinit {
+        self.bubbleContainerView = nil
+        self.senderImageView = nil
+        self.dateLabel = nil
+        self.bubbleLeadingConstraint = nil
+        self.bubbleTrailingConstraint = nil
+        self.bubbleBottomConstraint = nil
+        self.dateLabelLeadingConstraint = nil
+        self.dateLabelTrailingConstraint = nil
+        self.dateLabelTopConstraint = nil
+        self.bubbleView = nil
+    }
 }
 
 class TextBubbleCell : MessageBubbleCell {

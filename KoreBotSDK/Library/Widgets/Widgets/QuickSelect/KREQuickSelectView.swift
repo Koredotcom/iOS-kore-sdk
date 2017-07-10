@@ -9,7 +9,7 @@
 import UIKit
 
 public class KREQuickSelectView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    var wordList = WordList()
+    var wordList: WordList!
     var collectionView: KRECollectionView! = nil
     var flowLayout:UICollectionViewFlowLayout! = nil
     var prototypeCell: KRETokenCollectionViewCell! = nil
@@ -30,8 +30,15 @@ public class KREQuickSelectView: UIView, UICollectionViewDelegate, UICollectionV
         fatalError("This class does not support NSCoding")
     }
     
+    //MARK:- removing refernces to elements
+    public func prepareForDeinit(){
+        self.collectionView.delegate = nil
+        self.collectionView.dataSource = nil
+    }
+    
     // MARK:- setup collectionView
     func setup() {
+        wordList = WordList()
         
         prototypeCell = KRETokenCollectionViewCell()
         
@@ -43,7 +50,6 @@ public class KREQuickSelectView: UIView, UICollectionViewDelegate, UICollectionV
         flowLayout.minimumLineSpacing = 1
         flowLayout.sectionInset = UIEdgeInsetsMake(0.0, 10.0, 0.0, 10.0)
 
-        
         // collectionView initialization
         collectionView = KRECollectionView(frame: self.bounds, collectionViewLayout: flowLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -111,5 +117,12 @@ public class KREQuickSelectView: UIView, UICollectionViewDelegate, UICollectionV
 
         let sectionInset: UIEdgeInsets = collectionViewLayout.sectionInset
         return self.frame.size.width - sectionInset.left - sectionInset.right;
+    }
+    
+    deinit {
+        self.wordList = nil
+        self.collectionView = nil
+        self.flowLayout = nil
+        self.prototypeCell = nil
     }
 }

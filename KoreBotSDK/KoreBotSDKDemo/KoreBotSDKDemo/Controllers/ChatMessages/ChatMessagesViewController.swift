@@ -13,6 +13,7 @@ import AFNetworking
 import KoreWidgets
 import KoreTextParser
 import SpeechToText
+import AVFoundation
 
 enum ComposeMode : Int {
     case thread = 1, chat = 2, email = 3, kora = 4
@@ -40,11 +41,7 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     
     // MARK: properties
     var thread: KREThread! = nil
-    var composeMode: ComposeMode = .kora {
-        didSet {
-            
-        }
-    }
+    var composeMode: ComposeMode = .kora
 
     @IBOutlet weak var composeBarContainer: UIView!
     @IBOutlet weak var threadContentView: UIView!
@@ -59,115 +56,117 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     var quickReplyView: KREQuickSelectView! = nil
     var threadTableViewController: BotMessagesViewController!
     var composeBar: MessageComposeBar!
-    var audioComposer:AudioComposer!
+    var audioComposer: AudioComposer!
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
     var disableKeyboardAdjustmentAnimationDuration: Bool = false
     var quickSelectData: NSArray!
     var isSpeechToTextActive: Bool = false
     var typingStatusView:KRETypingStatusView?
     var identity: String!
+    var speechSynthesizer: AVSpeechSynthesizer? = nil
+    
     var botClient: BotClient! {
         didSet {
-            self.identity = botClient.userInfoModel.identity
-            // events
-            botClient.connectionWillOpen = { () in
-                
-            }
-            
-            botClient.connectionDidOpen = { () in
-                
-            }
-            
-            botClient.onConnectionError = { (error) in
-                
-            }
-            
-            botClient.onMessage = { [weak self] (object) in
-                let message: Message = Message()
-                message.messageType = .reply
-                if (object?.createdOn != nil) {
-                    message.sentDate = object?.createdOn as Date!
-                } else {
-                    message.sentDate = Date()
+            if(botClient != nil){
+                self.identity = botClient.userInfoModel.identity
+                // events
+                botClient.connectionWillOpen = { () in
+                    
                 }
                 
-                if (object?.iconUrl != nil) {
-                    message.iconUrl = object?.iconUrl
+                botClient.connectionDidOpen = { () in
+                    
                 }
                 
-                let messageObject = ((object?.messages.count)! > 0) ? (object?.messages[0]) : nil
-                if (messageObject?.component == nil) {
+                botClient.onConnectionError = { (error) in
                     
-                } else {
-                    let componentModel: ComponentModel = messageObject!.component!
-                    let cInfo: NSDictionary = messageObject!.cInfo!
-                    let cInfoBody: NSString = cInfo["body"] as! NSString
+                }
+                
+                botClient.onMessage = { [weak self] (object) in
+                    let message: Message = Message()
+                    message.messageType = .reply
+                    if (object?.createdOn != nil) {
+                        message.sentDate = object?.createdOn as Date!
+                    } else {
+                        message.sentDate = Date()
+                    }
                     
-                    if (componentModel.type == "text") {
-                        self?.showTypingStatusForBotsAction()
+                    if (object?.iconUrl != nil) {
+                        message.iconUrl = object?.iconUrl
+                    }
+                    
+                    let messageObject = ((object?.messages.count)! > 0) ? (object?.messages[0]) : nil
+                    if (messageObject?.component == nil) {
                         
-                        let payload: NSDictionary = componentModel.payload! as! NSDictionary
-                        let text: NSString = payload["text"] as! NSString
-                        let textComponent: TextComponent = TextComponent()
-                        textComponent.text = text
-                        textComponent.cInfo = cInfoBody
+                    } else {
+                        let componentModel: ComponentModel = messageObject!.component!
+                        let cInfo: NSDictionary = messageObject!.cInfo!
+                        let cInfoBody: NSString = cInfo["body"] as! NSString
                         
-                        message.addComponent(textComponent)
-                    } else if (componentModel.type == "template") {
-                        let payload: NSDictionary = componentModel.payload! as! NSDictionary
-                        let dictionary: NSDictionary = payload["payload"] as! NSDictionary
-                        let templateType: String = dictionary["template_type"] as! String
-                        
-                        if (templateType == "quick_replies") {
-                            let quickRepliesComponent: QuickRepliesComponent = QuickRepliesComponent()
-                            quickRepliesComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                            quickRepliesComponent.cInfo = cInfoBody
-                            
-                            message.addComponent(quickRepliesComponent)
-                        } else if (templateType == "button") {
+                        if (componentModel.type == "text") {
                             self?.showTypingStatusForBotsAction()
-
-                            let optionsComponent: OptionsComponent = OptionsComponent()
-                            optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                            optionsComponent.cInfo = cInfoBody
                             
-                            message.addComponent(optionsComponent)
-                        }else if (templateType == "list") {
-                            self?.showTypingStatusForBotsAction()
-
-                            let optionsComponent: ListComponent = ListComponent()
-                            optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                            optionsComponent.cInfo = cInfoBody
+                            let payload: NSDictionary = componentModel.payload! as! NSDictionary
+                            let text: NSString = payload["text"] as! NSString
+                            let textComponent: TextComponent = TextComponent()
+                            textComponent.text = text
+                            textComponent.cInfo = cInfoBody
                             
-                            message.addComponent(optionsComponent)
+                            message.addComponent(textComponent)
+                        } else if (componentModel.type == "template") {
+                            let payload: NSDictionary = componentModel.payload! as! NSDictionary
+                            let dictionary: NSDictionary = payload["payload"] as! NSDictionary
+                            let templateType: String = dictionary["template_type"] as! String
+                            
+                            if (templateType == "quick_replies") {
+                                let quickRepliesComponent: QuickRepliesComponent = QuickRepliesComponent()
+                                quickRepliesComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                                quickRepliesComponent.cInfo = cInfoBody
+                                
+                                message.addComponent(quickRepliesComponent)
+                            } else if (templateType == "button") {
+                                self?.showTypingStatusForBotsAction()
+
+                                let optionsComponent: OptionsComponent = OptionsComponent()
+                                optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                                optionsComponent.cInfo = cInfoBody
+                                
+                                message.addComponent(optionsComponent)
+                            }else if (templateType == "list") {
+                                self?.showTypingStatusForBotsAction()
+
+                                let optionsComponent: ListComponent = ListComponent()
+                                optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                                optionsComponent.cInfo = cInfoBody
+                                
+                                message.addComponent(optionsComponent)
+                            }
+                        }
+
+                        if (message.components.count > 0) {
+                            let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
+                            dataStoreManager.createNewMessageIn(thread: self!.thread, message: message, completionBlock: { (success) in
+                                self?.populateQuickReplyCards(with: nil)
+                            })
+                            NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: cInfoBody)
                         }
                     }
-
-                    if (message.components.count > 0) {
-                        let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
-                        dataStoreManager.createNewMessageIn(thread: self!.thread, message: message, completionBlock: { (success) in
-                            self?.populateQuickReplyCards(with: nil)
-                        })
-                    }
                 }
-               
                 
-            }
-            
-            botClient.onMessageAck = { (ack) in
+                botClient.onMessageAck = { (ack) in
+                    
+                }
                 
-            }
-            
-            botClient.connectionDidClose = { (code) in
+                botClient.connectionDidClose = { (code) in
+                    
+                }
                 
-            }
-            
-            botClient.connectionDidEnd = { (code, reason, error) in
-                
+                botClient.connectionDidEnd = { (code, reason, error) in
+                    
+                }
             }
         }
     }
-    
     
     // MARK: properties with observers
     var botInfoParameters: NSDictionary! = nil {
@@ -182,6 +181,7 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
             }
         }
     }
+    
     var quickSelectMode: QuickSelectMode! {
         didSet {
             if (self.quickSelectMode == .off) {
@@ -206,11 +206,13 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action:  #selector(ChatMessagesViewController.cancel(_:)))
                 
         self.initialize(.kora)
-        self.setupBotClient()
         self.typingStatusView = KRETypingStatusView.init()
         self.view.addSubview(self.typingStatusView!)
         self.typingStatusView?.isHidden = true
         
+        self.speechSynthesizer = AVSpeechSynthesizer()
+        NotificationCenter.default.addObserver(self, selector: #selector(self.startSpeaking), name: NSNotification.Name(rawValue: startSpeakingNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.stopSpeaking), name: NSNotification.Name(rawValue: stopSpeakingNotification), object: nil)
     }
     
     override open func viewWillAppear(_ animated: Bool) {
@@ -222,10 +224,12 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
+    
     override open func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
         self.removeKeyboardNotifications()
+        NotificationCenter.default.removeObserver(Any.self)
     }
     
     override open func viewWillLayoutSubviews() {
@@ -233,14 +237,34 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         self.typingStatusView?.frame = CGRect(x:0, y:self.composeBarContainer.frame.origin.y-40.0, width:self.view.bounds.size.width-50.0, height:40.0)
     }
 
-    func  viewLayoutUpdated() {
-        self.threadTableViewController.scrollToBottom(animated: true);
+    func viewLayoutUpdated() {
+        self.threadTableViewController?.scrollToBottom(animated: true);
         self.typingStatusView?.frame = CGRect(x:0, y:self.composeBarContainer.frame.origin.y-40.0, width:self.view.bounds.size.width-50.0, height:40.0);
     }
     
-    // MARK: setup bot client
-    func setupBotClient() {
+    //MARK:- removing refernces to elements
+    func prepareForDeinit(){
+        self.composeBarContainer.subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+        self.composeBar = nil
+        self.audioComposer = nil
         
+        self.threadTableViewController?.clearAssociateObjects()
+        self.threadTableViewController?.prepareForDeinit()
+        self.threadTableViewController.willMove(toParentViewController: nil)
+        self.threadTableViewController.view.removeFromSuperview()
+        self.threadTableViewController.removeFromParentViewController()
+        self.threadTableViewController.delegate = nil
+        self.threadTableViewController.thread = nil
+        self.threadTableViewController = nil
+        
+        self.quickReplyView.prepareForDeinit()
+        self.quickReplyView.removeFromSuperview()
+        self.quickReplyView = nil
+        
+        stopTTS()
+        self.speechSynthesizer = nil
     }
     
     // MARK: cancel
@@ -248,9 +272,8 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         if(self.botClient != nil){
             self.botClient.disconnect()
         }
-        threadTableViewController.clearAssociateObjects()
+        prepareForDeinit()
         self.navigationController?.popViewController(animated: true)
-        NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
     }
     
     // MARK: initialize
@@ -258,18 +281,18 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         self.composeMode = composeMode
         
         switch (composeMode) {
-        case .thread:
-            break
-            
-        case .kora:
-            break
-            
-        default:
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: nil)
-            
-            self.createAddressBar()
-            self.createSubjectBar()
-            break
+            case .thread:
+                break
+                
+            case .kora:
+                break
+                
+            default:
+                self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: nil)
+                
+                self.createAddressBar()
+                self.createSubjectBar()
+                break
         }
         
         self.createComposeBar()
@@ -278,15 +301,12 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         self.createQuickReplyView()
         
         self.quickSelectHorizontalLineHeightConstraint.constant = 0.5
-//        self.quickSelectTableView.rowHeight = 44
-        
         self.quickSelectMode = QuickSelectMode.off
         
         if ((self.composeMode == .chat) || (composeMode == .email)) {
             self.composeBar.textView.becomeFirstResponder()
         }
     }
-    
     
     func populateQuickReplyCards(with message: KREMessage?) {
         if (message?.templateType == 5) {
@@ -349,7 +369,6 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
            
             })
             
-
             self.quickReplyView.isHidden = false;
             self.isSpeechToTextActive = false;
         }
@@ -360,13 +379,10 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
             self.composeBar.enableSendButton = (self.composeBar.textView.text.characters.count > 0)
             self.composeBar.textView.isEditable = true
             self.composeBar.valueChanged()
-//            self.composeBar.disabledSpeech()
-
         }
         self.audioComposer.showCursorForSpeechDone = { [weak self]() in
             self?.composeBar.disabledSpeech()
         }
-
     }
     
     func createComposeBar() {
@@ -392,8 +408,6 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
                 self.viewLayoutUpdated();
             })
         }
-        
-//        self.composeBar.isKora = self.composeMode == ComposeMode.Kora
         
         self.composeBarContainer.addSubview(self.composeBar!)
         self.composeBarContainer.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[composeBar]|", options:[], metrics:nil, views:["composeBar" : self.composeBar!]))
@@ -423,8 +437,6 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
             }
         }
     }
-
-
    
     func createThreadContent() {
         self.threadTableViewController = BotMessagesViewController(nibName: "BotMessagesViewController", bundle: nil)
@@ -434,11 +446,10 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         self.addChildViewController(self.threadTableViewController)
         self.threadTableViewController.view.frame = self.threadContentView.bounds
         self.threadContentView.addSubview(threadTableViewController.view)
+        self.threadTableViewController.didMove(toParentViewController: self)
         
         self.threadContentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[thread]|", options:[], metrics:nil, views:["thread" : self.threadTableViewController.tableView]))
-        
         self.threadContentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[thread]|", options:[], metrics:nil, views:["thread" : self.threadTableViewController.tableView]))
-        self.threadTableViewController.didMove(toParentViewController: self)
         
         self.threadTableViewController.thread = self.thread
         self.threadTableViewController.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
@@ -456,7 +467,6 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
             self?.closeQuickSelectViewConstraints()
             self?.sendTextMessage(text: text!)
         }
- 
     }
 
     func addKeyboardNotifications() {
@@ -475,7 +485,7 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     
     // MARK: helpers
     func setAutoCorrectionType(_ autoCorrectionType: UITextAutocorrectionType) {
-        if (self.composeBar.textView.autocorrectionType != autoCorrectionType) {
+        if (self.composeBar != nil && self.composeBar.textView.autocorrectionType != autoCorrectionType) {
             if (self.composeBar.textView.isFirstResponder) {
                 
                 self.disableKeyboardAdjustmentAnimationDuration = true
@@ -502,6 +512,7 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
             
         }
     }
+    
     func closeQuickSelectViewConstraints() {
         self.quickSelectHeightConstraint.constant = 0.0
         
@@ -511,7 +522,6 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
             
         }
     }
-
     
     func dismissInputView(_ becomeFirstResponser: Bool) {
         self.dismiss(animated: true) {
@@ -618,7 +628,7 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         }
     }
     
-    func  sendTextMessage(text:String) {
+    func sendTextMessage(text:String) {
         let message: Message = Message()
         message.messageType = .default
         message.sentDate = Date()
@@ -640,7 +650,52 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
 
         self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 2.0)
         self.view.bringSubview(toFront: self.typingStatusView!)
-
     }
     
+    //MARK :- TTS Functionality
+    func startSpeaking(notification:Notification) {
+        if(isSpeakingEnabled){
+            let string: String = notification.object! as! String
+            let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
+            let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString)
+            self.readOutText(text: parsedString)
+        }
+    }
+    
+    func stopSpeaking(notification:Notification) {
+        self.stopTTS()
+    }
+    
+    func readOutText(text:String) {
+        let string = text
+        print("Reading text: %@", text);
+        let speechUtterance = AVSpeechUtterance(string: string)
+        self.speechSynthesizer?.speak(speechUtterance)
+    }
+    
+    func stopTTS(){
+        if(self.speechSynthesizer?.isSpeaking)!{
+            self.speechSynthesizer?.stopSpeaking(at: AVSpeechBoundary.immediate)
+        }
+    }
+    
+    //MARK:- deinit
+    deinit {
+        print("ChatMessagesViewController dealloc")
+        NotificationCenter.default.removeObserver(Any.self)
+        self.removeKeyboardNotifications()
+        
+        self.thread = nil
+        self.markdownParser = nil
+        self.quickReplyView = nil
+        self.threadTableViewController = nil
+        self.composeBar = nil
+        self.audioComposer = nil
+        self.tapToDismissGestureRecognizer = nil
+        self.quickSelectData = nil
+        self.typingStatusView = nil
+        self.speechSynthesizer = nil
+        self.botClient = nil
+        self.botInfoParameters = nil
+    }
 }

@@ -12,7 +12,6 @@ import CoreData
 protocol KREFetchedResultsControllerDelegate {
     func fetchedControllerWillChangeContent()
     func fetchedControllerDidChangeContent()
-    func fetchedControllerDidAddRowAt(indexPath:IndexPath)
 }
 
 class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, NSFetchedResultsControllerDelegate {
@@ -113,7 +112,6 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
                 
                 } else {
                     self.insertedRowIndexPaths?.append(newIndexPath!)
-                    self.kreDelegate?.fetchedControllerDidAddRowAt(indexPath: newIndexPath!)
                 }
             } else {
                 self.shouldReload = true
@@ -156,5 +154,7 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
     // MARK:- deinit
     deinit {
         clearSectionsAndRowsCache()
+        self.kreDelegate = nil
+        self.tableView = nil
     }
 }

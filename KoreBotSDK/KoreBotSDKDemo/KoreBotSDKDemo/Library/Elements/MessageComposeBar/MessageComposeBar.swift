@@ -12,14 +12,12 @@ import SpeechToText
 import SpeechToText.RequestManager
 import AVFoundation
 
-let ANIMATION_DURATION=1.5
-
+let ANIMATION_DURATION = 1.5
 
 class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, SpeechToTextDelegate {
     
     let kButtonSwitchDuration: CGFloat = 0.3
     let kAttachmentCellHeight: CGFloat = 74.0
-    let reuqestManager:RequestManager=RequestManager.init();
 
     @IBOutlet weak var showAccessoryButton :UIButton!
     @IBOutlet weak var closeAccessoryButton: UIButton!
@@ -31,11 +29,9 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
     @IBOutlet weak var promptLabel: UILabel!;
     
     @IBOutlet weak var SpeechToTextButton: UIButton!
-    weak var ownerViewController: UIViewController!
     @IBOutlet weak var TextToSpeechButton: UIButton!
-
     
-    var value: NSString!
+    weak var ownerViewController: UIViewController!
     var actionKeyboardActions: NSArray!
     var isKora: Bool = false
     var isSwitchingKeyboards: Bool = false
@@ -50,7 +46,6 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
     var updatingTextPosition: Bool!
     var isSpeechModeEnabled: Bool=false
     
-    var sublayer:CALayer=CALayer();
     var speechToTextToolBarString: NSMutableString!
     var speechToTextIntermediateString: NSMutableString!
     
@@ -59,7 +54,6 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
     var speechToTextButtonActionTriggered : (() -> ())?
     var viewWillResizeSubViews: (() -> ())?
 
-    var  myTimer:Timer!;
     var enableSendButton: Bool! {
         didSet(enableButton) {
             if (self.enableSendButton != enableButton) {
@@ -98,7 +92,6 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         NotificationCenter.default.addObserver(self, selector: #selector(MessageComposeBar.didShowKeyboard(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(MessageComposeBar.didHideKeyboard(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         
-        
         self.showingActionKeyboard = false;
         
         self.closeAccessoryButton.alpha = self.showAccessoryButton != nil ? 0.0 : 1.0
@@ -124,6 +117,7 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
     @IBAction func clearTextButtonAction(_ sender: Any) {
         self.clear();
     }
+    
     func composeBarFont() -> UIFont {
         return UIFont(name: "HelveticaNeue", size: 14.0)!
     }
@@ -151,8 +145,6 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         self.showAccessoryButton.transform = CGAffineTransform.identity
         self.closeAccessoryButton.isHidden = true;
         self.showAccessoryButton.isHidden = true;
-
-//        self.closeAccessoryButton.transform = CGAffineTransformScale(CGAffineTransformMakeRotation(DEG_TO_RAD(-45.0)), 0.4722, 0.4722)
     }
     
     func clear() {
@@ -171,7 +163,6 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         self.invalidateIntrinsicContentSize()
         self.setNeedsLayout()
         self.layoutIfNeeded()
-//        self.textView.text = self.textView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
 
         self.enableSendButton = (self.textView.text.characters.count > 0) || (self.attachments.count > 0)
         self.clearTextButton.isHidden = !(self.textView.text.characters.count > 0)
@@ -180,16 +171,12 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         if((self.viewWillResizeSubViews) != nil){
             self.viewWillResizeSubViews!()
         }
-
-        
-        if (self.valueDidChange != nil) {
-//            self.valueDidChange(composeBar: self)
-        }
     }
 
     func disabledSpeech(){
         self.textView.becomeFirstResponder()
     }
+    
     // MARK: event handlers
     @IBAction func accessoryButtonPressed(_ sender: AnyObject!) {
         self.textView.becomeFirstResponder()
@@ -335,8 +322,6 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
         return min(textSize.height, rect.size.height + 5);
     }
     
-   
-    
     public func speech(toTextdataDictionary dataDictionary: [AnyHashable : Any]!) {
         if(dataDictionary == nil){
             return;
@@ -361,5 +346,23 @@ class MessageComposeBar: UIView, UITextViewDelegate, UICollectionViewDataSource,
                 self.textView.text=self.speechToTextIntermediateString as String!;
             }
         }
+    }
+    
+    //Mark : deinit
+    deinit {
+        self.actionKeyboardActions = nil
+        self.attachments = nil
+        self.keyboardUserInfo = nil
+        self.keyboardImage = nil
+        self.oldKeyWindow = nil
+        self.animationWindow = nil
+        
+        self.speechToTextToolBarString = nil
+        self.speechToTextIntermediateString = nil
+        
+        self.sendButtonAction = nil
+        self.valueDidChange = nil
+        self.speechToTextButtonActionTriggered = nil
+        self.viewWillResizeSubViews = nil
     }
 }

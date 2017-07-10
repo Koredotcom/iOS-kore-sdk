@@ -53,9 +53,7 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
         self.textView.delegate = self;
         self.placeHolderTF.isUserInteractionEnabled = false;
         self.placeHolderTF.resignFirstResponder()
-
     }
-    
    
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -106,9 +104,11 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     }
 
     // MARK: UITextViewDelegate
+    
     func textViewDidBeginEditing(_ textView: UITextView) {
         self.updateTextView()
     }
+    
     func  textViewDidEndEditing(_ textView: UITextView) {
         self.updateTextView()
     }
@@ -129,6 +129,7 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
             self.cancelButton.setImage(UIImage.init(named: "done_icon"), for: UIControlState.normal)
         }
     }
+    
     // MARK: Height Calculation
 
     func calculatedTextHeight() -> CGFloat {
@@ -138,25 +139,21 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
                                                      attributes: [NSFontAttributeName: self.composeBarFont()],
                                                      context: nil)
         let textSize: CGSize = self.textView.sizeThatFits(CGSize(width: self.textView.bounds.size.width, height: 60))
-//        print("height  val --  ",min(textSize.height, rect.size.height + 5));
         var height:CGFloat = CGFloat(min(textSize.height, rect.size.height + 5));
         if(height > 66){
             height = 58;
         }
         return height;
     }
-    
-
 
     // MARK: Speech Output - sttDelegate
-
+    
     public func speech(toTextdataDictionary dataDictionary: [AnyHashable : Any]!) {
         if(dataDictionary == nil){
             return;
         }
         
         self.myTimer.invalidate()
-//        self.startTimeIntervalToSendMessage()
         
         let final:Bool = (dataDictionary["final"] as? Bool)!
         let hypotheses:NSDictionary! = (dataDictionary["hypotheses"] as! NSArray!).firstObject as! NSDictionary!;
@@ -181,10 +178,12 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     }
     
     // MARK: Message Sending
+    
     @IBAction func sendButtonAction(_ sender: Any) {
         initiateSendingMessage();
         NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
     }
+    
     func initiateSendingMessage(){
         let speechText:NSString = self.textView.text as NSString;
         let trimmedText:String = speechText.trimmingCharacters(in: NSCharacterSet.whitespaces)
@@ -192,10 +191,7 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
         if(trimmedText.characters.count > 0){
             self.sendSpeechToTextMessage()
             self.stopVoiceRecording()
-        }else{
-//            self.startTimeIntervalToSendMessage()
         }
-        
     }
     
     func sendSpeechToTextMessage()  {
@@ -224,10 +220,9 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
         self.valueChanged()
         
     }
-
     
     // MARK: Cancel SpeechToText
-
+    
     @IBAction func cancelButtonAction(_ sender: Any) {
         if((self.showCursorForSpeechDone) != nil){
             self.showCursorForSpeechDone!()
@@ -244,10 +239,10 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
         if((self.cancelledSpeechToText) != nil){
             self.cancelledSpeechToText!()
         }
-
     }
+    
     // MARK: Wave Animations initiation
-
+    
     func triggerAudioAnimation(radius:NSInteger) {
         NotificationCenter.default.addObserver(self, selector: #selector(AudioComposer.willShowKeyboard(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
 
@@ -296,7 +291,6 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     // MARK: Start/Stop Voice Recording
     
     func startVoiceRecording()  {
-        
         self.textView.resignFirstResponder()
         reuqestManager.intializeSocket(withUrl: ServerConfigs.BOT_SPEECH_SERVER, identity: "");
         reuqestManager.sttdelegate=self;
@@ -362,7 +356,6 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     func  startAnimationWaveTimer() {
         self.animationTimer = Timer.scheduledTimer(timeInterval: 0.35, target: self, selector: #selector(self.showCircleWaveAnimation), userInfo: nil, repeats: true)
         RunLoop.main.add(self.animationTimer, forMode: RunLoopMode.defaultRunLoopMode)
-        
     }
     
     func startTimeIntervalToSendMessage()  {
@@ -384,7 +377,6 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
             reuqestManager.audioQueueRecorder.updateMeters()
             self.audioPeakOutput =  self.decibelToLinear(power: reuqestManager.audioQueueRecorder.peakPower(forChannel: 0));
         }
-//        print("audio wave val --  ",self.audioPeakOutput);
     }
     
     // MARK: Decibel to Linear conversion
@@ -403,15 +395,12 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     }
     
     func disableSpeech(){
-        
         if((self.keyBoardActivated) != nil){
             if(self.textView.text.characters.count > 0){
                 self.keyBoardActivated(self.textView.text as NSString?)
             }
             self.clear()
             self.cancelSpeech()
-            
         }
     }
-    
 }

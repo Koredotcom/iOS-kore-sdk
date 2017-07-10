@@ -10,12 +10,10 @@ import UIKit
 import TOWebViewController
 import AFNetworking
 import CoreData
-import AVFoundation
 
 enum MessageThreadHeaderType : Int {
     case none = 1, sender = 2, date = 3, senderAndDate = 4
 }
-
 
 protocol BotMessagesDelegate {
     func optionsButtonTapAction(text:String)
@@ -23,46 +21,41 @@ protocol BotMessagesDelegate {
     func closeQuickReplyCards()
 }
 
-
 class BotMessagesViewController : UITableViewController, KREFetchedResultsControllerDelegate {
-    var speechSynthesizer = AVSpeechSynthesizer()
-    var insertedRowIndexPath : IndexPath? = nil
-
     var fetchedResultsController: KREFetchedResultsController? = nil
     var messagesArray:NSArray!
-    var mainContext: NSManagedObjectContext = DataStoreManager.sharedManager.coreDataManager.mainContext
     var delegate:BotMessagesDelegate?
     var shouldScrollToBottom:Bool = false
     var thread: KREThread! {
         didSet {
-            let request = NSFetchRequest<KREMessage>(entityName: "KREMessage")
-            request.predicate = NSPredicate(format: "thread.threadId == %@", self.thread.threadId!)
-
-            request.sortDescriptors = [NSSortDescriptor(key: "sentOn", ascending: true)]
-            fetchedResultsController = KREFetchedResultsController(fetchRequest: request as! NSFetchRequest<NSManagedObject>, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
-            fetchedResultsController?.tableView = self.tableView
-            fetchedResultsController?.kreDelegate = self
-            try! fetchedResultsController? .performFetch()
-            
-            self.tableView.alpha = 0
-            
-            UIView.animate(withDuration: 0, animations: {
-                self.tableView.reloadData()
-            }, completion: { (completion) in
-                self.scrollToBottom(animated: true)
-                self.tableView.alpha = 1
-            })
+            if(self.thread != nil){
+                let request = NSFetchRequest<KREMessage>(entityName: "KREMessage")
+                request.predicate = NSPredicate(format: "thread.threadId == %@", self.thread.threadId!)
+                request.sortDescriptors = [NSSortDescriptor(key: "sentOn", ascending: true)]
+                
+                let mainContext: NSManagedObjectContext = DataStoreManager.sharedManager.coreDataManager.mainContext
+                fetchedResultsController = KREFetchedResultsController(fetchRequest: request as! NSFetchRequest<NSManagedObject>, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
+                fetchedResultsController?.tableView = self.tableView
+                fetchedResultsController?.kreDelegate = self
+                try! fetchedResultsController? .performFetch()
+                
+                self.tableView.alpha = 0
+                
+                UIView.animate(withDuration: 0, animations: {
+                    self.tableView.reloadData()
+                }, completion: { (completion) in
+                    self.scrollToBottom(animated: true)
+                    self.tableView.alpha = 1
+                })
+            }
         }
     }
-    
-    let startingViewImageIndex: Int! = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.shouldScrollToBottom = false;
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 200
-
         self.tableView.separatorStyle = .none
 
         self.tableView.register(TextBubbleCell.self, forCellReuseIdentifier:"TextBubbleCell")
@@ -76,18 +69,14 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
             let point:CGPoint = CGPoint(x:0, y:self.tableView.contentSize.height - self.tableView.frame.size.height);
             self.tableView.setContentOffset(point, animated:true);
         }
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.stopSpeaking),
-            name: NSNotification.Name(rawValue: stopSpeakingNotification),
-            object: nil)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(Any.self)
+    //MARK:- removing refernces to elements
+    func prepareForDeinit(){
+        self.fetchedResultsController?.tableView = nil
+        self.fetchedResultsController?.kreDelegate = nil
+        self.fetchedResultsController = nil
     }
-
     
     // MARK: UITable view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -106,23 +95,23 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
         var cellIdentifier: String! = nil
         if let componentType = ComponentType(rawValue: (message.templateType?.intValue)!) {
             switch componentType {
-            case .text:
-                cellIdentifier = "TextBubbleCell"
-                break
-            case .image:
-                cellIdentifier = "ImageBubbleCell"
-                break
-            case .options:
-                cellIdentifier = "OptionsBubbleCell"
-                break
-            case .quickReply:
-                cellIdentifier = "QuickReplyBubbleCell"
-                break
-            case .list:
-                cellIdentifier = "ListBubbleCell"
-                break
-            default:
-                cellIdentifier = "TextBubbleCell"
+                case .text:
+                    cellIdentifier = "TextBubbleCell"
+                    break
+                case .image:
+                    cellIdentifier = "ImageBubbleCell"
+                    break
+                case .options:
+                    cellIdentifier = "OptionsBubbleCell"
+                    break
+                case .quickReply:
+                    cellIdentifier = "QuickReplyBubbleCell"
+                    break
+                case .list:
+                    cellIdentifier = "ListBubbleCell"
+                    break
+                default:
+                    cellIdentifier = "TextBubbleCell"
             }
         }
 
@@ -130,67 +119,67 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
         cell.configureWithComponents(message.components?.array as! Array<KREComponent>, maskType:maskType, templateType: ComponentType(rawValue: (message.templateType?.intValue)!)!)
         
         switch (cell.bubbleView.bubbleType!) {
-        case .text:
-            self.delegate?.closeQuickReplyCards()
-            let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
-            bubbleView.onChange = { (reload) in
-                self.tableView?.reloadRows(at: [indexPath], with: .none)
-            }
-            self.textLinkDetection(textLabel: bubbleView.textLabel)
-            break
-        case .image:
-            self.delegate?.closeQuickReplyCards()
-            cell.didSelectComponentAtIndex = { (sender, index) in
-                
-            }
-            break
-        case .options:
-            self.delegate?.closeQuickReplyCards()
-            let components: Array<KREComponent> = message.components?.array as! Array<KREComponent>
-            let bubbleView: OptionsBubbleView = cell.bubbleView as! OptionsBubbleView
-            self.textLinkDetection(textLabel: bubbleView.textLabel);
+            case .text:
+                self.delegate?.closeQuickReplyCards()
+                let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
+                bubbleView.onChange = { (reload) in
+                    self.tableView?.reloadRows(at: [indexPath], with: .none)
+                }
+                self.textLinkDetection(textLabel: bubbleView.textLabel)
+                break
+            case .image:
+                self.delegate?.closeQuickReplyCards()
+                cell.didSelectComponentAtIndex = { (sender, index) in
+                    
+                }
+                break
+            case .options:
+                self.delegate?.closeQuickReplyCards()
+                let components: Array<KREComponent> = message.components?.array as! Array<KREComponent>
+                let bubbleView: OptionsBubbleView = cell.bubbleView as! OptionsBubbleView
+                self.textLinkDetection(textLabel: bubbleView.textLabel);
 
-            bubbleView.components = components as NSArray!
-            bubbleView.optionsAction = {[weak self] (text) in
-                self?.delegate?.optionsButtonTapAction(text: text!)
-            }
-            
-            cell.bubbleView.drawBorder = true
-            break
-        case .list:
-            self.delegate?.closeQuickReplyCards()
-            let components: Array<KREComponent> = message.components?.array as! Array<KREComponent>
-            let bubbleView: ListBubbleView = cell.bubbleView as! ListBubbleView
-            self.textLinkDetection(textLabel: bubbleView.textLabel);
-
-            bubbleView.showMore = message.showMore
-            bubbleView.components = components as NSArray!
-            bubbleView.optionsAction = {[weak self] (text) in
-                if(text == "Show more"){
-                    message.showMore = true;
-                    bubbleView.invalidateIntrinsicContentSize()
-                    let indexpath:NSIndexPath = NSIndexPath.init(row: (self?.fetchedResultsController?.fetchedObjects?.index(of: message))!, section: 0)
-                    self?.tableView.reloadRows(at: [indexpath as IndexPath], with: UITableViewRowAnimation.automatic)
-
-                }else{
+                bubbleView.components = components as NSArray!
+                bubbleView.optionsAction = {[weak self] (text) in
                     self?.delegate?.optionsButtonTapAction(text: text!)
                 }
-            }
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.launchWebViewWithURLLink(urlString: text!)
-            }
-            cell.bubbleView.drawBorder = true
-            break
-        case .quickReply:
-            let lastIndexPath = getIndexPathForLastItem()
-            if (lastIndexPath.isEqual(indexPath)) {
-                self.delegate?.populateQuickReplyCards(with: message)
-            }
-            break
-        default:
-            self.delegate?.closeQuickReplyCards()
-            cell.didSelectComponentAtIndex = nil
-            break
+                
+                cell.bubbleView.drawBorder = true
+                break
+            case .list:
+                self.delegate?.closeQuickReplyCards()
+                let components: Array<KREComponent> = message.components?.array as! Array<KREComponent>
+                let bubbleView: ListBubbleView = cell.bubbleView as! ListBubbleView
+                self.textLinkDetection(textLabel: bubbleView.textLabel);
+
+                bubbleView.showMore = message.showMore
+                bubbleView.components = components as NSArray!
+                bubbleView.optionsAction = {[weak self] (text) in
+                    if(text == "Show more"){
+                        message.showMore = true;
+                        bubbleView.invalidateIntrinsicContentSize()
+                        let indexpath:NSIndexPath = NSIndexPath.init(row: (self?.fetchedResultsController?.fetchedObjects?.index(of: message))!, section: 0)
+                        self?.tableView.reloadRows(at: [indexpath as IndexPath], with: UITableViewRowAnimation.automatic)
+
+                    }else{
+                        self?.delegate?.optionsButtonTapAction(text: text!)
+                    }
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.launchWebViewWithURLLink(urlString: text!)
+                }
+                cell.bubbleView.drawBorder = true
+                break
+            case .quickReply:
+                let lastIndexPath = getIndexPathForLastItem()
+                if (lastIndexPath.isEqual(indexPath)) {
+                    self.delegate?.populateQuickReplyCards(with: message)
+                }
+                break
+            default:
+                self.delegate?.closeQuickReplyCards()
+                cell.didSelectComponentAtIndex = nil
+                break
         }
         cell.layoutIfNeeded()
         return cell
@@ -219,33 +208,6 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
             self.shouldScrollToBottom = true
         }
     }
-    
-    func fetchedControllerDidAddRowAt(indexPath:IndexPath){
-        if(!(indexPath == self.insertedRowIndexPath) && isSpeakingEnabled){
-            self.insertedRowIndexPath = indexPath
-            let message: KREMessage = fetchedResultsController!.object(at: indexPath) as! KREMessage
-            if (!message.isSender) {
-//                if(self.speechSynthesizer.isSpeaking){
-//                    self.stopTTS()
-//                }
-                
-                let components = message.components
-                if ((components?.count)! > 0) {
-                    let component: KREComponent = components![0] as! KREComponent
-                    if (!component.isKind(of: KREComponent.self)) {
-                        return;
-                    }
-                    
-                    if ((component.componentInfo) != nil) {
-                        let string: String = component.componentInfo! as String
-                        let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
-                        let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString)
-                        self.readOutText(text: parsedString)
-                    }
-                }
-            }
-        }
-    }
 
     // MARK: - scrollTo related methods
     func scrollToBottom(animated animate: Bool) {
@@ -270,28 +232,11 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
     func textLinkDetection(textLabel:KREAttributedLabel) {
         textLabel.detectionBlock = {(hotword, string) in
             switch hotword {
-            case KREAttributedHotWordMention:
-                break
-            case KREAttributedHotWordHashtag:
-                break
-            case KREAttributedHotWordLink:
-                let url: URL = URL(string: string!)!
-                let webViewController: TOWebViewController = TOWebViewController(url: url)
-                let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
-                webNavigationController.tabBarItem.title = "Bots"
-                
-                self.present(webNavigationController, animated: true, completion: {
-                    
-                })
-                break
-            case KREAttributedHotWordPhoneNumber:
-                break
-            case KREAttributedHotWordUserDefined:
-                break
-            case KREAttributedHotWordPlainText:
-                break
-            default:
-                break
+                case KREAttributedHotWordLink:
+                    self.launchWebViewWithURLLink(urlString: string!)
+                    break
+                default:
+                    break
             }
         }
     }
@@ -303,9 +248,7 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
             let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
             webNavigationController.tabBarItem.title = "Bots"
             
-            self.present(webNavigationController, animated: true, completion: {
-                
-            })
+            self.present(webNavigationController, animated: true, completion:nil)
         }
     }
     
@@ -316,25 +259,11 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
         }
     }
     
-    func readOutText(text:String) {
-        let string = text
-        print("Reading text: %@", text);
-        let speechUtterance = AVSpeechUtterance(string: string)
-        self.speechSynthesizer.speak(speechUtterance)
-    }
-    
-    func stopSpeaking(notification:Notification) {
-        self.stopTTS()
-    }
-    
-    func stopTTS(){
-        if(self.speechSynthesizer.isSpeaking){
-            self.speechSynthesizer.stopSpeaking(at: AVSpeechBoundary.immediate)
-        }
-    }
-    
     // MARK:- deinit
     deinit {
-        
+        self.fetchedResultsController = nil
+        self.messagesArray = nil
+        self.delegate = nil
+        self.thread = nil
     }
 }
