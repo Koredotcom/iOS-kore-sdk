@@ -89,7 +89,6 @@
 }
 
 - (void)timerFiredToRemoveTypingStatus:(NSTimer*)timer {
-    NSString *userId = timer.userInfo;
     [timer invalidate];
     [self.dataSource removeAllObjects];
     if([self.dataSource count]==0) {

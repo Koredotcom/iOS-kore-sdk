@@ -48,7 +48,6 @@ class TextBubbleView : BubbleView {
                     let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
 
                     self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
-                    self.textSizeThatFitsWithString(self.textLabel.attributedText!)
                 }
             }
         }
@@ -134,14 +133,15 @@ class QuickReplyBubbleView : TextBubbleView {
                 if (component.componentDesc != nil) {
                     let jsonString = component.componentDesc
                     let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
-                        if (jsonObject["text"] != nil) {
-                            let string: String = jsonObject["text"] as! String
-                            let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
-                            let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
-        
-                            self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
-                            self.textSizeThatFitsWithString(self.textLabel.attributedText!)
-                        }
+                    if (jsonObject["text"] != nil) {
+                        let string: String = jsonObject["text"] as! String
+                        let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
+                        let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
+    
+                        self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
+                    }else{
+                        self.textLabel.setHTMLString("Pick an option:", withWidth: kMaxTextWidth)
+                    }
                 }
             }
         }

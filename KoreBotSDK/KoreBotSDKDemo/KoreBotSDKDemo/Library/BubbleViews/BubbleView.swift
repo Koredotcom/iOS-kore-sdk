@@ -125,6 +125,7 @@ class BubbleView: UIView {
                 bubbleView = OptionsBubbleView()
                 break
             case .quickReply:
+                bubbleView = QuickReplyBubbleView()
                 break
             case .list:
                 bubbleView = ListBubbleView()
