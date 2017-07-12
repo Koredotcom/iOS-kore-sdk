@@ -95,7 +95,7 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
     
     // MARK:- table view
     public let optionsTableView: UITableView = {
-        let optionsView = UITableView(frame: CGRect.zero, style: .grouped)
+        let optionsView = UITableView(frame: CGRect.zero, style: .plain)
         optionsView.translatesAutoresizingMaskIntoConstraints = false
         optionsView.showsVerticalScrollIndicator = false
         optionsView.showsHorizontalScrollIndicator = false

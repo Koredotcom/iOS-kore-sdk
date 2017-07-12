@@ -64,6 +64,7 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
         self.tableView.register(ListBubbleCell.self, forCellReuseIdentifier:"ListBubbleCell")
         self.tableView.register(MessageBubbleCell.self, forCellReuseIdentifier:"MessageBubbleCell")
         self.tableView.register(QuickReplyBubbleCell.self, forCellReuseIdentifier:"QuickReplyBubbleCell")
+        self.tableView.register(CarouselBubbleCell.self, forCellReuseIdentifier:"CarouselBubbleCell")
 
         if (self.tableView.contentSize.height > self.tableView.frame.size.height) {
             let point:CGPoint = CGPoint(x:0, y:self.tableView.contentSize.height - self.tableView.frame.size.height);
@@ -109,6 +110,9 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
                     break
                 case .list:
                     cellIdentifier = "ListBubbleCell"
+                    break
+                case .carousel:
+                    cellIdentifier = "CarouselBubbleCell"
                     break
                 default:
                     cellIdentifier = "TextBubbleCell"
@@ -168,6 +172,7 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.launchWebViewWithURLLink(urlString: text!)
                 }
+                
                 cell.bubbleView.drawBorder = true
                 break
             case .quickReply:
@@ -175,6 +180,18 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
                 if (lastIndexPath.isEqual(indexPath)) {
                     self.delegate?.populateQuickReplyCards(with: message)
                 }
+                break
+            case .carousel:
+                self.delegate?.closeQuickReplyCards()
+                let bubbleView: CarouselBubbleView = cell.bubbleView as! CarouselBubbleView
+                bubbleView.optionsAction = {[weak self] (text) in
+                    self?.delegate?.optionsButtonTapAction(text: text!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.launchWebViewWithURLLink(urlString: text!)
+                }
+                
+                cell.bubbleView.drawBorder = false
                 break
             default:
                 self.delegate?.closeQuickReplyCards()

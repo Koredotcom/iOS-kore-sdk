@@ -17,7 +17,7 @@ enum BubbleMaskType : Int {
 }
 
 enum BubbleType : Int  {
-    case view = 1, text = 2, image = 3, options = 4, quickReply = 5, list = 6
+    case view = 1, text = 2, image = 3, options = 4, quickReply = 5, list = 6, carousel = 7
 }
 
 let BubbleViewRightTint: UIColor = Common.UIColorRGB(0x0578FE)
@@ -112,25 +112,26 @@ class BubbleView: UIView {
         var bubbleView: BubbleView!
         
         switch (bubbleType) {
-        case .view:
-            bubbleView = BubbleView()
-            break
-        case .text:
-            bubbleView = TextBubbleView()
-            break
-        case .image:
-            bubbleView = Bundle.main.loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as! BubbleView
-            break
-        case .options:
-            bubbleView = OptionsBubbleView()
-            break
-        case .quickReply:
-            bubbleView = QuickReplyBubbleView()
-            break
-        case .list:
-            bubbleView = ListBubbleView()
-            break
-
+            case .view:
+                bubbleView = BubbleView()
+                break
+            case .text:
+                bubbleView = TextBubbleView()
+                break
+            case .image:
+                bubbleView = Bundle.main.loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as! BubbleView
+                break
+            case .options:
+                bubbleView = OptionsBubbleView()
+                break
+            case .quickReply:
+                break
+            case .list:
+                bubbleView = ListBubbleView()
+                break
+            case .carousel:
+                bubbleView = CarouselBubbleView()
+                break
         }
         bubbleView.bubbleType = bubbleType
         
@@ -139,6 +140,11 @@ class BubbleView: UIView {
     
     // MARK: 
     func initialize() {
+        
+    }
+    
+    //MARK:- Method to be overridden
+    func prepareForReuse() {
         
     }
     
@@ -190,30 +196,6 @@ class BubbleView: UIView {
     }
     
     func applyBubbleMask() {
-        let path: UIBezierPath = UIBezierPath()
-        let height: CGFloat = self.bounds.size.height
-        let width: CGFloat = self.bounds.size.width
-        
-        var lOffset: CGFloat = 0.0
-        var rOffset: CGFloat = 0.0
-        
-        switch (self.tailPosition!) {
-        case .none:
-            lOffset = 0
-            rOffset = 0
-            break
-            
-        case .left:
-            lOffset = BubbleViewTailWidth
-            rOffset = 0
-            break
-            
-        case .right:
-            lOffset = 0
-            rOffset = BubbleViewTailWidth
-            break
-        }
-//        self.clearBubbleMask()
         let mask: CAShapeLayer = CAShapeLayer()
 
         mask.path = self.createBezierPath().cgPath
@@ -291,6 +273,4 @@ class BubbleView: UIView {
         aPath.close()
         return aPath
     }
-    
-
 }

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 enum ComponentType : Int {
-    case unknown = 1, text = 2, image = 3, options = 4, quickReply = 5, list = 6
+    case unknown = 1, text = 2, image = 3, options = 4, quickReply = 5, list = 6, carousel = 7
 }
 
 class Component : NSObject {
@@ -62,3 +62,10 @@ class ListComponent : Component {
     }
 }
 
+class CarouselComponent : Component {
+    var payload: NSString!
+    override init() {
+        super.init()
+        componentType = .carousel
+    }
+}

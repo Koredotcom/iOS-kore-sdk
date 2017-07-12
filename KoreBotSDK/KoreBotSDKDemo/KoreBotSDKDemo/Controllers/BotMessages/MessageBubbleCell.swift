@@ -198,10 +198,13 @@ class MessageBubbleCell : UITableViewCell {
                 bubbleView = BubbleView.bubbleWithType(.options)
                 break
             case .quickReply:
-                bubbleView = BubbleView.bubbleWithType(.quickReply)
+                bubbleView = BubbleView.bubbleWithType(.options)
                 break
             case .list:
                 bubbleView = BubbleView.bubbleWithType(.list)
+                break
+            case .carousel:
+                bubbleView = BubbleView.bubbleWithType(.carousel)
                 break
             case .unknown:
                 bubbleView = BubbleView.bubbleWithType(.text)
@@ -223,8 +226,8 @@ class MessageBubbleCell : UITableViewCell {
             case .list:
                 bubbleView = BubbleView.bubbleWithType(.list)
                 break
-            case .quickReply:
-                bubbleView = BubbleView.bubbleWithType(.quickReply)
+            case .carousel:
+                bubbleView = BubbleView.bubbleWithType(.carousel)
                 break
             default:
                 bubbleView = BubbleView.bubbleWithType(.text)
@@ -391,3 +394,15 @@ class ListBubbleCell : MessageBubbleCell {
     }
 }
 
+class CarouselBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> BubbleType {
+        return BubbleType.carousel
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 35
+            self.bubbleTrailingConstraint.priority = 999
+        }
+    }
+}

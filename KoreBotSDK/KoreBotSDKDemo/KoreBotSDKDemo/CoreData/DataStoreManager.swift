@@ -254,7 +254,18 @@ class DataStoreManager: NSObject {
                             nMessage.thread = thread
                             thread.addToMessages(_value: nMessage)
                             break
-
+                        case .carousel:
+                            let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
+                            let carouselComponent: CarouselComponent = component as! CarouselComponent
+                            
+                            nComponent.componentId = ""
+                            nComponent.componentDesc = carouselComponent.payload as String?
+                            nMessage.addComponentsObject(_value: nComponent)
+                            nComponent.message = nMessage
+                            nMessage.templateType = ComponentType.carousel.rawValue as NSNumber?
+                            nMessage.thread = thread
+                            thread.addToMessages(_value: nMessage)
+                            break
                         default:
                             let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
                             let textComponent: TextComponent = component as! TextComponent

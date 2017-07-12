@@ -20,7 +20,7 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var placeHolderTF: UITextField!
-    let reuqestManager:RequestManager=RequestManager.init();
+    let requestManager: RequestManager = RequestManager.init()
     var speechToTextToolBarString: NSMutableString!
     var speechToTextIntermediateString: NSMutableString!
     var speechToTextTempString: NSMutableString!
@@ -292,8 +292,8 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     
     func startVoiceRecording()  {
         self.textView.resignFirstResponder()
-        reuqestManager.intializeSocket(withUrl: ServerConfigs.BOT_SPEECH_SERVER, identity: "");
-        reuqestManager.sttdelegate=self;
+        requestManager.intializeSocket(withUrl: ServerConfigs.BOT_SPEECH_SERVER, identity: "");
+        requestManager.sttdelegate=self;
         self.audioIconSize = 20;
         self.animateBGView.isUserInteractionEnabled = false
         self.audioIconButton.setImage(UIImage(named: "audio_icon")!, for: .normal)
@@ -325,8 +325,8 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
        
         self.speechToTextToolBarString="";
         self.speechToTextIntermediateString="";
-        reuqestManager.sttdelegate=nil;
-        reuqestManager.stopAudioQueueRecording();
+        requestManager.sttdelegate=nil;
+        requestManager.stopAudioQueueRecording();
         self.textView.text = ""
         self.animateBGView.isUserInteractionEnabled = true
         self.audioIconButton.setImage(UIImage(named: "speech")!, for: .normal)
@@ -373,9 +373,9 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     }
     
     func updateRecordTimer() {
-        if((reuqestManager.audioQueueRecorder) != nil){
-            reuqestManager.audioQueueRecorder.updateMeters()
-            self.audioPeakOutput =  self.decibelToLinear(power: reuqestManager.audioQueueRecorder.peakPower(forChannel: 0));
+        if((requestManager.audioQueueRecorder) != nil){
+            requestManager.audioQueueRecorder.updateMeters()
+            self.audioPeakOutput =  self.decibelToLinear(power: requestManager.audioQueueRecorder.peakPower(forChannel: 0));
         }
     }
     

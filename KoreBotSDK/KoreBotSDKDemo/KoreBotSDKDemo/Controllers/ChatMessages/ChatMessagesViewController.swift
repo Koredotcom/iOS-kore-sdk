@@ -62,13 +62,11 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     var quickSelectData: NSArray!
     var isSpeechToTextActive: Bool = false
     var typingStatusView:KRETypingStatusView?
-    var identity: String!
     var speechSynthesizer: AVSpeechSynthesizer? = nil
     
     var botClient: BotClient! {
         didSet {
             if(botClient != nil){
-                self.identity = botClient.userInfoModel.identity
                 // events
                 botClient.connectionWillOpen = { () in
                     
@@ -140,6 +138,13 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
                                 optionsComponent.cInfo = cInfoBody
                                 
                                 message.addComponent(optionsComponent)
+                            }else if (templateType == "carousel") {
+                                self?.showTypingStatusForBotsAction()
+                                
+                                let carouselComponent: CarouselComponent = CarouselComponent()
+                                carouselComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                                
+                                message.addComponent(carouselComponent)
                             }
                         }
 
@@ -353,8 +358,8 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         self.audioComposer.sendButtonAction = { [weak self] (composeBar, message) in
             self?.sendMessage(message!)
         }
-        if (self.identity != nil && self.identity.characters.count > 0) {
-            self.audioComposer.identity = self.identity
+        if(self.botClient != nil){
+            self.audioComposer.identity = self.botClient.userInfoModel.identity
         }
         
         self.audioComposer.cancelledSpeechToText = {
@@ -452,7 +457,7 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         self.threadContentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[thread]|", options:[], metrics:nil, views:["thread" : self.threadTableViewController.tableView]))
         
         self.threadTableViewController.thread = self.thread
-        self.threadTableViewController.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
+        self.threadTableViewController.tableView.contentInset = UIEdgeInsetsMake(10, 0, 10, 0);
     }
     
     func createQuickReplyView() {
