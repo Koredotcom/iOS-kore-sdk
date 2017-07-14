@@ -8,14 +8,27 @@
 
 import UIKit
 
+public class Word: NSObject {
+    var title: String!
+    var payload: String!
+    var imageURL: String!
+    
+    public init(title: String, payload: String, imageURL: String) {
+        super.init()
+        self.title = title
+        self.payload = payload
+        self.imageURL = imageURL
+    }
+}
+
 public class KREQuickSelectView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    var wordList: WordList!
+    var wordList: [Word]!
     var collectionView: KRECollectionView! = nil
     var flowLayout:UICollectionViewFlowLayout! = nil
     var prototypeCell: KRETokenCollectionViewCell! = nil
     public var sendQuickReplyAction: ((_ text: String?) -> Void)!
 
-    let cellHeight: CGFloat = 41
+    let cellHeight: CGFloat = 40
     // MARK:- init
     override init (frame: CGRect) {
         super.init(frame: frame)
@@ -38,17 +51,17 @@ public class KREQuickSelectView: UIView, UICollectionViewDelegate, UICollectionV
     
     // MARK:- setup collectionView
     func setup() {
-        wordList = WordList()
-        
+        self.backgroundColor = UIColor.clear
+        wordList = [Word]()
         prototypeCell = KRETokenCollectionViewCell()
         
         // configure layout
         flowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = CGSize.zero
         flowLayout.scrollDirection = UICollectionViewScrollDirection.horizontal
-        flowLayout.minimumInteritemSpacing = 5
+        flowLayout.minimumInteritemSpacing = 8.0
         flowLayout.minimumLineSpacing = 1
-        flowLayout.sectionInset = UIEdgeInsetsMake(0.0, 10.0, 0.0, 10.0)
+        flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 10.0, 10.0, 10.0)
 
         // collectionView initialization
         collectionView = KRECollectionView(frame: self.bounds, collectionViewLayout: flowLayout)
@@ -72,9 +85,8 @@ public class KREQuickSelectView: UIView, UICollectionViewDelegate, UICollectionV
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[collectionView]|", options:[], metrics:nil, views:views))
     }
     
-    public func setWordsList(words:NSArray, payloads: NSArray) {
-        self.wordList.words = words as! [String]
-        self.wordList.payloads = payloads as! [String]
+    public func setWordsList(words:Array<Word>) {
+        self.wordList = words
         self.collectionView.reloadData()
     }
     
@@ -84,37 +96,37 @@ public class KREQuickSelectView: UIView, UICollectionViewDelegate, UICollectionV
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.wordList.words.count
+        return self.wordList.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "KRETokenCollectionViewCell", for: indexPath) as! KRETokenCollectionViewCell
-        cell.labelText = wordList.words[(indexPath as NSIndexPath).row]
+        let word = wordList[(indexPath as NSIndexPath).row]
+        cell.labelText = word.title
+        cell.imageURL = word.imageURL
         cell.krefocused = false
-
+        cell.layoutIfNeeded()
         return cell
     }
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell: KRETokenCollectionViewCell = collectionView.cellForItem(at: indexPath) as! KRETokenCollectionViewCell
         if(self.sendQuickReplyAction != nil){
-            let text: String = wordList.payloads[(indexPath as NSIndexPath).row]
-            self.sendQuickReplyAction(text)
+            let word = wordList[(indexPath as NSIndexPath).row]
+            self.sendQuickReplyAction(word.payload)
         }
         cell.krefocused = true
     }
     
     // MARK: - UICollectionViewDelegateContactFlowLayout
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let string: String = wordList.words[(indexPath as NSIndexPath).row]
-        let widthForItem: CGFloat = prototypeCell.widthForCell(string: string)
-        return CGSize(width: min(self.maxContentWidth(), widthForItem), height: cellHeight);
+        let word = wordList[(indexPath as NSIndexPath).row]
+        let widthForItem: CGFloat = self.prototypeCell.widthForCell(string: word.title, withImage: (word.imageURL.characters.count != 0), height: cellHeight)
+        return CGSize(width: min(self.maxContentWidth(), widthForItem), height: cellHeight)
     }
     
-
     func maxContentWidth() -> CGFloat {
         let collectionViewLayout: UICollectionViewFlowLayout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-
         let sectionInset: UIEdgeInsets = collectionViewLayout.sectionInset
         return self.frame.size.width - sectionInset.left - sectionInset.right;
     }

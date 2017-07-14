@@ -320,14 +320,23 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
                 return;
             }
             if ((component.componentDesc) != nil) {
-                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
-                let quickRepliesArr:NSArray = jsonObject.value(forKey: "quick_replies") as! NSArray;
                 if (self.isSpeechToTextActive == false) {
                     self.updateQuickSelectViewConstraints()
                 }
-                let quickRepliesWordsArr:NSArray = quickRepliesArr.value(forKeyPath: "title") as! NSArray
-                let quickRepliesPayloadsArr:NSArray = quickRepliesArr.value(forKeyPath: "payload") as! NSArray
-                self.quickReplyView.setWordsList(words: quickRepliesWordsArr, payloads: quickRepliesPayloadsArr)
+                
+                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
+                let quickReplies: Array<Dictionary<String, String>> = jsonObject["quick_replies"] as! Array<Dictionary<String, String>>
+                var words: Array<Word> = Array<Word>()
+                
+                for dictionary in quickReplies {
+                    let title: String = dictionary["title"] != nil ? dictionary["title"]! : ""
+                    let payload: String = dictionary["payload"] != nil ? dictionary["payload"]! : ""
+                    let imageURL: String = dictionary["image_url"] != nil ? dictionary["image_url"]! : ""
+                    
+                    let word: Word = Word(title: title, payload: payload, imageURL: imageURL)
+                    words.append(word)
+                }
+                self.quickReplyView.setWordsList(words: words)
             }
         } else if(message != nil) {
             self.closeQuickSelectViewConstraints()
@@ -509,7 +518,7 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     }
     
     func updateQuickSelectViewConstraints() {
-        self.quickSelectHeightConstraint.constant = 44.0
+        self.quickSelectHeightConstraint.constant = 60.0
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 5, options: [], animations: {
             self.view.layoutIfNeeded()
