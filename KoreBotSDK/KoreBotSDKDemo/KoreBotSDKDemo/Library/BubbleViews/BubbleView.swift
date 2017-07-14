@@ -36,42 +36,7 @@ let kBubbleViewCurveControlPointRatio: CGFloat = (BubbleViewCurveControlPoint / 
 let BubbleViewTailWidth: CGFloat = 9.0
 let BubbleViewTailHeight: CGFloat = 14.0
 
-let BubbleViewTailControlPointY: CGFloat = 6.0
-let BubbleViewTailControlPointX: CGFloat = 5.0
-
-let  BubbleViewMaxWidth: CGFloat = (UIScreen.main.bounds.size.width - 110.0)
-
-
-class MaskedBorderView : UIView {
-
-    init() {
-        super.init(frame: CGRect.zero)
-        self.backgroundColor = UIColor.clear
-    }
-
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)!
-    }
-    
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        
-        if (self.superview!.layer.mask != nil && self.superview!.layer.mask!.isKind(of: CAShapeLayer.self) == true && self.superview!.isKind(of: BubbleView.self) == true) {
-            
-            let bubbleView: BubbleView = self.superview as! BubbleView
-            let context:CGContext = UIGraphicsGetCurrentContext()!
-            
-            context.setStrokeColor(Common.UIColorRGB(0xebebeb).cgColor)
-            context.setLineWidth(1.5)
-            
-            let mask: CAShapeLayer = bubbleView.layer.mask as! CAShapeLayer
-            
-            context.addPath(mask.path!)
-            context.strokePath()
-        }
-    }
-}
-
+let BubbleViewMaxWidth: CGFloat = (UIScreen.main.bounds.size.width - 110.0)
 
 class BubbleView: UIView {
     var tailPosition: BubbleMaskTailPosition! {
@@ -81,8 +46,9 @@ class BubbleView: UIView {
     }
     var maskType: BubbleMaskType! 
     var bubbleType: BubbleType!
-    var borderView: MaskedBorderView!
     var didSelectComponentAtIndex:((Int) -> Void)!
+    var maskLayer: CAShapeLayer!
+    var borderLayer: CAShapeLayer!
 
     var components:NSArray! {
         didSet(c) {
@@ -95,7 +61,6 @@ class BubbleView: UIView {
             self.setNeedsLayout()
         }
     }
-    var roundedEdge: Bool = false
     
     // MARK: init
     init() {
@@ -156,9 +121,6 @@ class BubbleView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        if((self.layer.mask) != nil){
-            self.clearBubbleMask()
-        }
         self.applyBubbleMask()
     }
     
@@ -197,36 +159,31 @@ class BubbleView: UIView {
     }
     
     func applyBubbleMask() {
-        let mask: CAShapeLayer = CAShapeLayer()
-
-        mask.path = self.createBezierPath().cgPath
-        mask.position = CGPoint(x:0, y:0)
-        self.layer.mask = mask
+        if(self.maskLayer == nil){
+            self.maskLayer = CAShapeLayer()
+            self.layer.mask = self.maskLayer
+        }
+        self.maskLayer.path = self.createBezierPath().cgPath
+        self.maskLayer.position = CGPoint(x:0, y:0)
         
         if (self.drawBorder) {
-            if (self.borderView == nil) {
-                self.borderView = MaskedBorderView()
-                self.borderView.isUserInteractionEnabled = false
-                self.addSubview(borderView)
+            if(self.borderLayer == nil){
+                self.borderLayer = CAShapeLayer()
+                self.layer.addSublayer(self.borderLayer)
             }
-            
-            self.borderView.frame = self.bounds
+            self.borderLayer.path = self.maskLayer.path // Reuse the Bezier path
+            self.borderLayer.fillColor = UIColor.clear.cgColor
+            self.borderLayer.strokeColor = Common.UIColorRGB(0xebebeb).cgColor
+            self.borderLayer.lineWidth = 1.5
+            self.borderLayer.frame = self.bounds
         } else {
-            if (self.borderView != nil) {
-                self.borderView.removeFromSuperview()
-                self.borderView = nil
+            if (self.borderLayer != nil) {
+                self.borderLayer.removeFromSuperlayer()
+                self.borderLayer = nil
             }
-
-        }
-        if (self.drawBorder) {
-            self.borderView.isUserInteractionEnabled = false
         }
 
         self.setNeedsDisplay()
-    }
-    
-    func clearBubbleMask() {
-        self.layer.mask = nil
     }
     
     // MARK: populate components 
@@ -236,15 +193,12 @@ class BubbleView: UIView {
     
     func createBezierPath() -> UIBezierPath {
         // Drawing code
-        var cornerRadius: CGFloat = 20
+        let cornerRadius: CGFloat = 20
         let padding: CGFloat = 0
         let aPath = UIBezierPath()
         let leftPadding:CGFloat = 10.0
 
         var frame = self.bounds
-        if(frame.size.height > 300){
-            cornerRadius = 4
-        }
         
         if(self.tailPosition == .left){
             frame.origin.x += padding;

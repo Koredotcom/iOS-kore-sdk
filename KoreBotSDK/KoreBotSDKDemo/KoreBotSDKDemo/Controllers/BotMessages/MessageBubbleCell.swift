@@ -390,10 +390,25 @@ class OptionsBubbleCell : MessageBubbleCell {
     override func bubbleType() -> BubbleType {
         return BubbleType.options
     }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = 999
+        }
+    }
 }
+
 class ListBubbleCell : MessageBubbleCell {
     override func bubbleType() -> BubbleType {
         return BubbleType.list
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = 999
+        }
     }
 }
 

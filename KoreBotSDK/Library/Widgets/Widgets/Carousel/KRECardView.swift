@@ -25,6 +25,9 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     var textLabel: UILabel!
     var options: Array<KREOption> = Array<KREOption>()
     
+    var maskLayer: CAShapeLayer!
+    var borderLayer: CAShapeLayer!
+    
     public var optionsAction: ((_ text: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
     
@@ -41,7 +44,7 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     static func getAttributedString(data: NSDictionary) -> NSMutableAttributedString {
         var string = data["title"] as! String
         if(string.characters.count > titleCharLimit){
-            string = string.substring(from: string.index(string.startIndex, offsetBy: titleCharLimit-3))
+            string = string.substring(to: string.index(string.startIndex, offsetBy: titleCharLimit-3))
             string += "..."
         }
         
@@ -114,7 +117,6 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         let count: Int = min(buttons.count, KRECardView.buttonLimit)
         
         self.optionsView = KREOptionsView()
-        self.optionsView.optionsViewType = 1
         self.optionsView.translatesAutoresizingMaskIntoConstraints = false
         self.optionsView.isUserInteractionEnabled = true
         self.optionsView.contentMode = UIViewContentMode.topLeft
@@ -129,8 +131,8 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         
         for i in 0..<count {
             let dictionary = buttons[i]
-            let option: KREOption = KREOption(name: dictionary["title"] as! String, desc: dictionary["title"] as! String, type: dictionary["type"] as! String, index: i)
-            option.setButtonInfo(info: dictionary as! Dictionary<String, String>)
+            let option: KREOption = KREOption(title: dictionary["title"] as! String, subTitle: "", imageURL: "", optionType: .button)
+            option.setDefaultActionInfo(info: dictionary as! Dictionary<String, String>)
             options.append(option)
         }
         self.optionsView.options = options
@@ -177,19 +179,24 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     }
     
     func applyBubbleMask() {
-        let mask: CAShapeLayer = CAShapeLayer()
-        mask.path = self.createBezierPath().cgPath
-        mask.position = CGPoint(x:0, y:0)
-        self.layer.mask = mask
+        if(self.maskLayer == nil){
+            self.maskLayer = CAShapeLayer()
+            self.layer.mask = self.maskLayer
+        }
+        self.maskLayer.path = self.createBezierPath().cgPath
+        self.maskLayer.position = CGPoint(x:0, y:0)
         
         // Add border
-        let borderLayer = CAShapeLayer()
-        borderLayer.path = mask.path // Reuse the Bezier path
-        borderLayer.fillColor = UIColor.clear.cgColor
-        borderLayer.strokeColor = UIColor.lightGray.cgColor
-        borderLayer.lineWidth = 1.0
-        borderLayer.frame = self.bounds
-        self.layer.addSublayer(borderLayer)
+        if(self.borderLayer == nil){
+            self.borderLayer = CAShapeLayer()
+            self.layer.addSublayer(self.borderLayer)
+        }
+        self.borderLayer.path = self.maskLayer.path // Reuse the Bezier path
+        self.borderLayer.fillColor = UIColor.clear.cgColor
+        self.borderLayer.strokeColor = Common.UIColorRGB(0xebebeb).cgColor
+        self.borderLayer.lineWidth = 1.5
+        self.borderLayer.frame = self.bounds
+        
         self.setNeedsDisplay()
     }
     

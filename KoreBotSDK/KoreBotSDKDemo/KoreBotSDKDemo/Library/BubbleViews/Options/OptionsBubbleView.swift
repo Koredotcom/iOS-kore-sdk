@@ -12,35 +12,18 @@ import KoreWidgets
 
 class OptionsBubbleView: BubbleView {
     
-    func kTextColor() -> UIColor {
-        return (self.tailPosition == BubbleMaskTailPosition.left ? Common.UIColorRGB(0x484848) : Common.UIColorRGB(0xFFFFFF))
-    }
-    
-    func kLeftMargin() -> CGFloat {
-        return (self.tailPosition == BubbleMaskTailPosition.left ? 20.0 : 13.0)
-    }
-    
-    func kRightMargin() -> CGFloat {
-        return (self.tailPosition == BubbleMaskTailPosition.left ? 10.0 : 17.0)
-    }
-    
-    let kVerticalMargin: CGFloat = 10.0
-    let kMaxTextWidth: CGFloat = (BubbleViewMaxWidth)
-    let kMaxRowHeight: CGFloat = 44
+    let viewMaxWidth: CGFloat = (UIScreen.main.bounds.size.width - 90.0)
+    static let buttonsLimit: Int = 3
+    static let headerTextLimit: Int = 640
     let markdownParser: MarkdownParser = MarkdownParser()
-
-    var optionsView: KREOptionsView!
+    
     var textLabel: KREAttributedLabel!
+    var optionsView: KREOptionsView!
 
     var options: Array<KREOption> = Array<KREOption>()
     
     public var optionsAction: ((_ text: String?) -> Void)!
-
-    override var tailPosition: BubbleMaskTailPosition! {
-        didSet {
-            self.setNeedsLayout()
-        }
-    }
+    public var linkAction: ((_ text: String?) -> Void)!
     
     override init() {
         super.init()
@@ -56,6 +39,7 @@ class OptionsBubbleView: BubbleView {
         
         self.textLabel = KREAttributedLabel(frame: CGRect.zero)
         self.textLabel.textColor = Common.UIColorRGB(0x444444)
+        self.textLabel.backgroundColor = UIColor.clear
         self.textLabel.mentionTextColor = Common.UIColorRGB(0x8ac85a)
         self.textLabel.hashtagTextColor = Common.UIColorRGB(0x8ac85a)
         self.textLabel.linkTextColor = Common.UIColorRGB(0x0076FF)
@@ -64,33 +48,32 @@ class OptionsBubbleView: BubbleView {
         self.textLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.textLabel.isUserInteractionEnabled = true
         self.textLabel.contentMode = UIViewContentMode.topLeft
-        
+        self.textLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.textLabel)
         
         self.optionsView = KREOptionsView()
-        self.optionsView.optionsViewType = 1
         self.optionsView.translatesAutoresizingMaskIntoConstraints = false
         self.optionsView.isUserInteractionEnabled = true
         self.optionsView.contentMode = UIViewContentMode.topLeft
         self.addSubview(self.optionsView)
-        let views: [String: UIView] = ["optionsView": optionsView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[optionsView]|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[optionsView]|", options: [], metrics: nil, views: views))
+        
+        let views: [String: UIView] = ["textLabel": textLabel, "optionsView": optionsView]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[textLabel]-10-[optionsView]|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[textLabel]-10-|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[optionsView]|", options: [], metrics: nil, views: views))
+        
+        self.textLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: UILayoutConstraintAxis.vertical)
         
         self.optionsView.optionsButtonAction = {[weak self] (text) in
             if((self?.optionsAction) != nil){
                 self?.optionsAction(text)
             }
         }
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        let textSize: CGSize = self.textSizeThatFits()
-        self.textLabel.frame = CGRect(x: self.kLeftMargin(), y: self.kVerticalMargin - 4, width: textSize.width, height: textSize.height + 16 + self.kVerticalMargin-5)
-        self.textLabel.edgeInset = UIEdgeInsetsMake(5, 15, 5, 5)
-
+        self.optionsView.detailLinkAction = {[weak self] (text) in
+            if((self?.linkAction) != nil){
+                self?.linkAction(text)
+            }
+        }
     }
     
     override var components: NSArray! {
@@ -102,51 +85,35 @@ class OptionsBubbleView: BubbleView {
                     options.removeAll()
                     let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
                     let buttons: Array<Dictionary<String, Any>> = jsonObject["buttons"] as! Array<Dictionary<String, Any>>
-                    let index: Int = 0
-                    for dictionary in buttons  {
-                        let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
-                        let type: String = dictionary["type"] != nil ? dictionary["type"] as! String : ""
+                    let buttonsCount: Int = min(buttons.count, OptionsBubbleView.buttonsLimit)
+                    
+                    for i in 0..<buttonsCount {
+                        let dictionary = buttons[i]
                         
-                        let option: KREOption = KREOption(name: title, desc: title, type: type, index: index)
-                        option.setButtonInfo(info: dictionary as! Dictionary<String, String>)
+                        let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
+                        
+                        let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button)
+                        option.setDefaultActionInfo(info: dictionary as! Dictionary<String, String>)
                         options.append(option)
                     }
                     self.optionsView.options = options
                     
                     var headerText: String = jsonObject["text"] != nil ? jsonObject["text"] as! String : ""
                     headerText = KREUtilities.formatHTMLEscapedString(headerText);
-                    self.textLabel.setHTMLString(headerText, withWidth: self.textSizeThatFitsWithString(headerText as NSString).width)
-//                    self.textLabel.attributedText = markdownParser.attributedString(from: headerText)
-                    optionsView.optionsTableView.tableHeaderView = self.textLabel
+                    
+                    if(headerText.characters.count > OptionsBubbleView.headerTextLimit){
+                        headerText = headerText.substring(to: headerText.index(headerText.startIndex, offsetBy: OptionsBubbleView.headerTextLimit)) + "..."
+                    }
+                    self.textLabel.setHTMLString(headerText, withWidth: viewMaxWidth - 20)
                 }
             }
         }
     }
 
     override var intrinsicContentSize : CGSize {
-        let textSize: CGSize  = self.textSizeThatFits()
-        self.textLabel.frame = CGRect(x: 0.0, y: 0.0, width: kMaxTextWidth, height: textSize.height+16)
-        let maxRows = min(options.count, 4)
-        return CGSize(width: kMaxTextWidth + 2.0, height: textSize.height + 16 + CGFloat(maxRows)*kMaxRowHeight + 2.0)
-        
+        let limitingSize: CGSize  = CGSize(width: viewMaxWidth - 20, height: CGFloat.greatestFiniteMagnitude)
+        let textSize: CGSize = self.textLabel.sizeThatFits(limitingSize)
+        let rowsHeight = self.optionsView.getExpectedHeight(width: viewMaxWidth)
+        return CGSize(width: viewMaxWidth, height: textSize.height + rowsHeight + 20)
     }
-    
-    func textSizeThatFits() -> CGSize {
-        let limitingSize: CGSize  = CGSize(width: kMaxTextWidth , height: CGFloat.greatestFiniteMagnitude)
-        let rect: CGRect = self.textLabel.text!.boundingRect(with: limitingSize,
-                                                             options: NSStringDrawingOptions.usesLineFragmentOrigin,
-                                                             attributes: [NSFontAttributeName: self.textLabel.font],
-                                                             context: nil)
-        
-        return rect.size;
-    }
-    func textSizeThatFitsWithString(_ string:NSString) -> CGSize {
-        let limitingSize: CGSize  = CGSize(width: kMaxTextWidth , height: CGFloat.greatestFiniteMagnitude)
-        let rect: CGRect = string.boundingRect(with: limitingSize,
-                                               options: NSStringDrawingOptions.usesLineFragmentOrigin,
-                                               attributes: [NSFontAttributeName: self.textLabel.font],
-                                               context: nil)
-        return rect.size;
-    }
-
 }

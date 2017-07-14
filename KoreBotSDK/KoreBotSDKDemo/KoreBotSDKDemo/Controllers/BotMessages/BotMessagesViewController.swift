@@ -139,35 +139,24 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
                 break
             case .options:
                 self.delegate?.closeQuickReplyCards()
-                let components: Array<KREComponent> = message.components?.array as! Array<KREComponent>
+                
                 let bubbleView: OptionsBubbleView = cell.bubbleView as! OptionsBubbleView
                 self.textLinkDetection(textLabel: bubbleView.textLabel);
-
-                bubbleView.components = components as NSArray!
                 bubbleView.optionsAction = {[weak self] (text) in
                     self?.delegate?.optionsButtonTapAction(text: text!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.launchWebViewWithURLLink(urlString: text!)
                 }
                 
                 cell.bubbleView.drawBorder = true
                 break
             case .list:
                 self.delegate?.closeQuickReplyCards()
-                let components: Array<KREComponent> = message.components?.array as! Array<KREComponent>
+                
                 let bubbleView: ListBubbleView = cell.bubbleView as! ListBubbleView
-                self.textLinkDetection(textLabel: bubbleView.textLabel);
-
-                bubbleView.showMore = message.showMore
-                bubbleView.components = components as NSArray!
                 bubbleView.optionsAction = {[weak self] (text) in
-                    if(text == "Show more"){
-                        message.showMore = true;
-                        bubbleView.invalidateIntrinsicContentSize()
-                        let indexpath:NSIndexPath = NSIndexPath.init(row: (self?.fetchedResultsController?.fetchedObjects?.index(of: message))!, section: 0)
-                        self?.tableView.reloadRows(at: [indexpath as IndexPath], with: UITableViewRowAnimation.automatic)
-
-                    }else{
-                        self?.delegate?.optionsButtonTapAction(text: text!)
-                    }
+                    self?.delegate?.optionsButtonTapAction(text: text!)
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.launchWebViewWithURLLink(urlString: text!)
