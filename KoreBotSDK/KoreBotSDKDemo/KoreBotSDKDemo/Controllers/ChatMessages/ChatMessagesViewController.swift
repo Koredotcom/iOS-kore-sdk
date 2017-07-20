@@ -59,7 +59,6 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     var audioComposer: AudioComposer!
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
     var disableKeyboardAdjustmentAnimationDuration: Bool = false
-    var quickSelectData: NSArray!
     var isSpeechToTextActive: Bool = false
     var typingStatusView:KRETypingStatusView?
     var speechSynthesizer: AVSpeechSynthesizer? = nil
@@ -191,7 +190,6 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         didSet {
             if (self.quickSelectMode == .off) {
                 self.setAutoCorrectionType(UITextAutocorrectionType.default)
-                self.quickSelectData = nil
                 self.quickSelectHeightConstraint.constant = 0
                 self.view.updateConstraintsIfNeeded()
             } else {
@@ -457,6 +455,7 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         self.threadTableViewController.tableView.backgroundView = nil
         self.threadTableViewController.tableView.backgroundColor = UIColor.white
         self.threadTableViewController.delegate = self
+        self.threadTableViewController.view.translatesAutoresizingMaskIntoConstraints = false
         self.addChildViewController(self.threadTableViewController)
         self.threadTableViewController.view.frame = self.threadContentView.bounds
         self.threadContentView.addSubview(threadTableViewController.view)
@@ -608,21 +607,6 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         }
     }
     
-    // MARK: tableView dataSource
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (self.quickSelectMode == QuickSelectMode.off) {
-            return 0
-        }
-        
-        return self.quickSelectData.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
-        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "MessageThreadCell", for: indexPath)
-        
-        return cell
-    }
-    
     // MARK: Send Actions
     
     func sendMessage(_ message:Message){
@@ -682,7 +666,7 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     
     func readOutText(text:String) {
         let string = text
-        print("Reading text: %@", text);
+        print("Reading text: ", text);
         let speechUtterance = AVSpeechUtterance(string: string)
         self.speechSynthesizer?.speak(speechUtterance)
     }
@@ -706,7 +690,6 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         self.composeBar = nil
         self.audioComposer = nil
         self.tapToDismissGestureRecognizer = nil
-        self.quickSelectData = nil
         self.typingStatusView = nil
         self.speechSynthesizer = nil
         self.botClient = nil
