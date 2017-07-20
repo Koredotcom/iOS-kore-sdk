@@ -90,8 +90,7 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let message: KREMessage = fetchedResultsController!.object(at: indexPath) as! KREMessage        
-        let maskType: BubbleMaskType! = .top
+        let message: KREMessage = fetchedResultsController!.object(at: indexPath) as! KREMessage
         
         var cellIdentifier: String! = nil
         if let componentType = ComponentType(rawValue: (message.templateType?.intValue)!) {
@@ -120,7 +119,7 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
         }
 
         let cell: MessageBubbleCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! MessageBubbleCell
-        cell.configureWithComponents(message.components?.array as! Array<KREComponent>, maskType:maskType, templateType: ComponentType(rawValue: (message.templateType?.intValue)!)!)
+        cell.configureWithComponents(message.components?.array as! Array<KREComponent>)
         
         switch (cell.bubbleView.bubbleType!) {
             case .text:
@@ -133,9 +132,6 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
                 break
             case .image:
                 self.delegate?.closeQuickReplyCards()
-                cell.didSelectComponentAtIndex = { (sender, index) in
-                    
-                }
                 break
             case .options:
                 self.delegate?.closeQuickReplyCards()
@@ -172,6 +168,7 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
                 break
             case .carousel:
                 self.delegate?.closeQuickReplyCards()
+                
                 let bubbleView: CarouselBubbleView = cell.bubbleView as! CarouselBubbleView
                 bubbleView.optionsAction = {[weak self] (text) in
                     self?.delegate?.optionsButtonTapAction(text: text!)
@@ -179,22 +176,18 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.launchWebViewWithURLLink(urlString: text!)
                 }
-                
-                cell.bubbleView.drawBorder = false
                 break
             default:
-                self.delegate?.closeQuickReplyCards()
-                cell.didSelectComponentAtIndex = nil
                 break
         }
-        cell.layoutIfNeeded()
         return cell
     }
-
+    
+    // MARK: UITable view delegate source
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return CGFloat.leastNormalMagnitude
     }
-
+    
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return CGFloat.leastNormalMagnitude
     }

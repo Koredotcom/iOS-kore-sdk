@@ -12,10 +12,6 @@ enum BubbleMaskTailPosition : Int {
     case none = 1, left = 2, right = 3
 }
 
-enum BubbleMaskType : Int {
-    case full = 1, top = 2, middle = 3, bottom = 4
-}
-
 enum BubbleType : Int  {
     case view = 1, text = 2, image = 3, options = 4, quickReply = 5, list = 6, carousel = 7
 }
@@ -26,25 +22,14 @@ let BubbleViewLeftTint: UIColor = Common.UIColorRGB(0xF4F4F4)
 let BubbleViewLeftContrastTint: UIColor = Common.UIColorRGB(0xBCBCBC)
 
 let BubbleViewCurveRadius: CGFloat = 20.0
-let BubbleViewCurveControlPoint: CGFloat = 9.0
-
-let BubbleViewSmallCurveRadius: CGFloat = 4.0
-let BubbleViewSmallCurveControlPoint: CGFloat = 1.8
-
-let kBubbleViewCurveControlPointRatio: CGFloat = (BubbleViewCurveControlPoint / BubbleViewCurveRadius)
-
-let BubbleViewTailWidth: CGFloat = 9.0
-let BubbleViewTailHeight: CGFloat = 14.0
-
-let BubbleViewMaxWidth: CGFloat = (UIScreen.main.bounds.size.width - 110.0)
+let BubbleViewMaxWidth: CGFloat = (UIScreen.main.bounds.size.width - 90.0)
 
 class BubbleView: UIView {
     var tailPosition: BubbleMaskTailPosition! {
         didSet {
-            self.setNeedsLayout()
+            self.backgroundColor = self.borderColor()
         }
     }
-    var maskType: BubbleMaskType! 
     var bubbleType: BubbleType!
     var didSelectComponentAtIndex:((Int) -> Void)!
     var maskLayer: CAShapeLayer!
@@ -56,16 +41,12 @@ class BubbleView: UIView {
         }
     }
     
-    var drawBorder: Bool = false {
-        didSet {
-            self.setNeedsLayout()
-        }
-    }
+    var drawBorder: Bool = false
     
     // MARK: init
     init() {
         super.init(frame: CGRect.zero)
-        self.backgroundColor = UIColor.clear
+        self.initialize()
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -117,29 +98,10 @@ class BubbleView: UIView {
     func transitionImage() -> UIImage {
         return UIImage()
     }
-
     
     override func layoutSubviews() {
         super.layoutSubviews()
         self.applyBubbleMask()
-    }
-    
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        
-        let context: CGContext = UIGraphicsGetCurrentContext()!
-        context.setFillColor(self.borderColor().cgColor)
-        context.fill(rect)
-    }
-    
-    func contentRect() -> CGRect {
-        var rect: CGRect = self.bounds
-        rect.origin.x += self.tailPosition == BubbleMaskTailPosition.left ? BubbleViewTailWidth + BubbleViewCurveRadius / 2.0 : BubbleViewCurveRadius / 2.0
-        rect.origin.y += BubbleViewCurveRadius / 2.0
-        rect.size.height -= BubbleViewCurveRadius
-        rect.size.width -= BubbleViewCurveRadius + BubbleViewTailWidth
-        
-        return rect
     }
     
     func contrastTintColor() -> UIColor {
@@ -182,8 +144,6 @@ class BubbleView: UIView {
                 self.borderLayer = nil
             }
         }
-
-        self.setNeedsDisplay()
     }
     
     // MARK: populate components 
@@ -193,37 +153,31 @@ class BubbleView: UIView {
     
     func createBezierPath() -> UIBezierPath {
         // Drawing code
-        let cornerRadius: CGFloat = 20
-        let padding: CGFloat = 0
+        let cornerRadius: CGFloat = BubbleViewCurveRadius
         let aPath = UIBezierPath()
-        let leftPadding:CGFloat = 10.0
-
-        var frame = self.bounds
         
         if(self.tailPosition == .left){
-            frame.origin.x += padding;
-            
-            aPath.move(to: CGPoint(x: CGFloat(frame.origin.x + leftPadding), y: CGFloat(frame.origin.y + cornerRadius)))
-            aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x + leftPadding + cornerRadius), y: CGFloat(frame.origin.y)), controlPoint: CGPoint(x:frame.origin.x + leftPadding,y:frame.origin.y))
+            aPath.move(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.origin.y + cornerRadius)))
+            aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x + cornerRadius), y: CGFloat(frame.origin.y)), controlPoint: CGPoint(x:frame.origin.x, y:frame.origin.y))
             aPath.addLine(to: CGPoint(x: CGFloat(frame.maxX - cornerRadius), y: CGFloat(frame.origin.y)))
             aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.origin.y + cornerRadius)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.origin.y)))
             aPath.addLine(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY - cornerRadius)))
             aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX - cornerRadius), y: CGFloat(frame.maxY)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY)))
             aPath.addLine(to: CGPoint(x: CGFloat(0.0), y: CGFloat(frame.maxY)))
-            aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x + leftPadding), y: CGFloat(frame.maxY - 2 * padding)), controlPoint: CGPoint(x: CGFloat(frame.origin.x + leftPadding), y: CGFloat(frame.maxY - padding)))
-            aPath.addLine(to: CGPoint(x: CGFloat(frame.origin.x + leftPadding), y: CGFloat(frame.origin.y + cornerRadius)))
+            aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY)), controlPoint: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY)))
+            aPath.addLine(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.origin.y + cornerRadius)))
             
         }else{
             aPath.move(to: CGPoint(x: CGFloat(frame.origin.x + cornerRadius), y: CGFloat(frame.origin.y)))
             aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.origin.y + cornerRadius)), controlPoint: frame.origin)
             aPath.addLine(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY - cornerRadius)))
             aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x + cornerRadius), y: CGFloat(frame.maxY)), controlPoint: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY)))
-            aPath.addLine(to: CGPoint(x: CGFloat(frame.maxX + padding), y: CGFloat(frame.maxY)))
-            
-            aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY - 2 * padding)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY - padding)))
+            aPath.addLine(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY)))
+            aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY)))
             aPath.addLine(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.origin.y + cornerRadius)))
             aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX - cornerRadius), y: CGFloat(frame.origin.y)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.origin.y)))
             aPath.addLine(to: CGPoint(x: CGFloat(frame.origin.x + cornerRadius), y: CGFloat(frame.origin.y)))
+            
         }
         aPath.close()
         return aPath
