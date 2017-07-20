@@ -517,6 +517,10 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     }
     
     func updateQuickSelectViewConstraints() {
+        if(self.quickSelectHeightConstraint.constant == 60.0){
+            return
+        }
+        
         self.quickSelectHeightConstraint.constant = 60.0
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 5, options: [], animations: {
@@ -527,6 +531,10 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     }
     
     func closeQuickSelectViewConstraints() {
+        if(self.quickSelectHeightConstraint.constant == 0.0){
+            return
+        }
+        
         self.quickSelectHeightConstraint.constant = 0.0
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 5, options: [], animations: {
