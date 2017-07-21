@@ -9,13 +9,59 @@
 import UIKit
 import KoreWidgets
 
+public class KRECardInfo: NSObject {
+    
+    static public let buttonLimit: Int = 3
+    static public let titleCharLimit: Int = 80
+    static public let subtitleCharLimit: Int = 100
+    
+    // MARK:- properties
+    var title: String?
+    var subTitle: String?
+    var imageURL:String?
+    
+    var options: Array<KREOption>?
+    var defaultActionInfo:Dictionary<String,String>?
+    
+    // MARK:- init
+    public override init() {
+        super.init()
+    }
+    
+    public init(title: String, subTitle: String, imageURL: String) {
+        super.init()
+        self.title = truncateString(title, count: KRECardInfo.titleCharLimit)
+        self.subTitle = truncateString(subTitle, count: KRECardInfo.subtitleCharLimit)
+        self.imageURL = imageURL
+    }
+    
+    public func setOptionData(title: String, subTitle: String, imageURL: String) {
+        self.title = truncateString(title, count: KRECardInfo.titleCharLimit)
+        self.subTitle = truncateString(subTitle, count: KRECardInfo.subtitleCharLimit)
+        self.imageURL = imageURL
+    }
+    
+    public func setDefaultActionInfo(info: Dictionary<String, String>) {
+        defaultActionInfo = info
+    }
+    
+    public func setOptionsInfo(options: Array<KREOption>) {
+        self.options = options
+    }
+    
+    func truncateString(_ string: String, count: Int) -> String{
+        var tmpString = string
+        if(tmpString.characters.count > count){
+            tmpString = tmpString.substring(to: tmpString.index(tmpString.startIndex, offsetBy: count-3)) + "..."
+        }
+        return tmpString
+    }
+}
+
 public class KRECardView: UIView, UIGestureRecognizerDelegate {
     
     static let kMaxRowHeight: CGFloat = 44
     static let buttonLimit: Int = 3
-    static let titleCharLimit: Int = 80
-    static let subtitleCharLimit: Int = 100
-    var index: Int = 0
     var isFirst: Bool = false
     var isLast: Bool = false
     var urlString: String!
@@ -23,73 +69,32 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     var imageView: UIImageView!
     var optionsView: KREOptionsView!
     var textLabel: UILabel!
-    var options: Array<KREOption> = Array<KREOption>()
     
     var maskLayer: CAShapeLayer!
     var borderLayer: CAShapeLayer!
     
+    var imageViewHeightConstraint: NSLayoutConstraint!
+    var optionsViewHeightConstraint: NSLayoutConstraint!
+    
     public var optionsAction: ((_ text: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.white
         self.layer.masksToBounds = true
+        setup()
+    }
+    
+    convenience init () {
+        self.init(frame: CGRect.zero)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    static func getAttributedString(data: NSDictionary) -> NSMutableAttributedString {
-        var string = data["title"] as! String
-        if(string.characters.count > titleCharLimit){
-            string = string.substring(to: string.index(string.startIndex, offsetBy: titleCharLimit-3))
-            string += "..."
-        }
-        
-        var subtitle = data["subtitle"] as! String
-        if(subtitle.characters.count > subtitleCharLimit){
-            subtitle = subtitle.substring(to: subtitle.index(subtitle.startIndex, offsetBy: subtitleCharLimit-3))
-            subtitle += "..."
-        }
-        
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.paragraphSpacing = 0.25 * 16.0
-        let myAttributes = [NSForegroundColorAttributeName:Common.UIColorRGB(0x484848),
-                            NSFontAttributeName: UIFont(name: "HelveticaNeue-Medium", size: 16.0)!,
-                            NSParagraphStyleAttributeName:paragraphStyle ]
-        let mutableAttrString = NSMutableAttributedString(string: string, attributes: myAttributes)
-        let myAttributes2 = [NSForegroundColorAttributeName:Common.UIColorRGB(0x777777),
-                             NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 15.0)! ]
-        let mutableAttrString2 = NSMutableAttributedString(string: "\n\(subtitle)", attributes: myAttributes2)
-        mutableAttrString.append(mutableAttrString2)
-        return mutableAttrString
-    }
-    
-    static func getExpectedHeight(data: NSDictionary, width: CGFloat) -> CGFloat {
-        var height: CGFloat = 0.0
-        
-        height += width*0.5
-        
-        let buttons: Array<Dictionary<String, Any>> = data["buttons"] as! Array<Dictionary<String, Any>>
-        let count: Int = min(buttons.count, KRECardView.buttonLimit)
-        height += KRECardView.kMaxRowHeight*CGFloat(count)
-        
-        let attrString: NSMutableAttributedString = KRECardView.getAttributedString(data: data)
-        let limitingSize: CGSize = CGSize(width: width-20.0, height: CGFloat.greatestFiniteMagnitude)
-        let rect: CGRect = attrString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
-        height += rect.size.height + 20.0
-        
-        return height
-    }
-    
-    func setupView(data: NSDictionary, index: Int) {
-        self.index = index
-        
-        let default_action = data["default_action"] as! NSDictionary
-        self.urlString = default_action["url"] as! String
-        
+    func setup() {
         let width = self.frame.size.width
         self.imageView = UIImageView()
         self.imageView.contentMode = .scaleAspectFill
@@ -101,20 +106,12 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         self.imageView.isUserInteractionEnabled = true
         self.addSubview(self.imageView)
         
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(gestureRecognizer:)))
-        gestureRecognizer.delegate = self
-        self.imageView.addGestureRecognizer(gestureRecognizer)
-        
-        let image_url = data["image_url"] as! String
-        self.imageView.setImageWith(NSURL(string: image_url) as URL!, placeholderImage: UIImage.init(named: "placeholder_image"))
-        
         var views: [String: UIView] = ["imageView": self.imageView]
-        var metrics = ["imageHeight": width*0.5, "imageWidth": width]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[imageView(imageHeight)]", options: [], metrics: metrics, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[imageView(imageWidth@1)]|", options: [], metrics: metrics, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[imageView]", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[imageView]|", options: [], metrics: nil, views: views))
         
-        let buttons: Array<Dictionary<String, Any>> = data["buttons"] as! Array<Dictionary<String, Any>>
-        let count: Int = min(buttons.count, KRECardView.buttonLimit)
+        self.imageViewHeightConstraint = NSLayoutConstraint(item: self.imageView, attribute:.height, relatedBy:.equal, toItem:nil, attribute:.notAnAttribute, multiplier:1.0, constant:width*0.5)
+        self.imageView.addConstraint(self.imageViewHeightConstraint)
         
         self.optionsView = KREOptionsView()
         self.optionsView.translatesAutoresizingMaskIntoConstraints = false
@@ -125,17 +122,12 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         self.optionsView.optionsTableView.separatorInset = UIEdgeInsets.zero
         self.addSubview(self.optionsView)
         views = ["optionsView": self.optionsView]
-        metrics = ["optionsViewHeight": KRECardView.kMaxRowHeight*CGFloat(count), "optionsViewWidth": width]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[optionsView(optionsViewHeight)]|", options: [], metrics: metrics, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[optionsView(optionsViewWidth@1)]|", options: [], metrics: metrics, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[optionsView]|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[optionsView]|", options: [], metrics: nil, views: views))
         
-        for i in 0..<count {
-            let dictionary = buttons[i]
-            let option: KREOption = KREOption(title: dictionary["title"] as! String, subTitle: "", imageURL: "", optionType: .button)
-            option.setDefaultActionInfo(info: dictionary as! Dictionary<String, String>)
-            options.append(option)
-        }
-        self.optionsView.options = options
+        self.optionsViewHeightConstraint = NSLayoutConstraint(item: self.optionsView, attribute:.height, relatedBy:.equal, toItem:nil, attribute:.notAnAttribute, multiplier:1.0, constant:KRECardView.kMaxRowHeight)
+        self.optionsView.addConstraint(self.optionsViewHeightConstraint)
+        
         self.optionsView.optionsButtonAction = {[weak self] (text) in
             if((self?.optionsAction) != nil){
                 self?.optionsAction(text)
@@ -155,25 +147,62 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         self.textLabel.isUserInteractionEnabled = true
         self.textLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.textLabel)
-        views = ["imageView": self.imageView, "textLabel": self.textLabel, "optionsView": self.optionsView,]
-        metrics = ["textLabelHeight": width, "textLabelWidth": width]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[imageView]-[textLabel]-(>=10@1)-[optionsView]", options: [], metrics: metrics, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[textLabel(textLabelWidth@1)]-10-|", options: [], metrics: metrics, views: views))
         
-        let textGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(gestureRecognizer:)))
-        textGestureRecognizer.delegate = self
-        self.textLabel.addGestureRecognizer(textGestureRecognizer)
-        
-        self.textLabel.attributedText = KRECardView.getAttributedString(data: data)
+        views = ["imageView": self.imageView, "textLabel": self.textLabel, "optionsView": self.optionsView]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[imageView]-[textLabel]-(>=10@1)-[optionsView]", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[textLabel]-10-|", options: [], metrics: nil, views: views))
     }
     
-    func handleTap(gestureRecognizer: UIGestureRecognizer) {
-        if(self.linkAction != nil){
-            self.linkAction(self.urlString)
-        }
+    static func getAttributedString(cardInfo: KRECardInfo) -> NSMutableAttributedString {
+        var title = cardInfo.title as! String
+        var subtitle = cardInfo.subTitle as! String
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.paragraphSpacing = 0.25 * 16.0
+        let myAttributes = [NSForegroundColorAttributeName:Common.UIColorRGB(0x484848),
+                            NSFontAttributeName: UIFont(name: "HelveticaNeue-Medium", size: 16.0)!,
+                            NSParagraphStyleAttributeName:paragraphStyle ]
+        let mutableAttrString = NSMutableAttributedString(string: title, attributes: myAttributes)
+        let myAttributes2 = [NSForegroundColorAttributeName:Common.UIColorRGB(0x777777),
+                             NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 15.0)! ]
+        let mutableAttrString2 = NSMutableAttributedString(string: "\n\(subtitle)", attributes: myAttributes2)
+        mutableAttrString.append(mutableAttrString2)
+        return mutableAttrString
+    }
+    
+    static func getExpectedHeight(cardInfo: KRECardInfo, width: CGFloat) -> CGFloat {
+        var height: CGFloat = 0.0
+        
+        //imageViw height
+        height += width*0.5
+        
+        let count: Int = min(cardInfo.options!.count, KRECardView.buttonLimit)
+        height += KRECardView.kMaxRowHeight*CGFloat(count)
+        
+        let attrString: NSMutableAttributedString = KRECardView.getAttributedString(cardInfo: cardInfo)
+        let limitingSize: CGSize = CGSize(width: width-20.0, height: CGFloat.greatestFiniteMagnitude)
+        let rect: CGRect = attrString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
+        height += rect.size.height + 20.0
+        
+        return height
+    }
+    
+    public func configureForCardInfo(cardInfo: KRECardInfo) {
+        self.imageView.setImageWith(NSURL(string: cardInfo.imageURL!) as URL!, placeholderImage: UIImage.init(named: "placeholder_image"))
+        self.textLabel.attributedText = KRECardView.getAttributedString(cardInfo: cardInfo)
+        self.optionsView.options.removeAll()
+        self.optionsView.options = cardInfo.options!
+        
+        let count: Int = min(cardInfo.options!.count, KRECardView.buttonLimit)
+        self.optionsViewHeightConstraint.constant = KRECardView.kMaxRowHeight*CGFloat(count)
+    }
+    
+    public func updateLayer() {
+        self.applyBubbleMask()
     }
     
     override public func layoutSubviews() {
+        self.imageViewHeightConstraint.constant = self.frame.size.width*0.5
         super.layoutSubviews()
         self.applyBubbleMask()
     }
@@ -196,8 +225,6 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         self.borderLayer.strokeColor = Common.UIColorRGB(0xebebeb).cgColor
         self.borderLayer.lineWidth = 1.5
         self.borderLayer.frame = self.bounds
-        
-        self.setNeedsDisplay()
     }
     
     func createBezierPath() -> UIBezierPath {
@@ -235,5 +262,33 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         
         aPath.close()
         return aPath
+    }
+}
+
+public class KRECardCollectionViewCell: UICollectionViewCell {
+
+    public static let cellReuseIdentifier: String = "KRECardCollectionViewCell"
+    public var cardView: KRECardView!
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = UIColor.clear
+        
+        self.layer.masksToBounds = false
+        self.layer.shadowColor = UIColor.black.withAlphaComponent(0.5).cgColor
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowOffset = CGSize(width: 0, height: 0)
+        self.layer.shadowRadius = 0.5
+        
+        self.cardView = KRECardView(frame: CGRect.init(origin: CGPoint.zero, size: frame.size))
+        self.contentView.addSubview(self.cardView)
+        
+        let views: [String: UIView] = ["cardView": cardView]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[cardView]|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[cardView]|", options: [], metrics: nil, views: views))
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

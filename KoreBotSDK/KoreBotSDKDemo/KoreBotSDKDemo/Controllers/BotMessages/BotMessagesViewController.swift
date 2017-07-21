@@ -44,7 +44,7 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
                 UIView.animate(withDuration: 0, animations: {
                     self.tableView.reloadData()
                 }, completion: { (completion) in
-                    self.scrollToBottom(animated: true)
+                    self.scrollToBottom(animated: false)
                     self.tableView.alpha = 1
                 })
             }

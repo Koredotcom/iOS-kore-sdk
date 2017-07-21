@@ -28,7 +28,9 @@ class CarouselBubbleView: BubbleView {
     override func initialize() {
         super.initialize()
         
-        self.carouselView = KRECarouselView(frame: CGRect.zero)
+        self.carouselView = KRECarouselView()
+        self.carouselView.maxCardWidth = BubbleViewMaxWidth
+        self.carouselView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.carouselView)
         
         let views: [String: UIView] = ["carouselView": carouselView]
@@ -53,20 +55,53 @@ class CarouselBubbleView: BubbleView {
     
     // MARK: populate components
     override func populateComponents() {
-        self.prepareForReuse()
         if (components.count > 0) {
             let component: KREComponent = components.firstObject as! KREComponent
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
                 let elements: Array<Dictionary<String, Any>> = jsonObject["elements"] as! Array<Dictionary<String, Any>>
-                self.carouselView.initializeViewForElements(elements: elements, maxWidth: BubbleViewMaxWidth + 10)
+                let elementsCount: Int = min(elements.count, KRECarouselView.cardLimit)
+                var cards: Array<KRECardInfo> = Array<KRECardInfo>()
+                
+                for i in 0..<elementsCount {
+                    let dictionary = elements[i]
+                    
+                    let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
+                    let subtitle: String = dictionary["subtitle"] != nil ? dictionary["subtitle"] as! String : ""
+                    let imageUrl: String = dictionary["image_url"] != nil ? dictionary["image_url"] as! String : ""
+                    
+                    let cardInfo: KRECardInfo = KRECardInfo(title: title, subTitle: subtitle, imageURL: imageUrl)
+                    
+                    if (dictionary["default_action"] != nil) {
+                        cardInfo.setDefaultActionInfo(info: dictionary["default_action"] as! Dictionary<String, String>)
+                    }
+                    
+                    let buttons: Array<Dictionary<String, String>> = dictionary["buttons"] as! Array<Dictionary<String, String>>
+                    let buttonsCount: Int = min(buttons.count, KRECardInfo.buttonLimit)
+                    var options: Array<KREOption> = Array<KREOption>()
+                    
+                    for i in 0..<buttonsCount {
+                        let button = buttons[i]
+                        
+                        let title: String = button["title"] != nil ? button["title"]!: ""
+                        
+                        let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button)
+                        option.setDefaultActionInfo(info: button)
+                        options.append(option)
+                    }
+                    cardInfo.setOptionsInfo(options: options)
+                    cards.append(cardInfo)
+                }
+                
+                self.carouselView.cards.removeAll()
+                self.carouselView.cards = cards
             }
         }
     }
     
     override var intrinsicContentSize : CGSize {
-        return CGSize(width: 0.0, height: self.carouselView.maxHeight)
+        return CGSize(width: 0.0, height: self.carouselView.maxCardHeight)
     }
     
     override func prepareForReuse() {

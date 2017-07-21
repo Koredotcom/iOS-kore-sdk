@@ -117,7 +117,7 @@ class MessageBubbleCell : UITableViewCell {
         self.dateLabelTrailingConstraint = NSLayoutConstraint(item: self.contentView, attribute:.trailing, relatedBy:.equal, toItem:self.dateLabel, attribute:.trailing, multiplier:1.0, constant:16.0)
         self.dateLabelTrailingConstraint.priority = 1
 
-        self.bubbleBottomConstraint = NSLayoutConstraint(item:self.contentView, attribute:.bottom, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.bottom, multiplier:1.0, constant:1.0)
+        self.bubbleBottomConstraint = NSLayoutConstraint(item:self.contentView, attribute:.bottom, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.bottom, multiplier:1.0, constant:8.0)
         self.bubbleBottomConstraint.priority = 999
         self.bubbleLeadingConstraint = NSLayoutConstraint(item:self.bubbleContainerView, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier:1.0, constant:45.0)
         self.bubbleLeadingConstraint.priority = 999
@@ -242,7 +242,8 @@ class CarouselBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 35
+            self.bubbleLeadingConstraint.constant = 0
+            self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = 999
         }
     }

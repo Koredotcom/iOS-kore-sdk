@@ -47,11 +47,11 @@ public class KREOption: NSObject {
     }
 
     public func setDefaultActionInfo(info:Dictionary<String, String>) {
-        defaultActionInfo = info;
+        defaultActionInfo = info
     }
     
     public func setButtonActionInfo(info:Dictionary<String, String>) {
-        actionButtonInfo = info;
+        actionButtonInfo = info
     }
     
     func truncateString(_ string: String, count: Int) -> String{

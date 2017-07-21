@@ -687,7 +687,7 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     
     //MARK:- deinit
     deinit {
-        print("ChatMessagesViewController dealloc")
+        NSLog("ChatMessagesViewController dealloc")
         NotificationCenter.default.removeObserver(Any.self)
         self.removeKeyboardNotifications()
         

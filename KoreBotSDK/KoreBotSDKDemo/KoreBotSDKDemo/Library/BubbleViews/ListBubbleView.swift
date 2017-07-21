@@ -14,7 +14,6 @@ class ListBubbleView: BubbleView {
     static let elementsLimit: Int = 4
 
     var optionsView: KREOptionsView!
-    var options: Array<KREOption> = Array<KREOption>()
     
     public var optionsAction: ((_ text: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
@@ -50,10 +49,10 @@ class ListBubbleView: BubbleView {
             let component: KREComponent = components.firstObject as! KREComponent
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
-                options.removeAll()
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
                 let elements: Array<Dictionary<String, Any>> = jsonObject["elements"] as! Array<Dictionary<String, Any>>
                 let elementsCount: Int = min(elements.count, ListBubbleView.elementsLimit)
+                var options: Array<KREOption> = Array<KREOption>()
                 
                 for i in 0..<elementsCount {
                     let dictionary = elements[i]

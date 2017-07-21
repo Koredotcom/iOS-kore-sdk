@@ -16,8 +16,6 @@ class OptionsBubbleView: BubbleView {
     
     var textLabel: KREAttributedLabel!
     var optionsView: KREOptionsView!
-
-    var options: Array<KREOption> = Array<KREOption>()
     
     public var optionsAction: ((_ text: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
@@ -70,10 +68,10 @@ class OptionsBubbleView: BubbleView {
             let component: KREComponent = components.firstObject as! KREComponent
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
-                options.removeAll()
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
                 let buttons: Array<Dictionary<String, Any>> = jsonObject["buttons"] as! Array<Dictionary<String, Any>>
                 let buttonsCount: Int = min(buttons.count, OptionsBubbleView.buttonsLimit)
+                var options: Array<KREOption> = Array<KREOption>()
                 
                 for i in 0..<buttonsCount {
                     let dictionary = buttons[i]
