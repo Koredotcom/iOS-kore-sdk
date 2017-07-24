@@ -221,7 +221,6 @@ class DataStoreManager: NSObject {
                             
                             nComponent.componentId = ""
                             nComponent.componentDesc = optionsComponent.payload as String?
-                            nComponent.componentInfo = optionsComponent.cInfo as String?
                             nMessage.addComponentsObject(_value: nComponent)
                             nComponent.message = nMessage
                             nMessage.templateType = ComponentType.options.rawValue as NSNumber?
@@ -234,7 +233,6 @@ class DataStoreManager: NSObject {
 
                             nComponent.componentId = ""
                             nComponent.componentDesc = textComponent.payload as String?
-                            nComponent.componentInfo = textComponent.cInfo as String?
                             nMessage.addComponentsObject(_value: nComponent)
                             nComponent.message = nMessage
                             nMessage.templateType = ComponentType.quickReply.rawValue as NSNumber?
@@ -247,7 +245,6 @@ class DataStoreManager: NSObject {
                             
                             nComponent.componentId = ""
                             nComponent.componentDesc = optionsComponent.payload as String?
-                            nComponent.componentInfo = optionsComponent.cInfo as String?
                             nMessage.addComponentsObject(_value: nComponent)
                             nComponent.message = nMessage
                             nMessage.templateType = ComponentType.list.rawValue as NSNumber?
@@ -266,13 +263,24 @@ class DataStoreManager: NSObject {
                             nMessage.thread = thread
                             thread.addToMessages(_value: nMessage)
                             break
+                        case .error:
+                            let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
+                            let errorComponent: ErrorComponent = component as! ErrorComponent
+                            
+                            nComponent.componentId = ""
+                            nComponent.componentDesc = errorComponent.payload as String?
+                            nMessage.addComponentsObject(_value: nComponent)
+                            nComponent.message = nMessage
+                            nMessage.templateType = ComponentType.error.rawValue as NSNumber?
+                            nMessage.thread = thread
+                            thread.addToMessages(_value: nMessage)
+                            break
                         default:
                             let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
                             let textComponent: TextComponent = component as! TextComponent
 
                             nComponent.componentId = ""
                             nComponent.componentDesc = textComponent.text as String?
-                            nComponent.componentInfo = textComponent.cInfo as String?
                             nMessage.addComponentsObject(_value: nComponent)
                             nComponent.message = nMessage
                             nMessage.templateType = ComponentType.text.rawValue as NSNumber?

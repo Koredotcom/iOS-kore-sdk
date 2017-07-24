@@ -107,43 +107,50 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
                             let text: NSString = payload["text"] as! NSString
                             let textComponent: TextComponent = TextComponent()
                             textComponent.text = text
-                            textComponent.cInfo = cInfoBody
                             
                             message.addComponent(textComponent)
                         } else if (componentModel.type == "template") {
                             let payload: NSDictionary = componentModel.payload! as! NSDictionary
-                            let dictionary: NSDictionary = payload["payload"] as! NSDictionary
-                            let templateType: String = dictionary["template_type"] as! String
-                            
-                            if (templateType == "quick_replies") {
-                                let quickRepliesComponent: QuickRepliesComponent = QuickRepliesComponent()
-                                quickRepliesComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                                quickRepliesComponent.cInfo = cInfoBody
+                            let type: String = payload["type"] as! String
+                            if(type == "template"){
+                                let dictionary: NSDictionary = payload["payload"] as! NSDictionary
+                                let templateType: String = dictionary["template_type"] as! String
                                 
-                                message.addComponent(quickRepliesComponent)
-                            } else if (templateType == "button") {
-                                self?.showTypingStatusForBotsAction()
+                                if (templateType == "quick_replies") {
+                                    let quickRepliesComponent: QuickRepliesComponent = QuickRepliesComponent()
+                                    quickRepliesComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                                    
+                                    message.addComponent(quickRepliesComponent)
+                                } else if (templateType == "button") {
+                                    self?.showTypingStatusForBotsAction()
 
-                                let optionsComponent: OptionsComponent = OptionsComponent()
-                                optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                                optionsComponent.cInfo = cInfoBody
-                                
-                                message.addComponent(optionsComponent)
-                            }else if (templateType == "list") {
-                                self?.showTypingStatusForBotsAction()
+                                    let optionsComponent: OptionsComponent = OptionsComponent()
+                                    optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                                    
+                                    message.addComponent(optionsComponent)
+                                }else if (templateType == "list") {
+                                    self?.showTypingStatusForBotsAction()
 
-                                let optionsComponent: ListComponent = ListComponent()
-                                optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                                optionsComponent.cInfo = cInfoBody
-                                
-                                message.addComponent(optionsComponent)
-                            }else if (templateType == "carousel") {
+                                    let optionsComponent: ListComponent = ListComponent()
+                                    optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                                    
+                                    message.addComponent(optionsComponent)
+                                }else if (templateType == "carousel") {
+                                    self?.showTypingStatusForBotsAction()
+                                    
+                                    let carouselComponent: CarouselComponent = CarouselComponent()
+                                    carouselComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                                    
+                                    message.addComponent(carouselComponent)
+                                }
+                            }else if(type == "error"){
                                 self?.showTypingStatusForBotsAction()
                                 
-                                let carouselComponent: CarouselComponent = CarouselComponent()
-                                carouselComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                                let dictionary: NSDictionary = payload["payload"] as! NSDictionary
+                                let errorComponent: ErrorComponent = ErrorComponent()
+                                errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                                 
-                                message.addComponent(carouselComponent)
+                                message.addComponent(errorComponent)
                             }
                         }
 

@@ -65,6 +65,7 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
         self.tableView.register(MessageBubbleCell.self, forCellReuseIdentifier:"MessageBubbleCell")
         self.tableView.register(QuickReplyBubbleCell.self, forCellReuseIdentifier:"QuickReplyBubbleCell")
         self.tableView.register(CarouselBubbleCell.self, forCellReuseIdentifier:"CarouselBubbleCell")
+        self.tableView.register(ErrorBubbleCell.self, forCellReuseIdentifier:"ErrorBubbleCell")
 
         if (self.tableView.contentSize.height > self.tableView.frame.size.height) {
             let point:CGPoint = CGPoint(x:0, y:self.tableView.contentSize.height - self.tableView.frame.size.height);
@@ -112,6 +113,9 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
                     break
                 case .carousel:
                     cellIdentifier = "CarouselBubbleCell"
+                    break
+                case .error:
+                    cellIdentifier = "ErrorBubbleCell"
                     break
                 default:
                     cellIdentifier = "TextBubbleCell"
@@ -176,6 +180,11 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.launchWebViewWithURLLink(urlString: text!)
                 }
+                break
+            case .error:
+                self.delegate?.closeQuickReplyCards()
+                let bubbleView: ErrorBubbleView = cell.bubbleView as! ErrorBubbleView
+                self.textLinkDetection(textLabel: bubbleView.textLabel)
                 break
             default:
                 break

@@ -82,13 +82,45 @@ class QuickReplyBubbleView : TextBubbleView {
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
-                if (jsonObject["text"] != nil) {
-                    let string: String = jsonObject["text"] as! String
-                    let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
-                    let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
-                    self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
-                }else{
-                    self.textLabel.setHTMLString("Pick an option:", withWidth: kMaxTextWidth)
+
+                let string: String = jsonObject["text"] as! String
+                let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
+                let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
+                self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
+            }
+        }
+    }
+}
+
+class ErrorBubbleView : TextBubbleView {
+    var textColor: UIColor = Common.UIColorRGB(0x484848)
+    
+    override func kTextColor() -> UIColor {
+        return textColor
+    }
+    
+    override func populateComponents() {
+        if (components.count > 0) {
+            let component: KREComponent = components[0] as! KREComponent
+            
+            if (!component.isKind(of: KREComponent.self)) {
+                return;
+            }
+            
+            if (component.componentDesc != nil) {
+                let jsonString = component.componentDesc
+                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
+                
+                let string: String = jsonObject["text"] as! String
+                let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
+                let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
+                self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
+                
+                if var colorString: String = jsonObject["color"] as? String {
+                    if(colorString.hasPrefix("#")){
+                        colorString = String(colorString.characters.dropFirst())
+                    }
+                    self.textColor = Common.UIColorRGB(Int(colorString, radix: 16)!)
                 }
             }
         }

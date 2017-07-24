@@ -203,6 +203,12 @@ class QuickReplyBubbleCell : MessageBubbleCell {
     }
 }
 
+class ErrorBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> BubbleType {
+        return BubbleType.error
+    }
+}
+
 class ImageBubbleCell : MessageBubbleCell {
     override func bubbleType() -> BubbleType {
         return BubbleType.image
