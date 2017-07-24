@@ -9,15 +9,25 @@
 import UIKit
 
 public class Word: NSObject {
+    static let titleCharLimit: Int = 20
+    
     var title: String!
     var payload: String!
     var imageURL: String!
     
     public init(title: String, payload: String, imageURL: String) {
         super.init()
-        self.title = title
+        self.title = truncateString(title, count: Word.titleCharLimit)
         self.payload = payload
         self.imageURL = imageURL
+    }
+    
+    func truncateString(_ string: String, count: Int) -> String{
+        var tmpString = string
+        if(tmpString.characters.count > count){
+            tmpString = tmpString.substring(to: tmpString.index(tmpString.startIndex, offsetBy: count))
+        }
+        return tmpString
     }
 }
 
