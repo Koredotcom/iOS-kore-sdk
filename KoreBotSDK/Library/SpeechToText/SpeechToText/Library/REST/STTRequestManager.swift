@@ -36,7 +36,6 @@ open class STTRequestManager : NSObject {
         operationManager.requestSerializer = requestSerializer
         operationManager.post(urlString, parameters: parameters, success: { (operation, responseObject) in
             print(responseObject ?? "")
-            print(operation?.responseObject ?? "")
             success?(responseObject as AnyObject)
         }) { (operation, requestError) in
             if (operation?.responseObject != nil) {

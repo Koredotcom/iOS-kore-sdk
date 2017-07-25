@@ -13,32 +13,26 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
 
     public var webSocket: KREWebSocket!
     public var audioQueueRecorder: MCAudioInputQueue!
+    
     fileprivate var audioFormat: AudioStreamBasicDescription = AudioStreamBasicDescription()
+    fileprivate var audioBuffer: Data!
+    fileprivate var recordedData: Data!
     
     fileprivate var speechSocketURL: String!
     fileprivate var authToken: String!
     fileprivate var identity: String!
-    
-    fileprivate var reconnecting = false
-    fileprivate var currentReconnectAttempt = 0
-    fileprivate(set) var reconnectAttempts = 5
-    fileprivate var reconnectWait = 10
-    
-    var audioBuffer: Data!
-    var recordedData: Data!
-    public var isAudioQueueRecordingInProgress = false
+    fileprivate var isAudioQueueRecordingInProgress = false
     
     open var onReceiveMessage: (([AnyHashable : Any]?) -> Void)!
-    open var connectionDidClose: ((Int, String) -> Void)!
     
     public func initialize(serverUrl: String, authToken:String, identity: String) {
         self.setKoreBotServerUrl(url: serverUrl)
         self.authToken = authToken
         self.identity = identity
         
+        self.fetchWebSocketUrlAndConnect()
         self.setUpAudioQueueFormat()
         self.doAudioQueueRecording()
-        self.connect()
     }
     
     public func stopAudioQueueRecording() {
@@ -72,7 +66,7 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
         self.recordedData = Data()
         
         let audioSession = AVAudioSession.sharedInstance()
-        if(audioSession.responds(to: Selector(("requestRecordPermission")))){
+        if (audioSession.responds(to: #selector(AVAudioSession.requestRecordPermission(_:)))) {
             audioSession.requestRecordPermission({ (granted: Bool) in
                 if(granted){
                     DispatchQueue.main.async {
@@ -96,70 +90,29 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
     }
 
     // MARK:
-    fileprivate func connect() {
+    fileprivate func fetchWebSocketUrlAndConnect() {
         if (self.authToken != nil) {
             let requestManager: STTRequestManager = STTRequestManager.sharedManager
             requestManager.getSocketUrlWithAuthInfoModel(self.authToken, identity: self.identity, success: { (responseObject) in
                 if let socketURL: String = responseObject?["link"] as? String {
                     self.speechSocketURL = socketURL
                 }
-                self.webSocket = self.webSocketConnectWithURL(self.getSpeechServerUrl())
-                self.reconnecting = false
+                self.connetWebSocketWithURL(self.getSpeechServerUrl())
             }, failure: { (error) in
-                self.reconnecting = false
-                self.tryReconnect()
+                
             })
         }
     }
     
-    open func reconnect() {
-        if self.reconnecting == false {
-            self.reconnecting = true
-            connect()
-        }
-    }
-    
-    fileprivate func tryReconnect() {
-        if reconnecting == true {
-            return
-        }
-        
-        if currentReconnectAttempt + 1 > reconnectAttempts {
-            if (self.connectionDidClose != nil) {
-                self.connectionDidClose(100, "Reconnect Failed")
-            }
-            return
-        }
-        
-        currentReconnectAttempt += 1
-        reconnect()
-        
-        let dispatchAfter = DispatchTime(uptimeNanoseconds: UInt64(reconnectWait) * NSEC_PER_SEC)
-        DispatchQueue.main.asyncAfter(deadline: dispatchAfter) {
-            self.tryReconnect()
-        }
-    }
-    
-    open func disconnect() {
-        if self.webSocket != nil {
-            self.webSocket.close()
-        }
-    }
-    
     // MARK: functions
-    fileprivate func webSocketConnectWithURL(_ url: String) -> KREWebSocket {
-        if (self.webSocket != nil && (self.webSocket.webSocket.readyState == .OPEN || self.webSocket.webSocket.readyState == .CONNECTING)) {
-            return self.webSocket
-        } else {
-            let webSocketConnection: KREWebSocket = KREWebSocket.init(urlString:url)
-            webSocketConnection.delegate = self
-            webSocketConnection.connect()
-            return webSocketConnection
-        }
+    fileprivate func connetWebSocketWithURL(_ url: String) {
+        self.webSocket = KREWebSocket.init(urlString:url)
+        self.webSocket.delegate = self
+        self.webSocket.connect()
     }
     
     // MARK:
-    open func setKoreBotServerUrl(url: String) {
+    func setKoreBotServerUrl(url: String) {
         STTConstants.KORE_BOT_SERVER = url
     }
     
@@ -174,20 +127,20 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
     }
     
     public func webSocket(_ webSocket: SRWebSocket!, onFailWithError error: Error!) {
-        NSLog("*******%s********", #function)
+        NSLog("*******webSocket:onFailWithError********")
         self.webSocket.delegate = nil;
         self.webSocket = nil;
         if (self.isAudioQueueRecordingInProgress) {
-            reconnect()
+            self.fetchWebSocketUrlAndConnect()
         }
     }
     
     public func webSocket(_ webSocket: SRWebSocket!, onCloseWithCode code: Int, reason: String!, wasClean: Bool) {
-        NSLog("*******%s********", #function)
+        NSLog("*******webSocket:onCloseWithCode********")
         self.webSocket.delegate = nil;
         self.webSocket = nil;
         if(self.isAudioQueueRecordingInProgress){
-            reconnect()
+            self.fetchWebSocketUrlAndConnect()
         }
     }
     
@@ -195,7 +148,8 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
         
     }
     
-    @nonobjc public func webSocket(_ webSocket: SRWebSocket!, onReceiveMessage message: Any!) {
+    public func webSocket(_ webSocket: SRWebSocket!, onReceiveMessage message: Any!) {
+        NSLog("*******webSocket:onReceiveMessage********")
         if let data = message {
             do {
                 if let jsonResult = try JSONSerialization.jsonObject(with: (data as AnyObject).data(using: String.Encoding.utf8.rawValue)!, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:Any] {
@@ -216,11 +170,11 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
     // MARK: MCAudioInputQueueDelegate methods
     
     public func inputQueue(_ inputQueue: MCAudioInputQueue!, errorOccur error: Error!) {
-        NSLog("error occured %s", #function)
+        NSLog("**********inputQueue:errorOccur************")
     }
 
     public func inputQueue(_ inputQueue: MCAudioInputQueue!, inputData data: Data!, numberOfPackets: UInt32) {
-        if self.webSocket.webSocket.readyState == .OPEN {
+        if self.webSocket != nil && self.webSocket.webSocket.readyState == .OPEN {
             if self.audioBuffer.count > 0 {
                 self.webSocket.send(self.audioBuffer)
                 self.audioBuffer.removeAll()
@@ -230,5 +184,9 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
         }else{
             self.audioBuffer.append(data)
         }
+    }
+    
+    deinit {
+        NSLog("STTClient dealloc")
     }
 }
