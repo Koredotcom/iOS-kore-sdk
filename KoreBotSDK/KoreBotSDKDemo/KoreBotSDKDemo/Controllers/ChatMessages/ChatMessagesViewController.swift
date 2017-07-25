@@ -61,6 +61,8 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     var disableKeyboardAdjustmentAnimationDuration: Bool = false
     var isSpeechToTextActive: Bool = false
     var typingStatusView:KRETypingStatusView?
+    
+    let sttClient: STTClient = STTClient()
     var speechSynthesizer: AVSpeechSynthesizer? = nil
     
     var botClient: BotClient! {
@@ -401,6 +403,25 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         }
         self.audioComposer.showCursorForSpeechDone = { [weak self]() in
             self?.composeBar.disabledSpeech()
+        }
+        
+        self.audioComposer.voiceRecordingStarted = { [weak self] (composeBar) in
+            let authInfo = self?.botClient.authInfoModel
+            let authToken: String = String(format: "%@ %@", authInfo!.tokenType!, authInfo!.accessToken!)
+            let identity = self?.botClient.userInfoModel.identity
+            self?.sttClient.initialize(serverUrl: ServerConfigs.BOT_SPEECH_SERVER, authToken: authToken, identity: identity!)
+            self?.sttClient.onReceiveMessage = composeBar?.onReceiveMessage(dataDictionary:)
+        }
+        self.audioComposer.voiceRecordingStopped = {  [weak self] (composeBar) in
+            self?.sttClient.stopAudioQueueRecording()
+            self?.sttClient.onReceiveMessage = nil
+        }
+        self.audioComposer.getAudioPeakOutputPower = { [weak self]() in
+            if self?.sttClient.audioQueueRecorder != nil {
+                self?.sttClient.audioQueueRecorder.updateMeters()
+                return (self?.sttClient.audioQueueRecorder.peakPower(forChannel: 0))!
+            }
+            return 0.0
         }
     }
     

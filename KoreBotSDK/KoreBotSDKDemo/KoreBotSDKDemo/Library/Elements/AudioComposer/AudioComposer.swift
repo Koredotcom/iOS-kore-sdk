@@ -8,9 +8,8 @@
 
 import UIKit
 import SpeechToText
-import SpeechToText.RequestManager
 
-class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
+class AudioComposer: UIView, UITextViewDelegate {
 
     @IBOutlet weak var textViewHeightConstriant: NSLayoutConstraint!
     @IBOutlet weak var cancelButton: UIButton!
@@ -20,7 +19,7 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var placeHolderTF: UITextField!
-    let requestManager: RequestManager = RequestManager.init()
+    
     var speechToTextToolBarString: NSMutableString!
     var speechToTextIntermediateString: NSMutableString!
     var speechToTextTempString: NSMutableString!
@@ -38,6 +37,10 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     var viewWillResizeSubViews: (() -> ())?
     var keyBoardActivated: ((_ composedMessage: NSString?) -> ())!
     var showCursorForSpeechDone: (() -> ())?
+    var getAudioPeakOutputPower: (() -> (Float))!
+    
+    var voiceRecordingStarted: ((_ composeBar: AudioComposer?) -> Void)!
+    var voiceRecordingStopped: ((_ composeBar: AudioComposer?) -> Void)!
 
     var audioPeakOutput:Float = 0.3
     var tapAudioGestureRecognizer: UITapGestureRecognizer!
@@ -147,16 +150,15 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     }
 
     // MARK: Speech Output - sttDelegate
-    
-    public func speech(toTextdataDictionary dataDictionary: [AnyHashable : Any]!) {
+    public func onReceiveMessage(dataDictionary: [AnyHashable : Any]?) -> Void {
         if(dataDictionary == nil){
             return;
         }
         
         self.myTimer.invalidate()
         
-        let final:Bool = (dataDictionary["final"] as? Bool)!
-        let hypotheses:NSDictionary! = (dataDictionary["hypotheses"] as! NSArray!).firstObject as! NSDictionary!;
+        let final:Bool = (dataDictionary!["final"] as? Bool)!
+        let hypotheses:NSDictionary! = (dataDictionary!["hypotheses"] as! NSArray!).firstObject as! NSDictionary!;
         let str:String = hypotheses.value(forKey: "transcript") as! String;
         let transcript:NSString = ((str.characters.count > 0) ? str : "") as NSString;
         
@@ -292,8 +294,9 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     
     func startVoiceRecording()  {
         self.textView.resignFirstResponder()
-        requestManager.intializeSocket(withUrl: ServerConfigs.BOT_SPEECH_SERVER, identity: "");
-        requestManager.sttdelegate=self;
+        if self.voiceRecordingStarted != nil {
+            self.voiceRecordingStarted!(self)
+        }
         self.audioIconSize = 20;
         self.animateBGView.isUserInteractionEnabled = false
         self.audioIconButton.setImage(UIImage(named: "audio_icon")!, for: .normal)
@@ -325,8 +328,9 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
        
         self.speechToTextToolBarString="";
         self.speechToTextIntermediateString="";
-        requestManager.sttdelegate=nil;
-        requestManager.stopAudioQueueRecording();
+        if self.voiceRecordingStopped != nil {
+            self.voiceRecordingStopped!(self)
+        }
         self.textView.text = ""
         self.animateBGView.isUserInteractionEnabled = true
         self.audioIconButton.setImage(UIImage(named: "speech")!, for: .normal)
@@ -373,9 +377,8 @@ class AudioComposer: UIView, UITextViewDelegate, SpeechToTextDelegate {
     }
     
     func updateRecordTimer() {
-        if((requestManager.audioQueueRecorder) != nil){
-            requestManager.audioQueueRecorder.updateMeters()
-            self.audioPeakOutput =  self.decibelToLinear(power: requestManager.audioQueueRecorder.peakPower(forChannel: 0));
+        if(self.getAudioPeakOutputPower != nil){
+            self.audioPeakOutput =  self.decibelToLinear(power: self.getAudioPeakOutputPower())
         }
     }
     
