@@ -63,6 +63,7 @@ class MessageBubbleCell : UITableViewCell {
         self.dateLabel.text = nil;
         self.senderImageView.image = nil;
         self.bubbleView.prepareForReuse();
+        self.bubbleView.invalidateIntrinsicContentSize()
     }
 
     func initialize() {

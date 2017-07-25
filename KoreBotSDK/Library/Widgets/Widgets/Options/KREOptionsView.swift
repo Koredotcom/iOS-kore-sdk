@@ -168,6 +168,7 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
             cell.imgView.setImageWith(NSURL(string: option.imageURL!) as URL!,placeholderImage: UIImage.init(named: "placeholder_image"))
             
             if(option.actionButtonInfo != nil){
+                cell.actionButtonHeightConstraint.constant = 30.0
                 cell.actionButton.setTitle(option.actionButtonInfo?["title"] as String!, for: .normal)
                 cell.buttonAction = {[weak self] (text) in
                     let buttonInfo:Dictionary<String,String>? = option.actionButtonInfo
@@ -181,6 +182,9 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
                         }
                     }
                 }
+            }else{
+                cell.actionButtonHeightConstraint.constant = 0.0
+                cell.actionButton.setTitle(nil, for: .normal)
             }
             
             return cell
@@ -224,9 +228,14 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
             }else if(option.optionType == KREOptionType.list){
                 cell.titleLabel.text = option.title
                 cell.subTitleLabel.text = option.subTitle
-                
                 let limitingSize: CGSize = CGSize(width: width - 93.0, height: CGFloat.greatestFiniteMagnitude)
-                height += cell.titleLabel.sizeThatFits(limitingSize).height + cell.subTitleLabel.sizeThatFits(limitingSize).height + 51.0
+                var cellHeight: CGFloat = cell.titleLabel.sizeThatFits(limitingSize).height + cell.subTitleLabel.sizeThatFits(limitingSize).height // For Text
+                cellHeight += option.actionButtonInfo != nil ? 30.0 : 0.0 // For Button
+                cellHeight += 21.0 // other miscellaneous constant
+                if cellHeight < cell.minCellHeight {
+                    cellHeight = cell.minCellHeight
+                }
+                height += cellHeight
             }
         }
         return height

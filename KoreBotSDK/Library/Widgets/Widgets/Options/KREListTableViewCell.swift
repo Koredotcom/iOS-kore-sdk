@@ -14,8 +14,10 @@ class KREListTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
-
+    @IBOutlet weak var actionButtonHeightConstraint: NSLayoutConstraint!
+    
     var buttonAction: ((_ sender: Any) -> Void)!
+    var minCellHeight: CGFloat = 80.0
     
     override func awakeFromNib() {
         super.awakeFromNib()
