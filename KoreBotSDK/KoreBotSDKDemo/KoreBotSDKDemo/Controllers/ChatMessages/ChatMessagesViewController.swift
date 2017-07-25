@@ -99,8 +99,8 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
                         
                     } else {
                         let componentModel: ComponentModel = messageObject!.component!
-                        let cInfo: NSDictionary = messageObject!.cInfo!
-                        let cInfoBody: NSString = cInfo["body"] as! NSString
+                        let cInfo: NSDictionary = messageObject!.cInfo != nil ? messageObject!.cInfo! : [:]
+                        let cInfoBody: String = cInfo["body"] != nil ? cInfo["body"] as! String : ""
                         
                         if (componentModel.type == "text") {
                             self?.showTypingStatusForBotsAction()
