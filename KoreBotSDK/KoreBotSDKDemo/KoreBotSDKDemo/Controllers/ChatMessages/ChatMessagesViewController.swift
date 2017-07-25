@@ -429,23 +429,8 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
         self.composeBar = Bundle.main.loadNibNamed("MessageComposeBar", owner: self, options: nil)![0] as? MessageComposeBar
         self.composeBar.translatesAutoresizingMaskIntoConstraints = false
         self.composeBar.speechToTextButtonActionTriggered = {
-            self.isSpeechToTextActive = true;
-            self.quickReplyView.isHidden = true;
-            self.quickSelectMode = QuickSelectMode.off
-            self.composeBar.textView.resignFirstResponder()
-            self.composeBar.isHidden = true;
-            self.audioComposer.animateBGView.isHidden = true;
-            self.audioComposer.cancelButton.isHidden = true;
-            UIView.animate(withDuration: 0.3, animations: {
-                self.audioComposer.isHidden = false;
-                self.audioComposer.triggerAudioAnimation(radius: 25);
-                self.composeBarContainer.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[audioComposer]|", options:[], metrics:nil, views:["audioComposer" : self.audioComposer!]))
-                self.composeBarContainer.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[audioComposer]|", options:[], metrics:nil, views:["audioComposer" : self.audioComposer!]))
-                self.view.layoutIfNeeded()
-            }, completion: { (completion) in
-                self.audioComposer.animateBGView.isHidden = false;
-                self.audioComposer.cancelButton.isHidden = false;
-                self.viewLayoutUpdated();
+            self.sttClient.checkAudioRecordPermission(block: { [weak self] in
+                self?.speechToTextButtonAction()
             })
         }
         
@@ -525,6 +510,27 @@ open class ChatMessagesViewController : UIViewController,BotMessagesDelegate {
     }
     
     // MARK: helpers
+    func speechToTextButtonAction() {
+        self.isSpeechToTextActive = true;
+        self.quickReplyView.isHidden = true;
+        self.quickSelectMode = QuickSelectMode.off
+        self.composeBar.textView.resignFirstResponder()
+        self.composeBar.isHidden = true;
+        self.audioComposer.animateBGView.isHidden = true;
+        self.audioComposer.cancelButton.isHidden = true;
+        UIView.animate(withDuration: 0.3, animations: {
+            self.audioComposer.isHidden = false;
+            self.audioComposer.triggerAudioAnimation(radius: 25);
+            self.composeBarContainer.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[audioComposer]|", options:[], metrics:nil, views:["audioComposer" : self.audioComposer!]))
+            self.composeBarContainer.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[audioComposer]|", options:[], metrics:nil, views:["audioComposer" : self.audioComposer!]))
+            self.view.layoutIfNeeded()
+        }, completion: { (completion) in
+            self.audioComposer.animateBGView.isHidden = false;
+            self.audioComposer.cancelButton.isHidden = false;
+            self.viewLayoutUpdated();
+        })
+    }
+    
     func setAutoCorrectionType(_ autoCorrectionType: UITextAutocorrectionType) {
         if (self.composeBar != nil && self.composeBar.textView.autocorrectionType != autoCorrectionType) {
             if (self.composeBar.textView.isFirstResponder) {
