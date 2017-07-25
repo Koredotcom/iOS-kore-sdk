@@ -10,6 +10,7 @@ import UIKit
 import QuartzCore
 
 public class KRETokenCollectionViewCell: UICollectionViewCell {
+    var imageView: UIImageView!
     var label: UILabel!
     var krefocused: Bool = false {
         didSet {
@@ -41,23 +42,46 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    var imageURL : String? {
+        didSet{
+            imageView.setImageWith(NSURL(string: self.imageURL!) as URL!, placeholderImage: UIImage.init(named: "placeholder_image"))
+        }
+    }
+    
     func setup() {
+        self.backgroundColor = UIColor.white
+        
+        imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 16
+        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        contentView.addSubview(imageView)
+        
+        imageView.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: UILayoutConstraintAxis.horizontal)
+        imageView.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: UILayoutConstraintAxis.horizontal)
+        
         label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.blue
         label.textAlignment = NSTextAlignment.center
+        label.font = UIFont(name: "HelveticaNeue-Medium", size: 17.0)
         label.clipsToBounds = true
         contentView.addSubview(label)
-
-        let layer:CALayer = label.layer
+        
+        label.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: UILayoutConstraintAxis.horizontal)
+        label.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, for: UILayoutConstraintAxis.horizontal)
+        
+        let layer:CALayer = self.layer
         layer.masksToBounds = true
-        layer.cornerRadius = 15
+        layer.cornerRadius = 19
         layer.borderColor  = Common.UIColorRGB(0x0578FE).cgColor
         layer.borderWidth = 1
         
-        let views = ["label":label!]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(2)-[label]-(2)-|", options:[], metrics:nil, views:views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[label]|", options:[], metrics:nil, views:views))
+        let views = ["label":label!, "image":imageView!] as [String : Any]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-4-[image]-(8)-[label]-(12)-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-4-[image]-4-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[label]-2-|", options:[], metrics:nil, views:views))
     }
     
     override public func awakeFromNib() {
@@ -74,11 +98,9 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: -
-    func widthForCell(string: String) -> CGFloat {
-        let font: UIFont = self.label.font
-        let attributes = [NSFontAttributeName : font]
-
-        let rect = string.boundingRect(with: CGSize(width: frame.size.width, height: CGFloat.greatestFiniteMagnitude), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: attributes, context: nil)
-        return CGFloat(ceilf(Float(rect.size.width)) + 15.0)
+    func widthForCell(string: String, withImage: Bool, height: CGFloat) -> CGFloat {
+        self.label.text = string
+        let width = self.label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: height)).width
+        return width + 24.0 + (withImage ? 32.0 : 0.0)
     }
 }

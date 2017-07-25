@@ -15,53 +15,47 @@ enum MessageThreadHeaderType : Int {
     case none = 1, sender = 2, date = 3, senderAndDate = 4
 }
 
-
 protocol BotMessagesDelegate {
     func optionsButtonTapAction(text:String)
     func populateQuickReplyCards(with message: KREMessage?)
     func closeQuickReplyCards()
 }
 
-
 class BotMessagesViewController : UITableViewController, KREFetchedResultsControllerDelegate {
-
     var fetchedResultsController: KREFetchedResultsController? = nil
     var messagesArray:NSArray!
-    var mainContext: NSManagedObjectContext = DataStoreManager.sharedManager.coreDataManager.mainContext
     var delegate:BotMessagesDelegate?
     var shouldScrollToBottom:Bool = false
     var thread: KREThread! {
         didSet {
-            let request = NSFetchRequest<KREMessage>(entityName: "KREMessage")
-            request.predicate = NSPredicate(format: "thread.threadId == %@", self.thread.threadId!)
-
-            request.sortDescriptors = [NSSortDescriptor(key: "sentOn", ascending: true)]
-            fetchedResultsController = KREFetchedResultsController(fetchRequest: request as! NSFetchRequest<NSManagedObject>, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
-            fetchedResultsController?.tableView = self.tableView
-            fetchedResultsController?.kreDelegate = self
-//            fetchedResultsController?.fetchRequest.fetchLimit = 20
-            try! fetchedResultsController? .performFetch()
-            
-//            self.getLastQuickReplyMessage()
-            self.tableView.alpha = 0
-            
-            UIView.animate(withDuration: 0, animations: {
-                self.tableView.reloadData()
-            }, completion: { (completion) in
-                self.scrollToBottom(animated: true)
-                self.tableView.alpha = 1
-            })
+            if(self.thread != nil){
+                let request = NSFetchRequest<KREMessage>(entityName: "KREMessage")
+                request.predicate = NSPredicate(format: "thread.threadId == %@", self.thread.threadId!)
+                request.sortDescriptors = [NSSortDescriptor(key: "sentOn", ascending: true)]
+                
+                let mainContext: NSManagedObjectContext = DataStoreManager.sharedManager.coreDataManager.mainContext
+                fetchedResultsController = KREFetchedResultsController(fetchRequest: request as! NSFetchRequest<NSManagedObject>, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
+                fetchedResultsController?.tableView = self.tableView
+                fetchedResultsController?.kreDelegate = self
+                try! fetchedResultsController? .performFetch()
+                
+                self.tableView.alpha = 0
+                
+                UIView.animate(withDuration: 0, animations: {
+                    self.tableView.reloadData()
+                }, completion: { (completion) in
+                    self.scrollToBottom(animated: false)
+                    self.tableView.alpha = 1
+                })
+            }
         }
     }
-    
-    let startingViewImageIndex: Int! = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.shouldScrollToBottom = false;
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 200
-
         self.tableView.separatorStyle = .none
 
         self.tableView.register(TextBubbleCell.self, forCellReuseIdentifier:"TextBubbleCell")
@@ -70,11 +64,20 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
         self.tableView.register(ListBubbleCell.self, forCellReuseIdentifier:"ListBubbleCell")
         self.tableView.register(MessageBubbleCell.self, forCellReuseIdentifier:"MessageBubbleCell")
         self.tableView.register(QuickReplyBubbleCell.self, forCellReuseIdentifier:"QuickReplyBubbleCell")
+        self.tableView.register(CarouselBubbleCell.self, forCellReuseIdentifier:"CarouselBubbleCell")
+        self.tableView.register(ErrorBubbleCell.self, forCellReuseIdentifier:"ErrorBubbleCell")
 
         if (self.tableView.contentSize.height > self.tableView.frame.size.height) {
             let point:CGPoint = CGPoint(x:0, y:self.tableView.contentSize.height - self.tableView.frame.size.height);
             self.tableView.setContentOffset(point, animated:true);
         }
+    }
+    
+    //MARK:- removing refernces to elements
+    func prepareForDeinit(){
+        self.fetchedResultsController?.tableView = nil
+        self.fetchedResultsController?.kreDelegate = nil
+        self.fetchedResultsController = nil
     }
     
     // MARK: UITable view data source
@@ -88,106 +91,112 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let message: KREMessage = fetchedResultsController!.object(at: indexPath) as! KREMessage        
-        let maskType: BubbleMaskType! = .top
+        let message: KREMessage = fetchedResultsController!.object(at: indexPath) as! KREMessage
         
         var cellIdentifier: String! = nil
         if let componentType = ComponentType(rawValue: (message.templateType?.intValue)!) {
             switch componentType {
-            case .text:
-                cellIdentifier = "TextBubbleCell"
-                break
-            case .image:
-                cellIdentifier = "ImageBubbleCell"
-                break
-            case .options:
-                cellIdentifier = "OptionsBubbleCell"
-                break
-            case .quickReply:
-                cellIdentifier = "QuickReplyBubbleCell"
-                break
-            case .list:
-                cellIdentifier = "ListBubbleCell"
-                break
-            default:
-                cellIdentifier = "TextBubbleCell"
+                case .text:
+                    cellIdentifier = "TextBubbleCell"
+                    break
+                case .image:
+                    cellIdentifier = "ImageBubbleCell"
+                    break
+                case .options:
+                    cellIdentifier = "OptionsBubbleCell"
+                    break
+                case .quickReply:
+                    cellIdentifier = "QuickReplyBubbleCell"
+                    break
+                case .list:
+                    cellIdentifier = "ListBubbleCell"
+                    break
+                case .carousel:
+                    cellIdentifier = "CarouselBubbleCell"
+                    break
+                case .error:
+                    cellIdentifier = "ErrorBubbleCell"
+                    break
+                default:
+                    cellIdentifier = "TextBubbleCell"
             }
         }
 
         let cell: MessageBubbleCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! MessageBubbleCell
-        cell.configureWithComponents(message.components?.array as! Array<KREComponent>, maskType:maskType, templateType: ComponentType(rawValue: (message.templateType?.intValue)!)!)
+        cell.configureWithComponents(message.components?.array as! Array<KREComponent>)
         
         switch (cell.bubbleView.bubbleType!) {
-        case .text:
-            self.delegate?.closeQuickReplyCards()
-            let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
-            bubbleView.onChange = { (reload) in
-                self.tableView?.reloadRows(at: [indexPath], with: .none)
-            }
-            self.textLinkDetection(textLabel: bubbleView.textLabel)
-            break
-        case .image:
-            self.delegate?.closeQuickReplyCards()
-            cell.didSelectComponentAtIndex = { (sender, index) in
+            case .text:
+                self.delegate?.closeQuickReplyCards()
+                let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
+                bubbleView.onChange = { (reload) in
+                    self.tableView?.reloadRows(at: [indexPath], with: .none)
+                }
+                self.textLinkDetection(textLabel: bubbleView.textLabel)
+                break
+            case .image:
+                self.delegate?.closeQuickReplyCards()
+                break
+            case .options:
+                self.delegate?.closeQuickReplyCards()
                 
-            }
-            break
-        case .options:
-            self.delegate?.closeQuickReplyCards()
-            let components: Array<KREComponent> = message.components?.array as! Array<KREComponent>
-            let bubbleView: OptionsBubbleView = cell.bubbleView as! OptionsBubbleView
-            self.textLinkDetection(textLabel: bubbleView.textLabel);
-
-            bubbleView.components = components as NSArray!
-            bubbleView.optionsAction = {[weak self] (text) in
-                self?.delegate?.optionsButtonTapAction(text: text!)
-            }
-            
-            cell.bubbleView.drawBorder = true
-            break
-        case .list:
-            self.delegate?.closeQuickReplyCards()
-            let components: Array<KREComponent> = message.components?.array as! Array<KREComponent>
-            let bubbleView: ListBubbleView = cell.bubbleView as! ListBubbleView
-            self.textLinkDetection(textLabel: bubbleView.textLabel);
-
-            bubbleView.showMore = message.showMore
-            bubbleView.components = components as NSArray!
-            bubbleView.optionsAction = {[weak self] (text) in
-                if(text == "Show more"){
-                    message.showMore = true;
-                    bubbleView.invalidateIntrinsicContentSize()
-                    let indexpath:NSIndexPath = NSIndexPath.init(row: (self?.fetchedResultsController?.fetchedObjects?.index(of: message))!, section: 0)
-                    self?.tableView.reloadRows(at: [indexpath as IndexPath], with: UITableViewRowAnimation.automatic)
-
-                }else{
+                let bubbleView: OptionsBubbleView = cell.bubbleView as! OptionsBubbleView
+                self.textLinkDetection(textLabel: bubbleView.textLabel);
+                bubbleView.optionsAction = {[weak self] (text) in
                     self?.delegate?.optionsButtonTapAction(text: text!)
                 }
-            }
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.launchWebViewWithURLLink(urlString: text!)
-            }
-            cell.bubbleView.drawBorder = true
-            break
-        case .quickReply:
-            let lastIndexPath = getIndexPathForLastItem()
-            if (lastIndexPath.isEqual(indexPath)) {
-                self.delegate?.populateQuickReplyCards(with: message)
-            }
-            break
-        default:
-            self.delegate?.closeQuickReplyCards()
-            cell.didSelectComponentAtIndex = nil
-            break
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.launchWebViewWithURLLink(urlString: text!)
+                }
+                
+                cell.bubbleView.drawBorder = true
+                break
+            case .list:
+                self.delegate?.closeQuickReplyCards()
+                
+                let bubbleView: ListBubbleView = cell.bubbleView as! ListBubbleView
+                bubbleView.optionsAction = {[weak self] (text) in
+                    self?.delegate?.optionsButtonTapAction(text: text!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.launchWebViewWithURLLink(urlString: text!)
+                }
+                
+                cell.bubbleView.drawBorder = true
+                break
+            case .quickReply:
+                let lastIndexPath = getIndexPathForLastItem()
+                if (lastIndexPath.isEqual(indexPath)) {
+                    self.delegate?.populateQuickReplyCards(with: message)
+                }
+                break
+            case .carousel:
+                self.delegate?.closeQuickReplyCards()
+                
+                let bubbleView: CarouselBubbleView = cell.bubbleView as! CarouselBubbleView
+                bubbleView.optionsAction = {[weak self] (text) in
+                    self?.delegate?.optionsButtonTapAction(text: text!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.launchWebViewWithURLLink(urlString: text!)
+                }
+                break
+            case .error:
+                self.delegate?.closeQuickReplyCards()
+                let bubbleView: ErrorBubbleView = cell.bubbleView as! ErrorBubbleView
+                self.textLinkDetection(textLabel: bubbleView.textLabel)
+                break
+            default:
+                break
         }
-        cell.layoutIfNeeded()
         return cell
     }
-
+    
+    // MARK: UITable view delegate source
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return CGFloat.leastNormalMagnitude
     }
-
+    
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return CGFloat.leastNormalMagnitude
     }
@@ -206,8 +215,8 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
         if (visibleCelIndexPath?.contains(indexPath!))!{
             self.shouldScrollToBottom = true
         }
-    
     }
+
     // MARK: - scrollTo related methods
     func scrollToBottom(animated animate: Bool) {
         let indexPath: NSIndexPath = self.getIndexPathForLastItem()
@@ -231,31 +240,13 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
     func textLinkDetection(textLabel:KREAttributedLabel) {
         textLabel.detectionBlock = {(hotword, string) in
             switch hotword {
-            case KREAttributedHotWordMention:
-                break
-            case KREAttributedHotWordHashtag:
-                break
-            case KREAttributedHotWordLink:
-                let url: URL = URL(string: string!)!
-                let webViewController: TOWebViewController = TOWebViewController(url: url)
-                let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
-                webNavigationController.tabBarItem.title = "Bots"
-                
-                self.present(webNavigationController, animated: true, completion: {
-                    
-                })
-                break
-            case KREAttributedHotWordPhoneNumber:
-                break
-            case KREAttributedHotWordUserDefined:
-                break
-            case KREAttributedHotWordPlainText:
-                break
-            default:
-                break
+                case KREAttributedHotWordLink:
+                    self.launchWebViewWithURLLink(urlString: string!)
+                    break
+                default:
+                    break
             }
         }
-
     }
     
     func launchWebViewWithURLLink(urlString:String)  {
@@ -265,9 +256,7 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
             let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
             webNavigationController.tabBarItem.title = "Bots"
             
-            self.present(webNavigationController, animated: true, completion: {
-                
-            })
+            self.present(webNavigationController, animated: true, completion:nil)
         }
     }
     
@@ -276,10 +265,13 @@ class BotMessagesViewController : UITableViewController, KREFetchedResultsContro
             let messageObject: KREMessage = message as! KREMessage
             messageObject.showMore = false
         }
-
     }
+    
     // MARK:- deinit
     deinit {
-        
+        self.fetchedResultsController = nil
+        self.messagesArray = nil
+        self.delegate = nil
+        self.thread = nil
     }
 }

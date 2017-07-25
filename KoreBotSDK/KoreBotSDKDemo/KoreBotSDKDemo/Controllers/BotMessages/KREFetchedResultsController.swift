@@ -154,5 +154,7 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
     // MARK:- deinit
     deinit {
         clearSectionsAndRowsCache()
+        self.kreDelegate = nil
+        self.tableView = nil
     }
 }

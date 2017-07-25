@@ -15,7 +15,6 @@ class AppLaunchViewController: UIViewController {
     
     // MARK: properties
     @IBOutlet weak var chatButton: UIButton!
-    var botViewController: ChatMessagesViewController! = nil
     // MARK: life-cycle events
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,18 +27,16 @@ class AppLaunchViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.botViewController = nil
         setInitialState()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        self.navigationController?.isNavigationBarHidden = true
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-//        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -92,12 +89,11 @@ class AppLaunchViewController: UIViewController {
                     }
                     botClient.connectWithJwToken(jwToken, success: { [weak self] (client) in
                         activityIndicatorView.stopAnimating()
-                        if (self!.botViewController == nil) {
-                            self!.botViewController = ChatMessagesViewController(thread: thread)
-                            self!.botViewController.botClient = client
-                            self!.botViewController.title = SDKConfiguration.botConfig.chatBotName
-                            self!.navigationController?.pushViewController(self!.botViewController, animated: true)
-                        }
+                        
+                        let botViewController = ChatMessagesViewController(thread: thread)
+                        botViewController.botClient = client
+                        botViewController.title = SDKConfiguration.botConfig.chatBotName
+                        self!.navigationController?.pushViewController(botViewController, animated: true)
                     }, failure: { (error) in
                         activityIndicatorView.stopAnimating()
                     })

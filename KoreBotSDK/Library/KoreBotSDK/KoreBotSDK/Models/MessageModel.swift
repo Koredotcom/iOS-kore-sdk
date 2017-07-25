@@ -14,12 +14,14 @@ open class MessageModel: MTLModel, MTLJSONSerializing {
     open var type: String?
     open var clientId: String?
     open var component: ComponentModel?
+    open var cInfo: NSDictionary?
     open var botInfo: AnyObject?
     
     // MARK: MTLJSONSerializing methods
     open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["type":"type",
-                "component":"component"]
+                "component":"component",
+                "cInfo":"cInfo"]
     }
     open static func componentJSONTransformer() -> ValueTransformer {
         return ValueTransformer.mtl_JSONDictionaryTransformer(withModelClass: ComponentModel.self)
