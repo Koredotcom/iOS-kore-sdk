@@ -149,7 +149,7 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
     }
     
     public func webSocket(_ webSocket: SRWebSocket!, onReceiveMessage message: Any!) {
-        NSLog("*******webSocket:onReceiveMessage********")
+//        NSLog("*******webSocket:onReceiveMessage********")
         if let data = message {
             do {
                 if let jsonResult = try JSONSerialization.jsonObject(with: (data as AnyObject).data(using: String.Encoding.utf8.rawValue)!, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:Any] {
