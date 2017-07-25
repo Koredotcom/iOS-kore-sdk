@@ -36,7 +36,9 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
     }
     
     public func stopAudioQueueRecording() {
-        self.webSocket.sendEndOFSpeechMarker()
+        if self.webSocket != nil {
+            self.webSocket.sendEndOFSpeechMarker()
+        }
         self.audioQueueRecorder.stop()
         self.isAudioQueueRecordingInProgress = false
     }
