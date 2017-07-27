@@ -9,9 +9,17 @@
 import UIKit
 import CoreData
 
-class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
+protocol BotMessagesViewDelegate {
+    func optionsButtonTapAction(text:String)
+    func linkButtonTapAction(urlString:String)
+    func populateQuickReplyCards(with message: KREMessage?)
+    func closeQuickReplyCards()
+}
+
+class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSource, KREFetchedResultsControllerDelegate {
     
-    var fetchedResultsController: NSFetchedResultsController<KREMessage>!
+    var fetchedResultsController: KREFetchedResultsController!
+    var viewDelegate:BotMessagesViewDelegate?
     var shouldScrollToBottom:Bool = false
     var prototypeCell: MessageBubbleCell!
 
@@ -36,6 +44,7 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
     }
     
     func setup() {
+        self.backgroundColor = UIColor.white
         self.separatorStyle = .none
         self.dataSource = self
         self.delegate = self
@@ -58,7 +67,8 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
     
     //MARK:- removing refernces to elements
     func prepareForDeinit(){
-        self.fetchedResultsController?.delegate = nil
+        self.fetchedResultsController?.kreDelegate = nil
+        self.fetchedResultsController.tableView = nil
         self.fetchedResultsController = nil
     }
     
@@ -69,8 +79,9 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
             request.sortDescriptors = [NSSortDescriptor(key: "sentOn", ascending: true)]
             
             let mainContext: NSManagedObjectContext = DataStoreManager.sharedManager.coreDataManager.mainContext
-            fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
-            fetchedResultsController.delegate = self
+            fetchedResultsController = KREFetchedResultsController(fetchRequest: request as! NSFetchRequest<NSManagedObject>, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
+            fetchedResultsController.tableView = self
+            fetchedResultsController.kreDelegate = self
             do {
                 try fetchedResultsController.performFetch()
             } catch {
@@ -90,7 +101,7 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let message: KREMessage = fetchedResultsController!.object(at: indexPath)
+        let message: KREMessage = fetchedResultsController!.object(at: indexPath) as! KREMessage
         
         var cellIdentifier: String! = nil
         if let componentType = ComponentType(rawValue: (message.templateType?.intValue)!) {
@@ -124,21 +135,82 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
         let cell: MessageBubbleCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! MessageBubbleCell
         cell.configureWithComponents(message.components?.array as! Array<KREComponent>)
         
+        var isQuickReply = false
+        
+        switch (cell.bubbleView.bubbleType!) {
+        case .text:
+            let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
+            self.textLinkDetection(textLabel: bubbleView.textLabel)
+            break
+        case .image:
+            break
+        case .options:
+            let bubbleView: OptionsBubbleView = cell.bubbleView as! OptionsBubbleView
+            self.textLinkDetection(textLabel: bubbleView.textLabel);
+            bubbleView.optionsAction = {[weak self] (text) in
+                self?.viewDelegate?.optionsButtonTapAction(text: text!)
+            }
+            bubbleView.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
+            
+            cell.bubbleView.drawBorder = true
+            break
+        case .list:
+            let bubbleView: ListBubbleView = cell.bubbleView as! ListBubbleView
+            bubbleView.optionsAction = {[weak self] (text) in
+                self?.viewDelegate?.optionsButtonTapAction(text: text!)
+            }
+            bubbleView.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
+            
+            cell.bubbleView.drawBorder = true
+            break
+        case .quickReply:
+            isQuickReply = true
+            break
+        case .carousel:
+            let bubbleView: CarouselBubbleView = cell.bubbleView as! CarouselBubbleView
+            bubbleView.optionsAction = {[weak self] (text) in
+                self?.viewDelegate?.optionsButtonTapAction(text: text!)
+            }
+            bubbleView.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
+            break
+        case .error:
+            let bubbleView: ErrorBubbleView = cell.bubbleView as! ErrorBubbleView
+            self.textLinkDetection(textLabel: bubbleView.textLabel)
+            break
+        default:
+            break
+        }
+        
+        let lastIndexPath = getIndexPathForLastItem()
+        if lastIndexPath.isEqual(indexPath) {
+            if isQuickReply {
+                self.viewDelegate?.populateQuickReplyCards(with: message)
+            }else{
+                self.viewDelegate?.closeQuickReplyCards()
+            }
+        }
+        
         return cell
     }
     
     // MARK: UITable view delegate source
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat.leastNormalMagnitude
+        return 6.0
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.leastNormalMagnitude
+        return 6.0
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        let message: KREMessage = fetchedResultsController!.object(at: indexPath)
+        let message: KREMessage = fetchedResultsController!.object(at: indexPath) as! KREMessage
         var cellHeight = message.cellHeight
         
         if(cellHeight == 0.0){
@@ -151,43 +223,7 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
         return cellHeight
     }
     
-    // MARK:- NSFetchedResultsControllerDelegate methods
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        self.fetchedControllerWillChangeContent()
-        self.beginUpdates()
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        switch type {
-            case .insert:
-                self.insertSections(IndexSet(integer: sectionIndex), with: .fade)
-            case .delete:
-                self.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
-            case .move:
-                break
-            case .update:
-                break
-        }
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-            case .insert:
-                self.insertRows(at: [newIndexPath!], with: .fade)
-            case .delete:
-                self.deleteRows(at: [indexPath!], with: .fade)
-            case .update:
-                self.reloadRows(at: [indexPath!], with: .fade)
-            case .move:
-                self.moveRow(at: indexPath!, to: newIndexPath!)
-        }
-    }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        self.endUpdates()
-        self.fetchedControllerDidChangeContent()
-    }
-    
+    // MARK:- KREFetchedResultsControllerDelegate methods    
     func fetchedControllerWillChangeContent() {
         let visibleCelIndexPath: [IndexPath]? = self.indexPathsForVisibleRows
         let indexPath: IndexPath? = self.getIndexPathForLastItem() as IndexPath
@@ -218,14 +254,7 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
         self.setContentOffset(contentOffset, animated: animate)
     }
     
-    func scrollToBottom(animated animate: Bool, withDelay delay:TimeInterval) {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delay) {
-            self.scrollToBottom(animated: animate)
-        }
-    }
-    
     func scrollToBottom(animated animate: Bool) {
-        NSLog("BotMessagesTableView: scrollToBottom")
         let indexPath: NSIndexPath = self.getIndexPathForLastItem()
         if (indexPath.row > 0 || indexPath.section > 0) {
             self.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: animate)
@@ -242,6 +271,20 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
             }
         }
         return indexPath
+    }
+    
+    // MARK: helper functions
+    
+    func textLinkDetection(textLabel:KREAttributedLabel) {
+        textLabel.detectionBlock = {(hotword, string) in
+            switch hotword {
+            case KREAttributedHotWordLink:
+                self.viewDelegate?.linkButtonTapAction(urlString: string!)
+                break
+            default:
+                break
+            }
+        }
     }
     
     // MARK:- deinit

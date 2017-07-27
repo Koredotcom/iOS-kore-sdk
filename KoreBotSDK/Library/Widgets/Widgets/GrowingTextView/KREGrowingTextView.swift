@@ -195,12 +195,12 @@ open class KREGrowingTextView: UIScrollView {
         if newScrollViewFrame.equalTo(oldScrollViewFrame) {
             return
         }
-        
+        let heightDiff = newScrollViewFrame.height - oldScrollViewFrame.height
         self.viewDelegate?.growingTextView(self, willChangeHeight: newScrollViewFrame.height)
         UIView.animate(withDuration: animateHeightChange ? 0.25 : 0.0, animations: {
             self.frame = newScrollViewFrame
             self.invalidateIntrinsicContentSize()
-            self.viewDelegate?.growingTextView(self, changingHeight: newScrollViewFrame.height, animate: self.animateHeightChange)
+            self.viewDelegate?.growingTextView(self, changingHeight: heightDiff, animate: self.animateHeightChange)
         }, completion: { (complete) in
             self.viewDelegate?.growingTextView(self, didChangeHeight: self.frame.height)
         })
