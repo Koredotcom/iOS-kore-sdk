@@ -25,6 +25,15 @@ class ComposeBarView: UIView {
     var speechToTextButton: UIButton!
     var textToSpeechButton: UIButton!
     
+    convenience init() {
+        self.init(frame: CGRect.zero)
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.setupViews()
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setupViews()
@@ -126,18 +135,20 @@ class ComposeBarView: UIView {
         self.delegate?.composeBarViewSpeechToTextButtonAction(self)
     }
     
+    func valueChanged() {
+        let hasText = self.growingTextView.textView.text.characters.count > 0
+        self.sendButton.isHidden = !hasText
+        self.speechToTextButton.isHidden = hasText
+    }
+    
     func clear() {
         self.growingTextView.textView.text = "";
-        self.sendButton.isHidden = true
-        self.speechToTextButton.isHidden = false
+        self.valueChanged()
     }
     
     // MARK: Notification handler
     func textDidChangeNotification(_ notification: Notification) {
-        let hasText = self.growingTextView.textView.text.characters.count > 0
-        
-        self.sendButton.isHidden = !hasText
-        self.speechToTextButton.isHidden = hasText
+        self.valueChanged()
     }
     
     // MARK: UIResponder Methods
