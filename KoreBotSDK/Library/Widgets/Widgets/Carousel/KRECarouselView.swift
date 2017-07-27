@@ -124,11 +124,12 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
     
     // MARK: - UICollectionViewDelegateContactFlowLayout
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: maxCardWidth, height: maxCardHeight)
+        return CGSize(width: maxCardWidth, height: maxCardHeight - 1.0)
     }
     
     public func prepareForReuse() {
         self.cards.removeAll()
+        self.reloadData()
     }
     
     // MARK:- Scroll view delegate

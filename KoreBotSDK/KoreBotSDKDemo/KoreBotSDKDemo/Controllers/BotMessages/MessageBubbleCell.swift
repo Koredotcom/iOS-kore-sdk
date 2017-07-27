@@ -21,7 +21,7 @@ class MessageBubbleCell : UITableViewCell {
     
     var dateLabelLeadingConstraint: NSLayoutConstraint!
     var dateLabelTrailingConstraint: NSLayoutConstraint!
-
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.initialize()
@@ -108,9 +108,9 @@ class MessageBubbleCell : UITableViewCell {
         // Setting Constraints
         let views: [String: UIView] = ["dateLabel": dateLabel, "senderImageView": senderImageView, "bubbleContainerView": bubbleContainerView]
         
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[dateLabel]", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-4-[dateLabel]", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(30)]", options:[], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[senderImageView(30)]-8-|", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[senderImageView(30)]-4-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[dateLabel]-4-[bubbleContainerView]", options:[], metrics:nil, views:views))
         
         self.dateLabelLeadingConstraint = NSLayoutConstraint(item: self.dateLabel, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier:1.0, constant:45.0)
@@ -118,7 +118,7 @@ class MessageBubbleCell : UITableViewCell {
         self.dateLabelTrailingConstraint = NSLayoutConstraint(item: self.contentView, attribute:.trailing, relatedBy:.equal, toItem:self.dateLabel, attribute:.trailing, multiplier:1.0, constant:16.0)
         self.dateLabelTrailingConstraint.priority = 1
 
-        self.bubbleBottomConstraint = NSLayoutConstraint(item:self.contentView, attribute:.bottom, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.bottom, multiplier:1.0, constant:8.0)
+        self.bubbleBottomConstraint = NSLayoutConstraint(item:self.contentView, attribute:.bottom, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.bottom, multiplier:1.0, constant:4.0)
         self.bubbleBottomConstraint.priority = 999
         self.bubbleLeadingConstraint = NSLayoutConstraint(item:self.bubbleContainerView, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier:1.0, constant:45.0)
         self.bubbleLeadingConstraint.priority = 999
@@ -176,6 +176,23 @@ class MessageBubbleCell : UITableViewCell {
 
     func components() -> NSArray {
         return self.bubbleView.components
+    }
+    
+    func getEstimatedHeightForComponents(_ components: Array<KREComponent>, bubbleType:BubbleType) -> CGFloat {
+        let bubbleView = BubbleView.bubbleWithType(bubbleType)
+        MessageBubbleCell.setComponents(components, bubbleView:bubbleView)
+        var height = bubbleView.intrinsicContentSize.height
+        
+        let component: KREComponent = components.first!
+        let message: KREMessage = component.message!
+        if (message.sentOn != nil) {
+            let dateFormatter: DateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "EEE, MMM d, h:mm a"
+            self.dateLabel.text = dateFormatter.string(from: message.sentOn! as Date)
+            height += self.dateLabel.sizeThatFits(CGSize.init(width: BubbleViewMaxWidth, height: CGFloat.greatestFiniteMagnitude)).height
+        }
+        
+        return height + 12.0
     }
     
     // MARK:- deinit

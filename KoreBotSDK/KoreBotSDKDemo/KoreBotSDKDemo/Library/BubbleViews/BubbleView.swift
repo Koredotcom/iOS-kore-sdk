@@ -93,6 +93,11 @@ class BubbleView: UIView {
         
     }
     
+    // MARK: populate components
+    func populateComponents() {
+        
+    }
+    
     //MARK:- Method to be overridden
     func prepareForReuse() {
         
@@ -147,11 +152,6 @@ class BubbleView: UIView {
                 self.borderLayer = nil
             }
         }
-    }
-    
-    // MARK: populate components 
-    func populateComponents() {
-        
     }
     
     func createBezierPath() -> UIBezierPath {

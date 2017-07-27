@@ -67,6 +67,12 @@ class TextBubbleView : BubbleView {
             }
         }
     }
+    
+    override var intrinsicContentSize : CGSize {
+        let limitingSize: CGSize  = CGSize(width: kMaxTextWidth, height: CGFloat.greatestFiniteMagnitude)
+        let textSize: CGSize = self.textLabel.sizeThatFits(limitingSize)
+        return CGSize(width: textSize.width + 20, height: textSize.height + 20)
+    }
 }
 
 class QuickReplyBubbleView : TextBubbleView {
