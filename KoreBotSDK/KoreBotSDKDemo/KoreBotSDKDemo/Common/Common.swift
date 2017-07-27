@@ -11,7 +11,7 @@ import Foundation
 
 var startSpeakingNotification = "StartSpeakingNowNotificationName"
 var stopSpeakingNotification = "StopSpeakingNowNotificationName"
-var isSpeakingEnabled = true
+var isSpeakingEnabled = false
 
 open class Common : NSObject {
     open static func UIColorRGB(_ rgb: Int) -> UIColor {

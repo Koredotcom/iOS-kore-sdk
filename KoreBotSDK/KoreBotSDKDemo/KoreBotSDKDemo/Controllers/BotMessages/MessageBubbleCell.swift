@@ -180,7 +180,7 @@ class MessageBubbleCell : UITableViewCell {
     
     func getEstimatedHeightForComponents(_ components: Array<KREComponent>, bubbleType:BubbleType) -> CGFloat {
         let bubbleView = BubbleView.bubbleWithType(bubbleType)
-        MessageBubbleCell.setComponents(components, bubbleView:bubbleView)
+        bubbleView.components = components as NSArray!
         var height = bubbleView.intrinsicContentSize.height
         
         let component: KREComponent = components.first!

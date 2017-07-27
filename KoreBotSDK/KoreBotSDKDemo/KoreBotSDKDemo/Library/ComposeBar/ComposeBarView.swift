@@ -11,6 +11,7 @@ import KoreWidgets
 
 protocol ComposeBarViewDelegate {
     func composeBarView(_: ComposeBarView, sendButtonAction text: String)
+    func composeBarViewSpeechToTextButtonAction(_: ComposeBarView)
 }
 
 class ComposeBarView: UIView {
@@ -21,14 +22,15 @@ class ComposeBarView: UIView {
     var bottomLineView: UIView!
     var growingTextView: KREGrowingTextView!
     var sendButton: UIButton!
+    var speechToTextButton: UIButton!
     var textToSpeechButton: UIButton!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.setup()
+        self.setupViews()
     }
     
-    func setup() {
+    func setupViews() {
         self.backgroundColor = Common.UIColorRGB(0xF9F9F9)
         
         self.topLineView = UIView.init(frame: CGRect.zero)
@@ -59,13 +61,23 @@ class ComposeBarView: UIView {
         let attributes: [String : Any] = [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!, NSForegroundColorAttributeName: Common.UIColorRGB(0xB5B9BA)]
         self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Say Something...", attributes:attributes)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(ComposeBarView.textDidChangeNotification(_ :)), name: NSNotification.Name.UITextViewTextDidChange, object: self.growingTextView.textView)
+        
         self.sendButton = UIButton.init(frame: CGRect.zero)
         self.sendButton.setTitle("Send", for: .normal)
         self.sendButton.translatesAutoresizingMaskIntoConstraints = false
         self.sendButton.setTitleColor(Common.UIColorRGB(0x007AFF), for: .normal)
         self.sendButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
         self.sendButton.addTarget(self, action: #selector(self.sendButtonAction(_:)), for: .touchUpInside)
+        self.sendButton.isHidden = true
         self.addSubview(self.sendButton)
+        
+        self.speechToTextButton = UIButton.init(frame: CGRect.zero)
+        self.speechToTextButton.setTitle("", for: .normal)
+        self.speechToTextButton.translatesAutoresizingMaskIntoConstraints = false
+        self.speechToTextButton.setImage(UIImage(named: "audio_icon_select"), for: .normal)
+        self.speechToTextButton.addTarget(self, action: #selector(self.speechToTextButtonAction(_:)), for: .touchUpInside)
+        self.addSubview(self.speechToTextButton)
         
         self.textToSpeechButton = UIButton.init(frame: CGRect.zero)
         self.textToSpeechButton.setTitle("", for: .normal)
@@ -75,16 +87,18 @@ class ComposeBarView: UIView {
         self.textToSpeechButton.addTarget(self, action: #selector(self.textToSpeechButtonAction(_:)), for: .touchUpInside)
         self.addSubview(self.textToSpeechButton)
         
-        let views: [String : Any] = ["topLineView": self.topLineView, "bottomLineView": self.bottomLineView, "growingTextView": self.growingTextView, "sendButton": self.sendButton, "textToSpeechButton": self.textToSpeechButton]
+        let views: [String : Any] = ["topLineView": self.topLineView, "bottomLineView": self.bottomLineView, "growingTextView": self.growingTextView, "sendButton": self.sendButton, "speechToTextButton": self.speechToTextButton, "textToSpeechButton": self.textToSpeechButton]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[topLineView]|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[topLineView(0.5)]", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[bottomLineView]|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[bottomLineView(0.5)]|", options:[], metrics:nil, views:views))
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[growingTextView]-6-[sendButton]-6-[textToSpeechButton]-12-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[growingTextView]-6-[speechToTextButton]-6-[textToSpeechButton]", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-6.5-[growingTextView]-6.5-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[textToSpeechButton]-6-|", options:[], metrics:nil, views:views))
         self.addConstraint(NSLayoutConstraint.init(item: self.sendButton, attribute: .centerY, relatedBy: .equal, toItem: self.textToSpeechButton, attribute: .centerY, multiplier: 1.0, constant: 1.0))
+        self.addConstraint(NSLayoutConstraint.init(item: self.sendButton, attribute: .centerY, relatedBy: .equal, toItem: self.speechToTextButton, attribute: .centerY, multiplier: 1.0, constant: 0.0))
     }
     
     func sendButtonAction(_ sender: AnyObject!) {
@@ -98,14 +112,35 @@ class ComposeBarView: UIView {
     }
     
     func textToSpeechButtonAction(_ sender: Any) {
-        
+        if self.textToSpeechButton.isSelected {
+            self.textToSpeechButton.isSelected = false
+            isSpeakingEnabled = false
+            NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
+        }else{
+            self.textToSpeechButton.isSelected = true
+            isSpeakingEnabled = true
+        }
+    }
+    
+    func speechToTextButtonAction(_ sender: AnyObject) {
+        self.delegate?.composeBarViewSpeechToTextButtonAction(self)
     }
     
     func clear() {
         self.growingTextView.textView.text = "";
+        self.sendButton.isHidden = true
+        self.speechToTextButton.isHidden = false
     }
     
-    //MARK: UIResponder Methods
+    // MARK: Notification handler
+    func textDidChangeNotification(_ notification: Notification) {
+        let hasText = self.growingTextView.textView.text.characters.count > 0
+        
+        self.sendButton.isHidden = !hasText
+        self.speechToTextButton.isHidden = hasText
+    }
+    
+    // MARK: UIResponder Methods
     
     open override var isFirstResponder: Bool {
         return self.growingTextView.isFirstResponder
@@ -117,5 +152,15 @@ class ComposeBarView: UIView {
     
     open override func resignFirstResponder() -> Bool {
         return self.growingTextView.resignFirstResponder()
+    }
+    
+    //MARK:- removing refernces to elements
+    func prepareForDeinit(){
+        
+    }
+    
+    // MARK:- deinit
+    deinit {
+        NSLog("ComposeBarView dealloc")
     }
 }
