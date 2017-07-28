@@ -107,6 +107,12 @@ class AudioComposeView: UIView {
         }
     }
     
+    public func stopRecording() {
+        if self.isActive {
+            self.stopAudioRecording()
+        }
+    }
+    
     public func closeRecording() {
         if self.isActive {
             self.cancelButtonAction()

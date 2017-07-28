@@ -29,7 +29,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     var composeBar: ComposeBarView!
-    var audioComposer: AudioComposer!
+    var audioComposeView: AudioComposeView!
     var quickReplyView: KREQuickSelectView!
 
     let sttClient: STTClient = STTClient()
@@ -136,55 +136,33 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func configureAudioComposer()  {
-        self.audioComposer = Bundle.main.loadNibNamed("AudioComposer", owner: self, options: nil)![0] as? AudioComposer
-        self.audioComposer.translatesAutoresizingMaskIntoConstraints = false
-        self.composeBarContainerView.addSubview(self.audioComposer!)
-        self.audioComposer.isHidden = true;
+        self.audioComposeView = AudioComposeView()
+        self.audioComposeView.translatesAutoresizingMaskIntoConstraints = false
         
-        self.audioComposer.sendButtonAction = { [weak self] (composeBar, message) in
-            self?.sendMessage(message!)
-        }
-        if(self.botClient != nil){
-            self.audioComposer.identity = self.botClient.userInfoModel.identity
-        }
-        
-        self.audioComposer.cancelledSpeechToText = {
-            self.audioComposer.isHidden = true;
-            self.composeBar.isHidden = false;
-            
-            self.composeBarContainerView.removeConstraints(self.composeBarContainerView.constraints)
-            self.composeBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[composeBar]|", options:[], metrics:nil, views:["composeBar" : self.composeBar!]))
-            self.composeBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[composeBar]|", options:[], metrics:nil, views:["composeBar" : self.composeBar!]))
-            
-            UIView.animate(withDuration: 0.25, animations: {
+        self.audioComposeView.cancelledSpeechToText = {
+            _ = self.composeBar.becomeFirstResponder()
+            self.composeBar.configureViewForSpeech(false)
+            self.composeBar.removeSubComposeView(self.audioComposeView)
+            let options = UIViewAnimationOptions(rawValue: UInt(7 << 16))
+            let duration = 0.25
+            UIView.animate(withDuration: duration, delay: 0.0, options: options, animations: {
                 self.view.layoutIfNeeded()
-            }, completion: { (completion) in
-                
-            })
-            
-            self.quickReplyView.isHidden = false;
+                self.threadTableView.scrollWithOffset(-self.audioComposeView.frame.size.height, animated: false)
+            }) { (Bool) in
+            }
         }
-        
-        self.audioComposer.keyBoardActivated  = { (composedMessage) in
-            self.composeBar.growingTextView.textView.text = composedMessage! as String
-            self.composeBar.valueChanged()
-        }
-        self.audioComposer.showCursorForSpeechDone = { [weak self]() in
-            _ = self?.composeBar.becomeFirstResponder()
-        }
-        
-        self.audioComposer.voiceRecordingStarted = { [weak self] (composeBar) in
+        self.audioComposeView.voiceRecordingStarted = { [weak self] (composeBar) in
             let authInfo = self?.botClient.authInfoModel
             let authToken: String = String(format: "%@ %@", authInfo!.tokenType!, authInfo!.accessToken!)
             let identity = self?.botClient.userInfoModel.identity
             self?.sttClient.initialize(serverUrl: ServerConfigs.BOT_SPEECH_SERVER, authToken: authToken, identity: identity!)
-            self?.sttClient.onReceiveMessage = composeBar?.onReceiveMessage(dataDictionary:)
+            self?.sttClient.onReceiveMessage = self?.composeBar.onReceiveMessageFromSTTClient(dataDictionary:)
         }
-        self.audioComposer.voiceRecordingStopped = {  [weak self] (composeBar) in
+        self.audioComposeView.voiceRecordingStopped = {  [weak self] (composeBar) in
             self?.sttClient.stopAudioQueueRecording()
             self?.sttClient.onReceiveMessage = nil
         }
-        self.audioComposer.getAudioPeakOutputPower = { [weak self]() in
+        self.audioComposeView.getAudioPeakOutputPower = { [weak self]() in
             if self?.sttClient.audioQueueRecorder != nil {
                 self?.sttClient.audioQueueRecorder.updateMeters()
                 return (self?.sttClient.audioQueueRecorder.peakPower(forChannel: 0))!
@@ -431,20 +409,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func speechToTextButtonAction() {
-        self.quickReplyView.isHidden = true;
         _ = self.composeBar.resignFirstResponder()
-        self.composeBar.isHidden = true;
-        self.audioComposer.animateBGView.isHidden = true;
-        self.audioComposer.cancelButton.isHidden = true;
-        self.composeBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[audioComposer]|", options:[], metrics:nil, views:["audioComposer" : self.audioComposer!]))
-        self.composeBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[audioComposer]|", options:[], metrics:nil, views:["audioComposer" : self.audioComposer!]))
-        UIView.animate(withDuration: 0.25, animations: {
-            self.audioComposer.isHidden = false;
-            self.audioComposer.triggerAudioAnimation(radius: 25);
+        self.composeBar.configureViewForSpeech(true)
+        self.composeBar.addSubComposeView(self.audioComposeView)
+        self.audioComposeView.startRecording()
+        
+        let options = UIViewAnimationOptions(rawValue: UInt(7 << 16))
+        let duration = 0.25
+        UIView.animate(withDuration: duration, delay: 0.0, options: options, animations: {
             self.view.layoutIfNeeded()
-        }, completion: { (completion) in
-            self.audioComposer.animateBGView.isHidden = false;
-            self.audioComposer.cancelButton.isHidden = false;
+            self.threadTableView.scrollWithOffset(self.audioComposeView.frame.size.height, animated: false)
+        }, completion: { (Bool) in
         })
     }
     
@@ -529,12 +504,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func composeBarView(_: ComposeBarView, sendButtonAction text: String) {
         self.sendTextMessage(text: text)
+        self.audioComposeView.stopRecording()
     }
     
     func composeBarViewSpeechToTextButtonAction(_: ComposeBarView) {
         self.sttClient.checkAudioRecordPermission(block: { [weak self] in
             self?.speechToTextButtonAction()
         })
+    }
+    
+    func composeBarViewDidBecomeFirstResponder(_: ComposeBarView) {
+        self.audioComposeView.closeRecording()
     }
     
     // MARK: KREGrowingTextViewDelegate methods

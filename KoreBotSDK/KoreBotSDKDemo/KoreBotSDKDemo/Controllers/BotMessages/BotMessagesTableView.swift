@@ -242,14 +242,20 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
     
     // MARK: - scrollTo related methods
     func scrollWithOffset(_ offset: CGFloat, animated animate: Bool) {
-        var contentOffset = self.contentOffset
-        contentOffset.y += offset
-        
-        if contentOffset.y < -self.contentInset.top {
-            contentOffset.y = -self.contentInset.top
+        if self.contentSize.height < self.frame.size.height { // when content is too less
+            return
         }
         if self.frame.size.height + self.contentOffset.y >= self.contentSize.height - 1.0/*fraction buffer*/ {
             return
+        }
+        
+        var contentOffset = self.contentOffset
+        contentOffset.y += offset
+        if contentOffset.y < -self.contentInset.top {
+            contentOffset.y = -self.contentInset.top
+        }
+        if self.frame.size.height + offset > self.contentSize.height {
+            contentOffset.y = self.contentSize.height - self.frame.size.height
         }
         
         self.setContentOffset(contentOffset, animated: animate)
