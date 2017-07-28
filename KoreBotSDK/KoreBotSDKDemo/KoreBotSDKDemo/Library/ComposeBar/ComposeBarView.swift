@@ -12,6 +12,7 @@ import KoreWidgets
 protocol ComposeBarViewDelegate {
     func composeBarView(_: ComposeBarView, sendButtonAction text: String)
     func composeBarViewSpeechToTextButtonAction(_: ComposeBarView)
+    func composeBarViewDidBecomeFirstResponder(_: ComposeBarView)
 }
 
 class ComposeBarView: UIView {
@@ -24,6 +25,9 @@ class ComposeBarView: UIView {
     var sendButton: UIButton!
     var speechToTextButton: UIButton!
     var textToSpeechButton: UIButton!
+    var contentView: UIView!
+    
+    var contentViewHeightConstraint: NSLayoutConstraint!
     
     convenience init() {
         self.init(frame: CGRect.zero)
@@ -42,15 +46,9 @@ class ComposeBarView: UIView {
     func setupViews() {
         self.backgroundColor = Common.UIColorRGB(0xF9F9F9)
         
-        self.topLineView = UIView.init(frame: CGRect.zero)
-        self.topLineView.backgroundColor = Common.UIColorRGB(0xD7D9DA)
-        self.topLineView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(self.topLineView)
-        
-        self.bottomLineView = UIView.init(frame: CGRect.zero)
-        self.bottomLineView.backgroundColor = Common.UIColorRGB(0xD7D9DA)
-        self.bottomLineView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(self.bottomLineView)
+        self.contentView = UIView.init(frame: CGRect.zero)
+        self.contentView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.contentView)
         
         self.growingTextView = KREGrowingTextView.init(frame: CGRect.zero)
         self.growingTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -70,7 +68,8 @@ class ComposeBarView: UIView {
         let attributes: [String : Any] = [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!, NSForegroundColorAttributeName: Common.UIColorRGB(0xB5B9BA)]
         self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Say Something...", attributes:attributes)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ComposeBarView.textDidChangeNotification(_ :)), name: NSNotification.Name.UITextViewTextDidChange, object: self.growingTextView.textView)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.textDidBeginEditingNotification(_ :)), name: NSNotification.Name.UITextViewTextDidBeginEditing, object: self.growingTextView.textView)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.textDidChangeNotification(_ :)), name: NSNotification.Name.UITextViewTextDidChange, object: self.growingTextView.textView)
         
         self.sendButton = UIButton.init(frame: CGRect.zero)
         self.sendButton.setTitle("Send", for: .normal)
@@ -96,18 +95,47 @@ class ComposeBarView: UIView {
         self.textToSpeechButton.addTarget(self, action: #selector(self.textToSpeechButtonAction(_:)), for: .touchUpInside)
         self.addSubview(self.textToSpeechButton)
         
-        let views: [String : Any] = ["topLineView": self.topLineView, "bottomLineView": self.bottomLineView, "growingTextView": self.growingTextView, "sendButton": self.sendButton, "speechToTextButton": self.speechToTextButton, "textToSpeechButton": self.textToSpeechButton]
+        self.topLineView = UIView.init(frame: CGRect.zero)
+        self.topLineView.backgroundColor = Common.UIColorRGB(0xD7D9DA)
+        self.topLineView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.topLineView)
+        
+        self.bottomLineView = UIView.init(frame: CGRect.zero)
+        self.bottomLineView.backgroundColor = Common.UIColorRGB(0xD7D9DA)
+        self.bottomLineView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.bottomLineView)
+        
+        let views: [String : Any] = ["topLineView": self.topLineView, "bottomLineView": self.bottomLineView, "growingTextView": self.growingTextView, "sendButton": self.sendButton, "speechToTextButton": self.speechToTextButton, "textToSpeechButton": self.textToSpeechButton, "contentView": self.contentView]
+        
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[contentView]|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[contentView]|", options:[], metrics:nil, views:views))
+        self.contentViewHeightConstraint = NSLayoutConstraint.init(item: self.contentView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.0)
+        self.addConstraint(self.contentViewHeightConstraint)
+        
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[topLineView]|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[topLineView(0.5)]", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[bottomLineView]|", options:[], metrics:nil, views:views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[bottomLineView(0.5)]|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[bottomLineView(0.5)][contentView]", options:[], metrics:nil, views:views))
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[growingTextView]-6-[sendButton]-6-[textToSpeechButton]-12-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[growingTextView]-6-[speechToTextButton]-6-[textToSpeechButton]", options:[], metrics:nil, views:views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-6.5-[growingTextView]-6.5-|", options:[], metrics:nil, views:views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[textToSpeechButton]-6-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-6.5-[growingTextView]-6.5-[contentView]", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[textToSpeechButton]-6-[contentView]", options:[], metrics:nil, views:views))
         self.addConstraint(NSLayoutConstraint.init(item: self.sendButton, attribute: .centerY, relatedBy: .equal, toItem: self.textToSpeechButton, attribute: .centerY, multiplier: 1.0, constant: 1.0))
         self.addConstraint(NSLayoutConstraint.init(item: self.sendButton, attribute: .centerY, relatedBy: .equal, toItem: self.speechToTextButton, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+    }
+    
+    func addSubComposeView(_ view: UIView) {
+        self.contentViewHeightConstraint.isActive = false
+        self.contentView.addSubview(view)
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options:[], metrics:nil, views:["view" : view]))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options:[], metrics:nil, views:["view" : view]))
+        self.contentView.layoutIfNeeded()
+    }
+    
+    func removeSubComposeView(_ view: UIView) {
+        view.removeFromSuperview()
+        self.contentViewHeightConstraint.isActive = true
     }
     
     func sendButtonAction(_ sender: AnyObject!) {
@@ -147,6 +175,10 @@ class ComposeBarView: UIView {
     }
     
     // MARK: Notification handler
+    func textDidBeginEditingNotification(_ notification: Notification) {
+        self.delegate?.composeBarViewDidBecomeFirstResponder(self)
+    }
+    
     func textDidChangeNotification(_ notification: Notification) {
         self.valueChanged()
     }
