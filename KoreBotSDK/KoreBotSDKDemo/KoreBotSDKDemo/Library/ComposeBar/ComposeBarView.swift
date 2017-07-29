@@ -68,7 +68,6 @@ class ComposeBarView: UIView {
         self.growingTextView.layer.borderColor = Common.UIColorRGB(0xCCCFD0).cgColor
         self.growingTextView.layer.borderWidth = 0.5
         self.growingTextView.layer.cornerRadius = 14
-        self.growingTextView.textView.backgroundColor = UIColor.white
         self.growingTextView.backgroundColor = UIColor.white
         
         let attributes: [String : Any] = [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!, NSForegroundColorAttributeName: Common.UIColorRGB(0xB5B9BA)]

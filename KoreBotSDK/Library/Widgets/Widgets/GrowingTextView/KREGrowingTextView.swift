@@ -18,6 +18,7 @@ open class KREGrowingTextView: UIScrollView {
     // MARK: - Properties
     
     private let _textView: KRETextViewInternal
+    private let _placeholderLabel: UILabel
     private var _maxNumberOfLines: Int = 0
     private var _minNumberOfLines: Int = 0
     private var _maxHeight: CGFloat = 0
@@ -47,6 +48,7 @@ open class KREGrowingTextView: UIScrollView {
         set {
             _textView.textContainerInset = newValue
             updateMinimumAndMaximumHeight()
+            resetPlaceholderLabelFrame()
         }
     }
     
@@ -81,8 +83,13 @@ open class KREGrowingTextView: UIScrollView {
     }
     
     open var placeholderAttributedText: NSAttributedString? {
-        get { return _textView.placeholderAttributedText }
-        set { _textView.placeholderAttributedText = newValue }
+        get {
+            return _placeholderLabel.attributedText
+        }
+        set {
+            _placeholderLabel.attributedText = newValue
+            resetPlaceholderLabelFrame()
+        }
     }
     
     public var animateHeightChange: Bool = false
@@ -114,6 +121,7 @@ open class KREGrowingTextView: UIScrollView {
     
     public override init(frame: CGRect) {
         _textView = KRETextViewInternal(frame: CGRect(origin: CGPoint.zero, size: frame.size))
+        _placeholderLabel = UILabel(frame: CGRect(origin: CGPoint.zero, size: frame.size))
         _previousFrame = frame
         super.init(frame: frame)
         setup()
@@ -121,6 +129,7 @@ open class KREGrowingTextView: UIScrollView {
     
     public required init?(coder aDecoder: NSCoder) {
         _textView = KRETextViewInternal(frame: CGRect.zero)
+        _placeholderLabel = UILabel(frame: CGRect.zero)
         super.init(coder: aDecoder)
         _textView.frame = bounds
         _previousFrame = frame
@@ -150,12 +159,19 @@ open class KREGrowingTextView: UIScrollView {
     private func setup() {
         _textView.isScrollEnabled = false
         _textView.backgroundColor = UIColor.clear
+        addSubview(_placeholderLabel)
         addSubview(_textView)
         _minHeight = simulateHeight(1)
         maxNumberOfLines = 3
         _textView.textDidChange = { [weak self] in
+            self?._placeholderLabel.isHidden = self?._textView.text.characters.count != 0
             self?.fitToScrollView()
         }
+    }
+    
+    private func resetPlaceholderLabelFrame() {
+        var placeholderSize = _placeholderLabel.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude))
+        _placeholderLabel.frame = CGRect(origin: CGPoint(x: _textView.textContainerInset.left + 5, y: _textView.textContainerInset.top), size: placeholderSize)
     }
     
     private func measureTextViewSize() -> CGSize {

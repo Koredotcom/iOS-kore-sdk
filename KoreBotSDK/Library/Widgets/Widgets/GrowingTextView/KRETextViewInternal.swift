@@ -31,45 +31,18 @@ internal class KRETextViewInternal: UITextView {
     override var text: String! {
         didSet {
             textDidChange()
-            updatePlaceholder()
         }
     }
     
     override var attributedText: NSAttributedString! {
         didSet {
             textDidChange()
-            updatePlaceholder()
-        }
-    }
-    
-    var placeholderAttributedText: NSAttributedString? {
-        didSet {
-            setNeedsDisplay()
         }
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         setNeedsDisplay()
-    }
-    
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        
-        guard displayPlaceholder else { return }
-        
-        let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = textAlignment
-        
-        let targetRect = CGRect(
-            x: 5 + textContainerInset.left,
-            y: textContainerInset.top,
-            width: frame.size.width - (textContainerInset.left + textContainerInset.right),
-            height: frame.size.height - (textContainerInset.top + textContainerInset.bottom)
-        )
-        
-        let attributedString = placeholderAttributedText
-        attributedString?.draw(in: targetRect)
     }
     
     // MARK: Private
@@ -83,11 +56,6 @@ internal class KRETextViewInternal: UITextView {
     }
     
     private dynamic func textDidChangeNotification(_ notification: Notification) {
-        updatePlaceholder()
         textDidChange()
-    }
-    
-    private func updatePlaceholder() {
-        displayPlaceholder = text.characters.count == 0
     }
 }
