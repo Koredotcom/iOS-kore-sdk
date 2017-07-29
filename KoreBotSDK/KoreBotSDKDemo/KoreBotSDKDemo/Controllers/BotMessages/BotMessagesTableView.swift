@@ -69,8 +69,6 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
     func prepareForDeinit(){
         self.fetchedResultsController?.kreDelegate = nil
         self.fetchedResultsController.tableView = nil
-        self.fetchedResultsController = nil
-        self.prototypeCell = nil
     }
     
     func initializeFetchedResultsController() {

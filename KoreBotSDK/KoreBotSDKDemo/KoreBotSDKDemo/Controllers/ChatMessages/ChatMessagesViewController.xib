@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12121"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,7 +15,7 @@
                 <outlet property="composeBarContainerView" destination="8ru-91-Smj" id="E4u-Wx-GOf"/>
                 <outlet property="quickSelectContainerHeightConstraint" destination="BeV-1h-Rw4" id="7Qw-Ne-Nm4"/>
                 <outlet property="quickSelectContainerView" destination="y23-6f-O9g" id="zPj-te-g6g"/>
-                <outlet property="threadTableView" destination="2hC-OQ-x6f" id="a47-CY-ghE"/>
+                <outlet property="threadContainerView" destination="z3x-8O-A97" id="4up-O3-Uef"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -24,10 +24,10 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="2hC-OQ-x6f" customClass="BotMessagesTableView" customModule="KoreBotSDKDemo" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z3x-8O-A97">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                </tableView>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y23-6f-O9g">
                     <rect key="frame" x="0.0" y="623" width="375" height="0.0"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -43,13 +43,13 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="8ru-91-Smj" firstAttribute="top" secondItem="y23-6f-O9g" secondAttribute="bottom" id="5hp-Sg-7Qe"/>
-                <constraint firstItem="2hC-OQ-x6f" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="924-Oe-qU3"/>
-                <constraint firstAttribute="trailing" secondItem="2hC-OQ-x6f" secondAttribute="trailing" id="Boz-bM-o37"/>
                 <constraint firstItem="y23-6f-O9g" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="E8u-iv-Arc"/>
-                <constraint firstItem="2hC-OQ-x6f" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="KWL-n0-sEV"/>
+                <constraint firstAttribute="trailing" secondItem="z3x-8O-A97" secondAttribute="trailing" id="Hls-Eo-Deb"/>
+                <constraint firstItem="z3x-8O-A97" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="MkF-qb-FT5"/>
                 <constraint firstItem="8ru-91-Smj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="T5H-X0-Phe"/>
                 <constraint firstAttribute="bottom" secondItem="8ru-91-Smj" secondAttribute="bottom" id="Wcu-yO-vzz"/>
-                <constraint firstItem="8ru-91-Smj" firstAttribute="top" secondItem="2hC-OQ-x6f" secondAttribute="bottom" id="ryP-mg-LlH"/>
+                <constraint firstItem="z3x-8O-A97" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Wld-We-VMY"/>
+                <constraint firstItem="8ru-91-Smj" firstAttribute="top" secondItem="z3x-8O-A97" secondAttribute="bottom" id="a2y-FH-luB"/>
                 <constraint firstAttribute="trailing" secondItem="8ru-91-Smj" secondAttribute="trailing" id="v3q-WG-SDd"/>
                 <constraint firstAttribute="trailing" secondItem="y23-6f-O9g" secondAttribute="trailing" id="wvZ-jC-PT0"/>
             </constraints>

@@ -21,13 +21,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
     var isFirstTime: Bool = true
     
-    @IBOutlet weak var threadTableView: BotMessagesTableView!
+    @IBOutlet weak var threadContainerView: UIView!
     @IBOutlet weak var composeBarContainerView: UIView!
     @IBOutlet weak var quickSelectContainerView: UIView!
     
     @IBOutlet weak var quickSelectContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
+    var threadTableView: BotMessagesTableView!
     var composeBar: ComposeBarView!
     var audioComposeView: AudioComposeView!
     var quickReplyView: KREQuickSelectView!
@@ -52,9 +53,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         //Initialize elements
         
-        self.threadTableView.thread = self.thread
-        self.threadTableView.viewDelegate = self
-        
+        self.configureThreadView()
         self.configureComposeBar()
         self.configureAudioComposer()
         self.configureQuickReplyView()
@@ -129,6 +128,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     // MARK: configuring views
+    
+    func configureThreadView() {
+        self.threadTableView = BotMessagesTableView()
+        self.threadTableView.translatesAutoresizingMaskIntoConstraints = false
+        self.threadTableView.thread = self.thread
+        self.threadTableView.viewDelegate = self
+        self.threadContainerView.addSubview(self.threadTableView!)
+        
+        self.threadContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[threadTableView]|", options:[], metrics:nil, views:["threadTableView" : self.threadTableView!]))
+        self.threadContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[threadTableView]|", options:[], metrics:nil, views:["threadTableView" : self.threadTableView!]))
+    }
     
     func configureComposeBar() {
         self.composeBar = ComposeBarView()
