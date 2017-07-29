@@ -32,9 +32,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var composeBar: ComposeBarView!
     var audioComposeView: AudioComposeView!
     var quickReplyView: KREQuickSelectView!
+    var typingStatusView:KRETypingStatusView!
 
     let sttClient: STTClient = STTClient()
-    var speechSynthesizer: AVSpeechSynthesizer?
+    var speechSynthesizer: AVSpeechSynthesizer!
     
     // MARK: init
     init(thread: KREThread!) {
@@ -57,6 +58,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.configureComposeBar()
         self.configureAudioComposer()
         self.configureQuickReplyView()
+        self.configureTypingStatusView()
         self.configureBotClient()
         
         isSpeakingEnabled = false
@@ -102,6 +104,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.audioComposeView = nil
         self.threadTableView = nil
         self.quickReplyView = nil
+        self.typingStatusView = nil
         self.tapToDismissGestureRecognizer = nil
     }
     
@@ -119,6 +122,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.threadTableView.prepareForDeinit()
         self.threadTableView.viewDelegate = nil
         self.quickReplyView.sendQuickReplyAction = nil
+        self.typingStatusView?.removeFromSuperview()
     }
     
     // MARK: cancel
@@ -198,6 +202,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.quickReplyView.sendQuickReplyAction = { [weak self] (text) in
             self?.sendTextMessage(text: text!)
         }
+    }
+    
+    func configureTypingStatusView() {
+        self.typingStatusView = KRETypingStatusView()
+        self.typingStatusView?.isHidden = true
+        self.typingStatusView?.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.typingStatusView!)
+        
+        let views: [String: Any] = ["typingStatusView" : self.typingStatusView, "composeBarContainerView" : self.composeBarContainerView]
+        self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[typingStatusView]|", options:[], metrics:nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[typingStatusView(40)][composeBarContainerView]", options:[], metrics:nil, views: views))
     }
     
     func configureBotClient() {
@@ -581,23 +596,22 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let string = text
         print("Reading text: ", text);
         let speechUtterance = AVSpeechUtterance(string: string)
-        self.speechSynthesizer?.speak(speechUtterance)
+        self.speechSynthesizer.speak(speechUtterance)
     }
     
     func stopTTS(){
-        if(self.speechSynthesizer?.isSpeaking)!{
-            self.speechSynthesizer?.stopSpeaking(at: AVSpeechBoundary.immediate)
+        if(self.speechSynthesizer.isSpeaking){
+            self.speechSynthesizer.stopSpeaking(at: AVSpeechBoundary.immediate)
         }
     }
     
     // MARK: show tying status view
     func showTypingStatusForBotsAction() {
-//        let botId:String = "u-40d2bdc2-822a-51a2-bdcd-95bdf48331c9";
-//        let info:NSMutableDictionary = NSMutableDictionary.init()
-//        info.setValue(botId, forKey: "botId");
-//        info.setValue("kora", forKey: "imageName");
-//        
-//        self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 2.0)
-//        self.view.bringSubview(toFront: self.typingStatusView!)
+        let botId:String = "u-40d2bdc2-822a-51a2-bdcd-95bdf48331c9";
+        let info:NSMutableDictionary = NSMutableDictionary.init()
+        info.setValue(botId, forKey: "botId");
+        info.setValue("kora", forKey: "imageName");
+        
+        self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 2.0)
     }
 }
