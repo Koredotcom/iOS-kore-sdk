@@ -33,7 +33,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var quickReplyView: KREQuickSelectView!
 
     let sttClient: STTClient = STTClient()
-    var speechSynthesizer: AVSpeechSynthesizer? = nil
+    var speechSynthesizer: AVSpeechSynthesizer?
     
     // MARK: init
     init(thread: KREThread!) {
@@ -97,7 +97,12 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     deinit {
         NSLog("ChatMessagesViewController dealloc")
         self.thread = nil
+        self.botClient = nil
+        self.speechSynthesizer = nil
         self.composeBar = nil
+        self.audioComposeView = nil
+        self.threadTableView = nil
+        self.quickReplyView = nil
         self.tapToDismissGestureRecognizer = nil
     }
     
@@ -106,14 +111,15 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if(self.botClient != nil){
             self.botClient.disconnect()
         }
-        self.botClient = nil
-        
+        self.deConfigureBotClient()
+        self.stopTTS()
+        self.sttClient.onReceiveMessage = nil
         self.composeBar.growingTextView.viewDelegate = nil
         self.composeBar.delegate = nil
-        
+        self.audioComposeView.prepareForDeinit()
         self.threadTableView.prepareForDeinit()
         self.threadTableView.viewDelegate = nil
-        self.threadTableView.thread = nil
+        self.quickReplyView.sendQuickReplyAction = nil
     }
     
     // MARK: cancel
@@ -214,6 +220,19 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             botClient.connectionDidEnd = { (code, reason, error) in
                 
             }
+        }
+    }
+    
+    func deConfigureBotClient() {
+        if(botClient != nil){
+            // events
+            botClient.connectionWillOpen = nil
+            botClient.connectionDidOpen = nil
+            botClient.onConnectionError = nil
+            botClient.onMessage = nil
+            botClient.onMessageAck = nil
+            botClient.connectionDidClose = nil
+            botClient.connectionDidEnd = nil
         }
     }
     

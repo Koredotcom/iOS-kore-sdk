@@ -276,13 +276,21 @@ class ComposeBarView: UIView {
         return self.growingTextView.resignFirstResponder()
     }
     
-    //MARK:- removing refernces to elements
-    public func prepareForDeinit(){
-        
-    }
-    
     // MARK:- deinit
     deinit {
         NSLog("ComposeBarView dealloc")
+        
+        self.topLineView = nil
+        self.bottomLineView = nil
+        self.growingTextView = nil
+        self.clearButton = nil
+        self.sendButton = nil
+        self.speechToTextButton = nil
+        self.textToSpeechButton = nil
+        self.contentView = nil
+        self.contentViewHeightConstraint = nil
+        self.textToSpeechButtonWidthConstraint = nil
+        self.mainString = nil
+        self.intermediateString = nil
     }
 }

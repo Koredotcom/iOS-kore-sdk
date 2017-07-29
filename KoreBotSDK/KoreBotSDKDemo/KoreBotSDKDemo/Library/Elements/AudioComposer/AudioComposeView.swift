@@ -118,6 +118,34 @@ class AudioComposeView: UIView {
             self.cancelButtonAction()
         }
     }
+    //MARK:- removing refernces to elements
+    public func prepareForDeinit(){
+        if(self.animationTimer != nil){
+            self.animationTimer.invalidate()
+            self.animationTimer = nil;
+        }
+        if(self.audioRecorderTimer != nil){
+            self.audioRecorderTimer.invalidate()
+            self.audioRecorderTimer = nil
+        }
+        self.cancelledSpeechToText = nil
+        self.voiceRecordingStarted = nil
+        self.voiceRecordingStopped = nil
+        self.getAudioPeakOutputPower = nil
+    }
+    
+    // MARK:- deinit
+    deinit {
+        NSLog("AudioComposeView dealloc")
+        self.animateBGView = nil
+        self.audioImageView = nil
+        self.audiolabel = nil
+        self.cancelImageView = nil
+        self.cancelView = nil
+        self.audioImageWidthConstraint = nil
+        self.animationTimer = nil
+        self.audioRecorderTimer = nil
+    }
     
     @objc fileprivate func audioButtonAction() {
         if self.voiceRecordingStarted != nil {
