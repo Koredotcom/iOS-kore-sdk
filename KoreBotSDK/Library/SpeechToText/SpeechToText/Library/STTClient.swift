@@ -213,5 +213,13 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
     
     deinit {
         NSLog("STTClient dealloc")
+        self.webSocket = nil
+        self.audioQueueRecorder = nil
+        self.audioBuffer = nil
+        self.recordedData = nil
+        self.speechSocketURL = nil
+        self.authToken = nil
+        self.identity = nil
+        self.onReceiveMessage = nil
     }
 }

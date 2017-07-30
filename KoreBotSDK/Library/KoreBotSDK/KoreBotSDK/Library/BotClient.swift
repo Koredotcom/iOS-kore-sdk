@@ -24,13 +24,12 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     fileprivate var reconnects = false
     fileprivate var reconnectWait = 10
     
-    open var connectionWillOpen: ((Void) -> Void)!
     open var connectionDidOpen: ((Void) -> Void)!
-    open var onConnectionError: ((NSError) -> Void)!
+    open var connectionReady: ((Void) -> Void)!
+    open var connectionDidClose: ((Int, String) -> Void)!
+    open var connectionDidFailWithError: ((NSError) -> Void)!
     open var onMessage: ((BotMessageModel?) -> Void)!
     open var onMessageAck: ((Ack?) -> Void)!
-    open var connectionDidClose: ((Int, String) -> Void)!
-    open var connectionDidEnd: ((Int, String, NSError) -> Void)!
     
     fileprivate var successClosure: ((BotClient?) -> Void)!
     fileprivate var failureClosure: ((NSError) -> Void)!
@@ -106,6 +105,8 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     open func disconnect() {
         if self.connection != nil {
             self.connection.disconnect()
+            self.connection.connectionDelegate = nil
+            self.connection = nil
         }
     }
     
@@ -158,15 +159,19 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     }
     
     // MARK: WebSocketDelegate methods
-    open func rtmConnectionWillOpen() {
+    
+    open func rtmConnectionDidOpen() {
         self.currentReconnectAttempt = 0
         self.reconnects = true
         self.reconnecting = false
-    }
-    
-    open func rtmConnectionDidOpen() {
         if (self.connectionDidOpen != nil) {
             self.connectionDidOpen()
+        }
+    }
+    
+    public func rtmConnectionReady() {
+        if (self.connectionReady != nil) {
+            self.connectionReady()
         }
     }
     
@@ -185,6 +190,9 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     
     open func rtmConnectionDidFailWithError(_ error: NSError) {
         self.reconnecting = false
+        if (self.connectionDidFailWithError != nil) {
+            self.connectionDidFailWithError(error)
+        }
     }
     
     open func didReceiveMessage(_ message: BotMessageModel) {
@@ -195,13 +203,6 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     open func didReceiveMessageAck(_ ack: Ack) {
         if (self.onMessageAck != nil) {
             self.onMessageAck(ack)
-        }
-    }
-    
-    open func rtmConnectionDidEnd(_ code: Int, reason: String, wasClean: Bool, error: NSError?) {
-        self.reconnecting = false
-        if (self.connectionDidEnd != nil) {
-            self.connectionDidEnd(code, reason, NSError(domain: "", code: 0, userInfo: [:]))
         }
     }
     
@@ -245,5 +246,9 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     // MARK: 
     open func setKoreBotServerUrl(url: String) {
         Constants.KORE_BOT_SERVER = url
+    }
+
+    deinit {
+        NSLog("BotClient dealloc")
     }
 }

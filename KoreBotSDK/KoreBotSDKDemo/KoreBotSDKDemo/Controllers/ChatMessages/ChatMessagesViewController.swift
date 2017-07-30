@@ -122,7 +122,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.threadTableView.prepareForDeinit()
         self.threadTableView.viewDelegate = nil
         self.quickReplyView.sendQuickReplyAction = nil
-        self.typingStatusView?.removeFromSuperview()
     }
     
     // MARK: cancel
@@ -218,16 +217,22 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func configureBotClient() {
         if(botClient != nil){
             // events
-            botClient.connectionWillOpen = { () in
-                
-            }
-            
             botClient.connectionDidOpen = { () in
-                
+                NSLog("botClient: connectionDidOpen")
             }
             
-            botClient.onConnectionError = { (error) in
-                
+            botClient.connectionReady = { () in
+                NSLog("botClient: connectionReady")
+            }
+            
+            botClient.connectionDidClose = { [weak self] (code) in
+                NSLog("botClient: connectionDidClose > Reconnecting")
+                self?.botClient.reconnect()
+            }
+            
+            botClient.connectionDidFailWithError = { [weak self] (error) in
+                NSLog("botClient: connectionDidFailWithError > Reconnecting")
+                self?.botClient.reconnect()
             }
             
             botClient.onMessage = { [weak self] (object) in
@@ -237,27 +242,18 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             botClient.onMessageAck = { (ack) in
                 
             }
-            
-            botClient.connectionDidClose = { (code) in
-                
-            }
-            
-            botClient.connectionDidEnd = { (code, reason, error) in
-                
-            }
         }
     }
     
     func deConfigureBotClient() {
         if(botClient != nil){
             // events
-            botClient.connectionWillOpen = nil
             botClient.connectionDidOpen = nil
-            botClient.onConnectionError = nil
+            botClient.connectionReady = nil
+            botClient.connectionDidClose = nil
+            botClient.connectionDidFailWithError = nil
             botClient.onMessage = nil
             botClient.onMessageAck = nil
-            botClient.connectionDidClose = nil
-            botClient.connectionDidEnd = nil
         }
     }
     
