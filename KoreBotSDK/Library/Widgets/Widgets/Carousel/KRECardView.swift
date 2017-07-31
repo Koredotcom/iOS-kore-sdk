@@ -2,7 +2,8 @@
 //  KRECardView.swift
 //  Widgets
 //
-//  Created by anoop on 24/05/17.
+//  Created by developer@kore.com on 24/05/17.
+//  Copyright © 2017 Kore Inc. All rights reserved.
 //
 //
 

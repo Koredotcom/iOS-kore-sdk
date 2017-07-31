@@ -2,7 +2,8 @@
 //  KRETextViewInternal.swift
 //  Pods
 //
-//  Created by Anoop Dhiman on 27/07/17.
+//  Created by developer@kore.com on 27/07/17.
+//  Copyright © 2017 Kore Inc. All rights reserved.
 //
 //
 
