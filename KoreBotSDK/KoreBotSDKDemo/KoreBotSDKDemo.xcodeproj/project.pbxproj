@@ -17,8 +17,6 @@
 		6E7BA00E1F28B62700301C38 /* ChatMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E7BA00C1F28B62700301C38 /* ChatMessagesViewController.xib */; };
 		6E9C0E401F162FFB003550F8 /* CarouselBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9C0E3F1F162FFB003550F8 /* CarouselBubbleView.swift */; };
 		6ECD5CD01F2B3ECB00B9790E /* AudioComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECD5CCF1F2B3ECB00B9790E /* AudioComposeView.swift */; };
-		BB361E1C1DF5503300D2F0DB /* AudioComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB361E1B1DF5503300D2F0DB /* AudioComposer.swift */; };
-		BB361E1E1DF5504600D2F0DB /* AudioComposer.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB361E1D1DF5504600D2F0DB /* AudioComposer.xib */; };
 		BB4D2DE61E289FA000A97E99 /* KRETypingActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4D2DE01E289FA000A97E99 /* KRETypingActivityIndicator.m */; };
 		BB4D2DE71E289FA000A97E99 /* KRETypingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4D2DE21E289FA000A97E99 /* KRETypingCollectionViewCell.m */; };
 		BB4D2DE81E289FA000A97E99 /* KRETypingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB4D2DE31E289FA000A97E99 /* KRETypingCollectionViewCell.xib */; };
@@ -50,8 +48,6 @@
 		D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = D15045D41DE422CB008DE46E /* BotConfiguration.plist */; };
 		D15045D71DE475FC008DE46E /* KREFetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15045D61DE475FC008DE46E /* KREFetchedResultsController.swift */; };
 		D1522ABA1DED45AC00D86407 /* OptionsBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1522AB91DED45AC00D86407 /* OptionsBubbleView.swift */; };
-		D16D62E21CF5B7BC00752FC8 /* MessageComposeBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D62E11CF5B7BC00752FC8 /* MessageComposeBar.swift */; };
-		D16D62E41CF5B7C800752FC8 /* MessageComposeBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D16D62E31CF5B7C800752FC8 /* MessageComposeBar.xib */; };
 		D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */; };
 		D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D175AD561CEF0CD500BB9442 /* LaunchScreen.storyboard */; };
 		D1A12B6E1E84DD3500F4E2B4 /* SDKConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A12B6D1E84DD3500F4E2B4 /* SDKConfiguration.swift */; };
@@ -90,8 +86,6 @@
 		6E9C0E3F1F162FFB003550F8 /* CarouselBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselBubbleView.swift; sourceTree = "<group>"; };
 		6ECD5CCF1F2B3ECB00B9790E /* AudioComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioComposeView.swift; sourceTree = "<group>"; };
 		7092CBEB046F0BC9247CE8CE /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		BB361E1B1DF5503300D2F0DB /* AudioComposer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioComposer.swift; sourceTree = "<group>"; };
-		BB361E1D1DF5504600D2F0DB /* AudioComposer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AudioComposer.xib; sourceTree = "<group>"; };
 		BB4D2DDF1E289FA000A97E99 /* KRETypingActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingActivityIndicator.h; sourceTree = "<group>"; };
 		BB4D2DE01E289FA000A97E99 /* KRETypingActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingActivityIndicator.m; sourceTree = "<group>"; };
 		BB4D2DE11E289FA000A97E99 /* KRETypingCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingCollectionViewCell.h; sourceTree = "<group>"; };
@@ -131,8 +125,6 @@
 		D15045D41DE422CB008DE46E /* BotConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BotConfiguration.plist; sourceTree = "<group>"; };
 		D15045D61DE475FC008DE46E /* KREFetchedResultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREFetchedResultsController.swift; sourceTree = "<group>"; };
 		D1522AB91DED45AC00D86407 /* OptionsBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsBubbleView.swift; sourceTree = "<group>"; };
-		D16D62E11CF5B7BC00752FC8 /* MessageComposeBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageComposeBar.swift; sourceTree = "<group>"; };
-		D16D62E31CF5B7C800752FC8 /* MessageComposeBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageComposeBar.xib; sourceTree = "<group>"; };
 		D175AD4A1CEF0CD500BB9442 /* KoreBotSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KoreBotSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D175AD571CEF0CD500BB9442 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -217,8 +209,6 @@
 		BB361E1A1DF5501900D2F0DB /* AudioComposer */ = {
 			isa = PBXGroup;
 			children = (
-				BB361E1B1DF5503300D2F0DB /* AudioComposer.swift */,
-				BB361E1D1DF5504600D2F0DB /* AudioComposer.xib */,
 				6ECD5CCF1F2B3ECB00B9790E /* AudioComposeView.swift */,
 			);
 			name = AudioComposer;
@@ -277,16 +267,6 @@
 				D1132F651D8181130083FC10 /* NSMutableAttributedString+KREUtils.m */,
 			);
 			path = AttributedLabel;
-			sourceTree = "<group>";
-		};
-		D11499E11CF5899B003F5CC5 /* MessageComposeBar */ = {
-			isa = PBXGroup;
-			children = (
-				D16D62E11CF5B7BC00752FC8 /* MessageComposeBar.swift */,
-				D16D62E31CF5B7C800752FC8 /* MessageComposeBar.xib */,
-			);
-			name = MessageComposeBar;
-			path = Elements/MessageComposeBar;
 			sourceTree = "<group>";
 		};
 		D137B0A01D009285005E938E /* ChatMessages */ = {
@@ -435,7 +415,6 @@
 				D1132F5D1D8181130083FC10 /* AttributedLabel */,
 				D1F4E5021CF70A720044C093 /* BubbleViews */,
 				6E50B7781F2903F100E10D7D /* ComposeBar */,
-				D11499E11CF5899B003F5CC5 /* MessageComposeBar */,
 				D1CAF0941CF0AEA3001BCAEF /* Models */,
 			);
 			path = Library;
@@ -591,10 +570,8 @@
 				D1CAF15F1CF0AEA3001BCAEF /* AppLaunchViewController.xib in Resources */,
 				D1B944AE1D04463F000AADA9 /* MultiImageBubbleView.xib in Resources */,
 				D137B0AD1D009285005E938E /* QuickSelectIdentityCell.xib in Resources */,
-				BB361E1E1DF5504600D2F0DB /* AudioComposer.xib in Resources */,
 				D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */,
 				D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */,
-				D16D62E41CF5B7C800752FC8 /* MessageComposeBar.xib in Resources */,
 				D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */,
 				6E7BA00E1F28B62700301C38 /* ChatMessagesViewController.xib in Resources */,
 				D1B944AC1D04463F000AADA9 /* ImageComponentCollectionViewCell.xib in Resources */,
@@ -765,14 +742,12 @@
 				BB4D2DEF1E28AE4600A97E99 /* CALayer+MBAnimationPersistence.m in Sources */,
 				D15045D71DE475FC008DE46E /* KREFetchedResultsController.swift in Sources */,
 				D10A24741CF808A300E2732C /* Identity.swift in Sources */,
-				D16D62E21CF5B7BC00752FC8 /* MessageComposeBar.swift in Sources */,
 				D1CAF15E1CF0AEA3001BCAEF /* AppLaunchViewController.swift in Sources */,
 				D1132F671D8181130083FC10 /* KRELayoutManager.m in Sources */,
 				D1132F681D8181130083FC10 /* KREUtilities.m in Sources */,
 				D150415A1DE2CD0D00F2F92E /* KREComponent+CoreDataClass.swift in Sources */,
 				D1F086811EACB6CB00A75AD6 /* TSMarkdownParser.m in Sources */,
 				D1F4E52B1CF716640044C093 /* SectionedThread.swift in Sources */,
-				BB361E1C1DF5503300D2F0DB /* AudioComposer.swift in Sources */,
 				D14BD4B81DDED95C0032BD80 /* DataModel.xcdatamodeld in Sources */,
 				D1F086801EACB6CB00A75AD6 /* TSBaseParser.m in Sources */,
 				D1B944AD1D04463F000AADA9 /* MultiImageBubbleView.swift in Sources */,
