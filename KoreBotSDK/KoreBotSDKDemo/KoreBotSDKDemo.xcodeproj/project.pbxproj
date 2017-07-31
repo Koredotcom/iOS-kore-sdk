@@ -819,6 +819,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Kore, Inc";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Kore, Inc";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_ACTIVITY_MODE = "";
+				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = TUE6KHKZ4Z;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -870,6 +872,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Kore, Inc";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Kore, Inc";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_ACTIVITY_MODE = "";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = TUE6KHKZ4Z;
 				ENABLE_NS_ASSERTIONS = NO;

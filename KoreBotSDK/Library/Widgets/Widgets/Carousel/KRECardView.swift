@@ -21,7 +21,7 @@ public class KRECardInfo: NSObject {
     var imageURL:String?
     
     var options: Array<KREOption>?
-    var defaultActionInfo:Dictionary<String,String>?
+    var defaultAction: KREAction?
     
     // MARK:- init
     public override init() {
@@ -41,11 +41,11 @@ public class KRECardInfo: NSObject {
         self.imageURL = imageURL
     }
     
-    public func setDefaultActionInfo(info: Dictionary<String, String>) {
-        defaultActionInfo = info
+    public func setDefaultAction(action: KREAction) {
+        self.defaultAction = action
     }
     
-    public func setOptionsInfo(options: Array<KREOption>) {
+    public func setOptions(options: Array<KREOption>) {
         self.options = options
     }
     

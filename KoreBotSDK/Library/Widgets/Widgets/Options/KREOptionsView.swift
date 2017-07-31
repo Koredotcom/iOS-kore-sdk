@@ -9,6 +9,23 @@
 import UIKit
 import AFNetworking
 
+public enum KREActionType : Int {
+    case none = 0, webURL = 1, postback = 2
+}
+
+public class KREAction: NSObject {
+    var type: KREActionType?
+    var title: String?
+    var payload:String?
+    
+    public init(type: KREActionType, title: String, payload: String) {
+        super.init()
+        self.type = type
+        self.title = title
+        self.payload = payload
+    }
+}
+
 public enum KREOptionType : Int {
     case button = 1, list = 2
 }
@@ -23,8 +40,8 @@ public class KREOption: NSObject {
     var imageURL:String?
     var optionType: KREOptionType?
     
-    var defaultActionInfo:Dictionary<String,String>?
-    var actionButtonInfo:Dictionary<String,String>?
+    var defaultAction:KREAction?
+    var buttonAction:KREAction?
 
     // MARK:- init
     public override init() {
@@ -39,19 +56,12 @@ public class KREOption: NSObject {
         self.optionType = optionType
     }
     
-    public func setOptionData(title: String, subTitle: String, imageURL: String, optionType: KREOptionType) {
-        self.title = truncateString(title, count: KREOption.titleCharLimit)
-        self.subTitle = truncateString(subTitle, count: KREOption.subtitleCharLimit)
-        self.imageURL = imageURL
-        self.optionType = optionType
-    }
-
-    public func setDefaultActionInfo(info:Dictionary<String, String>) {
-        defaultActionInfo = info
+    public func setDefaultAction(action: KREAction) {
+        self.defaultAction = action
     }
     
-    public func setButtonActionInfo(info:Dictionary<String, String>) {
-        actionButtonInfo = info
+    public func setButtonAction(action: KREAction) {
+        self.buttonAction = action
     }
     
     func truncateString(_ string: String, count: Int) -> String{
@@ -167,18 +177,18 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
             cell.subTitleLabel.text = option.subTitle
             cell.imgView.setImageWith(NSURL(string: option.imageURL!) as URL!,placeholderImage: UIImage.init(named: "placeholder_image"))
             
-            if(option.actionButtonInfo != nil){
+            if(option.buttonAction != nil){
+                let buttonAction = option.buttonAction
                 cell.actionButtonHeightConstraint.constant = 30.0
-                cell.actionButton.setTitle(option.actionButtonInfo?["title"] as String!, for: .normal)
+                cell.actionButton.setTitle(buttonAction?.title, for: .normal)
                 cell.buttonAction = {[weak self] (text) in
-                    let buttonInfo:Dictionary<String,String>? = option.actionButtonInfo
-                    if (buttonInfo?["type"] == "web_url") {
+                    if (buttonAction?.type == .webURL) {
                         if ((self?.detailLinkAction) != nil) {
-                            self?.detailLinkAction(buttonInfo?["url"])
+                            self?.detailLinkAction(buttonAction?.payload)
                         }
-                    } else if (buttonInfo?["type"] == "postback") {
+                    } else if (buttonAction?.type == .postback) {
                         if (self?.optionsButtonAction != nil) {
-                            self?.optionsButtonAction(buttonInfo?["payload"])
+                            self?.optionsButtonAction(buttonAction?.payload)
                         }
                     }
                 }
@@ -194,15 +204,15 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let option: KREOption = options[indexPath.row]
-        if(option.defaultActionInfo != nil){
-            let buttonInfo:Dictionary<String,String>? = option.defaultActionInfo
-            if (buttonInfo?["type"] == "web_url") {
+        if(option.defaultAction != nil){
+            let defaultAction = option.defaultAction
+            if (defaultAction?.type == .webURL) {
                 if ((self.detailLinkAction) != nil) {
-                    self.detailLinkAction(buttonInfo?["url"])
+                    self.detailLinkAction(defaultAction?.payload)
                 }
-            } else if (buttonInfo?["type"] == "postback") {
+            } else if (defaultAction?.type == .postback) {
                 if (self.optionsButtonAction != nil) {
-                    self.optionsButtonAction(buttonInfo?["payload"])
+                    self.optionsButtonAction(defaultAction?.payload)
                 }
             }
         }
@@ -230,7 +240,7 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
                 cell.subTitleLabel.text = option.subTitle
                 let limitingSize: CGSize = CGSize(width: width - 93.0, height: CGFloat.greatestFiniteMagnitude)
                 var cellHeight: CGFloat = cell.titleLabel.sizeThatFits(limitingSize).height + cell.subTitleLabel.sizeThatFits(limitingSize).height // For Text
-                cellHeight += option.actionButtonInfo != nil ? 30.0 : 0.0 // For Button
+                cellHeight += option.buttonAction != nil ? 30.0 : 0.0 // For Button
                 cellHeight += 21.0 // other miscellaneous constant
                 if cellHeight < cell.minCellHeight {
                     cellHeight = cell.minCellHeight

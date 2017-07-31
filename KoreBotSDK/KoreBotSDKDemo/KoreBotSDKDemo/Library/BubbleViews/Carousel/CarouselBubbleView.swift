@@ -60,7 +60,7 @@ class CarouselBubbleView: BubbleView {
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
-                let elements: Array<Dictionary<String, Any>> = jsonObject["elements"] as! Array<Dictionary<String, Any>>
+                let elements: Array<Dictionary<String, Any>> = jsonObject["elements"] != nil ? jsonObject["elements"] as! Array<Dictionary<String, Any>> : []
                 let elementsCount: Int = min(elements.count, KRECarouselView.cardLimit)
                 var cards: Array<KRECardInfo> = Array<KRECardInfo>()
                 
@@ -72,25 +72,24 @@ class CarouselBubbleView: BubbleView {
                     let imageUrl: String = dictionary["image_url"] != nil ? dictionary["image_url"] as! String : ""
                     
                     let cardInfo: KRECardInfo = KRECardInfo(title: title, subTitle: subtitle, imageURL: imageUrl)
-                    
                     if (dictionary["default_action"] != nil) {
-                        cardInfo.setDefaultActionInfo(info: dictionary["default_action"] as! Dictionary<String, String>)
+                        let defaultAction = dictionary["default_action"] as! Dictionary<String, Any>
+                        cardInfo.setDefaultAction(action: Utilities.getKREActionFromDictionary(dictionary: defaultAction)!)
                     }
                     
-                    let buttons: Array<Dictionary<String, String>> = dictionary["buttons"] as! Array<Dictionary<String, String>>
+                    let buttons: Array<Dictionary<String, Any>> = dictionary["buttons"] as! Array<Dictionary<String, Any>>
                     let buttonsCount: Int = min(buttons.count, KRECardInfo.buttonLimit)
                     var options: Array<KREOption> = Array<KREOption>()
                     
                     for i in 0..<buttonsCount {
-                        let button = buttons[i]
-                        
-                        let title: String = button["title"] != nil ? button["title"]!: ""
+                        let buttonElement = buttons[i]
+                        let title: String = buttonElement["title"] != nil ? buttonElement["title"] as! String: ""
                         
                         let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button)
-                        option.setDefaultActionInfo(info: button)
+                        option.setDefaultAction(action: Utilities.getKREActionFromDictionary(dictionary: buttonElement)!)
                         options.append(option)
                     }
-                    cardInfo.setOptionsInfo(options: options)
+                    cardInfo.setOptions(options: options)
                     cards.append(cardInfo)
                 }
                 
