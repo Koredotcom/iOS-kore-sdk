@@ -1,7 +1,7 @@
 # Kore Bot SDK
 Kore offers Bots SDKs as a set of platform-specific client libraries that provide a quick and convenient way to integrate Kore Bots chat capability into custom applications.
 
-With just few lines of code, you can embed our Kore chat widget into your applications to enable end-users to interact with your applications using Natural Language. For more information, refer to https://developer.kore.com/docs/bots/kore-web-sdk/ 
+With just few lines of code, you can embed our Kore chat widget into your applications to enable end-users to interact with your applications using Natural Language. For more information, refer to https://developer.kore.ai/docs/bots/kore-web-sdk/ 
 
 # Kore Bot SDK for iOS developers
 
@@ -55,7 +55,7 @@ static let botId = "<bot-id>"
 
 BOT_SERVER URL- replace it with your server URL, if required
  ```
-static let BOT_SERVER = "https://bots.kore.com/";
+static let BOT_SERVER = "https://bots.kore.ai/";
  ```
 
 Anonymous user - if not anonymous, assign same identity (such as email or phone number) while making a connection
@@ -65,7 +65,7 @@ static bool isAnonymous = false;
 
 BOT_SPEECH_SERVER URL
  ```
-static let BOT_SPEECH_SERVER = "wss://speech.kore.ai/speechcntxt/ws/speech";
+static let BOT_SPEECH_SERVER = "https://speech.kore.ai/";
  ```
 
 JWT_SERVER URL - specify the server URL for JWT token generation. This token is used to authorize the SDK client. Refer to documentation on how to setup the JWT server for token generation - e.g. https://jwt-token-server.example.com/
@@ -115,7 +115,7 @@ NOTE: Please refer about JWT signing and verification at - https://developer.kor
     }
     self.botClient.connectionDidClose = { (code) in
     }
-    self.botClient.connectionDidEnd = { (code, reason, error) in
+    self.botClient.connectionDidFailWithError = { (error) in
     }
     
 #### 7. Subscribe to push notifications
@@ -132,15 +132,19 @@ NOTE: Please refer about JWT signing and verification at - https://developer.kor
 
 #### 9. Example
         self.botClient.connectWithJwToken(jwtToken, success: { (client) in
-                botClient.connectionWillOpen = { () in
-                    
-                }
-                
                 botClient.connectionDidOpen = { () in
                     
                 }
+		
+		botClient.connectionReady = { () in
+		
+            	}
                 
-                botClient.onConnectionError = { (error) in
+                botClient.connectionDidClose = { (code) in
+                    
+                }
+                
+                botClient.connectionDidFailWithError = { (error) in
                     
                 }
                 
@@ -151,14 +155,6 @@ NOTE: Please refer about JWT signing and verification at - https://developer.kor
                 botClient.onMessageAck = { (ack) in
                     
                 }
-                
-                botClient.connectionDidClose = { (code) in
-                    
-                }
-                
-                botClient.connectionDidEnd = { (code, reason, error) in
-                    
-                }
             }, failure: { (error) in
 
         })
@@ -166,31 +162,6 @@ NOTE: Please refer about JWT signing and verification at - https://developer.kor
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 License
 ----
 Copyright © Kore, Inc. MIT License; see LICENSE for further details.
-
-
-
- 
