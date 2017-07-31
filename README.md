@@ -131,33 +131,33 @@ NOTE: Please refer about JWT signing and verification at - https://developer.kor
     })
 
 #### 9. Example
-        self.botClient.connectWithJwToken(jwtToken, success: { (client) in
-                botClient.connectionDidOpen = { () in
-                    
-                }
-		
-		botClient.connectionReady = { () in
-		
-            	}
-                
-                botClient.connectionDidClose = { (code) in
-                    
-                }
-                
-                botClient.connectionDidFailWithError = { (error) in
-                    
-                }
-                
-                botClient.onMessage = { (object) in
-                    
-                }
-                
-                botClient.onMessageAck = { (ack) in
-                    
-                }
-            }, failure: { (error) in
-
-        })
+    self.botClient.connectWithJwToken(jwtToken, success: { (client) in
+        botClient.connectionDidOpen = { () in
+            
+        }
+        
+        botClient.connectionReady = { () in
+            
+        }
+        
+        botClient.connectionDidClose = { (code) in
+            
+        }
+        
+        botClient.connectionDidFailWithError = { (error) in
+            
+        }
+        
+        botClient.onMessage = { (object) in
+            
+        }
+        
+        botClient.onMessageAck = { (ack) in
+            
+        }
+    }, failure: { (error) in
+        
+    })
 
 
 
