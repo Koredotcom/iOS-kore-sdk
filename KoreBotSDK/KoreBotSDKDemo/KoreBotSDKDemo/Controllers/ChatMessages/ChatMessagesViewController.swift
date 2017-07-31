@@ -275,8 +275,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             
         } else {
             let componentModel: ComponentModel = messageObject!.component!
-            let cInfo: NSDictionary = messageObject!.cInfo != nil ? messageObject!.cInfo! : [:]
-            let cInfoBody: String = cInfo["body"] != nil ? cInfo["body"] as! String : ""
+            var ttsBody: String? = nil
             
             if (componentModel.type == "text") {
                 self.showTypingStatusForBotsAction()
@@ -285,6 +284,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 let text: NSString = payload["text"] as! NSString
                 let textComponent: TextComponent = TextComponent()
                 textComponent.text = text
+                ttsBody = text as String
                 
                 message.addComponent(textComponent)
             } else if (componentModel.type == "template") {
@@ -336,7 +336,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
                 dataStoreManager.createNewMessageIn(thread: self.thread, message: message, completionBlock: { (success) in
                 })
-                NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: cInfoBody)
+                if ttsBody != nil {
+                    NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: ttsBody)
+                }
             }
         }
     }
