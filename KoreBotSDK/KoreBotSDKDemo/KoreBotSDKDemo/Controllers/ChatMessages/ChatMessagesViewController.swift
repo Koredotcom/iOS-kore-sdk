@@ -28,7 +28,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     @IBOutlet weak var quickSelectContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
-    var threadTableView: BotMessagesTableView!
+    var botMessagesView: BotMessagesView!
     var composeBar: ComposeBarView!
     var audioComposeView: AudioComposeView!
     var quickReplyView: KREQuickSelectView!
@@ -90,7 +90,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NSLog("viewWillLayoutSubviews")
         super.viewWillLayoutSubviews()
         if self.isFirstTime {
-            self.threadTableView.scrollToBottom(animated: false)
+            self.botMessagesView.scrollToBottom(animated: false)
         }
     }
     
@@ -102,7 +102,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.speechSynthesizer = nil
         self.composeBar = nil
         self.audioComposeView = nil
-        self.threadTableView = nil
+        self.botMessagesView = nil
         self.quickReplyView = nil
         self.typingStatusView = nil
         self.tapToDismissGestureRecognizer = nil
@@ -119,8 +119,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.composeBar.growingTextView.viewDelegate = nil
         self.composeBar.delegate = nil
         self.audioComposeView.prepareForDeinit()
-        self.threadTableView.prepareForDeinit()
-        self.threadTableView.viewDelegate = nil
+        self.botMessagesView.prepareForDeinit()
+        self.botMessagesView.viewDelegate = nil
         self.quickReplyView.sendQuickReplyAction = nil
     }
     
@@ -133,14 +133,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: configuring views
     
     func configureThreadView() {
-        self.threadTableView = BotMessagesTableView()
-        self.threadTableView.translatesAutoresizingMaskIntoConstraints = false
-        self.threadTableView.thread = self.thread
-        self.threadTableView.viewDelegate = self
-        self.threadContainerView.addSubview(self.threadTableView!)
+        self.botMessagesView = BotMessagesView()
+        self.botMessagesView.translatesAutoresizingMaskIntoConstraints = false
+        self.botMessagesView.thread = self.thread
+        self.botMessagesView.viewDelegate = self
+        self.threadContainerView.addSubview(self.botMessagesView!)
         
-        self.threadContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[threadTableView]|", options:[], metrics:nil, views:["threadTableView" : self.threadTableView!]))
-        self.threadContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[threadTableView]|", options:[], metrics:nil, views:["threadTableView" : self.threadTableView!]))
+        self.threadContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[botMessagesView]|", options:[], metrics:nil, views:["botMessagesView" : self.botMessagesView!]))
+        self.threadContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[botMessagesView]|", options:[], metrics:nil, views:["botMessagesView" : self.botMessagesView!]))
     }
     
     func configureComposeBar() {
@@ -166,7 +166,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             let duration = 0.25
             UIView.animate(withDuration: duration, delay: 0.0, options: options, animations: {
                 self.view.layoutIfNeeded()
-                self.threadTableView.scrollWithOffset(-self.audioComposeView.frame.size.height, animated: false)
+                self.botMessagesView.scrollWithOffset(-self.audioComposeView.frame.size.height, animated: false)
             }) { (Bool) in
             }
         }
@@ -373,7 +373,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.bottomConstraint.constant = keyboardFrameEnd.size.height
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
             self.view.layoutIfNeeded()
-            self.threadTableView.scrollWithOffset(keyboardFrameEnd.size.height, animated: false)
+            self.botMessagesView.scrollWithOffset(keyboardFrameEnd.size.height, animated: false)
         }, completion: { (Bool) in
             
         })
@@ -389,7 +389,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.bottomConstraint.constant = 0
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
             self.view.layoutIfNeeded()
-            self.threadTableView.scrollWithOffset(-keyboardFrameEnd.size.height, animated: false)
+            self.botMessagesView.scrollWithOffset(-keyboardFrameEnd.size.height, animated: false)
         }, completion: { (Bool) in
             
         })
@@ -398,13 +398,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func keyboardDidShow(_ notification: Notification) {
         if (self.tapToDismissGestureRecognizer == nil) {
             self.tapToDismissGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(ChatMessagesViewController.dismissKeyboard(_:)))
-            self.threadTableView.addGestureRecognizer(tapToDismissGestureRecognizer)
+            self.botMessagesView.addGestureRecognizer(tapToDismissGestureRecognizer)
         }
     }
     
     func keyboardDidHide(_ notification: Notification) {
         if (self.tapToDismissGestureRecognizer != nil) {
-            self.threadTableView.removeGestureRecognizer(tapToDismissGestureRecognizer)
+            self.botMessagesView.removeGestureRecognizer(tapToDismissGestureRecognizer)
             self.tapToDismissGestureRecognizer = nil
         }
     }
@@ -445,7 +445,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func textMessageSent() {
         self.composeBar.clear()
-        self.threadTableView.scrollToBottom(animated: true)
+        self.botMessagesView.scrollToBottom(animated: true)
     }
     
     func speechToTextButtonAction() {
@@ -458,7 +458,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let duration = 0.25
         UIView.animate(withDuration: duration, delay: 0.0, options: options, animations: {
             self.view.layoutIfNeeded()
-            self.threadTableView.scrollWithOffset(self.audioComposeView.frame.size.height, animated: false)
+            self.botMessagesView.scrollWithOffset(self.audioComposeView.frame.size.height, animated: false)
         }, completion: { (Bool) in
         })
     }
@@ -513,9 +513,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func updateQuickSelectViewConstraints() {
         if self.quickSelectContainerHeightConstraint.constant == 60.0 {return}
         
-        var contentInset = self.threadTableView.contentInset
+        var contentInset = self.botMessagesView.tableView.contentInset
         contentInset.bottom = 60
-        self.threadTableView.contentInset = contentInset
+        self.botMessagesView.tableView.contentInset = contentInset
         self.quickSelectContainerHeightConstraint.constant = 60.0
         
         UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
@@ -528,9 +528,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func closeQuickSelectViewConstraints() {
         if self.quickSelectContainerHeightConstraint.constant == 0.0 {return}
 
-        var contentInset = self.threadTableView.contentInset
+        var contentInset = self.botMessagesView.tableView.contentInset
         contentInset.bottom = 0
-        self.threadTableView.contentInset = contentInset
+        self.botMessagesView.tableView.contentInset = contentInset
         self.quickSelectContainerHeightConstraint.constant = 0.0
         
         UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: {
@@ -562,7 +562,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func growingTextView(_: KREGrowingTextView, changingHeight height: CGFloat, animate: Bool) {
         UIView.animate(withDuration: animate ? 0.25: 0.0) {
             self.view.layoutIfNeeded()
-            self.threadTableView.scrollWithOffset(height, animated: false)
+            self.botMessagesView.scrollWithOffset(height, animated: false)
         }
     }
     

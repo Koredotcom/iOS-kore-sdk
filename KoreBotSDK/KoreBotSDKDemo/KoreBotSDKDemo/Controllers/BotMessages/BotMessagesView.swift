@@ -1,8 +1,8 @@
 //
-//  BotMessagesTableView.swift
+//  BotMessagesView.swift
 //  KoreBotSDKDemo
 //
-//  Created by Anoop Dhiman on 26/07/17.
+//  Created by Anoop Dhiman on 31/07/17.
 //  Copyright © 2017 Kore. All rights reserved.
 //
 
@@ -16,13 +16,14 @@ protocol BotMessagesViewDelegate {
     func closeQuickReplyCards()
 }
 
-class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSource, KREFetchedResultsControllerDelegate {
-    
-    var fetchedResultsController: KREFetchedResultsController!
-    var viewDelegate:BotMessagesViewDelegate?
-    var shouldScrollToBottom:Bool = false
-    var prototypeCell: MessageBubbleCell!
+class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFetchedResultsControllerDelegate {
 
+    var tableView: UITableView
+    var fetchedResultsController: KREFetchedResultsController!
+    var viewDelegate: BotMessagesViewDelegate?
+    var shouldScrollToBottom: Bool = false
+    var prototypeCell: MessageBubbleCell!
+    
     weak var thread: KREThread! {
         didSet{
             self.initializeFetchedResultsController()
@@ -30,35 +31,43 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
     }
     
     convenience init(){
-        self.init(frame: CGRect.zero, style: .grouped)
+        self.init(frame: CGRect.zero)
     }
     
-    override init(frame: CGRect, style: UITableViewStyle) {
-        super.init(frame: frame, style: style)
+    override init(frame: CGRect) {
+        self.tableView = UITableView(frame: frame, style: .grouped)
+        super.init(frame: frame)
         self.setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
+        self.tableView = UITableView(frame: CGRect.zero, style: .grouped)
         super.init(coder: aDecoder)
         self.setup()
     }
     
     func setup() {
-        self.backgroundColor = UIColor.white
-        self.separatorStyle = .none
-        self.dataSource = self
-        self.delegate = self
+        self.tableView.backgroundColor = UIColor.white
+        self.tableView.translatesAutoresizingMaskIntoConstraints = false
+        self.tableView.separatorStyle = .none
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        self.addSubview(self.tableView)
+        
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[tableView]|", options:[], metrics:nil, views:["tableView" : self.tableView]))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[tableView]|", options:[], metrics:nil, views:["tableView" : self.tableView]))
+        
+        //Register reusable cells
+        self.tableView.register(MessageBubbleCell.self, forCellReuseIdentifier:"MessageBubbleCell")
+        self.tableView.register(TextBubbleCell.self, forCellReuseIdentifier:"TextBubbleCell")
+        self.tableView.register(ImageBubbleCell.self, forCellReuseIdentifier:"ImageBubbleCell")
+        self.tableView.register(OptionsBubbleCell.self, forCellReuseIdentifier:"OptionsBubbleCell")
+        self.tableView.register(ListBubbleCell.self, forCellReuseIdentifier:"ListBubbleCell")
+        self.tableView.register(QuickReplyBubbleCell.self, forCellReuseIdentifier:"QuickReplyBubbleCell")
+        self.tableView.register(CarouselBubbleCell.self, forCellReuseIdentifier:"CarouselBubbleCell")
+        self.tableView.register(ErrorBubbleCell.self, forCellReuseIdentifier:"ErrorBubbleCell")
         
         self.prototypeCell = MessageBubbleCell()
-        
-        self.register(MessageBubbleCell.self, forCellReuseIdentifier:"MessageBubbleCell")
-        self.register(TextBubbleCell.self, forCellReuseIdentifier:"TextBubbleCell")
-        self.register(ImageBubbleCell.self, forCellReuseIdentifier:"ImageBubbleCell")
-        self.register(OptionsBubbleCell.self, forCellReuseIdentifier:"OptionsBubbleCell")
-        self.register(ListBubbleCell.self, forCellReuseIdentifier:"ListBubbleCell")
-        self.register(QuickReplyBubbleCell.self, forCellReuseIdentifier:"QuickReplyBubbleCell")
-        self.register(CarouselBubbleCell.self, forCellReuseIdentifier:"CarouselBubbleCell")
-        self.register(ErrorBubbleCell.self, forCellReuseIdentifier:"ErrorBubbleCell")
     }
     
     override func layoutSubviews() {
@@ -69,6 +78,8 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
     func prepareForDeinit(){
         self.fetchedResultsController?.kreDelegate = nil
         self.fetchedResultsController.tableView = nil
+        self.tableView.dataSource = nil
+        self.tableView.delegate = nil
     }
     
     func initializeFetchedResultsController() {
@@ -79,7 +90,7 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
             
             let mainContext: NSManagedObjectContext = DataStoreManager.sharedManager.coreDataManager.mainContext
             fetchedResultsController = KREFetchedResultsController(fetchRequest: request as! NSFetchRequest<NSManagedObject>, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
-            fetchedResultsController.tableView = self
+            fetchedResultsController.tableView = self.tableView
             fetchedResultsController.kreDelegate = self
             do {
                 try fetchedResultsController.performFetch()
@@ -222,9 +233,9 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
         return cellHeight
     }
     
-    // MARK:- KREFetchedResultsControllerDelegate methods    
+    // MARK:- KREFetchedResultsControllerDelegate methods
     func fetchedControllerWillChangeContent() {
-        let visibleCelIndexPath: [IndexPath]? = self.indexPathsForVisibleRows
+        let visibleCelIndexPath: [IndexPath]? = self.tableView.indexPathsForVisibleRows
         let indexPath: IndexPath? = self.getIndexPathForLastItem() as IndexPath
         if (visibleCelIndexPath?.contains(indexPath!))!{
             self.shouldScrollToBottom = true
@@ -232,7 +243,7 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
     }
     
     func fetchedControllerDidChangeContent() {
-        if (self.shouldScrollToBottom && !self.isDragging) {
+        if (self.shouldScrollToBottom && !self.tableView.isDragging) {
             self.shouldScrollToBottom = false
             self.scrollToBottom(animated: true)
         }
@@ -240,37 +251,37 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
     
     // MARK: - scrollTo related methods
     func scrollWithOffset(_ offset: CGFloat, animated animate: Bool) {
-        if self.contentSize.height < self.frame.size.height { // when content is too less
+        if self.tableView.contentSize.height < self.frame.size.height { // when content is too less
             return
         }
-        if self.frame.size.height + self.contentOffset.y >= self.contentSize.height - 1.0/*fraction buffer*/ {
+        if self.frame.size.height + self.tableView.contentOffset.y >= self.tableView.contentSize.height - 1.0/*fraction buffer*/ {
             return
         }
         
-        var contentOffset = self.contentOffset
+        var contentOffset = self.tableView.contentOffset
         contentOffset.y += offset
-        if contentOffset.y < -self.contentInset.top {
-            contentOffset.y = -self.contentInset.top
+        if contentOffset.y < -self.tableView.contentInset.top {
+            contentOffset.y = -self.tableView.contentInset.top
         }
-        if self.frame.size.height + offset > self.contentSize.height {
-            contentOffset.y = self.contentSize.height - self.frame.size.height
+        if self.tableView.frame.size.height + offset > self.tableView.contentSize.height {
+            contentOffset.y = self.tableView.contentSize.height - self.tableView.frame.size.height
         }
         
-        self.setContentOffset(contentOffset, animated: animate)
+        self.tableView.setContentOffset(contentOffset, animated: animate)
     }
     
     func scrollToBottom(animated animate: Bool) {
         let indexPath: NSIndexPath = self.getIndexPathForLastItem()
         if (indexPath.row > 0 || indexPath.section > 0) {
-            self.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: animate)
+            self.tableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: animate)
         }
     }
     
     func getIndexPathForLastItem()->(NSIndexPath){
         var indexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0);
-        let numberOfSections: Int = self.numberOfSections
+        let numberOfSections: Int = self.tableView.numberOfSections
         if numberOfSections > 0 {
-            let numberOfRows: Int = self.numberOfRows(inSection: numberOfSections - 1)
+            let numberOfRows: Int = self.tableView.numberOfRows(inSection: numberOfSections - 1)
             if numberOfRows > 0 {
                 indexPath = NSIndexPath(row: numberOfRows - 1, section: numberOfSections - 1)
             }
@@ -294,7 +305,7 @@ class BotMessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSou
     
     // MARK:- deinit
     deinit {
-        NSLog("BotMessagesTableView dealloc")
+        NSLog("BotMessagesView dealloc")
         self.fetchedResultsController = nil
         self.thread = nil
     }

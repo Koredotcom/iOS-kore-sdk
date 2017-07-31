@@ -11,7 +11,7 @@
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		2E1E49F68222AAA4C970168B /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E1812F1242FE88925056F7C /* Pods_KoreBotSDKDemo.framework */; };
-		6E50B7771F28EA6900E10D7D /* BotMessagesTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E50B7761F28EA6900E10D7D /* BotMessagesTableView.swift */; };
+		6E14F4691F2F4D8600F5C149 /* BotMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E14F4681F2F4D8600F5C149 /* BotMessagesView.swift */; };
 		6E50B77A1F29042000E10D7D /* ComposeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E50B7791F29042000E10D7D /* ComposeBarView.swift */; };
 		6E7BA00D1F28B62700301C38 /* ChatMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7BA00B1F28B62700301C38 /* ChatMessagesViewController.swift */; };
 		6E7BA00E1F28B62700301C38 /* ChatMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E7BA00C1F28B62700301C38 /* ChatMessagesViewController.xib */; };
@@ -62,8 +62,6 @@
 		D1F086801EACB6CB00A75AD6 /* TSBaseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F0867C1EACB6CB00A75AD6 /* TSBaseParser.m */; };
 		D1F086811EACB6CB00A75AD6 /* TSMarkdownParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F0867F1EACB6CB00A75AD6 /* TSMarkdownParser.m */; };
 		D1F4E4FB1CF709C40044C093 /* MessageBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F4E4F21CF709C40044C093 /* MessageBubbleCell.swift */; };
-		D1F4E5001CF709C40044C093 /* BotMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F4E4F91CF709C40044C093 /* BotMessagesViewController.swift */; };
-		D1F4E5011CF709C40044C093 /* BotMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F4E4FA1CF709C40044C093 /* BotMessagesViewController.xib */; };
 		D1F4E5041CF70A8E0044C093 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F4E5031CF70A8E0044C093 /* BubbleView.swift */; };
 		D1F4E5261CF716640044C093 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F4E51C1CF716640044C093 /* Component.swift */; };
 		D1F4E5281CF716640044C093 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F4E51E1CF716640044C093 /* Message.swift */; };
@@ -78,8 +76,8 @@
 		0590F8421DED7A1B00107721 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		51D2300D7315E548B03ED7F4 /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
+		6E14F4681F2F4D8600F5C149 /* BotMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotMessagesView.swift; sourceTree = "<group>"; };
 		6E1812F1242FE88925056F7C /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6E50B7761F28EA6900E10D7D /* BotMessagesTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotMessagesTableView.swift; sourceTree = "<group>"; };
 		6E50B7791F29042000E10D7D /* ComposeBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeBarView.swift; sourceTree = "<group>"; };
 		6E7BA00B1F28B62700301C38 /* ChatMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessagesViewController.swift; sourceTree = "<group>"; };
 		6E7BA00C1F28B62700301C38 /* ChatMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatMessagesViewController.xib; sourceTree = "<group>"; };
@@ -144,8 +142,6 @@
 		D1F0867E1EACB6CB00A75AD6 /* TSMarkdownParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMarkdownParser.h; sourceTree = "<group>"; };
 		D1F0867F1EACB6CB00A75AD6 /* TSMarkdownParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMarkdownParser.m; sourceTree = "<group>"; };
 		D1F4E4F21CF709C40044C093 /* MessageBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleCell.swift; sourceTree = "<group>"; };
-		D1F4E4F91CF709C40044C093 /* BotMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotMessagesViewController.swift; sourceTree = "<group>"; };
-		D1F4E4FA1CF709C40044C093 /* BotMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BotMessagesViewController.xib; sourceTree = "<group>"; };
 		D1F4E5031CF70A8E0044C093 /* BubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
 		D1F4E51C1CF716640044C093 /* Component.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		D1F4E51E1CF716640044C093 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -473,10 +469,8 @@
 			isa = PBXGroup;
 			children = (
 				D1F4E4F21CF709C40044C093 /* MessageBubbleCell.swift */,
-				D1F4E4F91CF709C40044C093 /* BotMessagesViewController.swift */,
-				D1F4E4FA1CF709C40044C093 /* BotMessagesViewController.xib */,
 				D15045D61DE475FC008DE46E /* KREFetchedResultsController.swift */,
-				6E50B7761F28EA6900E10D7D /* BotMessagesTableView.swift */,
+				6E14F4681F2F4D8600F5C149 /* BotMessagesView.swift */,
 			);
 			path = BotMessages;
 			sourceTree = "<group>";
@@ -566,7 +560,6 @@
 				D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */,
 				BB4D2DE81E289FA000A97E99 /* KRETypingCollectionViewCell.xib in Resources */,
 				D137B0AB1D009285005E938E /* QuickSelectCommandCell.xib in Resources */,
-				D1F4E5011CF709C40044C093 /* BotMessagesViewController.xib in Resources */,
 				D1CAF15F1CF0AEA3001BCAEF /* AppLaunchViewController.xib in Resources */,
 				D1B944AE1D04463F000AADA9 /* MultiImageBubbleView.xib in Resources */,
 				D137B0AD1D009285005E938E /* QuickSelectIdentityCell.xib in Resources */,
@@ -708,7 +701,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1F4E5001CF709C40044C093 /* BotMessagesViewController.swift in Sources */,
 				D1AA2A351CF3489000BE9789 /* Common.swift in Sources */,
 				D1F4E5261CF716640044C093 /* Component.swift in Sources */,
 				D150415C1DE2CD0D00F2F92E /* KREMessage+CoreDataClass.swift in Sources */,
@@ -719,11 +711,11 @@
 				D137B0AA1D009285005E938E /* QuickSelectCommandCell.swift in Sources */,
 				D14BD4BE1DDEDBAD0032BD80 /* CoreDataManager.swift in Sources */,
 				D10A245A1CF72FD400E2732C /* TextBubbleView.swift in Sources */,
+				6E14F4691F2F4D8600F5C149 /* BotMessagesView.swift in Sources */,
 				D1F4E5041CF70A8E0044C093 /* BubbleView.swift in Sources */,
 				D1132F691D8181130083FC10 /* NSMutableAttributedString+KREUtils.m in Sources */,
 				D150415E1DE2CD0D00F2F92E /* KREContact+CoreDataClass.swift in Sources */,
 				D1F4E4FB1CF709C40044C093 /* MessageBubbleCell.swift in Sources */,
-				6E50B7771F28EA6900E10D7D /* BotMessagesTableView.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
 				BB4D2DE91E289FA000A97E99 /* KRETypingStatusView.m in Sources */,
 				6E7BA00D1F28B62700301C38 /* ChatMessagesViewController.swift in Sources */,
