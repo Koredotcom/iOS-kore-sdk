@@ -38,8 +38,8 @@ class TextBubbleView : BubbleView {
         self.textLabel.isUserInteractionEnabled = true
         self.textLabel.contentMode = UIViewContentMode.topLeft
         self.textLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.textLabel.imageDetectionBlock = { (reload) in
-            self.onChange(reload)
+        self.textLabel.imageDetectionBlock = {[weak self] (reload) in
+            self?.onChange(reload)
         }
 
         self.addSubview(self.textLabel)

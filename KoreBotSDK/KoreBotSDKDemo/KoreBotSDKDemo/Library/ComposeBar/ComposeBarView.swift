@@ -278,8 +278,7 @@ class ComposeBarView: UIView {
     
     // MARK:- deinit
     deinit {
-        NSLog("ComposeBarView dealloc")
-        
+//        NSLog("ComposeBarView dealloc")
         self.topLineView = nil
         self.bottomLineView = nil
         self.growingTextView = nil

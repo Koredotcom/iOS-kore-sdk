@@ -136,7 +136,7 @@ class AudioComposeView: UIView {
     
     // MARK:- deinit
     deinit {
-        NSLog("AudioComposeView dealloc")
+//        NSLog("AudioComposeView dealloc")
         self.animateBGView = nil
         self.audioImageView = nil
         self.audiolabel = nil

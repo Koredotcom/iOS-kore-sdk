@@ -153,7 +153,7 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
     
     // MARK:- deinit
     deinit {
-        NSLog("KREFetchedResultsController dealloc")
+//        NSLog("KREFetchedResultsController dealloc")
         clearSectionsAndRowsCache()
         self.kreDelegate = nil
         self.tableView = nil
