@@ -78,8 +78,6 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     func prepareForDeinit(){
         self.fetchedResultsController?.kreDelegate = nil
         self.fetchedResultsController.tableView = nil
-        self.tableView.dataSource = nil
-        self.tableView.delegate = nil
     }
     
     func initializeFetchedResultsController() {
@@ -307,6 +305,5 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     deinit {
         NSLog("BotMessagesView dealloc")
         self.fetchedResultsController = nil
-        self.thread = nil
     }
 }
