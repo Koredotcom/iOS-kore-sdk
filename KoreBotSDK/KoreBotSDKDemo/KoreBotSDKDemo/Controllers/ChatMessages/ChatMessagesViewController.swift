@@ -16,8 +16,8 @@ import AVFoundation
 class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate {
     
     // MARK: properties
-    weak var thread: KREThread!
-    weak var botClient: BotClient!
+    var thread: KREThread!
+    var botClient: BotClient!
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
     var isFirstTime: Bool = true
     
@@ -367,15 +367,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: notification handlers
     func keyboardWillShow(_ notification: Notification) {
         let keyboardUserInfo: NSDictionary = NSDictionary(dictionary: (notification as NSNotification).userInfo!)
+        let keyboardFrameBegin: CGRect = ((keyboardUserInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue?)!.cgRectValue)
         let keyboardFrameEnd: CGRect = ((keyboardUserInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue?)!.cgRectValue)
         let options = UIViewAnimationOptions(rawValue: UInt((keyboardUserInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
         let durationValue = keyboardUserInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
         let duration = durationValue.doubleValue
         
+        let diff = keyboardFrameBegin.origin.y - keyboardFrameEnd.origin.y
         self.bottomConstraint.constant = keyboardFrameEnd.size.height
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
             self.view.layoutIfNeeded()
-            self.botMessagesView.scrollWithOffset(keyboardFrameEnd.size.height, animated: false)
+            self.botMessagesView.scrollWithOffset(diff, animated: false)
         }, completion: { (Bool) in
             
         })
@@ -383,15 +385,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func keyboardWillHide(_ notification: Notification) {
         let keyboardUserInfo: NSDictionary = NSDictionary(dictionary: (notification as NSNotification).userInfo!)
+        let keyboardFrameBegin: CGRect = ((keyboardUserInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue?)!.cgRectValue)
         let keyboardFrameEnd: CGRect = ((keyboardUserInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue?)!.cgRectValue)
         let durationValue = keyboardUserInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
         let duration = durationValue.doubleValue
         let options = UIViewAnimationOptions(rawValue: UInt((keyboardUserInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
         
+        let diff = keyboardFrameBegin.origin.y - keyboardFrameEnd.origin.y
         self.bottomConstraint.constant = 0
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
             self.view.layoutIfNeeded()
-            self.botMessagesView.scrollWithOffset(-keyboardFrameEnd.size.height, animated: false)
+            self.botMessagesView.scrollWithOffset(diff, animated: false)
         }, completion: { (Bool) in
             
         })

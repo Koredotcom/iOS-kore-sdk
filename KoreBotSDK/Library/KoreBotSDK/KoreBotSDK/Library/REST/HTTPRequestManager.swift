@@ -34,6 +34,7 @@ open class HTTPRequestManager : NSObject {
         operationManager.responseSerializer = AFJSONResponseSerializer.init()
         operationManager.requestSerializer = requestSerializer
         operationManager.post(urlString, parameters: parameters, success: { (operation, responseObject) in
+            print(responseObject)
             let error: Error?
             if responseObject is [AnyHashable: Any] {
                 let dictionary = responseObject as! [String : AnyObject]
@@ -45,7 +46,6 @@ open class HTTPRequestManager : NSObject {
             } else {
                 failure?(NSError(domain: "", code: 0, userInfo: [:]))
             }
-            print(operation?.responseObject)
         }) { (operation, error) in
             if (operation?.responseObject != nil) {
                 print(operation?.responseObject)
@@ -71,9 +71,7 @@ open class HTTPRequestManager : NSObject {
             print(responseObject)
             let error: NSError?
             let botInfo: BotInfoModel = try! (MTLJSONAdapter.model(of: BotInfoModel.self, fromJSONDictionary: responseObject! as! [AnyHashable: Any]) as! BotInfoModel)
-            
             success?(botInfo)
-            print(operation?.responseObject)
         }) { (operation, requestError) in
             if (operation?.responseObject != nil) {
                 print(operation?.responseObject)
