@@ -49,7 +49,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action:  #selector(ChatMessagesViewController.cancel(_:)))
         self.updateNavBarPrompt()
 
@@ -115,8 +114,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             self.botClient.disconnect()
         }
         self.deConfigureBotClient()
+        self.deConfigureSTTClient()
         self.stopTTS()
-        self.sttClient.onReceiveMessage = nil
         self.composeBar.growingTextView.viewDelegate = nil
         self.composeBar.delegate = nil
         self.audioComposeView.prepareForDeinit()
@@ -176,11 +175,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             let authToken: String = String(format: "%@ %@", authInfo!.tokenType!, authInfo!.accessToken!)
             let identity = self?.botClient.userInfoModel.identity
             self?.sttClient.initialize(serverUrl: ServerConfigs.BOT_SPEECH_SERVER, authToken: authToken, identity: identity!)
-            self?.sttClient.onReceiveMessage = self?.composeBar.onReceiveMessageFromSTTClient(dataDictionary:)
+            self?.configureSTTClient()
         }
         self.audioComposeView.voiceRecordingStopped = {  [weak self] (composeBar) in
             self?.sttClient.stopAudioQueueRecording()
-            self?.sttClient.onReceiveMessage = nil
+            self?.deConfigureSTTClient()
         }
         self.audioComposeView.getAudioPeakOutputPower = { [weak self]() in
             if self?.sttClient.audioQueueRecorder != nil {
@@ -350,9 +349,37 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
     }
     
+    func configureSTTClient() {
+        sttClient.connectionWillOpen = { () in
+            
+        }
+        sttClient.connectionDidOpen = { () in
+            
+        }
+        sttClient.connectionDidClose = { [weak self] (code, reason) in
+            self?.audioComposeView.stopRecording()
+        }
+        sttClient.connectionDidFailWithError = { [weak self] (error) in
+            self?.audioComposeView.stopRecording()
+        }
+        sttClient.onMessage = { [weak self] (object) in
+            self?.composeBar.onReceiveMessageFromSTTClient(dataDictionary: object)
+        }
+    }
+    
+    func deConfigureSTTClient() {
+        sttClient.connectionWillOpen = nil
+        sttClient.connectionDidOpen = nil
+        sttClient.connectionDidClose = nil
+        sttClient.connectionDidFailWithError = nil
+        sttClient.onMessage = nil
+    }
+    
     func updateNavBarPrompt() {
+        self.navigationItem.leftBarButtonItem?.isEnabled = true
         switch self.botClient.connectionState {
         case .CONNECTING:
+            self.navigationItem.leftBarButtonItem?.isEnabled = false
             self.navigationItem.prompt = "Connecting..."
             break
         case .CONNECTED:
