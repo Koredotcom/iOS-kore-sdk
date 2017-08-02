@@ -51,7 +51,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         super.viewDidLoad()
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action:  #selector(ChatMessagesViewController.cancel(_:)))
-        
+        self.updateNavBarPrompt()
+
         //Initialize elements
         
         self.configureThreadView()
@@ -217,22 +218,27 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func configureBotClient() {
         if(botClient != nil){
             // events
-            botClient.connectionDidOpen = { () in
-                NSLog("botClient: connectionDidOpen")
+            botClient.connectionWillOpen =  { [weak self] () in
+                self?.updateNavBarPrompt()
+            }
+            
+            botClient.connectionDidOpen = { [weak self] () in
+                self?.updateNavBarPrompt()
             }
             
             botClient.connectionReady = { () in
-                NSLog("botClient: connectionReady")
+                
             }
             
-            botClient.connectionDidClose = { [weak self] (code) in
-                NSLog("botClient: connectionDidClose > Reconnecting")
-                self?.botClient.reconnect()
+            botClient.connectionDidClose = { [weak self] (code, reason) in
+                NSLog("botClient: connectionDidClose")
+                self?.updateNavBarPrompt()
+                
             }
             
             botClient.connectionDidFailWithError = { [weak self] (error) in
-                NSLog("botClient: connectionDidFailWithError > Reconnecting")
-                self?.botClient.reconnect()
+                NSLog("botClient: connectionDidFailWithError")
+                self?.updateNavBarPrompt()
             }
             
             botClient.onMessage = { [weak self] (object) in
@@ -248,6 +254,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func deConfigureBotClient() {
         if(botClient != nil){
             // events
+            botClient.connectionWillOpen = nil
             botClient.connectionDidOpen = nil
             botClient.connectionReady = nil
             botClient.connectionDidClose = nil
@@ -340,6 +347,32 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: ttsBody)
                 }
             }
+        }
+    }
+    
+    func updateNavBarPrompt() {
+        switch self.botClient.connectionState {
+        case .CONNECTING:
+            self.navigationItem.prompt = "Connecting..."
+            break
+        case .CONNECTED:
+            self.navigationItem.prompt = "Connected"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                self.navigationItem.prompt = nil
+            })
+            break
+        case .FAILED:
+            self.navigationItem.prompt = "Connection Failed"
+            break
+        case .CLOSED:
+            self.navigationItem.prompt = "Connection Closed"
+            break
+        case .NO_NETWORK:
+            self.navigationItem.prompt = "No Network"
+            break
+        case .NONE:
+            self.navigationItem.prompt = nil
+            break
         }
     }
     

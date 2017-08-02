@@ -139,6 +139,17 @@ open class HTTPRequestManager : NSObject {
             failure?(error!)
         }
     }
+    
+    open func startNewtorkMonitoring(_ block: ((AFNetworkReachabilityStatus) -> Void)?) {
+        AFNetworkReachabilityManager.shared().setReachabilityStatusChange { (status) in
+            if block != nil { block!(status) }
+        }
+        AFNetworkReachabilityManager.shared().startMonitoring()
+    }
+    
+    open func stopNewtorkMonitoring() {
+        AFNetworkReachabilityManager.shared().stopMonitoring()
+    }
 }
 
 extension Data {
