@@ -69,17 +69,16 @@ class OptionsBubbleView: BubbleView {
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
-                let buttons: Array<Dictionary<String, Any>> = jsonObject["buttons"] as! Array<Dictionary<String, Any>>
+                let buttons: Array<Dictionary<String, Any>> = jsonObject["buttons"] != nil ? jsonObject["buttons"] as! Array<Dictionary<String, Any>> : []
                 let buttonsCount: Int = min(buttons.count, OptionsBubbleView.buttonsLimit)
                 var options: Array<KREOption> = Array<KREOption>()
                 
                 for i in 0..<buttonsCount {
                     let dictionary = buttons[i]
-                    
                     let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
                     
                     let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button)
-                    option.setDefaultActionInfo(info: dictionary as! Dictionary<String, String>)
+                    option.setDefaultAction(action: Utilities.getKREActionFromDictionary(dictionary: dictionary)!)
                     options.append(option)
                 }
                 self.optionsView.options = options

@@ -25,7 +25,7 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
             }
         }
     }
-    var tableView: UITableView?
+    weak var tableView: UITableView?
     var animateChanges: Bool = false
     var ignoreUpdates: Bool = false
     var shouldReload: Bool = false
@@ -153,6 +153,7 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
     
     // MARK:- deinit
     deinit {
+//        NSLog("KREFetchedResultsController dealloc")
         clearSectionsAndRowsCache()
         self.kreDelegate = nil
         self.tableView = nil

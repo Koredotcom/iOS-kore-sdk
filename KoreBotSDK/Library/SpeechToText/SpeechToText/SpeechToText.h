@@ -2,7 +2,7 @@
 //  SpeechToText.h
 //  SpeechToText
 //
-//  Created by Shylaja Mamidala on 11/16/16.
+//  Created by developer@kore.com on 11/16/16.
 //  Copyright © 2016 Kore. All rights reserved.
 //
 

@@ -2,7 +2,8 @@
 //  KRECarouselView.swift
 //  Widgets
 //
-//  Created by anoop on 24/05/17.
+//  Created by developer@kore.com on 24/05/17.
+//  Copyright © 2017 Kore Inc. All rights reserved.
 //
 //
 
@@ -108,15 +109,15 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cardInfo = cards[indexPath.row]
-        if(cardInfo.defaultActionInfo != nil){
-            let defaultActionInfo:Dictionary<String,String>? = cardInfo.defaultActionInfo
-            if (defaultActionInfo?["type"] == "web_url") {
+        if(cardInfo.defaultAction != nil){
+            let defaultAction = cardInfo.defaultAction
+            if (defaultAction?.type == .webURL) {
                 if ((self.linkAction) != nil) {
-                    self.linkAction(defaultActionInfo?["url"])
+                    self.linkAction(defaultAction?.payload)
                 }
-            } else if (defaultActionInfo?["type"] == "postback") {
+            } else if (defaultAction?.type == .postback) {
                 if (self.optionsAction != nil) {
-                    self.optionsAction(defaultActionInfo?["payload"])
+                    self.optionsAction(defaultAction?.payload)
                 }
             }
         }
@@ -124,11 +125,12 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
     
     // MARK: - UICollectionViewDelegateContactFlowLayout
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: maxCardWidth, height: maxCardHeight)
+        return CGSize(width: maxCardWidth, height: maxCardHeight - 1.0)
     }
     
     public func prepareForReuse() {
         self.cards.removeAll()
+        self.reloadData()
     }
     
     // MARK:- Scroll view delegate

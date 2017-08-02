@@ -49,6 +49,8 @@ class AppLaunchViewController: UIViewController {
     
     // MARK: known user
     @IBAction func chatButtonAction(_ sender: UIButton!) {
+        self.chatButton.isUserInteractionEnabled = false
+        
         let clientId: String = SDKConfiguration.botConfig.clientId
         let clientSecret: String = SDKConfiguration.botConfig.clientSecret
         let isAnonymous: Bool = SDKConfiguration.botConfig.isAnonymous
@@ -89,6 +91,7 @@ class AppLaunchViewController: UIViewController {
                     }
                     botClient.connectWithJwToken(jwToken, success: { [weak self] (client) in
                         activityIndicatorView.stopAnimating()
+                        self?.chatButton.isUserInteractionEnabled = true
                         
                         let botViewController = ChatMessagesViewController(thread: thread)
                         botViewController.botClient = client
@@ -96,14 +99,17 @@ class AppLaunchViewController: UIViewController {
                         self!.navigationController?.pushViewController(botViewController, animated: true)
                     }, failure: { (error) in
                         activityIndicatorView.stopAnimating()
+                        self?.chatButton.isUserInteractionEnabled = true
                     })
                 })
                 }
             }, failure: { (error) in
                 activityIndicatorView.stopAnimating()
+                self.chatButton.isUserInteractionEnabled = true
             })
         } else {
             self.showAlert(title: "Bot SDK Demo", message: "YOU MUST SET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
+            self.chatButton.isUserInteractionEnabled = true
         }
     }
     

@@ -3,6 +3,7 @@
 //  Pods
 //
 //  Created by developer@kore.com on 24/07/17.
+//  Copyright © 2017 Kore Inc. All rights reserved.
 //
 //
 
@@ -23,7 +24,16 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
     fileprivate var identity: String!
     fileprivate var isAudioQueueRecordingInProgress = false
     
-    open var onReceiveMessage: (([AnyHashable : Any]?) -> Void)!
+    open var connectionWillOpen: ((Void) -> Void)!
+    open var connectionDidOpen: ((Void) -> Void)!
+    open var connectionDidClose: ((Int, String) -> Void)!
+    open var connectionDidFailWithError: ((Error) -> Void)!
+    open var onMessage: (([AnyHashable : Any]?) -> Void)!
+    
+    public override init() {
+        super.init()
+        self.setUpAudioQueueFormat()
+    }
     
     public func initialize(serverUrl: String, authToken:String, identity: String) {
         self.setKoreBotServerUrl(url: serverUrl)
@@ -31,7 +41,6 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
         self.identity = identity
         
         self.fetchWebSocketUrlAndConnect()
-        self.setUpAudioQueueFormat()
         self.doAudioQueueRecording()
     }
     
@@ -39,8 +48,10 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
         if self.webSocket != nil {
             self.webSocket.sendEndOFSpeechMarker()
         }
-        self.audioQueueRecorder.stop()
-        self.isAudioQueueRecordingInProgress = false
+        if self.isAudioQueueRecordingInProgress {
+            self.audioQueueRecorder.stop()
+            self.isAudioQueueRecordingInProgress = false
+        }
     }
     
     public func checkAudioRecordPermission(block:(() -> Void)?) {
@@ -66,7 +77,7 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
         }
     }
     
-    func setUpAudioQueueFormat() {
+    fileprivate func setUpAudioQueueFormat() {
         audioFormat.mFormatID = kAudioFormatLinearPCM
         audioFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked
         audioFormat.mBitsPerChannel = 16
@@ -86,31 +97,14 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
         }
     }
     
-    func doAudioQueueRecording() {
+    fileprivate func doAudioQueueRecording() {
         self.audioBuffer = Data()
         self.recordedData = Data()
         
-        let audioSession = AVAudioSession.sharedInstance()
-        if (audioSession.responds(to: #selector(AVAudioSession.requestRecordPermission(_:)))) {
-            audioSession.requestRecordPermission({ (granted: Bool) in
-                if(granted){
-                    DispatchQueue.main.async {
-                        self.audioQueueRecorder = MCAudioInputQueue.init(format: self.audioFormat, bufferDuration: 0.25, delegate: self)
-                        self.audioQueueRecorder.meteringEnabled = true
-                        self.isAudioQueueRecordingInProgress = true
-                    }
-                }else{
-                    DispatchQueue.main.async {
-                        let alert = UIAlertController(title: "Microphone Access Denied", message: "This app requires access to your device's Microphone.\n\nPlease enable Microphone access for this app in Settings / Privacy / Microphone", preferredStyle: UIAlertControllerStyle.alert)
-                        alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.cancel, handler: nil))
-                        
-                        // Get root view controller
-                        if let viewController = UIApplication.shared.keyWindow?.rootViewController {
-                            viewController.present(alert, animated: true, completion: nil)
-                        }
-                    }
-                }
-            })
+        self.checkAudioRecordPermission { 
+            self.audioQueueRecorder = MCAudioInputQueue.init(format: self.audioFormat, bufferDuration: 0.25, delegate: self)
+            self.audioQueueRecorder.meteringEnabled = true
+            self.isAudioQueueRecordingInProgress = true
         }
     }
 
@@ -131,6 +125,9 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
     
     // MARK: functions
     fileprivate func connetWebSocketWithURL(_ url: String) {
+        if (self.connectionWillOpen != nil) {
+            self.connectionWillOpen()
+        }
         self.webSocket = KREWebSocket.init(urlString:url)
         self.webSocket.delegate = self
         self.webSocket.connect()
@@ -148,15 +145,19 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
     // MARK: KREWebSocketDelegate methods
     
     public func webSocketOpen(_ webSocket: SRWebSocket!) {
-        
+        if (self.connectionDidOpen != nil) {
+            self.connectionDidOpen()
+        }
     }
     
     public func webSocket(_ webSocket: SRWebSocket!, onFailWithError error: Error!) {
         NSLog("*******webSocket:onFailWithError********")
         self.webSocket.delegate = nil;
         self.webSocket = nil;
-        if (self.isAudioQueueRecordingInProgress) {
-            self.fetchWebSocketUrlAndConnect()
+        self.stopAudioQueueRecording()
+        
+        if (self.connectionDidFailWithError != nil) {
+            self.connectionDidFailWithError(error)
         }
     }
     
@@ -164,8 +165,10 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
         NSLog("*******webSocket:onCloseWithCode********")
         self.webSocket.delegate = nil;
         self.webSocket = nil;
-        if(self.isAudioQueueRecordingInProgress){
-            self.fetchWebSocketUrlAndConnect()
+        self.stopAudioQueueRecording()
+        
+        if (self.connectionDidClose != nil) {
+            self.connectionDidClose(code, reason ?? "")
         }
     }
     
@@ -174,20 +177,19 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
     }
     
     public func webSocket(_ webSocket: SRWebSocket!, onReceiveMessage message: Any!) {
-//        NSLog("*******webSocket:onReceiveMessage********")
         if let data = message {
             do {
                 if let jsonResult = try JSONSerialization.jsonObject(with: (data as AnyObject).data(using: String.Encoding.utf8.rawValue)!, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:Any] {
                     let status = jsonResult["status"] as! NSNumber
                     if(status.intValue == 0){
                         let dataDictionary = jsonResult["result"] as! [AnyHashable : Any]
-                        if (self.onReceiveMessage != nil) {
-                            self.onReceiveMessage(dataDictionary)
+                        if (self.onMessage != nil) {
+                            self.onMessage(dataDictionary)
                         }
                     }
                 }
             } catch {
-                NSLog("JSON Serializaation failed")
+                NSLog("JSON Serialization failed")
             }
         }
     }
@@ -213,5 +215,12 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
     
     deinit {
         NSLog("STTClient dealloc")
+        self.webSocket = nil
+        self.audioQueueRecorder = nil
+        self.audioBuffer = nil
+        self.recordedData = nil
+        self.speechSocketURL = nil
+        self.authToken = nil
+        self.identity = nil
     }
 }

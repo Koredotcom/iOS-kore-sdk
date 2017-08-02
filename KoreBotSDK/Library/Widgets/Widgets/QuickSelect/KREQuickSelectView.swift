@@ -125,7 +125,7 @@ public class KREQuickSelectView: UIView, UICollectionViewDelegate, UICollectionV
             let word = wordList[(indexPath as NSIndexPath).row]
             self.sendQuickReplyAction(word.payload)
         }
-        cell.krefocused = true
+        cell.krefocused = false
     }
     
     // MARK: - UICollectionViewDelegateContactFlowLayout

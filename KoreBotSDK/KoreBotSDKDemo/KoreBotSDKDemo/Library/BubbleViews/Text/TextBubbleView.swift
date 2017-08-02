@@ -38,8 +38,8 @@ class TextBubbleView : BubbleView {
         self.textLabel.isUserInteractionEnabled = true
         self.textLabel.contentMode = UIViewContentMode.topLeft
         self.textLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.textLabel.imageDetectionBlock = { (reload) in
-            self.onChange(reload)
+        self.textLabel.imageDetectionBlock = {[weak self] (reload) in
+            self?.onChange(reload)
         }
 
         self.addSubview(self.textLabel)
@@ -66,6 +66,12 @@ class TextBubbleView : BubbleView {
                 self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
             }
         }
+    }
+    
+    override var intrinsicContentSize : CGSize {
+        let limitingSize: CGSize  = CGSize(width: kMaxTextWidth, height: CGFloat.greatestFiniteMagnitude)
+        let textSize: CGSize = self.textLabel.sizeThatFits(limitingSize)
+        return CGSize(width: textSize.width + 20, height: textSize.height + 20)
     }
 }
 

@@ -50,7 +50,7 @@ class ListBubbleView: BubbleView {
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
-                let elements: Array<Dictionary<String, Any>> = jsonObject["elements"] as! Array<Dictionary<String, Any>>
+                let elements: Array<Dictionary<String, Any>> = jsonObject["elements"] != nil ? jsonObject["elements"] as! Array<Dictionary<String, Any>> : []
                 let elementsCount: Int = min(elements.count, ListBubbleView.elementsLimit)
                 var options: Array<KREOption> = Array<KREOption>()
                 
@@ -63,29 +63,29 @@ class ListBubbleView: BubbleView {
                     
                     let option: KREOption = KREOption(title: title, subTitle: subtitle, imageURL: imageUrl, optionType: .list)
                     if (dictionary["default_action"] != nil) {
-                        option.setDefaultActionInfo(info: dictionary["default_action"] as! Dictionary<String, String>)
+                        let defaultAction = dictionary["default_action"] as! Dictionary<String, Any>
+                        option.setDefaultAction(action: Utilities.getKREActionFromDictionary(dictionary: defaultAction)!)
                     }
-                    if (dictionary["buttons"] != nil) {
-                        let buttons: Array<Dictionary<String, Any>> = dictionary["buttons"] as! Array<Dictionary<String, Any>>
-                        if (buttons.count > 0) {
-                            let buttonElement: Dictionary<String, Any> = buttons.first! as Dictionary<String, Any>
-                            option.setButtonActionInfo(info: buttonElement as! Dictionary<String, String>)
-                        }
+                    
+                    let buttons: Array<Dictionary<String, Any>> = dictionary["buttons"] != nil ? dictionary["buttons"] as! Array<Dictionary<String, Any>> : []
+                    if (buttons.count > 0) {
+                        let buttonElement: Dictionary<String, Any> = buttons.first! as Dictionary<String, Any>
+                        option.setButtonAction(action: Utilities.getKREActionFromDictionary(dictionary: buttonElement)!)
                     }
+                    
                     options.append(option)
                 }
                 
-                if jsonObject["buttons"] != nil {
-                    let buttons: Array<Dictionary<String, Any>> = jsonObject["buttons"] as! Array<Dictionary<String, Any>>
-                    if (buttons.count > 0) {
-                        let buttonElement: Dictionary<String, Any> = buttons.first! as Dictionary<String, Any>
-                        let title: String = buttonElement["title"] != nil ? buttonElement["title"] as! String : ""
-                        
-                        let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button)
-                        option.setDefaultActionInfo(info: buttonElement as! Dictionary<String, String>)
-                        options.append(option)
-                    }
+                let buttons: Array<Dictionary<String, Any>> = jsonObject["buttons"] != nil ? jsonObject["buttons"] as! Array<Dictionary<String, Any>> : []
+                if (buttons.count > 0) {
+                    let buttonElement: Dictionary<String, Any> = buttons.first! as Dictionary<String, Any>
+                    let title: String = buttonElement["title"] != nil ? buttonElement["title"] as! String : ""
+                    
+                    let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button)
+                    option.setDefaultAction(action: Utilities.getKREActionFromDictionary(dictionary: buttonElement)!)
+                    options.append(option)
                 }
+                
                 self.optionsView.options.removeAll()
                 self.optionsView.options = options
             }

@@ -3,6 +3,7 @@
 //  Pods
 //
 //  Created by developer@kore.com on 24/07/17.
+//  Copyright © 2017 Kore Inc. All rights reserved.
 //
 //
 
