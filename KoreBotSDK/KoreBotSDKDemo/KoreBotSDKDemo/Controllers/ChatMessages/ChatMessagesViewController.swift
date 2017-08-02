@@ -266,11 +266,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func onReceiveMessage(object: BotMessageModel?) {
         let message: Message = Message()
         message.messageType = .reply
-        if (object?.createdOn != nil) {
-            message.sentDate = object?.createdOn as Date!
-        } else {
-            message.sentDate = Date()
-        }
+        message.sentDate = Date()
         
         if (object?.iconUrl != nil) {
             message.iconUrl = object?.iconUrl
