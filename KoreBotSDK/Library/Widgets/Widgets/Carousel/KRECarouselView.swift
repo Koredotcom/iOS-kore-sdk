@@ -16,6 +16,7 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
     public var maxCardHeight: CGFloat = 0.0
     public var maxCardWidth: CGFloat = 0.0
     public var numberOfItems: Int = 0
+    fileprivate var pageIndex = 0
     
     public var cards: Array<KRECardInfo> = Array<KRECardInfo>() {
         didSet {
@@ -131,6 +132,7 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
     public func prepareForReuse() {
         self.cards.removeAll()
         self.reloadData()
+        self.pageIndex = 0
     }
     
     // MARK:- Scroll view delegate
@@ -138,38 +140,26 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
         
         // Ensure the scrollview is the one on the collectionView we care are working with
         if (scrollView == self) {
-            
-            // Find cell closest to the frame centre with reference from the targetContentOffset
-            let frameCenter: CGPoint = self.center
-            var targetOffsetToCenter: CGPoint = CGPoint(x: self.contentOffset.x + frameCenter.x, y: self.contentOffset.y + frameCenter.y)
-            var currentIndexPath: IndexPath? = self.indexPathForItem(at: targetOffsetToCenter)
-            
-            // Check for "edge case" where the target will land right between cells and then next neighbor to prevent scrolling to index {0,0}.
-            while currentIndexPath == nil {
-                targetOffsetToCenter.x += 10
-                currentIndexPath = self.indexPathForItem(at: targetOffsetToCenter)
-            }
-            // safe unwrap to make sure we found a valid index path
-            if let index = currentIndexPath {
-                var newPage = Float(index.row)
-                let pageWidth = Float(maxCardWidth + 10.0)
-                let targetXContentOffset = Float(targetContentOffset.pointee.x)
-                let contentWidth = Float(self.contentSize.width)
+            var newPage = self.pageIndex
+            let pageWidth = Float(maxCardWidth + 10.0)
+            let targetXContentOffset = Float(targetContentOffset.pointee.x)
+            let contentWidth = Float(self.contentSize.width)
                 
-                if velocity.x == 0 {
-                    newPage = floor( (targetXContentOffset - Float(pageWidth) / 2) / Float(pageWidth)) + 1.0
-                } else {
-                    newPage = Float(velocity.x > 0 ? newPage + 1 : newPage - 1)
-                    if newPage < 0 {
-                        newPage = 0
-                    }
-                    if (newPage > contentWidth / pageWidth) {
-                        newPage = ceil(contentWidth / pageWidth) - 1.0
-                    }
+            if velocity.x == 0 {
+                newPage = Int(floor((targetXContentOffset - pageWidth / 2) / pageWidth) + 1.0)
+            } else {
+                newPage = velocity.x > 0 ? newPage + 1 : newPage - 1
+                if newPage < 0 {
+                    newPage = 0
                 }
-                let point = CGPoint (x: CGFloat(newPage * pageWidth), y: targetContentOffset.pointee.y)
-                targetContentOffset.pointee = point
+                let lastPage = Int(floor(contentWidth / pageWidth) - 1.0)
+                if newPage > lastPage {
+                    newPage = lastPage
+                }
             }
+            self.pageIndex = newPage
+            let point = CGPoint (x: CGFloat(Float(newPage) * pageWidth), y: targetContentOffset.pointee.y)
+            targetContentOffset.pointee = point
         }
     }
 }
