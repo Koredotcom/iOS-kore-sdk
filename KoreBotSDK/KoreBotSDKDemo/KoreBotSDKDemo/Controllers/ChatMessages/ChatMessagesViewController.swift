@@ -171,10 +171,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             }
         }
         self.audioComposeView.voiceRecordingStarted = { [weak self] (composeBar) in
-            let authInfo = self?.botClient.authInfoModel
-            let authToken: String = String(format: "%@ %@", authInfo!.tokenType!, authInfo!.accessToken!)
             let identity = self?.botClient.userInfoModel.identity
-            self?.sttClient.initialize(serverUrl: ServerConfigs.BOT_SPEECH_SERVER, authToken: authToken, identity: identity!)
+            if ServerConfigs.responds(to: #selector(getter: ServerConfigs.BOT_SPEECH_SERVER)) {
+                let authInfo = self?.botClient.authInfoModel
+                let authToken: String = String(format: "%@ %@", authInfo!.tokenType!, authInfo!.accessToken!)
+                self?.sttClient.initialize(serverUrl: ServerConfigs.BOT_SPEECH_SERVER, authToken: authToken, identity: identity!)
+            }else if ServerConfigs.responds(to: #selector(getter: ServerConfigs.BOT_SPEECH_WEBSOCKET)) {
+                self?.sttClient.initialize(socketURL: ServerConfigs.BOT_SPEECH_WEBSOCKET, identity: identity!)
+            }
             self?.configureSTTClient()
         }
         self.audioComposeView.voiceRecordingStopped = {  [weak self] (composeBar) in

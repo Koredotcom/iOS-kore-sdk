@@ -23,7 +23,7 @@ open class STTRequestManager : NSObject {
     }()
     
     open func getSocketUrlWithAuthInfoModel(_ accessToken: String!, identity: String!, success:((_ responseObject: AnyObject?) -> Void)?, failure:((_ error: Error) -> Void)?)  {
-        let urlString: String = String(format: STTConstants.SocketURL.urlPath, STTConstants.SocketURL.baseUrl, identity)
+        let urlString: String = String(format: STTConstants.SpeechServer.urlPath, STTConstants.SpeechServer.baseUrl, identity)
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue(accessToken, forHTTPHeaderField:"Authorization")
@@ -32,7 +32,7 @@ open class STTRequestManager : NSObject {
         requestSerializer.setValue("application/json", forHTTPHeaderField:"Accept")
         
         let parameters: NSDictionary = ["email":identity]
-        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: URL.init(string: STTConstants.SocketURL.baseUrl) as URL!)
+        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: URL.init(string: STTConstants.SpeechServer.baseUrl) as URL!)
         operationManager.responseSerializer = AFJSONResponseSerializer.init()
         operationManager.requestSerializer = requestSerializer
         operationManager.post(urlString, parameters: parameters, success: { (operation, responseObject) in

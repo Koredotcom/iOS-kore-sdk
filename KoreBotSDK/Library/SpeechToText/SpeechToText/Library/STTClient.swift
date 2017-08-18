@@ -35,6 +35,14 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
         self.setUpAudioQueueFormat()
     }
     
+    public func initialize(socketURL: String, identity: String) {
+        self.speechSocketURL = socketURL
+        self.identity = identity
+        
+        self.connetWebSocketWithURL(self.getSpeechServerUrl())
+        self.doAudioQueueRecording()
+    }
+    
     public func initialize(serverUrl: String, authToken:String, identity: String) {
         self.setKoreBotServerUrl(url: serverUrl)
         self.authToken = authToken
@@ -135,11 +143,11 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
     
     // MARK:
     func setKoreBotServerUrl(url: String) {
-        STTConstants.KORE_BOT_SERVER = url
+        STTConstants.KORE_SPEECH_SERVER = url
     }
     
     func getSpeechServerUrl() -> String {
-        return String(format: STTConstants.kreSpeechServer, arguments: [self.speechSocketURL, STTConstants.voiceContentType, self.identity])
+        return String(format: STTConstants.SocketURL.urlFormat, self.speechSocketURL, STTConstants.voiceContentType)
     }
     
     // MARK: KREWebSocketDelegate methods

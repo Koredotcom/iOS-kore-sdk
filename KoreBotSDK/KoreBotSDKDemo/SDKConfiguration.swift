@@ -37,5 +37,6 @@ class ServerConfigs: NSObject {
     }
     
     open static let BOT_SERVER = String(format: "https://bots.kore.ai/")
-    open static let BOT_SPEECH_SERVER = String(format: "<speech-server-url>") //Example wss://speech.kore.ai/speechcontext/bot
+    open static let BOT_SPEECH_SERVER = String(format: "https://bots.kore.ai/") //By Default "BOT_SPEECH_SERVER" config will be taken if provided, otherwise comment this if websocket url is to be used
+    open static let BOT_SPEECH_WEBSOCKET = String(format: "<speech-server-socket-url>") //Example wss://speech.kore.ai/speechcontext/bot
 }
