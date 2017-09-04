@@ -13,7 +13,7 @@ open class STTConstants: NSObject {
     open static var KORE_SPEECH_SERVER = "https://qa-speech.kore.ai/"
     struct SpeechServer {
         static let baseUrl = KORE_SPEECH_SERVER
-        static let urlPath = "%@asrsocket/dev/start?email=%@"
+        static let urlPath = "%@asr/wss/start?email=%@"
     }
     struct SocketURL {
         static let urlFormat = "%@&content-type=%@"
