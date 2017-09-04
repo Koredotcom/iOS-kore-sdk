@@ -89,10 +89,13 @@ class QuickReplyBubbleView : TextBubbleView {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
 
-                let string: String = jsonObject["text"] as! String
-                let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
-                let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
-                self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
+                if let string: String = jsonObject["text"] as? String {
+                    let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
+                    let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
+                    self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
+                }else{
+                    self.textLabel.setHTMLString("", withWidth: kMaxTextWidth)
+                }
             }
         }
     }
@@ -117,11 +120,14 @@ class ErrorBubbleView : TextBubbleView {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
                 
-                let string: String = jsonObject["text"] as! String
-                let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
-                let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
-                self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
-                
+                if let string: String = jsonObject["text"] as? String{
+                    let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
+                    let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
+                    self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
+                }else{
+                    self.textLabel.setHTMLString("", withWidth: kMaxTextWidth)
+                }
+            
                 if var colorString: String = jsonObject["color"] as? String {
                     if(colorString.hasPrefix("#")){
                         colorString = String(colorString.characters.dropFirst())
