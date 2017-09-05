@@ -18,17 +18,11 @@ class TextBubbleView : BubbleView {
     let kMinTextWidth: CGFloat = 20.0
     var textLabel: KREAttributedLabel!
     
-    override var tailPosition: BubbleMaskTailPosition! {
-        didSet {
-            self.textLabel.textColor = self.kTextColor()
-        }
-    }
-    
     override func initialize() {
         super.initialize()
         
         self.textLabel = KREAttributedLabel(frame: CGRect.zero)
-        self.textLabel.textColor = Common.UIColorRGB(0x444444)
+        self.textLabel.textColor = Common.UIColorRGB(0x484848)
         self.textLabel.mentionTextColor = Common.UIColorRGB(0x8ac85a)
         self.textLabel.hashtagTextColor = Common.UIColorRGB(0x8ac85a)
         self.textLabel.linkTextColor = Common.UIColorRGB(0x0076FF)
@@ -59,6 +53,7 @@ class TextBubbleView : BubbleView {
                 return;
             }
             
+            self.textLabel.textColor = self.kTextColor()
             if ((component.componentDesc) != nil) {
                 let string: String = component.componentDesc! as String
                 let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
@@ -70,7 +65,10 @@ class TextBubbleView : BubbleView {
     
     override var intrinsicContentSize : CGSize {
         let limitingSize: CGSize  = CGSize(width: kMaxTextWidth, height: CGFloat.greatestFiniteMagnitude)
-        let textSize: CGSize = self.textLabel.sizeThatFits(limitingSize)
+        var textSize: CGSize = self.textLabel.sizeThatFits(limitingSize)
+        if textSize.height < self.textLabel.font.pointSize {
+            textSize.height = self.textLabel.font.pointSize
+        }
         return CGSize(width: textSize.width + 20, height: textSize.height + 20)
     }
 }
@@ -84,7 +82,8 @@ class QuickReplyBubbleView : TextBubbleView {
             if (!component.isKind(of: KREComponent.self)) {
                 return;
             }
-
+            
+            self.textLabel.textColor = self.kTextColor()
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
@@ -102,11 +101,6 @@ class QuickReplyBubbleView : TextBubbleView {
 }
 
 class ErrorBubbleView : TextBubbleView {
-    var textColor: UIColor = Common.UIColorRGB(0x484848)
-    
-    override func kTextColor() -> UIColor {
-        return textColor
-    }
     
     override func populateComponents() {
         if (components.count > 0) {
@@ -132,7 +126,7 @@ class ErrorBubbleView : TextBubbleView {
                     if(colorString.hasPrefix("#")){
                         colorString = String(colorString.characters.dropFirst())
                     }
-                    self.textColor = Common.UIColorRGB(Int(colorString, radix: 16)!)
+                    self.textLabel.textColor = Common.UIColorRGB(Int(colorString, radix: 16)!)
                 }
             }
         }

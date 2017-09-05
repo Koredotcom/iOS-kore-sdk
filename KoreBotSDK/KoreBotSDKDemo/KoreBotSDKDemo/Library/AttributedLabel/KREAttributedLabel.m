@@ -248,16 +248,13 @@
         return;
 
     __weak typeof(self) weakSelf = self;
-    
     NSString *originalString = sString;
-    NSString *string = [KREUtilities getHTMLStrippedStringFromString:sString];
     
-    NSMutableAttributedString *attributedString = [[self.markdownParser attributedStringFromMarkdown:string] mutableCopy];
-//    [attributedString addAttribute:NSForegroundColorAttributeName value:self.textColor range:[string rangeOfString:string]];
+    NSMutableAttributedString *attributedString = [[self.markdownParser attributedStringFromMarkdown:[KREUtilities getHTMLStrippedStringFromString:sString]] mutableCopy];
+    NSString *string = attributedString.string;
     
     //initialize layout manager
     NSMutableAttributedString *layoutManagerString = [attributedString mutableCopy];
-//    [layoutManagerString addAttributes:@{NSFontAttributeName:self.font} range:[string rangeOfString:string]];
     KRELayoutManager *layoutManager = [[KRELayoutManager alloc] initWithAttributedString:layoutManagerString andWidth:width];
     layoutManager.edgeInset = self.edgeInset;
     
