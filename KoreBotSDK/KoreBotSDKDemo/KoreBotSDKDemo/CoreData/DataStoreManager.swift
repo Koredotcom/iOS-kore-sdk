@@ -263,6 +263,18 @@ class DataStoreManager: NSObject {
                             nMessage.thread = thread
                             thread.addToMessages(_value: nMessage)
                             break
+                        case .piechart:
+                            let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
+                            let piechartComponent: PiechartComponent = component as! PiechartComponent
+                            
+                            nComponent.componentId = ""
+                            nComponent.componentDesc = piechartComponent.payload as String?
+                            nMessage.addComponentsObject(_value: nComponent)
+                            nComponent.message = nMessage
+                            nMessage.templateType = ComponentType.piechart.rawValue as NSNumber?
+                            nMessage.thread = thread
+                            thread.addToMessages(_value: nMessage)
+                            break
                         case .error:
                             let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
                             let errorComponent: ErrorComponent = component as! ErrorComponent

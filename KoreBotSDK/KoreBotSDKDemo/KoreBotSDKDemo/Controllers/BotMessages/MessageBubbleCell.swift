@@ -272,3 +272,23 @@ class CarouselBubbleCell : MessageBubbleCell {
         }
     }
 }
+
+class PiechartBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> BubbleType {
+        return BubbleType.piechart
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleLeadingConstraint.constant = 0
+            self.bubbleTrailingConstraint.constant = 0
+            self.bubbleTrailingConstraint.priority = 999
+        }
+    }
+    
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        self.dateLabel.text = nil
+        self.senderImageView.isHidden = true
+    }
+}
