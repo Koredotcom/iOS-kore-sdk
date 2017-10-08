@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChatWindowViewController" customModule="KoreBotSDKDemo" customModuleProvider="target">
+            <connections>
+                <outlet property="bottomContentView" destination="iqn-zu-3mT" id="vq5-ab-X6t"/>
+                <outlet property="resTextScrollView" destination="xJi-9O-rmu" id="a7M-hG-Agd"/>
+                <outlet property="textScrollView" destination="KfE-9E-r1s" id="Hdb-et-NKc"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Wallpaper" translatesAutoresizingMaskIntoConstraints="NO" id="bOE-5a-QEv">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                </imageView>
+                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zub-PN-4sC">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="esd-2d-gmi">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <blurEffect style="dark"/>
+                </visualEffectView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yd0-AT-Duo" userLabel="InputView">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                    <subviews>
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KfE-9E-r1s">
+                            <rect key="frame" x="20" y="0.0" width="335" height="50"/>
+                        </scrollView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.26434075342465752" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="KfE-9E-r1s" firstAttribute="leading" secondItem="yd0-AT-Duo" secondAttribute="leading" constant="20" symbolic="YES" id="70p-Bm-oQS"/>
+                        <constraint firstAttribute="trailing" secondItem="KfE-9E-r1s" secondAttribute="trailing" constant="20" symbolic="YES" id="Th8-G0-uyV"/>
+                        <constraint firstAttribute="height" constant="50" id="U4m-Ll-EUy"/>
+                        <constraint firstAttribute="bottom" secondItem="KfE-9E-r1s" secondAttribute="bottom" id="gFd-u7-F8O"/>
+                        <constraint firstItem="KfE-9E-r1s" firstAttribute="top" secondItem="yd0-AT-Duo" secondAttribute="top" id="gNQ-m7-pKr"/>
+                    </constraints>
+                </view>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xJi-9O-rmu">
+                    <rect key="frame" x="20" y="70" width="335" height="507"/>
+                </scrollView>
+                <view contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="90" translatesAutoresizingMaskIntoConstraints="NO" id="iqn-zu-3mT">
+                    <rect key="frame" x="0.0" y="577" width="375" height="90"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="iqn-zu-3mT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Bp5-In-57B"/>
+                <constraint firstItem="xJi-9O-rmu" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" symbolic="YES" id="C13-bt-POj"/>
+                <constraint firstAttribute="trailing" secondItem="iqn-zu-3mT" secondAttribute="trailing" id="GbP-Cl-IBh"/>
+                <constraint firstItem="Zub-PN-4sC" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="KY1-w3-EIX"/>
+                <constraint firstAttribute="trailing" secondItem="Zub-PN-4sC" secondAttribute="trailing" id="RTR-92-pEk"/>
+                <constraint firstItem="bOE-5a-QEv" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="RZ2-3a-j5h"/>
+                <constraint firstAttribute="trailing" secondItem="xJi-9O-rmu" secondAttribute="trailing" constant="20" symbolic="YES" id="Ufi-uM-r4p"/>
+                <constraint firstItem="bOE-5a-QEv" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="XUh-j3-aXV"/>
+                <constraint firstItem="yd0-AT-Duo" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Ytw-1f-78f"/>
+                <constraint firstItem="xJi-9O-rmu" firstAttribute="top" secondItem="yd0-AT-Duo" secondAttribute="bottom" constant="20" id="ZUs-LI-A0J"/>
+                <constraint firstAttribute="trailing" secondItem="yd0-AT-Duo" secondAttribute="trailing" id="aT7-Ox-KLq"/>
+                <constraint firstItem="yd0-AT-Duo" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="dEe-LX-KFQ"/>
+                <constraint firstAttribute="bottom" secondItem="iqn-zu-3mT" secondAttribute="bottom" id="pu9-ua-Jwi"/>
+                <constraint firstAttribute="bottom" secondItem="Zub-PN-4sC" secondAttribute="bottom" id="rJN-nZ-vt1"/>
+                <constraint firstItem="iqn-zu-3mT" firstAttribute="top" secondItem="xJi-9O-rmu" secondAttribute="bottom" id="u0F-aH-bPY"/>
+                <constraint firstItem="Zub-PN-4sC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vHr-bz-ZFu"/>
+                <constraint firstAttribute="bottom" secondItem="bOE-5a-QEv" secondAttribute="bottom" id="vPj-Tb-arh"/>
+                <constraint firstAttribute="trailing" secondItem="bOE-5a-QEv" secondAttribute="trailing" id="xGK-7l-EQv"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <point key="canvasLocation" x="-331.5" y="-67.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Wallpaper" width="365" height="477"/>
+    </resources>
+</document>

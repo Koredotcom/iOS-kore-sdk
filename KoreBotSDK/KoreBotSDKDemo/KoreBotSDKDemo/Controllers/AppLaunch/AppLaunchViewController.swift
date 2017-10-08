@@ -93,9 +93,14 @@ class AppLaunchViewController: UIViewController {
                         activityIndicatorView.stopAnimating()
                         self?.chatButton.isUserInteractionEnabled = true
                         
-                        let botViewController = ChatMessagesViewController(thread: thread)
+//                        let botViewController = ChatMessagesViewController(thread: thread)
+//                        botViewController.botClient = client
+//                        botViewController.title = SDKConfiguration.botConfig.chatBotName
+                        
+                        let botViewController = ChatWindowViewController(thread: thread)
                         botViewController.botClient = client
                         botViewController.title = SDKConfiguration.botConfig.chatBotName
+                        
                         self!.navigationController?.pushViewController(botViewController, animated: true)
                     }, failure: { (error) in
                         activityIndicatorView.stopAnimating()
