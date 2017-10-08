@@ -36,13 +36,13 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     }
     
     override init(frame: CGRect) {
-        self.tableView = UITableView(frame: frame, style: .grouped)
+        self.tableView = UITableView(frame: frame, style: .plain)
         super.init(frame: frame)
         self.setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.tableView = UITableView(frame: CGRect.zero, style: .grouped)
+        self.tableView = UITableView(frame: CGRect.zero, style: .plain)
         super.init(coder: aDecoder)
         self.setup()
     }
@@ -212,13 +212,6 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     }
     
     // MARK: UITable view delegate source
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 6.0
-    }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 6.0
-    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         

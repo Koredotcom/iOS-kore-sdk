@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChatWindowViewController" customModule="KoreBotSDKDemo" customModuleProvider="target">
             <connections>
                 <outlet property="bottomContentView" destination="iqn-zu-3mT" id="vq5-ab-X6t"/>
-                <outlet property="textScrollView" destination="KfE-9E-r1s" id="Hdb-et-NKc"/>
                 <outlet property="threadContentView" destination="Y5t-2V-w6I" id="sBG-hx-lYb"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -33,24 +32,8 @@
                     </view>
                     <blurEffect style="dark"/>
                 </visualEffectView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yd0-AT-Duo" userLabel="InputView">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
-                    <subviews>
-                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KfE-9E-r1s">
-                            <rect key="frame" x="20" y="0.0" width="335" height="50"/>
-                        </scrollView>
-                    </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.26434075342465752" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="KfE-9E-r1s" firstAttribute="leading" secondItem="yd0-AT-Duo" secondAttribute="leading" constant="20" symbolic="YES" id="70p-Bm-oQS"/>
-                        <constraint firstAttribute="trailing" secondItem="KfE-9E-r1s" secondAttribute="trailing" constant="20" symbolic="YES" id="Th8-G0-uyV"/>
-                        <constraint firstAttribute="height" constant="50" id="U4m-Ll-EUy"/>
-                        <constraint firstAttribute="bottom" secondItem="KfE-9E-r1s" secondAttribute="bottom" id="gFd-u7-F8O"/>
-                        <constraint firstItem="KfE-9E-r1s" firstAttribute="top" secondItem="yd0-AT-Duo" secondAttribute="top" id="gNQ-m7-pKr"/>
-                    </constraints>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y5t-2V-w6I">
-                    <rect key="frame" x="0.0" y="58" width="375" height="511"/>
+                    <rect key="frame" x="0.0" y="8" width="375" height="569"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="90" translatesAutoresizingMaskIntoConstraints="NO" id="iqn-zu-3mT">
@@ -60,7 +43,8 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="iqn-zu-3mT" firstAttribute="top" secondItem="Y5t-2V-w6I" secondAttribute="bottom" constant="8" symbolic="YES" id="0tc-9k-jsw"/>
+                <constraint firstItem="iqn-zu-3mT" firstAttribute="top" secondItem="Y5t-2V-w6I" secondAttribute="bottom" id="0tc-9k-jsw"/>
+                <constraint firstItem="Y5t-2V-w6I" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="8" id="4KW-tE-Neg"/>
                 <constraint firstItem="Y5t-2V-w6I" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="9Rb-RG-kha"/>
                 <constraint firstItem="iqn-zu-3mT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Bp5-In-57B"/>
                 <constraint firstAttribute="trailing" secondItem="iqn-zu-3mT" secondAttribute="trailing" id="GbP-Cl-IBh"/>
@@ -69,10 +53,6 @@
                 <constraint firstItem="bOE-5a-QEv" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="RZ2-3a-j5h"/>
                 <constraint firstAttribute="trailing" secondItem="Y5t-2V-w6I" secondAttribute="trailing" id="USz-13-FJf"/>
                 <constraint firstItem="bOE-5a-QEv" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="XUh-j3-aXV"/>
-                <constraint firstItem="yd0-AT-Duo" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Ytw-1f-78f"/>
-                <constraint firstAttribute="trailing" secondItem="yd0-AT-Duo" secondAttribute="trailing" id="aT7-Ox-KLq"/>
-                <constraint firstItem="yd0-AT-Duo" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="dEe-LX-KFQ"/>
-                <constraint firstItem="Y5t-2V-w6I" firstAttribute="top" secondItem="yd0-AT-Duo" secondAttribute="bottom" constant="8" symbolic="YES" id="la5-4f-M4t"/>
                 <constraint firstAttribute="bottom" secondItem="iqn-zu-3mT" secondAttribute="bottom" id="pu9-ua-Jwi"/>
                 <constraint firstAttribute="bottom" secondItem="Zub-PN-4sC" secondAttribute="bottom" id="rJN-nZ-vt1"/>
                 <constraint firstItem="Zub-PN-4sC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vHr-bz-ZFu"/>

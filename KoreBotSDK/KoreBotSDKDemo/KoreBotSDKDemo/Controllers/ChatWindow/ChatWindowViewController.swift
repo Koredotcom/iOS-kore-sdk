@@ -10,6 +10,7 @@ import UIKit
 import KoreBotSDK
 import AVFoundation
 import googleapis
+import TOWebViewController
 
 let SAMPLE_RATE = 16000
 
@@ -19,14 +20,11 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
     var thread: KREThread!
     var botClient: BotClient!
     
-    @IBOutlet weak var textScrollView: UIScrollView!
     @IBOutlet weak var threadContentView: UIView!
     @IBOutlet weak var bottomContentView: UIView!
 
-    private var textLabel: UILabel!
     var audioView: AudioView!
     var botMessagesView: BotMessagesView!
-
     var speechSynthesizer: AVSpeechSynthesizer!
     
     init(thread: KREThread!) {
@@ -40,12 +38,7 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.textLabel = UILabel(frame: CGRect.zero)
-        self.textLabel.numberOfLines = 1
-        self.textLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)!
-        self.textLabel.textColor = .white
-        self.textScrollView.addSubview(self.textLabel)
+        self.automaticallyAdjustsScrollViewInsets = false
         
         AudioController.sharedInstance.delegate = self
         
@@ -53,7 +46,6 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
         self.configureAudioComposer()
         self.configureBotClient()
         self.speechSynthesizer = AVSpeechSynthesizer()
-        setTextToLabel("Say something...")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -109,7 +101,6 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
         }
         self.audioView.voiceRecordingStarted = { [weak self] (composeBar) in
             composeBar?.isActive = true
-            self?.setTextToLabel("")
             self?.recordAudio(composeBar as Any)
         }
         self.audioView.voiceRecordingStopped = { (composeBar) in
@@ -181,24 +172,28 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
                 message.addComponent(textComponent)
             } else if (componentModel.type == "template") {
                 let payload: NSDictionary = componentModel.payload! as! NSDictionary
-                let type: String = payload["type"] as! String
+                let text: String = payload["text"] != nil ? payload["text"] as! String : ""
+                let type: String = payload["type"] != nil ? payload["type"] as! String : ""
+                ttsBody = payload["speech_hint"] != nil ? payload["speech_hint"] as? String : nil
+                
                 if(type == "template"){
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
                     let templateType: String = dictionary["template_type"] as! String
                     
                     if (templateType == "quick_replies") {
+                        ttsBody = dictionary["text"] as? String
                         let quickRepliesComponent: QuickRepliesComponent = QuickRepliesComponent()
                         quickRepliesComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                         
                         message.addComponent(quickRepliesComponent)
                     } else if (templateType == "button") {
-                        
+                        ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : dictionary["text"] as? String
                         let optionsComponent: OptionsComponent = OptionsComponent()
                         optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                         
                         message.addComponent(optionsComponent)
                     }else if (templateType == "list") {
-                        
+                        ttsBody = dictionary["text"] as? String
                         let optionsComponent: ListComponent = ListComponent()
                         optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                         
@@ -217,6 +212,12 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
                     errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                     
                     message.addComponent(errorComponent)
+                }else if text != "" {
+                    
+                    let textComponent: TextComponent = TextComponent()
+                    textComponent.text = text as NSString!
+                    
+                    message.addComponent(textComponent)
                 }
             }
             
@@ -227,16 +228,41 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
                 if ttsBody != nil {
                     self.audioView.stopRecording()
                     self.readOutText(text: ttsBody!)
-//                    NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: ttsBody)
                 }
             }
         }
     }
     
-    func sendMessage(_ message: String){
-        if(self.botClient != nil){
-            self.botClient.sendMessage(message, options: [] as AnyObject)
+    // MARK: Helper functions
+    
+    func sendMessage(_ message:Message){
+        NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
+        let composedMessage: Message = message
+        if (composedMessage.components.count > 0) {
+            let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
+            dataStoreManager.createNewMessageIn(thread: self.thread, message: composedMessage, completionBlock: { (success) in
+                let textComponent: TextComponent = composedMessage.components[0] as! TextComponent
+                let text: String = textComponent.text as String
+                if(self.botClient != nil){
+                    self.botClient.sendMessage(text, options: [] as AnyObject)
+                }
+                self.textMessageSent()
+            })
         }
+    }
+    
+    func sendTextMessage(_ text:String) {
+        let message: Message = Message()
+        message.messageType = .default
+        message.sentDate = Date()
+        let textComponent: TextComponent = TextComponent()
+        textComponent.text = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) as NSString!
+        message.addComponent(textComponent)
+        self.sendMessage(message)
+    }
+    
+    func textMessageSent() {
+//        self.botMessagesView.scrollToBottom(animated: true)
     }
     
     func deConfigureBotClient() {
@@ -262,7 +288,7 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
         
         let audioSession = AVAudioSession.sharedInstance()
         do {
-            try audioSession.setCategory(AVAudioSessionCategoryRecord)
+            try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
         } catch {
             
         }
@@ -292,7 +318,7 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
                 }
                 
                 if let error = error {
-                    strongSelf.textLabel.text = error.localizedDescription
+//                    strongSelf.textLabel.text = error.localizedDescription
                 } else if let response = response {
                     var finished = false
                     var transcript = ""
@@ -316,26 +342,15 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
                             }
                         }
                     }
-                    strongSelf.setTextToLabel(transcript)
                     if finished {
                         strongSelf.stopAudio(strongSelf)
                         strongSelf.audioView.stopRecording()
-                        strongSelf.sendMessage(transcript)
+                        strongSelf.sendTextMessage(transcript)
                     }
                 }
             })
             self.audioData = NSMutableData()
         }
-    }
-    
-    func setTextToLabel(_ text: String) {
-        self.textLabel.text = text
-        let size = self.textLabel.sizeThatFits(CGSize(width: .greatestFiniteMagnitude, height: self.textScrollView.frame.size.height))
-        let frame = CGRect(x: 0.0, y: 0.0, width: size.width, height: self.textScrollView.frame.size.height)
-        self.textLabel.frame = frame
-        self.textScrollView.contentSize = frame.size
-        let rect = CGRect(x: frame.size.width - 1.0, y: 0.0, width: 1.0, height: self.textScrollView.frame.size.height)
-        self.textScrollView.scrollRectToVisible(rect, animated: false)
     }
     
     func readOutText(text:String) {
@@ -344,7 +359,7 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
             try audioSession.setCategory(AVAudioSessionCategoryPlayback)
             try audioSession.setMode(AVAudioSessionModeDefault)
         } catch {
-            
+
         }
         let string = text
         print("Reading text: ", text);
@@ -360,17 +375,17 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
     
     // MARK: BotMessagesDelegate methods
     func optionsButtonTapAction(text: String) {
-//        self.sendTextMessage(text: text)
+        self.sendTextMessage(text)
     }
     
     func linkButtonTapAction(urlString: String) {
-//        if (urlString.characters.count > 0) {
-//            let url: URL = URL(string: urlString)!
-//            let webViewController: TOWebViewController = TOWebViewController(url: url)
-//            let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
-//            webNavigationController.tabBarItem.title = "Bots"
-//            self.present(webNavigationController, animated: true, completion:nil)
-//        }
+        if (urlString.characters.count > 0) {
+            let url: URL = URL(string: urlString)!
+            let webViewController: TOWebViewController = TOWebViewController(url: url)
+            let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
+            webNavigationController.tabBarItem.title = "Bots"
+            self.present(webNavigationController, animated: true, completion:nil)
+        }
     }
     
     func populateQuickReplyCards(with message: KREMessage?) {
