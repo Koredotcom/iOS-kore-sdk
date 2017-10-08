@@ -36,6 +36,20 @@ class PiechartView: BubbleView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[pcView]|", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[pcView]|", options: [], metrics: nil, views: views))
         
+        let l: Legend = self.pcView.legend
+        l.horizontalAlignment = .right
+        l.verticalAlignment = .top
+        l.orientation = .vertical
+        l.drawInside = true
+        l.xEntrySpace = 7.0
+        l.yEntrySpace = 0.0
+        l.yOffset = 0.0
+        l.textColor = .white
+        let description: Description = Description()
+        description.text = nil
+        self.pcView.chartDescription = description
+        self.pcView.drawHoleEnabled = false
+        
 //        self.carouselView.optionsAction = {[weak self] (text) in
 //            if((self?.optionsAction) != nil){
 //                self?.optionsAction(text)
@@ -83,6 +97,17 @@ class PiechartView: BubbleView {
                 pieChartDataSet.colors = colors
                 
                 let pieChartData = PieChartData(dataSet: pieChartDataSet)
+                
+                let pFormatter: NumberFormatter = NumberFormatter()
+                pFormatter.numberStyle = .currency
+                pFormatter.maximumFractionDigits = 1
+                pFormatter.multiplier = 1.0
+                pFormatter.currencySymbol = "$"
+                
+//                pieChartData.setValueFormatter(IValueFormatter?)
+                pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 11.0))
+                pieChartData.setValueTextColor(UIColor.black)
+                
                 self.pcView.data = pieChartData
                 self.pcView.highlightValues(nil)
             }
