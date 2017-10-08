@@ -14,6 +14,7 @@ target 'KoreBotSDKDemo' do
 
     use_frameworks!
     import_pods
+    pod 'googleapis', :path=> '.'
     pod 'TOWebViewController'
     pod 'KoreBotSDK', :path => './Library/KoreBotSDK/'
     pod 'KoreWidgets', :path=> './Library/Widgets/'
