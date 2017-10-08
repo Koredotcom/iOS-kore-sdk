@@ -20,9 +20,11 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
     var thread: KREThread!
     var botClient: BotClient!
     
+    @IBOutlet weak var textScrollView: UIScrollView!
     @IBOutlet weak var threadContentView: UIView!
     @IBOutlet weak var bottomContentView: UIView!
 
+    private var textLabel: UILabel!
     var audioView: AudioView!
     var botMessagesView: BotMessagesView!
     var speechSynthesizer: AVSpeechSynthesizer!
@@ -39,6 +41,12 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
     override func viewDidLoad() {
         super.viewDidLoad()
         self.automaticallyAdjustsScrollViewInsets = false
+        
+        self.textLabel = UILabel(frame: CGRect.zero)
+        self.textLabel.numberOfLines = 1
+        self.textLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)!
+        self.textLabel.textColor = .white
+        self.textScrollView.addSubview(self.textLabel)
         
         AudioController.sharedInstance.delegate = self
         
@@ -318,7 +326,7 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
                 }
                 
                 if let error = error {
-//                    strongSelf.textLabel.text = error.localizedDescription
+                    strongSelf.textLabel.text = error.localizedDescription
                 } else if let response = response {
                     var finished = false
                     var transcript = ""
@@ -342,15 +350,30 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
                             }
                         }
                     }
+                    strongSelf.setTextToLabel(transcript)
                     if finished {
                         strongSelf.stopAudio(strongSelf)
-                        strongSelf.audioView.stopRecording()
-                        strongSelf.sendTextMessage(transcript)
+                        let deadline = DispatchTime.now() + .milliseconds(500)
+                        DispatchQueue.main.asyncAfter(deadline: deadline) {
+                            strongSelf.audioView.stopRecording()
+                            strongSelf.setTextToLabel("")
+                            strongSelf.sendTextMessage(transcript)
+                        }
                     }
                 }
             })
             self.audioData = NSMutableData()
         }
+    }
+    
+    func setTextToLabel(_ text: String) {
+        self.textLabel.text = text
+        let size = self.textLabel.sizeThatFits(CGSize(width: .greatestFiniteMagnitude, height: self.textScrollView.frame.size.height))
+        let frame = CGRect(x: self.textScrollView.frame.size.width - size.width, y: 0.0, width: size.width, height: self.textScrollView.frame.size.height)
+        self.textLabel.frame = frame
+//        self.textScrollView.contentSize = CGSize. frame.size
+//        let rect = CGRect(x: frame.size.width - 1.0, y: 0.0, width: 1.0, height: self.textScrollView.frame.size.height)
+//        self.textScrollView.scrollRectToVisible(rect, animated: false)
     }
     
     func readOutText(text:String) {
