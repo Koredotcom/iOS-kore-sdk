@@ -20,6 +20,7 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
     var thread: KREThread!
     var botClient: BotClient!
     
+    @IBOutlet weak var textInputView: UIView!
     @IBOutlet weak var textScrollView: UIScrollView!
     @IBOutlet weak var threadContentView: UIView!
     @IBOutlet weak var bottomContentView: UIView!
@@ -47,6 +48,7 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
         self.textLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)!
         self.textLabel.textColor = .white
         self.textScrollView.addSubview(self.textLabel)
+        self.textInputView.isHidden = true
         
         AudioController.sharedInstance.delegate = self
         
@@ -373,6 +375,7 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
     }
     
     func setTextToLabel(_ text: String) {
+        self.textInputView.isHidden = !((text.characters.count) > 0)
         self.textLabel.text = text
         let size = self.textLabel.sizeThatFits(CGSize(width: .greatestFiniteMagnitude, height: self.textScrollView.frame.size.height))
         let frame = CGRect(x: self.textScrollView.frame.size.width - size.width, y: 0.0, width: size.width, height: self.textScrollView.frame.size.height)

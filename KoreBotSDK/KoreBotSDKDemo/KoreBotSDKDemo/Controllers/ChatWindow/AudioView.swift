@@ -17,6 +17,7 @@ class AudioView: UIView {
     fileprivate var audiolabel: UILabel!
     fileprivate var cancelImageView: UIImageView!
     fileprivate var cancelView: UIView!
+    fileprivate var keyboardImageView: UIImageView!
     
     fileprivate var audioImageWidthConstraint: NSLayoutConstraint!
     fileprivate var animationTimer:Timer!
@@ -86,7 +87,13 @@ class AudioView: UIView {
         self.cancelView.addConstraint(NSLayoutConstraint.init(item: self.cancelImageView, attribute: .centerY, relatedBy: .equal, toItem: self.cancelView, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         self.cancelView.addConstraint(NSLayoutConstraint.init(item: self.cancelImageView, attribute: .centerX, relatedBy: .equal, toItem: self.cancelView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
         
-        let views: [String : Any] = ["animateBGView": self.animateBGView, "cancelView": self.cancelView]
+        
+        self.keyboardImageView = UIImageView(image: UIImage(named: "keyboard"))
+        self.keyboardImageView.contentMode = .scaleAspectFit
+        self.keyboardImageView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.keyboardImageView)
+        
+        let views: [String : Any] = ["animateBGView": self.animateBGView, "cancelView": self.cancelView, "keyboardImageView": self.keyboardImageView]
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[animateBGView(100)]", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[animateBGView(70)]-|", options:[], metrics:nil, views:views))
@@ -95,6 +102,10 @@ class AudioView: UIView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[cancelView(50)]", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[cancelView(50)]", options:[], metrics:nil, views:views))
         self.addConstraint(NSLayoutConstraint.init(item: self.cancelView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[keyboardImageView(30)]-20-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[keyboardImageView(30)]", options:[], metrics:nil, views:views))
+        self.addConstraint(NSLayoutConstraint.init(item: self.keyboardImageView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         
         let audioGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(self.audioButtonAction))
         self.animateBGView.addGestureRecognizer(audioGestureRecognizer)

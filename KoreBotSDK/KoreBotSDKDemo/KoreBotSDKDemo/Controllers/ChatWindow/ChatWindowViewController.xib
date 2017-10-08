@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChatWindowViewController" customModule="KoreBotSDKDemo" customModuleProvider="target">
             <connections>
                 <outlet property="bottomContentView" destination="iqn-zu-3mT" id="vq5-ab-X6t"/>
+                <outlet property="textInputView" destination="7sL-oS-pTq" id="URI-q1-FRp"/>
                 <outlet property="textScrollView" destination="pFs-SF-E8w" id="UdL-9f-b4d"/>
                 <outlet property="threadContentView" destination="Y5t-2V-w6I" id="sBG-hx-lYb"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
