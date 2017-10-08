@@ -37,14 +37,17 @@ class PiechartView: BubbleView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[pcView]|", options: [], metrics: nil, views: views))
         
         let l: Legend = self.pcView.legend
-        l.horizontalAlignment = .right
+        l.horizontalAlignment = .center
         l.verticalAlignment = .top
-        l.orientation = .vertical
+        l.orientation = .horizontal
         l.drawInside = true
         l.xEntrySpace = 7.0
         l.yEntrySpace = 0.0
-        l.yOffset = 0.0
+        l.yOffset = -4.0
+        l.formSize = 14.0
         l.textColor = .white
+        l.font = UIFont(name: "HelveticaNeue-Medium", size: 14.0)!
+        
         let description: Description = Description()
         description.text = nil
         self.pcView.chartDescription = description
@@ -88,12 +91,13 @@ class PiechartView: BubbleView {
                 let pieChartDataSet = PieChartDataSet(values: values, label: "")
                 
                 var colors: Array<UIColor> = Array<UIColor>()
-                colors.append(contentsOf: ChartColorTemplates.vordiplom())
                 colors.append(contentsOf: ChartColorTemplates.joyful())
                 colors.append(contentsOf: ChartColorTemplates.colorful())
                 colors.append(contentsOf: ChartColorTemplates.liberty())
+                colors.append(contentsOf: ChartColorTemplates.material())
                 colors.append(contentsOf: ChartColorTemplates.pastel())
-                
+                colors.append(contentsOf: ChartColorTemplates.vordiplom())
+
                 pieChartDataSet.colors = colors
                 
                 let pieChartData = PieChartData(dataSet: pieChartDataSet)
@@ -104,8 +108,8 @@ class PiechartView: BubbleView {
                 pFormatter.multiplier = 1.0
                 pFormatter.currencySymbol = "$"
                 
-//                pieChartData.setValueFormatter(IValueFormatter?)
-                pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 11.0))
+                pieChartData.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
+                pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 14.0))
                 pieChartData.setValueTextColor(UIColor.black)
                 
                 self.pcView.data = pieChartData
