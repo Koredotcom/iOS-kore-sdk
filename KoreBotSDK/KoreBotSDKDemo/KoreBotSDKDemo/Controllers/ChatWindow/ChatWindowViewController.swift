@@ -13,20 +13,19 @@ import googleapis
 
 let SAMPLE_RATE = 16000
 
-class ChatWindowViewController: UIViewController, AudioControllerDelegate {
+class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMessagesViewDelegate {
     
     var audioData: NSMutableData!
     var thread: KREThread!
     var botClient: BotClient!
     
-    @IBOutlet weak var speechButton: UIButton!
     @IBOutlet weak var textScrollView: UIScrollView!
-    @IBOutlet weak var resTextScrollView: UIScrollView!
+    @IBOutlet weak var threadContentView: UIView!
     @IBOutlet weak var bottomContentView: UIView!
 
     private var textLabel: UILabel!
-    private var resTextLabel: UILabel!
     var audioView: AudioView!
+    var botMessagesView: BotMessagesView!
 
     var speechSynthesizer: AVSpeechSynthesizer!
     
@@ -48,14 +47,9 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate {
         self.textLabel.textColor = .white
         self.textScrollView.addSubview(self.textLabel)
         
-        self.resTextLabel = UILabel(frame: CGRect.zero)
-        self.resTextLabel.numberOfLines = 0
-        self.resTextLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 15.0)!
-        self.resTextLabel.textColor = .white
-        self.resTextScrollView.addSubview(self.resTextLabel)
-        
         AudioController.sharedInstance.delegate = self
         
+        self.configureThreadView()
         self.configureAudioComposer()
         self.configureBotClient()
         self.speechSynthesizer = AVSpeechSynthesizer()
@@ -75,6 +69,33 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate {
         return true
     }
     
+    //MARK:- removing refernces to elements
+    func prepareForDeinit(){
+        if(self.botClient != nil){
+            self.botClient.disconnect()
+        }
+        self.deConfigureBotClient()
+        self.stopTTS()
+        AudioController.sharedInstance.delegate = nil
+    }
+    
+    
+    // MARK: configuring views
+    
+    func configureThreadView() {
+        self.botMessagesView = BotMessagesView()
+        self.botMessagesView.translatesAutoresizingMaskIntoConstraints = false
+        self.botMessagesView.thread = self.thread
+        self.botMessagesView.viewDelegate = self
+        self.botMessagesView.backgroundColor = .clear
+        self.botMessagesView.tableView.backgroundColor = .clear
+        self.botMessagesView.clearBackground = true
+        self.threadContentView.addSubview(self.botMessagesView!)
+        
+        self.threadContentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[botMessagesView]|", options:[], metrics:nil, views:["botMessagesView" : self.botMessagesView!]))
+        self.threadContentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[botMessagesView]|", options:[], metrics:nil, views:["botMessagesView" : self.botMessagesView!]))
+    }
+    
     func configureAudioComposer()  {
         self.audioView = AudioView()
         self.audioView.translatesAutoresizingMaskIntoConstraints = false
@@ -89,13 +110,12 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate {
         self.audioView.voiceRecordingStarted = { [weak self] (composeBar) in
             composeBar?.isActive = true
             self?.setTextToLabel("")
-            self?.setTextToResLabel("")
             self?.recordAudio(composeBar as Any)
         }
-        self.audioView.voiceRecordingStopped = {  [weak self] (composeBar) in
+        self.audioView.voiceRecordingStopped = { (composeBar) in
 
         }
-        self.audioView.getAudioPeakOutputPower = { [weak self]() in
+        self.audioView.getAudioPeakOutputPower = { () in
             return 0.0
         }
     }
@@ -103,22 +123,24 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate {
     func configureBotClient() {
         if(botClient != nil){
             // events
-            botClient.connectionWillOpen =  { [weak self] () in
+            botClient.connectionWillOpen =  { () in
+                
             }
             
-            botClient.connectionDidOpen = { [weak self] () in
+            botClient.connectionDidOpen = { () in
+                
             }
             
             botClient.connectionReady = { () in
                 
             }
             
-            botClient.connectionDidClose = { [weak self] (code, reason) in
+            botClient.connectionDidClose = { (code, reason) in
                 NSLog("botClient: connectionDidClose")
                 
             }
             
-            botClient.connectionDidFailWithError = { [weak self] (error) in
+            botClient.connectionDidFailWithError = { (error) in
                 NSLog("botClient: connectionDidFailWithError")
             }
             
@@ -133,26 +155,81 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate {
     }
     
     func onReceiveMessage(object: BotMessageModel?) {
+        let message: Message = Message()
+        message.messageType = .reply
+        message.sentDate = Date()
+        
+        if (object?.iconUrl != nil) {
+            message.iconUrl = object?.iconUrl
+        }
+        
         let messageObject = ((object?.messages.count)! > 0) ? (object?.messages[0]) : nil
         if (messageObject?.component == nil) {
             
         } else {
             let componentModel: ComponentModel = messageObject!.component!
-            var body: String? = nil
+            var ttsBody: String? = nil
             
             if (componentModel.type == "text") {
+                
                 let payload: NSDictionary = componentModel.payload! as! NSDictionary
                 let text: NSString = payload["text"] as! NSString
-                body = text as String
+                let textComponent: TextComponent = TextComponent()
+                textComponent.text = text
+                ttsBody = text as String
+                
+                message.addComponent(textComponent)
             } else if (componentModel.type == "template") {
                 let payload: NSDictionary = componentModel.payload! as! NSDictionary
-                let dictionary: NSDictionary = payload["payload"] as! NSDictionary
-                body = Utilities.stringFromJSONObject(object: dictionary) as String
+                let type: String = payload["type"] as! String
+                if(type == "template"){
+                    let dictionary: NSDictionary = payload["payload"] as! NSDictionary
+                    let templateType: String = dictionary["template_type"] as! String
+                    
+                    if (templateType == "quick_replies") {
+                        let quickRepliesComponent: QuickRepliesComponent = QuickRepliesComponent()
+                        quickRepliesComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        
+                        message.addComponent(quickRepliesComponent)
+                    } else if (templateType == "button") {
+                        
+                        let optionsComponent: OptionsComponent = OptionsComponent()
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        
+                        message.addComponent(optionsComponent)
+                    }else if (templateType == "list") {
+                        
+                        let optionsComponent: ListComponent = ListComponent()
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        
+                        message.addComponent(optionsComponent)
+                    }else if (templateType == "carousel") {
+                        
+                        let carouselComponent: CarouselComponent = CarouselComponent()
+                        carouselComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        
+                        message.addComponent(carouselComponent)
+                    }
+                }else if(type == "error"){
+                    
+                    let dictionary: NSDictionary = payload["payload"] as! NSDictionary
+                    let errorComponent: ErrorComponent = ErrorComponent()
+                    errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                    
+                    message.addComponent(errorComponent)
+                }
             }
             
-            self.setTextToResLabel(body!)
-            self.audioView.stopRecording()
-            self.readOutText(text: body!)
+            if (message.components.count > 0) {
+                let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
+                dataStoreManager.createNewMessageIn(thread: self.thread, message: message, completionBlock: { (success) in
+                })
+                if ttsBody != nil {
+                    self.audioView.stopRecording()
+                    self.readOutText(text: ttsBody!)
+//                    NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: ttsBody)
+                }
+            }
         }
     }
     
@@ -176,10 +253,7 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate {
     }
     
     @IBAction func closeAction(_ sender: Any) {
-        if(self.botClient != nil){
-            self.botClient.disconnect()
-        }
-        deConfigureBotClient()
+        prepareForDeinit()
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -264,14 +338,6 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate {
         self.textScrollView.scrollRectToVisible(rect, animated: false)
     }
     
-    func setTextToResLabel(_ text: String) {
-        self.resTextLabel.text = text
-        let size = self.resTextLabel.sizeThatFits(CGSize(width: self.resTextScrollView.frame.size.width, height: .greatestFiniteMagnitude))
-        let frame = CGRect(x: 0.0, y: 0.0, width: self.resTextScrollView.frame.size.width, height: size.height)
-        self.resTextLabel.frame = frame
-        self.resTextScrollView.contentSize = frame.size
-    }
-    
     func readOutText(text:String) {
         let audioSession = AVAudioSession.sharedInstance()
         do {
@@ -290,5 +356,82 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate {
         if(self.speechSynthesizer.isSpeaking){
             self.speechSynthesizer.stopSpeaking(at: AVSpeechBoundary.immediate)
         }
+    }
+    
+    // MARK: BotMessagesDelegate methods
+    func optionsButtonTapAction(text: String) {
+//        self.sendTextMessage(text: text)
+    }
+    
+    func linkButtonTapAction(urlString: String) {
+//        if (urlString.characters.count > 0) {
+//            let url: URL = URL(string: urlString)!
+//            let webViewController: TOWebViewController = TOWebViewController(url: url)
+//            let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
+//            webNavigationController.tabBarItem.title = "Bots"
+//            self.present(webNavigationController, animated: true, completion:nil)
+//        }
+    }
+    
+    func populateQuickReplyCards(with message: KREMessage?) {
+//        if (message?.templateType == 5) {
+//            let component: KREComponent = message!.components![0] as! KREComponent
+//            if (!component.isKind(of: KREComponent.self)) {
+//                return;
+//            }
+//            if ((component.componentDesc) != nil) {
+//                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
+//                let quickReplies: Array<Dictionary<String, String>> = jsonObject["quick_replies"] as! Array<Dictionary<String, String>>
+//                var words: Array<Word> = Array<Word>()
+//                
+//                for dictionary in quickReplies {
+//                    let title: String = dictionary["title"] != nil ? dictionary["title"]! : ""
+//                    let payload: String = dictionary["payload"] != nil ? dictionary["payload"]! : ""
+//                    let imageURL: String = dictionary["image_url"] != nil ? dictionary["image_url"]! : ""
+//                    
+//                    let word: Word = Word(title: title, payload: payload, imageURL: imageURL)
+//                    words.append(word)
+//                }
+//                self.quickReplyView.setWordsList(words: words)
+//                
+//                self.updateQuickSelectViewConstraints()
+//            }
+//        } else if(message != nil) {
+//            self.closeQuickSelectViewConstraints()
+//        }
+    }
+    
+    func closeQuickReplyCards(){
+//        self.closeQuickSelectViewConstraints()
+    }
+    
+    func updateQuickSelectViewConstraints() {
+//        if self.quickSelectContainerHeightConstraint.constant == 60.0 {return}
+//        
+//        var contentInset = self.botMessagesView.tableView.contentInset
+//        contentInset.bottom = 60
+//        self.botMessagesView.tableView.contentInset = contentInset
+//        self.quickSelectContainerHeightConstraint.constant = 60.0
+//        
+//        UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
+//            self.view.layoutIfNeeded()
+//        }) { (Bool) in
+//            
+//        }
+    }
+    
+    func closeQuickSelectViewConstraints() {
+//        if self.quickSelectContainerHeightConstraint.constant == 0.0 {return}
+//        
+//        var contentInset = self.botMessagesView.tableView.contentInset
+//        contentInset.bottom = 0
+//        self.botMessagesView.tableView.contentInset = contentInset
+//        self.quickSelectContainerHeightConstraint.constant = 0.0
+//        
+//        UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: {
+//            self.view.layoutIfNeeded()
+//        }) { (Bool) in
+//            
+//        }
     }
 }

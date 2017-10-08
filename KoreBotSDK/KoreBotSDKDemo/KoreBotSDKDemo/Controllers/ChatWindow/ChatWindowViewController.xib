@@ -12,8 +12,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChatWindowViewController" customModule="KoreBotSDKDemo" customModuleProvider="target">
             <connections>
                 <outlet property="bottomContentView" destination="iqn-zu-3mT" id="vq5-ab-X6t"/>
-                <outlet property="resTextScrollView" destination="xJi-9O-rmu" id="a7M-hG-Agd"/>
                 <outlet property="textScrollView" destination="KfE-9E-r1s" id="Hdb-et-NKc"/>
+                <outlet property="threadContentView" destination="Y5t-2V-w6I" id="sBG-hx-lYb"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -49,9 +49,10 @@
                         <constraint firstItem="KfE-9E-r1s" firstAttribute="top" secondItem="yd0-AT-Duo" secondAttribute="top" id="gNQ-m7-pKr"/>
                     </constraints>
                 </view>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xJi-9O-rmu">
-                    <rect key="frame" x="20" y="70" width="335" height="507"/>
-                </scrollView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y5t-2V-w6I">
+                    <rect key="frame" x="0.0" y="58" width="375" height="511"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </view>
                 <view contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="90" translatesAutoresizingMaskIntoConstraints="NO" id="iqn-zu-3mT">
                     <rect key="frame" x="0.0" y="577" width="375" height="90"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -59,21 +60,21 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="iqn-zu-3mT" firstAttribute="top" secondItem="Y5t-2V-w6I" secondAttribute="bottom" constant="8" symbolic="YES" id="0tc-9k-jsw"/>
+                <constraint firstItem="Y5t-2V-w6I" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="9Rb-RG-kha"/>
                 <constraint firstItem="iqn-zu-3mT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Bp5-In-57B"/>
-                <constraint firstItem="xJi-9O-rmu" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" symbolic="YES" id="C13-bt-POj"/>
                 <constraint firstAttribute="trailing" secondItem="iqn-zu-3mT" secondAttribute="trailing" id="GbP-Cl-IBh"/>
                 <constraint firstItem="Zub-PN-4sC" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="KY1-w3-EIX"/>
                 <constraint firstAttribute="trailing" secondItem="Zub-PN-4sC" secondAttribute="trailing" id="RTR-92-pEk"/>
                 <constraint firstItem="bOE-5a-QEv" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="RZ2-3a-j5h"/>
-                <constraint firstAttribute="trailing" secondItem="xJi-9O-rmu" secondAttribute="trailing" constant="20" symbolic="YES" id="Ufi-uM-r4p"/>
+                <constraint firstAttribute="trailing" secondItem="Y5t-2V-w6I" secondAttribute="trailing" id="USz-13-FJf"/>
                 <constraint firstItem="bOE-5a-QEv" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="XUh-j3-aXV"/>
                 <constraint firstItem="yd0-AT-Duo" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Ytw-1f-78f"/>
-                <constraint firstItem="xJi-9O-rmu" firstAttribute="top" secondItem="yd0-AT-Duo" secondAttribute="bottom" constant="20" id="ZUs-LI-A0J"/>
                 <constraint firstAttribute="trailing" secondItem="yd0-AT-Duo" secondAttribute="trailing" id="aT7-Ox-KLq"/>
                 <constraint firstItem="yd0-AT-Duo" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="dEe-LX-KFQ"/>
+                <constraint firstItem="Y5t-2V-w6I" firstAttribute="top" secondItem="yd0-AT-Duo" secondAttribute="bottom" constant="8" symbolic="YES" id="la5-4f-M4t"/>
                 <constraint firstAttribute="bottom" secondItem="iqn-zu-3mT" secondAttribute="bottom" id="pu9-ua-Jwi"/>
                 <constraint firstAttribute="bottom" secondItem="Zub-PN-4sC" secondAttribute="bottom" id="rJN-nZ-vt1"/>
-                <constraint firstItem="iqn-zu-3mT" firstAttribute="top" secondItem="xJi-9O-rmu" secondAttribute="bottom" id="u0F-aH-bPY"/>
                 <constraint firstItem="Zub-PN-4sC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vHr-bz-ZFu"/>
                 <constraint firstAttribute="bottom" secondItem="bOE-5a-QEv" secondAttribute="bottom" id="vPj-Tb-arh"/>
                 <constraint firstAttribute="trailing" secondItem="bOE-5a-QEv" secondAttribute="trailing" id="xGK-7l-EQv"/>

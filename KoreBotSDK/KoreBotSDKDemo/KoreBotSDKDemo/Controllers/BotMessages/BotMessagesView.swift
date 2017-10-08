@@ -23,6 +23,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     var viewDelegate: BotMessagesViewDelegate?
     var shouldScrollToBottom: Bool = false
     var prototypeCell: MessageBubbleCell!
+    var clearBackground = false
     
     weak var thread: KREThread! {
         didSet{
@@ -142,6 +143,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         
         let cell: MessageBubbleCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! MessageBubbleCell
         cell.configureWithComponents(message.components?.array as! Array<KREComponent>)
+        if self.clearBackground {
+            cell.backgroundColor = .clear
+        }
         
         var isQuickReply = false
         
