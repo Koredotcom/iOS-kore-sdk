@@ -88,6 +88,8 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate {
         }
         self.audioView.voiceRecordingStarted = { [weak self] (composeBar) in
             composeBar?.isActive = true
+            self?.setTextToLabel("")
+            self?.setTextToResLabel("")
             self?.recordAudio(composeBar as Any)
         }
         self.audioView.voiceRecordingStopped = {  [weak self] (composeBar) in
@@ -271,6 +273,13 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate {
     }
     
     func readOutText(text:String) {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(AVAudioSessionCategoryPlayback)
+            try audioSession.setMode(AVAudioSessionModeDefault)
+        } catch {
+            
+        }
         let string = text
         print("Reading text: ", text);
         let speechUtterance = AVSpeechUtterance(string: string)

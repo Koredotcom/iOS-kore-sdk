@@ -11,15 +11,15 @@ import KoreBotSDK
 
 class SDKConfiguration: NSObject {
     struct botConfig {
-        static let clientId = "cs-efbb5584-cce6-52e7-b8ed-52ed6dba64f1" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
+        static let clientId = "cs-ccec5fef-7aa3-5b01-afa5-9c7328b1e7dc" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
         
-        static let clientSecret = "pWRI/AWybyd4ZzYEdyplORKKrU/CmZjySlwPv3jKUJ4=" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
+        static let clientSecret = "gkn4bUjl6MpZ1jILTSs8i7F5QP/gd5ydXk7l5Ji/eOg=" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
         
         static let botId =  "st-d45e59c9-6753-5cba-8e29-d796b70ee63b" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
 
         static let chatBotName = "Barry Pilot" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
         
-        static let identity = "girish.ahankari@kore.com"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
+        static let identity = "demo@kore.com"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
         
         static let isAnonymous = false // This should be either true (in case of known-user) or false (in-case of anonymous user).
     }
