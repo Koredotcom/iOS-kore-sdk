@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
     s.author = {"Shylaja Mamidala" => "shylaja.mamidala@kore.com"}
     s.source = {:git => "https://github.com/Koredotcom/iOS-kore-sdk.git"}
 
-    s.source_files = "SpeechToText/**/**/*.{h,m}"
+    s.source_files = "SpeechToText/**/**/*.{h,m,swift}"
     s.exclude_files = "SpeechToText/SpeechToText.{h}"
 
     s.dependency 'AFNetworking', '2.5.4'
