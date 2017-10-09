@@ -36,7 +36,7 @@
                     <blurEffect style="dark"/>
                 </visualEffectView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y5t-2V-w6I">
-                    <rect key="frame" x="0.0" y="8" width="375" height="519"/>
+                    <rect key="frame" x="0.0" y="8" width="375" height="569"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7sL-oS-pTq">
@@ -46,7 +46,7 @@
                             <rect key="frame" x="20" y="0.0" width="335" height="50"/>
                         </scrollView>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.26434075340000002" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.40162136130136988" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="pFs-SF-E8w" firstAttribute="top" secondItem="7sL-oS-pTq" secondAttribute="top" id="82Q-xD-JE4"/>
                         <constraint firstItem="pFs-SF-E8w" firstAttribute="leading" secondItem="7sL-oS-pTq" secondAttribute="leading" constant="20" symbolic="YES" id="L0N-6l-AXO"/>
@@ -74,8 +74,8 @@
                 <constraint firstAttribute="trailing" secondItem="Y5t-2V-w6I" secondAttribute="trailing" id="USz-13-FJf"/>
                 <constraint firstItem="bOE-5a-QEv" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="XUh-j3-aXV"/>
                 <constraint firstItem="7sL-oS-pTq" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="iMj-zh-hVc"/>
-                <constraint firstItem="7sL-oS-pTq" firstAttribute="top" secondItem="Y5t-2V-w6I" secondAttribute="bottom" id="ieN-SO-6Pi"/>
                 <constraint firstAttribute="bottom" secondItem="iqn-zu-3mT" secondAttribute="bottom" id="pu9-ua-Jwi"/>
+                <constraint firstItem="iqn-zu-3mT" firstAttribute="top" secondItem="Y5t-2V-w6I" secondAttribute="bottom" id="q6U-aI-Yok"/>
                 <constraint firstAttribute="bottom" secondItem="Zub-PN-4sC" secondAttribute="bottom" id="rJN-nZ-vt1"/>
                 <constraint firstItem="Zub-PN-4sC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vHr-bz-ZFu"/>
                 <constraint firstAttribute="bottom" secondItem="bOE-5a-QEv" secondAttribute="bottom" id="vPj-Tb-arh"/>
