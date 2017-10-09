@@ -70,22 +70,15 @@ class PiechartBubbleView: BubbleView {
                 let elements: Array<Dictionary<String, Any>> = jsonObject["elements"] != nil ? jsonObject["elements"] as! Array<Dictionary<String, Any>> : []
                 let elementsCount: Int = elements.count
                 var values: Array<PieChartDataEntry> = Array<PieChartDataEntry>()
-                var currency: String? = nil
+                var currency: String? = "$"
                 for i in 0..<elementsCount {
                     let dictionary = elements[i]
                     let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
-                    let value: String = dictionary["value"] != nil ? dictionary["value"] as! String : ""
-                    var number: NSNumber = 0
-                    let formatter = NumberFormatter()
-                    formatter.numberStyle = .currency
-                    if let num = formatter.number(from: value) {
-                        number = num
+                    let value: NSNumber = dictionary["value"] != nil ? dictionary["value"] as! NSNumber : 0
+                    if dictionary["currency"] != nil {
+                        currency = dictionary["currency"] as? String
                     }
-                    if let symbol = formatter.currencySymbol {
-                        currency = symbol
-                    }
-                    
-                    let pieChartDataEntry = PieChartDataEntry(value: number.doubleValue, label: title, data: dictionary as AnyObject)
+                    let pieChartDataEntry = PieChartDataEntry(value: value.doubleValue, label: title, data: dictionary as AnyObject)
                     values.append(pieChartDataEntry)
                 }
                 let pieChartDataSet = PieChartDataSet(values: values, label: "")
@@ -104,7 +97,7 @@ class PiechartBubbleView: BubbleView {
                 
                 let pFormatter: NumberFormatter = NumberFormatter()
                 pFormatter.numberStyle = .currency
-                pFormatter.maximumFractionDigits = 1
+                pFormatter.maximumFractionDigits = 2
                 pFormatter.multiplier = 1.0
                 pFormatter.currencySymbol = currency
                 
