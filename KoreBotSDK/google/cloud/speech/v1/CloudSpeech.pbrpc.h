@@ -1,10 +1,15 @@
+//#import "google/cloud/speech/v1/CloudSpeech.pbobjc.h"
 #import <googleapis/CloudSpeech.pbobjc.h>
 
 #import <ProtoRPC/ProtoService.h>
 #import <RxLibrary/GRXWriteable.h>
 #import <RxLibrary/GRXWriter.h>
 
+//#import "google/api/Annotations.pbobjc.h"
+
 #import <googleapis/Annotations.pbobjc.h>
+
+//#import "google/longrunning/Operations.pbobjc.h"
 #import <googleapis/Operations.pbobjc.h>
 #if GPB_USE_PROTOBUF_FRAMEWORK_IMPORTS
   #import <Protobuf/Any.pbobjc.h>
@@ -21,6 +26,7 @@
 #else
   #import "google/protobuf/Timestamp.pbobjc.h"
 #endif
+//#import "google/rpc/Status.pbobjc.h"
 #import <googleapis/Status.pbobjc.h>
 
 

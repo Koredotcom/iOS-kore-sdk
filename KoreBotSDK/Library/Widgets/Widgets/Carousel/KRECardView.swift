@@ -155,8 +155,8 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     }
     
     static func getAttributedString(cardInfo: KRECardInfo) -> NSMutableAttributedString {
-        var title = cardInfo.title as! String
-        var subtitle = cardInfo.subTitle as! String
+        var title = cardInfo.title! as String
+        var subtitle = cardInfo.subTitle! as String
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 0.25 * 16.0
