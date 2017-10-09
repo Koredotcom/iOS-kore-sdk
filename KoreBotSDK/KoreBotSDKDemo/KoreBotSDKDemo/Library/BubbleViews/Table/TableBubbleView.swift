@@ -8,42 +8,11 @@
 
 import UIKit
 
-class HeaderView: UIView {
-    var textLabel: UILabel!
-    var detailTextLabel: UILabel!
+class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    var collectionView: UICollectionView!
+    let customCellIdentifier = "CustomCellIdentifier"
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        self.textLabel = UILabel()
-        self.textLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.textLabel.textColor = UIColor(red: 0.556863, green: 0.556863, blue: 0.576471, alpha: 1)
-        self.textLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 17.0)!
-        self.addSubview(self.textLabel)
-        
-        self.detailTextLabel = UILabel()
-        self.detailTextLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.detailTextLabel.textColor = UIColor(red: 0.556863, green: 0.556863, blue: 0.576471, alpha: 1)
-        self.detailTextLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 17.0)!
-        self.addSubview(self.detailTextLabel)
-        
-        let views: [String : Any] = ["textLabel": self.textLabel, "detailTextLabel": self.detailTextLabel]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[textLabel]->=8-[detailTextLabel]-15-|", options:[], metrics:nil, views:views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[textLabel]|", options:[], metrics:nil, views:views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[detailTextLabel]|", options:[], metrics:nil, views:views))
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-class TableBubbleView: BubbleView, UITableViewDataSource, UITableViewDelegate {
-    var tableView: UITableView!
-    var dataArray: Array<Dictionary<String, Any>> = Array<Dictionary<String, Any>>()
-    
-    public var optionsAction: ((_ text: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+    var data: Dictionary<String, Any> = Dictionary<String, Any>()
     
     override func applyBubbleMask() {
         //nothing to put here
@@ -51,7 +20,7 @@ class TableBubbleView: BubbleView, UITableViewDataSource, UITableViewDelegate {
     
     override var tailPosition: BubbleMaskTailPosition! {
         didSet {
-            self.backgroundColor = Common.UIColorRGB(0xEFEFF4)
+            self.backgroundColor = .clear
         }
     }
     
@@ -59,114 +28,141 @@ class TableBubbleView: BubbleView, UITableViewDataSource, UITableViewDelegate {
         super.initialize()
         self.needDateLabel = false
         
-        self.tableView = UITableView(frame: CGRect.zero, style: .grouped)
-        self.tableView.translatesAutoresizingMaskIntoConstraints = false
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
-        self.addSubview(self.tableView)
+        let collectionViewLayout = UICollectionViewFlowLayout()
+        self.collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewLayout)
+        self.collectionView.translatesAutoresizingMaskIntoConstraints = false
+        self.collectionView.dataSource = self
+        self.collectionView.delegate = self
+        self.collectionView.backgroundColor = .clear
+        self.addSubview(self.collectionView)
         
-        let views: [String: UIView] = ["tableView": tableView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tableView]-0-|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[tableView]-10-|", options: [], metrics: nil, views: views))
+        self.collectionView.register(UINib(nibName: "CustomCollectionViewCell", bundle: nil),
+                                     forCellWithReuseIdentifier: customCellIdentifier)
+        
+        let views: [String: UIView] = ["collectionView": collectionView]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[collectionView]-0-|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[collectionView]-0-|", options: [], metrics: nil, views: views))
     }
     
-    override func borderColor() -> UIColor {
-        return UIColor.clear
+    //MARK: collection view delegate methods
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        let rows = self.data["rows"]  as! Array<Array<String>>
+        return rows.count + 2
     }
     
-    //MARK: TableView datasource/delegate methods
-    public func numberOfSections(in tableView: UITableView) -> Int {
-        return dataArray.count
-    }
-    
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let element = dataArray[section]
-        let rows: Array<Array<String>> = element["rows"] as! Array<Array<String>>
-        return rows.count
-    }
-    
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell:UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: "tableViewCell")
-        if cell == nil {
-            cell = UITableViewCell(style: .value1, reuseIdentifier: "tableViewCell")
-            cell?.selectionStyle = .none
-            cell?.textLabel?.font = UIFont(name: "HelveticaNeue-Medium", size: 14.0)!
-            cell?.detailTextLabel?.font = UIFont(name: "HelveticaNeue-Medium", size: 14.0)!
-            cell?.textLabel?.textColor = cell?.detailTextLabel?.textColor
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if section == 0 {
+            let headers = self.data["headers"]  as! Array<Dictionary<String, Any>>
+            return headers.count
+        } else if section == 1 {
+            return 1
+        } else {
+            let rows = self.data["rows"]  as! Array<Array<String>>
+            let row = rows[section - 2]
+            return row.count
         }
-        let element = dataArray[indexPath.section]
-        let rows: Array<Array<String>> = element["rows"] as! Array<Array<String>>
-        let row = rows[indexPath.row]
-        let title: String = row.count > 0 ? row[0] : ""
-        let value: String = row.count > 1 ? row[1] : ""
-        cell?.textLabel?.text = title
-        cell?.detailTextLabel?.text = value
-        return cell!
     }
     
-    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let element = dataArray[section]
-        let header = element["headers"] as! Array<String>
-        let title: String = header.count > 0 ? header[0] : ""
-        let value: String = header.count > 1 ? header[1] : ""
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // swiftlint:disable force_cast
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! CustomCollectionViewCell
+        cell.backgroundColor = .clear
         
-        let headerView = HeaderView(frame: CGRect.zero)
-        headerView.textLabel.text = title
-        headerView.detailTextLabel.text = value
-        headerView.backgroundColor = .white
-        return headerView
-    }
-    
-    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return UIView(frame: CGRect.zero)
-    }
-    
-    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let headers = self.data["headers"]  as! Array<Dictionary<String, Any>>
+        let header = headers[indexPath.row]
+        let alignment = header["alignment"] != nil ? header["alignment"] as! String : ""
+        if alignment == "right" {
+            cell.textLabel.textAlignment = .right
+        }else if alignment == "center" {
+            cell.textLabel.textAlignment = .center
+        }else {
+            cell.textLabel.textAlignment = .left
+        }
+        if indexPath.section == 0 {
+            let title = header["title"] != nil ? header["title"] as! String : ""
+            cell.textLabel.text = title
+            cell.textLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)!
+        } else if indexPath.section == 1 {
+            cell.textLabel.text = ""
+            cell.backgroundColor = .white
+        } else {
+            let rows = self.data["rows"]  as! Array<Array<String>>
+            let row = rows[indexPath.section - 2]
+            let text = row[indexPath.row]
+            if text == "---" {
+                cell.textLabel.text = ""
+                cell.backgroundColor = .white
+            } else {
+                cell.textLabel.text = row[indexPath.row]
+                cell.textLabel.font = UIFont(name: "HelveticaNeue", size: 14.0)!
+            }
+        }
         
+        return cell
     }
     
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let headers = self.data["headers"]  as! Array<Dictionary<String, Any>>
+        let header = headers[indexPath.row]
+        let percentage = header["percentage"] != nil ? header["percentage"] as! NSNumber : 0
+        let count = CGFloat(headers.count)
         
+        let viewWidth = UIScreen.main.bounds.size.width - 40
+        let maxWidth: CGFloat = viewWidth - 5*(count-1)
+        let itemWidth = floor((maxWidth*CGFloat(percentage.doubleValue)/100))
+        
+        if indexPath.section == 0 {
+            return CGSize(width: itemWidth, height: 36)
+        } else if indexPath.section == 1 {
+            return CGSize(width: viewWidth, height: 1)
+        } else {
+            let rows = self.data["rows"]  as! Array<Array<String>>
+            let row = rows[indexPath.section - 2]
+            let text = row[indexPath.row]
+            if text == "---" {
+                return CGSize(width: viewWidth, height: 1)
+            }
+            return CGSize(width: itemWidth, height: 36)
+        }
     }
     
-    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 38.0
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
     }
     
-    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 44.0
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0.0
     }
     
-    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 15.0
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 5.0
     }
     
-    // MARK: populate components
     override func populateComponents() {
         if (components.count > 0) {
             let component: KREComponent = components.firstObject as! KREComponent
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
-                let elements: Array<Dictionary<String, Any>> = jsonObject["elements"] != nil ? jsonObject["elements"] as! Array<Dictionary<String, Any>> : []
-                self.dataArray = elements
-                self.tableView.reloadData()
+                let data: Dictionary<String, Any> = jsonObject["data"] != nil ? jsonObject["data"] as! Dictionary<String, Any> : [:]
+                self.data = data
+                self.collectionView.reloadData()
             }
         }
     }
     
     override var intrinsicContentSize : CGSize {
-        var height: Double = 15.0
-        for i in 0..<dataArray.count {
-            let element = dataArray[i]
-            let rows: Array<Array<String>> = element["rows"] as! Array<Array<String>>
-            height += 44.0 + Double(rows.count) * 38.0 + 15.0
+        let rows = self.data["rows"]  as! Array<Array<String>>
+        var height: CGFloat = 38.0
+        for i in 0..<rows.count {
+            let row = rows[i]
+            let text = row[0]
+            if text == "---" {
+                height += 1.0
+            } else {
+                height += 36.0
+            }
         }
         return CGSize(width: 0.0, height: height)
-    }
-    
-    override func prepareForReuse() {
-        self.dataArray = Array<Dictionary<String, Any>>()
-        self.tableView.reloadData()
     }
 }

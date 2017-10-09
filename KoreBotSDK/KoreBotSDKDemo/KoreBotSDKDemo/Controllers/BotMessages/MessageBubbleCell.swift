@@ -304,8 +304,8 @@ class TableBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleLeadingConstraint.constant = 15
-            self.bubbleTrailingConstraint.constant = 15
+            self.bubbleLeadingConstraint.constant = 0
+            self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = 999
             self.dateLabelHeightConstraint.isActive = true
         }
