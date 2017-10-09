@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
     s.summary = "SpeechToText"
     s.homepage = "https://kore.com"
 
-    s.license = "MIT (SpeechToText.h)"
+    s.license = "MIT (SpeechToText)"
     s.license  = {:type => "MIT", :file => "LICENSE" }
 
     s.platform = :ios
@@ -13,8 +13,7 @@ Pod::Spec.new do |s|
     s.author = {"Shylaja Mamidala" => "shylaja.mamidala@kore.com"}
     s.source = {:git => "https://github.com/Koredotcom/iOS-kore-sdk.git"}
 
-    s.source_files = "SpeechToText/**/**/*.{h,m,swift}"
-    s.exclude_files = "SpeechToText/SpeechToText.{h}"
+    s.source_files = "SpeechToText/**/*.{h,m,swift}"
 
     s.dependency 'AFNetworking', '2.5.4'
     s.dependency 'SocketRocket'
