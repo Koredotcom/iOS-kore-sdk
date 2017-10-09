@@ -81,7 +81,7 @@ class TableBubbleView: BubbleView, UITableViewDataSource, UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let element = dataArray[section]
-        let rows: Array<Dictionary<String, Any>> = element["rows"] as! Array<Dictionary<String, Any>>
+        let rows: Array<Array<String>> = element["rows"] as! Array<Array<String>>
         return rows.count
     }
     
@@ -95,10 +95,10 @@ class TableBubbleView: BubbleView, UITableViewDataSource, UITableViewDelegate {
             cell?.textLabel?.textColor = cell?.detailTextLabel?.textColor
         }
         let element = dataArray[indexPath.section]
-        let rows: Array<Dictionary<String, Any>> = element["rows"] as! Array<Dictionary<String, Any>>
+        let rows: Array<Array<String>> = element["rows"] as! Array<Array<String>>
         let row = rows[indexPath.row]
-        let title: String = row["title"] != nil ? row["title"] as! String: ""
-        let value: String = row["value"] != nil ? row["value"] as! String: ""
+        let title: String = row.count > 0 ? row[0] : ""
+        let value: String = row.count > 1 ? row[1] : ""
         cell?.textLabel?.text = title
         cell?.detailTextLabel?.text = value
         return cell!
@@ -106,9 +106,9 @@ class TableBubbleView: BubbleView, UITableViewDataSource, UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let element = dataArray[section]
-        let header = element["header"] as! Dictionary<String, Any>
-        let title: String = header["title"] != nil ? header["title"] as! String: ""
-        let value: String = header["value"] != nil ? header["value"] as! String: ""
+        let header = element["headers"] as! Array<String>
+        let title: String = header.count > 0 ? header[0] : ""
+        let value: String = header.count > 1 ? header[1] : ""
         
         let headerView = HeaderView(frame: CGRect.zero)
         headerView.textLabel.text = title
@@ -159,7 +159,7 @@ class TableBubbleView: BubbleView, UITableViewDataSource, UITableViewDelegate {
         var height: Double = 15.0
         for i in 0..<dataArray.count {
             let element = dataArray[i]
-            let rows: Array<Dictionary<String, Any>> = element["rows"] as! Array<Dictionary<String, Any>>
+            let rows: Array<Array<String>> = element["rows"] as! Array<Array<String>>
             height += 44.0 + Double(rows.count) * 38.0 + 15.0
         }
         return CGSize(width: 0.0, height: height)
