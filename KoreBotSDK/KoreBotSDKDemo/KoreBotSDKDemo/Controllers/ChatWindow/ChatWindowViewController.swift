@@ -19,7 +19,8 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
     var audioData: NSMutableData!
     var thread: KREThread!
     var botClient: BotClient!
-    
+    var webViewController: InputTOWebViewController!
+
     @IBOutlet weak var textInputView: UIView!
     @IBOutlet weak var textScrollView: UIScrollView!
     @IBOutlet weak var threadContentView: UIView!
@@ -158,12 +159,18 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
     }
     
     func onReceiveMessage(object: BotMessageModel?) {
+        var textMessage: Message! = nil
         let message: Message = Message()
         message.messageType = .reply
         message.sentDate = Date()
         
         if (object?.iconUrl != nil) {
             message.iconUrl = object?.iconUrl
+        }
+        
+        if (webViewController != nil) {
+            webViewController.dismissInputView()
+            webViewController = nil
         }
         
         let messageObject = ((object?.messages.count)! > 0) ? (object?.messages[0]) : nil
@@ -181,6 +188,18 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
                 textComponent.text = text
                 ttsBody = text as String
                 
+                if(text.contains("use a web form")){
+                    
+                    let range: NSRange = text.range(of: "use a web form - ")
+                    let urlString: String? = text.substring(with: NSMakeRange(range.location+range.length, 44))
+                    if (urlString != nil) {
+                        let url: URL = URL(string: urlString!)!
+                        webViewController = InputTOWebViewController(url: url)
+                        webViewController.modalPresentationStyle = .custom
+                        self.present(webViewController, animated: true, completion:nil)
+                    }
+                    ttsBody = "Ok, Please fill in the details and submit"
+                }
                 message.addComponent(textComponent)
             } else if (componentModel.type == "template") {
                 let payload: NSDictionary = componentModel.payload! as! NSDictionary
@@ -218,15 +237,41 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
                         message.addComponent(carouselComponent)
                     }else if (templateType == "piechart") {
                         
+                        let text: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
+                        ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
+                        
+                        textMessage = Message()
+                        textMessage?.messageType = .reply
+                        textMessage?.sentDate = Date()
+                        if (object?.iconUrl != nil) {
+                            textMessage?.iconUrl = object?.iconUrl
+                        }
+                        
+                        let textComponent: TextComponent = TextComponent()
+                        textComponent.text = text as NSString!
+                        ttsBody = text as String
+                        textMessage?.addComponent(textComponent)
+                        
                         let piechartComponent: PiechartComponent = PiechartComponent()
                         piechartComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                        
+                        message.sentDate = Date()
                         message.addComponent(piechartComponent)
                     }else if (templateType == "table") {
-                        
+                        if (text.characters.count > 0) {
+                            textMessage = Message()
+                            textMessage?.messageType = .reply
+                            textMessage?.sentDate = Date()
+                            if (object?.iconUrl != nil) {
+                                textMessage?.iconUrl = object?.iconUrl
+                            }
+                            
+                            let textComponent: TextComponent = TextComponent()
+                            textComponent.text = text as NSString!
+                            textMessage?.addComponent(textComponent)
+                        }
                         let tableComponent: TableComponent = TableComponent()
                         tableComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                        
+                        message.sentDate = Date()
                         message.addComponent(tableComponent)
                     }
                 }else if(type == "error"){
@@ -237,12 +282,17 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
                     
                     message.addComponent(errorComponent)
                 }else if text != "" {
-                    
                     let textComponent: TextComponent = TextComponent()
                     textComponent.text = text as NSString!
                     
                     message.addComponent(textComponent)
                 }
+            }
+            
+            if (textMessage != nil && textMessage!.components.count > 0) {
+                let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
+                dataStoreManager.createNewMessageIn(thread: self.thread, message: textMessage!, completionBlock: { (success) in
+                })
             }
             
             if (message.components.count > 0) {
