@@ -9,7 +9,7 @@
 import UIKit
 import Charts
 
-class PiechartView: BubbleView {
+class PiechartBubbleView: BubbleView {
     var pcView: PieChartView!
     
     public var optionsAction: ((_ text: String?) -> Void)!
@@ -27,6 +27,7 @@ class PiechartView: BubbleView {
     
     override func initialize() {
         super.initialize()
+        self.needDateLabel = false
         
         self.pcView = PieChartView()
         self.pcView.translatesAutoresizingMaskIntoConstraints = false
@@ -52,17 +53,6 @@ class PiechartView: BubbleView {
         description.text = nil
         self.pcView.chartDescription = description
         self.pcView.drawHoleEnabled = false
-        
-//        self.carouselView.optionsAction = {[weak self] (text) in
-//            if((self?.optionsAction) != nil){
-//                self?.optionsAction(text)
-//            }
-//        }
-//        self.carouselView.linkAction = {[weak self] (text) in
-//            if(self?.linkAction != nil){
-//                self?.linkAction(text)
-//            }
-//        }
     }
     
     override func borderColor() -> UIColor {
@@ -80,12 +70,22 @@ class PiechartView: BubbleView {
                 let elements: Array<Dictionary<String, Any>> = jsonObject["elements"] != nil ? jsonObject["elements"] as! Array<Dictionary<String, Any>> : []
                 let elementsCount: Int = elements.count
                 var values: Array<PieChartDataEntry> = Array<PieChartDataEntry>()
+                var currency: String? = nil
                 for i in 0..<elementsCount {
                     let dictionary = elements[i]
                     let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
-                    let value: NSNumber = dictionary["value"] != nil ? dictionary["value"] as! NSNumber : 0
+                    let value: String = dictionary["value"] != nil ? dictionary["value"] as! String : ""
+                    var number: NSNumber = 0
+                    let formatter = NumberFormatter()
+                    formatter.numberStyle = .currency
+                    if let num = formatter.number(from: value) {
+                        number = num
+                    }
+                    if let symbol = formatter.currencySymbol {
+                        currency = symbol
+                    }
                     
-                    let pieChartDataEntry = PieChartDataEntry(value: value.doubleValue, label: title, data: dictionary as AnyObject)
+                    let pieChartDataEntry = PieChartDataEntry(value: number.doubleValue, label: title, data: dictionary as AnyObject)
                     values.append(pieChartDataEntry)
                 }
                 let pieChartDataSet = PieChartDataSet(values: values, label: "")
@@ -106,7 +106,7 @@ class PiechartView: BubbleView {
                 pFormatter.numberStyle = .currency
                 pFormatter.maximumFractionDigits = 1
                 pFormatter.multiplier = 1.0
-                pFormatter.currencySymbol = "$"
+                pFormatter.currencySymbol = currency
                 
                 pieChartData.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
                 pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 14.0))
@@ -119,7 +119,7 @@ class PiechartView: BubbleView {
     }
     
     override var intrinsicContentSize : CGSize {
-        return CGSize(width: 0.0, height: 300)
+        return CGSize(width: 0.0, height: 320)
     }
     
     override func prepareForReuse() {

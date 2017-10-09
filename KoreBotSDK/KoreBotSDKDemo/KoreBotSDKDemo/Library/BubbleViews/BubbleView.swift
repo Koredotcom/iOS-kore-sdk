@@ -13,7 +13,7 @@ enum BubbleMaskTailPosition : Int {
 }
 
 enum BubbleType : Int  {
-    case view = 1, text = 2, image = 3, options = 4, quickReply = 5, list = 6, carousel = 7, error = 8, piechart = 9
+    case view = 1, text = 2, image = 3, options = 4, quickReply = 5, list = 6, carousel = 7, error = 8, piechart = 9, table = 10
 }
 
 let BubbleViewRightTint: UIColor = Common.UIColorRGB(0x0578FE)
@@ -42,6 +42,7 @@ class BubbleView: UIView {
     }
     
     var drawBorder: Bool = false
+    var needDateLabel: Bool = true
     
     // MARK: init
     init() {
@@ -83,7 +84,10 @@ class BubbleView: UIView {
                 bubbleView = ErrorBubbleView()
                 break
             case .piechart:
-                bubbleView = PiechartView()
+                bubbleView = PiechartBubbleView()
+                break
+            case .table:
+                bubbleView = TableBubbleView()
                 break
         }
         bubbleView.bubbleType = bubbleType

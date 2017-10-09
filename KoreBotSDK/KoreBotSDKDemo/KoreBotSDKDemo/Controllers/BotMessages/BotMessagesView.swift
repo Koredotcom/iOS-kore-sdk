@@ -68,6 +68,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(CarouselBubbleCell.self, forCellReuseIdentifier:"CarouselBubbleCell")
         self.tableView.register(ErrorBubbleCell.self, forCellReuseIdentifier:"ErrorBubbleCell")
         self.tableView.register(PiechartBubbleCell.self, forCellReuseIdentifier:"PiechartBubbleCell")
+        self.tableView.register(TableBubbleCell.self, forCellReuseIdentifier:"TableBubbleCell")
         
         self.prototypeCell = MessageBubbleCell()
     }
@@ -140,6 +141,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .piechart:
                 cellIdentifier = "PiechartBubbleCell"
                 break
+            case .table:
+                cellIdentifier = "TableBubbleCell"
+                break
             default:
                 cellIdentifier = "TextBubbleCell"
             }
@@ -200,6 +204,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             self.textLinkDetection(textLabel: bubbleView.textLabel)
             break
         case .piechart:
+            
+            break
+        case .table:
             
             break
         default:

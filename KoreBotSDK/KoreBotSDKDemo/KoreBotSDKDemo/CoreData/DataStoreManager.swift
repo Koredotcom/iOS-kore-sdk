@@ -263,6 +263,18 @@ class DataStoreManager: NSObject {
                             nMessage.thread = thread
                             thread.addToMessages(_value: nMessage)
                             break
+                        case .error:
+                            let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
+                            let errorComponent: ErrorComponent = component as! ErrorComponent
+                            
+                            nComponent.componentId = ""
+                            nComponent.componentDesc = errorComponent.payload as String?
+                            nMessage.addComponentsObject(_value: nComponent)
+                            nComponent.message = nMessage
+                            nMessage.templateType = ComponentType.error.rawValue as NSNumber?
+                            nMessage.thread = thread
+                            thread.addToMessages(_value: nMessage)
+                            break
                         case .piechart:
                             let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
                             let piechartComponent: PiechartComponent = component as! PiechartComponent
@@ -275,15 +287,15 @@ class DataStoreManager: NSObject {
                             nMessage.thread = thread
                             thread.addToMessages(_value: nMessage)
                             break
-                        case .error:
+                        case .table:
                             let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
-                            let errorComponent: ErrorComponent = component as! ErrorComponent
+                            let tableComponent: TableComponent = component as! TableComponent
                             
                             nComponent.componentId = ""
-                            nComponent.componentDesc = errorComponent.payload as String?
+                            nComponent.componentDesc = tableComponent.payload as String?
                             nMessage.addComponentsObject(_value: nComponent)
                             nComponent.message = nMessage
-                            nMessage.templateType = ComponentType.error.rawValue as NSNumber?
+                            nMessage.templateType = ComponentType.table.rawValue as NSNumber?
                             nMessage.thread = thread
                             thread.addToMessages(_value: nMessage)
                             break

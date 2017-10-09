@@ -222,6 +222,12 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
                         piechartComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                         
                         message.addComponent(piechartComponent)
+                    }else if (templateType == "table") {
+                        
+                        let tableComponent: TableComponent = TableComponent()
+                        tableComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        
+                        message.addComponent(tableComponent)
                     }
                 }else if(type == "error"){
                     

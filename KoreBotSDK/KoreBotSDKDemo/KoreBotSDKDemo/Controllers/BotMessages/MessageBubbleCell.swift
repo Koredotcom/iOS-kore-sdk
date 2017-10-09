@@ -21,6 +21,7 @@ class MessageBubbleCell : UITableViewCell {
     
     var dateLabelLeadingConstraint: NSLayoutConstraint!
     var dateLabelTrailingConstraint: NSLayoutConstraint!
+    var dateLabelHeightConstraint: NSLayoutConstraint!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -117,6 +118,7 @@ class MessageBubbleCell : UITableViewCell {
         self.dateLabelLeadingConstraint.priority = 999
         self.dateLabelTrailingConstraint = NSLayoutConstraint(item: self.contentView, attribute:.trailing, relatedBy:.equal, toItem:self.dateLabel, attribute:.trailing, multiplier:1.0, constant:16.0)
         self.dateLabelTrailingConstraint.priority = 1
+        self.dateLabelHeightConstraint = NSLayoutConstraint(item: self.dateLabel, attribute:.height, relatedBy:.equal, toItem:nil, attribute:.notAnAttribute, multiplier:1.0, constant:0.0)
 
         self.bubbleBottomConstraint = NSLayoutConstraint(item:self.contentView, attribute:.bottom, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.bottom, multiplier:1.0, constant:4.0)
         self.bubbleBottomConstraint.priority = 999
@@ -125,7 +127,8 @@ class MessageBubbleCell : UITableViewCell {
         self.bubbleTrailingConstraint = NSLayoutConstraint(item:self.contentView, attribute:.trailing, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.trailing, multiplier:1.0, constant:16.0)
         self.bubbleTrailingConstraint.priority = 1
         
-        self.contentView.addConstraints([self.bubbleTrailingConstraint, self.bubbleLeadingConstraint, self.bubbleBottomConstraint, self.dateLabelLeadingConstraint, self.dateLabelTrailingConstraint])
+        self.contentView.addConstraints([self.bubbleTrailingConstraint, self.bubbleLeadingConstraint, self.bubbleBottomConstraint, self.dateLabelLeadingConstraint, self.dateLabelTrailingConstraint, self.dateLabelHeightConstraint])
+        self.dateLabelHeightConstraint.isActive = false
     }
 
     func bubbleType() -> BubbleType {
@@ -185,7 +188,7 @@ class MessageBubbleCell : UITableViewCell {
         
         let component: KREComponent = components.first!
         let message: KREMessage = component.message!
-        if (message.sentOn != nil) {
+        if (message.sentOn != nil && bubbleView.needDateLabel) {
             let dateFormatter: DateFormatter = DateFormatter()
             dateFormatter.dateFormat = "EEE, MMM d, h:mm a"
             self.dateLabel.text = dateFormatter.string(from: message.sentOn! as Date)
@@ -283,6 +286,28 @@ class PiechartBubbleCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = 999
+            self.dateLabelHeightConstraint.isActive = true
+        }
+    }
+    
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        self.dateLabel.text = nil
+        self.senderImageView.isHidden = true
+    }
+}
+
+class TableBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> BubbleType {
+        return BubbleType.table
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleLeadingConstraint.constant = 15
+            self.bubbleTrailingConstraint.constant = 15
+            self.bubbleTrailingConstraint.priority = 999
+            self.dateLabelHeightConstraint.isActive = true
         }
     }
     

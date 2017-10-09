@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 enum ComponentType : Int {
-    case unknown = 1, text = 2, image = 3, options = 4, quickReply = 5, list = 6, carousel = 7, error = 8, piechart = 9
+    case unknown = 1, text = 2, image = 3, options = 4, quickReply = 5, list = 6, carousel = 7, error = 8, piechart = 9, table = 10
 }
 
 class Component : NSObject {
@@ -82,5 +82,13 @@ class PiechartComponent : Component {
     override init() {
         super.init()
         componentType = .piechart
+    }
+}
+
+class TableComponent : Component {
+    var payload: NSString!
+    override init() {
+        super.init()
+        componentType = .table
     }
 }
