@@ -12,6 +12,7 @@ import CoreData
 protocol KREFetchedResultsControllerDelegate {
     func fetchedControllerWillChangeContent()
     func fetchedControllerDidChangeContent()
+    func fetchedControllerDidEndAnimation()
 }
 
 class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, NSFetchedResultsControllerDelegate {
@@ -72,6 +73,13 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
         if (self.shouldReload == true) {
             self.tableView?.reloadData()
         } else {
+            CATransaction.begin()
+            CATransaction.setCompletionBlock({ () -> Void in
+                // This block runs after the animations between CATransaction.begin
+                // and CATransaction.commit are finished.
+                self.kreDelegate?.fetchedControllerDidEndAnimation()
+            })
+            
             let animation: UITableViewRowAnimation = self.animateChanges ? .fade : .none
             self.tableView?.beginUpdates()
             
@@ -83,6 +91,8 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
             self.tableView?.reloadRows(at: self.updatedRowIndexPaths!, with: animation)
 
             self.tableView?.endUpdates()
+            
+            CATransaction.commit()
             
             self.kreDelegate?.fetchedControllerDidChangeContent()
             clearSectionsAndRowsCache()

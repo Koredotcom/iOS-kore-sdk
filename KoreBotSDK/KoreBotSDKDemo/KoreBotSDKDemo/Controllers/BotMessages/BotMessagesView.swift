@@ -252,10 +252,31 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     }
     
     func fetchedControllerDidChangeContent() {
+//        if (self.shouldScrollToBottom && !self.tableView.isDragging) {
+//            self.shouldScrollToBottom = false
+//            self.scrollToBottom(animated: true)
+//        }
+    }
+    
+    func fetchedControllerDidEndAnimation() {
         if (self.shouldScrollToBottom && !self.tableView.isDragging) {
             self.shouldScrollToBottom = false
-            self.scrollToBottom(animated: true)
+            self.scrollToLastMessage()
         }
+    }
+    
+    func scrollToLastMessage() {
+        CATransaction.begin()
+        CATransaction.setCompletionBlock({ () -> Void in
+            self.scrollToBottom(animated: true)
+        })
+        
+        // scroll down by 1 point: this causes the newly added cell to be dequeued and rendered.
+        var contentOffset = tableView.contentOffset
+        contentOffset.y += 1
+        self.tableView.setContentOffset(contentOffset, animated: true)
+        
+        CATransaction.commit()
     }
     
     // MARK: - scrollTo related methods
