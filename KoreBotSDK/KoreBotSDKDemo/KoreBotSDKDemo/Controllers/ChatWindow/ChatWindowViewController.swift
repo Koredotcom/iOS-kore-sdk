@@ -15,7 +15,7 @@ import TOWebViewController
 let SAMPLE_RATE = 16000
 
 class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMessagesViewDelegate {
-    
+    var retryCount: Int = 0
     var audioData: NSMutableData!
     var thread: KREThread!
     var botClient: BotClient!
@@ -401,21 +401,24 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
                 }
                 
                 if let error = error {
-                    print(error.debugDescription)
-                    strongSelf.audioView.stopRecording()
-                    strongSelf.setTextToLabel("")
-                } else if let response = response {
-                    var finished = false
-                    var transcript = ""
-                    print(response)
-                    
-                    if let result = response.resultsArray[0] as? StreamingRecognitionResult {
-                        if result.stability > 0.5 {
-                            if let speechResult = result.alternativesArray[0] as? SpeechRecognitionAlternative {
-                                transcript = speechResult.transcript
-                            }
+                    NSLog("SpeechRecognitionService failed with error: %@", error.debugDescription)
+                    strongSelf.stopAudio()
+                    if strongSelf.retryCount == 3 {
+                        strongSelf.retryCount = 0
+                        strongSelf.audioView.stopRecording()
+                        strongSelf.setTextToLabel("")
+                    }else{
+                        let deadline = DispatchTime.now() + .milliseconds(100)
+                        DispatchQueue.main.asyncAfter(deadline: deadline) {
+                            strongSelf.retryCount += 1
+                            strongSelf.recordAudio()
                         }
                     }
+                } else if let response = response {
+                    strongSelf.retryCount = 0
+                    var finished = false
+                    var transcript = ""
+//                    print(response)
                     
                     for result in response.resultsArray! {
                         if let result = result as? StreamingRecognitionResult {
@@ -424,17 +427,21 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
                                 if let speechResult = result.alternativesArray[0] as? SpeechRecognitionAlternative {
                                     transcript = speechResult.transcript
                                 }
+                            }else{
+                                if let speechResult = result.alternativesArray[0] as? SpeechRecognitionAlternative {
+                                    transcript += speechResult.transcript
+                                }
                             }
                         }
                     }
+                    
+                    print("Got transcript: \(transcript)")
                     strongSelf.setTextToLabel(transcript)
                     if finished {
+                        strongSelf.stopAudio()
                         strongSelf.audioView.stopRecording()
                         strongSelf.sendTextMessage(transcript)
-                        let deadline = DispatchTime.now() + .milliseconds(500)
-                        DispatchQueue.main.asyncAfter(deadline: deadline) {
-                            strongSelf.setTextToLabel("")
-                        }
+                        strongSelf.setTextToLabel("")
                     }
                 }
             })
