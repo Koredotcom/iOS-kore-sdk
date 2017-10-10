@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class AudioView: UIView {
 
@@ -154,17 +155,35 @@ class AudioView: UIView {
         self.audioRecorderTimer = nil
     }
     
+    func checkAudioRecordPermission(block:(() -> Void)?) {
+        let audioSession = AVAudioSession.sharedInstance()
+        if (audioSession.responds(to: #selector(AVAudioSession.requestRecordPermission(_:)))) {
+            audioSession.requestRecordPermission({ (granted: Bool) in
+                if(granted){
+                    DispatchQueue.main.async {
+                        block!()
+                    }
+                }else{
+                    DispatchQueue.main.async {
+                        let alert = UIAlertController(title: "Microphone Access Denied", message: "This app requires access to your device's Microphone.\n\nPlease enable Microphone access for this app in Settings / Privacy / Microphone", preferredStyle: UIAlertControllerStyle.alert)
+                        alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.cancel, handler: nil))
+                        
+                        // Get root view controller
+                        if let viewController = UIApplication.shared.keyWindow?.rootViewController {
+                            viewController.present(alert, animated: true, completion: nil)
+                        }
+                    }
+                }
+            })
+        }
+    }
+    
     @objc fileprivate func audioButtonAction() {
         if !self.isActive {
-            self.isActive = true
-            
-            if self.voiceRecordingStarted != nil {
-                self.voiceRecordingStarted!(self)
-            }
-            self.audiolabel.isHidden = true
-            self.cancelView.isHidden = true
-            self.startAnimationWaveTimer()
-            self.audioRecordTimer()
+            self.checkAudioRecordPermission(block: { [weak self] in
+                self?.isActive = true
+                self?.startRecording()
+            })
         } else {
             self.isActive = false
             self.stopAudioRecording()
@@ -176,6 +195,38 @@ class AudioView: UIView {
             self.cancelledSpeechToText!()
         }
     }
+    
+    fileprivate func startRecording(){
+        if self.voiceRecordingStarted != nil {
+            self.voiceRecordingStarted!(self)
+        }
+        self.audiolabel.isHidden = true
+        self.cancelView.isHidden = true
+        self.startAnimationWaveTimer()
+        self.audioRecordTimer()
+    }
+    
+    fileprivate func stopAudioRecording()  {
+        //stop timers
+        if(self.animationTimer != nil){
+            self.animationTimer.invalidate()
+            self.animationTimer = nil;
+        }
+        
+        if(self.audioRecorderTimer != nil){
+            self.audioRecorderTimer.invalidate()
+            self.audioRecorderTimer = nil
+        }
+        
+        self.audiolabel.isHidden = false
+        self.cancelView.isHidden = false
+        
+        if self.voiceRecordingStopped != nil {
+            self.voiceRecordingStopped!(self)
+        }
+    }
+    
+    //MARK: Wave animation
     
     @objc fileprivate func showCircleWaveAnimation() {
         let circleView = UIView()
@@ -200,26 +251,6 @@ class AudioView: UIView {
         }, completion: {(_ finished: Bool) -> Void in
             circleView.removeFromSuperview()
         })
-    }
-    
-    fileprivate func stopAudioRecording()  {
-        //stop timers
-        if(self.animationTimer != nil){
-            self.animationTimer.invalidate()
-            self.animationTimer = nil;
-        }
-        
-        if(self.audioRecorderTimer != nil){
-            self.audioRecorderTimer.invalidate()
-            self.audioRecorderTimer = nil
-        }
-        
-        self.audiolabel.isHidden = false
-        self.cancelView.isHidden = false
-        
-        if self.voiceRecordingStopped != nil {
-            self.voiceRecordingStopped!(self)
-        }
     }
     
     @objc fileprivate func updateRecordTimer() {

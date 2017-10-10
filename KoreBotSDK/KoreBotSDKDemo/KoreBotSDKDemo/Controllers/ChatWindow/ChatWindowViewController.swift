@@ -422,10 +422,10 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
                     strongSelf.setTextToLabel(transcript)
                     if finished {
                         strongSelf.audioView.stopRecording()
+                        strongSelf.sendTextMessage(transcript)
                         let deadline = DispatchTime.now() + .milliseconds(500)
                         DispatchQueue.main.asyncAfter(deadline: deadline) {
                             strongSelf.setTextToLabel("")
-                            strongSelf.sendTextMessage(transcript)
                         }
                     }
                 }
