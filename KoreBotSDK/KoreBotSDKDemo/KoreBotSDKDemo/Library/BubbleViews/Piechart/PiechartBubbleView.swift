@@ -84,6 +84,12 @@ class PiechartBubbleView: BubbleView {
                 let pieChartDataSet = PieChartDataSet(values: values, label: "")
                 
                 var colors: Array<UIColor> = Array<UIColor>()
+                colors.append(Common.UIColorRGB(0x41C5D3))
+                colors.append(Common.UIColorRGB(0xC4AFF0))
+                colors.append(Common.UIColorRGB(0x64D7D6))
+                colors.append(Common.UIColorRGB(0x2ecc71))
+                colors.append(Common.UIColorRGB(0x1abc9c))
+                colors.append(Common.UIColorRGB(0x1abc9c))
                 colors.append(contentsOf: ChartColorTemplates.joyful())
                 colors.append(contentsOf: ChartColorTemplates.colorful())
                 colors.append(contentsOf: ChartColorTemplates.liberty())
@@ -107,6 +113,7 @@ class PiechartBubbleView: BubbleView {
                 
                 self.pcView.data = pieChartData
                 self.pcView.highlightValues(nil)
+                self.pcView.animate(yAxisDuration: 1.4, easingOption: ChartEasingOption.easeInOutBack)
             }
         }
     }
