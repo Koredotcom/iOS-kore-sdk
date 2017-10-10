@@ -101,7 +101,14 @@ class AppLaunchViewController: UIViewController {
                         botViewController.botClient = client
                         botViewController.title = SDKConfiguration.botConfig.chatBotName
                         
-                        self!.navigationController?.pushViewController(botViewController, animated: true)
+                        //Addition fade in animation
+                        let transition = CATransition()
+                        transition.duration = 0.5
+                        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                        transition.type = kCATransitionFade
+                        self?.navigationController?.view.layer.add(transition, forKey: nil)
+                    
+                        self!.navigationController?.pushViewController(botViewController, animated: false)
                     }, failure: { (error) in
                         activityIndicatorView.stopAnimating()
                         self?.chatButton.isUserInteractionEnabled = true

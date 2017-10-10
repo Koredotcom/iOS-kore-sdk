@@ -353,7 +353,15 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
     
     @IBAction func closeAction(_ sender: Any) {
         prepareForDeinit()
-        self.navigationController?.popViewController(animated: true)
+        
+        //Addition fade in animation
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionFade
+        self.navigationController?.view.layer.add(transition, forKey: nil)
+        
+        self.navigationController?.popViewController(animated: false)
     }
     
     func recordAudio() {
