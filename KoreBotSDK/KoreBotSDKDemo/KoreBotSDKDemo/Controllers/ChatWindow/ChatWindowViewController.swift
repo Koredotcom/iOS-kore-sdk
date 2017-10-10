@@ -113,11 +113,10 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
             self.closeAction(self.audioView)
         }
         self.audioView.voiceRecordingStarted = { [weak self] (composeBar) in
-            composeBar?.isActive = true
-            self?.recordAudio(composeBar as Any)
+            self?.recordAudio()
         }
-        self.audioView.voiceRecordingStopped = { (composeBar) in
-
+        self.audioView.voiceRecordingStopped = { [weak self] (composeBar) in
+            self?.stopAudio()
         }
         self.audioView.getAudioPeakOutputPower = { () in
             return 0.0
@@ -336,7 +335,7 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
     }
     
     func textMessageSent() {
-//        self.botMessagesView.scrollToBottom(animated: true)
+        
     }
     
     func deConfigureBotClient() {
@@ -357,9 +356,10 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
         self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func recordAudio(_ sender: Any) {
+    func recordAudio() {
         stopTTS()
         
+        NSLog("Starting audio recording")
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
@@ -372,7 +372,8 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
         _ = AudioController.sharedInstance.start()
     }
     
-    @IBAction func stopAudio(_ sender: Any) {
+    func stopAudio() {
+        NSLog("Stopping audio recording")
         _ = AudioController.sharedInstance.stop()
         SpeechRecognitionService.sharedInstance.stopStreaming()
     }
@@ -392,7 +393,9 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
                 }
                 
                 if let error = error {
-                    strongSelf.setTextToLabel(error.localizedDescription)
+                    print(error.debugDescription)
+                    strongSelf.audioView.stopRecording()
+                    strongSelf.setTextToLabel("")
                 } else if let response = response {
                     var finished = false
                     var transcript = ""
@@ -418,10 +421,9 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
                     }
                     strongSelf.setTextToLabel(transcript)
                     if finished {
-                        strongSelf.stopAudio(strongSelf)
+                        strongSelf.audioView.stopRecording()
                         let deadline = DispatchTime.now() + .milliseconds(500)
                         DispatchQueue.main.asyncAfter(deadline: deadline) {
-                            strongSelf.audioView.stopRecording()
                             strongSelf.setTextToLabel("")
                             strongSelf.sendTextMessage(transcript)
                         }
@@ -433,14 +435,13 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
     }
     
     func setTextToLabel(_ text: String) {
-        self.textInputViewHeightConstraint.constant = (text.characters.count) > 0 ? 50.0 : 0.0
-        self.textLabel.text = text
+        let tempText = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        
+        self.textInputViewHeightConstraint.constant = (tempText.characters.count) > 0 ? 50.0 : 0.0
+        self.textLabel.text = tempText
         let size = self.textLabel.sizeThatFits(CGSize(width: .greatestFiniteMagnitude, height: self.textScrollView.frame.size.height))
         let frame = CGRect(x: self.textScrollView.frame.size.width - size.width, y: 0.0, width: size.width, height: self.textScrollView.frame.size.height)
         self.textLabel.frame = frame
-//        self.textScrollView.contentSize = CGSize. frame.size
-//        let rect = CGRect(x: frame.size.width - 1.0, y: 0.0, width: 1.0, height: self.textScrollView.frame.size.height)
-//        self.textScrollView.scrollRectToVisible(rect, animated: false)
     }
     
     func readOutText(text:String) {
