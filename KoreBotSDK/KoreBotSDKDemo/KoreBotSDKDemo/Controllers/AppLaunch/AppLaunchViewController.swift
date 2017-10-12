@@ -43,8 +43,8 @@ class AppLaunchViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    override var prefersStatusBarHidden : Bool {
-        return true
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     // MARK: known user
@@ -93,13 +93,13 @@ class AppLaunchViewController: UIViewController {
                         activityIndicatorView.stopAnimating()
                         self?.chatButton.isUserInteractionEnabled = true
                         
-//                        let botViewController = ChatMessagesViewController(thread: thread)
-//                        botViewController.botClient = client
-//                        botViewController.title = SDKConfiguration.botConfig.chatBotName
-                        
-                        let botViewController = ChatWindowViewController(thread: thread)
+                        let botViewController = ChatMessagesViewController(thread: thread)
                         botViewController.botClient = client
                         botViewController.title = SDKConfiguration.botConfig.chatBotName
+                        
+//                        let botViewController = ChatWindowViewController(thread: thread)
+//                        botViewController.botClient = client
+//                        botViewController.title = SDKConfiguration.botConfig.chatBotName
                         
                         //Addition fade in animation
                         let transition = CATransition()

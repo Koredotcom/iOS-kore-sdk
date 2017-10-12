@@ -70,10 +70,6 @@ class ChatWindowViewController: UIViewController, AudioControllerDelegate, BotMe
         // Dispose of any resources that can be recreated.
     }
     
-    override var prefersStatusBarHidden : Bool {
-        return true
-    }
-    
     //MARK:- removing refernces to elements
     func prepareForDeinit(){
         if(self.botClient != nil){

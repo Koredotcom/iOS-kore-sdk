@@ -48,7 +48,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     }
     
     func setup() {
-        self.tableView.backgroundColor = UIColor.white
+        self.tableView.backgroundColor = UIColor.clear
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.separatorStyle = .none
         self.tableView.dataSource = self
@@ -240,6 +240,10 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         }
         
         return cellHeight
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 10.0
     }
     
     // MARK:- KREFetchedResultsControllerDelegate methods
