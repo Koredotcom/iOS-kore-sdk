@@ -63,7 +63,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.configureBotClient()
         self.configureSTTClient()
         
-        isSpeakingEnabled = false
+        isSpeakingEnabled = true
         self.speechSynthesizer = AVSpeechSynthesizer()
     }
     
@@ -366,7 +366,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         
                         let textComponent: TextComponent = TextComponent()
                         textComponent.text = text as NSString!
-                        ttsBody = text as String
                         textMessage?.addComponent(textComponent)
                         
                         let piechartComponent: PiechartComponent = PiechartComponent()
@@ -401,6 +400,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 }else if text != "" {
                     let textComponent: TextComponent = TextComponent()
                     textComponent.text = text as NSString!
+                    ttsBody = text
                     
                     message.addComponent(textComponent)
                 }
@@ -747,9 +747,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func startSpeaking(notification:Notification) {
         if(isSpeakingEnabled){
             let string: String = notification.object! as! String
-            let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
-            let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString)
-            self.readOutText(text: parsedString)
+            self.readOutText(text: string)
         }
     }
     
@@ -758,8 +756,15 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func readOutText(text:String) {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(AVAudioSessionCategoryPlayback)
+            try audioSession.setMode(AVAudioSessionModeDefault)
+        } catch {
+            
+        }
         let string = text
-        print("Reading text: ", text);
+        print("Reading text: ", string);
         let speechUtterance = AVSpeechUtterance(string: string)
         self.speechSynthesizer.speak(speechUtterance)
     }

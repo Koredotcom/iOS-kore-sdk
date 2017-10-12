@@ -36,13 +36,13 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     }
     
     override init(frame: CGRect) {
-        self.tableView = UITableView(frame: frame, style: .plain)
+        self.tableView = UITableView(frame: frame, style: .grouped)
         super.init(frame: frame)
         self.setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.tableView = UITableView(frame: CGRect.zero, style: .plain)
+        self.tableView = UITableView(frame: CGRect.zero, style: .grouped)
         super.init(coder: aDecoder)
         self.setup()
     }
@@ -242,8 +242,22 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         return cellHeight
     }
     
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 10.0
+    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView()
+        return view
+    }
+    
+    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let view = UIView()
+        return view
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20.0
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 20.0
     }
     
     // MARK:- KREFetchedResultsControllerDelegate methods

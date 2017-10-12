@@ -66,7 +66,7 @@ class GoogleASRService: AudioControllerDelegate {
         
         // We recommend sending samples in 100ms chunks
         let chunkSize : Int /* bytes/chunk */ = Int(0.1 /* seconds/chunk */
-            * Double(SAMPLE_RATE) /* samples/second */
+            * Double(sample_rate) /* samples/second */
             * 2 /* bytes/sample */);
         
         if (audioData.length > chunkSize) {
