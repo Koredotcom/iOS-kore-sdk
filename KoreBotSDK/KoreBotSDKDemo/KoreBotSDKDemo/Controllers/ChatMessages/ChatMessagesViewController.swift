@@ -584,7 +584,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func textMessageSent() {
         self.composeView.clear()
-        self.botMessagesView.scrollToTop(true)
+        self.botMessagesView.scrollToTop(animate: true)
     }
     
     func speechToTextButtonAction() {

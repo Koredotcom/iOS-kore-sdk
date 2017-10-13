@@ -21,6 +21,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     var tableView: UITableView
     var fetchedResultsController: KREFetchedResultsController!
     var viewDelegate: BotMessagesViewDelegate?
+    var shouldScrollToBottom: Bool = false
     var clearBackground = false
     
     weak var thread: KREThread! {
@@ -252,15 +253,22 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     
     // MARK:- KREFetchedResultsControllerDelegate methods
     func fetchedControllerWillChangeContent() {
-        
+        let visibleCelIndexPath: [IndexPath]? = self.tableView.indexPathsForVisibleRows
+        let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+        if (visibleCelIndexPath?.contains(firstIndexPath as IndexPath))!{
+            self.shouldScrollToBottom = true
+        }
     }
     
     func fetchedControllerDidChangeContent() {
-        
+        if (self.shouldScrollToBottom && !self.tableView.isDragging) {
+            self.shouldScrollToBottom = false
+            self.scrollToTop(animate: true)
+        }
     }
     
-    func scrollToTop(_ animate: Bool){
-        self.tableView.scrollToRow(at: IndexPath.init(row: 0, section: 0), at: .top, animated: animate)
+    func scrollToTop(animate: Bool){
+        self.tableView.scrollToRow(at: IndexPath.init(row: 0, section: 0), at: .bottom, animated: animate)
     }
     
     // MARK: - scrollTo related methods
