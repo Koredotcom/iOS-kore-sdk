@@ -18,7 +18,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var thread: KREThread!
     var botClient: BotClient!
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
-    var isFirstTime: Bool = true
     
     @IBOutlet weak var threadContainerView: UIView!
     @IBOutlet weak var quickSelectContainerView: UIView!
@@ -74,7 +73,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.isFirstTime = false
     }
     
     override open func viewDidDisappear(_ animated: Bool) {
@@ -90,9 +88,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     override func viewWillLayoutSubviews() {
         NSLog("viewWillLayoutSubviews")
         super.viewWillLayoutSubviews()
-        if self.isFirstTime {
-            self.botMessagesView.scrollToBottom(animated: false)
-        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -512,21 +507,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: notification handlers
     func keyboardWillShow(_ notification: Notification) {
         let keyboardUserInfo: NSDictionary = NSDictionary(dictionary: (notification as NSNotification).userInfo!)
-        let keyboardFrameBegin: CGRect = ((keyboardUserInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue?)!.cgRectValue)
         let keyboardFrameEnd: CGRect = ((keyboardUserInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue?)!.cgRectValue)
         let options = UIViewAnimationOptions(rawValue: UInt((keyboardUserInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
         let durationValue = keyboardUserInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
         let duration = durationValue.doubleValue
         
-        var diff = keyboardFrameBegin.origin.y - keyboardFrameEnd.origin.y
-        if !self.audioComposeContainerHeightConstraint.isActive {
-            let composeViewDiff = self.audioComposeContainerView.frame.size.height - self.composeView.frame.size.height
-            diff -= composeViewDiff
-        }
         self.bottomConstraint.constant = keyboardFrameEnd.size.height
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
             self.view.layoutIfNeeded()
-            self.botMessagesView.scrollWithOffset(diff, animated: false)
         }, completion: { (Bool) in
             
         })
@@ -534,17 +522,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func keyboardWillHide(_ notification: Notification) {
         let keyboardUserInfo: NSDictionary = NSDictionary(dictionary: (notification as NSNotification).userInfo!)
-        let keyboardFrameBegin: CGRect = ((keyboardUserInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue?)!.cgRectValue)
-        let keyboardFrameEnd: CGRect = ((keyboardUserInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue?)!.cgRectValue)
         let durationValue = keyboardUserInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
         let duration = durationValue.doubleValue
         let options = UIViewAnimationOptions(rawValue: UInt((keyboardUserInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
         
-        let diff = keyboardFrameBegin.origin.y - keyboardFrameEnd.origin.y
         self.bottomConstraint.constant = 0
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
             self.view.layoutIfNeeded()
-            self.botMessagesView.scrollWithOffset(diff, animated: false)
         }, completion: { (Bool) in
             
         })
@@ -600,7 +584,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func textMessageSent() {
         self.composeView.clear()
-        self.botMessagesView.scrollToBottom(animated: true)
+        self.botMessagesView.scrollToTop(true)
     }
     
     func speechToTextButtonAction() {
@@ -608,12 +592,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         _ = self.composeView.resignFirstResponder()
         self.audioComposeView.startRecording()
         
-        let composeViewDiff = self.audioComposeView.intrinsicContentSize.height - self.composeView.frame.size.height
         let options = UIViewAnimationOptions(rawValue: UInt(7 << 16))
         let duration = 0.25
         UIView.animate(withDuration: duration, delay: 0.0, options: options, animations: {
             self.view.layoutIfNeeded()
-            self.botMessagesView.scrollWithOffset(composeViewDiff, animated: false)
         }, completion: { (Bool) in
         })
     }
@@ -672,6 +654,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 self.updateQuickSelectViewConstraints()
             }
         } else if(message != nil) {
+            let words: Array<Word> = Array<Word>()
+            self.quickReplyView.setWordsList(words: words)
             self.closeQuickSelectViewConstraints()
         }
     }
@@ -731,7 +715,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func growingTextView(_: KREGrowingTextView, changingHeight height: CGFloat, animate: Bool) {
         UIView.animate(withDuration: animate ? 0.25: 0.0) {
             self.view.layoutIfNeeded()
-            self.botMessagesView.scrollWithOffset(height, animated: false)
         }
     }
     

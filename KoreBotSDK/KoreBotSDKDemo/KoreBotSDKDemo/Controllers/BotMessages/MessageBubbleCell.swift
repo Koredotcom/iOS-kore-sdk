@@ -69,6 +69,7 @@ class MessageBubbleCell : UITableViewCell {
 
     func initialize() {
         self.selectionStyle = .none
+        self.contentView.transform = CGAffineTransform(scaleX: 1, y: -1)
         
         self.dateLabel = UILabel()
         self.dateLabel.numberOfLines = 0

@@ -21,8 +21,6 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     var tableView: UITableView
     var fetchedResultsController: KREFetchedResultsController!
     var viewDelegate: BotMessagesViewDelegate?
-    var shouldScrollToBottom: Bool = false
-    var prototypeCell: MessageBubbleCell!
     var clearBackground = false
     
     weak var thread: KREThread! {
@@ -55,6 +53,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.delegate = self
         self.addSubview(self.tableView)
         
+        self.tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
+        
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[tableView]|", options:[], metrics:nil, views:["tableView" : self.tableView]))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[tableView]|", options:[], metrics:nil, views:["tableView" : self.tableView]))
         
@@ -69,8 +69,6 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(ErrorBubbleCell.self, forCellReuseIdentifier:"ErrorBubbleCell")
         self.tableView.register(PiechartBubbleCell.self, forCellReuseIdentifier:"PiechartBubbleCell")
         self.tableView.register(TableBubbleCell.self, forCellReuseIdentifier:"TableBubbleCell")
-        
-        self.prototypeCell = MessageBubbleCell()
     }
     
     override func layoutSubviews() {
@@ -87,7 +85,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         if(self.thread != nil){
             let request: NSFetchRequest<KREMessage> = KREMessage.fetchRequest()
             request.predicate = NSPredicate(format: "thread.threadId == %@", self.thread.threadId!)
-            request.sortDescriptors = [NSSortDescriptor(key: "sentOn", ascending: true)]
+            request.sortDescriptors = [NSSortDescriptor(key: "sentOn", ascending: false)]
             
             let mainContext: NSManagedObjectContext = DataStoreManager.sharedManager.coreDataManager.mainContext
             fetchedResultsController = KREFetchedResultsController(fetchRequest: request as! NSFetchRequest<NSManagedObject>, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -212,9 +210,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         default:
             break
         }
-        
-        let lastIndexPath = getIndexPathForLastItem()
-        if lastIndexPath.isEqual(indexPath) {
+        let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+        if firstIndexPath.isEqual(indexPath) {
             if isQuickReply {
                 self.viewDelegate?.populateQuickReplyCards(with: message)
             }else{
@@ -228,18 +225,11 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     // MARK: UITable view delegate source
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        let message: KREMessage = fetchedResultsController!.object(at: indexPath) as! KREMessage
-        var cellHeight = message.cellHeight
-        
-        if(cellHeight == 0.0){
-            cellHeight = self.prototypeCell.getEstimatedHeightForComponents(message.components?.array as! Array<KREComponent>, bubbleType: BubbleType(rawValue: (message.templateType?.intValue)!)!)
-            cellHeight = CGFloat(ceilf(Float(cellHeight)))
-            
-            message.cellHeight = cellHeight
-        }
-        
-        return cellHeight
+        return UITableViewAutomaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
     }
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -253,7 +243,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 20.0
+        return 0.0
     }
     
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -262,69 +252,18 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     
     // MARK:- KREFetchedResultsControllerDelegate methods
     func fetchedControllerWillChangeContent() {
-        let visibleCelIndexPath: [IndexPath]? = self.tableView.indexPathsForVisibleRows
-        let indexPath: IndexPath? = self.getIndexPathForLastItem() as IndexPath
-        if (visibleCelIndexPath?.contains(indexPath!))!{
-            self.shouldScrollToBottom = true
-        }
+        
     }
     
     func fetchedControllerDidChangeContent() {
-//        if (self.shouldScrollToBottom && !self.tableView.isDragging) {
-//            self.shouldScrollToBottom = false
-//            self.scrollToBottom(animated: true)
-//        }
+        
     }
     
-    func fetchedControllerDidEndAnimation() {
-        if (self.shouldScrollToBottom && !self.tableView.isDragging) {
-            self.shouldScrollToBottom = false
-            self.scrollToLastMessage()
-        }
-    }
-    
-    func scrollToLastMessage() {
-        CATransaction.begin()
-        CATransaction.setCompletionBlock({ () -> Void in
-            self.scrollToBottom(animated: true)
-        })
-        
-        // scroll down by 1 point: this causes the newly added cell to be dequeued and rendered.
-        var contentOffset = tableView.contentOffset
-        contentOffset.y += 1
-        self.tableView.setContentOffset(contentOffset, animated: true)
-        
-        CATransaction.commit()
+    func scrollToTop(_ animate: Bool){
+        self.tableView.scrollToRow(at: IndexPath.init(row: 0, section: 0), at: .top, animated: animate)
     }
     
     // MARK: - scrollTo related methods
-    func scrollWithOffset(_ offset: CGFloat, animated animate: Bool) {
-        if self.tableView.contentSize.height < self.frame.size.height { // when content is too less
-            return
-        }
-        if self.frame.size.height + self.tableView.contentOffset.y >= self.tableView.contentSize.height - 1.0/*fraction buffer*/ {
-            return
-        }
-        
-        var contentOffset = self.tableView.contentOffset
-        contentOffset.y += offset
-        if contentOffset.y < -self.tableView.contentInset.top {
-            contentOffset.y = -self.tableView.contentInset.top
-        }
-        if self.tableView.frame.size.height + offset > self.tableView.contentSize.height {
-            contentOffset.y = self.tableView.contentSize.height - self.tableView.frame.size.height
-        }
-        
-        self.tableView.setContentOffset(contentOffset, animated: animate)
-    }
-    
-    func scrollToBottom(animated animate: Bool) {
-        let indexPath: NSIndexPath = self.getIndexPathForLastItem()
-        if (indexPath.row > 0 || indexPath.section > 0) {
-            self.tableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: animate)
-        }
-    }
-    
     func getIndexPathForLastItem()->(NSIndexPath){
         var indexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0);
         let numberOfSections: Int = self.tableView.numberOfSections

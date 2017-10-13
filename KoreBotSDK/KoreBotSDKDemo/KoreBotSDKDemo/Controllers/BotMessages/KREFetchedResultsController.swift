@@ -12,7 +12,6 @@ import CoreData
 protocol KREFetchedResultsControllerDelegate {
     func fetchedControllerWillChangeContent()
     func fetchedControllerDidChangeContent()
-    func fetchedControllerDidEndAnimation()
 }
 
 class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, NSFetchedResultsControllerDelegate {
@@ -27,7 +26,6 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
         }
     }
     weak var tableView: UITableView?
-    var animateChanges: Bool = false
     var ignoreUpdates: Bool = false
     var shouldReload: Bool = false
     var maybePreMoveUpdateIndexPath: IndexPath? = nil
@@ -73,26 +71,16 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
         if (self.shouldReload == true) {
             self.tableView?.reloadData()
         } else {
-            CATransaction.begin()
-            CATransaction.setCompletionBlock({ () -> Void in
-                // This block runs after the animations between CATransaction.begin
-                // and CATransaction.commit are finished.
-                self.kreDelegate?.fetchedControllerDidEndAnimation()
-            })
-            
-            let animation: UITableViewRowAnimation = self.animateChanges ? .fade : .none
             self.tableView?.beginUpdates()
             
-            self.tableView?.deleteSections(self.deletedSectionIndexes!, with: animation)
-            self.tableView?.insertSections(self.insertedSectionIndexes!, with: animation)
+            self.tableView?.deleteSections(self.deletedSectionIndexes!, with: .fade)
+            self.tableView?.insertSections(self.insertedSectionIndexes!, with: .fade)
 
-            self.tableView?.deleteRows(at: self.deletedRowIndexPaths!, with: animation)
-            self.tableView?.insertRows(at: self.insertedRowIndexPaths!, with: animation)
-            self.tableView?.reloadRows(at: self.updatedRowIndexPaths!, with: animation)
+            self.tableView?.deleteRows(at: self.deletedRowIndexPaths!, with: .fade)
+            self.tableView?.insertRows(at: self.insertedRowIndexPaths!, with: .top)
+            self.tableView?.reloadRows(at: self.updatedRowIndexPaths!, with: .automatic)
 
             self.tableView?.endUpdates()
-            
-            CATransaction.commit()
             
             self.kreDelegate?.fetchedControllerDidChangeContent()
             clearSectionsAndRowsCache()
@@ -163,7 +151,6 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
     
     // MARK:- deinit
     deinit {
-//        NSLog("KREFetchedResultsController dealloc")
         clearSectionsAndRowsCache()
         self.kreDelegate = nil
         self.tableView = nil
