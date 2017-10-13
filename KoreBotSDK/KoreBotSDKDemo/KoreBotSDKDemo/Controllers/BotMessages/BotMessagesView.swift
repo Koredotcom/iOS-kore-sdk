@@ -160,6 +160,11 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         case .text:
             let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
             self.textLinkDetection(textLabel: bubbleView.textLabel)
+            
+            bubbleView.onChange = { [weak self](reload) in
+                self?.tableView.reloadRows(at: [indexPath], with: .none)
+            }
+            
             break
         case .image:
             break

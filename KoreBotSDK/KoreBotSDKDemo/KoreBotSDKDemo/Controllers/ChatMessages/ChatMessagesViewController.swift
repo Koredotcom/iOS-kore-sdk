@@ -407,7 +407,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 }else if text != "" {
                     let textComponent: TextComponent = TextComponent()
                     textComponent.text = text as NSString!
-                    ttsBody = text
                     
                     message.addComponent(textComponent)
                 }

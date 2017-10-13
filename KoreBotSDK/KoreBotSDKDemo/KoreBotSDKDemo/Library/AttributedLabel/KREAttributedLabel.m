@@ -248,6 +248,7 @@
     NSString *originalString = sString;
     NSString *string = [KREUtilities getHTMLStrippedStringFromString:sString];
     NSMutableAttributedString *attributedString = [[self.markdownParser attributedStringFromMarkdown:string] mutableCopy];
+    string = attributedString.string;
     
     //initialize layout manager
     NSMutableAttributedString *layoutManagerString = [attributedString mutableCopy];
