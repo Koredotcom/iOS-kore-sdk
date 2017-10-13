@@ -324,19 +324,25 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     let templateType: String = dictionary["template_type"] as! String
                     
                     if (templateType == "quick_replies") {
+                        
                         ttsBody = dictionary["text"] as? String
+                        
                         let quickRepliesComponent: QuickRepliesComponent = QuickRepliesComponent()
                         quickRepliesComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                         
                         message.addComponent(quickRepliesComponent)
                     } else if (templateType == "button") {
+                        
                         ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : dictionary["text"] as? String
+                        
                         let optionsComponent: OptionsComponent = OptionsComponent()
                         optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                         
                         message.addComponent(optionsComponent)
                     }else if (templateType == "list") {
+                        
                         ttsBody = dictionary["text"] as? String
+                        
                         let optionsComponent: ListComponent = ListComponent()
                         optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                         
@@ -349,26 +355,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         message.addComponent(carouselComponent)
                     }else if (templateType == "piechart") {
                         
-                        let text: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
+                        let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
                         ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
                         
-                        textMessage = Message()
-                        textMessage?.messageType = .reply
-                        textMessage?.sentDate = Date()
-                        if (object?.iconUrl != nil) {
-                            textMessage?.iconUrl = object?.iconUrl
-                        }
-                        
-                        let textComponent: TextComponent = TextComponent()
-                        textComponent.text = text as NSString!
-                        textMessage?.addComponent(textComponent)
-                        
-                        let piechartComponent: PiechartComponent = PiechartComponent()
-                        piechartComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                        message.sentDate = Date()
-                        message.addComponent(piechartComponent)
-                    }else if (templateType == "table") {
-                        if (text.characters.count > 0) {
+                        if tText.characters.count > 0 {
                             textMessage = Message()
                             textMessage?.messageType = .reply
                             textMessage?.sentDate = Date()
@@ -377,7 +367,29 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                             }
                             
                             let textComponent: TextComponent = TextComponent()
-                            textComponent.text = text as NSString!
+                            textComponent.text = tText as NSString!
+                            textMessage?.addComponent(textComponent)
+                        }
+                        
+                        let piechartComponent: PiechartComponent = PiechartComponent()
+                        piechartComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = Date()
+                        message.addComponent(piechartComponent)
+                    }else if (templateType == "table") {
+
+                        let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
+                        ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
+                        
+                        if (tText.characters.count > 0) {
+                            textMessage = Message()
+                            textMessage?.messageType = .reply
+                            textMessage?.sentDate = Date()
+                            if (object?.iconUrl != nil) {
+                                textMessage?.iconUrl = object?.iconUrl
+                            }
+                            
+                            let textComponent: TextComponent = TextComponent()
+                            textComponent.text = tText as NSString!
                             textMessage?.addComponent(textComponent)
                         }
                         let tableComponent: TableComponent = TableComponent()
