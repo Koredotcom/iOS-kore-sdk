@@ -54,6 +54,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.delegate = self
         self.addSubview(self.tableView)
         
+        self.tableView.contentInset = UIEdgeInsetsMake(0.0, 0.0, 20.0, 0.0)
         self.tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[tableView]|", options:[], metrics:nil, views:["tableView" : self.tableView]))
