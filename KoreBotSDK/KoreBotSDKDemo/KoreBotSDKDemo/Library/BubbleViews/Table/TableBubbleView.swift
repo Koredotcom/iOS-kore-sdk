@@ -26,7 +26,6 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
     
     override func initialize() {
         super.initialize()
-        self.needDateLabel = false
         
         let collectionViewLayout = UICollectionViewFlowLayout()
         self.collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewLayout)

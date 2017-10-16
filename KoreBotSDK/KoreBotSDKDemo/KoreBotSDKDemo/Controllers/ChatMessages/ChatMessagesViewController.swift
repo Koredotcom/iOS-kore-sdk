@@ -184,6 +184,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.audioComposeContainerHeightConstraint.isActive = false
         
         self.audioComposeView.voiceRecordingStarted = { [weak self] (composeBar) in
+            self?.stopTTS()
             self?.sttClient.start()
         }
         self.audioComposeView.voiceRecordingStopped = { [weak self] (composeBar) in
@@ -601,6 +602,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func speechToTextButtonAction() {
         self.configureViewForKeyboard(false)
         _ = self.composeView.resignFirstResponder()
+        self.stopTTS()
         self.audioComposeView.startRecording()
         
         let options = UIViewAnimationOptions(rawValue: UInt(7 << 16))

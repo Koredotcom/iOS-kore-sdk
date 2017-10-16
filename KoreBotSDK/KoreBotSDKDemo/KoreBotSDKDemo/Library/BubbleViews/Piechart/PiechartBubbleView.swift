@@ -27,7 +27,6 @@ class PiechartBubbleView: BubbleView {
     
     override func initialize() {
         super.initialize()
-        self.needDateLabel = false
         
         self.pcView = PieChartView()
         self.pcView.translatesAutoresizingMaskIntoConstraints = false

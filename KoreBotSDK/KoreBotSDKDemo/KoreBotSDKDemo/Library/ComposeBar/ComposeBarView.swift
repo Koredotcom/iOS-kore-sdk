@@ -90,12 +90,12 @@ class ComposeBarView: UIView {
         self.addSubview(self.speechToTextButton)
         
         self.topLineView = UIView.init(frame: CGRect.zero)
-        self.topLineView.backgroundColor = .white// Common.UIColorRGB(0xD7D9DA)
+        self.topLineView.backgroundColor = .clear
         self.topLineView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.topLineView)
         
         self.bottomLineView = UIView.init(frame: CGRect.zero)
-        self.bottomLineView.backgroundColor = .white// Common.UIColorRGB(0xD7D9DA)
+        self.bottomLineView.backgroundColor = .clear
         self.bottomLineView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.bottomLineView)
         

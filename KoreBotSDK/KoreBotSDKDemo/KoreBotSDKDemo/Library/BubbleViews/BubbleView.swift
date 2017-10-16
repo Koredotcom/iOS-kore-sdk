@@ -42,7 +42,6 @@ class BubbleView: UIView {
     }
     
     var drawBorder: Bool = false
-    var needDateLabel: Bool = true
     
     // MARK: init
     init() {
