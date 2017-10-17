@@ -95,7 +95,7 @@ class ListBubbleView: BubbleView {
     //MARK: View height calculation
     override var intrinsicContentSize : CGSize {
         let height = self.optionsView.getExpectedHeight(width: BubbleViewMaxWidth)
-        let viewSize:CGSize = CGSize(width: BubbleViewMaxWidth, height: height + 2.0)
+        let viewSize:CGSize = CGSize(width: BubbleViewMaxWidth, height: height)
         return viewSize;
     }
 }
