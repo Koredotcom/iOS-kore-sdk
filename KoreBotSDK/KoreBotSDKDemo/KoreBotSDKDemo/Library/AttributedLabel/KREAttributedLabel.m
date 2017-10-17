@@ -278,6 +278,18 @@
     }];
     //end
     
+    // get link attributes
+    [attributedString enumerateAttribute:NSLinkAttributeName inRange:NSMakeRange(0, [string length]) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+        if (value != NULL) {
+            CGRect pos = [layoutManager boundingRectForCharacterRange:range];
+            [_touchableWords addObject:[value absoluteString]];
+            [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
+            [_touchableLocations addObject:[NSValue valueWithCGRect:pos]];
+            [weakSelf addTouchableLayerWithRect:pos];
+        }
+    }];
+    //end
+    
     // get URL links from the string
     regex = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink|NSTextCheckingTypePhoneNumber error:nil];
     result = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
