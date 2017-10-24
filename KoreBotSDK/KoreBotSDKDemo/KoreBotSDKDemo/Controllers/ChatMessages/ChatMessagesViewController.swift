@@ -739,10 +739,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
     }
     
-    //MARK :- TTS Functionality
+    // MARK: TTS Functionality
     func startSpeaking(notification:Notification) {
         if(isSpeakingEnabled){
-            let string: String = notification.object! as! String
+            var string: String = notification.object! as! String
+            string = KREUtilities.getHTMLStrippedString(from: string)
             self.readOutText(text: string)
         }
     }

@@ -34,10 +34,17 @@
     
     //replace <br> or <br/> characters with newline charcater
     NSRegularExpression *regex = [NSRegularExpression
-                                  regularExpressionWithPattern:@"(<br/>)|(<br>|<br />)"
+                                  regularExpressionWithPattern:@"(<br/>|<br>|<br />)"
                                   options:NSRegularExpressionCaseInsensitive
                                   error:NULL];
     [regex replaceMatchesInString:str options:0 range:NSMakeRange(0, [str length]) withTemplate:@"\n"];
+    
+    //replace <b> or </b> characters with newline charcater
+    regex = [NSRegularExpression
+             regularExpressionWithPattern:@"(<b>|</b>)"
+             options:NSRegularExpressionCaseInsensitive
+             error:NULL];
+    [regex replaceMatchesInString:str options:0 range:NSMakeRange(0, [str length]) withTemplate:@"*"];
     
     //filtering all other html characters
     regex = [NSRegularExpression
