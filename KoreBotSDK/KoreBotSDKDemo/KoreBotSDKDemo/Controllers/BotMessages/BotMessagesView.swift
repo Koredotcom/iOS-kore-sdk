@@ -54,7 +54,6 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.delegate = self
         self.addSubview(self.tableView)
         
-        self.tableView.contentInset = UIEdgeInsetsMake(0.0, 0.0, 20.0, 0.0)
         self.tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[tableView]|", options:[], metrics:nil, views:["tableView" : self.tableView]))
@@ -261,13 +260,13 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         label.transform = CGAffineTransform(scaleX: 1, y: -1)
         label.text = dateString
         label.textAlignment = .center
-        label.textColor = UIColor.white.withAlphaComponent(0.5)
+        label.textColor = UIColor.white.withAlphaComponent(0.8)
         label.font = UIFont(name: "HelveticaNeue", size: 13)
         return label
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0.0
+        return 5.0
     }
     
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

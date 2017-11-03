@@ -524,7 +524,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let durationValue = keyboardUserInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
         let duration = durationValue.doubleValue
         
-        self.bottomConstraint.constant = keyboardFrameEnd.size.height
+        var keyboardHeight = keyboardFrameEnd.size.height;
+        if #available(iOS 11.0, *) {
+            keyboardHeight -= self.view.safeAreaInsets.bottom
+        } else {
+            // Fallback on earlier versions
+        };
+        self.bottomConstraint.constant = keyboardHeight
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
             self.view.layoutIfNeeded()
         }, completion: { (Bool) in
@@ -680,11 +686,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func updateQuickSelectViewConstraints() {
         if self.quickSelectContainerHeightConstraint.constant == 60.0 {return}
         
-        var contentInset = self.botMessagesView.tableView.contentInset
-        contentInset.bottom = 60
-        self.botMessagesView.tableView.contentInset = contentInset
         self.quickSelectContainerHeightConstraint.constant = 60.0
-        
         UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
             self.view.layoutIfNeeded()
         }) { (Bool) in
@@ -695,11 +697,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func closeQuickSelectViewConstraints() {
         if self.quickSelectContainerHeightConstraint.constant == 0.0 {return}
 
-        var contentInset = self.botMessagesView.tableView.contentInset
-        contentInset.bottom = 0
-        self.botMessagesView.tableView.contentInset = contentInset
         self.quickSelectContainerHeightConstraint.constant = 0.0
-        
         UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: {
             self.view.layoutIfNeeded()
         }) { (Bool) in
