@@ -48,7 +48,7 @@ class OptionsBubbleView: BubbleView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[textLabel]-10-|", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[optionsView]|", options: [], metrics: nil, views: views))
         
-        self.textLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: UILayoutConstraintAxis.vertical)
+        self.textLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
         
         self.optionsView.optionsButtonAction = {[weak self] (text) in
             if((self?.optionsAction) != nil){
@@ -86,8 +86,8 @@ class OptionsBubbleView: BubbleView {
                 var headerText: String = jsonObject["text"] != nil ? jsonObject["text"] as! String : ""
                 headerText = KREUtilities.formatHTMLEscapedString(headerText);
                 
-                if(headerText.characters.count > OptionsBubbleView.headerTextLimit){
-                    headerText = headerText.substring(to: headerText.index(headerText.startIndex, offsetBy: OptionsBubbleView.headerTextLimit)) + "..."
+                if(headerText.count > OptionsBubbleView.headerTextLimit){
+                    headerText = String(headerText[..<headerText.index(headerText.startIndex, offsetBy: OptionsBubbleView.headerTextLimit)]) + "..."
                 }
                 self.textLabel.setHTMLString(headerText, withWidth: BubbleViewMaxWidth - 20)
             }

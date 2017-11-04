@@ -359,7 +359,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
                         ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
                         
-                        if tText.characters.count > 0 {
+                        if tText.count > 0 {
                             textMessage = Message()
                             textMessage?.messageType = .reply
                             textMessage?.sentDate = Date()
@@ -381,7 +381,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
                         ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
                         
-                        if (tText.characters.count > 0) {
+                        if (tText.count > 0) {
                             textMessage = Message()
                             textMessage?.messageType = .reply
                             textMessage?.sentDate = Date()
@@ -517,7 +517,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     // MARK: notification handlers
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let keyboardUserInfo: NSDictionary = NSDictionary(dictionary: (notification as NSNotification).userInfo!)
         let keyboardFrameEnd: CGRect = ((keyboardUserInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue?)!.cgRectValue)
         let options = UIViewAnimationOptions(rawValue: UInt((keyboardUserInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
@@ -538,7 +538,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         })
     }
     
-    func keyboardWillHide(_ notification: Notification) {
+    @objc func keyboardWillHide(_ notification: Notification) {
         let keyboardUserInfo: NSDictionary = NSDictionary(dictionary: (notification as NSNotification).userInfo!)
         let durationValue = keyboardUserInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
         let duration = durationValue.doubleValue
@@ -552,21 +552,21 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         })
     }
     
-    func keyboardDidShow(_ notification: Notification) {
+    @objc func keyboardDidShow(_ notification: Notification) {
         if (self.tapToDismissGestureRecognizer == nil) {
             self.tapToDismissGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(ChatMessagesViewController.dismissKeyboard(_:)))
             self.botMessagesView.addGestureRecognizer(tapToDismissGestureRecognizer)
         }
     }
     
-    func keyboardDidHide(_ notification: Notification) {
+    @objc func keyboardDidHide(_ notification: Notification) {
         if (self.tapToDismissGestureRecognizer != nil) {
             self.botMessagesView.removeGestureRecognizer(tapToDismissGestureRecognizer)
             self.tapToDismissGestureRecognizer = nil
         }
     }
     
-    func dismissKeyboard(_ gesture: UITapGestureRecognizer) {
+    @objc func dismissKeyboard(_ gesture: UITapGestureRecognizer) {
         if (self.composeView.isFirstResponder) {
             _ = self.composeView.resignFirstResponder()
         }
@@ -640,7 +640,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func linkButtonTapAction(urlString: String) {
-        if (urlString.characters.count > 0) {
+        if (urlString.count > 0) {
             let url: URL = URL(string: urlString)!
             let webViewController: TOWebViewController = TOWebViewController(url: url)
             let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
@@ -738,7 +738,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     // MARK: TTS Functionality
-    func startSpeaking(notification:Notification) {
+    @objc func startSpeaking(notification:Notification) {
         if(isSpeakingEnabled){
             var string: String = notification.object! as! String
             string = KREUtilities.getHTMLStrippedString(from: string)
@@ -746,7 +746,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
     }
     
-    func stopSpeaking(notification:Notification) {
+    @objc func stopSpeaking(notification:Notification) {
         self.stopTTS()
     }
     

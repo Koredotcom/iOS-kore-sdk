@@ -37,7 +37,7 @@ class ListBubbleView: BubbleView {
             }
         }
         self.optionsView.detailLinkAction = {[weak self] (text) in
-            if (self?.linkAction != nil && (text?.characters.count)! > 0) {
+            if (self?.linkAction != nil && ((text?.count) != nil)) {
                 self?.linkAction(text)
             }
         }

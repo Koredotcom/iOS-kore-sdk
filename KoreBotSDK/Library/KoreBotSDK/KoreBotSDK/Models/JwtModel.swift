@@ -10,7 +10,7 @@ import UIKit
 import Mantle
 
 open class JwtModel: MTLModel, MTLJSONSerializing {
-    open var jwtToken: String?
+    @objc open var jwtToken: String?
     
     // MARK: MTLJSONSerializing methods
     open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {

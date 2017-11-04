@@ -54,7 +54,7 @@ class InputTOWebViewController: UIViewController {
         self.add(asChildViewController: webViewController)
     }
     
-    func handleTap(_ sender: UITapGestureRecognizer) {
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
         dismiss(animated: true, completion: nil)
     }
     

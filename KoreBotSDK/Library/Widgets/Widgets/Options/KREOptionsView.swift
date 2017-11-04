@@ -242,7 +242,7 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
                 let cell:KREListTableViewCell = self.tableView(optionsTableView, cellForRowAt: IndexPath(row: options.index(of: option)!, section: 0)) as! KREListTableViewCell
                 var fittingSize = UILayoutFittingCompressedSize
                 fittingSize.width = width
-                let size = cell.systemLayoutSizeFitting(fittingSize, withHorizontalFittingPriority: 1000, verticalFittingPriority: 250)
+                let size = cell.systemLayoutSizeFitting(fittingSize, withHorizontalFittingPriority: UILayoutPriority(rawValue: 1000), verticalFittingPriority: UILayoutPriority(rawValue: 250))
                 height += size.height
             }
         }

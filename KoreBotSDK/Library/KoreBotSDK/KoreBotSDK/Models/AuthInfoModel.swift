@@ -11,19 +11,19 @@ import Mantle
 
 open class AuthInfoModel : MTLModel, MTLJSONSerializing {
     // MARK: properties
-    open var identity: String?
-    open var resourceOwnerID: String?
-    open var orgID: String?
-    open var clientID: String?
-    open var sesId: String?
-    open var accountId: String?
-    open var managedBy: String?
-    open var accessToken: String?
-    open var refreshToken: String?
-    open var tokenType: String?
-    open var expiresDate: Date?
-    open var refreshExpiresDate: Date?
-    open var issuedDate: Date?
+    @objc open var identity: String?
+    @objc open var resourceOwnerID: String?
+    @objc open var orgID: String?
+    @objc open var clientID: String?
+    @objc open var sesId: String?
+    @objc open var accountId: String?
+    @objc open var managedBy: String?
+    @objc open var accessToken: String?
+    @objc open var refreshToken: String?
+    @objc open var tokenType: String?
+    @objc open var expiresDate: Date?
+    @objc open var refreshExpiresDate: Date?
+    @objc open var issuedDate: Date?
     
     // MARK: MTLJSONSerializing methods
     open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {

@@ -10,7 +10,7 @@ import UIKit
 import Mantle
 
 open class BotInfoModel: MTLModel, MTLJSONSerializing {
-    open var botUrl: String?
+    @objc open var botUrl: String?
     
     // MARK: MTLJSONSerializing methods
     open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {

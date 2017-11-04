@@ -48,7 +48,7 @@ class ComposeBarView: UIView {
         self.growingTextView = KREGrowingTextView.init(frame: CGRect.zero)
         self.growingTextView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.growingTextView)
-        self.growingTextView.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .horizontal)
+        self.growingTextView.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .horizontal)
         
         self.growingTextView.textView.tintColor = .white
         self.growingTextView.textView.textColor = .white
@@ -60,7 +60,7 @@ class ComposeBarView: UIView {
         self.growingTextView.backgroundColor = .clear
         self.growingTextView.isUserInteractionEnabled = false
         
-        let attributes: [String : Any] = [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 14.0)!, NSForegroundColorAttributeName: Common.UIColorRGB(0xB5B9BA)]
+        let attributes: [NSAttributedStringKey : Any] = [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 14.0)!, NSAttributedStringKey.foregroundColor: Common.UIColorRGB(0xB5B9BA)]
         self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Say Something...", attributes:attributes)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidBeginEditingNotification(_ :)), name: NSNotification.Name.UITextViewTextDidBeginEditing, object: self.growingTextView.textView)
@@ -112,10 +112,10 @@ class ComposeBarView: UIView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[sendButton]-6-|", options:[], metrics:nil, views:views))
         self.addConstraint(NSLayoutConstraint.init(item: self.sendButton, attribute: .centerY, relatedBy: .equal, toItem: self.speechToTextButton, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         self.addConstraint(NSLayoutConstraint.init(item: self.sendButton, attribute: .height, relatedBy: .equal, toItem: self.speechToTextButton, attribute: .height, multiplier: 1.0, constant: 0.0))
-        self.speechToTextButton.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
-        self.speechToTextButton.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .vertical)
-        self.speechToTextButton.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .horizontal)
-        self.speechToTextButton.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .vertical)
+        self.speechToTextButton.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .horizontal)
+        self.speechToTextButton.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .vertical)
+        self.speechToTextButton.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .horizontal)
+        self.speechToTextButton.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .vertical)
         
         self.textViewTrailingConstraint = NSLayoutConstraint.init(item: self, attribute: .trailing, relatedBy: .equal, toItem: self.growingTextView, attribute: .trailing, multiplier: 1.0, constant: 15.0)
         self.addConstraint(self.textViewTrailingConstraint)
@@ -151,7 +151,7 @@ class ComposeBarView: UIView {
         text = text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         
         // is there any text?
-        if ((text?.characters.count)! > 0) {
+        if ((text?.count)! > 0) {
             self.delegate?.composeBarView(self, sendButtonAction: text!)
         }
     }
@@ -161,7 +161,7 @@ class ComposeBarView: UIView {
     }
     
     fileprivate func valueChanged() {
-        let hasText = self.growingTextView.textView.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).characters.count > 0
+        let hasText = self.growingTextView.textView.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).count > 0
         self.sendButton.isEnabled = hasText
         if self.isKeyboardEnabled {
             self.sendButton.isHidden = !hasText

@@ -12,12 +12,12 @@ import Mantle
 open class UserModel: MTLModel, MTLJSONSerializing {
     
     // MARK: properties
-    open var userId: String?
-    open var resourceOwnerID: String?
-    open var enrollType: String?
-    open var orgID: String?
-    open var emailId: String?
-    open var identity: String?
+    @objc open var userId: String?
+    @objc open var resourceOwnerID: String?
+    @objc open var enrollType: String?
+    @objc open var orgID: String?
+    @objc open var emailId: String?
+    @objc open var identity: String?
 
     // MARK: MTLJSONSerializing methods
     open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {

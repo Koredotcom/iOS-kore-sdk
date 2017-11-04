@@ -34,12 +34,12 @@ class MessageBubbleCell : UITableViewCell {
         }
         set {
             if (tailPosition == .left) {
-                self.bubbleLeadingConstraint.priority = 999
-                self.bubbleTrailingConstraint.priority = 1
+                self.bubbleLeadingConstraint.priority = UILayoutPriority.defaultHigh
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultLow
                 self.senderImageView.isHidden = false
             } else {
-                self.bubbleLeadingConstraint.priority = 1
-                self.bubbleTrailingConstraint.priority = 999
+                self.bubbleLeadingConstraint.priority = UILayoutPriority.defaultLow
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
                 self.senderImageView.isHidden = true
             }
             
@@ -80,13 +80,6 @@ class MessageBubbleCell : UITableViewCell {
         self.bubbleContainerView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(self.bubbleContainerView)
         
-        // Setting content Priorities
-        self.senderImageView.setContentHuggingPriority(251, for:.horizontal)
-        self.senderImageView.setContentCompressionResistancePriority(751, for:.horizontal)
-        
-        self.bubbleContainerView.setContentHuggingPriority(250, for:.horizontal)
-        self.bubbleContainerView.setContentCompressionResistancePriority(750, for:.horizontal)
-        
         // Setting Constraints
         let views: [String: UIView] = ["senderImageView": senderImageView, "bubbleContainerView": bubbleContainerView]
         
@@ -95,11 +88,11 @@ class MessageBubbleCell : UITableViewCell {
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[bubbleContainerView]", options:[], metrics:nil, views:views))
 
         self.bubbleBottomConstraint = NSLayoutConstraint(item:self.contentView, attribute:.bottom, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.bottom, multiplier:1.0, constant:4.0)
-        self.bubbleBottomConstraint.priority = 999
+        self.bubbleBottomConstraint.priority = UILayoutPriority.defaultHigh
         self.bubbleLeadingConstraint = NSLayoutConstraint(item:self.bubbleContainerView, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier:1.0, constant:45.0)
-        self.bubbleLeadingConstraint.priority = 999
+        self.bubbleLeadingConstraint.priority = UILayoutPriority.defaultHigh
         self.bubbleTrailingConstraint = NSLayoutConstraint(item:self.contentView, attribute:.trailing, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.trailing, multiplier:1.0, constant:16.0)
-        self.bubbleTrailingConstraint.priority = 1
+        self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultLow
         
         self.contentView.addConstraints([self.bubbleTrailingConstraint, self.bubbleLeadingConstraint, self.bubbleBottomConstraint])
     }
@@ -199,7 +192,7 @@ class OptionsBubbleCell : MessageBubbleCell {
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
             self.bubbleTrailingConstraint.constant = 45
-            self.bubbleTrailingConstraint.priority = 999
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
 }
@@ -212,7 +205,7 @@ class ListBubbleCell : MessageBubbleCell {
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
             self.bubbleTrailingConstraint.constant = 45
-            self.bubbleTrailingConstraint.priority = 999
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
 }
@@ -226,7 +219,7 @@ class CarouselBubbleCell : MessageBubbleCell {
         didSet {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
-            self.bubbleTrailingConstraint.priority = 999
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
 }
@@ -240,7 +233,7 @@ class PiechartBubbleCell : MessageBubbleCell {
         didSet {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
-            self.bubbleTrailingConstraint.priority = 999
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
     
@@ -259,7 +252,7 @@ class TableBubbleCell : MessageBubbleCell {
         didSet {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
-            self.bubbleTrailingConstraint.priority = 999
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
     

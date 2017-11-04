@@ -64,7 +64,7 @@ class AppLaunchViewController: UIViewController {
             identity = SDKConfiguration.botConfig.identity
         }
         
-        if clientId.indexOfCharacter(char: "<") == -1 && clientSecret.indexOfCharacter(char: "<") == -1 && chatBotName.indexOfCharacter(char: "<") == -1 && botId.indexOfCharacter(char: "<") == -1 && identity.indexOfCharacter(char: "<") == -1 {
+        if !clientId.hasPrefix("<") && !clientSecret.hasPrefix("<") && !chatBotName.hasPrefix("<") && !botId.hasPrefix("<") && !identity.hasPrefix("<") {
             let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
             activityIndicatorView.center = view.center
             view.addSubview(activityIndicatorView)
@@ -86,7 +86,7 @@ class AppLaunchViewController: UIViewController {
                     print(thread.threadId!)
                     
                     let botClient: BotClient = BotClient(botInfoParameters: botInfo)
-                    if (ServerConfigs.BOT_SERVER.characters.count > 0) {
+                    if (ServerConfigs.BOT_SERVER.count > 0) {
                         botClient.setKoreBotServerUrl(url: ServerConfigs.BOT_SERVER)
                     }
                     botClient.connectWithJwToken(jwToken, success: { [weak self] (client) in
@@ -177,14 +177,5 @@ class AppLaunchViewController: UIViewController {
     func getUUID() -> String {
         let date: Date = Date()
         return String(format: "email%ld%@", date.timeIntervalSince1970, "@domain.com")
-    }
-}
-
-extension String {
-    public func indexOfCharacter(char: Character) -> Int? {
-        if let idx = characters.index(of: char) {
-            return characters.distance(from: startIndex, to: idx)
-        }
-        return -1
     }
 }

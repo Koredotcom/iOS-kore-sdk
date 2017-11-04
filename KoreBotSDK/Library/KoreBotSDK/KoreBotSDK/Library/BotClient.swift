@@ -36,9 +36,9 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     fileprivate(set) var reconnectAttempts = 3
     fileprivate var reconnectTimer: Timer!
     
-    open var connectionWillOpen: ((Void) -> Void)!
-    open var connectionDidOpen: ((Void) -> Void)!
-    open var connectionReady: ((Void) -> Void)!
+    open var connectionWillOpen: (() -> Void)!
+    open var connectionDidOpen: (() -> Void)!
+    open var connectionReady: (() -> Void)!
     open var connectionDidClose: ((Int, String) -> Void)!
     open var connectionDidFailWithError: ((NSError) -> Void)!
     open var onMessage: ((BotMessageModel?) -> Void)!
@@ -90,7 +90,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         }
     }
     
-    open func reconnect() {
+    @objc open func reconnect() {
         if self.reconnecting == false && self.isNetworkAvailable {
             self.reconnecting = true
             self.connectionState = .CONNECTING
@@ -129,7 +129,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             }, failure: { (error) in
                 self.reconnecting = false
                 if (self.failureClosure != nil) {
-                    self.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as! [AnyHashable : Any]?))
+                    self.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as! [AnyHashable : Any]? as! [String : Any]))
                 }
             })
         } else {

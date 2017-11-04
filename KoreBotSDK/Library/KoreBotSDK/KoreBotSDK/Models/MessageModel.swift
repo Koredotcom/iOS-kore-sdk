@@ -11,11 +11,11 @@ import Mantle
 
 open class MessageModel: MTLModel, MTLJSONSerializing {
     // MARK: properties
-    open var type: String?
-    open var clientId: String?
-    open var component: ComponentModel?
-    open var cInfo: NSDictionary?
-    open var botInfo: AnyObject?
+    @objc open var type: String?
+    @objc open var clientId: String?
+    @objc open var component: ComponentModel?
+    @objc open var cInfo: NSDictionary?
+    @objc open var botInfo: AnyObject?
     
     // MARK: MTLJSONSerializing methods
     open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
@@ -23,17 +23,17 @@ open class MessageModel: MTLModel, MTLJSONSerializing {
                 "component":"component",
                 "cInfo":"cInfo"]
     }
-    open static func componentJSONTransformer() -> ValueTransformer {
+    @objc open static func componentJSONTransformer() -> ValueTransformer {
         return ValueTransformer.mtl_JSONDictionaryTransformer(withModelClass: ComponentModel.self)
     }
 }
 
 open class BotMessageModel: MTLModel, MTLJSONSerializing {
     // MARK: properties
-    open var type: String?
-    open var iconUrl: String?
-    open var messages: Array<MessageModel> = [MessageModel]()
-    open var createdOn: Date?
+    @objc open var type: String?
+    @objc open var iconUrl: String?
+    @objc open var messages: Array<MessageModel> = [MessageModel]()
+    @objc open var createdOn: Date?
 
     // MARK: MTLJSONSerializing methods
     open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
@@ -43,11 +43,11 @@ open class BotMessageModel: MTLModel, MTLJSONSerializing {
                 "createdOn":"createdOn"]
     }
     
-    open static func messagesJSONTransformer() -> ValueTransformer {
+    @objc open static func messagesJSONTransformer() -> ValueTransformer {
         return ValueTransformer.mtl_JSONArrayTransformer(withModelClass: MessageModel.self)
     }
     
-    open static func createdOnJSONTransformer() -> ValueTransformer {
+    @objc open static func createdOnJSONTransformer() -> ValueTransformer {
         return MTLValueTransformer.reversibleTransformer(forwardBlock: { (dateString) in
             return self.dateFormatter().date(from: dateString as! String)
             }, reverse: { (date) in
@@ -65,8 +65,8 @@ open class BotMessageModel: MTLModel, MTLJSONSerializing {
 
 open class Ack: MTLModel, MTLJSONSerializing {
     // MARK: properties
-    open var status: Bool = false
-    open var clientId: String?
+    @objc open var status: Bool = false
+    @objc open var clientId: String?
     
     // MARK: MTLJSONSerializing methods
     open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
