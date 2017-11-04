@@ -56,6 +56,7 @@ class MessageBubbleCell : UITableViewCell {
 
     func initialize() {
         self.selectionStyle = .none
+        self.clipsToBounds = true
         self.contentView.transform = CGAffineTransform(scaleX: 1, y: -1)
 
         // Create the sender imageView
@@ -97,8 +98,8 @@ class MessageBubbleCell : UITableViewCell {
         self.contentView.addConstraints([self.bubbleTrailingConstraint, self.bubbleLeadingConstraint, self.bubbleBottomConstraint])
     }
 
-    func bubbleType() -> BubbleType {
-        return BubbleType.view
+    func bubbleType() -> ComponentType {
+        return .text
     }
 
     static func setComponents(_ components: Array<KREComponent>, bubbleView: BubbleView) {
@@ -141,7 +142,7 @@ class MessageBubbleCell : UITableViewCell {
         return self.bubbleView.components
     }
     
-    func getEstimatedHeightForComponents(_ components: Array<KREComponent>, bubbleType:BubbleType) -> CGFloat {
+    func getEstimatedHeightForComponents(_ components: Array<KREComponent>, bubbleType:ComponentType) -> CGFloat {
         let bubbleView = BubbleView.bubbleWithType(bubbleType)
         bubbleView.components = components as NSArray!
         let height = bubbleView.intrinsicContentSize.height
@@ -161,32 +162,32 @@ class MessageBubbleCell : UITableViewCell {
 }
 
 class TextBubbleCell : MessageBubbleCell {
-    override func bubbleType() -> BubbleType {
-        return BubbleType.text
+    override func bubbleType() -> ComponentType {
+        return .text
     }
 }
 
 class QuickReplyBubbleCell : MessageBubbleCell {
-    override func bubbleType() -> BubbleType {
-        return BubbleType.quickReply
+    override func bubbleType() -> ComponentType {
+        return .quickReply
     }
 }
 
 class ErrorBubbleCell : MessageBubbleCell {
-    override func bubbleType() -> BubbleType {
-        return BubbleType.error
+    override func bubbleType() -> ComponentType {
+        return .error
     }
 }
 
 class ImageBubbleCell : MessageBubbleCell {
-    override func bubbleType() -> BubbleType {
-        return BubbleType.image
+    override func bubbleType() -> ComponentType {
+        return .image
     }
 }
 
 class OptionsBubbleCell : MessageBubbleCell {
-    override func bubbleType() -> BubbleType {
-        return BubbleType.options
+    override func bubbleType() -> ComponentType {
+        return .options
     }
     
     override var tailPosition: BubbleMaskTailPosition {
@@ -198,8 +199,8 @@ class OptionsBubbleCell : MessageBubbleCell {
 }
 
 class ListBubbleCell : MessageBubbleCell {
-    override func bubbleType() -> BubbleType {
-        return BubbleType.list
+    override func bubbleType() -> ComponentType {
+        return .list
     }
     
     override var tailPosition: BubbleMaskTailPosition {
@@ -211,8 +212,8 @@ class ListBubbleCell : MessageBubbleCell {
 }
 
 class CarouselBubbleCell : MessageBubbleCell {
-    override func bubbleType() -> BubbleType {
-        return BubbleType.carousel
+    override func bubbleType() -> ComponentType {
+        return .carousel
     }
     
     override var tailPosition: BubbleMaskTailPosition {
@@ -225,8 +226,8 @@ class CarouselBubbleCell : MessageBubbleCell {
 }
 
 class PiechartBubbleCell : MessageBubbleCell {
-    override func bubbleType() -> BubbleType {
-        return BubbleType.piechart
+    override func bubbleType() -> ComponentType {
+        return .chart
     }
     
     override var tailPosition: BubbleMaskTailPosition {
@@ -244,8 +245,8 @@ class PiechartBubbleCell : MessageBubbleCell {
 }
 
 class TableBubbleCell : MessageBubbleCell {
-    override func bubbleType() -> BubbleType {
-        return BubbleType.table
+    override func bubbleType() -> ComponentType {
+        return .table
     }
     
     override var tailPosition: BubbleMaskTailPosition {

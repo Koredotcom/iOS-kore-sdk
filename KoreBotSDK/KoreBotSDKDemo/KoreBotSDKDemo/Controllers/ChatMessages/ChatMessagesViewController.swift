@@ -272,6 +272,23 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
     }
     
+    func getComponentType(_ templateType: String) -> ComponentType {
+        if (templateType == "quick_replies") {
+            return .quickReply
+        } else if (templateType == "button") {
+            return .options
+        }else if (templateType == "list") {
+            return .list
+        }else if (templateType == "carousel") {
+            return .carousel
+        }else if (templateType == "piechart") {
+            return .chart
+        }else if (templateType == "table") {
+            return .table
+        }
+        return .text
+    }
+    
     func onReceiveMessage(object: BotMessageModel?) {
         var textMessage: Message! = nil
         let message: Message = Message()
@@ -298,8 +315,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 
                 let payload: NSDictionary = componentModel.payload! as! NSDictionary
                 let text: NSString = payload["text"] as! NSString
-                let textComponent: TextComponent = TextComponent()
-                textComponent.text = text
+                let textComponent: Component = Component()
+                textComponent.payload = text
                 ttsBody = text as String
                 
                 if(text.contains("use a web form")){
@@ -314,102 +331,53 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     ttsBody = "Ok, Please fill in the details and submit"
                 }
                 message.addComponent(textComponent)
+                
             } else if (componentModel.type == "template") {
+                
                 let payload: NSDictionary = componentModel.payload! as! NSDictionary
                 let text: String = payload["text"] != nil ? payload["text"] as! String : ""
                 let type: String = payload["type"] != nil ? payload["type"] as! String : ""
                 ttsBody = payload["speech_hint"] != nil ? payload["speech_hint"] as? String : nil
                 
                 if(type == "template"){
+                    
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
                     let templateType: String = dictionary["template_type"] as! String
+                    let componentType = self.getComponentType(templateType)
                     
-                    if (templateType == "quick_replies") {
-                        
-                        ttsBody = dictionary["text"] as? String
-                        
-                        let quickRepliesComponent: QuickRepliesComponent = QuickRepliesComponent()
-                        quickRepliesComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                        
-                        message.addComponent(quickRepliesComponent)
-                    } else if (templateType == "button") {
-                        
-                        ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : dictionary["text"] as? String
-                        
-                        let optionsComponent: OptionsComponent = OptionsComponent()
-                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                        
-                        message.addComponent(optionsComponent)
-                    }else if (templateType == "list") {
-                        
-                        ttsBody = dictionary["text"] as? String
-                        
-                        let optionsComponent: ListComponent = ListComponent()
-                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                        
-                        message.addComponent(optionsComponent)
-                    }else if (templateType == "carousel") {
-                        
-                        let carouselComponent: CarouselComponent = CarouselComponent()
-                        carouselComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                        
-                        message.addComponent(carouselComponent)
-                    }else if (templateType == "piechart") {
-                        
-                        let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
-                        ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
-                        
-                        if tText.count > 0 {
-                            textMessage = Message()
-                            textMessage?.messageType = .reply
-                            textMessage?.sentDate = Date()
-                            if (object?.iconUrl != nil) {
-                                textMessage?.iconUrl = object?.iconUrl
-                            }
-                            
-                            let textComponent: TextComponent = TextComponent()
-                            textComponent.text = tText as NSString!
-                            textMessage?.addComponent(textComponent)
+                    let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
+                    ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
+                    
+                    if tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table) {
+                        textMessage = Message()
+                        textMessage?.messageType = .reply
+                        textMessage?.sentDate = Date()
+                        if (object?.iconUrl != nil) {
+                            textMessage?.iconUrl = object?.iconUrl
                         }
-                        
-                        let piechartComponent: PiechartComponent = PiechartComponent()
-                        piechartComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                        message.sentDate = Date()
-                        message.addComponent(piechartComponent)
-                    }else if (templateType == "table") {
-
-                        let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
-                        ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
-                        
-                        if (tText.count > 0) {
-                            textMessage = Message()
-                            textMessage?.messageType = .reply
-                            textMessage?.sentDate = Date()
-                            if (object?.iconUrl != nil) {
-                                textMessage?.iconUrl = object?.iconUrl
-                            }
-                            
-                            let textComponent: TextComponent = TextComponent()
-                            textComponent.text = tText as NSString!
-                            textMessage?.addComponent(textComponent)
-                        }
-                        let tableComponent: TableComponent = TableComponent()
-                        tableComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                        message.sentDate = Date()
-                        message.addComponent(tableComponent)
+                        let textComponent: Component = Component()
+                        textComponent.payload = tText as NSString!
+                        textMessage?.addComponent(textComponent)
                     }
+                    
+                    let optionsComponent: Component = Component(componentType)
+                    optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                    message.sentDate = Date()
+                    message.addComponent(optionsComponent)
+                    
                 }else if(type == "error"){
                     
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
-                    let errorComponent: ErrorComponent = ErrorComponent()
+                    let errorComponent: Component = Component(.error)
                     errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                    
                     message.addComponent(errorComponent)
-                }else if text != "" {
-                    let textComponent: TextComponent = TextComponent()
-                    textComponent.text = text as NSString!
                     
+                }else if text != "" {
+                    
+                    let textComponent: Component = Component()
+                    textComponent.payload = text as NSString!
                     message.addComponent(textComponent)
+                    
                 }
             }
             
@@ -580,8 +548,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if (composedMessage.components.count > 0) {
             let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
             dataStoreManager.createNewMessageIn(thread: self.thread, message: composedMessage, completionBlock: { (success) in
-                let textComponent: TextComponent = composedMessage.components[0] as! TextComponent
-                let text: String = textComponent.text as String
+                let textComponent: Component = composedMessage.components[0] as! Component
+                let text: String = textComponent.payload as String
                 if(self.botClient != nil){
                     self.botClient.sendMessage(text, options: [] as AnyObject)
                 }
@@ -594,8 +562,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let message: Message = Message()
         message.messageType = .default
         message.sentDate = Date()
-        let textComponent: TextComponent = TextComponent()
-        textComponent.text = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) as NSString!
+        let textComponent: Component = Component()
+        textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) as NSString!
         message.addComponent(textComponent)
         self.sendMessage(message)
     }
@@ -650,7 +618,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func populateQuickReplyCards(with message: KREMessage?) {
-        if (message?.templateType == 5) {
+        if message?.templateType == (ComponentType.quickReply.rawValue as NSNumber) {
             let component: KREComponent = message!.components![0] as! KREComponent
             if (!component.isKind(of: KREComponent.self)) {
                 return;

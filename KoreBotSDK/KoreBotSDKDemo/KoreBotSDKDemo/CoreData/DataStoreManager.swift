@@ -212,106 +212,14 @@ class DataStoreManager: NSObject {
             if (message.components.count > 0) {
                 let components: NSArray = message.components
                 for component in components as! [Component] {
-                    switch (component.componentType) {
-                        case .image:
-                            break
-                        case .options:
-                            let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
-                            let optionsComponent: OptionsComponent = component as! OptionsComponent
-                            
-                            nComponent.componentId = ""
-                            nComponent.componentDesc = optionsComponent.payload as String?
-                            nMessage.addComponentsObject(_value: nComponent)
-                            nComponent.message = nMessage
-                            nMessage.templateType = ComponentType.options.rawValue as NSNumber?
-                            nMessage.thread = thread
-                            thread.addToMessages(_value: nMessage)
-                            break
-                        case .quickReply:
-                            let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
-                            let textComponent: QuickRepliesComponent = component as! QuickRepliesComponent
-
-                            nComponent.componentId = ""
-                            nComponent.componentDesc = textComponent.payload as String?
-                            nMessage.addComponentsObject(_value: nComponent)
-                            nComponent.message = nMessage
-                            nMessage.templateType = ComponentType.quickReply.rawValue as NSNumber?
-                            nMessage.thread = thread
-                            thread.addToMessages(_value: nMessage)
-                            break
-                        case .list:
-                            let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
-                            let optionsComponent: ListComponent = component as! ListComponent
-                            
-                            nComponent.componentId = ""
-                            nComponent.componentDesc = optionsComponent.payload as String?
-                            nMessage.addComponentsObject(_value: nComponent)
-                            nComponent.message = nMessage
-                            nMessage.templateType = ComponentType.list.rawValue as NSNumber?
-                            nMessage.thread = thread
-                            thread.addToMessages(_value: nMessage)
-                            break
-                        case .carousel:
-                            let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
-                            let carouselComponent: CarouselComponent = component as! CarouselComponent
-                            
-                            nComponent.componentId = ""
-                            nComponent.componentDesc = carouselComponent.payload as String?
-                            nMessage.addComponentsObject(_value: nComponent)
-                            nComponent.message = nMessage
-                            nMessage.templateType = ComponentType.carousel.rawValue as NSNumber?
-                            nMessage.thread = thread
-                            thread.addToMessages(_value: nMessage)
-                            break
-                        case .error:
-                            let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
-                            let errorComponent: ErrorComponent = component as! ErrorComponent
-                            
-                            nComponent.componentId = ""
-                            nComponent.componentDesc = errorComponent.payload as String?
-                            nMessage.addComponentsObject(_value: nComponent)
-                            nComponent.message = nMessage
-                            nMessage.templateType = ComponentType.error.rawValue as NSNumber?
-                            nMessage.thread = thread
-                            thread.addToMessages(_value: nMessage)
-                            break
-                        case .piechart:
-                            let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
-                            let piechartComponent: PiechartComponent = component as! PiechartComponent
-                            
-                            nComponent.componentId = ""
-                            nComponent.componentDesc = piechartComponent.payload as String?
-                            nMessage.addComponentsObject(_value: nComponent)
-                            nComponent.message = nMessage
-                            nMessage.templateType = ComponentType.piechart.rawValue as NSNumber?
-                            nMessage.thread = thread
-                            thread.addToMessages(_value: nMessage)
-                            break
-                        case .table:
-                            let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
-                            let tableComponent: TableComponent = component as! TableComponent
-                            
-                            nComponent.componentId = ""
-                            nComponent.componentDesc = tableComponent.payload as String?
-                            nMessage.addComponentsObject(_value: nComponent)
-                            nComponent.message = nMessage
-                            nMessage.templateType = ComponentType.table.rawValue as NSNumber?
-                            nMessage.thread = thread
-                            thread.addToMessages(_value: nMessage)
-                            break
-                        default:
-                            let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
-                            let textComponent: TextComponent = component as! TextComponent
-
-                            nComponent.componentId = ""
-                            nComponent.componentDesc = textComponent.text as String?
-                            nMessage.addComponentsObject(_value: nComponent)
-                            nComponent.message = nMessage
-                            nMessage.templateType = ComponentType.text.rawValue as NSNumber?
-                            nMessage.thread = thread
-                            thread.addToMessages(_value: nMessage)
-                            break
-                    }
+                    let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
+                    nComponent.componentId = ""
+                    nComponent.componentDesc = component.payload as String?
+                    nMessage.addComponentsObject(_value: nComponent)
+                    nComponent.message = nMessage
+                    nMessage.templateType = component.componentType.rawValue as NSNumber?
+                    nMessage.thread = thread
+                    thread.addToMessages(_value: nMessage)
                 }
             }
 

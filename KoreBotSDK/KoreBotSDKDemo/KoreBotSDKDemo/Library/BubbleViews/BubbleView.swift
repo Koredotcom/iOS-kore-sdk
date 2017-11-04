@@ -12,10 +12,6 @@ enum BubbleMaskTailPosition : Int {
     case none = 1, left = 2, right = 3
 }
 
-enum BubbleType : Int  {
-    case view = 1, text = 2, image = 3, options = 4, quickReply = 5, list = 6, carousel = 7, error = 8, piechart = 9, table = 10
-}
-
 let BubbleViewRightTint: UIColor = Common.UIColorRGB(0x0578FE)
 let BubbleViewRightContrastTint: UIColor = Common.UIColorRGB(0xFFFFFF)
 let BubbleViewLeftTint: UIColor = Common.UIColorRGB(0xF4F4F4)
@@ -30,7 +26,7 @@ class BubbleView: UIView {
             self.backgroundColor = self.borderColor()
         }
     }
-    var bubbleType: BubbleType!
+    var bubbleType: ComponentType!
     var didSelectComponentAtIndex:((Int) -> Void)!
     var maskLayer: CAShapeLayer!
     var borderLayer: CAShapeLayer!
@@ -54,13 +50,10 @@ class BubbleView: UIView {
     }
     
     // MARK: bubbleWithType
-    static func bubbleWithType(_ bubbleType: BubbleType) -> BubbleView{
+    static func bubbleWithType(_ bubbleType: ComponentType) -> BubbleView{
         var bubbleView: BubbleView!
         
         switch (bubbleType) {
-            case .view:
-                bubbleView = BubbleView()
-                break
             case .text:
                 bubbleView = TextBubbleView()
                 break
@@ -82,7 +75,7 @@ class BubbleView: UIView {
             case .error:
                 bubbleView = ErrorBubbleView()
                 break
-            case .piechart:
+            case .chart:
                 bubbleView = PiechartBubbleView()
                 break
             case .table:

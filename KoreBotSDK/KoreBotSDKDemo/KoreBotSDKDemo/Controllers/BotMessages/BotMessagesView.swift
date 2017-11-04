@@ -137,14 +137,12 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .error:
                 cellIdentifier = "ErrorBubbleCell"
                 break
-            case .piechart:
+            case .chart:
                 cellIdentifier = "PiechartBubbleCell"
                 break
             case .table:
                 cellIdentifier = "TableBubbleCell"
                 break
-            default:
-                cellIdentifier = "TextBubbleCell"
             }
         }
         
@@ -207,13 +205,11 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             let bubbleView: ErrorBubbleView = cell.bubbleView as! ErrorBubbleView
             self.textLinkDetection(textLabel: bubbleView.textLabel)
             break
-        case .piechart:
+        case .chart:
             
             break
         case .table:
             
-            break
-        default:
             break
         }
         let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)

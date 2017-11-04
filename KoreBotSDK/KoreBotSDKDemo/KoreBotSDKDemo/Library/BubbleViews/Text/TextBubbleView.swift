@@ -124,7 +124,7 @@ class ErrorBubbleView : TextBubbleView {
             
                 if var colorString: String = jsonObject["color"] as? String {
                     if(colorString.hasPrefix("#")){
-                        colorString = String(colorString.characters.dropFirst())
+                        colorString = String(colorString.dropFirst())
                     }
                     self.textLabel.textColor = Common.UIColorRGB(Int(colorString, radix: 16)!)
                 }
