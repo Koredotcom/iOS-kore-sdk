@@ -76,7 +76,7 @@ class BubbleView: UIView {
                 bubbleView = ErrorBubbleView()
                 break
             case .chart:
-                bubbleView = PiechartBubbleView()
+                bubbleView = ChartBubbleView()
                 break
             case .table:
                 bubbleView = TableBubbleView()

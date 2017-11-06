@@ -44,6 +44,16 @@ class TextBubbleView : BubbleView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[textLabel(>=textLabelMinWidth,<=textLabelMaxWidth)]-10-|", options: [], metrics: metrics, views: views))
     }
     
+    func setTextColor() {
+        if self.tailPosition == BubbleMaskTailPosition.left {
+            self.textLabel.textColor = Common.UIColorRGB(0x484848)
+            self.textLabel.linkTextColor = Common.UIColorRGB(0x0076FF)
+        }else{
+            self.textLabel.textColor = Common.UIColorRGB(0xFFFFFF)
+            self.textLabel.linkTextColor = Common.UIColorRGB(0xFFFFFF)
+        }
+    }
+    
     // MARK: populate components
     override func populateComponents() {
         if (components.count > 0) {
@@ -53,7 +63,7 @@ class TextBubbleView : BubbleView {
                 return;
             }
             
-            self.textLabel.textColor = self.kTextColor()
+            setTextColor()
             if ((component.componentDesc) != nil) {
                 let string: String = component.componentDesc! as String
                 let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
