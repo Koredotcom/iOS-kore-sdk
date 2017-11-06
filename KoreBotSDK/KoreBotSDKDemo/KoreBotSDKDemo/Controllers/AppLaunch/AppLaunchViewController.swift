@@ -175,7 +175,15 @@ class AppLaunchViewController: UIViewController {
     }
     
     func getUUID() -> String {
-        let date: Date = Date()
-        return String(format: "email%ld%@", date.timeIntervalSince1970, "@domain.com")
+        var id: String?
+        let userDefaults = UserDefaults.standard
+        if let UUID = userDefaults.string(forKey: "UUID") {
+            id = UUID
+        } else {
+            let date: Date = Date()
+            id = String(format: "email%ld%@", date.timeIntervalSince1970, "@domain.com")
+            userDefaults.set(id, forKey: "UUID")
+        }
+        return id!
     }
 }
