@@ -80,14 +80,14 @@ class ChartBubbleView: BubbleView {
         self.lcView.isUserInteractionEnabled = false
         
         self.lcView.leftAxis.enabled = true
-        self.lcView.leftAxis.drawAxisLineEnabled = false
+        self.lcView.leftAxis.drawAxisLineEnabled = true
         self.lcView.leftAxis.drawGridLinesEnabled = false
         self.lcView.leftAxis.labelTextColor = UIColor.white
         self.lcView.rightAxis.enabled = false
         
         self.lcView.xAxis.labelPosition = .bottom
         self.lcView.xAxis.labelTextColor = UIColor.white
-        self.lcView.xAxis.drawAxisLineEnabled = false
+        self.lcView.xAxis.drawAxisLineEnabled = true
         self.lcView.xAxis.drawGridLinesEnabled = false
         
         self.lcView.drawGridBackgroundEnabled = false
@@ -98,10 +98,11 @@ class ChartBubbleView: BubbleView {
         let l: Legend = self.lcView.legend
         l.horizontalAlignment = .right
         l.verticalAlignment = .top
-        l.orientation = .vertical
+        l.orientation = .horizontal
         l.drawInside = true
+        l.formSize = 12.0
         l.textColor = .white
-        l.font = UIFont(name: "HelveticaNeue-Medium", size: 10.0)!
+        l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
     }
     
     func initializeViewForType(_ type: String){
