@@ -18,9 +18,9 @@
 		6E7BA00D1F28B62700301C38 /* ChatMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7BA00B1F28B62700301C38 /* ChatMessagesViewController.swift */; };
 		6E7BA00E1F28B62700301C38 /* ChatMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E7BA00C1F28B62700301C38 /* ChatMessagesViewController.xib */; };
 		6E7E002F1F8E638B002F2789 /* GoogleASRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7E002E1F8E638B002F2789 /* GoogleASRService.swift */; };
+		6E8410211FADF0C900A26C8F /* ChartBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8410201FADF0C900A26C8F /* ChartBubbleView.swift */; };
 		6E9C0E401F162FFB003550F8 /* CarouselBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9C0E3F1F162FFB003550F8 /* CarouselBubbleView.swift */; };
 		6ECD5CD01F2B3ECB00B9790E /* AudioComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECD5CCF1F2B3ECB00B9790E /* AudioComposeView.swift */; };
-		7D5861C31F8B6A6900389DCB /* PiechartBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5861C21F8B6A6900389DCB /* PiechartBubbleView.swift */; };
 		7D5861C51F8B6A7E00389DCB /* TableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5861C41F8B6A7E00389DCB /* TableBubbleView.swift */; };
 		7D63B37F1F8B9D6800D08701 /* InputTOWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D63B37E1F8B9D6800D08701 /* InputTOWebViewController.swift */; };
 		BB4D2DE61E289FA000A97E99 /* KRETypingActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4D2DE01E289FA000A97E99 /* KRETypingActivityIndicator.m */; };
@@ -88,10 +88,10 @@
 		6E7BA00B1F28B62700301C38 /* ChatMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessagesViewController.swift; sourceTree = "<group>"; };
 		6E7BA00C1F28B62700301C38 /* ChatMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatMessagesViewController.xib; sourceTree = "<group>"; };
 		6E7E002E1F8E638B002F2789 /* GoogleASRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleASRService.swift; sourceTree = "<group>"; };
+		6E8410201FADF0C900A26C8F /* ChartBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartBubbleView.swift; sourceTree = "<group>"; };
 		6E9C0E3F1F162FFB003550F8 /* CarouselBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselBubbleView.swift; sourceTree = "<group>"; };
 		6ECD5CCF1F2B3ECB00B9790E /* AudioComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioComposeView.swift; sourceTree = "<group>"; };
 		7092CBEB046F0BC9247CE8CE /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		7D5861C21F8B6A6900389DCB /* PiechartBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PiechartBubbleView.swift; sourceTree = "<group>"; };
 		7D5861C41F8B6A7E00389DCB /* TableBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableBubbleView.swift; sourceTree = "<group>"; };
 		7D63B37E1F8B9D6800D08701 /* InputTOWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTOWebViewController.swift; sourceTree = "<group>"; };
 		BB4D2DDF1E289FA000A97E99 /* KRETypingActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingActivityIndicator.h; sourceTree = "<group>"; };
@@ -199,20 +199,20 @@
 			path = SpeechRecognition;
 			sourceTree = "<group>";
 		};
+		6E84101F1FADF09800A26C8F /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				6E8410201FADF0C900A26C8F /* ChartBubbleView.swift */,
+			);
+			path = Chart;
+			sourceTree = "<group>";
+		};
 		6E9C0E3E1F162FFB003550F8 /* Carousel */ = {
 			isa = PBXGroup;
 			children = (
 				6E9C0E3F1F162FFB003550F8 /* CarouselBubbleView.swift */,
 			);
 			path = Carousel;
-			sourceTree = "<group>";
-		};
-		6ECC2A4D1F8A6E23007A0B61 /* Piechart */ = {
-			isa = PBXGroup;
-			children = (
-				7D5861C21F8B6A6900389DCB /* PiechartBubbleView.swift */,
-			);
-			path = Piechart;
 			sourceTree = "<group>";
 		};
 		7D63B37D1F8B9D6800D08701 /* InputViews */ = {
@@ -520,8 +520,8 @@
 		D1F4E5021CF70A720044C093 /* BubbleViews */ = {
 			isa = PBXGroup;
 			children = (
+				6E84101F1FADF09800A26C8F /* Chart */,
 				6E46A14D1F8B020F00E0AAF8 /* Table */,
-				6ECC2A4D1F8A6E23007A0B61 /* Piechart */,
 				6E9C0E3E1F162FFB003550F8 /* Carousel */,
 				BBB4F9581E0D095D00C2A53A /* List */,
 				D1522AB81DED45AC00D86407 /* Options */,
@@ -791,6 +791,7 @@
 				6E5F21E41F8E34AC00527A52 /* AudioController.swift in Sources */,
 				BBB4F95A1E0D1A8400C2A53A /* ListBubbleView.swift in Sources */,
 				D15041601DE2CD0D00F2F92E /* KREThread+CoreDataClass.swift in Sources */,
+				6E8410211FADF0C900A26C8F /* ChartBubbleView.swift in Sources */,
 				D1A12B6E1E84DD3500F4E2B4 /* SDKConfiguration.swift in Sources */,
 				D14BD4BE1DDEDBAD0032BD80 /* CoreDataManager.swift in Sources */,
 				D10A245A1CF72FD400E2732C /* TextBubbleView.swift in Sources */,
@@ -804,7 +805,6 @@
 				6E7E002F1F8E638B002F2789 /* GoogleASRService.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
 				BB4D2DE91E289FA000A97E99 /* KRETypingStatusView.m in Sources */,
-				7D5861C31F8B6A6900389DCB /* PiechartBubbleView.swift in Sources */,
 				6E7BA00D1F28B62700301C38 /* ChatMessagesViewController.swift in Sources */,
 				D150415B1DE2CD0D00F2F92E /* KREComponent+CoreDataProperties.swift in Sources */,
 				6ECD5CD01F2B3ECB00B9790E /* AudioComposeView.swift in Sources */,
