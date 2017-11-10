@@ -391,6 +391,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
                 dataStoreManager.createNewMessageIn(thread: self.thread, message: message, completionBlock: { (success) in
                 })
+                self.showTypingStatusForBotsAction()
                 if ttsBody != nil {
                     NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: ttsBody)
                 }
