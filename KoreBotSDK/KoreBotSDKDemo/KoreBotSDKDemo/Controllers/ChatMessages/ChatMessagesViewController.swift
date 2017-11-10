@@ -91,7 +91,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return .default
     }
     
     //MARK:- deinit
@@ -232,6 +232,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             
             botClient.connectionDidOpen = { [weak self] () in
                 self?.updateNavBarPrompt()
+                if(self?.botClient != nil){
+                    self?.botClient.sendMessage("Welpro", options: [] as AnyObject)
+                }
             }
             
             botClient.connectionReady = { () in

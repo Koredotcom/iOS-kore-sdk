@@ -20,7 +20,7 @@ class AppLaunchViewController: UIViewController {
         super.viewDidLoad()
         
         let chatBotName: String = SDKConfiguration.botConfig.chatBotName
-        self.chatButton.setTitle(String(format: "Chat with %@", chatBotName), for: .normal)
+        self.chatButton.setTitle(String(format: "%@", chatBotName), for: .normal)
         setInitialState()
         self.automaticallyAdjustsScrollViewInsets = false
     }
@@ -65,8 +65,8 @@ class AppLaunchViewController: UIViewController {
         }
         
         if !clientId.hasPrefix("<") && !clientSecret.hasPrefix("<") && !chatBotName.hasPrefix("<") && !botId.hasPrefix("<") && !identity.hasPrefix("<") {
-            let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-            activityIndicatorView.center = view.center
+            let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
+            activityIndicatorView.center = chatButton.center
             view.addSubview(activityIndicatorView)
             activityIndicatorView.startAnimating()
             

@@ -12,17 +12,7 @@ import QuartzCore
 public class KRETokenCollectionViewCell: UICollectionViewCell {
     var imageView: UIImageView!
     var label: UILabel!
-    var krefocused: Bool = false {
-        didSet {
-            if (krefocused) {
-                self.label.textColor = UIColor.white
-                self.label.backgroundColor = tintColor
-            } else {
-                self.label.textColor = self.tintColor
-                self.label.backgroundColor = UIColor.clear
-            }
-        }
-    }
+    var krefocused: Bool = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -63,7 +53,7 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
         
         label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor.blue
+        label.textColor = Common.UIColorRGB(0x233842)
         label.textAlignment = NSTextAlignment.center
         label.font = UIFont(name: "HelveticaNeue-Medium", size: 17.0)
         label.clipsToBounds = true
@@ -75,7 +65,7 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
         let layer:CALayer = self.layer
         layer.masksToBounds = true
         layer.cornerRadius = 19
-        layer.borderColor  = Common.UIColorRGB(0x0578FE).cgColor
+        layer.borderColor  = Common.UIColorRGB(0x233842).cgColor
         layer.borderWidth = 1
         
         let views = ["label":label!, "image":imageView!] as [String : Any]

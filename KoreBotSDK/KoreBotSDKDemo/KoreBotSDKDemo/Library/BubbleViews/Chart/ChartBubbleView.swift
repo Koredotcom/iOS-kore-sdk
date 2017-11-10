@@ -60,7 +60,7 @@ class ChartBubbleView: BubbleView {
         l.yEntrySpace = 0.0
         l.yOffset = -4.0
         l.formSize = 14.0
-        l.textColor = .white
+        l.textColor = Common.UIColorRGB(0x233842)
         l.font = UIFont(name: "HelveticaNeue-Medium", size: 14.0)!
         
         self.pcView.chartDescription?.enabled = false
@@ -82,11 +82,11 @@ class ChartBubbleView: BubbleView {
         self.lcView.leftAxis.enabled = true
         self.lcView.leftAxis.drawAxisLineEnabled = true
         self.lcView.leftAxis.drawGridLinesEnabled = false
-        self.lcView.leftAxis.labelTextColor = UIColor.white
+        self.lcView.leftAxis.labelTextColor = Common.UIColorRGB(0x233842)
         self.lcView.rightAxis.enabled = false
         
         self.lcView.xAxis.labelPosition = .bottom
-        self.lcView.xAxis.labelTextColor = UIColor.white
+        self.lcView.xAxis.labelTextColor = Common.UIColorRGB(0x233842)
         self.lcView.xAxis.drawAxisLineEnabled = true
         self.lcView.xAxis.drawGridLinesEnabled = false
         
@@ -101,7 +101,7 @@ class ChartBubbleView: BubbleView {
         l.orientation = .horizontal
         l.drawInside = true
         l.formSize = 12.0
-        l.textColor = .white
+        l.textColor = Common.UIColorRGB(0x233842)
         l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
     }
     
@@ -202,7 +202,9 @@ class ChartBubbleView: BubbleView {
         dataValues = transpose(input: dataValues)
         
         var colors: Array<UIColor> = Array<UIColor>()
-        colors.append(contentsOf: ChartColorTemplates.vordiplom())
+        colors.append(Common.UIColorRGB(0x41C5D3))
+        colors.append(Common.UIColorRGB(0xC4AFF0))
+        //colors.append(contentsOf: ChartColorTemplates.vordiplom())
         
         var dataSets: Array<LineChartDataSet> = Array<LineChartDataSet>()
         for i in 0..<dataValues.count {

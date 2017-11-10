@@ -83,14 +83,14 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
             cell.textLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)!
         } else if indexPath.section == 1 {
             cell.textLabel.text = ""
-            cell.backgroundColor = .white
+            cell.backgroundColor = Common.UIColorRGB(0x233842)
         } else {
             let rows = self.data["rows"]  as! Array<Array<String>>
             let row = rows[indexPath.section - 2]
             let text = row[indexPath.row]
             if text == "---" {
                 cell.textLabel.text = ""
-                cell.backgroundColor = .white
+                cell.backgroundColor = Common.UIColorRGB(0x233842)
             } else {
                 cell.textLabel.text = row[indexPath.row]
                 cell.textLabel.font = UIFont(name: "HelveticaNeue", size: 14.0)!
