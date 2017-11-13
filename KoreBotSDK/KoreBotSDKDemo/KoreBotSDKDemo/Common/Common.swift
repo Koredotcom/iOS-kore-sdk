@@ -36,7 +36,7 @@ open class Utilities: NSObject {
         var jsonString: NSString!
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: object, options: .prettyPrinted)
-            jsonString = NSString(data: jsonData, encoding: String.Encoding.ascii.rawValue)
+            jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)
         } catch {
             print(error.localizedDescription)
         }

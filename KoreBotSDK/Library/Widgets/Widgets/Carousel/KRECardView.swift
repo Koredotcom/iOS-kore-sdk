@@ -155,17 +155,17 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     }
     
     static func getAttributedString(cardInfo: KRECardInfo) -> NSMutableAttributedString {
-        var title = cardInfo.title as! String
-        var subtitle = cardInfo.subTitle as! String
+        var title = cardInfo.title! as String
+        var subtitle = cardInfo.subTitle! as String
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 0.25 * 16.0
-        let myAttributes = [NSForegroundColorAttributeName:Common.UIColorRGB(0x484848),
-                            NSFontAttributeName: UIFont(name: "HelveticaNeue-Medium", size: 16.0)!,
-                            NSParagraphStyleAttributeName:paragraphStyle ]
+        let myAttributes = [NSAttributedStringKey.foregroundColor:Common.UIColorRGB(0x484848),
+                            NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Medium", size: 16.0)!,
+                            NSAttributedStringKey.paragraphStyle:paragraphStyle ]
         let mutableAttrString = NSMutableAttributedString(string: title, attributes: myAttributes)
-        let myAttributes2 = [NSForegroundColorAttributeName:Common.UIColorRGB(0x777777),
-                             NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 15.0)! ]
+        let myAttributes2 = [NSAttributedStringKey.foregroundColor:Common.UIColorRGB(0x777777),
+                             NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 15.0)! ]
         let mutableAttrString2 = NSMutableAttributedString(string: "\n\(subtitle)", attributes: myAttributes2)
         mutableAttrString.append(mutableAttrString2)
         return mutableAttrString

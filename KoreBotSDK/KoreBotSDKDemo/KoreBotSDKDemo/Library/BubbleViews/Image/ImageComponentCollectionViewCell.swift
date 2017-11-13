@@ -10,12 +10,12 @@ import UIKit
 
 class ImageComponentView : UIImageView {
 
-    var component: ImageComponent!
+    var component: Component!
     var block: (() -> Void)!
-    func setupImageView(_ component: ImageComponent!, completion: (() -> Void)?) {
-        if (component.isKind(of: ImageComponent.self)) {
+    func setupImageView(_ component: Component!, completion: (() -> Void)?) {
+        if (component.componentType == .image) {
             self.contentMode = .scaleAspectFill
-            self.component = component as ImageComponent!
+            self.component = component
             
             self.setupImageView(completion)
         }
@@ -29,7 +29,7 @@ class ImageComponentView : UIImageView {
     func setupImageView(_ completion:(() -> Void)?) {
         self.contentMode = .scaleAspectFill
         
-        self.image = UIImage(named: self.component.imageFile)
+        self.image = UIImage(named: self.component.payload as String)
         if (completion != nil) {
             completion!()
         }
@@ -44,7 +44,7 @@ class ImageComponentCollectionViewCell : UICollectionViewCell {
     @IBOutlet weak var displayView: UIView!
     
     var index: NSNumber!
-    var component: ImageComponent! {
+    var component: Component! {
         didSet {
             self.imageComponent.setupImageView(component) { 
                 

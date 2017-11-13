@@ -56,7 +56,7 @@ internal class KRETextViewInternal: UITextView {
         }
     }
     
-    private dynamic func textDidChangeNotification(_ notification: Notification) {
+    @objc private dynamic func textDidChangeNotification(_ notification: Notification) {
         textDidChange()
     }
 }

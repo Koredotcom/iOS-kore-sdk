@@ -29,8 +29,6 @@ typedef enum {
 @property (nonatomic, strong) UIColor *hashtagTextColor;
 @property (nonatomic, strong) UIColor *linkTextColor;
 @property (nonatomic, strong) UIFont *mentionTextFont;
-@property (nonatomic, strong) NSString *searchString;
-@property (nonatomic, strong) NSDictionary *searchHighlightAttributes;
 
 @property (nonatomic, assign) UIEdgeInsets edgeInset;
 @property (nonatomic, assign) BOOL focusedHighlighting;

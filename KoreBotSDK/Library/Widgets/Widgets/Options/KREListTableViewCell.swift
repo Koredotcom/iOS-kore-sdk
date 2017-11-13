@@ -15,6 +15,7 @@ class KREListTableViewCell: UITableViewCell {
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var actionButtonHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imgViewWidthConstraint: NSLayoutConstraint!
     
     var buttonAction: ((_ sender: Any) -> Void)!
     var minCellHeight: CGFloat = 80.0

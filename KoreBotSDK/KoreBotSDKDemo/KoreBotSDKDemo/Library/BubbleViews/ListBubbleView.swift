@@ -37,7 +37,7 @@ class ListBubbleView: BubbleView {
             }
         }
         self.optionsView.detailLinkAction = {[weak self] (text) in
-            if (self?.linkAction != nil && (text?.characters.count)! > 0) {
+            if (self?.linkAction != nil && ((text?.count) != nil)) {
                 self?.linkAction(text)
             }
         }
@@ -95,7 +95,7 @@ class ListBubbleView: BubbleView {
     //MARK: View height calculation
     override var intrinsicContentSize : CGSize {
         let height = self.optionsView.getExpectedHeight(width: BubbleViewMaxWidth)
-        let viewSize:CGSize = CGSize(width: BubbleViewMaxWidth, height: height + 2.0)
+        let viewSize:CGSize = CGSize(width: BubbleViewMaxWidth, height: height)
         return viewSize;
     }
 }

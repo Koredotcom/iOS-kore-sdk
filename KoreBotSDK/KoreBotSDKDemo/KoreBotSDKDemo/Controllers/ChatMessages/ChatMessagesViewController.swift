@@ -7,11 +7,10 @@
 //
 
 import UIKit
+import AVFoundation
 import KoreBotSDK
 import KoreWidgets
-import SpeechToText
 import TOWebViewController
-import AVFoundation
 
 class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate {
     
@@ -19,22 +18,26 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var thread: KREThread!
     var botClient: BotClient!
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
-    var isFirstTime: Bool = true
     
     @IBOutlet weak var threadContainerView: UIView!
-    @IBOutlet weak var composeBarContainerView: UIView!
     @IBOutlet weak var quickSelectContainerView: UIView!
+    @IBOutlet weak var composeBarContainerView: UIView!
+    @IBOutlet weak var audioComposeContainerView: UIView!
     
     @IBOutlet weak var quickSelectContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-    
+
+    var composeBarContainerHeightConstraint: NSLayoutConstraint!
+    var composeViewBottomConstraint: NSLayoutConstraint!
+    var audioComposeContainerHeightConstraint: NSLayoutConstraint!
     var botMessagesView: BotMessagesView!
-    var composeBar: ComposeBarView!
+    var composeView: ComposeBarView!
     var audioComposeView: AudioComposeView!
     var quickReplyView: KREQuickSelectView!
-    var typingStatusView:KRETypingStatusView!
+    var typingStatusView: KRETypingStatusView!
+    var webViewController: InputTOWebViewController!
 
-    let sttClient: STTClient = STTClient()
+    let sttClient: GoogleASRService = GoogleASRService()
     var speechSynthesizer: AVSpeechSynthesizer!
     
     // MARK: init
@@ -49,31 +52,27 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action:  #selector(ChatMessagesViewController.cancel(_:)))
-        self.updateNavBarPrompt()
-
-        //Initialize elements
         
+        //Initialize elements
         self.configureThreadView()
         self.configureComposeBar()
         self.configureAudioComposer()
         self.configureQuickReplyView()
         self.configureTypingStatusView()
         self.configureBotClient()
+        self.configureSTTClient()
         
-        isSpeakingEnabled = false
+        isSpeakingEnabled = true
         self.speechSynthesizer = AVSpeechSynthesizer()
     }
     
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.addNotifications()
     }
     
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.isFirstTime = false
     }
     
     override open func viewDidDisappear(_ animated: Bool) {
@@ -89,9 +88,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     override func viewWillLayoutSubviews() {
         NSLog("viewWillLayoutSubviews")
         super.viewWillLayoutSubviews()
-        if self.isFirstTime {
-            self.botMessagesView.scrollToBottom(animated: false)
-        }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     //MARK:- deinit
@@ -100,7 +100,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.thread = nil
         self.botClient = nil
         self.speechSynthesizer = nil
-        self.composeBar = nil
+        self.composeView = nil
         self.audioComposeView = nil
         self.botMessagesView = nil
         self.quickReplyView = nil
@@ -116,8 +116,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.deConfigureBotClient()
         self.deConfigureSTTClient()
         self.stopTTS()
-        self.composeBar.growingTextView.viewDelegate = nil
-        self.composeBar.delegate = nil
+        self.composeView.growingTextView.viewDelegate = nil
+        self.composeView.delegate = nil
         self.audioComposeView.prepareForDeinit()
         self.botMessagesView.prepareForDeinit()
         self.botMessagesView.viewDelegate = nil
@@ -127,6 +127,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: cancel
     func cancel(_ sender: AnyObject) {
         self.prepareForDeinit()
+        
+        //Addition fade in animation
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionFade
+        self.navigationController?.view.layer.add(transition, forKey: nil)
+        
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -135,8 +143,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func configureThreadView() {
         self.botMessagesView = BotMessagesView()
         self.botMessagesView.translatesAutoresizingMaskIntoConstraints = false
+        self.botMessagesView.backgroundColor = .clear
         self.botMessagesView.thread = self.thread
         self.botMessagesView.viewDelegate = self
+        self.botMessagesView.clearBackground = true
         self.threadContainerView.addSubview(self.botMessagesView!)
         
         self.threadContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[botMessagesView]|", options:[], metrics:nil, views:["botMessagesView" : self.botMessagesView!]))
@@ -144,55 +154,48 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func configureComposeBar() {
-        self.composeBar = ComposeBarView()
-        self.composeBar.translatesAutoresizingMaskIntoConstraints = false
-        self.composeBar.growingTextView.viewDelegate = self
-        self.composeBar.delegate = self
-        self.composeBarContainerView.addSubview(self.composeBar!)
+        self.composeView = ComposeBarView()
+        self.composeView.translatesAutoresizingMaskIntoConstraints = false
+        self.composeView.growingTextView.viewDelegate = self
+        self.composeView.delegate = self
+        self.composeBarContainerView.addSubview(self.composeView!)
         
-        self.composeBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[composeBar]|", options:[], metrics:nil, views:["composeBar" : self.composeBar!]))
-        self.composeBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[composeBar]|", options:[], metrics:nil, views:["composeBar" : self.composeBar!]))
+        self.composeBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[composeView]|", options:[], metrics:nil, views:["composeView" : self.composeView!]))
+        self.composeBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[composeView]", options:[], metrics:nil, views:["composeView" : self.composeView!]))
+        
+        self.composeViewBottomConstraint = NSLayoutConstraint.init(item: self.composeBarContainerView, attribute: .bottom, relatedBy: .equal, toItem: self.composeView, attribute: .bottom, multiplier: 1.0, constant: 0.0)
+        self.composeBarContainerView.addConstraint(self.composeViewBottomConstraint)
+        self.composeViewBottomConstraint.isActive = false
+        
+        self.composeBarContainerHeightConstraint = NSLayoutConstraint.init(item: self.composeBarContainerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.0)
+        self.view.addConstraint(self.composeBarContainerHeightConstraint)
     }
     
     func configureAudioComposer()  {
         self.audioComposeView = AudioComposeView()
         self.audioComposeView.translatesAutoresizingMaskIntoConstraints = false
+        self.audioComposeContainerView.addSubview(self.audioComposeView!)
         
-        self.audioComposeView.cancelledSpeechToText = {
-            _ = self.composeBar.becomeFirstResponder()
-            self.composeBar.configureViewForSpeech(false)
-            self.composeBar.removeSubComposeView(self.audioComposeView)
-            let options = UIViewAnimationOptions(rawValue: UInt(7 << 16))
-            let duration = 0.25
-            UIView.animate(withDuration: duration, delay: 0.0, options: options, animations: {
-                self.view.layoutIfNeeded()
-                self.botMessagesView.scrollWithOffset(-self.audioComposeView.frame.size.height, animated: false)
-            }) { (Bool) in
-            }
-        }
+        self.audioComposeContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[audioComposeView]|", options:[], metrics:nil, views:["audioComposeView" : self.audioComposeView!]))
+        self.audioComposeContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[audioComposeView]|", options:[], metrics:nil, views:["audioComposeView" : self.audioComposeView!]))
+        
+        self.audioComposeContainerHeightConstraint = NSLayoutConstraint.init(item: self.audioComposeContainerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.0)
+        self.view.addConstraint(self.audioComposeContainerHeightConstraint)
+        self.audioComposeContainerHeightConstraint.isActive = false
+        
         self.audioComposeView.voiceRecordingStarted = { [weak self] (composeBar) in
-            let identity = self?.botClient.userInfoModel.identity
-            if ServerConfigs.BOT_SPEECH_SERVER.hasPrefix("http") {
-                let authInfo = self?.botClient.authInfoModel
-                let authToken: String = String(format: "%@ %@", authInfo!.tokenType!, authInfo!.accessToken!)
-                self?.sttClient.initialize(serverUrl: ServerConfigs.BOT_SPEECH_SERVER, authToken: authToken, identity: identity!)
-            }else if ServerConfigs.BOT_SPEECH_SERVER.hasPrefix("wss") {
-                self?.sttClient.initialize(socketURL: ServerConfigs.BOT_SPEECH_SERVER, identity: identity!)
-            }else{
-                return;
-            }
-            self?.configureSTTClient()
+            self?.stopTTS()
+            self?.sttClient.start()
         }
-        self.audioComposeView.voiceRecordingStopped = {  [weak self] (composeBar) in
-            self?.sttClient.stopAudioQueueRecording()
-            self?.deConfigureSTTClient()
+        self.audioComposeView.voiceRecordingStopped = { [weak self] (composeBar) in
+            self?.sttClient.stop()
         }
-        self.audioComposeView.getAudioPeakOutputPower = { [weak self]() in
-            if self?.sttClient.audioQueueRecorder != nil {
-                self?.sttClient.audioQueueRecorder.updateMeters()
-                return (self?.sttClient.audioQueueRecorder.peakPower(forChannel: 0))!
-            }
+        self.audioComposeView.getAudioPeakOutputPower = { () in
             return 0.0
+        }
+        self.audioComposeView.onKeyboardButtonAction = { [weak self] () in
+            _ = self?.composeView.becomeFirstResponder()
+            self?.configureViewForKeyboard(true)
         }
     }
     
@@ -205,7 +208,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
         
         self.quickReplyView.sendQuickReplyAction = { [weak self] (text) in
-            self?.sendTextMessage(text: text!)
+            self?.sendTextMessage(text!)
         }
     }
     
@@ -269,13 +272,36 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
     }
     
+    func getComponentType(_ templateType: String) -> ComponentType {
+        if (templateType == "quick_replies") {
+            return .quickReply
+        } else if (templateType == "button") {
+            return .options
+        }else if (templateType == "list") {
+            return .list
+        }else if (templateType == "carousel") {
+            return .carousel
+        }else if (templateType == "piechart" || templateType == "linechart") {
+            return .chart
+        }else if (templateType == "table") {
+            return .table
+        }
+        return .text
+    }
+    
     func onReceiveMessage(object: BotMessageModel?) {
+        var textMessage: Message! = nil
         let message: Message = Message()
         message.messageType = .reply
         message.sentDate = Date()
         
         if (object?.iconUrl != nil) {
             message.iconUrl = object?.iconUrl
+        }
+        
+        if (webViewController != nil) {
+            webViewController.dismissInputView()
+            webViewController = nil
         }
         
         let messageObject = ((object?.messages.count)! > 0) ? (object?.messages[0]) : nil
@@ -286,64 +312,86 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             var ttsBody: String? = nil
             
             if (componentModel.type == "text") {
-                self.showTypingStatusForBotsAction()
                 
                 let payload: NSDictionary = componentModel.payload! as! NSDictionary
                 let text: NSString = payload["text"] as! NSString
-                let textComponent: TextComponent = TextComponent()
-                textComponent.text = text
+                let textComponent: Component = Component()
+                textComponent.payload = text
                 ttsBody = text as String
                 
+                if(text.contains("use a web form")){
+                    let range: NSRange = text.range(of: "use a web form - ")
+                    let urlString: String? = text.substring(with: NSMakeRange(range.location+range.length, 44))
+                    if (urlString != nil) {
+                        let url: URL = URL(string: urlString!)!
+                        webViewController = InputTOWebViewController(url: url)
+                        webViewController.modalPresentationStyle = .custom
+                        self.present(webViewController, animated: true, completion:nil)
+                    }
+                    ttsBody = "Ok, Please fill in the details and submit"
+                }
                 message.addComponent(textComponent)
+                
             } else if (componentModel.type == "template") {
+                
                 let payload: NSDictionary = componentModel.payload! as! NSDictionary
-                let type: String = payload["type"] as! String
+                let text: String = payload["text"] != nil ? payload["text"] as! String : ""
+                let type: String = payload["type"] != nil ? payload["type"] as! String : ""
+                ttsBody = payload["speech_hint"] != nil ? payload["speech_hint"] as? String : nil
+                
                 if(type == "template"){
+                    
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
                     let templateType: String = dictionary["template_type"] as! String
+                    let componentType = self.getComponentType(templateType)
                     
-                    if (templateType == "quick_replies") {
-                        let quickRepliesComponent: QuickRepliesComponent = QuickRepliesComponent()
-                        quickRepliesComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                        
-                        message.addComponent(quickRepliesComponent)
-                    } else if (templateType == "button") {
-                        self.showTypingStatusForBotsAction()
-                        
-                        let optionsComponent: OptionsComponent = OptionsComponent()
-                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                        
-                        message.addComponent(optionsComponent)
-                    }else if (templateType == "list") {
-                        self.showTypingStatusForBotsAction()
-                        
-                        let optionsComponent: ListComponent = ListComponent()
-                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                        
-                        message.addComponent(optionsComponent)
-                    }else if (templateType == "carousel") {
-                        self.showTypingStatusForBotsAction()
-                        
-                        let carouselComponent: CarouselComponent = CarouselComponent()
-                        carouselComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                        
-                        message.addComponent(carouselComponent)
+                    let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
+                    ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
+                    
+                    if tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table) {
+                        textMessage = Message()
+                        textMessage?.messageType = .reply
+                        textMessage?.sentDate = Date()
+                        if (object?.iconUrl != nil) {
+                            textMessage?.iconUrl = object?.iconUrl
+                        }
+                        let textComponent: Component = Component()
+                        textComponent.payload = tText as NSString!
+                        textMessage?.addComponent(textComponent)
                     }
+                    
+                    let optionsComponent: Component = Component(componentType)
+                    optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                    message.sentDate = Date()
+                    message.addComponent(optionsComponent)
+                    
                 }else if(type == "error"){
-                    self.showTypingStatusForBotsAction()
                     
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
-                    let errorComponent: ErrorComponent = ErrorComponent()
+                    let errorComponent: Component = Component(.error)
                     errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                    
                     message.addComponent(errorComponent)
+                    
+                }else if text != "" {
+                    
+                    let textComponent: Component = Component()
+                    textComponent.payload = text as NSString!
+                    message.addComponent(textComponent)
+                    
                 }
+            }
+            
+            if (textMessage != nil && textMessage!.components.count > 0) {
+                let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
+                dataStoreManager.createNewMessageIn(thread: self.thread, message: textMessage!, completionBlock: { (success) in
+                })
             }
             
             if (message.components.count > 0) {
                 let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
                 dataStoreManager.createNewMessageIn(thread: self.thread, message: message, completionBlock: { (success) in
                 })
+                self.showTypingStatusForBotsAction()
                 if ttsBody != nil {
                     NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: ttsBody)
                 }
@@ -352,29 +400,40 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func configureSTTClient() {
-        sttClient.connectionWillOpen = { () in
-            
+        self.sttClient.onError = { [weak self] (error) in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.audioComposeView.stopRecording()
+            strongSelf.composeView.setText("")
+            strongSelf.composeViewBottomConstraint.isActive = false
+            strongSelf.composeBarContainerHeightConstraint.isActive = true
+            strongSelf.composeBarContainerView.isHidden = true
         }
-        sttClient.connectionDidOpen = { () in
-            
-        }
-        sttClient.connectionDidClose = { [weak self] (code, reason) in
-            self?.audioComposeView.stopRecording()
-        }
-        sttClient.connectionDidFailWithError = { [weak self] (error) in
-            self?.audioComposeView.stopRecording()
-        }
-        sttClient.onMessage = { [weak self] (object) in
-            self?.composeBar.onReceiveMessageFromSTTClient(dataDictionary: object)
+        self.sttClient.onResponse = { [weak self] (transcript, isFinal) in
+            guard let strongSelf = self else {
+                return
+            }
+            print("Got transcript: \(transcript)")
+            if isFinal {
+                strongSelf.audioComposeView.stopRecording()
+                strongSelf.sendTextMessage(transcript)
+                strongSelf.composeView.setText("")
+                strongSelf.composeViewBottomConstraint.isActive = false
+                strongSelf.composeBarContainerHeightConstraint.isActive = true
+                strongSelf.composeBarContainerView.isHidden = true
+            }else{
+                strongSelf.composeView.setText(transcript)
+                strongSelf.composeBarContainerHeightConstraint.isActive = false
+                strongSelf.composeViewBottomConstraint.isActive = true
+                strongSelf.composeBarContainerView.isHidden = false
+            }
         }
     }
     
     func deConfigureSTTClient() {
-        sttClient.connectionWillOpen = nil
-        sttClient.connectionDidOpen = nil
-        sttClient.connectionDidClose = nil
-        sttClient.connectionDidFailWithError = nil
-        sttClient.onMessage = nil
+        self.sttClient.onError = nil
+        self.sttClient.onResponse = nil
     }
     
     func updateNavBarPrompt() {
@@ -427,59 +486,58 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     // MARK: notification handlers
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let keyboardUserInfo: NSDictionary = NSDictionary(dictionary: (notification as NSNotification).userInfo!)
-        let keyboardFrameBegin: CGRect = ((keyboardUserInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue?)!.cgRectValue)
         let keyboardFrameEnd: CGRect = ((keyboardUserInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue?)!.cgRectValue)
         let options = UIViewAnimationOptions(rawValue: UInt((keyboardUserInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
         let durationValue = keyboardUserInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
         let duration = durationValue.doubleValue
         
-        let diff = keyboardFrameBegin.origin.y - keyboardFrameEnd.origin.y
-        self.bottomConstraint.constant = keyboardFrameEnd.size.height
+        var keyboardHeight = keyboardFrameEnd.size.height;
+        if #available(iOS 11.0, *) {
+            keyboardHeight -= self.view.safeAreaInsets.bottom
+        } else {
+            // Fallback on earlier versions
+        };
+        self.bottomConstraint.constant = keyboardHeight
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
             self.view.layoutIfNeeded()
-            self.botMessagesView.scrollWithOffset(diff, animated: false)
         }, completion: { (Bool) in
             
         })
     }
     
-    func keyboardWillHide(_ notification: Notification) {
+    @objc func keyboardWillHide(_ notification: Notification) {
         let keyboardUserInfo: NSDictionary = NSDictionary(dictionary: (notification as NSNotification).userInfo!)
-        let keyboardFrameBegin: CGRect = ((keyboardUserInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue?)!.cgRectValue)
-        let keyboardFrameEnd: CGRect = ((keyboardUserInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue?)!.cgRectValue)
         let durationValue = keyboardUserInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
         let duration = durationValue.doubleValue
         let options = UIViewAnimationOptions(rawValue: UInt((keyboardUserInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
         
-        let diff = keyboardFrameBegin.origin.y - keyboardFrameEnd.origin.y
         self.bottomConstraint.constant = 0
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
             self.view.layoutIfNeeded()
-            self.botMessagesView.scrollWithOffset(diff, animated: false)
         }, completion: { (Bool) in
             
         })
     }
     
-    func keyboardDidShow(_ notification: Notification) {
+    @objc func keyboardDidShow(_ notification: Notification) {
         if (self.tapToDismissGestureRecognizer == nil) {
             self.tapToDismissGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(ChatMessagesViewController.dismissKeyboard(_:)))
             self.botMessagesView.addGestureRecognizer(tapToDismissGestureRecognizer)
         }
     }
     
-    func keyboardDidHide(_ notification: Notification) {
+    @objc func keyboardDidHide(_ notification: Notification) {
         if (self.tapToDismissGestureRecognizer != nil) {
             self.botMessagesView.removeGestureRecognizer(tapToDismissGestureRecognizer)
             self.tapToDismissGestureRecognizer = nil
         }
     }
     
-    func dismissKeyboard(_ gesture: UITapGestureRecognizer) {
-        if (self.composeBar.isFirstResponder) {
-            _ = self.composeBar.resignFirstResponder()
+    @objc func dismissKeyboard(_ gesture: UITapGestureRecognizer) {
+        if (self.composeView.isFirstResponder) {
+            _ = self.composeView.resignFirstResponder()
         }
     }
     
@@ -491,8 +549,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if (composedMessage.components.count > 0) {
             let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
             dataStoreManager.createNewMessageIn(thread: self.thread, message: composedMessage, completionBlock: { (success) in
-                let textComponent: TextComponent = composedMessage.components[0] as! TextComponent
-                let text: String = textComponent.text as String
+                let textComponent: Component = composedMessage.components[0] as! Component
+                let text: String = textComponent.payload as String
                 if(self.botClient != nil){
                     self.botClient.sendMessage(text, options: [] as AnyObject)
                 }
@@ -501,43 +559,57 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
     }
     
-    func sendTextMessage(text:String) {
+    func sendTextMessage(_ text:String) {
         let message: Message = Message()
         message.messageType = .default
         message.sentDate = Date()
-        let textComponent: TextComponent = TextComponent()
-        textComponent.text = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) as NSString!
+        let textComponent: Component = Component()
+        textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) as NSString!
         message.addComponent(textComponent)
         self.sendMessage(message)
     }
     
     func textMessageSent() {
-        self.composeBar.clear()
-        self.botMessagesView.scrollToBottom(animated: true)
+        self.composeView.clear()
+        self.botMessagesView.scrollToTop(animate: true)
     }
     
     func speechToTextButtonAction() {
-        _ = self.composeBar.resignFirstResponder()
-        self.composeBar.configureViewForSpeech(true)
-        self.composeBar.addSubComposeView(self.audioComposeView)
+        self.configureViewForKeyboard(false)
+        _ = self.composeView.resignFirstResponder()
+        self.stopTTS()
         self.audioComposeView.startRecording()
         
         let options = UIViewAnimationOptions(rawValue: UInt(7 << 16))
         let duration = 0.25
         UIView.animate(withDuration: duration, delay: 0.0, options: options, animations: {
             self.view.layoutIfNeeded()
-            self.botMessagesView.scrollWithOffset(self.audioComposeView.frame.size.height, animated: false)
         }, completion: { (Bool) in
         })
     }
     
+    func configureViewForKeyboard(_ prepare: Bool) {
+        if prepare {
+            self.composeBarContainerHeightConstraint.isActive = false
+            self.composeViewBottomConstraint.isActive = true
+        } else {
+            self.composeViewBottomConstraint.isActive = false
+            self.composeBarContainerHeightConstraint.isActive = true
+        }
+        self.audioComposeContainerHeightConstraint.isActive = prepare
+        self.audioComposeContainerView.clipsToBounds = prepare
+        self.composeView.configureViewForKeyboard(prepare)
+        self.composeBarContainerView.isHidden = !prepare
+        self.audioComposeContainerView.isHidden = prepare
+    }
+    
     // MARK: BotMessagesDelegate methods
     func optionsButtonTapAction(text: String) {
-        self.sendTextMessage(text: text)
+        self.sendTextMessage(text)
     }
     
     func linkButtonTapAction(urlString: String) {
-        if (urlString.characters.count > 0) {
+        if (urlString.count > 0) {
             let url: URL = URL(string: urlString)!
             let webViewController: TOWebViewController = TOWebViewController(url: url)
             let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
@@ -547,7 +619,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func populateQuickReplyCards(with message: KREMessage?) {
-        if (message?.templateType == 5) {
+        if message?.templateType == (ComponentType.quickReply.rawValue as NSNumber) {
             let component: KREComponent = message!.components![0] as! KREComponent
             if (!component.isKind(of: KREComponent.self)) {
                 return;
@@ -570,6 +642,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 self.updateQuickSelectViewConstraints()
             }
         } else if(message != nil) {
+            let words: Array<Word> = Array<Word>()
+            self.quickReplyView.setWordsList(words: words)
             self.closeQuickSelectViewConstraints()
         }
     }
@@ -581,11 +655,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func updateQuickSelectViewConstraints() {
         if self.quickSelectContainerHeightConstraint.constant == 60.0 {return}
         
-        var contentInset = self.botMessagesView.tableView.contentInset
-        contentInset.bottom = 60
-        self.botMessagesView.tableView.contentInset = contentInset
         self.quickSelectContainerHeightConstraint.constant = 60.0
-        
         UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
             self.view.layoutIfNeeded()
         }) { (Bool) in
@@ -596,11 +666,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func closeQuickSelectViewConstraints() {
         if self.quickSelectContainerHeightConstraint.constant == 0.0 {return}
 
-        var contentInset = self.botMessagesView.tableView.contentInset
-        contentInset.bottom = 0
-        self.botMessagesView.tableView.contentInset = contentInset
         self.quickSelectContainerHeightConstraint.constant = 0.0
-        
         UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: {
             self.view.layoutIfNeeded()
         }) { (Bool) in
@@ -611,18 +677,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: ComposeBarViewDelegate methods
     
     func composeBarView(_: ComposeBarView, sendButtonAction text: String) {
-        self.sendTextMessage(text: text)
-        self.audioComposeView.stopRecording()
+        self.sendTextMessage(text)
     }
     
     func composeBarViewSpeechToTextButtonAction(_: ComposeBarView) {
-        self.sttClient.checkAudioRecordPermission(block: { [weak self] in
+        GoogleASRService.checkAudioRecordPermission(block: { [weak self] in
             self?.speechToTextButtonAction()
         })
     }
     
     func composeBarViewDidBecomeFirstResponder(_: ComposeBarView) {
-        self.audioComposeView.closeRecording()
+        self.audioComposeView.stopRecording()
     }
     
     // MARK: KREGrowingTextViewDelegate methods
@@ -630,7 +695,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func growingTextView(_: KREGrowingTextView, changingHeight height: CGFloat, animate: Bool) {
         UIView.animate(withDuration: animate ? 0.25: 0.0) {
             self.view.layoutIfNeeded()
-            self.botMessagesView.scrollWithOffset(height, animated: false)
         }
     }
     
@@ -642,23 +706,29 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
     }
     
-    //MARK :- TTS Functionality
-    func startSpeaking(notification:Notification) {
+    // MARK: TTS Functionality
+    @objc func startSpeaking(notification:Notification) {
         if(isSpeakingEnabled){
-            let string: String = notification.object! as! String
-            let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
-            let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString)
-            self.readOutText(text: parsedString)
+            var string: String = notification.object! as! String
+            string = KREUtilities.getHTMLStrippedString(from: string)
+            self.readOutText(text: string)
         }
     }
     
-    func stopSpeaking(notification:Notification) {
+    @objc func stopSpeaking(notification:Notification) {
         self.stopTTS()
     }
     
     func readOutText(text:String) {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(AVAudioSessionCategoryPlayback)
+            try audioSession.setMode(AVAudioSessionModeDefault)
+        } catch {
+            
+        }
         let string = text
-        print("Reading text: ", text);
+        print("Reading text: ", string);
         let speechUtterance = AVSpeechUtterance(string: string)
         self.speechSynthesizer.speak(speechUtterance)
     }

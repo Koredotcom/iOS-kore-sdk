@@ -43,8 +43,8 @@ class AppLaunchViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    override var prefersStatusBarHidden : Bool {
-        return true
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     // MARK: known user
@@ -64,7 +64,7 @@ class AppLaunchViewController: UIViewController {
             identity = SDKConfiguration.botConfig.identity
         }
         
-        if clientId.indexOfCharacter(char: "<") == -1 && clientSecret.indexOfCharacter(char: "<") == -1 && chatBotName.indexOfCharacter(char: "<") == -1 && botId.indexOfCharacter(char: "<") == -1 && identity.indexOfCharacter(char: "<") == -1 {
+        if !clientId.hasPrefix("<") && !clientSecret.hasPrefix("<") && !chatBotName.hasPrefix("<") && !botId.hasPrefix("<") && !identity.hasPrefix("<") {
             let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
             activityIndicatorView.center = view.center
             view.addSubview(activityIndicatorView)
@@ -86,7 +86,7 @@ class AppLaunchViewController: UIViewController {
                     print(thread.threadId!)
                     
                     let botClient: BotClient = BotClient(botInfoParameters: botInfo)
-                    if (ServerConfigs.BOT_SERVER.characters.count > 0) {
+                    if (ServerConfigs.BOT_SERVER.count > 0) {
                         botClient.setKoreBotServerUrl(url: ServerConfigs.BOT_SERVER)
                     }
                     botClient.connectWithJwToken(jwToken, success: { [weak self] (client) in
@@ -96,7 +96,19 @@ class AppLaunchViewController: UIViewController {
                         let botViewController = ChatMessagesViewController(thread: thread)
                         botViewController.botClient = client
                         botViewController.title = SDKConfiguration.botConfig.chatBotName
-                        self!.navigationController?.pushViewController(botViewController, animated: true)
+                        
+//                        let botViewController = ChatWindowViewController(thread: thread)
+//                        botViewController.botClient = client
+//                        botViewController.title = SDKConfiguration.botConfig.chatBotName
+                        
+                        //Addition fade in animation
+                        let transition = CATransition()
+                        transition.duration = 0.5
+                        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                        transition.type = kCATransitionFade
+                        self?.navigationController?.view.layer.add(transition, forKey: nil)
+                    
+                        self!.navigationController?.pushViewController(botViewController, animated: false)
                     }, failure: { (error) in
                         activityIndicatorView.stopAnimating()
                         self?.chatButton.isUserInteractionEnabled = true
@@ -163,16 +175,15 @@ class AppLaunchViewController: UIViewController {
     }
     
     func getUUID() -> String {
-        let date: Date = Date()
-        return String(format: "email%ld%@", date.timeIntervalSince1970, "@domain.com")
-    }
-}
-
-extension String {
-    public func indexOfCharacter(char: Character) -> Int? {
-        if let idx = characters.index(of: char) {
-            return characters.distance(from: startIndex, to: idx)
+        var id: String?
+        let userDefaults = UserDefaults.standard
+        if let UUID = userDefaults.string(forKey: "UUID") {
+            id = UUID
+        } else {
+            let date: Date = Date()
+            id = String(format: "email%ld%@", date.timeIntervalSince1970, "@domain.com")
+            userDefaults.set(id, forKey: "UUID")
         }
-        return -1
+        return id!
     }
 }

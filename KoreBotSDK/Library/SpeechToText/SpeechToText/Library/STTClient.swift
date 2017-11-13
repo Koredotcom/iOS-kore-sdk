@@ -24,8 +24,8 @@ open class STTClient: NSObject, KREWebSocketDelegate, MCAudioInputQueueDelegate 
     fileprivate var identity: String!
     fileprivate var isAudioQueueRecordingInProgress = false
     
-    open var connectionWillOpen: ((Void) -> Void)!
-    open var connectionDidOpen: ((Void) -> Void)!
+    open var connectionWillOpen: (() -> Void)!
+    open var connectionDidOpen: (() -> Void)!
     open var connectionDidClose: ((Int, String) -> Void)!
     open var connectionDidFailWithError: ((Error) -> Void)!
     open var onMessage: (([AnyHashable : Any]?) -> Void)!

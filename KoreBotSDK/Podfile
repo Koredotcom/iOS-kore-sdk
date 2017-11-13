@@ -11,9 +11,11 @@ end
 target 'KoreBotSDKDemo' do
     platform :ios, '8.0'
     pod 'DTCoreText','1.6.15'
+    pod 'Charts'
 
     use_frameworks!
     import_pods
+    pod 'googleapis', :path=> '.'
     pod 'TOWebViewController'
     pod 'KoreBotSDK', :path => './Library/KoreBotSDK/'
     pod 'KoreWidgets', :path=> './Library/Widgets/'

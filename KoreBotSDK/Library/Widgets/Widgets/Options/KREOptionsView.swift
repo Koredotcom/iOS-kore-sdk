@@ -175,7 +175,14 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
             
             cell.titleLabel.text = option.title
             cell.subTitleLabel.text = option.subTitle
-            cell.imgView.setImageWith(NSURL(string: option.imageURL!) as URL!,placeholderImage: UIImage.init(named: "placeholder_image"))
+            
+            if option.imageURL != "" {
+                cell.imgView.setImageWith(NSURL(string: option.imageURL!) as URL!,placeholderImage: UIImage.init(named: "placeholder_image"))
+                cell.imgViewWidthConstraint.constant = 60.0
+            } else {
+                cell.imageView?.image = nil
+                cell.imgViewWidthConstraint.constant = 0.0
+            }
             
             if(option.buttonAction != nil){
                 let buttonAction = option.buttonAction
@@ -227,25 +234,16 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
     }
     
     public func getExpectedHeight(width: CGFloat) -> CGFloat {
-        let cell:KREListTableViewCell = self.optionsTableView.dequeueReusableCell(withIdentifier: listCellIdentifier) as! KREListTableViewCell
-        cell.selectionStyle = UITableViewCellSelectionStyle.none
-
         var height: CGFloat = 0.0
-        var maxHeight: CGFloat = UIScreen.main.bounds.size.height
         for option in options  {
             if(option.optionType == KREOptionType.button){
                 height += kMaxRowHeight
             }else if(option.optionType == KREOptionType.list){
-                cell.titleLabel.text = option.title
-                cell.subTitleLabel.text = option.subTitle
-                let limitingSize: CGSize = CGSize(width: width - 93.0, height: CGFloat.greatestFiniteMagnitude)
-                var cellHeight: CGFloat = cell.titleLabel.sizeThatFits(limitingSize).height + cell.subTitleLabel.sizeThatFits(limitingSize).height // For Text
-                cellHeight += option.buttonAction != nil ? 30.0 : 0.0 // For Button
-                cellHeight += 21.0 // other miscellaneous constant
-                if cellHeight < cell.minCellHeight {
-                    cellHeight = cell.minCellHeight
-                }
-                height += cellHeight
+                let cell:KREListTableViewCell = self.tableView(optionsTableView, cellForRowAt: IndexPath(row: options.index(of: option)!, section: 0)) as! KREListTableViewCell
+                var fittingSize = UILayoutFittingCompressedSize
+                fittingSize.width = width
+                let size = cell.systemLayoutSizeFitting(fittingSize, withHorizontalFittingPriority: UILayoutPriority(rawValue: 1000), verticalFittingPriority: UILayoutPriority(rawValue: 250))
+                height += size.height
             }
         }
         return height

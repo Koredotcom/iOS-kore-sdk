@@ -74,7 +74,7 @@ extension KREThread {
     public func removeMessagesObject(_value: KREMessage)  {
         self.willChangeValue(forKey: "messages")
         let tempSet = NSMutableOrderedSet(orderedSet: self.messages!)
-        tempSet.remove(at: tempSet.index(of: _value) )
+        tempSet.remove(tempSet.index(of: _value) )
         self.messages = tempSet
         self.didChangeValue(forKey: "messages")
     }

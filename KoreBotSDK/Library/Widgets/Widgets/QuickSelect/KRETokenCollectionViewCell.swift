@@ -58,8 +58,8 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
         imageView.contentMode = UIViewContentMode.scaleAspectFill
         contentView.addSubview(imageView)
         
-        imageView.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: UILayoutConstraintAxis.horizontal)
-        imageView.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: UILayoutConstraintAxis.horizontal)
+        imageView.setContentHuggingPriority(UILayoutPriority.defaultLow, for: UILayoutConstraintAxis.horizontal)
+        imageView.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: UILayoutConstraintAxis.horizontal)
         
         label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -69,8 +69,8 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
         label.clipsToBounds = true
         contentView.addSubview(label)
         
-        label.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: UILayoutConstraintAxis.horizontal)
-        label.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, for: UILayoutConstraintAxis.horizontal)
+        label.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.horizontal)
+        label.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.horizontal)
         
         let layer:CALayer = self.layer
         layer.masksToBounds = true

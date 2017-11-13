@@ -22,7 +22,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     var fetchedResultsController: KREFetchedResultsController!
     var viewDelegate: BotMessagesViewDelegate?
     var shouldScrollToBottom: Bool = false
-    var prototypeCell: MessageBubbleCell!
+    var clearBackground = false
     
     weak var thread: KREThread! {
         didSet{
@@ -47,12 +47,14 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     }
     
     func setup() {
-        self.tableView.backgroundColor = UIColor.white
+        self.tableView.backgroundColor = UIColor.clear
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.separatorStyle = .none
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.addSubview(self.tableView)
+        
+        self.tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[tableView]|", options:[], metrics:nil, views:["tableView" : self.tableView]))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[tableView]|", options:[], metrics:nil, views:["tableView" : self.tableView]))
@@ -66,8 +68,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(QuickReplyBubbleCell.self, forCellReuseIdentifier:"QuickReplyBubbleCell")
         self.tableView.register(CarouselBubbleCell.self, forCellReuseIdentifier:"CarouselBubbleCell")
         self.tableView.register(ErrorBubbleCell.self, forCellReuseIdentifier:"ErrorBubbleCell")
-        
-        self.prototypeCell = MessageBubbleCell()
+        self.tableView.register(PiechartBubbleCell.self, forCellReuseIdentifier:"PiechartBubbleCell")
+        self.tableView.register(TableBubbleCell.self, forCellReuseIdentifier:"TableBubbleCell")
     }
     
     override func layoutSubviews() {
@@ -84,7 +86,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         if(self.thread != nil){
             let request: NSFetchRequest<KREMessage> = KREMessage.fetchRequest()
             request.predicate = NSPredicate(format: "thread.threadId == %@", self.thread.threadId!)
-            request.sortDescriptors = [NSSortDescriptor(key: "sentOn", ascending: true)]
+            request.sortDescriptors = [NSSortDescriptor(key: "sentOn", ascending: false)]
             
             let mainContext: NSManagedObjectContext = DataStoreManager.sharedManager.coreDataManager.mainContext
             fetchedResultsController = KREFetchedResultsController(fetchRequest: request as! NSFetchRequest<NSManagedObject>, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -135,13 +137,20 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .error:
                 cellIdentifier = "ErrorBubbleCell"
                 break
-            default:
-                cellIdentifier = "TextBubbleCell"
+            case .chart:
+                cellIdentifier = "PiechartBubbleCell"
+                break
+            case .table:
+                cellIdentifier = "TableBubbleCell"
+                break
             }
         }
         
         let cell: MessageBubbleCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! MessageBubbleCell
         cell.configureWithComponents(message.components?.array as! Array<KREComponent>)
+        if self.clearBackground {
+            cell.backgroundColor = .clear
+        }
         
         var isQuickReply = false
         
@@ -149,6 +158,11 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         case .text:
             let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
             self.textLinkDetection(textLabel: bubbleView.textLabel)
+            
+            bubbleView.onChange = { [weak self](reload) in
+                self?.tableView.reloadRows(at: [indexPath], with: .none)
+            }
+            
             break
         case .image:
             break
@@ -191,12 +205,15 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             let bubbleView: ErrorBubbleView = cell.bubbleView as! ErrorBubbleView
             self.textLinkDetection(textLabel: bubbleView.textLabel)
             break
-        default:
+        case .chart:
+            
+            break
+        case .table:
+            
             break
         }
-        
-        let lastIndexPath = getIndexPathForLastItem()
-        if lastIndexPath.isEqual(indexPath) {
+        let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+        if firstIndexPath.isEqual(indexPath) {
             if isQuickReply {
                 self.viewDelegate?.populateQuickReplyCards(with: message)
             }else{
@@ -208,34 +225,55 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     }
     
     // MARK: UITable view delegate source
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 6.0
-    }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 6.0
-    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        let message: KREMessage = fetchedResultsController!.object(at: indexPath) as! KREMessage
-        var cellHeight = message.cellHeight
-        
-        if(cellHeight == 0.0){
-            cellHeight = self.prototypeCell.getEstimatedHeightForComponents(message.components?.array as! Array<KREComponent>, bubbleType: BubbleType(rawValue: (message.templateType?.intValue)!)!)
-            cellHeight = CGFloat(ceilf(Float(cellHeight)))
-            
-            message.cellHeight = cellHeight
+        return UITableViewAutomaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    
+    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView()
+        return view
+    }
+    
+    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        var date = Date()
+        if fetchedResultsController!.fetchedObjects!.count > 0 {
+            let message: KREMessage = fetchedResultsController!.object(at: IndexPath(row: 0, section: 0)) as! KREMessage
+            if message.sentOn != nil {
+                date = message.sentOn! as Date
+            }
         }
         
-        return cellHeight
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEE, d MMMM YYYY"
+        let dateString = dateFormatter.string(from: date)
+        
+        let label = UILabel()
+        label.transform = CGAffineTransform(scaleX: 1, y: -1)
+        label.text = dateString
+        label.textAlignment = .center
+        label.textColor = UIColor.white.withAlphaComponent(0.8)
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
+        return label
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 5.0
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 20.0
     }
     
     // MARK:- KREFetchedResultsControllerDelegate methods
     func fetchedControllerWillChangeContent() {
         let visibleCelIndexPath: [IndexPath]? = self.tableView.indexPathsForVisibleRows
-        let indexPath: IndexPath? = self.getIndexPathForLastItem() as IndexPath
-        if (visibleCelIndexPath?.contains(indexPath!))!{
+        let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+        if (visibleCelIndexPath?.contains(firstIndexPath as IndexPath))!{
             self.shouldScrollToBottom = true
         }
     }
@@ -243,38 +281,15 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     func fetchedControllerDidChangeContent() {
         if (self.shouldScrollToBottom && !self.tableView.isDragging) {
             self.shouldScrollToBottom = false
-            self.scrollToBottom(animated: true)
+            self.scrollToTop(animate: true)
         }
+    }
+    
+    func scrollToTop(animate: Bool){
+        self.tableView.scrollToRow(at: IndexPath.init(row: 0, section: 0), at: .bottom, animated: animate)
     }
     
     // MARK: - scrollTo related methods
-    func scrollWithOffset(_ offset: CGFloat, animated animate: Bool) {
-        if self.tableView.contentSize.height < self.frame.size.height { // when content is too less
-            return
-        }
-        if self.frame.size.height + self.tableView.contentOffset.y >= self.tableView.contentSize.height - 1.0/*fraction buffer*/ {
-            return
-        }
-        
-        var contentOffset = self.tableView.contentOffset
-        contentOffset.y += offset
-        if contentOffset.y < -self.tableView.contentInset.top {
-            contentOffset.y = -self.tableView.contentInset.top
-        }
-        if self.tableView.frame.size.height + offset > self.tableView.contentSize.height {
-            contentOffset.y = self.tableView.contentSize.height - self.tableView.frame.size.height
-        }
-        
-        self.tableView.setContentOffset(contentOffset, animated: animate)
-    }
-    
-    func scrollToBottom(animated animate: Bool) {
-        let indexPath: NSIndexPath = self.getIndexPathForLastItem()
-        if (indexPath.row > 0 || indexPath.section > 0) {
-            self.tableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: animate)
-        }
-    }
-    
     func getIndexPathForLastItem()->(NSIndexPath){
         var indexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0);
         let numberOfSections: Int = self.tableView.numberOfSections

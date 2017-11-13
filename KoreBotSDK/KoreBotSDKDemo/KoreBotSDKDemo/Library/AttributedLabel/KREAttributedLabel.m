@@ -54,7 +54,13 @@
 }
 
 - (void) setUpView {
+    __weak typeof(self) weakSelf = self;
     self.markdownParser = [TSMarkdownParser standardParser];
+    self.markdownParser.imageDetectionBlock = ^(BOOL reload) {
+        if (weakSelf.imageDetectionBlock) {
+            weakSelf.imageDetectionBlock(reload);
+        }
+    };
 
     if(self.textColor == nil)
         self.textColor = [UIColor lightGrayColor];
@@ -187,15 +193,6 @@
         }];
         //end
         
-        if(weakSelf.searchString != nil){
-            NSDictionary *highlightAttributes;
-            if(weakSelf.searchHighlightAttributes){
-                highlightAttributes = weakSelf.searchHighlightAttributes;
-            }else{
-                highlightAttributes = [KREUtilities getSearchHighlightAttributes:0];
-            }
-            [attrString applySearchStringHighlighting:weakSelf.searchString highlightedAttributes:highlightAttributes range:NSMakeRange(0,[attrString length]) beginsWithSearch:NO withPhraseSearch:YES];
-        }
         //setting attributed text on main thread
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.attributedText = attrString;
@@ -249,9 +246,9 @@
 
     __weak typeof(self) weakSelf = self;
     NSString *originalString = sString;
-    
-    NSMutableAttributedString *attributedString = [[self.markdownParser attributedStringFromMarkdown:[KREUtilities getHTMLStrippedStringFromString:sString]] mutableCopy];
-    NSString *string = attributedString.string;
+    NSString *string = [KREUtilities getHTMLStrippedStringFromString:sString];
+    NSMutableAttributedString *attributedString = [[self.markdownParser attributedStringFromMarkdown:string] mutableCopy];
+    string = attributedString.string;
     
     //initialize layout manager
     NSMutableAttributedString *layoutManagerString = [attributedString mutableCopy];
@@ -281,11 +278,18 @@
     }];
     //end
     
-    self.markdownParser.imageDetectionBlock = ^(BOOL reload) {
-        if (weakSelf.imageDetectionBlock) {
-            weakSelf.imageDetectionBlock(reload);
+    // get link attributes
+    [attributedString enumerateAttribute:NSLinkAttributeName inRange:NSMakeRange(0, [string length]) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+        if (value != NULL) {
+            CGRect pos = [layoutManager boundingRectForCharacterRange:range];
+            [_touchableWords addObject:[value absoluteString]];
+            [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
+            [_touchableLocations addObject:[NSValue valueWithCGRect:pos]];
+            [weakSelf addTouchableLayerWithRect:pos];
         }
-    };
+    }];
+    //end
+    
     // get URL links from the string
     regex = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink|NSTextCheckingTypePhoneNumber error:nil];
     result = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
@@ -306,15 +310,6 @@
     }];
     //end
     
-    if (weakSelf.searchString != nil) {
-        NSDictionary *highlightAttributes;
-        if(weakSelf.searchHighlightAttributes){
-            highlightAttributes = weakSelf.searchHighlightAttributes;
-        }else{
-            highlightAttributes = [KREUtilities getSearchHighlightAttributes:0];
-        }
-        [attributedString applySearchStringHighlighting:weakSelf.searchString highlightedAttributes:highlightAttributes range:NSMakeRange(0,[attributedString length]) beginsWithSearch:NO withPhraseSearch:YES];
-    }
     self.attributedText = attributedString;
 }
 
@@ -464,8 +459,6 @@
     self.hashtagTextColor = nil;
     self.linkTextColor = nil;
     self.mentionTextFont = nil;
-    self.searchString = nil;
-    self.searchHighlightAttributes = nil;
     
     [_touchableWords removeAllObjects];
     [_touchableWordsType removeAllObjects];

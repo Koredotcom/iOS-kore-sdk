@@ -86,7 +86,7 @@ extension KREMessage {
     public func removeComponentsObject(_value: KREComponent)  {
         self.willChangeValue(forKey: "components")
         let tempSet = NSMutableOrderedSet(orderedSet: self.components!)
-        tempSet.remove(at: tempSet.index(of: _value) )
+        tempSet.remove(tempSet.index(of: _value) )
         self.components = tempSet
         self.didChangeValue(forKey: "components")
     }
