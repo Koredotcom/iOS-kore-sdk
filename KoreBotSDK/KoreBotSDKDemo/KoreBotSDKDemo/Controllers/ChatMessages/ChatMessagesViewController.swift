@@ -281,7 +281,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             return .list
         }else if (templateType == "carousel") {
             return .carousel
-        }else if (templateType == "piechart" || templateType == "linechart") {
+        }else if (templateType == "piechart" || templateType == "linechart" || templateType == "barchart") {
             return .chart
         }else if (templateType == "table") {
             return .table
