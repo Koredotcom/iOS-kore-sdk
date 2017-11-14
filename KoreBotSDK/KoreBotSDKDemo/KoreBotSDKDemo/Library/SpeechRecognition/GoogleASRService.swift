@@ -22,6 +22,11 @@ class GoogleASRService: AudioControllerDelegate {
         AudioController.sharedInstance.delegate = self
     }
     
+    convenience init(api_key: String) {
+        self.init()
+        SpeechRecognitionService.sharedInstance.api_key = api_key
+    }
+    
     static func checkAudioRecordPermission(block:(() -> Void)?) {
         let audioSession = AVAudioSession.sharedInstance()
         if (audioSession.responds(to: #selector(AVAudioSession.requestRecordPermission(_:)))) {

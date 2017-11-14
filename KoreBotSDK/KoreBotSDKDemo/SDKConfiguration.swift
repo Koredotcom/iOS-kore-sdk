@@ -10,6 +10,11 @@ import UIKit
 import KoreBotSDK
 
 class SDKConfiguration: NSObject {
+    
+    struct dataStoreConfig {
+        static let resetDataStoreOnConnect = true // This should be either true or false. Conversation with the bot will be persisted, if it is false.
+    }
+    
     struct botConfig {
         static let clientId = "cs-ccec5fef-7aa3-5b01-afa5-9c7328b1e7dc" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
         
@@ -24,18 +29,17 @@ class SDKConfiguration: NSObject {
         static let isAnonymous = true // This should be either true (in case of known-user) or false (in-case of anonymous user).
     }
     
-    struct dataStoreConfig {
-        static let resetDataStoreOnConnect = true // This should be either true or false. Conversation with the bot will be persisted, if it is false.
-    }
-}
-
-class ServerConfigs: NSObject {
-    open static let JWT_SERVER = String(format: "http://demo.kore.net:3000/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
-    
-    open static func koreJwtUrl() -> String {
-        return String(format: "%@users/sts", JWT_SERVER)
+    struct serverConfig {
+        static let JWT_SERVER = String(format: "http://demo.kore.net:3000/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
+        
+        static func koreJwtUrl() -> String {
+            return String(format: "%@users/sts", JWT_SERVER)
+        }
+        
+        static let BOT_SERVER = String(format: "https://pilot-bots.kore.ai/")
     }
     
-    open static let BOT_SERVER = String(format: "https://pilot-bots.kore.ai/")
-    open static let BOT_SPEECH_SERVER = String(format: "https://qa-speech.kore.ai/")
+    struct speechConfig {
+        static let API_KEY = "AIzaSyCagwsHmUxecD-ZR6OJoL_YAvRBFIXFArQ"
+    }
 }

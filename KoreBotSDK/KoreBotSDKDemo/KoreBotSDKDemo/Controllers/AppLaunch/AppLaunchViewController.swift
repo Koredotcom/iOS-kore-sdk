@@ -86,8 +86,8 @@ class AppLaunchViewController: UIViewController {
                     print(thread.threadId!)
                     
                     let botClient: BotClient = BotClient(botInfoParameters: botInfo)
-                    if (ServerConfigs.BOT_SERVER.count > 0) {
-                        botClient.setKoreBotServerUrl(url: ServerConfigs.BOT_SERVER)
+                    if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
+                        botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
                     }
                     botClient.connectWithJwToken(jwToken, success: { [weak self] (client) in
                         activityIndicatorView.stopAnimating()
@@ -96,10 +96,6 @@ class AppLaunchViewController: UIViewController {
                         let botViewController = ChatMessagesViewController(thread: thread)
                         botViewController.botClient = client
                         botViewController.title = SDKConfiguration.botConfig.chatBotName
-                        
-//                        let botViewController = ChatWindowViewController(thread: thread)
-//                        botViewController.botClient = client
-//                        botViewController.title = SDKConfiguration.botConfig.chatBotName
                         
                         //Addition fade in animation
                         let transition = CATransition()
@@ -130,7 +126,7 @@ class AppLaunchViewController: UIViewController {
     //       Developer has to host a webservice, which generates the JWT and that should be called from this method.
     func getJwTokenWithClientId(_ clientId: String!, clientSecret: String!, identity: String!, isAnonymous: Bool!, success:((_ jwToken: String?) -> Void)?, failure:((_ error: Error) -> Void)?) {
         // NOTE: You must set your URL to generate JWT. 
-        let urlString: String = ServerConfigs.koreJwtUrl()
+        let urlString: String = SDKConfiguration.serverConfig.koreJwtUrl()
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
@@ -145,7 +141,7 @@ class AppLaunchViewController: UIViewController {
                                         "aud": "https://idproxy.kore.com/authorize",
                                         "isAnonymous": isAnonymous]
         
-        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: URL.init(string: ServerConfigs.JWT_SERVER) as URL!)
+        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL!)
         operationManager.responseSerializer = AFJSONResponseSerializer.init()
         operationManager.requestSerializer = requestSerializer
         operationManager.post(urlString, parameters: parameters, success: { (operation, responseObject) in

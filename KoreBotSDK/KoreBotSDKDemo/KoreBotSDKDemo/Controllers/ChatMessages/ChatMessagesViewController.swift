@@ -37,7 +37,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var typingStatusView: KRETypingStatusView!
     var webViewController: InputTOWebViewController!
 
-    let sttClient: GoogleASRService = GoogleASRService()
+    let sttClient: GoogleASRService = GoogleASRService(api_key: SDKConfiguration.speechConfig.API_KEY)
     var speechSynthesizer: AVSpeechSynthesizer!
     
     // MARK: init
