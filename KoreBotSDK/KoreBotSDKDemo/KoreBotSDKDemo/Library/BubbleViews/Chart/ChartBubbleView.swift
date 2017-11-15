@@ -9,7 +9,7 @@
 import UIKit
 import Charts
 
-class ChartBubbleView: BubbleView, IAxisValueFormatter {
+class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
     var pcView: PieChartView!
     var lcView: LineChartView!
     var bcView: BarChartView!
@@ -40,6 +40,10 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter {
         return "\(value)"
     }
     
+    func stringForValue(_ value: Double, entry: ChartDataEntry, dataSetIndex: Int, viewPortHandler: ViewPortHandler?) -> String {
+        return entry.data!["displayValue"] != nil ? entry.data!["displayValue"] as! String : "\(value)"
+    }
+    
     // MARK: initialize chart views
     func intializePieChartView(){
         self.pcView = PieChartView()
@@ -51,19 +55,17 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[pcView]|", options: [], metrics: nil, views: views))
         
         let l: Legend = self.pcView.legend
-        l.horizontalAlignment = .center
+        l.horizontalAlignment = .right
         l.verticalAlignment = .top
-        l.orientation = .horizontal
-        l.drawInside = true
-        l.xEntrySpace = 7.0
-        l.yEntrySpace = 0.0
-        l.yOffset = -4.0
-        l.formSize = 14.0
+        l.orientation = .vertical
+        l.drawInside = false
+        l.formSize = 12.0
         l.textColor = .white
-        l.font = UIFont(name: "HelveticaNeue-Medium", size: 14.0)!
+        l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
         
         self.pcView.chartDescription?.enabled = false
         self.pcView.drawHoleEnabled = false
+        self.pcView.drawEntryLabelsEnabled = false
     }
     
     func intializeLineChartView(){
@@ -154,14 +156,14 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter {
     
     func colorsPalet() -> [NSUIColor]{
         var colors: Array<UIColor> = Array<UIColor>()
+        colors.append(Common.UIColorRGB(0x5F6BF7))
+        colors.append(Common.UIColorRGB(0xF78083))
         colors.append(Common.UIColorRGB(0x41C5D3))
         colors.append(Common.UIColorRGB(0xC4AFF0))
-        colors.append(Common.UIColorRGB(0x64D7D6))
         colors.append(Common.UIColorRGB(0x2ecc71))
         colors.append(Common.UIColorRGB(0x1abc9c))
-        colors.append(Common.UIColorRGB(0x1abc9c))
-        colors.append(contentsOf: ChartColorTemplates.joyful())
         colors.append(contentsOf: ChartColorTemplates.colorful())
+        colors.append(contentsOf: ChartColorTemplates.joyful())
         colors.append(contentsOf: ChartColorTemplates.liberty())
         colors.append(contentsOf: ChartColorTemplates.material())
         colors.append(contentsOf: ChartColorTemplates.pastel())
@@ -174,31 +176,21 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter {
         let elements: Array<Dictionary<String, Any>> = jsonObject["elements"] != nil ? jsonObject["elements"] as! Array<Dictionary<String, Any>> : []
         let elementsCount: Int = elements.count
         var values: Array<PieChartDataEntry> = Array<PieChartDataEntry>()
-        var currency: String? = "$"
         for i in 0..<elementsCount {
             let dictionary = elements[i]
             let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
             let value: NSNumber = dictionary["value"] != nil ? dictionary["value"] as! NSNumber : 0
-            if dictionary["currency"] != nil {
-                currency = dictionary["currency"] as? String
-            }
             let pieChartDataEntry = PieChartDataEntry(value: value.doubleValue, label: title, data: dictionary as AnyObject)
             values.append(pieChartDataEntry)
         }
         let pieChartDataSet = PieChartDataSet(values: values, label: "")
         pieChartDataSet.colors = colorsPalet()
+        pieChartDataSet.sliceSpace = 2.0
         
         let pieChartData = PieChartData(dataSet: pieChartDataSet)
-        
-        let pFormatter: NumberFormatter = NumberFormatter()
-        pFormatter.numberStyle = .currency
-        pFormatter.maximumFractionDigits = 2
-        pFormatter.multiplier = 1.0
-        pFormatter.currencySymbol = currency
-        
-        pieChartData.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
+        pieChartData.setValueFormatter(self)
         pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 14.0))
-        pieChartData.setValueTextColor(UIColor.black)
+        pieChartData.setValueTextColor(UIColor.white)
         
         self.pcView.data = pieChartData
         self.pcView.highlightValues(nil)
