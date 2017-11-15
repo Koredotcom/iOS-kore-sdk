@@ -34,8 +34,8 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
     
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
         let index = Int(value)
-        if xAxisValues.count >= index {
-            return xAxisValues[index-1]
+        if xAxisValues.count > index {
+            return xAxisValues[index]
         }
         return "\(value)"
     }
@@ -66,6 +66,8 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         self.pcView.chartDescription?.enabled = false
         self.pcView.drawHoleEnabled = false
         self.pcView.drawEntryLabelsEnabled = false
+        self.pcView.extraRightOffset = 0.0
+        self.pcView.rotationEnabled = false
     }
     
     func intializeLineChartView(){
@@ -92,11 +94,12 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         self.lcView.xAxis.drawGridLinesEnabled = false
         self.lcView.xAxis.granularity = 1.0
         self.lcView.xAxis.valueFormatter = self
+        self.lcView.xAxis.avoidFirstLastClippingEnabled = true
         
         self.lcView.drawGridBackgroundEnabled = false
         self.lcView.drawBordersEnabled = false
         self.lcView.dragEnabled = true
-        self.lcView.pinchZoomEnabled = false
+        self.lcView.pinchZoomEnabled = true
         
         let l: Legend = self.lcView.legend
         l.horizontalAlignment = .right
@@ -135,7 +138,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         self.bcView.drawGridBackgroundEnabled = false
         self.bcView.drawBordersEnabled = false
         self.bcView.dragEnabled = true
-        self.bcView.pinchZoomEnabled = false
+        self.bcView.pinchZoomEnabled = true
         
         let l: Legend = self.bcView.legend
         l.horizontalAlignment = .right
@@ -146,7 +149,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         l.textColor = .white
         l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
         
-        let marker = BalloonMarker(color: UIColor.white.withAlphaComponent(0.9), font: UIFont(name: "HelveticaNeue-Bold", size: 13.0)!, textColor: .black, insets: UIEdgeInsetsMake(8.0, 8.0, 20.0, 8.0))
+        let marker = BalloonMarker(color: UIColor.white.withAlphaComponent(0.9), font: UIFont(name: "HelveticaNeue-Bold", size: 12.0)!, textColor: .black, insets: UIEdgeInsetsMake(8.0, 8.0, 20.0, 8.0))
         self.bcView.marker = marker
     }
     
@@ -176,12 +179,15 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         let elements: Array<Dictionary<String, Any>> = jsonObject["elements"] != nil ? jsonObject["elements"] as! Array<Dictionary<String, Any>> : []
         let elementsCount: Int = elements.count
         var values: Array<PieChartDataEntry> = Array<PieChartDataEntry>()
+        var rightOffset: CGFloat = 0.0
         for i in 0..<elementsCount {
             let dictionary = elements[i]
             let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
             let value: NSNumber = dictionary["value"] != nil ? dictionary["value"] as! NSNumber : 0
             let pieChartDataEntry = PieChartDataEntry(value: value.doubleValue, label: title, data: dictionary as AnyObject)
             values.append(pieChartDataEntry)
+            
+            rightOffset = CGFloat.maximum(rightOffset, (title as NSString).size(withAttributes: [NSAttributedStringKey.font : UIFont(name: "HelveticaNeue-Medium", size: 12.0)!]).width)
         }
         let pieChartDataSet = PieChartDataSet(values: values, label: "")
         pieChartDataSet.colors = colorsPalet()
@@ -189,9 +195,10 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         
         let pieChartData = PieChartData(dataSet: pieChartDataSet)
         pieChartData.setValueFormatter(self)
-        pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 14.0))
+        pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 12.0))
         pieChartData.setValueTextColor(UIColor.white)
         
+        self.pcView.extraRightOffset = rightOffset
         self.pcView.data = pieChartData
         self.pcView.highlightValues(nil)
         self.pcView.animate(yAxisDuration: 1.4, easingOption: ChartEasingOption.easeInOutBack)
@@ -224,7 +231,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             let values: Array<NSNumber> = dictionary["values"] != nil ? dictionary["values"] as! Array<NSNumber> : []
             var subDataValues: Array<ChartDataEntry> = Array<ChartDataEntry>()
             for j in 0..<values.count {
-                subDataValues.append(ChartDataEntry(x: Double(i + 1), y: values[j].doubleValue))
+                subDataValues.append(ChartDataEntry(x: Double(i), y: values[j].doubleValue))
             }
             dataValues.append(subDataValues)
         }
@@ -266,7 +273,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             let values: Array<NSNumber> = dictionary["values"] != nil ? dictionary["values"] as! Array<NSNumber> : []
             var subDataValues: Array<BarChartDataEntry> = Array<BarChartDataEntry>()
             for j in 0..<values.count {
-                subDataValues.append(BarChartDataEntry(x: Double(i + 1), y: values[j].doubleValue))
+                subDataValues.append(BarChartDataEntry(x: Double(i), y: values[j].doubleValue))
             }
             dataValues.append(subDataValues)
         }
@@ -292,7 +299,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         let barSpace = 0.01
         let barWidth = ((1.0 - groupSpace)/Double(dataSets.count)) - barSpace
         barChartData.barWidth = barWidth
-        barChartData.groupBars(fromX: 0.5, groupSpace: groupSpace, barSpace: barSpace)
+        barChartData.groupBars(fromX: -0.5, groupSpace: groupSpace, barSpace: barSpace)
         
         self.xAxisValues = titles
         self.bcView.data = barChartData
@@ -335,7 +342,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
     }
     
     override var intrinsicContentSize : CGSize {
-        return CGSize(width: 0.0, height: 320)
+        return CGSize(width: 0.0, height: 280)
     }
     
     override func prepareForReuse() {

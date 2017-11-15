@@ -312,6 +312,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             var ttsBody: String? = nil
             
             if (componentModel.type == "text") {
+                self.showTypingStatusForBotsAction()
                 
                 let payload: NSDictionary = componentModel.payload! as! NSDictionary
                 let text: NSString = payload["text"] as! NSString
@@ -345,6 +346,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     let templateType: String = dictionary["template_type"] as! String
                     let componentType = self.getComponentType(templateType)
                     
+                    if componentType != .quickReply {
+                        self.showTypingStatusForBotsAction()
+                    }
+                    
                     let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
                     ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
                     
@@ -366,6 +371,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     message.addComponent(optionsComponent)
                     
                 }else if(type == "error"){
+                    self.showTypingStatusForBotsAction()
                     
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
                     let errorComponent: Component = Component(.error)
@@ -373,6 +379,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     message.addComponent(errorComponent)
                     
                 }else if text != "" {
+                    self.showTypingStatusForBotsAction()
                     
                     let textComponent: Component = Component()
                     textComponent.payload = text as NSString!
@@ -391,7 +398,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
                 dataStoreManager.createNewMessageIn(thread: self.thread, message: message, completionBlock: { (success) in
                 })
-                self.showTypingStatusForBotsAction()
                 if ttsBody != nil {
                     NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: ttsBody)
                 }
