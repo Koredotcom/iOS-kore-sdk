@@ -479,6 +479,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.startSpeaking), name: NSNotification.Name(rawValue: startSpeakingNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.stopSpeaking), name: NSNotification.Name(rawValue: stopSpeakingNotification), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.showTableTemplateView), name: NSNotification.Name(rawValue: showTableTemplateNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -489,6 +491,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: startSpeakingNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: stopSpeakingNotification), object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showTableTemplateNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -753,5 +757,12 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         info.setValue("kora", forKey: "imageName");
         
         self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 2.0)
+    }
+    
+    // MARK: show TableTemplateView
+    @objc func showTableTemplateView(notification:Notification) {
+        let dataString: String = notification.object as! String
+        let tableTemplateViewController = TableTemplateViewController(dataString: dataString)
+        self.navigationController?.present(tableTemplateViewController, animated: true, completion: nil)
     }
 }

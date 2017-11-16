@@ -13,6 +13,7 @@
 		2E1E49F68222AAA4C970168B /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E1812F1242FE88925056F7C /* Pods_KoreBotSDKDemo.framework */; };
 		6E14F4691F2F4D8600F5C149 /* BotMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E14F4681F2F4D8600F5C149 /* BotMessagesView.swift */; };
 		6E202A581FBB22AF002A608C /* BalloonMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E202A571FBB22AF002A608C /* BalloonMarker.swift */; };
+		6E202A5C1FBC7B33002A608C /* CustomCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E202A5B1FBC7B33002A608C /* CustomCollectionViewLayout.swift */; };
 		6E50B77A1F29042000E10D7D /* ComposeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E50B7791F29042000E10D7D /* ComposeBarView.swift */; };
 		6E5F21E31F8E34AC00527A52 /* SpeechRecognitionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5F21E11F8E34AC00527A52 /* SpeechRecognitionService.swift */; };
 		6E5F21E41F8E34AC00527A52 /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5F21E21F8E34AC00527A52 /* AudioController.swift */; };
@@ -21,6 +22,8 @@
 		6E7E002F1F8E638B002F2789 /* GoogleASRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7E002E1F8E638B002F2789 /* GoogleASRService.swift */; };
 		6E8410211FADF0C900A26C8F /* ChartBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8410201FADF0C900A26C8F /* ChartBubbleView.swift */; };
 		6E9C0E401F162FFB003550F8 /* CarouselBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9C0E3F1F162FFB003550F8 /* CarouselBubbleView.swift */; };
+		6EA472EF1FBD9BA200982255 /* TableTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA472ED1FBD9BA200982255 /* TableTemplateViewController.swift */; };
+		6EA472F01FBD9BA200982255 /* TableTemplateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EA472EE1FBD9BA200982255 /* TableTemplateViewController.xib */; };
 		6ECD5CD01F2B3ECB00B9790E /* AudioComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECD5CCF1F2B3ECB00B9790E /* AudioComposeView.swift */; };
 		7D5861C51F8B6A7E00389DCB /* TableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5861C41F8B6A7E00389DCB /* TableBubbleView.swift */; };
 		7D63B37F1F8B9D6800D08701 /* InputTOWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D63B37E1F8B9D6800D08701 /* InputTOWebViewController.swift */; };
@@ -84,6 +87,7 @@
 		6E14F4681F2F4D8600F5C149 /* BotMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotMessagesView.swift; sourceTree = "<group>"; };
 		6E1812F1242FE88925056F7C /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E202A571FBB22AF002A608C /* BalloonMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalloonMarker.swift; sourceTree = "<group>"; };
+		6E202A5B1FBC7B33002A608C /* CustomCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewLayout.swift; sourceTree = "<group>"; };
 		6E50B7791F29042000E10D7D /* ComposeBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeBarView.swift; sourceTree = "<group>"; };
 		6E5F21E11F8E34AC00527A52 /* SpeechRecognitionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionService.swift; sourceTree = "<group>"; };
 		6E5F21E21F8E34AC00527A52 /* AudioController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
@@ -92,6 +96,8 @@
 		6E7E002E1F8E638B002F2789 /* GoogleASRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleASRService.swift; sourceTree = "<group>"; };
 		6E8410201FADF0C900A26C8F /* ChartBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartBubbleView.swift; sourceTree = "<group>"; };
 		6E9C0E3F1F162FFB003550F8 /* CarouselBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselBubbleView.swift; sourceTree = "<group>"; };
+		6EA472ED1FBD9BA200982255 /* TableTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableTemplateViewController.swift; sourceTree = "<group>"; };
+		6EA472EE1FBD9BA200982255 /* TableTemplateViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableTemplateViewController.xib; sourceTree = "<group>"; };
 		6ECD5CCF1F2B3ECB00B9790E /* AudioComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioComposeView.swift; sourceTree = "<group>"; };
 		7092CBEB046F0BC9247CE8CE /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		7D5861C41F8B6A7E00389DCB /* TableBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableBubbleView.swift; sourceTree = "<group>"; };
@@ -222,6 +228,8 @@
 			isa = PBXGroup;
 			children = (
 				7D63B37E1F8B9D6800D08701 /* InputTOWebViewController.swift */,
+				6EA472ED1FBD9BA200982255 /* TableTemplateViewController.swift */,
+				6EA472EE1FBD9BA200982255 /* TableTemplateViewController.xib */,
 			);
 			path = InputViews;
 			sourceTree = "<group>";
@@ -365,6 +373,7 @@
 		D17550511F8BADCB00022853 /* CollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				6E202A5B1FBC7B33002A608C /* CustomCollectionViewLayout.swift */,
 				D17550521F8BADCB00022853 /* CustomCollectionViewCell.swift */,
 				D17550531F8BADCB00022853 /* CustomCollectionViewCell.xib */,
 			);
@@ -606,6 +615,7 @@
 			files = (
 				D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */,
 				BB4D2DE81E289FA000A97E99 /* KRETypingCollectionViewCell.xib in Resources */,
+				6EA472F01FBD9BA200982255 /* TableTemplateViewController.xib in Resources */,
 				D1CAF15F1CF0AEA3001BCAEF /* AppLaunchViewController.xib in Resources */,
 				D1B944AE1D04463F000AADA9 /* MultiImageBubbleView.xib in Resources */,
 				D17550551F8BADCB00022853 /* CustomCollectionViewCell.xib in Resources */,
@@ -817,6 +827,7 @@
 				BB4D2DE71E289FA000A97E99 /* KRETypingCollectionViewCell.m in Sources */,
 				D1F4E52C1CF716640044C093 /* Thread.swift in Sources */,
 				D150415D1DE2CD0D00F2F92E /* KREMessage+CoreDataProperties.swift in Sources */,
+				6EA472EF1FBD9BA200982255 /* TableTemplateViewController.swift in Sources */,
 				D1522ABA1DED45AC00D86407 /* OptionsBubbleView.swift in Sources */,
 				D150415F1DE2CD0D00F2F92E /* KREContact+CoreDataProperties.swift in Sources */,
 				6E9C0E401F162FFB003550F8 /* CarouselBubbleView.swift in Sources */,
@@ -837,6 +848,7 @@
 				D1B944AD1D04463F000AADA9 /* MultiImageBubbleView.swift in Sources */,
 				BB4D2DE61E289FA000A97E99 /* KRETypingActivityIndicator.m in Sources */,
 				6E50B77A1F29042000E10D7D /* ComposeBarView.swift in Sources */,
+				6E202A5C1FBC7B33002A608C /* CustomCollectionViewLayout.swift in Sources */,
 				D15041631DE2F93D00F2F92E /* DataStoreManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

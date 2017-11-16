@@ -12,6 +12,7 @@ import KoreWidgets
 
 var startSpeakingNotification = "StartSpeakingNowNotificationName"
 var stopSpeakingNotification = "StopSpeakingNowNotificationName"
+var showTableTemplateNotification = "ShowTableTemplateNotificationName"
 var isSpeakingEnabled = false
 
 open class Common : NSObject {

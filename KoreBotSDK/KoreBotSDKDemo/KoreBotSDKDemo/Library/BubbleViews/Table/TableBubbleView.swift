@@ -10,9 +10,14 @@ import UIKit
 
 class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var collectionView: UICollectionView!
-    let customCellIdentifier = "CustomCellIdentifier"
+    var showMoreButton: UIButton!
     
-    var data: Dictionary<String, Any> = Dictionary<String, Any>()
+    let customCellIdentifier = "CustomCellIdentifier"
+    let rowsDataLimit = 6
+    
+    var headers: Array<Dictionary<String, Any>> = Array<Dictionary<String, Any>>()
+    var rows: Array<Array<String>> = Array<Array<String>>()
+    var showMore = false
     
     override func applyBubbleMask() {
         //nothing to put here
@@ -27,37 +32,52 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
     override func initialize() {
         super.initialize()
         
-        let collectionViewLayout = UICollectionViewFlowLayout()
+        let collectionViewLayout = CustomCollectionViewLayout()
         self.collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewLayout)
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         self.collectionView.backgroundColor = .clear
+        self.collectionView.showsHorizontalScrollIndicator = false
+        self.collectionView.showsVerticalScrollIndicator = false
+        self.collectionView.bounces = false
         self.addSubview(self.collectionView)
         
         self.collectionView.register(UINib(nibName: "CustomCollectionViewCell", bundle: nil),
                                      forCellWithReuseIdentifier: customCellIdentifier)
         
-        let views: [String: UIView] = ["collectionView": collectionView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[collectionView]-0-|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[collectionView]-0-|", options: [], metrics: nil, views: views))
+        self.showMoreButton = UIButton.init(frame: CGRect.zero)
+        self.showMoreButton.setTitle("Show More", for: .normal)
+        self.showMoreButton.translatesAutoresizingMaskIntoConstraints = false
+        self.showMoreButton.setTitleColor(Common.UIColorRGB(0xFFFFFF), for: .normal)
+        self.showMoreButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
+        self.showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
+        self.showMoreButton.isHidden = true
+        self.showMoreButton.clipsToBounds = true
+        self.addSubview(self.showMoreButton)
+        
+        let views: [String: UIView] = ["collectionView": collectionView, "showMoreButton": showMoreButton]
+        
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[collectionView]|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[collectionView]|", options: [], metrics: nil, views: views))
+        
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[showMoreButton(36.0)]|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[showMoreButton]|", options: [], metrics: nil, views: views))
     }
     
     //MARK: collection view delegate methods
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        let rows = self.data["rows"]  as! Array<Array<String>>
         return rows.count + 2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            let headers = self.data["headers"]  as! Array<Dictionary<String, Any>>
             return headers.count
         } else if section == 1 {
             return 1
         } else {
-            let rows = self.data["rows"]  as! Array<Array<String>>
-            let row = rows[section - 2]
+            let sec = section - 2
+            let row = rows[sec]
             return row.count
         }
     }
@@ -67,7 +87,6 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! CustomCollectionViewCell
         cell.backgroundColor = .clear
         
-        let headers = self.data["headers"]  as! Array<Dictionary<String, Any>>
         let header = headers[indexPath.row]
         let alignment = header["alignment"] != nil ? header["alignment"] as! String : ""
         if alignment == "right" {
@@ -85,8 +104,8 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
             cell.textLabel.text = ""
             cell.backgroundColor = .white
         } else {
-            let rows = self.data["rows"]  as! Array<Array<String>>
-            let row = rows[indexPath.section - 2]
+            let sec = indexPath.section - 2
+            let row = rows[sec]
             let text = row[indexPath.row]
             if text == "---" {
                 cell.textLabel.text = ""
@@ -101,7 +120,6 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let headers = self.data["headers"]  as! Array<Dictionary<String, Any>>
         let header = headers[indexPath.row]
         let percentage = header["percentage"] != nil ? header["percentage"] as! NSNumber : 0
         let count = CGFloat(headers.count)
@@ -113,13 +131,13 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         if indexPath.section == 0 {
             return CGSize(width: itemWidth, height: 36)
         } else if indexPath.section == 1 {
-            return CGSize(width: viewWidth, height: 1)
+            return CGSize(width: -1, height: 1)
         } else {
-            let rows = self.data["rows"]  as! Array<Array<String>>
-            let row = rows[indexPath.section - 2]
+            let sec = indexPath.section - 2
+            let row = rows[sec]
             let text = row[indexPath.row]
             if text == "---" {
-                return CGSize(width: viewWidth, height: 1)
+                return CGSize(width: -1, height: 1)
             }
             return CGSize(width: itemWidth, height: 36)
         }
@@ -144,14 +162,36 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
                 let data: Dictionary<String, Any> = jsonObject["data"] != nil ? jsonObject["data"] as! Dictionary<String, Any> : [:]
-                self.data = data
+                
+                self.headers = data["headers"] as! Array<Dictionary<String, Any>>
+                let rowsData = data["rows"] as! Array<Array<String>>
+                
+                self.showMore = false
+                var rowsDataCount = 0
+                var index = 0
+                for row in rowsData {
+                    index += 1
+                    let text = row[0]
+                    if text != "---" {
+                        rowsDataCount += 1
+                    }
+                    if rowsDataCount == rowsDataLimit {
+                        self.showMore = true
+                        break
+                    }
+                }
+                self.rows = Array(rowsData.dropLast(rowsData.count - index))
+                if self.showMore && self.rows[self.rows.count-1][0] != "---" {
+                    self.rows.append(["---"])
+                }
+                self.collectionView.collectionViewLayout.invalidateLayout()
                 self.collectionView.reloadData()
+                self.showMoreButton.isHidden = !self.showMore
             }
         }
     }
     
     override var intrinsicContentSize : CGSize {
-        let rows = self.data["rows"]  as! Array<Array<String>>
         var height: CGFloat = 38.0
         for i in 0..<rows.count {
             let row = rows[i]
@@ -162,6 +202,20 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
                 height += 36.0
             }
         }
+        if self.showMore {
+            height += 36.0
+        }
+        
         return CGSize(width: 0.0, height: height)
+    }
+    
+    @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
+        if (components.count > 0) {
+            let component: KREComponent = components.firstObject as! KREComponent
+            if (component.componentDesc != nil) {
+                let jsonString = component.componentDesc
+                NotificationCenter.default.post(name: Notification.Name(showTableTemplateNotification), object: jsonString)
+            }
+        }
     }
 }
