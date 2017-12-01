@@ -8,7 +8,7 @@
 //
 
 import UIKit
-import KoreWidgets
+import KoreBotSDK
 
 public class KRECardInfo: NSObject {
     

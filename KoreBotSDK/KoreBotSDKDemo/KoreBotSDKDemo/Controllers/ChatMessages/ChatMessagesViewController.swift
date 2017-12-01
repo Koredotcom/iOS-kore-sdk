@@ -9,7 +9,6 @@
 import UIKit
 import AVFoundation
 import KoreBotSDK
-import KoreWidgets
 import TOWebViewController
 
 class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate {

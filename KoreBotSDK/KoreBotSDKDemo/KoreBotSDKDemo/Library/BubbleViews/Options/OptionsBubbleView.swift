@@ -7,8 +7,7 @@
 //
 
 import UIKit
-import KoreTextParser
-import KoreWidgets
+import KoreBotSDK
 
 class OptionsBubbleView: BubbleView {
     static let buttonsLimit: Int = 3

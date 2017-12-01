@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import KoreWidgets
+import KoreBotSDK
 
 class CarouselBubbleView: BubbleView {
     var carouselView: KRECarouselView!
