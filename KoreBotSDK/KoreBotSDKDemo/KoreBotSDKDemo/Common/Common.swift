@@ -8,7 +8,7 @@
 
 import UIKit
 import Foundation
-import KoreWidgets
+import KoreBotSDK
 
 var startSpeakingNotification = "StartSpeakingNowNotificationName"
 var stopSpeakingNotification = "StopSpeakingNowNotificationName"

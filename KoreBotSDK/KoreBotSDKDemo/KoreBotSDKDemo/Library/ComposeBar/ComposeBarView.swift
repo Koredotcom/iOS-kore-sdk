@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import KoreWidgets
+import KoreBotSDK
 
 protocol ComposeBarViewDelegate {
     func composeBarView(_: ComposeBarView, sendButtonAction text: String)

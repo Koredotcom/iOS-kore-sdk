@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import KoreTextParser
 
 class TextBubbleView : BubbleView {
     var onChange: ((_ reload: Bool) -> ())!

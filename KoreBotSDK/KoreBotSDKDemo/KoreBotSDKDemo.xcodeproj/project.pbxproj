@@ -27,6 +27,7 @@
 		6ECD5CD01F2B3ECB00B9790E /* AudioComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECD5CCF1F2B3ECB00B9790E /* AudioComposeView.swift */; };
 		7D5861C51F8B6A7E00389DCB /* TableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5861C41F8B6A7E00389DCB /* TableBubbleView.swift */; };
 		7D63B37F1F8B9D6800D08701 /* InputTOWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D63B37E1F8B9D6800D08701 /* InputTOWebViewController.swift */; };
+		ACB6026F1FD15B5D00A5B815 /* KoreBotSDK.podspec in Resources */ = {isa = PBXBuildFile; fileRef = ACB6026E1FD15B5C00A5B815 /* KoreBotSDK.podspec */; };
 		BB4D2DE61E289FA000A97E99 /* KRETypingActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4D2DE01E289FA000A97E99 /* KRETypingActivityIndicator.m */; };
 		BB4D2DE71E289FA000A97E99 /* KRETypingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4D2DE21E289FA000A97E99 /* KRETypingCollectionViewCell.m */; };
 		BB4D2DE81E289FA000A97E99 /* KRETypingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB4D2DE31E289FA000A97E99 /* KRETypingCollectionViewCell.xib */; };
@@ -102,6 +103,7 @@
 		7092CBEB046F0BC9247CE8CE /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		7D5861C41F8B6A7E00389DCB /* TableBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableBubbleView.swift; sourceTree = "<group>"; };
 		7D63B37E1F8B9D6800D08701 /* InputTOWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTOWebViewController.swift; sourceTree = "<group>"; };
+		ACB6026E1FD15B5C00A5B815 /* KoreBotSDK.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = KoreBotSDK.podspec; path = ../../KoreBotSDK.podspec; sourceTree = "<group>"; };
 		BB4D2DDF1E289FA000A97E99 /* KRETypingActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingActivityIndicator.h; sourceTree = "<group>"; };
 		BB4D2DE01E289FA000A97E99 /* KRETypingActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingActivityIndicator.m; sourceTree = "<group>"; };
 		BB4D2DE11E289FA000A97E99 /* KRETypingCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingCollectionViewCell.h; sourceTree = "<group>"; };
@@ -383,6 +385,7 @@
 		D175AD411CEF0CD500BB9442 = {
 			isa = PBXGroup;
 			children = (
+				ACB6026E1FD15B5C00A5B815 /* KoreBotSDK.podspec */,
 				D1A12B6D1E84DD3500F4E2B4 /* SDKConfiguration.swift */,
 				D175AD4C1CEF0CD500BB9442 /* KoreBotSDKDemo */,
 				D175AD4B1CEF0CD500BB9442 /* Products */,
@@ -615,6 +618,7 @@
 			files = (
 				D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */,
 				BB4D2DE81E289FA000A97E99 /* KRETypingCollectionViewCell.xib in Resources */,
+				ACB6026F1FD15B5D00A5B815 /* KoreBotSDK.podspec in Resources */,
 				6EA472F01FBD9BA200982255 /* TableTemplateViewController.xib in Resources */,
 				D1CAF15F1CF0AEA3001BCAEF /* AppLaunchViewController.xib in Resources */,
 				D1B944AE1D04463F000AADA9 /* MultiImageBubbleView.xib in Resources */,
@@ -673,12 +677,9 @@
 				"${BUILT_PRODUCTS_DIR}/DTCoreText/DTCoreText.framework",
 				"${BUILT_PRODUCTS_DIR}/DTFoundation/DTFoundation.framework",
 				"${BUILT_PRODUCTS_DIR}/KoreBotSDK/KoreBotSDK.framework",
-				"${BUILT_PRODUCTS_DIR}/KoreTextParser/KoreTextParser.framework",
-				"${BUILT_PRODUCTS_DIR}/KoreWidgets/KoreWidgets.framework",
 				"${BUILT_PRODUCTS_DIR}/Mantle/Mantle.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket/SocketRocket.framework",
-				"${BUILT_PRODUCTS_DIR}/SpeechToText/SpeechToText.framework",
 				"${BUILT_PRODUCTS_DIR}/TOWebViewController/TOWebViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
@@ -695,12 +696,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTCoreText.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTFoundation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KoreBotSDK.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KoreTextParser.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KoreWidgets.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mantle.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SpeechToText.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TOWebViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",

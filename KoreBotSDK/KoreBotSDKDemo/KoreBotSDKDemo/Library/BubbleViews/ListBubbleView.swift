@@ -7,8 +7,7 @@
 //
 
 import UIKit
-import KoreTextParser
-import KoreWidgets
+import KoreBotSDK
 
 class ListBubbleView: BubbleView {
     static let elementsLimit: Int = 4
