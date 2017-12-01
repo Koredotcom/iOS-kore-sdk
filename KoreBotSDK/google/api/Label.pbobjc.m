@@ -23,6 +23,9 @@
 
 @implementation LabelRoot
 
+// No extensions in the file and no imports, so no need to generate
+// +extensionRegistry.
+
 @end
 
 #pragma mark - LabelRoot_FileDescriptor
@@ -32,7 +35,7 @@ static GPBFileDescriptor *LabelRoot_FileDescriptor(void) {
   // about thread safety of the singleton.
   static GPBFileDescriptor *descriptor = NULL;
   if (!descriptor) {
-    GPBDebugCheckRuntimeVersion();
+    GPB_DEBUG_CHECK_RUNTIME_VERSIONS();
     descriptor = [[GPBFileDescriptor alloc] initWithPackage:@"google.api"
                                                      syntax:GPBFileSyntaxProto3];
   }
@@ -75,7 +78,7 @@ typedef struct LabelDescriptor__storage_ {
         .number = LabelDescriptor_FieldNumber_ValueType,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(LabelDescriptor__storage_, valueType),
-        .flags = GPBFieldOptional | GPBFieldHasEnumDescriptor,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor),
         .dataType = GPBDataTypeEnum,
       },
       {
@@ -95,7 +98,7 @@ typedef struct LabelDescriptor__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(LabelDescriptor__storage_)
-                                         flags:0];
+                                         flags:GPBDescriptorInitializationFlag_None];
     NSAssert(descriptor == nil, @"Startup recursed!");
     descriptor = localDescriptor;
   }

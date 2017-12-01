@@ -1,12 +1,11 @@
-//#import "google/longrunning/Operations.pbobjc.h"
-#import <googleapis/Operations.pbobjc.h>
+#import "Operations.pbobjc.h"
 
 #import <ProtoRPC/ProtoService.h>
+#import <ProtoRPC/ProtoRPC.h>
 #import <RxLibrary/GRXWriteable.h>
 #import <RxLibrary/GRXWriter.h>
 
-//#import "google/api/Annotations.pbobjc.h"
-#import <googleapis/Annotations.pbobjc.h>
+#import "Annotations.pbobjc.h"
 #if GPB_USE_PROTOBUF_FRAMEWORK_IMPORTS
   #import <Protobuf/Any.pbobjc.h>
 #else
@@ -17,8 +16,7 @@
 #else
   #import "google/protobuf/Empty.pbobjc.h"
 #endif
-//#import "google/rpc/Status.pbobjc.h"
-#import <googleapis/Status.pbobjc.h>
+#import "Status.pbobjc.h"
 
 
 NS_ASSUME_NONNULL_BEGIN
