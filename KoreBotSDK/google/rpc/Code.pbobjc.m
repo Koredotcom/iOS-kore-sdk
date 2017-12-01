@@ -23,6 +23,9 @@
 
 @implementation CodeRoot
 
+// No extensions in the file and no imports, so no need to generate
+// +extensionRegistry.
+
 @end
 
 #pragma mark - Enum Code
