@@ -122,7 +122,7 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
     // MARK:- setup collectionView
     func setup() {
         let podBundle = Bundle(for: self.classForCoder)
-        if let bundleURL = podBundle.url(forResource: "KoreWidgets", withExtension: "bundle") {
+        if let bundleURL = podBundle.url(forResource: "Widgets", withExtension: "bundle") {
             if let bundle = Bundle(url: bundleURL) {
                 
                 let optionsCellNib = UINib(nibName: optionCellIdentifier, bundle: bundle)
@@ -131,7 +131,9 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
                 optionsTableView.register(optionsCellNib, forCellReuseIdentifier: optionCellIdentifier)
                 optionsTableView.register(listCellNib, forCellReuseIdentifier: listCellIdentifier)
                 
-            }else {
+                optionsTableView.register(KREOptionsTableViewCell.self, forCellReuseIdentifier: optionCellIdentifier)
+                optionsTableView.register(KREListTableViewCell.self, forCellReuseIdentifier: listCellIdentifier)
+            } else {
                 assertionFailure("Could not load the bundle")
             }
         }else {

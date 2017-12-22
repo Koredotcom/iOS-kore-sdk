@@ -54,11 +54,13 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
         requestManager.startNewtorkMonitoring {[weak self] (status) in
             if status == .reachableViaWiFi || status == .reachableViaWWAN {
-                self?.isNetworkAvailable = true
-                if (self?.reconnects)! { self?.reconnect() }
-            } else {
-                self?.isNetworkAvailable = false
-                self?.connectionState = .NO_NETWORK
+                if (self != nil) {
+                    self?.isNetworkAvailable = true
+                    if (self?.reconnects)! { self?.reconnect() }
+                } else {
+                    self?.isNetworkAvailable = false
+                    self?.connectionState = .NO_NETWORK
+                }
             }
         }
     }
