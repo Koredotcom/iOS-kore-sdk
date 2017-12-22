@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
         ss.ios.frameworks = 'SystemConfiguration'
     end
 
-    s.subspec 'UIKit' do |ss|
+    s.subspec 'Widgets' do |ss|
         ss.ios.deployment_target = '8.0'
         ss.source_files = 'KoreBotSDK/Library/Widgets/Widgets/**/*.{h,m,txt,swift,xib}'
         ss.public_header_files = 'KoreBotSDK/Widgets.h'

@@ -19,7 +19,7 @@
  #import "google/protobuf/Any.pbobjc.h"
 #endif
 
- #import "google/rpc/Status.pbobjc.h"
+ #import "Status.pbobjc.h"
 // @@protoc_insertion_point(imports)
 
 #pragma clang diagnostic push

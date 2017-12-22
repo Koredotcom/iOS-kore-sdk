@@ -1,4 +1,4 @@
-#import "google/longrunning/Operations.pbrpc.h"
+#import "Operations.pbrpc.h"
 
 #import <ProtoRPC/ProtoRPC.h>
 #import <RxLibrary/GRXWriter+Immediate.h>
