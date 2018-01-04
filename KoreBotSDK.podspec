@@ -36,7 +36,7 @@ Pod::Spec.new do |s|
         ss.source_files = 'KoreBotSDK/Library/Widgets/Widgets/**/*.{h,m,txt,swift,xib}'
         ss.public_header_files = 'KoreBotSDK/Widgets.h'
         ss.resource_bundles = {
-            'UIKit' => ['KoreBotSDK/Library/Widgets/Widgets/**/*.xib']
+            'Widgets' => ['KoreBotSDK/Library/Widgets/Widgets/**/*.xib']
         }
         #ss.exclude_files = "KoreBotSDK/Library/Widgets/Widgets/Controllers/*.{swift}"
         #ss.exclude_files = "KoreBotSDK/Library/Widgets/Widgets/AppDelegate.{h}"
