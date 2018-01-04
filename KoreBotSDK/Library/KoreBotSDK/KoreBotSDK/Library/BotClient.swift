@@ -260,7 +260,8 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         } else {
             switch self.connection.websocket.readyState {
             case .OPEN:
-                self.connection.sendMessageModel(message, options: [] as AnyObject?)
+                let authorization = "bearer " + authInfoModel.accessToken!
+                self.connection.sendMessageModel(message, authorization: authorization, options: [] as AnyObject?)
                 break
             default:
                 break

@@ -114,7 +114,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     }
     
     // MARK: sending message
-    open func sendMessageModel(_ message: String, options: AnyObject?) {
+    open func sendMessageModel(_ message: String, authorization: String, options: AnyObject?) {
         switch (self.websocket.readyState) {
         case .CONNECTING:
             print("Socket is in CONNECTING state")
@@ -129,7 +129,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
         case .OPEN:
             print("Socket is in OPEN state")
             let parameters: NSMutableDictionary = NSMutableDictionary()
-            let messageObject = ["body":message, "attachments":[]] as [String : Any];
+            let messageObject = ["body":message, "attachments":[], "authInfo": authorization] as [String : Any];
             parameters.setObject(messageObject, forKey: "message" as NSCopying)
             parameters.setObject("/bot.message", forKey: "resourceid" as NSCopying)
             if (self.botInfoParameters != nil) {
