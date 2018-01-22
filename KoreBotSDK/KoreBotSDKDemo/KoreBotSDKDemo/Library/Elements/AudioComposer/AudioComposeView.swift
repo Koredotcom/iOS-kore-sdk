@@ -18,6 +18,7 @@ class AudioComposeView: UIView {
     fileprivate var audioImageView: UIImageView!
     fileprivate var audiolabel: UILabel!
     fileprivate var keyboardButton: UIButton!
+    fileprivate var playbackButton: UIButton!
     
     fileprivate var audioImageWidthConstraint: NSLayoutConstraint!
     fileprivate var animationTimer:Timer!
@@ -81,13 +82,23 @@ class AudioComposeView: UIView {
         self.keyboardButton.setTitle("", for: .normal)
         self.keyboardButton.translatesAutoresizingMaskIntoConstraints = false
         self.keyboardButton.setImage(UIImage(named: "keyboard"), for: .normal)
-        self.keyboardButton.imageView?.contentMode = .scaleAspectFit
+        self.keyboardButton.imageView?.contentMode = .center
         self.keyboardButton.addTarget(self, action: #selector(self.keyboardButtonAction), for: .touchUpInside)
-        self.keyboardButton.contentEdgeInsets = UIEdgeInsetsMake(2.0, 10.0, 0.0, 10.0)
+//        self.keyboardButton.contentEdgeInsets = UIEdgeInsetsMake(2.0, 10.0, 0.0, 10.0)
         self.keyboardButton.clipsToBounds = true
         self.addSubview(self.keyboardButton)
         
-        let views: [String : Any] = ["animateBGView": self.animateBGView, "audioActionView": self.audioActionView, "keyboardButton": self.keyboardButton]
+        self.playbackButton = UIButton.init(frame: CGRect.zero)
+        self.playbackButton.setTitle("", for: .normal)
+        self.playbackButton.translatesAutoresizingMaskIntoConstraints = false
+        self.playbackButton.setImage(UIImage(named: "SpeakerIcon"), for: .normal)
+        self.playbackButton.imageView?.contentMode = .center
+        self.playbackButton.addTarget(self, action: #selector(self.playbackButtonAction), for: .touchUpInside)
+//        self.playbackButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
+        self.playbackButton.clipsToBounds = true
+        self.addSubview(self.playbackButton)
+        
+        let views: [String : Any] = ["animateBGView": self.animateBGView, "audioActionView": self.audioActionView, "keyboardButton": self.keyboardButton, "playbackButton": self.playbackButton]
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[animateBGView(100)]", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[animateBGView(70)]", options:[], metrics:nil, views:views))
@@ -105,6 +116,10 @@ class AudioComposeView: UIView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[keyboardButton(50)]", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[keyboardButton(50)]", options:[], metrics:nil, views:views))
         self.addConstraint(NSLayoutConstraint.init(item: self.keyboardButton, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[playbackButton(60)]-10-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[playbackButton(60)]", options:[], metrics:nil, views:views))
+        self.addConstraint(NSLayoutConstraint.init(item: self.playbackButton, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
     }
     
     override var intrinsicContentSize: CGSize {
@@ -120,6 +135,14 @@ class AudioComposeView: UIView {
     public func stopRecording() {
         if self.isActive {
             self.audioButtonAction()
+        }
+    }
+    
+    public func enablePlayback(enable: Bool){
+        if enable {
+            self.playbackButton.setImage(UIImage(named: "SpeakerIcon"), for: .normal)
+        }else{
+            self.playbackButton.setImage(UIImage(named: "SpeakerMuteIcon"), for: .normal)
         }
     }
 
@@ -165,6 +188,14 @@ class AudioComposeView: UIView {
         if self.onKeyboardButtonAction != nil {
             self.onKeyboardButtonAction!()
         }
+    }
+    
+    @objc fileprivate func playbackButtonAction() {
+        if isSpeakingEnabled {
+            NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
+        }
+        isSpeakingEnabled = !isSpeakingEnabled
+        self.enablePlayback(enable: isSpeakingEnabled)
     }
     
     fileprivate func startAudioRecording(){

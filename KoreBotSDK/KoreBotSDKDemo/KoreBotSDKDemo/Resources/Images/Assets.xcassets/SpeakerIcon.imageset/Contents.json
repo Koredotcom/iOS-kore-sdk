@@ -2,16 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "SpeakerIcon@3x.png",
+      "filename" : "ic_volume_up_white_36pt.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "SpeakerIcon-64.png",
+      "filename" : "ic_volume_up_white_36pt_2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "ic_volume_up_white_36pt_3x.png",
       "scale" : "3x"
     }
   ],

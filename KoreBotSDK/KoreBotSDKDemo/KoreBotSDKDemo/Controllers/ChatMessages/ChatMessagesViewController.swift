@@ -23,6 +23,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     @IBOutlet weak var quickSelectContainerView: UIView!
     @IBOutlet weak var composeBarContainerView: UIView!
     @IBOutlet weak var audioComposeContainerView: UIView!
+    @IBOutlet weak var menuButton: UIButton!
     
     @IBOutlet weak var quickSelectContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
@@ -136,6 +137,27 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.navigationController?.view.layer.add(transition, forKey: nil)
         
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    //MARK: Menu Button Action
+    @IBAction func menuButtonAction(_ sender: Any) {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        var string = NSLocalizedString("Enable Playback", comment: "Default action")
+        if isSpeakingEnabled {
+            string = NSLocalizedString("Disable Playback", comment: "Default action")
+        }
+        actionSheet.addAction(UIAlertAction(title: string, style: .`default`, handler: { [weak self] _ in
+            if isSpeakingEnabled {
+                self?.stopTTS()
+            }
+            isSpeakingEnabled = !isSpeakingEnabled
+            self?.audioComposeView.enablePlayback(enable: isSpeakingEnabled)
+        }))
+        
+        // Add close Action
+        actionSheet.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "close action sheet"), style: .cancel, handler: nil))
+        self.present(actionSheet, animated: true, completion: nil)
     }
     
     // MARK: configuring views
