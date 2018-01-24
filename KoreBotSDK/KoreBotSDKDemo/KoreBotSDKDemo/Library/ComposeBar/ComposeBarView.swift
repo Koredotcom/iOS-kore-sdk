@@ -26,7 +26,7 @@ class ComposeBarView: UIView {
     fileprivate var speechToTextButton: UIButton!
 
     fileprivate var textViewTrailingConstraint: NSLayoutConstraint!
-    fileprivate var isKeyboardEnabled: Bool = false
+    fileprivate(set) public var isKeyboardEnabled: Bool = false
     
     convenience init() {
         self.init(frame: CGRect.zero)

@@ -442,14 +442,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             guard let strongSelf = self else {
                 return
             }
-            print("Got transcript: \(transcript)")
+            print("Got transcript: \(transcript) isFinal:\(isFinal)")
             if isFinal {
-                strongSelf.audioComposeView.stopRecording()
-                strongSelf.sendTextMessage(transcript)
-                strongSelf.composeView.setText("")
-                strongSelf.composeViewBottomConstraint.isActive = false
-                strongSelf.composeBarContainerHeightConstraint.isActive = true
-                strongSelf.composeBarContainerView.isHidden = true
+                strongSelf.composeView.setText(transcript)
+                if !strongSelf.composeView.isKeyboardEnabled {
+                    strongSelf.audioComposeView.stopRecording()
+                    strongSelf.sendTextMessage(transcript)
+                    strongSelf.composeView.setText("")
+                    strongSelf.composeViewBottomConstraint.isActive = false
+                    strongSelf.composeBarContainerHeightConstraint.isActive = true
+                    strongSelf.composeBarContainerView.isHidden = true
+                }
             }else{
                 strongSelf.composeView.setText(transcript)
                 strongSelf.composeBarContainerHeightConstraint.isActive = false
