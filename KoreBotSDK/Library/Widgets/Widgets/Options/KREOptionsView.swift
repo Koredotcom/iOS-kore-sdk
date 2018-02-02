@@ -10,7 +10,7 @@ import UIKit
 import AFNetworking
 
 public enum KREActionType : Int {
-    case none = 0, webURL = 1, postback = 2
+    case none = 0, webURL = 1, postback = 2, user_intent = 3
 }
 
 public class KREAction: NSObject {
@@ -30,7 +30,7 @@ public enum KREOptionType : Int {
     case button = 1, list = 2
 }
 
-public class KREOption: NSObject {
+open class KREOption: NSObject {
     static let titleCharLimit: Int = 80
     static let subtitleCharLimit: Int = 100
     
@@ -73,7 +73,7 @@ public class KREOption: NSObject {
     }
 }
 
-public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
+open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     fileprivate let optionCellIdentifier = "KREOptionsTableViewCell"
     fileprivate let listCellIdentifier = "KREListTableViewCell"
@@ -120,7 +120,7 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
     }()
     
     // MARK:- setup collectionView
-    func setup() {
+    public func setup() {
         let podBundle = Bundle(for: self.classForCoder)
         if let bundleURL = podBundle.url(forResource: "Widgets", withExtension: "bundle") {
             if let bundle = Bundle(url: bundleURL) {

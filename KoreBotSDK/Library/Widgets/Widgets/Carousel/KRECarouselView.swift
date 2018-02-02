@@ -16,7 +16,7 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
     public var maxCardHeight: CGFloat = 0.0
     public var maxCardWidth: CGFloat = 0.0
     public var numberOfItems: Int = 0
-    fileprivate var pageIndex = 0
+    public var pageIndex = 0
     
     public var cards: Array<KRECardInfo> = Array<KRECardInfo>() {
         didSet {
@@ -25,7 +25,7 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
             var maxHeight: CGFloat = 0.0
             for i in 0..<self.numberOfItems {
                 let cardInfo = cards[i]
-                let height = KRECardView.getExpectedHeight(cardInfo: cardInfo, width: maxCardWidth - KRECarouselView.cardPadding)
+                let height = getExpectedHeight(cardInfo: cardInfo, width: maxCardWidth - KRECarouselView.cardPadding)
                 if(height > maxHeight){
                     maxHeight = height
                 }
@@ -43,7 +43,7 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
     }
     
     convenience init () {
-        var flowLayout = UICollectionViewFlowLayout()
+        let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = UICollectionViewScrollDirection.horizontal
         flowLayout.minimumInteritemSpacing = 10.0
         flowLayout.minimumLineSpacing = 10.0
@@ -59,6 +59,7 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
         self.delegate = self
         
         self.register(KRECardCollectionViewCell.self, forCellWithReuseIdentifier: KRECardCollectionViewCell.cellReuseIdentifier)
+        self.register(KACardCollectionViewCell.self, forCellWithReuseIdentifier: KACardCollectionViewCell.cellReuseIdentifier)
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -161,5 +162,23 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
             let point = CGPoint (x: CGFloat(Float(newPage) * pageWidth), y: targetContentOffset.pointee.y)
             targetContentOffset.pointee = point
         }
+    }
+    
+    // MARK: - expected height of KRECard
+    public func getExpectedHeight(cardInfo: KRECardInfo, width: CGFloat) -> CGFloat {
+        var height: CGFloat = 0.0
+        
+        //imageViw height
+        height += width*0.5
+        
+        let count: Int = min(cardInfo.options!.count, KRECardView.buttonLimit)
+        height += KRECardView.kMaxRowHeight * CGFloat(count)
+        
+        let attrString: NSMutableAttributedString = KRECardView.getAttributedString(cardInfo: cardInfo)
+        let limitingSize: CGSize = CGSize(width: width-20.0, height: CGFloat.greatestFiniteMagnitude)
+        let rect: CGRect = attrString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
+        height += rect.size.height + 20.0
+        
+        return height
     }
 }

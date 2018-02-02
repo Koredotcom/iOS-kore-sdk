@@ -21,10 +21,10 @@ open class UserModel: MTLModel, MTLJSONSerializing {
 
     // MARK: MTLJSONSerializing methods
     open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
-        return ["userId":"id",
+        return ["userId":"userId",
                 "resourceOwnerID":"resourceOwnerID",
                 "enrollType":"enrollType",
-                "orgID":"orgID",
+                "orgID":"orgId",
                 "emailId":"emailId",
                 "identity":"identity"]
     }

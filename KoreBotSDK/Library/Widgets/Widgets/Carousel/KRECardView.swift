@@ -8,9 +8,8 @@
 //
 
 import UIKit
-import KoreBotSDK
 
-public class KRECardInfo: NSObject {
+open class KRECardInfo: NSObject {
     
     static public let buttonLimit: Int = 3
     static public let titleCharLimit: Int = 80
@@ -52,7 +51,7 @@ public class KRECardInfo: NSObject {
     
     func truncateString(_ string: String, count: Int) -> String{
         var tmpString = string
-        if(tmpString.characters.count > count){
+        if (tmpString.characters.count > count) {
             tmpString = tmpString.substring(to: tmpString.index(tmpString.startIndex, offsetBy: count-3)) + "..."
         }
         return tmpString
@@ -95,7 +94,7 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup() {
+    public func setup() {
         let width = self.frame.size.width
         self.imageView = UIImageView()
         self.imageView.contentMode = .scaleAspectFill
@@ -155,8 +154,8 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     }
     
     static func getAttributedString(cardInfo: KRECardInfo) -> NSMutableAttributedString {
-        var title = cardInfo.title! as String
-        var subtitle = cardInfo.subTitle! as String
+        let title = cardInfo.title! as String
+        let subtitle = cardInfo.subTitle! as String
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 0.25 * 16.0
