@@ -231,12 +231,25 @@ public class KACardView: KRECardView {
         
         titleLabel.text = cardInfo.title
         subTitleLabel.text = cardInfo.subTitle
-        hashTagsLabel.text = "#welcome   #newemployee"
         informationLabel.text = "Link: News Article"
         statusLabel.text = "Private"
-
+        if let value = cardInfo.payload!["hashTag"] {
+            let array = (value as? [String])
+            let predicate = NSPredicate(format: "length > 0")
+            let results = array?.filter { predicate.evaluate(with: $0) }
+            let hashTags = results?.hashTags
+            hashTagsLabel.text = hashTags?.joined(separator: " ")
+        }
         let count: Int = min(cardInfo.options!.count, KACardView.buttonLimit)
         self.optionsViewHeightConstraint.constant = KACardView.kMaxRowHeight*CGFloat(count)
+    }
+    
+    public override func prepareForReuse() {
+        titleLabel.text = ""
+        subTitleLabel.text = ""
+        informationLabel.text = "Link: News Article"
+        statusLabel.text = "Private"
+        hashTagsLabel.text = ""
     }
 }
 
@@ -338,6 +351,12 @@ public class KACardCollectionViewCell: UICollectionViewCell {
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    public override func prepareForReuse() {
+        if (cardView != nil) {
+            cardView.prepareForReuse()
+        }
+    }
 }
 
 public class KACarouselView: KRECarouselView {
@@ -372,8 +391,9 @@ public class KACarouselView: KRECarouselView {
         }
         
         cell.cardView.userIntentAction = { [weak self] (text) in
+            let cardInfo = self!.cards[indexPath.row]
             if (self?.userIntentAction != nil) {
-                self?.userIntentAction(text)
+                self?.userIntentAction(cardInfo.resourceId)
             }
         }
         
@@ -393,5 +413,11 @@ public class KACarouselView: KRECarouselView {
         height += KRECardView.kMaxRowHeight * CGFloat(count)
         height += 307.0
         return height
+    }
+}
+
+extension Collection where Iterator.Element == String {
+    var hashTags: [String] {
+        return map{ String(format: "#%@", $0) }
     }
 }

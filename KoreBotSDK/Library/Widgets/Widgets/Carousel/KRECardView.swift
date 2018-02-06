@@ -19,9 +19,10 @@ open class KRECardInfo: NSObject {
     var title: String?
     var subTitle: String?
     var imageURL:String?
-    
+    public var resourceId: String?
     var options: Array<KREOption>?
     var defaultAction: KREAction?
+    public var payload: [String: Any]?
     
     // MARK:- init
     public override init() {
@@ -55,6 +56,10 @@ open class KRECardInfo: NSObject {
             tmpString = tmpString.substring(to: tmpString.index(tmpString.startIndex, offsetBy: count-3)) + "..."
         }
         return tmpString
+    }
+    
+    public func prepareForReuse() {
+        
     }
 }
 
@@ -262,6 +267,10 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         
         aPath.close()
         return aPath
+    }
+    
+    public func prepareForReuse() {
+        
     }
 }
 
