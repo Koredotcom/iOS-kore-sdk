@@ -78,19 +78,20 @@ static let JWT_SERVER = "<jwt-token-server-url>";
 	* Run "pod install" in the KoreBotSDK project folder.
 	* Open KoreBotSDK.xworkspace in Xcode.
 	* Run the KoreBotSDKDemo.app in xcode
-
+	
+	Please refer to Build Fixes if you encounter errors running the app.
 
 ## Integrating into your app
 #### 1. Initialize CocoaPods
 	Add the following to your Podfile:
 	pod 'KoreBotSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git’
 	
-    Run pod install in your project folder.
+	Run pod install in your project folder.
     
 #### 2. Initializing the Bot client
-    import KoreBotSDK
-    let botInfo: NSDictionary = ["chatBot":"<bot-name>", "taskBotId":"<bot-identifier>"]
-    let botClient: BotClient = BotClient(botInfoParameters: botInfo)
+	import KoreBotSDK
+	let botInfo: NSDictionary = ["chatBot":"<bot-name>", "taskBotId":"<bot-identifier>"]
+	let botClient: BotClient = BotClient(botInfoParameters: botInfo)
 
 #### 3. JWT generation
     a. You need to have secure token service hosted in your environment which returns the JWT token.
@@ -164,6 +165,9 @@ NOTE: Please refer about JWT signing and verification at - https://developer.kor
         
     })
 
+## Build Fixes:
+	When running the app, may get few errors due to google api sdk. Please refer to following link to fix errors due to google sdk:
+	https://github.com/GoogleCloudPlatform/ios-docs-samples/blob/master/speech/Swift/Speech-gRPC-Streaming/BUILDFIXES
 
 License
 ----
