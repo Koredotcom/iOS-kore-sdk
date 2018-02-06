@@ -10,12 +10,17 @@ import UIKit
 import KoreBotSDK
 
 class SDKConfiguration: NSObject {
+    
+    struct dataStoreConfig {
+        static let resetDataStoreOnConnect = true // This should be either true or false. Conversation with the bot will be persisted, if it is false.
+    }
+    
     struct botConfig {
         static let clientId = "<client-id>" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
         
         static let clientSecret = "<client-secret>" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
         
-        static let botId =  "<bot-identifier>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
+        static let botId =  "<bot-id>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
 
         static let chatBotName = "<bot-name>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
         
@@ -24,18 +29,18 @@ class SDKConfiguration: NSObject {
         static let isAnonymous = false // This should be either true (in case of known-user) or false (in-case of anonymous user).
     }
     
-    struct dataStoreConfig {
-        static let resetDataStoreOnConnect = true // This should be either true or false. Conversation with the bot will be persisted, if it is false.
-    }
-}
-
-class ServerConfigs: NSObject {
-    open static let JWT_SERVER = String(format: "https://<jwt-server-host>/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
-    
-    open static func koreJwtUrl() -> String {
-        return String(format: "%@api/users/sts", JWT_SERVER)
+    struct serverConfig {
+        static let JWT_SERVER = String(format: "http://<jwt-server-host>/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
+        
+        static func koreJwtUrl() -> String {
+            return String(format: "%@users/sts", JWT_SERVER)
+        }
+        
+        static let BOT_SERVER = String(format: "https://bots.kore.ai/")
     }
     
-    open static let BOT_SERVER = String(format: "https://bots.kore.ai/")
-    open static let BOT_SPEECH_SERVER = String(format: "<speech-server-url>") //Example wss://speech.kore.ai/speechcontext/bot
+    // googleapi speech API_KEY
+    struct speechConfig {
+        static let API_KEY = "<speech_api_key>"
+    }
 }

@@ -15,7 +15,6 @@ class AppLaunchViewController: UIViewController {
     
     // MARK: properties
     @IBOutlet weak var chatButton: UIButton!
-    var botViewController: ChatMessagesViewController! = nil
     // MARK: life-cycle events
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,30 +27,30 @@ class AppLaunchViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.botViewController = nil
         setInitialState()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        self.navigationController?.isNavigationBarHidden = true
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-//        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    override var prefersStatusBarHidden : Bool {
-        return true
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     // MARK: known user
     @IBAction func chatButtonAction(_ sender: UIButton!) {
+        self.chatButton.isUserInteractionEnabled = false
+        
         let clientId: String = SDKConfiguration.botConfig.clientId
         let clientSecret: String = SDKConfiguration.botConfig.clientSecret
         let isAnonymous: Bool = SDKConfiguration.botConfig.isAnonymous
@@ -65,7 +64,7 @@ class AppLaunchViewController: UIViewController {
             identity = SDKConfiguration.botConfig.identity
         }
         
-        if clientId.indexOfCharacter(char: "<") == -1 && clientSecret.indexOfCharacter(char: "<") == -1 && chatBotName.indexOfCharacter(char: "<") == -1 && botId.indexOfCharacter(char: "<") == -1 && identity.indexOfCharacter(char: "<") == -1 {
+        if !clientId.hasPrefix("<") && !clientSecret.hasPrefix("<") && !chatBotName.hasPrefix("<") && !botId.hasPrefix("<") && !identity.hasPrefix("<") {
             let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
             activityIndicatorView.center = view.center
             view.addSubview(activityIndicatorView)
@@ -87,27 +86,38 @@ class AppLaunchViewController: UIViewController {
                     print(thread.threadId!)
                     
                     let botClient: BotClient = BotClient(botInfoParameters: botInfo)
-                    if (ServerConfigs.BOT_SERVER.characters.count > 0) {
-                        botClient.setKoreBotServerUrl(url: ServerConfigs.BOT_SERVER)
+                    if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
+                        botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
                     }
                     botClient.connectWithJwToken(jwToken, success: { [weak self] (client) in
                         activityIndicatorView.stopAnimating()
-                        if (self!.botViewController == nil) {
-                            self!.botViewController = ChatMessagesViewController(thread: thread)
-                            self!.botViewController.botClient = client
-                            self!.botViewController.title = SDKConfiguration.botConfig.chatBotName
-                            self!.navigationController?.pushViewController(self!.botViewController, animated: true)
-                        }
+                        self?.chatButton.isUserInteractionEnabled = true
+                        
+                        let botViewController = ChatMessagesViewController(thread: thread)
+                        botViewController.botClient = client
+                        botViewController.title = SDKConfiguration.botConfig.chatBotName
+                        
+                        //Addition fade in animation
+                        let transition = CATransition()
+                        transition.duration = 0.5
+                        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                        transition.type = kCATransitionFade
+                        self?.navigationController?.view.layer.add(transition, forKey: nil)
+                    
+                        self!.navigationController?.pushViewController(botViewController, animated: false)
                     }, failure: { (error) in
                         activityIndicatorView.stopAnimating()
+                        self?.chatButton.isUserInteractionEnabled = true
                     })
                 })
                 }
             }, failure: { (error) in
                 activityIndicatorView.stopAnimating()
+                self.chatButton.isUserInteractionEnabled = true
             })
         } else {
             self.showAlert(title: "Bot SDK Demo", message: "YOU MUST SET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
+            self.chatButton.isUserInteractionEnabled = true
         }
     }
     
@@ -116,7 +126,7 @@ class AppLaunchViewController: UIViewController {
     //       Developer has to host a webservice, which generates the JWT and that should be called from this method.
     func getJwTokenWithClientId(_ clientId: String!, clientSecret: String!, identity: String!, isAnonymous: Bool!, success:((_ jwToken: String?) -> Void)?, failure:((_ error: Error) -> Void)?) {
         // NOTE: You must set your URL to generate JWT. 
-        let urlString: String = ServerConfigs.koreJwtUrl()
+        let urlString: String = SDKConfiguration.serverConfig.koreJwtUrl()
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
@@ -131,7 +141,7 @@ class AppLaunchViewController: UIViewController {
                                         "aud": "https://idproxy.kore.com/authorize",
                                         "isAnonymous": isAnonymous]
         
-        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: URL.init(string: ServerConfigs.JWT_SERVER) as URL!)
+        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL!)
         operationManager.responseSerializer = AFJSONResponseSerializer.init()
         operationManager.requestSerializer = requestSerializer
         operationManager.post(urlString, parameters: parameters, success: { (operation, responseObject) in
@@ -161,16 +171,15 @@ class AppLaunchViewController: UIViewController {
     }
     
     func getUUID() -> String {
-        let date: Date = Date()
-        return String(format: "email%ld%@", date.timeIntervalSince1970, "@domain.com")
-    }
-}
-
-extension String {
-    public func indexOfCharacter(char: Character) -> Int? {
-        if let idx = characters.index(of: char) {
-            return characters.distance(from: startIndex, to: idx)
+        var id: String?
+        let userDefaults = UserDefaults.standard
+        if let UUID = userDefaults.string(forKey: "UUID") {
+            id = UUID
+        } else {
+            let date: Date = Date()
+            id = String(format: "email%ld%@", date.timeIntervalSince1970, "@domain.com")
+            userDefaults.set(id, forKey: "UUID")
         }
-        return -1
+        return id!
     }
 }

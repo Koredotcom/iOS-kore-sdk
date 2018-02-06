@@ -51,6 +51,7 @@ extension KREMessage {
 }
 
 var MessageObjectHandle: UInt8 = 0
+var cellHeightObjectHandle: UInt8 = 1
 
 extension KREMessage {
     
@@ -85,7 +86,7 @@ extension KREMessage {
     public func removeComponentsObject(_value: KREComponent)  {
         self.willChangeValue(forKey: "components")
         let tempSet = NSMutableOrderedSet(orderedSet: self.components!)
-        tempSet.remove(at: tempSet.index(of: _value) )
+        tempSet.remove(tempSet.index(of: _value) )
         self.components = tempSet
         self.didChangeValue(forKey: "components")
     }
@@ -116,6 +117,16 @@ extension KREMessage {
         
         set {
             objc_setAssociatedObject(self, &MessageObjectHandle, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    var cellHeight: CGFloat {
+        get {
+            return objc_getAssociatedObject(self, &cellHeightObjectHandle) as? CGFloat ?? 0.0
+        }
+        
+        set {
+            objc_setAssociatedObject(self, &cellHeightObjectHandle, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 }

@@ -11,50 +11,26 @@ import UIKit
 class KREListTableViewCell: UITableViewCell {
 
     @IBOutlet weak var imgView: UIImageView!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var infoLabel: UILabel!
-    @IBOutlet weak var moreDetailsLabel: UILabel!
-    @IBOutlet weak var detailsLabelTopConstraint: NSLayoutConstraint!
-
-    var moreDetailsText: NSString! {
-        didSet {
-            moreDetailsLabel.layer.borderWidth = 1.0
-            moreDetailsLabel.layer.cornerRadius = 5
-            self.moreDetailsLabel.text = moreDetailsText as String?;
-            self.detailsLabelTopConstraint.constant = 70;
-        }
-    }
-    var labelAction: ((_ text: String?) -> Void)!
-
-    var tapGesture:UITapGestureRecognizer?
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subTitleLabel: UILabel!
+    @IBOutlet weak var actionButton: UIButton!
+    @IBOutlet weak var actionButtonHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imgViewWidthConstraint: NSLayoutConstraint!
+    
+    var buttonAction: ((_ sender: Any) -> Void)!
+    var minCellHeight: CGFloat = 80.0
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        infoLabel.sizeToFit()
-        self.tapGesture = UITapGestureRecognizer.init(target: self, action: #selector(tappedOnLabel));
-        self.moreDetailsLabel.addGestureRecognizer(self.tapGesture!)
-        self.moreDetailsLabel.isUserInteractionEnabled = true
-        self.detailsLabelTopConstraint.constant = 37;
-        // Initialization code
         
-    }
-    override func layoutSubviews() {
-        super.layoutSubviews()
-//        infoLabel.sizeToFit()
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+        actionButton.layer.cornerRadius = 5
+        actionButton.layer.borderWidth = 1.0
+        actionButton.layer.borderColor = Common.UIColorRGB(0x0076ff).cgColor
     }
     
-    func tappedOnLabel() {
-        if(self.labelAction != nil){
-            self.labelAction("cell")
+    @IBAction func btnAction(_ sender: Any) {
+        if(self.buttonAction != nil){
+            self.buttonAction(sender)
         }
     }
-    
-    
-    
 }

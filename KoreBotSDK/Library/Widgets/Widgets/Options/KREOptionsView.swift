@@ -9,75 +9,86 @@
 import UIKit
 import AFNetworking
 
-enum KREOptionType : Int {
+public enum KREActionType : Int {
+    case none = 0, webURL = 1, postback = 2
+}
+
+public class KREAction: NSObject {
+    var type: KREActionType?
+    var title: String?
+    var payload:String?
+    
+    public init(type: KREActionType, title: String, payload: String) {
+        super.init()
+        self.type = type
+        self.title = title
+        self.payload = payload
+    }
+}
+
+public enum KREOptionType : Int {
     case button = 1, list = 2
 }
 
 public class KREOption: NSObject {
+    static let titleCharLimit: Int = 80
+    static let subtitleCharLimit: Int = 100
     
     // MARK:- properties
-    var optionName: String?
-    var optionIndex: Int = -1
-    var optionDescription: String?
-    var optionWithButtonDesc:Dictionary<String,String>?
-    var optionWithButtonInfo:Dictionary<String,String>?
-
+    var title: String?
+    var subTitle: String?
     var imageURL:String?
-    var subTitle:String?
-    var optionType: String?
+    var optionType: KREOptionType?
+    
+    var defaultAction:KREAction?
+    var buttonAction:KREAction?
+
     // MARK:- init
     public override init() {
         super.init()
     }
     
-    public init(name: String, desc: String, type: String, index: Int) {
+    public init(title: String, subTitle: String, imageURL: String, optionType: KREOptionType) {
         super.init()
-        optionName = name
-        optionDescription = desc
-        optionIndex = index
+        self.title = truncateString(title, count: KREOption.titleCharLimit)
+        self.subTitle = truncateString(subTitle, count: KREOption.subtitleCharLimit)
+        self.imageURL = imageURL
+        self.optionType = optionType
     }
     
-    public func setOptionData(name: String, subTitle:String, imgURL:String, index: Int) {
-        optionName = name
-        self.subTitle = subTitle
-        imageURL = imgURL
-        optionIndex = index
-    }
-
-    public func setButtonDesc(info:Dictionary<String, String>) {
-        optionWithButtonDesc = info;
+    public func setDefaultAction(action: KREAction) {
+        self.defaultAction = action
     }
     
-    public func setButtonInfo(info:Dictionary<String, String>) {
-        optionWithButtonInfo = info;
+    public func setButtonAction(action: KREAction) {
+        self.buttonAction = action
     }
-
     
+    func truncateString(_ string: String, count: Int) -> String{
+        var tmpString = string
+        if(tmpString.characters.count > count){
+            tmpString = tmpString.substring(to: tmpString.index(tmpString.startIndex, offsetBy: count))
+        }
+        return tmpString
+    }
 }
-
-
 
 public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
     
-//    fileprivate let cellIdentifier = "UITableViewCell"
-    fileprivate let cellIdentifier = "KREOptionsTableViewCell"
+    fileprivate let optionCellIdentifier = "KREOptionsTableViewCell"
     fileprivate let listCellIdentifier = "KREListTableViewCell"
-    public var showMore:Bool = false
+    
+    let kMaxRowHeight: CGFloat = 44
   
     public var optionsButtonAction: ((_ text: String?) -> Void)!
     public var detailLinkAction: ((_ text: String?) -> Void)!
-
-//    public var showMoreButtonAction: () -> ()!
 
     // MARK:- properites
     public var options: Array<KREOption> = Array<KREOption>() {
         didSet {
             self.optionsTableView.reloadData()
-//            self.optionsTableView.layoutSubviews()
         }
     }
-    var optionIndex: Int = -1
-    public var optionsViewType: Int = 1
 
     // MARK:- init
     override init (frame: CGRect) {
@@ -95,7 +106,7 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
     
     // MARK:- table view
     public let optionsTableView: UITableView = {
-        let optionsView = UITableView(frame: CGRect.zero, style: .grouped)
+        let optionsView = UITableView(frame: CGRect.zero, style: .plain)
         optionsView.translatesAutoresizingMaskIntoConstraints = false
         optionsView.showsVerticalScrollIndicator = false
         optionsView.showsHorizontalScrollIndicator = false
@@ -114,10 +125,10 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
         if let bundleURL = podBundle.url(forResource: "KoreWidgets", withExtension: "bundle") {
             if let bundle = Bundle(url: bundleURL) {
                 
-                let optionsCellNib = UINib(nibName: "KREOptionsTableViewCell", bundle: bundle)
-                let listCellNib = UINib(nibName: "KREListTableViewCell", bundle: bundle)
+                let optionsCellNib = UINib(nibName: optionCellIdentifier, bundle: bundle)
+                let listCellNib = UINib(nibName: listCellIdentifier, bundle: bundle)
 
-                optionsTableView.register(optionsCellNib, forCellReuseIdentifier: cellIdentifier)
+                optionsTableView.register(optionsCellNib, forCellReuseIdentifier: optionCellIdentifier)
                 optionsTableView.register(listCellNib, forCellReuseIdentifier: listCellIdentifier)
                 
             }else {
@@ -145,110 +156,99 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if(self.showMore){
-            return options.count + 1
-        }
         return options.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let option: KREOption = options[indexPath.row]
         
-        if(self.showMore && indexPath.row == options.count){
-            let cell:KREOptionsTableViewCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! KREOptionsTableViewCell
-            cell.textLabel?.textAlignment = .center
-            cell.nameLabel?.text = "Show more"
+        if(option.optionType == KREOptionType.button){
+            let cell:KREOptionsTableViewCell = tableView.dequeueReusableCell(withIdentifier: optionCellIdentifier, for: indexPath) as! KREOptionsTableViewCell
+            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            
+            cell.textLabel?.text = option.title
             
             return cell
-        }else if(self.optionsViewType == KREOptionType.button.rawValue){
-            let cell:KREOptionsTableViewCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! KREOptionsTableViewCell
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
-            let option: KREOption = options[indexPath.row]
-            cell.nameLabel?.text = option.optionName
-            cell.layoutIfNeeded()
-            cell.setNeedsLayout()
-            return cell
-        } else {
+        }else if(option.optionType == KREOptionType.list){
             let cell:KREListTableViewCell = tableView.dequeueReusableCell(withIdentifier: listCellIdentifier, for: indexPath) as! KREListTableViewCell
             cell.selectionStyle = UITableViewCellSelectionStyle.none
-            let option: KREOption = options[indexPath.row]
-            cell.nameLabel.text = option.optionName
-            cell.infoLabel.text =  option.subTitle
-            cell.infoLabel.numberOfLines = 2
-            cell.imgView.setImageWith(NSURL(string: option.imageURL!) as URL!,placeholderImage: UIImage.init(named: "placeholder_image"))
-            cell.moreDetailsLabel.layer.borderColor = Common.UIColorRGB(0x0076ff).cgColor
-            if(option.optionWithButtonDesc != nil){
-                cell.moreDetailsText = option.optionWithButtonDesc?["title"] as NSString!
+            
+            cell.titleLabel.text = option.title
+            cell.subTitleLabel.text = option.subTitle
+            
+            if option.imageURL != "" {
+                cell.imgView.setImageWith(NSURL(string: option.imageURL!) as URL!,placeholderImage: UIImage.init(named: "placeholder_image"))
+                cell.imgViewWidthConstraint.constant = 60.0
+            } else {
+                cell.imageView?.image = nil
+                cell.imgViewWidthConstraint.constant = 0.0
             }
             
-            cell.labelAction = {[weak self] (text) in
-                let buttonInfo:Dictionary<String,String>? = option.optionWithButtonDesc
-                if (buttonInfo?["type"] == "web_url") {
-                    if ((self?.detailLinkAction) != nil) {
-                        self?.detailLinkAction(buttonInfo?["url"])
-                    }
-                } else if (buttonInfo?["type"] == "postback") {
-                    if (self?.optionsButtonAction != nil) {
-                        self?.optionsButtonAction(buttonInfo?["payload"])
-                    }
-                } else {
-                    if (self?.optionsButtonAction != nil) {
-                        self?.optionsButtonAction(cell.nameLabel.text)
+            if(option.buttonAction != nil){
+                let buttonAction = option.buttonAction
+                cell.actionButtonHeightConstraint.constant = 30.0
+                cell.actionButton.setTitle(buttonAction?.title, for: .normal)
+                cell.buttonAction = {[weak self] (text) in
+                    if (buttonAction?.type == .webURL) {
+                        if ((self?.detailLinkAction) != nil) {
+                            self?.detailLinkAction(buttonAction?.payload)
+                        }
+                    } else if (buttonAction?.type == .postback) {
+                        if (self?.optionsButtonAction != nil) {
+                            self?.optionsButtonAction(buttonAction?.payload)
+                        }
                     }
                 }
+            }else{
+                cell.actionButtonHeightConstraint.constant = 0.0
+                cell.actionButton.setTitle(nil, for: .normal)
             }
             
             return cell
         }
         return UITableViewCell.init()
-
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if(self.showMore && indexPath.row == options.count){
-            if(self.optionsButtonAction != nil){
-                self.optionsButtonAction("Show more")
-            }
-        }else if(self.optionsViewType == KREOptionType.button.rawValue){
-            let cell:KREOptionsTableViewCell = tableView.cellForRow(at: indexPath) as! KREOptionsTableViewCell
-            
-            if(self.optionsButtonAction != nil){
-                let option: KREOption = options[indexPath.row]
-
-                var optionWithButtonInfo:Dictionary<String,String>?
-
-                let buttonInfo:Dictionary<String,String>? = option.optionWithButtonInfo
-                
-                if(buttonInfo?["type"] == "web_url"){
-                    if((self.detailLinkAction) != nil){
-                        self.detailLinkAction(buttonInfo?["url"])
-                    }
-                }else if(buttonInfo?["type"] == "postback"){
-                    if(self.optionsButtonAction != nil){
-                        self.optionsButtonAction(buttonInfo?["payload"])
-                    }
-                }else{
-                    if(self.optionsButtonAction != nil){
-                        self.optionsButtonAction(cell.nameLabel.text)
-                    }
+        let option: KREOption = options[indexPath.row]
+        if(option.defaultAction != nil){
+            let defaultAction = option.defaultAction
+            if (defaultAction?.type == .webURL) {
+                if ((self.detailLinkAction) != nil) {
+                    self.detailLinkAction(defaultAction?.payload)
+                }
+            } else if (defaultAction?.type == .postback) {
+                if (self.optionsButtonAction != nil) {
+                    self.optionsButtonAction(defaultAction?.payload)
                 }
             }
-        }else{
-          
         }
     }
-     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
-     public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
-
-
+    public func getExpectedHeight(width: CGFloat) -> CGFloat {
+        var height: CGFloat = 0.0
+        for option in options  {
+            if(option.optionType == KREOptionType.button){
+                height += kMaxRowHeight
+            }else if(option.optionType == KREOptionType.list){
+                let cell:KREListTableViewCell = self.tableView(optionsTableView, cellForRowAt: IndexPath(row: options.index(of: option)!, section: 0)) as! KREListTableViewCell
+                var fittingSize = UILayoutFittingCompressedSize
+                fittingSize.width = width
+                let size = cell.systemLayoutSizeFitting(fittingSize, withHorizontalFittingPriority: UILayoutPriority(rawValue: 1000), verticalFittingPriority: UILayoutPriority(rawValue: 250))
+                height += size.height
+            }
+        }
+        return height
+    }
 }
-
-
 
 public class KREOptionsViewCell: UITableViewCell {
     // MARK:- init

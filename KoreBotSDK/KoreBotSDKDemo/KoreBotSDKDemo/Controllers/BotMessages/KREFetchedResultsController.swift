@@ -25,8 +25,7 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
             }
         }
     }
-    var tableView: UITableView?
-    var animateChanges: Bool = false
+    weak var tableView: UITableView?
     var ignoreUpdates: Bool = false
     var shouldReload: Bool = false
     var maybePreMoveUpdateIndexPath: IndexPath? = nil
@@ -72,15 +71,14 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
         if (self.shouldReload == true) {
             self.tableView?.reloadData()
         } else {
-            let animation: UITableViewRowAnimation = self.animateChanges ? .fade : .none
             self.tableView?.beginUpdates()
             
-            self.tableView?.deleteSections(self.deletedSectionIndexes!, with: animation)
-            self.tableView?.insertSections(self.insertedSectionIndexes!, with: animation)
+            self.tableView?.deleteSections(self.deletedSectionIndexes!, with: .fade)
+            self.tableView?.insertSections(self.insertedSectionIndexes!, with: .fade)
 
-            self.tableView?.deleteRows(at: self.deletedRowIndexPaths!, with: animation)
-            self.tableView?.insertRows(at: self.insertedRowIndexPaths!, with: animation)
-            self.tableView?.reloadRows(at: self.updatedRowIndexPaths!, with: animation)
+            self.tableView?.deleteRows(at: self.deletedRowIndexPaths!, with: .fade)
+            self.tableView?.insertRows(at: self.insertedRowIndexPaths!, with: .top)
+            self.tableView?.reloadRows(at: self.updatedRowIndexPaths!, with: .automatic)
 
             self.tableView?.endUpdates()
             
@@ -154,5 +152,7 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
     // MARK:- deinit
     deinit {
         clearSectionsAndRowsCache()
+        self.kreDelegate = nil
+        self.tableView = nil
     }
 }

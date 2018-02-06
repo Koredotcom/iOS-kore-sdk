@@ -1,7 +1,7 @@
 # Kore Bot SDK
 Kore offers Bots SDKs as a set of platform-specific client libraries that provide a quick and convenient way to integrate Kore Bots chat capability into custom applications.
 
-With just few lines of code, you can embed our Kore chat widget into your applications to enable end-users to interact with your applications using Natural Language. For more information, refer to https://developer.kore.com/docs/bots/kore-web-sdk/ 
+With just few lines of code, you can embed our Kore chat widget into your applications to enable end-users to interact with your applications using Natural Language. For more information, refer to https://developer.kore.ai/docs/bots/kore-web-sdk/ 
 
 # Kore Bot SDK for iOS developers
 
@@ -14,20 +14,20 @@ Kore Bot SDK for iOS enables you to talk to Kore bots over a web socket. This re
 	* Login to the Bots platform
 	* Navigate to the Bot builder
 	* Search and click on the bot 
+	* Go to channels
 	* Enable *Web / Mobile Client* channel against the bot as shown in the screen below.	
 	![Add bot to Web/Mobile Client channel](https://github.com/Koredotcom/iOS-kore-sdk/blob/master/channels.png)
 	
 	* create new or use existing SDK app to obtain client id and client secret
 	![Obtain Client id and Client secret](https://github.com/Koredotcom/iOS-kore-sdk/blob/master/web-mobile-client-channel.png)
 
-
-
-
 ## Instructions
 
 ### Configuration changes
 
-* Setting up clientId, clientSecret, botId, chatBotName and identity in KoreBotSDK/KoreBotSDKDemo/SDKConfiguration
+* Setting up clientId, clientSecret, botId, chatBotName and identity in KoreBotSDK/KoreBotSDKDemo/SDKConfiguration.swift
+![SDKConfiguration setup](https://github.com/Koredotcom/iOS-kore-sdk/blob/master/sdk_configuration.png)
+
 Client id - Copy this id from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
  ```
  static let clientId = "<client-id>"
@@ -55,7 +55,7 @@ static let botId = "<bot-id>"
 
 BOT_SERVER URL- replace it with your server URL, if required
  ```
-static let BOT_SERVER = "https://bots.kore.com/";
+static let BOT_SERVER = "https://bots.kore.ai/";
  ```
 
 Anonymous user - if not anonymous, assign same identity (such as email or phone number) while making a connection
@@ -63,46 +63,48 @@ Anonymous user - if not anonymous, assign same identity (such as email or phone 
 static bool isAnonymous = false; 
  ```
 
-BOT_SPEECH_SERVER URL
+Google Speech API KEY
  ```
-static let BOT_SPEECH_SERVER = "wss://speech.kore.ai/speechcntxt/ws/speech";
+static let API_KEY = "<speech_api_key>"
  ```
 
 JWT_SERVER URL - specify the server URL for JWT token generation. This token is used to authorize the SDK client. Refer to documentation on how to setup the JWT server for token generation - e.g. https://jwt-token-server.example.com/
  ```
 static let JWT_SERVER = "<jwt-token-server-url>";
-
 ```
 
-### Running the Demo app
+## Running the Demo app
 	* Download or clone the repository.
 	* Run "pod install" in the KoreBotSDK project folder.
-    * Open KoreBotSDK.xworkspace in Xcode.
-    * Run the KoreBotSDKDemo.app in xcode
+	* Open KoreBotSDK.xworkspace in Xcode.
+	* Run the KoreBotSDKDemo.app in xcode
+	
+	Please refer to Build Fixes if you encounter errors running the app.
 
 ## Integrating into your app
 #### 1. Initialize CocoaPods
-    Run pod install in your project folder.
-    pod 'KoreBotSDK'
+	Add the following to your Podfile:
+	pod 'KoreBotSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git’
+	
+	Run pod install in your project folder.
     
-#### 2. Iniitializing the Bot client
-    import KoreBotSDK
-    var self.botClient: BotClient!
-    let botInfo: NSDictionary = ["chatBot":"<bot-name>", "taskBotId":"<bot-identifier>"]
-    self.botClient = BotClient(botInfoParameters: botInfo)
+#### 2. Initializing the Bot client
+	import KoreBotSDK
+	let botInfo: NSDictionary = ["chatBot":"<bot-name>", "taskBotId":"<bot-identifier>"]
+	let botClient: BotClient = BotClient(botInfoParameters: botInfo)
 
-#### 3. JWT genration
+#### 3. JWT generation
     a. You need to have secure token service hosted in your environment which returns the JWT token.
     b. Generate JWT in your enviornment.
 
 NOTE: Please refer about JWT signing and verification at - https://developer.kore.com/docs/bots/kore-web-sdk/
 
 #### 4. Connect with JWT
-    self.botClient.connectWithJwToken(jwToken, success: { (client) in
+    botClient.connectWithJwToken(jwToken, success: { (client) in
         // listen to RTM events
  
-        }, failure: { (error) in
-
+    }, failure: { (error) in
+		
     })
 
 #### 5. Send message
@@ -110,12 +112,16 @@ NOTE: Please refer about JWT signing and verification at - https://developer.kor
     
 #### 6. Listen to events
     self.botClient.onMessage = { [weak self] (object) in
+		//"object" type as "BotMessageModel"
     }
     self.botClient.onMessageAck = { (ack) in
+		//"ack" type as "Ack"
     }
-    self.botClient.connectionDidClose = { (code) in
+    self.botClient.connectionDidClose = { (code, reason) in
+		//"code" type as "Int", "reason" type as "String"
     }
-    self.botClient.connectionDidEnd = { (code, reason, error) in
+    self.botClient.connectionDidFailWithError = { (error) in
+		//"error" type as "NSError"
     }
     
 #### 7. Subscribe to push notifications
@@ -131,66 +137,38 @@ NOTE: Please refer about JWT signing and verification at - https://developer.kor
     })
 
 #### 9. Example
-        self.botClient.connectWithJwToken(jwtToken, success: { (client) in
-                botClient.connectionWillOpen = { () in
-                    
-                }
-                
-                botClient.connectionDidOpen = { () in
-                    
-                }
-                
-                botClient.onConnectionError = { (error) in
-                    
-                }
-                
-                botClient.onMessage = { (object) in
-                    
-                }
-                
-                botClient.onMessageAck = { (ack) in
-                    
-                }
-                
-                botClient.connectionDidClose = { (code) in
-                    
-                }
-                
-                botClient.connectionDidEnd = { (code, reason, error) in
-                    
-                }
-            }, failure: { (error) in
+    self.botClient.connectWithJwToken(jwtToken, success: { (client) in
+        client.connectionDidOpen = { () in
+            
+        }
+        
+        client.connectionReady = { () in
+            
+        }
+        
+        client.connectionDidClose = { (code) in
+            
+        }
+        
+        client.connectionDidFailWithError = { (error) in
+            
+        }
+        
+        client.onMessage = { (object) in
+            
+        }
+        
+        client.onMessageAck = { (ack) in
+            
+        }
+    }, failure: { (error) in
+        
+    })
 
-        })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## Build Fixes:
+	When running the app, may get few errors due to google api sdk. Please refer to following link to fix errors due to google sdk:
+	https://github.com/GoogleCloudPlatform/ios-docs-samples/blob/master/speech/Swift/Speech-gRPC-Streaming/BUILDFIXES
 
 License
 ----
 Copyright © Kore, Inc. MIT License; see LICENSE for further details.
-
-
-
- 

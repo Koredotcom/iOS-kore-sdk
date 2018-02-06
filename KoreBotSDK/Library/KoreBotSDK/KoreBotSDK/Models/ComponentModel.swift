@@ -11,9 +11,9 @@ import Mantle
 
 open class ComponentModel: MTLModel, MTLJSONSerializing {
     // MARK: properties
-    open var type: String?
-    open var body: String?
-    open var payload: Any?
+    @objc open var type: String?
+    @objc open var body: String?
+    @objc open var payload: Any?
 
     // MARK: MTLJSONSerializing methods
     open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {

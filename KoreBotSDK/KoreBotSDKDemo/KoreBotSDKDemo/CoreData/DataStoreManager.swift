@@ -212,60 +212,14 @@ class DataStoreManager: NSObject {
             if (message.components.count > 0) {
                 let components: NSArray = message.components
                 for component in components as! [Component] {
-                    switch (component.componentType) {
-                    case .image:
-                        break
-                    case .options:
-                        let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
-                        let optionsComponent: OptionsComponent = component as! OptionsComponent
-                        
-                        nComponent.componentId = ""
-                        nComponent.componentDesc = optionsComponent.payload as String?
-                        nMessage.addComponentsObject(_value: nComponent)
-                        nComponent.message = nMessage
-                        nMessage.templateType = ComponentType.options.rawValue as NSNumber?
-                        nMessage.thread = thread
-                        thread.addToMessages(_value: nMessage)
-                        break
-                    case .quickReply:
-                        let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
-                        let textComponent: QuickRepliesComponent = component as! QuickRepliesComponent
-//                        let textComponent: TextComponent = component as! TextComponent
-
-                        nComponent.componentId = ""
-                        nComponent.componentDesc = textComponent.payload as String?
-                        nMessage.addComponentsObject(_value: nComponent)
-                        nComponent.message = nMessage
-                        nMessage.templateType = ComponentType.quickReply.rawValue as NSNumber?
-                        nMessage.thread = thread
-                        thread.addToMessages(_value: nMessage)
-                        break
-                    case .list:
-                        let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
-                        let optionsComponent: ListComponent = component as! ListComponent
-                        
-                        nComponent.componentId = ""
-                        nComponent.componentDesc = optionsComponent.payload as String?
-                        nMessage.addComponentsObject(_value: nComponent)
-                        nComponent.message = nMessage
-                        nMessage.templateType = ComponentType.list.rawValue as NSNumber?
-                        nMessage.thread = thread
-                        thread.addToMessages(_value: nMessage)
-                        break
-
-                    default:
-                        let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
-                        let textComponent: TextComponent = component as! TextComponent
-
-                        nComponent.componentId = ""
-                        nComponent.componentDesc = textComponent.text as String?
-                        nMessage.addComponentsObject(_value: nComponent)
-                        nComponent.message = nMessage
-                        nMessage.templateType = ComponentType.text.rawValue as NSNumber?
-                        nMessage.thread = thread
-                        thread.addToMessages(_value: nMessage)
-                        break
-                    }
+                    let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
+                    nComponent.componentId = ""
+                    nComponent.componentDesc = component.payload as String?
+                    nMessage.addComponentsObject(_value: nComponent)
+                    nComponent.message = nMessage
+                    nMessage.templateType = component.componentType.rawValue as NSNumber?
+                    nMessage.thread = thread
+                    thread.addToMessages(_value: nMessage)
                 }
             }
 

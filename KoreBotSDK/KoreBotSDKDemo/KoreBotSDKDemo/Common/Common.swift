@@ -8,6 +8,12 @@
 
 import UIKit
 import Foundation
+import KoreBotSDK
+
+var startSpeakingNotification = "StartSpeakingNowNotificationName"
+var stopSpeakingNotification = "StopSpeakingNowNotificationName"
+var showTableTemplateNotification = "ShowTableTemplateNotificationName"
+var isSpeakingEnabled = false
 
 open class Common : NSObject {
     open static func UIColorRGB(_ rgb: Int) -> UIColor {
@@ -31,7 +37,7 @@ open class Utilities: NSObject {
         var jsonString: NSString!
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: object, options: .prettyPrinted)
-            jsonString = NSString(data: jsonData, encoding: String.Encoding.ascii.rawValue)
+            jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)
         } catch {
             print(error.localizedDescription)
         }
@@ -48,5 +54,19 @@ open class Utilities: NSObject {
             print(error.localizedDescription)
         }
         return jsonObject
+    }
+    
+    open static func getKREActionFromDictionary(dictionary: Dictionary<String, Any>) -> KREAction? {
+        let actionInfo:Dictionary<String,Any> = dictionary
+        let actionType: String = actionInfo["type"] != nil ? actionInfo["type"] as! String : ""
+        let title: String = actionInfo["title"] != nil ? actionInfo["title"] as! String : ""
+        if (actionType == "web_url") {
+            let url: String = actionInfo["url"] != nil ? actionInfo["url"] as! String : ""
+            return KREAction(type: .webURL, title: title, payload: url)
+        } else if (actionType == "postback") {
+            let payload: String = actionInfo["payload"] != nil ? actionInfo["payload"] as! String : ""
+            return KREAction(type: .postback, title: title, payload: payload)
+        }
+        return nil
     }
 }
