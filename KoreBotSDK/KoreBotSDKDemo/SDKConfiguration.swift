@@ -41,6 +41,6 @@ class SDKConfiguration: NSObject {
     
     // googleapi speech API_KEY
     struct speechConfig {
-        static let API_KEY = "AIzaSyCagwsHmUxecD-ZR6OJoL_YAvRBFIXFArQ"
+        static let API_KEY = "<speech_api_key>"
     }
 }
