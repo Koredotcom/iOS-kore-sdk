@@ -166,7 +166,26 @@ NOTE: Please refer about JWT signing and verification at - https://developer.kor
     })
 
 ## Build Fixes:
-	When running the app, may get few errors due to google api sdk. Please refer to following link to fix errors due to google sdk:
+	When running the app, may get few errors due to google api sdk. Please follow these steps:
+	* Make sure you are on latest cocoapods and xcode version.
+	* Replace any of the following failing import statements:
+	
+		#import "google/cloud/speech/v1beta1/CloudSpeech.pbobjc.h"
+		#import "google/api/Annotations.pbobjc.h"
+		#import "google/longrunning/Operations.pbobjc.h"
+		#import "google/rpc/Status.pbobjc.h"
+		#import "google/protobuf/Duration.pbobjc.h"
+
+	    with the corresponding imports:
+	
+		#import "CloudSpeech.pbobjc.h"
+		#import "Annotations.pbobjc.h"
+		#import "Operations.pbobjc.h"
+		#import "Status.pbobjc.h"
+		#import "Duration.pbobjc.h"
+		
+		
+	Please refer to following link for more information on errors due to google sdk:
 	https://github.com/GoogleCloudPlatform/ios-docs-samples/blob/master/speech/Swift/Speech-gRPC-Streaming/BUILDFIXES
 
 License
