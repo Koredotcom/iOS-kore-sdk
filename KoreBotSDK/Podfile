@@ -18,8 +18,5 @@ target 'KoreBotSDKDemo' do
     pod 'googleapis', :path=> '.'
     pod 'TOWebViewController'
     pod 'KoreBotSDK', :path => '..'
-    #pod 'KoreWidgets', :path=> './Library/Widgets/'
-    #pod 'KoreTextParser', :path=> './Library/TextParser/'
-    #pod 'SpeechToText', :path=>'./Library/SpeechToText/'
     project 'KoreBotSDKDemo/KoreBotSDKDemo.xcodeproj'
 end
