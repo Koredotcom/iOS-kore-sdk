@@ -28,5 +28,4 @@ open class Constants: NSObject {
         let date: Date = Date()
         return String(format: "%@-%.0f", uuid, date.timeIntervalSince1970)
     }
-    
 }

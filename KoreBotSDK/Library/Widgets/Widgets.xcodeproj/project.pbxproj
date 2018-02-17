@@ -12,6 +12,8 @@
 		6E50B8331F2A6EDD00E10D7D /* KRECardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E50B82F1F2A6EDD00E10D7D /* KRECardView.swift */; };
 		6E50B8341F2A6EDD00E10D7D /* KRECarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E50B8301F2A6EDD00E10D7D /* KRECarouselView.swift */; };
 		AC19FB9620208F6600797F04 /* KACarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC19FB9520208F6600797F04 /* KACarouselView.swift */; };
+		ACF7E8782034203900ACDF43 /* KAEmailCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF7E8762034203900ACDF43 /* KAEmailCardView.swift */; };
+		ACF7E8792034203900ACDF43 /* KAEmailCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF7E8772034203900ACDF43 /* KAEmailCarouselView.swift */; };
 		BB7DB13C1E0B9FF500FF5A13 /* KREOptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7DB13A1E0B9FF500FF5A13 /* KREOptionsTableViewCell.swift */; };
 		BB7DB13D1E0B9FF500FF5A13 /* KREOptionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7DB13B1E0B9FF500FF5A13 /* KREOptionsTableViewCell.xib */; };
 		BBB4F95D1E0D260800C2A53A /* KREListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4F95B1E0D260800C2A53A /* KREListTableViewCell.swift */; };
@@ -43,6 +45,8 @@
 		6E50B8301F2A6EDD00E10D7D /* KRECarouselView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECarouselView.swift; sourceTree = "<group>"; };
 		726E9CF8ADE08F6A9DCF1381 /* Pods-Widgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Widgets.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Widgets/Pods-Widgets.debug.xcconfig"; sourceTree = "<group>"; };
 		AC19FB9520208F6600797F04 /* KACarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KACarouselView.swift; sourceTree = "<group>"; };
+		ACF7E8762034203900ACDF43 /* KAEmailCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAEmailCardView.swift; sourceTree = "<group>"; };
+		ACF7E8772034203900ACDF43 /* KAEmailCarouselView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAEmailCarouselView.swift; sourceTree = "<group>"; };
 		BB7DB13A1E0B9FF500FF5A13 /* KREOptionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREOptionsTableViewCell.swift; sourceTree = "<group>"; };
 		BB7DB13B1E0B9FF500FF5A13 /* KREOptionsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KREOptionsTableViewCell.xib; sourceTree = "<group>"; };
 		BBB4F95B1E0D260800C2A53A /* KREListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREListTableViewCell.swift; sourceTree = "<group>"; };
@@ -100,11 +104,21 @@
 		6E50B82E1F2A6EDD00E10D7D /* Carousel */ = {
 			isa = PBXGroup;
 			children = (
+				ACF7E8752034203900ACDF43 /* EMailCarousel */,
 				6E50B82F1F2A6EDD00E10D7D /* KRECardView.swift */,
 				6E50B8301F2A6EDD00E10D7D /* KRECarouselView.swift */,
 				AC19FB9520208F6600797F04 /* KACarouselView.swift */,
 			);
 			path = Carousel;
+			sourceTree = "<group>";
+		};
+		ACF7E8752034203900ACDF43 /* EMailCarousel */ = {
+			isa = PBXGroup;
+			children = (
+				ACF7E8762034203900ACDF43 /* KAEmailCardView.swift */,
+				ACF7E8772034203900ACDF43 /* KAEmailCarouselView.swift */,
+			);
+			path = EMailCarousel;
 			sourceTree = "<group>";
 		};
 		C81C86E2F4301FA0EF9B8746 /* Frameworks */ = {
@@ -375,8 +389,10 @@
 				6E50B8331F2A6EDD00E10D7D /* KRECardView.swift in Sources */,
 				6E50B8321F2A6EDD00E10D7D /* KRETextViewInternal.swift in Sources */,
 				D1CE673E1DE713B0009B8AB9 /* KRETokenCollectionViewCell.swift in Sources */,
+				ACF7E8782034203900ACDF43 /* KAEmailCardView.swift in Sources */,
 				BBB4F95D1E0D260800C2A53A /* KREListTableViewCell.swift in Sources */,
 				D1CE673D1DE713B0009B8AB9 /* KREQuickSelectView.swift in Sources */,
+				ACF7E8792034203900ACDF43 /* KAEmailCarouselView.swift in Sources */,
 				AC19FB9620208F6600797F04 /* KACarouselView.swift in Sources */,
 				D1832B591DDC1EE700FDFB93 /* KWAppDelegate.swift in Sources */,
 				D1CE673C1DE713B0009B8AB9 /* KRECollectionView.swift in Sources */,
