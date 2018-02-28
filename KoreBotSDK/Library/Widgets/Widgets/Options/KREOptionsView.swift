@@ -79,7 +79,8 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
     fileprivate let listCellIdentifier = "KREListTableViewCell"
     
     let kMaxRowHeight: CGFloat = 44
-  
+    
+    public var optionsButtonAction1: ((_ text: String?, _ text1: String?) -> Void)!
     public var optionsButtonAction: ((_ text: String?) -> Void)!
     public var detailLinkAction: ((_ text: String?) -> Void)!
 
@@ -218,8 +219,8 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
                     self.detailLinkAction(defaultAction?.payload)
                 }
             } else if (defaultAction?.type == .postback) {
-                if (self.optionsButtonAction != nil) {
-                    self.optionsButtonAction(defaultAction?.payload)
+                if (self.optionsButtonAction1 != nil) {
+                    self.optionsButtonAction1(defaultAction?.payload, defaultAction?.title)
                 }
             }
         }

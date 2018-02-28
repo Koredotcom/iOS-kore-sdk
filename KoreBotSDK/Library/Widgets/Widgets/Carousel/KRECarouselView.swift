@@ -35,6 +35,7 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
         }
     }
     
+    public var optionsAction1: ((_ text: String? , _ text1: String?) -> Void)!
     public var optionsAction: ((_ text: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
     
@@ -94,6 +95,11 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
                 self?.optionsAction(text)
             }
         }
+        cell.cardView.optionsAction1 = {[weak self] (text , text1) in
+            if((self?.optionsAction1) != nil){
+                self?.optionsAction1(text, text1)
+            }
+        }
         cell.cardView.linkAction = {[weak self] (text) in
             if(self?.linkAction != nil){
                 self?.linkAction(text)
@@ -117,8 +123,8 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
                     self.linkAction(defaultAction?.payload)
                 }
             } else if (defaultAction?.type == .postback) {
-                if (self.optionsAction != nil) {
-                    self.optionsAction(defaultAction?.payload)
+                if (self.optionsAction1 != nil) {
+                    self.optionsAction1(defaultAction?.payload, defaultAction?.title)
                 }
             }
         }

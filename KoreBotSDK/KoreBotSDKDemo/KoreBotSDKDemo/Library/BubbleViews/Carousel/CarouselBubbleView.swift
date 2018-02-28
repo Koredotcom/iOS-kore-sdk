@@ -12,6 +12,7 @@ import KoreBotSDK
 class CarouselBubbleView: BubbleView {
     var carouselView: KRECarouselView!
     
+    public var optionsAction1: ((_ text: String?, _ text1: String?) -> Void)!
     public var optionsAction: ((_ text: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
     
@@ -40,6 +41,11 @@ class CarouselBubbleView: BubbleView {
         self.carouselView.optionsAction = {[weak self] (text) in
             if((self?.optionsAction) != nil){
                 self?.optionsAction(text)
+            }
+        }
+        self.carouselView.optionsAction1 = {[weak self] (text, text1) in
+            if((self?.optionsAction1) != nil){
+                self?.optionsAction1(text, text1)
             }
         }
         self.carouselView.linkAction = {[weak self] (text) in

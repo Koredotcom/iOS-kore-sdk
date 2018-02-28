@@ -11,6 +11,7 @@ import CoreData
 
 protocol BotMessagesViewDelegate {
     func optionsButtonTapAction(text:String)
+    func optionsButtonTapAction1(text:String, text1:String)
     func linkButtonTapAction(urlString:String)
     func populateQuickReplyCards(with message: KREMessage?)
     func closeQuickReplyCards()
@@ -172,6 +173,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             bubbleView.optionsAction = {[weak self] (text) in
                 self?.viewDelegate?.optionsButtonTapAction(text: text!)
             }
+            bubbleView.optionsAction1 = {[weak self] (text,text1) in
+                self?.viewDelegate?.optionsButtonTapAction1(text: text!, text1:text1!)
+            }
             bubbleView.linkAction = {[weak self] (text) in
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
             }
@@ -186,7 +190,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             bubbleView.linkAction = {[weak self] (text) in
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
             }
-            
+            bubbleView.optionsAction1 = {[weak self] (text,text1) in
+                self?.viewDelegate?.optionsButtonTapAction1(text: text!, text1:text1!)
+            }
             cell.bubbleView.drawBorder = true
             break
         case .quickReply:
@@ -199,6 +205,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             }
             bubbleView.linkAction = {[weak self] (text) in
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
+            bubbleView.optionsAction1 = {[weak self] (text,text1) in
+                self?.viewDelegate?.optionsButtonTapAction1(text: text!, text1:text1!)
             }
             break
         case .error:

@@ -42,7 +42,10 @@ extension UIView {
     }
 }
 class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate {
-    
+    func optionsButtonTapAction(text: String) {
+        
+    }
+
     // MARK: properties
     var thread: KREThread!
     var botClient: BotClient!
@@ -674,7 +677,22 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     // MARK: Helper functions
-    
+    func sendMessage1(_ message:Message, _ text1 : String){
+        NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
+        let composedMessage: Message = message
+        if (composedMessage.components.count > 0) {
+            let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
+            dataStoreManager.createNewMessageIn(thread: self.thread, message: composedMessage, completionBlock: { (success) in
+                let textComponent: Component = composedMessage.components[0] as! Component
+                let text: String = textComponent.payload as String
+                if(self.botClient != nil){
+                    self.botClient.sendMessage(text1, options: [] as AnyObject)
+                }
+                self.textMessageSent()
+            })
+        }
+    }
+
     func sendMessage(_ message:Message){
         NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
         let composedMessage: Message = message
@@ -689,6 +707,16 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 self.textMessageSent()
             })
         }
+    }
+    
+    func sendTextMessage1 (_ text: String ,_ text1:String) {
+        let message: Message = Message()
+        message.messageType = .default
+        message.sentDate = Date()
+        let textComponent: Component = Component()
+        textComponent.payload = text1.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) as NSString!
+        message.addComponent(textComponent)
+        self.sendMessage1(message , text)
     }
     
     func sendTextMessage(_ text:String) {
@@ -736,8 +764,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     // MARK: BotMessagesDelegate methods
-    func optionsButtonTapAction(text: String) {
-        self.sendTextMessage(text)
+    func optionsButtonTapAction1(text: String, text1: String) {
+        //self.sendTextMessage(text)
+        self.sendTextMessage1(text, text1)
     }
     
     func linkButtonTapAction(urlString: String) {

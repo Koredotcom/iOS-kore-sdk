@@ -16,6 +16,7 @@ class OptionsBubbleView: BubbleView {
     var textLabel: KREAttributedLabel!
     var optionsView: KREOptionsView!
     
+    public var optionsAction1: ((_ text: String?, _ text1: String?) -> Void)!
     public var optionsAction: ((_ text: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
     
@@ -49,6 +50,11 @@ class OptionsBubbleView: BubbleView {
         
         self.textLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
         
+        self.optionsView.optionsButtonAction1 = {[weak self] (text, text1) in
+            if((self?.optionsAction1) != nil){
+                self?.optionsAction1(text,text1)
+            }
+        }
         self.optionsView.optionsButtonAction = {[weak self] (text) in
             if((self?.optionsAction) != nil){
                 self?.optionsAction(text)

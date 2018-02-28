@@ -77,6 +77,7 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     var imageViewHeightConstraint: NSLayoutConstraint!
     var optionsViewHeightConstraint: NSLayoutConstraint!
     
+    public var optionsAction1: ((_ text: String?, _ text1: String?) -> Void)!
     public var optionsAction: ((_ text: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
     
@@ -134,6 +135,12 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
                 self?.optionsAction(text)
             }
         }
+        self.optionsView.optionsButtonAction1 = {[weak self] (text, text1) in
+            if((self?.optionsAction1) != nil){
+                self?.optionsAction1(text, text1)
+            }
+        }
+
         self.optionsView.detailLinkAction = {[weak self] (text) in
             if(self?.linkAction != nil){
                 self?.linkAction(text)
