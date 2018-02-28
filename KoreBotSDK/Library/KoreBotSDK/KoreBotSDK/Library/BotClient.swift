@@ -254,14 +254,14 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         }
     }
     
-    open func sendMessage(_ message: String!, options: AnyObject!) {
+    open func sendMessage(_ message: String!, options: [String: Any]?) {
         if (self.connection == nil) {
             NSLog("WebSocket connection not available")
         } else {
             switch self.connection.websocket.readyState {
             case .OPEN:
                 let authorization = "bearer " + authInfoModel.accessToken!
-                self.connection.sendMessageModel(message, authorization: authorization, options: [] as AnyObject?)
+                self.connection.sendMessageModel(message, authorization: authorization, options: options)
                 break
             default:
                 break

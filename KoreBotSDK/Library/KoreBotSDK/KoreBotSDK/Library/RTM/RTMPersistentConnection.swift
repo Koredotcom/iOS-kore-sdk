@@ -114,7 +114,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     }
     
     // MARK: sending message
-    open func sendMessageModel(_ message: String, authorization: String, options: AnyObject?) {
+    open func sendMessageModel(_ message: String, authorization: String, options: [String: Any]?) {
         switch (self.websocket.readyState) {
         case .CONNECTING:
             print("Socket is in CONNECTING state")
@@ -129,7 +129,12 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
         case .OPEN:
             print("Socket is in OPEN state")
             let parameters: NSMutableDictionary = NSMutableDictionary()
-            let messageObject = ["body":message, "attachments":[], "authInfo": authorization] as [String : Any];
+            let messageObject: NSMutableDictionary = NSMutableDictionary()
+            messageObject.addEntries(from: ["body":message, "attachments":[], "authInfo": authorization] as [String : Any])
+            if let object = options {
+                messageObject.addEntries(from: object)
+            }
+            
             parameters.setObject(messageObject, forKey: "message" as NSCopying)
             parameters.setObject("/bot.message", forKey: "resourceid" as NSCopying)
             if (self.botInfoParameters != nil) {
@@ -140,7 +145,6 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             parameters.setObject(uuid, forKey: "clientMessageId" as NSCopying)
             print("send: \(parameters)")
 
-            var error : NSError?
             let jsonData = try! JSONSerialization.data(withJSONObject: parameters, options: JSONSerialization.WritingOptions.prettyPrinted)
             self.websocket.send(jsonData)
             break
