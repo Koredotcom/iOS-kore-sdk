@@ -11,5 +11,5 @@
 
 #import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/UIImageView+AFNetworking.h>
-
+#import "UITextView+SLKAdditions.h"
 #endif /* Widgets_Bridging_Header_h */

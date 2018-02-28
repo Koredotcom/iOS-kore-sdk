@@ -12,6 +12,8 @@
 		6E50B8331F2A6EDD00E10D7D /* KRECardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E50B82F1F2A6EDD00E10D7D /* KRECardView.swift */; };
 		6E50B8341F2A6EDD00E10D7D /* KRECarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E50B8301F2A6EDD00E10D7D /* KRECarouselView.swift */; };
 		AC19FB9620208F6600797F04 /* KACarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC19FB9520208F6600797F04 /* KACarouselView.swift */; };
+		AC819F1220443D5900239A52 /* UITextView+SLKAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AC819F1120443D5900239A52 /* UITextView+SLKAdditions.m */; };
+		ACA10359203C0EC500B567D4 /* KAFormActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA10358203C0EC500B567D4 /* KAFormActionView.swift */; };
 		ACF7E8782034203900ACDF43 /* KAEmailCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF7E8762034203900ACDF43 /* KAEmailCardView.swift */; };
 		ACF7E8792034203900ACDF43 /* KAEmailCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF7E8772034203900ACDF43 /* KAEmailCarouselView.swift */; };
 		BB7DB13C1E0B9FF500FF5A13 /* KREOptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7DB13A1E0B9FF500FF5A13 /* KREOptionsTableViewCell.swift */; };
@@ -29,8 +31,6 @@
 		D1CE673C1DE713B0009B8AB9 /* KRECollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE67371DE713B0009B8AB9 /* KRECollectionView.swift */; };
 		D1CE673D1DE713B0009B8AB9 /* KREQuickSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE67381DE713B0009B8AB9 /* KREQuickSelectView.swift */; };
 		D1CE673E1DE713B0009B8AB9 /* KRETokenCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE67391DE713B0009B8AB9 /* KRETokenCollectionViewCell.swift */; };
-		D1CE673F1DE713B0009B8AB9 /* WordList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE673A1DE713B0009B8AB9 /* WordList.swift */; };
-		D1CE67401DE713B0009B8AB9 /* Words.txt in Resources */ = {isa = PBXBuildFile; fileRef = D1CE673B1DE713B0009B8AB9 /* Words.txt */; };
 		D1CE67421DE714BF009B8AB9 /* QuickSelectWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE67411DE714BF009B8AB9 /* QuickSelectWidgetViewController.swift */; };
 		D1CE67451DE717F2009B8AB9 /* KREOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE67441DE717F2009B8AB9 /* KREOptionsView.swift */; };
 		D1CE674B1DE718EE009B8AB9 /* KREImagesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE67481DE718EE009B8AB9 /* KREImagesCollectionView.swift */; };
@@ -45,6 +45,9 @@
 		6E50B8301F2A6EDD00E10D7D /* KRECarouselView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECarouselView.swift; sourceTree = "<group>"; };
 		726E9CF8ADE08F6A9DCF1381 /* Pods-Widgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Widgets.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Widgets/Pods-Widgets.debug.xcconfig"; sourceTree = "<group>"; };
 		AC19FB9520208F6600797F04 /* KACarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KACarouselView.swift; sourceTree = "<group>"; };
+		AC819F1020443D5900239A52 /* UITextView+SLKAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+SLKAdditions.h"; sourceTree = "<group>"; };
+		AC819F1120443D5900239A52 /* UITextView+SLKAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+SLKAdditions.m"; sourceTree = "<group>"; };
+		ACA10358203C0EC500B567D4 /* KAFormActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KAFormActionView.swift; sourceTree = "<group>"; };
 		ACF7E8762034203900ACDF43 /* KAEmailCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAEmailCardView.swift; sourceTree = "<group>"; };
 		ACF7E8772034203900ACDF43 /* KAEmailCarouselView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAEmailCarouselView.swift; sourceTree = "<group>"; };
 		BB7DB13A1E0B9FF500FF5A13 /* KREOptionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREOptionsTableViewCell.swift; sourceTree = "<group>"; };
@@ -64,8 +67,6 @@
 		D1CE67371DE713B0009B8AB9 /* KRECollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECollectionView.swift; sourceTree = "<group>"; };
 		D1CE67381DE713B0009B8AB9 /* KREQuickSelectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREQuickSelectView.swift; sourceTree = "<group>"; };
 		D1CE67391DE713B0009B8AB9 /* KRETokenCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETokenCollectionViewCell.swift; sourceTree = "<group>"; };
-		D1CE673A1DE713B0009B8AB9 /* WordList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordList.swift; sourceTree = "<group>"; };
-		D1CE673B1DE713B0009B8AB9 /* Words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Words.txt; sourceTree = "<group>"; };
 		D1CE67411DE714BF009B8AB9 /* QuickSelectWidgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickSelectWidgetViewController.swift; sourceTree = "<group>"; };
 		D1CE67441DE717F2009B8AB9 /* KREOptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREOptionsView.swift; sourceTree = "<group>"; };
 		D1CE67481DE718EE009B8AB9 /* KREImagesCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREImagesCollectionView.swift; sourceTree = "<group>"; };
@@ -95,6 +96,8 @@
 		6E50B82B1F2A6EDD00E10D7D /* GrowingTextView */ = {
 			isa = PBXGroup;
 			children = (
+				AC819F1020443D5900239A52 /* UITextView+SLKAdditions.h */,
+				AC819F1120443D5900239A52 /* UITextView+SLKAdditions.m */,
 				6E50B82C1F2A6EDD00E10D7D /* KREGrowingTextView.swift */,
 				6E50B82D1F2A6EDD00E10D7D /* KRETextViewInternal.swift */,
 			);
@@ -183,8 +186,7 @@
 				D1CE67371DE713B0009B8AB9 /* KRECollectionView.swift */,
 				D1CE67381DE713B0009B8AB9 /* KREQuickSelectView.swift */,
 				D1CE67391DE713B0009B8AB9 /* KRETokenCollectionViewCell.swift */,
-				D1CE673A1DE713B0009B8AB9 /* WordList.swift */,
-				D1CE673B1DE713B0009B8AB9 /* Words.txt */,
+				ACA10358203C0EC500B567D4 /* KAFormActionView.swift */,
 			);
 			path = QuickSelect;
 			sourceTree = "<group>";
@@ -277,7 +279,6 @@
 				BBB4F95E1E0D260800C2A53A /* KREListTableViewCell.xib in Resources */,
 				D1832B631DDC1EE700FDFB93 /* LaunchScreen.storyboard in Resources */,
 				D1832B601DDC1EE700FDFB93 /* Assets.xcassets in Resources */,
-				D1CE67401DE713B0009B8AB9 /* Words.txt in Resources */,
 				BB7DB13D1E0B9FF500FF5A13 /* KREOptionsTableViewCell.xib in Resources */,
 				D150E0FC1DDDADE400E674FE /* KoreWidgets.podspec in Resources */,
 			);
@@ -385,6 +386,7 @@
 			files = (
 				D1CE67421DE714BF009B8AB9 /* QuickSelectWidgetViewController.swift in Sources */,
 				BB7DB13C1E0B9FF500FF5A13 /* KREOptionsTableViewCell.swift in Sources */,
+				ACA10359203C0EC500B567D4 /* KAFormActionView.swift in Sources */,
 				D1365FE01DDC2F240017D80E /* ButtonWidgetViewController.swift in Sources */,
 				6E50B8331F2A6EDD00E10D7D /* KRECardView.swift in Sources */,
 				6E50B8321F2A6EDD00E10D7D /* KRETextViewInternal.swift in Sources */,
@@ -401,7 +403,7 @@
 				D1CE674B1DE718EE009B8AB9 /* KREImagesCollectionView.swift in Sources */,
 				D1365FDE1DDC2F0F0017D80E /* ListViewWidgetViewController.swift in Sources */,
 				D1CE67451DE717F2009B8AB9 /* KREOptionsView.swift in Sources */,
-				D1CE673F1DE713B0009B8AB9 /* WordList.swift in Sources */,
+				AC819F1220443D5900239A52 /* UITextView+SLKAdditions.m in Sources */,
 				6E50B8341F2A6EDD00E10D7D /* KRECarouselView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
