@@ -11,6 +11,36 @@ import AVFoundation
 import KoreBotSDK
 import TOWebViewController
 
+enum GradientDirection {
+    case leftToRight
+    case rightToLeft
+    case topToBottom
+    case bottomToTop
+}
+
+extension UIView {
+    func gradientBackground(from color1: UIColor, to color2: UIColor, direction: GradientDirection) {
+        let gradient = CAGradientLayer()
+        gradient.frame = self.bounds
+        gradient.colors = [color1.cgColor, color2.cgColor]
+        
+        switch direction {
+        case .leftToRight:
+            gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+            gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+        case .rightToLeft:
+            gradient.startPoint = CGPoint(x: 1.0, y: 0.5)
+            gradient.endPoint = CGPoint(x: 0.0, y: 0.5)
+        case .bottomToTop:
+            gradient.startPoint = CGPoint(x: 0.5, y: 1.0)
+            gradient.endPoint = CGPoint(x: 0.5, y: 0.0)
+        default:
+            break
+        }
+        
+        self.layer.insertSublayer(gradient, at: 0)
+    }
+}
 class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate {
     
     // MARK: properties
@@ -36,9 +66,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var quickReplyView: KREQuickSelectView!
     var typingStatusView: KRETypingStatusView!
     var webViewController: InputTOWebViewController!
-
+    var gradient: CAGradientLayer!
     let sttClient: GoogleASRService = GoogleASRService(api_key: SDKConfiguration.speechConfig.API_KEY)
     var speechSynthesizer: AVSpeechSynthesizer!
+    var colorState:Bool!
+    var backgroundTimer: Timer!
     
     // MARK: init
     init(thread: KREThread!) {
@@ -52,7 +84,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //Initialize elements
         self.configureThreadView()
         self.configureComposeBar()
@@ -71,8 +102,43 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.addNotifications()
     }
     
+    func hexStringToUIColor (hex:String) -> UIColor {
+        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        
+        if (cString.hasPrefix("#")) {
+            cString.remove(at: cString.startIndex)
+        }
+        
+        if ((cString.count) != 6) {
+            return UIColor.gray
+        }
+        
+        var rgbValue:UInt32 = 0
+        Scanner(string: cString).scanHexInt32(&rgbValue)
+        
+        return UIColor(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
+    }
+    @objc func update() {
+        UIView.animate(withDuration: 10.0, animations: {
+            self.animateLayer()
+        })
+    }
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        backgroundTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(update), userInfo: nil, repeats: true)
+        let color1 = hexStringToUIColor(hex: "#ff6e7f")
+        let color2 = hexStringToUIColor(hex: "##bfe9ff")
+        colorState = true
+        gradient = CAGradientLayer()
+        gradient.frame = view.bounds
+        gradient.colors = [color1.cgColor, color2.cgColor]
+        view.layer.insertSublayer(gradient, at: 0)
+        animateLayer()
     }
     
     override open func viewDidDisappear(_ animated: Bool) {
@@ -88,10 +154,39 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     override func viewWillLayoutSubviews() {
         NSLog("viewWillLayoutSubviews")
         super.viewWillLayoutSubviews()
+        //self.view.gradientBackground(from: .blue, to: .green, direction: .topToBottom)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    func animateLayer() {
+        let color1 = hexStringToUIColor(hex: "#ff6e7f")
+        let color2 = hexStringToUIColor(hex: "##bfe9ff")
+        let color3 = hexStringToUIColor(hex: "#dbd4b4")
+        let color4 = hexStringToUIColor(hex: "#7aa1d2")
+        var fromColors = gradient.colors
+        var toColors = [color3.cgColor, color4.cgColor]
+        if colorState == true {
+             fromColors = gradient.colors
+             toColors = [color3.cgColor, color4.cgColor]
+             colorState = false
+        }else{
+            fromColors = gradient.colors
+            toColors = [color1.cgColor, color2.cgColor]
+            colorState = true
+        }
+        gradient.colors = toColors
+        let animation = CABasicAnimation(keyPath: "colors")
+        animation.fromValue = fromColors
+        animation.toValue = toColors
+        animation.duration = 10.00
+        animation.isRemovedOnCompletion = true
+        animation.fillMode = kCAFillModeForwards
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animation.delegate = self as? CAAnimationDelegate
+        gradient.add(animation, forKey: "animateGradient")
     }
     
     //MARK:- deinit
@@ -120,6 +215,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.composeView.delegate = nil
         self.audioComposeView.prepareForDeinit()
         self.botMessagesView.prepareForDeinit()
+        backgroundTimer.invalidate()
         self.botMessagesView.viewDelegate = nil
         self.quickReplyView.sendQuickReplyAction = nil
     }
@@ -127,7 +223,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: cancel
     func cancel(_ sender: AnyObject) {
         self.prepareForDeinit()
-        
         //Addition fade in animation
         let transition = CATransition()
         transition.duration = 0.5
@@ -253,6 +348,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             
             botClient.connectionDidOpen = { [weak self] () in
                 self?.updateNavBarPrompt()
+                if(self?.botClient != nil){
+                    self?.botClient.sendMessage("Welpro", options: [] as AnyObject)
+                }
             }
             
             botClient.connectionReady = { () in
@@ -420,7 +518,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 dataStoreManager.createNewMessageIn(thread: self.thread, message: message, completionBlock: { (success) in
                 })
                 if ttsBody != nil {
-                    NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: ttsBody)
+                    //NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: ttsBody)
                 }
             }
         }
@@ -789,4 +887,5 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let tableTemplateViewController = TableTemplateViewController(dataString: dataString)
         self.navigationController?.present(tableTemplateViewController, animated: true, completion: nil)
     }
+    
 }

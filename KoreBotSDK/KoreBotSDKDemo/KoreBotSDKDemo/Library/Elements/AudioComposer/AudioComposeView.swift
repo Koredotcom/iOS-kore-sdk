@@ -87,11 +87,12 @@ class AudioComposeView: UIView {
 //        self.keyboardButton.contentEdgeInsets = UIEdgeInsetsMake(2.0, 10.0, 0.0, 10.0)
         self.keyboardButton.clipsToBounds = true
         self.addSubview(self.keyboardButton)
+        NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
         
         self.playbackButton = UIButton.init(frame: CGRect.zero)
         self.playbackButton.setTitle("", for: .normal)
         self.playbackButton.translatesAutoresizingMaskIntoConstraints = false
-        self.playbackButton.setImage(UIImage(named: "SpeakerIcon"), for: .normal)
+        //self.playbackButton.setImage(UIImage(named: "SpeakerIcon"), for: .normal)
         self.playbackButton.imageView?.contentMode = .center
         self.playbackButton.addTarget(self, action: #selector(self.playbackButtonAction), for: .touchUpInside)
 //        self.playbackButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
@@ -139,11 +140,11 @@ class AudioComposeView: UIView {
     }
     
     public func enablePlayback(enable: Bool){
-        if enable {
-            self.playbackButton.setImage(UIImage(named: "SpeakerIcon"), for: .normal)
-        }else{
-            self.playbackButton.setImage(UIImage(named: "SpeakerMuteIcon"), for: .normal)
-        }
+//        if enable {
+//            self.playbackButton.setImage(UIImage(named: "SpeakerIcon"), for: .normal)
+//        }else{
+//            self.playbackButton.setImage(UIImage(named: "SpeakerMuteIcon"), for: .normal)
+//        }
     }
 
     //MARK:- removing refernces to elements
@@ -191,11 +192,11 @@ class AudioComposeView: UIView {
     }
     
     @objc fileprivate func playbackButtonAction() {
-        if isSpeakingEnabled {
+        //if isSpeakingEnabled {
             NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
-        }
-        isSpeakingEnabled = !isSpeakingEnabled
-        self.enablePlayback(enable: isSpeakingEnabled)
+//        }
+//        isSpeakingEnabled = !isSpeakingEnabled
+//        self.enablePlayback(enable: isSpeakingEnabled)
     }
     
     fileprivate func startAudioRecording(){
