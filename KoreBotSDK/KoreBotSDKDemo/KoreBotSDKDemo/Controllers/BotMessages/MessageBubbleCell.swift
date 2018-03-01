@@ -133,8 +133,8 @@ class MessageBubbleCell : UITableViewCell {
         self.senderImageView.image = placeHolderIcon
         
         if (message.iconUrl != nil) {
-            let fileUrl = URL(string: message.iconUrl!)
-            self.senderImageView.setImageWith(fileUrl, placeholderImage: placeHolderIcon)
+//            let fileUrl = URL(string: message.iconUrl!)
+//            self.senderImageView.setImageWith(fileUrl, placeholderImage: placeHolderIcon)
         }
     }
 

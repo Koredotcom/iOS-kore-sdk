@@ -192,8 +192,9 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         let attrString: NSMutableAttributedString = KRECardView.getAttributedString(cardInfo: cardInfo)
         let limitingSize: CGSize = CGSize(width: width-20.0, height: CGFloat.greatestFiniteMagnitude)
         let rect: CGRect = attrString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
-        height += rect.size.height + 20.0
-        
+        if cardInfo.title != ""{
+            height += rect.size.height + 20.0
+        }
         return height
     }
     

@@ -19,7 +19,6 @@ class TextBubbleView : BubbleView {
     
     override func initialize() {
         super.initialize()
-        
         self.textLabel = KREAttributedLabel(frame: CGRect.zero)
         self.textLabel.textColor = Common.UIColorRGB(0x484848)
         self.textLabel.mentionTextColor = Common.UIColorRGB(0x8ac85a)

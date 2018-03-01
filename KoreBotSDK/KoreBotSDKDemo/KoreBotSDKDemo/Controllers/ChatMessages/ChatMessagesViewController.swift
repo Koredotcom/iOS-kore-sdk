@@ -266,6 +266,16 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.botMessagesView.thread = self.thread
         self.botMessagesView.viewDelegate = self
         self.botMessagesView.clearBackground = true
+        self.botMessagesView.layer.borderWidth = 1
+        self.botMessagesView.layer.cornerRadius = 3
+        self.botMessagesView.layer.borderColor = UIColor.clear.cgColor
+        self.botMessagesView.layer.masksToBounds = true
+        
+        self.botMessagesView.layer.shadowOpacity = 0.18
+        self.botMessagesView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        self.botMessagesView.layer.shadowRadius = 2
+        self.botMessagesView.layer.shadowColor = UIColor.black.cgColor
+        self.botMessagesView.layer.masksToBounds = false
         self.threadContainerView.addSubview(self.botMessagesView!)
         
         self.threadContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[botMessagesView]|", options:[], metrics:nil, views:["botMessagesView" : self.botMessagesView!]))
@@ -352,7 +362,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             botClient.connectionDidOpen = { [weak self] () in
                 self?.updateNavBarPrompt()
                 if(self?.botClient != nil){
-                    self?.botClient.sendMessage("Welpro", options: [] as AnyObject)
+                    self?.botClient.sendMessage("ForIOS", options: [] as AnyObject)
                 }
             }
             

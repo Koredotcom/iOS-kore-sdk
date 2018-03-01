@@ -49,7 +49,7 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
     }
     
     func setup() {
-        self.backgroundColor = UIColor.white
+        self.backgroundColor = UIColor.clear
         
         imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
