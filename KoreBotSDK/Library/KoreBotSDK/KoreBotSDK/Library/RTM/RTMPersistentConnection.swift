@@ -62,32 +62,33 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
         let intervalInNSec = pingInterval * Double(NSEC_PER_SEC)
         let startTime = DispatchTime.now() + Double(intervalInNSec) / Double(NSEC_PER_SEC)
         
-        timerSource.scheduleRepeating(deadline: startTime, interval: pingInterval, leeway: .nanoseconds(Int(NSEC_PER_SEC / 10)))
-        timerSource.setEventHandler { [unowned self] in
-            if self.receivedLastPong == false {
+        timerSource.schedule(deadline: startTime, repeating: pingInterval, leeway: .nanoseconds(Int(NSEC_PER_SEC / 10)))
+        timerSource.setEventHandler(handler: { [weak self] in
+            if self!.receivedLastPong == false {
                 // we did not receive the last pong
                 // abort the socket so that we can spin up a new connection
-                self.websocket.close()
-            } else if self.websocket.readyState == .CLOSED || self.websocket.readyState == .CLOSING {
-                self.websocket.close()
+                self!.websocket.close()
+            } else if self!.websocket.readyState == .CLOSED || self!.websocket.readyState == .CLOSING {
+                self!.websocket.close()
             } else {
                 // we got a pong recently
                 // send another ping
-                self.receivedLastPong = false
-                try? self.websocket.sendPing(nil)
+                self!.receivedLastPong = false
+                self!.websocket.sendPing(nil)
             }
-        }
+        })
         timerSource.resume()
     }
     
-    open func webSocket(_ webSocket: SRWebSocket!, didFailWithError error: NSError!) {
-        self.connectionDelegate?.rtmConnectionDidFailWithError(error)
+    open func webSocket(_ webSocket: SRWebSocket!, didFailWithError error: Error!) {
+        self.connectionDelegate?.rtmConnectionDidFailWithError(error! as NSError)
     }
     
-    open func webSocket(_ webSocket: SRWebSocket, didCloseWithCode code: Int, reason: String, wasClean: Bool) {
+    
+    public func webSocket(_ webSocket: SRWebSocket!, didCloseWithCode code: Int, reason: String!, wasClean: Bool) {
         self.connectionDelegate?.rtmConnectionDidClose(code, reason: reason as String)
     }
-    
+
     open func webSocket(_ webSocket: SRWebSocket!, didReceivePong pongPayload: Data!) {
         self.receivedLastPong = true
     }
@@ -114,7 +115,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     }
     
     // MARK: sending message
-    open func sendMessageModel(_ message: String, authorization: String, options: [String: Any]?) {
+    open func sendMessageModel(_ message: String, userId: String, authorization: String, options: [String: Any]?) {
         switch (self.websocket.readyState) {
         case .CONNECTING:
             print("Socket is in CONNECTING state")
@@ -130,7 +131,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             print("Socket is in OPEN state")
             let parameters: NSMutableDictionary = NSMutableDictionary()
             let messageObject: NSMutableDictionary = NSMutableDictionary()
-            messageObject.addEntries(from: ["body":message, "attachments":[], "authInfo": authorization] as [String : Any])
+            messageObject.addEntries(from: ["body":message, "attachments":[], "authInfo": authorization, "mappedkuid": userId] as [String : Any])
             if let object = options {
                 messageObject.addEntries(from: object)
             }
@@ -155,7 +156,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     func convertStringToDictionary(_ text: String) -> [String:AnyObject]? {
         if let data = text.data(using: String.Encoding.utf8) {
             do {
-                return try! JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
             } catch let error as NSError {
                 print(error)
             }

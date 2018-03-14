@@ -44,6 +44,14 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     open var onMessage: ((BotMessageModel?) -> Void)!
     open var onMessageAck: ((Ack?) -> Void)!
     
+    open var botsUrl: String {
+        get {
+            return Constants.KORE_BOT_SERVER
+        }
+        set(newValue) {
+            Constants.KORE_BOT_SERVER = newValue
+        }
+    }
     fileprivate var successClosure: ((BotClient?) -> Void)!
     fileprivate var failureClosure: ((NSError) -> Void)!
     
@@ -55,11 +63,24 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         requestManager.startNewtorkMonitoring {[weak self] (status) in
             if status == .reachableViaWiFi || status == .reachableViaWWAN {
                 if (self != nil) {
-                    self?.isNetworkAvailable = true
-                    if (self?.reconnects)! { self?.reconnect() }
-                } else {
-                    self?.isNetworkAvailable = false
-                    self?.connectionState = .NO_NETWORK
+                    if (self!.connection == nil) {
+                        // WebSocket connection not available
+                        self!.tryReconnect()
+                    } else {
+                        self!.isNetworkAvailable = true
+                        switch self!.connection.websocket.readyState {
+                        case .OPEN:
+                            break
+                        case .CLOSED:
+                            self!.tryReconnect()
+                            break
+                        case .CLOSING:
+                            self!.tryReconnect()
+                            break
+                        case .CONNECTING:
+                            break
+                        }
+                    }
                 }
             }
         }
@@ -92,23 +113,6 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         }
     }
     
-    @objc open func reconnect() {
-        if self.reconnecting == false && self.isNetworkAvailable {
-            self.reconnecting = true
-            self.connectionState = .CONNECTING
-            
-            if (self.connectionWillOpen != nil) {
-                self.connectionWillOpen()
-            }
-            
-            self.connect()
-        }
-    }
-    
-    open func reconnectAfter(_ timeInterval: TimeInterval) {
-        self.addReconnectTimer(timeInterval)
-    }
-    
     open func disconnect() {
         self.removeReconnectTimer()
         if self.connection != nil {
@@ -131,7 +135,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             }, failure: { (error) in
                 self.reconnecting = false
                 if (self.failureClosure != nil) {
-                    self.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as! [AnyHashable : Any]? as! [String : Any]))
+                    self.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as? [String : Any]))
                 }
             })
         } else {
@@ -151,7 +155,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         }
     }
     
-    fileprivate func tryReconnect() {
+    @objc fileprivate func tryReconnect() {
         if self.reconnecting == false && self.isNetworkAvailable {
             self.reconnecting = true
         
@@ -179,7 +183,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     
     fileprivate func addReconnectTimer(_ interval: TimeInterval) {
         self.removeReconnectTimer()
-        self.reconnectTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.reconnect), userInfo: nil, repeats: false)
+        self.reconnectTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.tryReconnect), userInfo: nil, repeats: false)
         RunLoop.main.add(self.reconnectTimer, forMode: RunLoopMode.defaultRunLoopMode)
     }
     
@@ -217,7 +221,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             }
             break
         default:
-            self.reconnect()
+            self.tryReconnect()
             break
         }
     }
@@ -261,9 +265,16 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             switch self.connection.websocket.readyState {
             case .OPEN:
                 let authorization = "bearer " + authInfoModel.accessToken!
-                self.connection.sendMessageModel(message, authorization: authorization, options: options)
+                let userId = userInfoModel.userId!
+                self.connection.sendMessageModel(message, userId: userId, authorization: authorization, options: options)
                 break
-            default:
+            case .CLOSED:
+                self.tryReconnect()
+                break
+            case .CLOSING:
+                self.tryReconnect()
+                break
+            case .CONNECTING:
                 break
             }
         }
