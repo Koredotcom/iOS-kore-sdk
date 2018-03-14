@@ -169,6 +169,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             
             cell.textLabel?.text = option.title
+            cell.textLabel?.textAlignment = .center
             
             return cell
         }else if(option.optionType == KREOptionType.list){

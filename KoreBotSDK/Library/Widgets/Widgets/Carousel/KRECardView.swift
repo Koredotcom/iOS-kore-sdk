@@ -102,8 +102,8 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     public func setup() {
         let width = self.frame.size.width
         self.imageView = UIImageView()
-        self.imageView.contentMode = .scaleAspectFill
-        self.imageView.backgroundColor = UIColor.gray
+        self.imageView.contentMode = .scaleAspectFit
+        self.imageView.backgroundColor = UIColor.white
         self.imageView.clipsToBounds = true
         self.imageView.layer.borderWidth = 0.5
         self.imageView.layer.borderColor = UIColor.lightGray.cgColor
