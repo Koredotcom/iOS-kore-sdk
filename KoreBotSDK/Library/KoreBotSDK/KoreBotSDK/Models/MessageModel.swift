@@ -34,12 +34,13 @@ open class BotMessageModel: MTLModel, MTLJSONSerializing {
     @objc open var iconUrl: String?
     @objc open var messages: Array<MessageModel> = [MessageModel]()
     @objc open var createdOn: Date?
-
+    @objc open var messageId: String?
     // MARK: MTLJSONSerializing methods
     open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["type":"type",
                 "iconUrl":"icon",
                 "messages":"message",
+                "messageId":"messageId",
                 "createdOn":"createdOn"]
     }
     

@@ -168,7 +168,6 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                         self.failureClosure(NSError(domain: "RTM", code: 0, userInfo: ["message": "connection timed-out"]))
                     }
                 }
-                return
             }
             
             self.connectionState = .CONNECTING
@@ -264,9 +263,17 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         } else {
             switch self.connection.websocket.readyState {
             case .OPEN:
-                let authorization = "bearer " + authInfoModel.accessToken!
-                let userId = userInfoModel.userId!
-                self.connection.sendMessageModel(message, userId: userId, authorization: authorization, options: options)
+                var parameters: [String: Any] = [:]
+                if let kmToken = botInfoParameters["kmToken"] {
+                    parameters["kmToken"] = kmToken
+                }
+                if let kmUId = botInfoParameters["kmUId"] {
+                    parameters["kmUId"] = kmUId
+                }
+                if let botToken = authInfoModel.accessToken {
+                    parameters["botToken"] = botToken
+                }
+                self.connection.sendMessage(message, parameters: parameters, options: options)
                 break
             case .CLOSED:
                 self.tryReconnect()

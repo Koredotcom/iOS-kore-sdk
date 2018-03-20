@@ -115,7 +115,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     }
     
     // MARK: sending message
-    open func sendMessageModel(_ message: String, userId: String, authorization: String, options: [String: Any]?) {
+    open func sendMessage(_ message: String, parameters: [String: Any], options: [String: Any]?) {
         switch (self.websocket.readyState) {
         case .CONNECTING:
             print("Socket is in CONNECTING state")
@@ -129,24 +129,24 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             break
         case .OPEN:
             print("Socket is in OPEN state")
-            let parameters: NSMutableDictionary = NSMutableDictionary()
+            let dictionary: NSMutableDictionary = NSMutableDictionary()
             let messageObject: NSMutableDictionary = NSMutableDictionary()
-            messageObject.addEntries(from: ["body":message, "attachments":[], "authInfo": authorization, "mappedkuid": userId] as [String : Any])
+            messageObject.addEntries(from: ["body": message, "attachments":[], "customData": parameters] as [String : Any])
             if let object = options {
                 messageObject.addEntries(from: object)
             }
             
-            parameters.setObject(messageObject, forKey: "message" as NSCopying)
-            parameters.setObject("/bot.message", forKey: "resourceid" as NSCopying)
+            dictionary.setObject(messageObject, forKey: "message" as NSCopying)
+            dictionary.setObject("/bot.message", forKey: "resourceid" as NSCopying)
             if (self.botInfoParameters != nil) {
-                parameters.setObject(self.botInfoParameters, forKey: "botInfo" as NSCopying)
+                dictionary.setObject(self.botInfoParameters, forKey: "botInfo" as NSCopying)
             }
             let uuid: String = Constants.getUUID()
-            parameters.setObject(uuid, forKey: "id" as NSCopying)
-            parameters.setObject(uuid, forKey: "clientMessageId" as NSCopying)
-            print("send: \(parameters)")
+            dictionary.setObject(uuid, forKey: "id" as NSCopying)
+            dictionary.setObject(uuid, forKey: "clientMessageId" as NSCopying)
+            print("send: \(dictionary)")
 
-            let jsonData = try! JSONSerialization.data(withJSONObject: parameters, options: JSONSerialization.WritingOptions.prettyPrinted)
+            let jsonData = try! JSONSerialization.data(withJSONObject: dictionary, options: JSONSerialization.WritingOptions.prettyPrinted)
             self.websocket.send(jsonData)
             break
         }
