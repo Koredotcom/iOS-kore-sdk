@@ -165,7 +165,7 @@ class ComposeBarView: UIView {
         self.sendButton.isEnabled = hasText
         if self.isKeyboardEnabled {
             self.sendButton.isHidden = !hasText
-            self.speechToTextButton.isHidden = hasText
+            self.speechToTextButton.isHidden = true
         }else{
             self.sendButton.isHidden = true
             self.speechToTextButton.isHidden = true

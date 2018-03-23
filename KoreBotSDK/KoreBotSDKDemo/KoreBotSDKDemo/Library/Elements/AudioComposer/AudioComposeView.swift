@@ -66,8 +66,10 @@ class AudioComposeView: UIView {
         self.audiolabel.font = UIFont(name: "HelveticaNeue", size: 11.0)!
         self.audiolabel.textColor = .white
         self.audiolabel.textAlignment = .center
+        self.audiolabel.isHidden = true
         self.audiolabel.translatesAutoresizingMaskIntoConstraints = false
         self.animateBGView.addSubview(self.audiolabel)
+        self.animateBGView.isHidden = true
         
         self.animateBGView.addConstraint(NSLayoutConstraint.init(item: self.audioImageView, attribute: .centerY, relatedBy: .equal, toItem: self.animateBGView, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         self.animateBGView.addConstraint(NSLayoutConstraint.init(item: self.audioImageView, attribute: .centerX, relatedBy: .equal, toItem: self.animateBGView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
