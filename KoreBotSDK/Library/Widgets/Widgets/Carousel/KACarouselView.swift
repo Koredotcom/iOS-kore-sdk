@@ -63,7 +63,7 @@ public class KAOptionsView: KREOptionsView {
                 }
             } else if (defaultAction?.type == .postback) {
                 if (self.optionsButtonAction != nil) {
-                    self.optionsButtonAction(defaultAction?.payload)
+                    self.optionsButtonAction(defaultAction?.title, defaultAction?.payload)
                 }
             } else if (defaultAction?.type == .user_intent) {
                 if (self.userIntentAction != nil) {
@@ -141,9 +141,9 @@ public class KACardView: KRECardView {
         self.optionsViewHeightConstraint = NSLayoutConstraint(item: self.optionsView, attribute:.height, relatedBy:.equal, toItem:nil, attribute:.notAnAttribute, multiplier:1.0, constant: KACardView.kMaxRowHeight)
         self.optionsView.addConstraint(self.optionsViewHeightConstraint)
         
-        self.optionsView.optionsButtonAction = {[weak self] (text) in
+        self.optionsView.optionsButtonAction = { [weak self] (title, payload) in
             if ((self?.optionsAction) != nil) {
-                self?.optionsAction(text)
+                self?.optionsAction(title, payload)
             }
         }
         
@@ -378,9 +378,9 @@ public class KACarouselView: KRECarouselView {
             cell.cardView.isLast = false
         }
         
-        cell.cardView.optionsAction = { [weak self] (text) in
+        cell.cardView.optionsAction = { [weak self] (title, payload) in
             if ((self?.optionsAction) != nil) {
-                self?.optionsAction(text)
+                self?.optionsAction(title, payload)
             }
         }
         

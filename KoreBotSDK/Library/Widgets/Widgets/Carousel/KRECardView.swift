@@ -81,7 +81,7 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     var imageViewHeightConstraint: NSLayoutConstraint!
     var optionsViewHeightConstraint: NSLayoutConstraint!
     
-    public var optionsAction: ((_ text: String?) -> Void)!
+    public var optionsAction: ((_ title: String?, _ payload: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
     
     public override init(frame: CGRect) {
@@ -133,9 +133,9 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         self.optionsViewHeightConstraint = NSLayoutConstraint(item: self.optionsView, attribute:.height, relatedBy:.equal, toItem:nil, attribute:.notAnAttribute, multiplier:1.0, constant:KRECardView.kMaxRowHeight)
         self.optionsView.addConstraint(self.optionsViewHeightConstraint)
         
-        self.optionsView.optionsButtonAction = {[weak self] (text) in
-            if((self?.optionsAction) != nil){
-                self?.optionsAction(text)
+        self.optionsView.optionsButtonAction = { [weak self] (title, payload) in
+            if ((self?.optionsAction) != nil) {
+                self?.optionsAction(title, payload)
             }
         }
         self.optionsView.detailLinkAction = {[weak self] (text) in

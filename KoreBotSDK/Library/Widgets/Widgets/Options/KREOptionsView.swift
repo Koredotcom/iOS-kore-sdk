@@ -14,15 +14,24 @@ public enum KREActionType : Int {
 }
 
 public class KREAction: NSObject {
-    var type: KREActionType?
-    var title: String?
-    var payload:String?
-    
+    public var type: KREActionType?
+    public var title: String?
+    public var payload:String?
+    public var customData: [String: Any]?
+    public var action: String?
+
     public init(type: KREActionType, title: String, payload: String) {
         super.init()
         self.type = type
         self.title = title
         self.payload = payload
+    }
+    
+    public init(type: KREActionType, title: String, customData: [String: Any]) {
+        super.init()
+        self.type = type
+        self.title = title
+        self.customData = customData
     }
 }
 
@@ -80,7 +89,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     let kMaxRowHeight: CGFloat = 44
   
-    public var optionsButtonAction: ((_ text: String?) -> Void)!
+    public var optionsButtonAction: ((_ title: String?, _ payload: String?) -> Void)!
     public var detailLinkAction: ((_ text: String?) -> Void)!
 
     // MARK:- properites
@@ -198,7 +207,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
                         }
                     } else if (buttonAction?.type == .postback) {
                         if (self?.optionsButtonAction != nil) {
-                            self?.optionsButtonAction(buttonAction?.payload)
+                            self?.optionsButtonAction(buttonAction?.title, buttonAction?.payload)
                         }
                     }
                 }
@@ -222,7 +231,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
                 }
             } else if (defaultAction?.type == .postback) {
                 if (self.optionsButtonAction != nil) {
-                    self.optionsButtonAction(defaultAction?.payload)
+                    self.optionsButtonAction(defaultAction?.title, defaultAction?.payload)
                 }
             }
         }

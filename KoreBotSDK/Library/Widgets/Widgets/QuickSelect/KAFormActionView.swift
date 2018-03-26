@@ -47,9 +47,21 @@ public struct KAFormAction {
 extension KAFormAction: Encodable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(title, forKey: .title)
-        try container.encode(type, forKey: .type)
-        try container.encode(name, forKey: .name)
+        do {
+            try container.encode(title, forKey: .title)
+        } catch {
+            print(error.localizedDescription)
+        }
+        do {
+            try container.encode(type, forKey: .type)
+        } catch {
+            print(error.localizedDescription)
+        }
+        do {
+            try container.encode(name, forKey: .name)
+        } catch {
+            print(error.localizedDescription)
+        }
         do {
             try container.encode(information, forKey: .information)
         } catch {
@@ -69,9 +81,21 @@ extension KAFormAction: Encodable {
 extension KAFormAction: Decodable {
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        title = try values.decode(String.self, forKey: .title)
-        type = try values.decode(String.self, forKey: .type)
-        name = try values.decode(String.self, forKey: .name)
+        do {
+            title = try values.decode(String.self, forKey: .title)
+        } catch {
+            print(error.localizedDescription)
+        }
+        do {
+            type = try values.decode(String.self, forKey: .type)
+        } catch {
+            print(error.localizedDescription)
+        }
+        do {
+            name = try values.decode(String.self, forKey: .name)
+        } catch {
+            print(error.localizedDescription)
+        }
         do {
             information = try values.decode(KAInformation.self, forKey: .information)
         } catch {

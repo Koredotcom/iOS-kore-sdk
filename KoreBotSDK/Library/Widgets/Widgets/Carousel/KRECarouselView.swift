@@ -35,8 +35,9 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
         }
     }
     
-    public var optionsAction: ((_ text: String?) -> Void)!
+    public var optionsAction: ((_ title: String?, _ payload: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
+    public var userIntent:((_ action: Any?) -> Void)!
     
     public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -90,9 +91,9 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
         }else{
             cell.cardView.isLast = false
         }
-        cell.cardView.optionsAction = {[weak self] (text) in
+        cell.cardView.optionsAction = { [weak self] (title, payload) in
             if((self?.optionsAction) != nil){
-                self?.optionsAction(text)
+                self?.optionsAction(title, payload)
             }
         }
         cell.cardView.linkAction = {[weak self] (text) in
@@ -111,7 +112,7 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cardInfo = cards[indexPath.row]
-        if(cardInfo.defaultAction != nil){
+        if (cardInfo.defaultAction != nil){
             let defaultAction = cardInfo.defaultAction
             if (defaultAction?.type == .webURL) {
                 if ((self.linkAction) != nil) {
@@ -119,7 +120,11 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
                 }
             } else if (defaultAction?.type == .postback) {
                 if (self.optionsAction != nil) {
-                    self.optionsAction(defaultAction?.payload)
+                    self.optionsAction(defaultAction?.title, defaultAction?.payload)
+                }
+            } else if (defaultAction?.type == .user_intent) {
+                if (self.userIntent != nil) {
+                    self.userIntent(defaultAction)
                 }
             }
         }
