@@ -10,7 +10,7 @@ import UIKit
 import KoreBotSDK
 
 class OptionsBubbleView: BubbleView {
-    static let buttonsLimit: Int = 3
+    static let buttonsLimit: Int = 6
     static let headerTextLimit: Int = 640
     
     var textLabel: KREAttributedLabel!

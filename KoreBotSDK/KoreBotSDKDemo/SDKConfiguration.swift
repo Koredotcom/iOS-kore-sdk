@@ -16,7 +16,7 @@ class SDKConfiguration: NSObject {
     }
     
     struct botConfig {
-        static let clientId = "cs-ee860078-c74d-56a1-bbf2-c6ad2ddb341e" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
+        static let clientId = "cs-1e501118-b145-5948-9edf-ee4783559f0e" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
         
         static let clientSecret = "Bm5ublh/xgKW01MUYz9wOGx03jmLCyA0qgF3iTo7gCI=" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
         
@@ -24,7 +24,7 @@ class SDKConfiguration: NSObject {
 
         static let chatBotName = "Philips onboarding bot" // Copy thiss value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
         
-        static let identity = "harinder.bommakanti@kore.com"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
+        static let identity = "ramachandra.marreddi@kore.com"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
         
         static let isAnonymous = true // This should be either true (in case of known-user) or false (in-case of anonymous user).
     }

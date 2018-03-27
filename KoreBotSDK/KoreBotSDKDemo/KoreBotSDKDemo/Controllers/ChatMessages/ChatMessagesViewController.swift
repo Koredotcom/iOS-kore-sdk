@@ -41,7 +41,7 @@ extension UIView {
         self.layer.insertSublayer(gradient, at: 0)
     }
 }
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate {
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate,UIGestureRecognizerDelegate {
     func optionsButtonTapAction(text: String) {
         
     }
@@ -134,8 +134,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         backgroundTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(update), userInfo: nil, repeats: true)
-        let color1 = hexStringToUIColor(hex: "#ff6e7f")
-        let color2 = hexStringToUIColor(hex: "##bfe9ff")
+//        let color1 = hexStringToUIColor(hex: "#ff6e7f")
+//        let color2 = hexStringToUIColor(hex: "##bfe9ff")
+        let color1 = hexStringToUIColor(hex: "#ffeeee")
+        let color2 = hexStringToUIColor(hex: "#ddefbb")
         colorState = true
         gradient = CAGradientLayer()
         gradient.frame = view.bounds
@@ -165,8 +167,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func animateLayer() {
-        let color1 = hexStringToUIColor(hex: "#ff6e7f")
-        let color2 = hexStringToUIColor(hex: "##bfe9ff")
+//        let color1 = hexStringToUIColor(hex: "#ff6e7f")
+//        let color2 = hexStringToUIColor(hex: "##bfe9ff")
+//        let color3 = hexStringToUIColor(hex: "#dbd4b4")
+//        let color4 = hexStringToUIColor(hex: "#7aa1d2")
+        
+        let color1 = hexStringToUIColor(hex: "#ffeeee")
+        let color2 = hexStringToUIColor(hex: "#ddefbb")
         let color3 = hexStringToUIColor(hex: "#dbd4b4")
         let color4 = hexStringToUIColor(hex: "#7aa1d2")
         var fromColors = gradient.colors
@@ -186,7 +193,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         animation.toValue = toColors
         animation.duration = 10.00
         animation.isRemovedOnCompletion = true
-        animation.fillMode = kCAFillModeForwards
+        animation.fillMode = kCAFillModeBoth
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
         animation.delegate = self as? CAAnimationDelegate
         gradient.add(animation, forKey: "animateGradient")
@@ -277,7 +284,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.botMessagesView.layer.shadowColor = UIColor.black.cgColor
         self.botMessagesView.layer.masksToBounds = false
         self.threadContainerView.addSubview(self.botMessagesView!)
-        
+       // self.tapToDismissGestureRecognizer.delegate = self
         self.threadContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[botMessagesView]|", options:[], metrics:nil, views:["botMessagesView" : self.botMessagesView!]))
         self.threadContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[botMessagesView]|", options:[], metrics:nil, views:["botMessagesView" : self.botMessagesView!]))
     }
@@ -652,6 +659,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         })
     }
     
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view is UILabel {
+            return false
+        }
+        return true
+    }
+    
     @objc func keyboardWillHide(_ notification: Notification) {
         let keyboardUserInfo: NSDictionary = NSDictionary(dictionary: (notification as NSNotification).userInfo!)
         let durationValue = keyboardUserInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
@@ -669,6 +683,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     @objc func keyboardDidShow(_ notification: Notification) {
         if (self.tapToDismissGestureRecognizer == nil) {
             self.tapToDismissGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(ChatMessagesViewController.dismissKeyboard(_:)))
+            self.tapToDismissGestureRecognizer.delegate = self
             self.botMessagesView.addGestureRecognizer(tapToDismissGestureRecognizer)
         }
     }
@@ -676,13 +691,16 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     @objc func keyboardDidHide(_ notification: Notification) {
         if (self.tapToDismissGestureRecognizer != nil) {
             self.botMessagesView.removeGestureRecognizer(tapToDismissGestureRecognizer)
+            self.tapToDismissGestureRecognizer.delegate = nil
             self.tapToDismissGestureRecognizer = nil
         }
     }
     
     @objc func dismissKeyboard(_ gesture: UITapGestureRecognizer) {
-        if (self.composeView.isFirstResponder) {
-            _ = self.composeView.resignFirstResponder()
+        if !(gesture.view is UIButton) {
+            if (self.composeView.isFirstResponder) {
+                _ = self.composeView.resignFirstResponder()
+            }
         }
     }
     
