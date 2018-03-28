@@ -83,6 +83,7 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     
     public var optionsAction: ((_ title: String?, _ payload: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
+    public var userIntent: ((_ object: Any?) -> Void)!
     
     public override init(frame: CGRect) {
         super.init(frame: frame)

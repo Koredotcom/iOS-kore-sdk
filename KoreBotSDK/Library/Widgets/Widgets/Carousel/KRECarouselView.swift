@@ -101,7 +101,11 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
                 self?.linkAction(text)
             }
         }
-        
+        cell.cardView.userIntent = { [weak self] (object) in
+            if (self?.userIntent != nil) {
+                self?.userIntent(object)
+            }
+        }
         return cell
     }
     

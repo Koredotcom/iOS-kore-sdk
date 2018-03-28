@@ -9,7 +9,7 @@
 import UIKit
 
 public class KAOptionsView: KREOptionsView {
-    public var userIntentAction: ((_ text: String?) -> Void)!
+    public var userIntent:((_ action: Any?) -> Void)!
 
     fileprivate let optionCellIdentifier = "KAOptionCellIdentifier"
     fileprivate let listCellIdentifier = "KAListTableViewCellIdentifier"
@@ -66,8 +66,8 @@ public class KAOptionsView: KREOptionsView {
                     self.optionsButtonAction(defaultAction?.title, defaultAction?.payload)
                 }
             } else if (defaultAction?.type == .user_intent) {
-                if (self.userIntentAction != nil) {
-                    self.userIntentAction(defaultAction?.payload)
+                if (self.userIntent != nil) {
+                    self.userIntent(defaultAction)
                 }
             }
         }
@@ -96,7 +96,6 @@ public class KACardView: KRECardView {
     var hashTagsLabel: UILabel!
     var informationLabel: UILabel!
     var statusLabel: UILabel!
-    public var userIntentAction: ((_ text: String?) -> Void)!
 
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -155,9 +154,9 @@ public class KACardView: KRECardView {
         
         if (self.optionsView is KAOptionsView) {
             let ov = self.optionsView as! KAOptionsView
-            ov.userIntentAction = {[weak self] (text) in
-                if (self?.userIntentAction != nil) {
-                    self?.userIntentAction(text)
+            ov.userIntent = { [weak self] (object) in
+                if (self?.userIntent != nil) {
+                    self?.userIntent(object)
                 }
             }
         }
@@ -360,8 +359,6 @@ public class KACardCollectionViewCell: UICollectionViewCell {
 }
 
 public class KACarouselView: KRECarouselView {
-    public var userIntentAction: ((_ text: String?) -> Void)!
-
     public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: KACardCollectionViewCell.cellReuseIdentifier, for: indexPath) as! KACardCollectionViewCell
         let cardInfo = cards[indexPath.row]
@@ -390,10 +387,10 @@ public class KACarouselView: KRECarouselView {
             }
         }
         
-        cell.cardView.userIntentAction = { [weak self] (text) in
+        cell.cardView.userIntent = { [weak self] (text) in
             let cardInfo = self!.cards[indexPath.row]
-            if (self?.userIntentAction != nil) {
-                self?.userIntentAction(cardInfo.resourceId)
+            if (self?.userIntent != nil) {
+                self?.userIntent(cardInfo.resourceId)
             }
         }
         
