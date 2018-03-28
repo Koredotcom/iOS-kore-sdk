@@ -256,7 +256,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         label.transform = CGAffineTransform(scaleX: 1, y: -1)
         label.text = dateString
         label.textAlignment = .center
-        label.textColor = UIColor.white.withAlphaComponent(0.8)
+        label.textColor = UIColor.black.withAlphaComponent(0.8)
         label.font = UIFont(name: "HelveticaNeue", size: 13)
         return label
     }
