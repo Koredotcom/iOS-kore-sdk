@@ -112,6 +112,7 @@ class AppLaunchViewController: UIViewController {
                 })
                 }
             }, failure: { (error) in
+                print(error)
                 activityIndicatorView.stopAnimating()
                 self.chatButton.isUserInteractionEnabled = true
             })

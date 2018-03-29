@@ -293,7 +293,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
     }
     
-    func getComponentType(_ templateType: String) -> ComponentType {
+    func getComponentType(_ templateType: String,_ tabledesign:String) -> ComponentType {
         if (templateType == "quick_replies") {
             return .quickReply
         } else if (templateType == "button") {
@@ -304,8 +304,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             return .carousel
         }else if (templateType == "piechart" || templateType == "linechart" || templateType == "barchart") {
             return .chart
-        }else if (templateType == "table") {
+        }else if (templateType == "table"  && tabledesign == "regular") {
             return .table
+        }
+        else if (templateType == "table"  && tabledesign == "responsive") {
+            return .responsiveTable
+        }
+        else if (templateType == "mini_table") {
+            return .minitable
         }
         return .text
     }
@@ -365,7 +371,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
                     let templateType: String = dictionary["template_type"] as! String
-                    let componentType = self.getComponentType(templateType)
+                    var tabledesign: String
+                    
+                    tabledesign  = (dictionary["table_design"] != nil ? dictionary["table_design"] as? String : "")!
+                    let componentType = self.getComponentType(templateType,tabledesign)
                     
                     if componentType != .quickReply {
                         self.showTypingStatusForBotsAction()
@@ -374,7 +383,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
                     ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
                     
-                    if tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table) {
+                    if tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable) {
                         textMessage = Message()
                         textMessage?.messageType = .reply
                         textMessage?.sentDate = Date()
@@ -775,7 +784,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     // MARK: show tying status view
     func showTypingStatusForBotsAction() {
-        let botId:String = "u-40d2bdc2-822a-51a2-bdcd-95bdf48331c9";
+        let botId:String = "u-40d2bdc2-822a-51a2-bdcd-95bdf4po8331c9";
         let info:NSMutableDictionary = NSMutableDictionary.init()
         info.setValue(botId, forKey: "botId");
         info.setValue("kora", forKey: "imageName");
@@ -786,7 +795,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: show TableTemplateView
     @objc func showTableTemplateView(notification:Notification) {
         let dataString: String = notification.object as! String
+        let data: TableData = TableData()
+        
         let tableTemplateViewController = TableTemplateViewController(dataString: dataString)
-        self.navigationController?.present(tableTemplateViewController, animated: true, completion: nil)
+        if(data.tableDesign == "responsive"){
+            
+        }else{
+            self.navigationController?.present(tableTemplateViewController, animated: true, completion: nil)
+
+        }
     }
 }

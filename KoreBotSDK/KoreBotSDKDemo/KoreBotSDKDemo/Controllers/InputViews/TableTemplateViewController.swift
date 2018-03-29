@@ -8,14 +8,23 @@
 
 import UIKit
 
-class TableTemplateViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class TableTemplateViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     
+    var selectedRowIndex : Int = -1
+    var selectedIndex : IndexPath!
+    var selected : Bool = false
+    
+    let cellReuseIdentifier = "CellIdentifier"
+    let cellReuseIdentifier1 = "SubTableViewCell"
+    var rows: Array<Array<String>> = Array<Array<String>>()
+    
     var dataString: String!
-    var data: Dictionary<String, Any> = Dictionary<String, Any>()
+    var data: TableData = TableData()
     let customCellIdentifier = "CustomCellIdentifier"
     
     // MARK: init
@@ -33,17 +42,32 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
         
         let customCollectionViewLayout = self.collectionView.collectionViewLayout as! CustomCollectionViewLayout
         customCollectionViewLayout.shouldPinFirstRow = true
-        
-        self.collectionView.dataSource = self
-        self.collectionView.delegate = self
-        self.collectionView.showsHorizontalScrollIndicator = false
-        self.collectionView.alwaysBounceHorizontal = false
-        
-        self.collectionView.register(UINib(nibName: "CustomCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: customCellIdentifier)
-        
         let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: dataString!) as! NSDictionary
-        let data: Dictionary<String, Any> = jsonObject["data"] != nil ? jsonObject["data"] as! Dictionary<String, Any> : [:]
-        self.data = data
+        let data: Dictionary<String, Any> = jsonObject as! Dictionary<String, Any>
+        self.data = TableData(data)
+        
+        if(self.data.tableDesign == "regular"){
+            self.collectionView.dataSource = self
+            self.collectionView.delegate = self
+            self.collectionView.showsHorizontalScrollIndicator = false
+            self.collectionView.alwaysBounceHorizontal = false
+            
+            self.collectionView.register(UINib(nibName: "CustomCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: customCellIdentifier)
+            
+            self.collectionView.register(UINib(nibName: "CustomCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: customCellIdentifier)
+        }else{
+            self.tableView.dataSource = self
+            self.tableView.delegate = self
+            self.tableView.showsHorizontalScrollIndicator = false
+            self.tableView.alwaysBounceHorizontal = false
+            tableView.register(ResponsiveCustonCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+            tableView.register(SubTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier1)
+            let row = 0
+            let section = 0
+            selectedIndex = IndexPath(row: row, section: section)
+            tableView.tableFooterView = UIView(frame: .zero)
+
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -58,18 +82,18 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
     
     //MARK: collection view delegate methods
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        let rows = self.data["rows"]  as! Array<Array<String>>
+        let rows = self.data.rows
         return rows.count + 2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            let headers = self.data["headers"]  as! Array<Dictionary<String, Any>>
+            let headers = self.data.headers
             return headers.count
         } else if section == 1 {
             return 1
         } else {
-            let rows = self.data["rows"]  as! Array<Array<String>>
+             let rows = self.data.rows
             let row = rows[section - 2]
             return row.count
         }
@@ -81,25 +105,24 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
         cell.backgroundColor = .white
         cell.textLabel.textColor = Common.UIColorRGB(0x26344A)
         
-        let headers = self.data["headers"]  as! Array<Dictionary<String, Any>>
+         let headers = self.data.headers
         let header = headers[indexPath.row]
-        let alignment = header["alignment"] != nil ? header["alignment"] as! String : ""
-        if alignment == "right" {
-            cell.textLabel.textAlignment = .right
-        }else if alignment == "center" {
-            cell.textLabel.textAlignment = .center
-        }else {
-            cell.textLabel.textAlignment = .left
-        }
+//        let alignment = header.alignment != nil ? header.alignment as! String : ""
+//        if alignment == "right" {
+//            cell.textLabel.textAlignment = .right
+//        }else if alignment == "center" {
+//            cell.textLabel.textAlignment = .center
+//        }else {
+//            cell.textLabel.textAlignment = .left
+//        }
         if indexPath.section == 0 {
-            let title = header["title"] != nil ? header["title"] as! String : ""
-            cell.textLabel.text = title
+            cell.textLabel.text = header.title
             cell.textLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 16.0)!
         } else if indexPath.section == 1 {
             cell.textLabel.text = ""
             cell.backgroundColor = Common.UIColorRGB(0xEDEFF2)
         } else {
-            let rows = self.data["rows"]  as! Array<Array<String>>
+            let rows = self.data.rows
             let row = rows[indexPath.section - 2]
             let text = row[indexPath.row]
             if text == "---" {
@@ -115,20 +138,20 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let headers = self.data["headers"]  as! Array<Dictionary<String, Any>>
+        let headers = self.data.headers
         let header = headers[indexPath.row]
-        let percentage = header["percentage"] != nil ? header["percentage"] as! NSNumber : 0
+        let percentage = header.percentage
         
         let viewWidth = UIScreen.main.bounds.size.width - 40
         let maxWidth: CGFloat = viewWidth
-        let itemWidth = floor((maxWidth*CGFloat(percentage.doubleValue)/100))
+        let itemWidth = floor((maxWidth*CGFloat(percentage)/100))
         
         if indexPath.section == 0 {
             return CGSize(width: itemWidth, height: 44)
         } else if indexPath.section == 1 {
             return CGSize(width: -1, height: 2)
         } else {
-            let rows = self.data["rows"]  as! Array<Array<String>>
+             let rows = self.data.rows
             let row = rows[indexPath.section - 2]
             let text = row[indexPath.row]
             if text == "---" {
@@ -148,5 +171,75 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0.0
+    }
+    
+    //MARK: table view delegate methods
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if(selectedIndex as IndexPath == indexPath && selected == true) {
+            return CGFloat((data.headers.count)*44)
+        }
+        return UITableViewAutomaticDimension
+    }
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return 1
+    }
+    
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        
+        return data.rows.count
+    }
+    
+    
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        rows = data.rows
+        
+        if(selectedIndex as IndexPath == indexPath && selected == true && indexPath.row != rows.count-1) {
+            let subtableViewCell = SubTableViewCell(style: .default, reuseIdentifier: cellReuseIdentifier1)
+            subtableViewCell.backgroundColor = UIColor.white
+            subtableViewCell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+            subtableViewCell.rows = data.rows
+            subtableViewCell.headers = data.headers
+            subtableViewCell.section = indexPath.section
+            
+            return subtableViewCell
+        }
+        else{
+            let cell : ResponsiveCustonCell = self.tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! ResponsiveCustonCell
+            print(rows[indexPath.section][indexPath.row])
+            let row = rows[indexPath.section]
+            if(row.count > indexPath.row*2){
+                cell.headerLabel.text = row[indexPath.row*2]
+            }
+            if(row.count > indexPath.row*2+1){
+                cell.secondLbl.text = row[indexPath.row*2+1]
+            }
+            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+            
+            
+            return cell
+            
+        }
+    }
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if selected == false {
+            selected = true
+        }
+        else{
+            selected = false
+        }
+        
+        if indexPath == selectedIndex {
+            selectedIndex = NSIndexPath(row: -1, section: -1) as IndexPath
+            selected = false
+        } else {
+            selectedIndex = indexPath
+            selected = true
+        }
+        tableView.reloadData()
     }
 }

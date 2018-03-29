@@ -21,7 +21,7 @@ typealias SpeechRecognitionCompletionHandler = (StreamingRecognizeResponse?, NSE
 class SpeechRecognitionService {
     var sampleRate: Int = 16000
     var host = "speech.googleapis.com"
-    var api_key = "<placeholder>"
+    var api_key = "AIzaSyCagwsHmUxecD-ZR6OJoL_YAvRBFIXFArQ"//"<placeholder>"
     
     private var streaming = false
     private var client : Speech!

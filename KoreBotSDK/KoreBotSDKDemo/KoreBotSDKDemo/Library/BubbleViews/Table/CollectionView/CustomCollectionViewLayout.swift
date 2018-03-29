@@ -10,7 +10,6 @@ import UIKit
 
 class CustomCollectionViewLayout: UICollectionViewLayout {
     var shouldPinFirstRow = false
-    
     var itemAttributes = [[UICollectionViewLayoutAttributes]]()
     var contentSize: CGSize = .zero
 
@@ -18,11 +17,10 @@ class CustomCollectionViewLayout: UICollectionViewLayout {
         guard let collectionView = collectionView else {
             return
         }
-
         if collectionView.numberOfSections == 0 {
             return
         }
-        
+    
         if itemAttributes.count != collectionView.numberOfSections {
             generateItemAttributes(collectionView: collectionView)
             return

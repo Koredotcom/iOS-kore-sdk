@@ -81,6 +81,12 @@ class BubbleView: UIView {
             case .table:
                 bubbleView = TableBubbleView()
                 break
+        case .minitable:
+            bubbleView = MiniTableBubbleView()
+            break
+        case .responsiveTable:
+            bubbleView = ResponsiveTableBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         

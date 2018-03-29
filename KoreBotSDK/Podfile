@@ -12,6 +12,8 @@ target 'KoreBotSDKDemo' do
     platform :ios, '8.0'
     pod 'DTCoreText','1.6.15'
     pod 'Charts'
+    pod 'SquareMosaicLayout', '0.6.2'
+    
 
     use_frameworks!
     import_pods

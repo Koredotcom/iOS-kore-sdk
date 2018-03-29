@@ -8,15 +8,63 @@
 
 import UIKit
 
+struct Header {
+    var title: String = ""
+    var alignment: NSTextAlignment = .left
+    var percentage: Int = 0
+}
+
+class TableData {
+    var headers: Array<Header> = Array<Header>()
+    var rows: Array<Array<String>> = Array<Array<String>>()
+    var elements:Array<Dictionary<String, Any>> = Array<Dictionary<String, Any>>()
+    var tableDesign:String!
+    
+    convenience init(_ data: Dictionary<String, Any>){
+        self.init()
+        guard let columns = data["columns"] as? Array<Array<String>> else { return }
+        guard let locelements = data["elements"] as? Array<Dictionary<String, Any>> else { return }
+        elements = locelements
+        tableDesign = data["table_design"] != nil ? data["table_design"] as? String : "responsive"
+        var percentage: Int = Int(floor(Double(100/columns.count)))
+        for column in columns {
+            let title = column[0]
+            var alignment: NSTextAlignment = .left
+            if column.count > 1, let align = column[1] as String? {
+                if align == "right" {
+                    alignment = .right
+                } else if align == "center" {
+                    alignment = .center
+                }
+            }
+            if column.count > 2, let perc = column[2] as String? {
+                percentage = Int(perc)!
+            }
+            headers.append(Header(title: title.uppercased(), alignment: alignment, percentage: percentage))
+        }
+        for element in elements {
+            let values = element["Values"] as! Array<Any>
+            var row = Array<String>()
+            for value in values {
+                let val = value as? String ?? ""
+                row.append(val)
+            }
+            rows.append(row)
+        }
+        print(rows)
+        print(headers)
+    }
+}
 class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var collectionView: UICollectionView!
     var showMoreButton: UIButton!
     
     let customCellIdentifier = "CustomCellIdentifier"
-    let rowsDataLimit = 6
-    
-    var headers: Array<Dictionary<String, Any>> = Array<Dictionary<String, Any>>()
+    var data: TableData = TableData()
+    let rowsDataLimit = 3
     var rows: Array<Array<String>> = Array<Array<String>>()
+
+    
     var showMore = false
     
     override func applyBubbleMask() {
@@ -67,17 +115,19 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
     
     //MARK: collection view delegate methods
     func numberOfSections(in collectionView: UICollectionView) -> Int {
+        let rows = self.rows//self.data.rows
         return rows.count + 2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
+            let headers = self.data.headers
             return headers.count
         } else if section == 1 {
             return 1
         } else {
-            let sec = section - 2
-            let row = rows[sec]
+//            let rows = self.rows//self.data.rows
+            let row = rows[section - 2]
             return row.count
         }
     }
@@ -87,23 +137,17 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! CustomCollectionViewCell
         cell.backgroundColor = .clear
         
+        let headers = self.data.headers
         let header = headers[indexPath.row]
-        let alignment = header["alignment"] != nil ? header["alignment"] as! String : ""
-        if alignment == "right" {
-            cell.textLabel.textAlignment = .right
-        }else if alignment == "center" {
-            cell.textLabel.textAlignment = .center
-        }else {
-            cell.textLabel.textAlignment = .left
-        }
         if indexPath.section == 0 {
-            let title = header["title"] != nil ? header["title"] as! String : ""
-            cell.textLabel.text = title
+            cell.textLabel.text = header.title
             cell.textLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)!
+        } else if indexPath.section == 1 {
         } else if indexPath.section == 1 {
             cell.textLabel.text = ""
             cell.backgroundColor = .white
         } else {
+            let rows = self.data.rows
             let sec = indexPath.section - 2
             let row = rows[sec]
             let text = row[indexPath.row]
@@ -120,24 +164,25 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let headers = self.data.headers
         let header = headers[indexPath.row]
-        let percentage = header["percentage"] != nil ? header["percentage"] as! NSNumber : 0
+        let percentage = header.percentage
         let count = CGFloat(headers.count)
         
         let viewWidth = UIScreen.main.bounds.size.width - 40
         let maxWidth: CGFloat = viewWidth - 5*(count-1)
-        let itemWidth = floor((maxWidth*CGFloat(percentage.doubleValue)/100))
+        let itemWidth = floor((maxWidth*CGFloat(percentage)/100))
         
         if indexPath.section == 0 {
             return CGSize(width: itemWidth, height: 36)
         } else if indexPath.section == 1 {
             return CGSize(width: -1, height: 1)
         } else {
-            let sec = indexPath.section - 2
-            let row = rows[sec]
+            let rows = self.data.rows
+            let row = rows[indexPath.section - 2]
             let text = row[indexPath.row]
             if text == "---" {
-                return CGSize(width: -1, height: 1)
+                return CGSize(width: viewWidth, height: 1)
             }
             return CGSize(width: itemWidth, height: 36)
         }
@@ -161,15 +206,13 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
-                let data: Dictionary<String, Any> = jsonObject["data"] != nil ? jsonObject["data"] as! Dictionary<String, Any> : [:]
-                
-                self.headers = data["headers"] as! Array<Dictionary<String, Any>>
-                let rowsData = data["rows"] as! Array<Array<String>>
-                
+                let data: Dictionary<String, Any> = jsonObject as! Dictionary<String, Any>
+                self.data = TableData(data)
+                let rowsData = self.data.rows
                 self.showMore = false
                 var rowsDataCount = 0
                 var index = 0
-                for row in rowsData {
+                for row in self.data.rows {
                     index += 1
                     let text = row[0]
                     if text != "---" {
@@ -181,8 +224,8 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
                     }
                 }
                 self.rows = Array(rowsData.dropLast(rowsData.count - index))
-                if self.showMore && self.rows[self.rows.count-1][0] != "---" {
-                    self.rows.append(["---"])
+                if self.showMore && self.data.rows[self.data.rows.count-1][0] != "---" {
+                    self.data.rows.append(["---"])
                 }
                 self.collectionView.collectionViewLayout.invalidateLayout()
                 self.collectionView.reloadData()
@@ -192,6 +235,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
     }
     
     override var intrinsicContentSize : CGSize {
+        let rows = self.data.rows
         var height: CGFloat = 38.0
         for i in 0..<rows.count {
             let row = rows[i]
@@ -219,3 +263,4 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         }
     }
 }
+

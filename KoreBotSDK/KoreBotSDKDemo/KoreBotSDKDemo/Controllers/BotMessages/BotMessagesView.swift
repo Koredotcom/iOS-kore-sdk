@@ -70,6 +70,10 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(ErrorBubbleCell.self, forCellReuseIdentifier:"ErrorBubbleCell")
         self.tableView.register(PiechartBubbleCell.self, forCellReuseIdentifier:"PiechartBubbleCell")
         self.tableView.register(TableBubbleCell.self, forCellReuseIdentifier:"TableBubbleCell")
+        self.tableView.register(MiniTableBubbleCell.self, forCellReuseIdentifier:"MiniTableBubbleCell")
+        self.tableView.register(ResponsiveTableBubbleCell.self, forCellReuseIdentifier:"ResponsiveTableBubbleCell")
+
+
     }
     
     override func layoutSubviews() {
@@ -140,10 +144,17 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .chart:
                 cellIdentifier = "PiechartBubbleCell"
                 break
+            case .minitable:
+                cellIdentifier = "MiniTableBubbleCell"
+                break
             case .table:
                 cellIdentifier = "TableBubbleCell"
                 break
+            case .responsiveTable:
+                cellIdentifier = "ResponsiveTableBubbleCell"
+                break
             }
+            
         }
         
         let cell: MessageBubbleCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! MessageBubbleCell
@@ -210,6 +221,11 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             break
         case .table:
             
+            break
+        case .minitable:
+            
+            break
+        case .responsiveTable:
             break
         }
         let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
