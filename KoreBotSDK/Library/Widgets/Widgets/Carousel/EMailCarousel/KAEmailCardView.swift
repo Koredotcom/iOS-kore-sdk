@@ -52,20 +52,29 @@ extension KAEmailCardInfo: Decodable {
         desc = try values.decode(String.self, forKey: .desc)
         date = try values.decode(String.self, forKey: .date)
         attachments = try values.decode([String].self, forKey: .attachments)
-        buttons = try values.decode([KAButtonInfo].self, forKey: .buttons)
+        do {
+            buttons = try values.decode([KAButtonInfo].self, forKey: .buttons)
+        } catch {
+            print(error.localizedDescription)
+        }
         source = try values.decode(String.self, forKey: .source)
     }
 }
 
 // MARK: - Button object
 public struct KAButtonInfo {
+    public var action: String?
     public var payload: String?
     public var title: String?
     public var type: String?
     public var dweb: String?
     public var mob: String?
     enum CodingKeys: String, CodingKey {
-        case payload, title, type, redirectUrl
+        case action, payload, title, type, customData
+    }
+    
+    enum CustomData: String, CodingKey {
+        case redirectUrl
     }
     
     enum RedirectUrl: String, CodingKey {
@@ -76,11 +85,13 @@ public struct KAButtonInfo {
 extension KAButtonInfo: Encodable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(action, forKey: .action)
         try container.encode(payload, forKey: .payload)
         try container.encode(title, forKey: .title)
         try container.encode(type, forKey: .type)
         
-        var redirectUrl = container.nestedContainer(keyedBy: RedirectUrl.self, forKey: .redirectUrl)
+        var customData = container.nestedContainer(keyedBy: CustomData.self, forKey: .customData)
+        var redirectUrl = customData.nestedContainer(keyedBy: RedirectUrl.self, forKey: .redirectUrl)
         try redirectUrl.encode(dweb, forKey: .dweb)
         try redirectUrl.encode(mob, forKey: .mob)
     }
@@ -89,13 +100,34 @@ extension KAButtonInfo: Encodable {
 extension KAButtonInfo: Decodable {
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        payload = try values.decode(String.self, forKey: .payload)
-        title = try values.decode(String.self, forKey: .title)
-        type = try values.decode(String.self, forKey: .type)
-        
-        let redirectUrl = try values.nestedContainer(keyedBy: RedirectUrl.self, forKey: .redirectUrl)
-        dweb = try redirectUrl.decode(String.self, forKey: .dweb)
-        mob = try redirectUrl.decode(String.self, forKey: .mob)
+        do {
+            action = try values.decode(String.self, forKey: .action)
+        } catch {
+            print(error.localizedDescription)
+        }
+        do {
+            payload = try values.decode(String.self, forKey: .payload)
+        } catch {
+            print(error.localizedDescription)
+        }
+        do {
+            title = try values.decode(String.self, forKey: .title)
+        } catch {
+            print(error.localizedDescription)
+        }
+        do {
+            type = try values.decode(String.self, forKey: .type)
+        } catch {
+            print(error.localizedDescription)
+        }
+        do {
+            let customData = try values.nestedContainer(keyedBy: CustomData.self, forKey: .customData)
+            let redirectUrl = try customData.nestedContainer(keyedBy: RedirectUrl.self, forKey: .redirectUrl)
+            dweb = try redirectUrl.decode(String.self, forKey: .dweb)
+            mob = try redirectUrl.decode(String.self, forKey: .mob)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 }
 
