@@ -51,7 +51,7 @@ class ResponsiveCustonCell: UITableViewCell {
         contentView.addSubview(secondLbl)
         
         let views: [String: UIView] = ["headerLabel": headerLabel, "secondLbl":secondLbl]
-         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[headerLabel]-[secondLbl]-20-|", options:[], metrics:nil, views:views))
+         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[headerLabel]-[secondLbl]-40-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[headerLabel]-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[secondLbl]|", options:[], metrics:nil, views:views))
     }

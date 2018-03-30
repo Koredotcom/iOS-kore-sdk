@@ -56,10 +56,9 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
         self.tableView.bounces = false
         self.tableView.separatorStyle = .singleLineEtched
         self.tableView.tableFooterView = UIView(frame: .zero)
-
         
-        let row = -1
-        let section = -1
+        let row = 0
+        let section = 0
         selectedIndex = IndexPath(row: row, section: section)
         
         self.showMoreButton = UIButton.init(frame: CGRect.zero)
@@ -176,10 +175,6 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
                         break
                     }
                 }
-                // self.rows = Array(rowsData.dropLast(rowsData.count - index))
-//                if self.showMore && self.data.rows[self.data.rows.count-1][0] != "---" {
-//                    self.data.rows.append(["---"])
-//                }
                 self.showMoreButton.isHidden = !self.showMore
                 self.tableView.reloadData()
                 
@@ -196,7 +191,12 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
             if text == "---" {
                 height += 1.0
             } else {
-                height += 40
+                if(selected == false){
+                    height += 40
+                }
+                else{
+                    height += CGFloat((data.headers.count)*44)
+                }
             }
         }
         if self.showMore {

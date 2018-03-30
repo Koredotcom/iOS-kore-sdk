@@ -76,8 +76,8 @@ class ExpandedTableViewCell: UITableViewCell {
         let views: [String: UIView] = ["titleLbl": titleLbl, "valueLbl":valueLbl,"titleLbl1": titleLbl1, "valueLbl1":valueLbl1]
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[titleLbl]", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[valueLbl]", options:[], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[titleLbl1]-15-|", options:[], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[valueLbl1]-15-|", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[titleLbl1]-40-|", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[valueLbl1]-40-|", options:[], metrics:nil, views:views))
        
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[titleLbl]-[valueLbl]-15-|", options:[], metrics:nil, views:views))
          self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[titleLbl1]-[valueLbl1]-15-|", options:[], metrics:nil, views:views))
