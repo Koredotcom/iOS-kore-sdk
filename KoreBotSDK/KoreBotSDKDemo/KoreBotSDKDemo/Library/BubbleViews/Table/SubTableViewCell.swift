@@ -113,6 +113,11 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
     }
     
     
+    override var intrinsicContentSize : CGSize {
+        let height: Double = Double(44 * count);
+        return CGSize(width: 0.0, height: height)
+    }
+    
     
     // MARK:- deinit
     deinit {

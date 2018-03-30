@@ -514,6 +514,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.stopSpeaking), name: NSNotification.Name(rawValue: stopSpeakingNotification), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.showTableTemplateView), name: NSNotification.Name(rawValue: showTableTemplateNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.reloadTable(notification:)), name: NSNotification.Name(rawValue: reloadTableNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -526,6 +527,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: stopSpeakingNotification), object: nil)
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showTableTemplateNotification), object: nil)
+          NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: reloadTableNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -795,14 +797,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: show TableTemplateView
     @objc func showTableTemplateView(notification:Notification) {
         let dataString: String = notification.object as! String
-        let data: TableData = TableData()
-        
         let tableTemplateViewController = TableTemplateViewController(dataString: dataString)
-        if(data.tableDesign == "responsive"){
-            
-        }else{
             self.navigationController?.present(tableTemplateViewController, animated: true, completion: nil)
-
-        }
+    }
+    @objc func reloadTable(notification:Notification){
+        botMessagesView.tableView.reloadData()
     }
 }

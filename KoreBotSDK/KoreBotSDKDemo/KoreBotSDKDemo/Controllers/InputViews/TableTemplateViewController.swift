@@ -225,6 +225,8 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
                     cell.secondLbl.text = row[indexPath.row*2+1]
                 }
                 cell.accessoryView = UIImageView(image: UIImage(named: "arrowUnselected"))
+                cell.separatorInset = UIEdgeInsetsMake(0, 20, 0, 22)
+
                 return cell
                 
             }
@@ -239,6 +241,8 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
                 cell.secondLbl.text = row[indexPath.row*2+1]
             }
             cell.accessoryView = UIImageView(image: UIImage(named: "arrowUnselected"))
+            cell.separatorInset = UIEdgeInsetsMake(0, 20, 0, 22)
+
             return cell
             
         }

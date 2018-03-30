@@ -55,11 +55,10 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
         self.tableView.showsHorizontalScrollIndicator = false
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.bounces = false
-        self.tableView.separatorStyle = .singleLineEtched
         self.tableView.tableFooterView = UIView(frame: .zero)
         
-        let row = 0
-        let section = 0
+        let row = -1
+        let section = -1
         selectedIndex = IndexPath(row: row, section: section)
         
         self.showMoreButton = UIButton.init(frame: CGRect.zero)
@@ -137,6 +136,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
                     cell.secondLbl.text = row[indexPath.row*2+1]
                 }
                 cell.accessoryView = UIImageView(image: UIImage(named: "arrowUnselected"))
+                cell.separatorInset = UIEdgeInsetsMake(0, 20, 0, 22)
                 return cell
                 
             }
@@ -151,6 +151,8 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
                 cell.secondLbl.text = row[indexPath.row*2+1]
             }
             cell.accessoryView = UIImageView(image: UIImage(named: "arrowUnselected"))
+            cell.separatorInset = UIEdgeInsetsMake(0, 20, 0, 22)
+
             
             return cell
             
@@ -180,6 +182,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
             }
             selected = true
         }
+        reloadTable()
         tableView.reloadData()
     }
     
@@ -193,13 +196,8 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
                 self.data = TableData(data)
                 self.showMore = false
                 var rowsDataCount = 0
-                var index = 0
                 for row in self.data.rows {
-                    index += 1
-                    let text = row[0]
-                    if text != "---" {
-                        rowsDataCount += 1
-                    }
+                    rowsDataCount += 1
                     if rowsDataCount == rowsDataLimit {
                         self.showMore = true
                         break
@@ -215,15 +213,19 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
     override var intrinsicContentSize : CGSize {
         let rows = self.data.rows
         var height: CGFloat = 44.0
-        for i in 0..<rows.count {
-            let row = rows[i]
-            let text = row[0]
-            if text == "---" {
-                height += 1.0
-            } else {
-                height += 40
-            }
-        }
+//        height = (CGFloat(rows.count * 44))
+        let noOfUnselectedRows = rows.count - indexPaths.count
+        height = (CGFloat(noOfUnselectedRows * 44)) + CGFloat(indexPaths.count * data.headers.count * 44)
+        
+//        for _ in 0..<rows.count {
+//            if(indexPaths.count>0){
+//                let expandedcellHeight: CGFloat = CGFloat((data.headers.count)*44)/2
+//                height += expandedcellHeight
+//            }else{
+//                height += 40
+//            }
+//        }
+        
         if self.showMore {
             height += 36.0
         }
@@ -237,6 +239,15 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 NotificationCenter.default.post(name: Notification.Name(showTableTemplateNotification), object: jsonString)
+            }
+        }
+    }
+    @objc fileprivate func reloadTable() {
+        if (components.count > 0) {
+            let component: KREComponent = components.firstObject as! KREComponent
+            if (component.componentDesc != nil) {
+                let jsonString = component.componentDesc
+                NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: jsonString)
             }
         }
     }

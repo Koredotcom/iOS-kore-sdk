@@ -13,6 +13,7 @@ import KoreBotSDK
 var startSpeakingNotification = "StartSpeakingNowNotificationName"
 var stopSpeakingNotification = "StopSpeakingNowNotificationName"
 var showTableTemplateNotification = "ShowTableTemplateNotificationName"
+var reloadTableNotification = "reloadTableNotification"
 var isSpeakingEnabled = false
 
 open class Common : NSObject {
