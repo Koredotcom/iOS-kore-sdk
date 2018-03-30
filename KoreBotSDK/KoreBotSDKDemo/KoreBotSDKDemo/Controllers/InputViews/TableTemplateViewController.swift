@@ -18,6 +18,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
     var selectedRowIndex : Int = -1
     var selectedIndex : IndexPath!
     var selected : Bool = false
+    var indexPaths : Array<IndexPath> = []
     
     let cellReuseIdentifier = "CellIdentifier"
     let cellReuseIdentifier1 = "SubTableViewCell"
@@ -175,8 +176,13 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
     
     //MARK: table view delegate methods
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if(selectedIndex as IndexPath == indexPath && selected == true) {
-            return CGFloat((data.headers.count)*44)
+        if indexPaths.count>0 {
+            if indexPaths.contains(indexPath){
+                return CGFloat((data.headers.count)*44)
+            }
+            else {
+                return UITableViewAutomaticDimension
+            }
         }
         return UITableViewAutomaticDimension
     }
@@ -197,17 +203,32 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
         
         rows = data.rows
         
-        if(selectedIndex as IndexPath == indexPath && selected == true && indexPath.row != rows.count-1) {
-            let subtableViewCell = SubTableViewCell(style: .default, reuseIdentifier: cellReuseIdentifier1)
-            subtableViewCell.backgroundColor = UIColor.white
-            subtableViewCell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
-            subtableViewCell.rows = data.rows
-            subtableViewCell.headers = data.headers
-            subtableViewCell.section = indexPath.section
-            
-            return subtableViewCell
-        }
-        else{
+        if indexPaths.count>0 {
+            if indexPaths.contains(indexPath){
+                let subtableViewCell = SubTableViewCell(style: .default, reuseIdentifier: cellReuseIdentifier1)
+                subtableViewCell.backgroundColor = UIColor.white
+                subtableViewCell.accessoryView = UIImageView(image: UIImage(named: "arrowSelected"))
+                subtableViewCell.rows = data.rows
+                subtableViewCell.headers = data.headers
+                subtableViewCell.section = indexPath.section
+                
+                return subtableViewCell
+            }
+            else{
+                let cell : ResponsiveCustonCell = self.tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! ResponsiveCustonCell
+                print(rows[indexPath.section][indexPath.row])
+                let row = rows[indexPath.section]
+                if(row.count > indexPath.row*2){
+                    cell.headerLabel.text = row[indexPath.row*2]
+                }
+                if(row.count > indexPath.row*2+1){
+                    cell.secondLbl.text = row[indexPath.row*2+1]
+                }
+                cell.accessoryView = UIImageView(image: UIImage(named: "arrowUnselected"))
+                return cell
+                
+            }
+        }else{
             let cell : ResponsiveCustonCell = self.tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! ResponsiveCustonCell
             print(rows[indexPath.section][indexPath.row])
             let row = rows[indexPath.section]
@@ -217,9 +238,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
             if(row.count > indexPath.row*2+1){
                 cell.secondLbl.text = row[indexPath.row*2+1]
             }
-            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
-            
-            
+            cell.accessoryView = UIImageView(image: UIImage(named: "arrowUnselected"))
             return cell
             
         }
@@ -238,6 +257,14 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
             selected = false
         } else {
             selectedIndex = indexPath
+            selectedIndex = indexPath
+            if !indexPaths.contains(selectedIndex!){
+                indexPaths += [selectedIndex!]
+            }
+            else {
+                let index = indexPaths.index(of: selectedIndex!)
+                indexPaths.remove(at: index!)
+            }
             selected = true
         }
         tableView.reloadData()
