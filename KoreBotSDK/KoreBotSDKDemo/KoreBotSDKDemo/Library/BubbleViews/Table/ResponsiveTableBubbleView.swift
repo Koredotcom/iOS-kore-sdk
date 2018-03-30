@@ -213,19 +213,8 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
     override var intrinsicContentSize : CGSize {
         let rows = self.data.rows
         var height: CGFloat = 44.0
-//        height = (CGFloat(rows.count * 44))
         let noOfUnselectedRows = rows.count - indexPaths.count
         height = (CGFloat(noOfUnselectedRows * 44)) + CGFloat(indexPaths.count * data.headers.count * 44)
-        
-//        for _ in 0..<rows.count {
-//            if(indexPaths.count>0){
-//                let expandedcellHeight: CGFloat = CGFloat((data.headers.count)*44)/2
-//                height += expandedcellHeight
-//            }else{
-//                height += 40
-//            }
-//        }
-        
         if self.showMore {
             height += 36.0
         }
@@ -243,13 +232,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
         }
     }
     @objc fileprivate func reloadTable() {
-        if (components.count > 0) {
-            let component: KREComponent = components.firstObject as! KREComponent
-            if (component.componentDesc != nil) {
-                let jsonString = component.componentDesc
-                NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: jsonString)
-            }
-        }
+        NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
     }
 }
 
