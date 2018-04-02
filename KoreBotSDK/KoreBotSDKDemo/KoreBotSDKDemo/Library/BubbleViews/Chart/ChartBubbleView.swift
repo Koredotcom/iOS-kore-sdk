@@ -321,7 +321,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             
             let values: Array<NSNumber> = dictionary["values"] != nil ? dictionary["values"] as! Array<NSNumber> : []
             var subDataValues: Array<ChartDataEntry> = Array<ChartDataEntry>()
-            for j in 0..<headers.count {
+            for j in 0..<values.count {
                 subDataValues.append(ChartDataEntry(x: Double(j), y: values[j].doubleValue))
             }
             dataValues.append(subDataValues)
@@ -345,7 +345,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         self.xAxisValues = headers
         self.lcView.data = lineChartData
         self.lcView.xAxis.labelCount = headers.count
-        self.lcView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
+        lcView.animate(xAxisDuration: 1.0, easingOption: ChartEasingOption.easeInElastic)
     }
     
     func setDataForBarChart(_ jsonObject: NSDictionary){
@@ -363,7 +363,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
 
             let values: Array<NSNumber> = dictionary["values"] != nil ? dictionary["values"] as! Array<NSNumber> : []
             var subDataValues: Array<BarChartDataEntry> = Array<BarChartDataEntry>()
-            for j in 0..<headers.count {
+            for j in 0..<values.count {
                 subDataValues.append(BarChartDataEntry(x: Double(j), y: values[j].doubleValue))
             }
             dataValues.append(subDataValues)
