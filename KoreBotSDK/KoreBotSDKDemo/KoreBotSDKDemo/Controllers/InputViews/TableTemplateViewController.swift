@@ -48,6 +48,8 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
         self.data = TableData(data)
         
         if(self.data.tableDesign == "regular"){
+            self.collectionView.isHidden = false
+            self.tableView.isHidden = true
             self.collectionView.dataSource = self
             self.collectionView.delegate = self
             self.collectionView.showsHorizontalScrollIndicator = false
@@ -57,6 +59,8 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
             
             self.collectionView.register(UINib(nibName: "CustomCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: customCellIdentifier)
         }else{
+            self.collectionView.isHidden = true
+            self.tableView.isHidden = false
             self.tableView.dataSource = self
             self.tableView.delegate = self
             self.tableView.showsHorizontalScrollIndicator = false

@@ -18,7 +18,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
     let cellReuseIdentifier = "CellIdentifier"
     let cellReuseIdentifier1 = "SubTableViewCell"
     var data: TableData = TableData()
-    let rowsDataLimit = 2
+    let rowsDataLimit = 3
     
     var selectedRowIndex : Int = -1
     var selectedIndex : IndexPath!
@@ -104,7 +104,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
     
     public func numberOfSections(in tableView: UITableView) -> Int {
         
-        return data.rows.count
+        return rowsDataLimit
     }
     
     
@@ -213,7 +213,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
     override var intrinsicContentSize : CGSize {
         let rows = self.data.rows
         var height: CGFloat = 44.0
-        let noOfUnselectedRows = rows.count - indexPaths.count
+        let noOfUnselectedRows = rowsDataLimit - indexPaths.count
         height = (CGFloat(noOfUnselectedRows * 44)) + CGFloat(indexPaths.count * data.headers.count * 44)
         if self.showMore {
             height += 36.0

@@ -237,7 +237,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
     override var intrinsicContentSize : CGSize {
         let rows = self.data.rows
         var height: CGFloat = 38.0
-        for i in 0..<rows.count {
+        for i in 0..<rowsDataLimit {
             let row = rows[i]
             let text = row[0]
             if text == "---" {
