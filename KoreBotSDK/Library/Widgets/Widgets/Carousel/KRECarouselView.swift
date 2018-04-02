@@ -122,7 +122,7 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
                 if ((self.linkAction) != nil) {
                     self.linkAction(defaultAction?.payload)
                 }
-            } else if (defaultAction?.type == .postback) {
+            } else if (defaultAction?.type == .postback || defaultAction?.type == .postback_disp_payload) {
                 if (self.optionsAction != nil) {
                     self.optionsAction(defaultAction?.title, defaultAction?.payload)
                 }

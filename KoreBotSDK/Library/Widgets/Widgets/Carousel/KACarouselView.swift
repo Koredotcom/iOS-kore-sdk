@@ -61,7 +61,7 @@ public class KAOptionsView: KREOptionsView {
                 if ((self.detailLinkAction) != nil) {
                     self.detailLinkAction(defaultAction?.payload)
                 }
-            } else if (defaultAction?.type == .postback) {
+            } else if (defaultAction?.type == .postback || defaultAction?.type == .postback_disp_payload) {
                 if (self.optionsButtonAction != nil) {
                     self.optionsButtonAction(defaultAction?.title, defaultAction?.payload)
                 }

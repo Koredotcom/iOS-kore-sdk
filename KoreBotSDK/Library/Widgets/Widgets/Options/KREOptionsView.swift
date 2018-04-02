@@ -10,7 +10,7 @@ import UIKit
 import AFNetworking
 
 public enum KREActionType : Int {
-    case none = 0, webURL = 1, postback = 2, user_intent = 3
+    case none = 0, webURL = 1, postback = 2, user_intent = 3, postback_disp_payload = 4
 }
 
 public class KREAction: NSObject {
@@ -205,7 +205,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
                         if ((self?.detailLinkAction) != nil) {
                             self?.detailLinkAction(buttonAction?.payload)
                         }
-                    } else if (buttonAction?.type == .postback) {
+                    } else if (buttonAction?.type == .postback || buttonAction?.type == .postback_disp_payload) {
                         if (self?.optionsButtonAction != nil) {
                             self?.optionsButtonAction(buttonAction?.title, buttonAction?.payload)
                         }
@@ -229,7 +229,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
                 if ((self.detailLinkAction) != nil) {
                     self.detailLinkAction(defaultAction?.payload)
                 }
-            } else if (defaultAction?.type == .postback) {
+            } else if (defaultAction?.type == .postback || defaultAction?.type == .postback_disp_payload) {
                 if (self.optionsButtonAction != nil) {
                     self.optionsButtonAction(defaultAction?.title, defaultAction?.payload)
                 }
