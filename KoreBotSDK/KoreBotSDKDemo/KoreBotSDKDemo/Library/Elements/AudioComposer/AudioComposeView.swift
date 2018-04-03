@@ -91,8 +91,8 @@ class AudioComposeView: UIView {
         self.playbackButton = UIButton.init(frame: CGRect.zero)
         self.playbackButton.setTitle("", for: .normal)
         self.playbackButton.translatesAutoresizingMaskIntoConstraints = false
-        self.playbackButton.setImage(UIImage(named: "SpeakerIcon"), for: .normal)
-        self.playbackButton.imageView?.contentMode = .center
+        self.playbackButton.setImage(UIImage(named: "unmute"), for: .normal)
+        self.playbackButton.imageView?.contentMode = .scaleAspectFit
         self.playbackButton.addTarget(self, action: #selector(self.playbackButtonAction), for: .touchUpInside)
 //        self.playbackButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
         self.playbackButton.clipsToBounds = true
@@ -140,9 +140,9 @@ class AudioComposeView: UIView {
     
     public func enablePlayback(enable: Bool){
         if enable {
-            self.playbackButton.setImage(UIImage(named: "SpeakerIcon"), for: .normal)
+            self.playbackButton.setImage(UIImage(named: "unmute"), for: .normal)
         }else{
-            self.playbackButton.setImage(UIImage(named: "SpeakerMuteIcon"), for: .normal)
+            self.playbackButton.setImage(UIImage(named: "mute"), for: .normal)
         }
     }
 
@@ -192,10 +192,16 @@ class AudioComposeView: UIView {
     
     @objc fileprivate func playbackButtonAction() {
         if isSpeakingEnabled {
+            self.playbackButton.setImage(UIImage(named: "mute"), for: .normal)
+            isSpeakingEnabled =  false
             NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
+        }else{
+            self.playbackButton.setImage(UIImage(named: "unmute"), for: .normal)
+            NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: nil)
+            isSpeakingEnabled = true
         }
-        isSpeakingEnabled = !isSpeakingEnabled
-        self.enablePlayback(enable: isSpeakingEnabled)
+//        isSpeakingEnabled = !isSpeakingEnabled
+//        self.enablePlayback(enable: isSpeakingEnabled)
     }
     
     fileprivate func startAudioRecording(){
@@ -229,7 +235,7 @@ class AudioComposeView: UIView {
         circleView.frame = CGRect(x: self.animateBGView.frame.size.width/2 - 2.5, y: self.animateBGView.frame.size.height/2 - 2.5, width: CGFloat(5), height: CGFloat(5))
         
         self.animateBGView.addSubview(circleView)
-        circleView.backgroundColor = .white
+        circleView.backgroundColor = .blue
         circleView.layer.cornerRadius = circleView.frame.size.width / 2
         circleView.alpha = 1.0
         var radius:CGFloat = 7.0

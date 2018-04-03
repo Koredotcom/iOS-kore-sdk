@@ -50,8 +50,8 @@ class ComposeBarView: UIView {
         self.addSubview(self.growingTextView)
         self.growingTextView.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .horizontal)
         
-        self.growingTextView.textView.tintColor = .white
-        self.growingTextView.textView.textColor = .white
+        self.growingTextView.textView.tintColor = .black
+        self.growingTextView.textView.textColor = .black
         self.growingTextView.textView.textAlignment = .right
         self.growingTextView.maxNumberOfLines = 10
         self.growingTextView.font = UIFont(name: "HelveticaNeue", size: 14.0)!
@@ -69,6 +69,8 @@ class ComposeBarView: UIView {
         self.sendButton = UIButton.init(frame: CGRect.zero)
         self.sendButton.setTitle("Send", for: .normal)
         self.sendButton.translatesAutoresizingMaskIntoConstraints = false
+        self.sendButton.backgroundColor = userColor
+        self.sendButton.layer.cornerRadius = 5
         self.sendButton.setTitleColor(Common.UIColorRGB(0xFFFFFF), for: .normal)
         self.sendButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
         self.sendButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!

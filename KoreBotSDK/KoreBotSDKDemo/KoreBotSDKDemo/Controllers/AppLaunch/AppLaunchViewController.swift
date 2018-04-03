@@ -65,8 +65,8 @@ class AppLaunchViewController: UIViewController {
         }
         
         if !clientId.hasPrefix("<") && !clientSecret.hasPrefix("<") && !chatBotName.hasPrefix("<") && !botId.hasPrefix("<") && !identity.hasPrefix("<") {
-            let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-            activityIndicatorView.center = view.center
+            let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
+            activityIndicatorView.center = chatButton.center
             view.addSubview(activityIndicatorView)
             activityIndicatorView.startAnimating()
             

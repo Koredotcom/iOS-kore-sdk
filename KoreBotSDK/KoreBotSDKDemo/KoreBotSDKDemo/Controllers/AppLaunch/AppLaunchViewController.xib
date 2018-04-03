@@ -8,11 +8,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="HelveticaNeue.ttc">
-            <string>HelveticaNeue-Bold</string>
-        </array>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AppLaunchViewController">
             <connections>
@@ -25,31 +20,13 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Wallpaper" translatesAutoresizingMaskIntoConstraints="NO" id="wd3-Zt-iHn">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                </imageView>
-                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BbK-W2-Wt7">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Jje-Je-tg8">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    </view>
-                    <blurEffect style="dark"/>
-                </visualEffectView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bot SDK Demo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t8H-H5-pFc">
-                    <rect key="frame" x="101" y="177.5" width="173" height="29"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="24"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="17E-ZR-uVC" userLabel="Chat with Bot">
-                    <rect key="frame" x="42" y="308.5" width="291" height="50"/>
-                    <color key="backgroundColor" red="0.17254902420000001" green="0.78039217000000005" blue="0.85490196939999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="17E-ZR-uVC" userLabel="Chat with Bot">
+                    <rect key="frame" x="20" y="597" width="335" height="50"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="EP5-2O-snM"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <state key="normal" title="Chat with Bot">
+                    <state key="normal" image="buttonWithText">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <userDefinedRuntimeAttributes>
@@ -61,27 +38,28 @@
                         <action selector="chatButtonAction:" destination="-1" eventType="touchUpInside" id="hxy-YT-WwB"/>
                     </connections>
                 </button>
+                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kore_logo_mask" translatesAutoresizingMaskIntoConstraints="NO" id="6hj-Om-n0n">
+                    <rect key="frame" x="20" y="270.5" width="335" height="126"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="126" id="Yyp-aY-oop"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="wd3-Zt-iHn" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="0d1-nN-Kwz"/>
-                <constraint firstAttribute="trailing" secondItem="17E-ZR-uVC" secondAttribute="trailing" constant="42" id="9fj-d6-sTa"/>
-                <constraint firstAttribute="trailing" secondItem="wd3-Zt-iHn" secondAttribute="trailing" id="Ate-o0-B1w"/>
-                <constraint firstItem="BbK-W2-Wt7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="CsM-vA-z61"/>
-                <constraint firstAttribute="trailing" secondItem="BbK-W2-Wt7" secondAttribute="trailing" id="DwS-hF-7v9"/>
-                <constraint firstItem="17E-ZR-uVC" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="KfB-g6-oSX"/>
-                <constraint firstItem="17E-ZR-uVC" firstAttribute="top" secondItem="t8H-H5-pFc" secondAttribute="bottom" constant="102" id="MIU-XZ-txL"/>
-                <constraint firstItem="wd3-Zt-iHn" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="NU2-qn-ZuM"/>
-                <constraint firstItem="BbK-W2-Wt7" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="RYP-wl-5ar"/>
-                <constraint firstAttribute="bottom" secondItem="BbK-W2-Wt7" secondAttribute="bottom" id="SFy-QE-1DB"/>
-                <constraint firstAttribute="bottom" secondItem="wd3-Zt-iHn" secondAttribute="bottom" id="YbS-Y0-kvd"/>
-                <constraint firstItem="t8H-H5-pFc" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="iS0-TU-ARM"/>
-                <constraint firstItem="17E-ZR-uVC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="42" id="srz-88-hcr"/>
+                <constraint firstItem="6hj-Om-n0n" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="8kf-PP-VB9"/>
+                <constraint firstAttribute="trailing" secondItem="6hj-Om-n0n" secondAttribute="trailing" constant="20" id="9Yp-fa-Hmh"/>
+                <constraint firstAttribute="trailing" secondItem="17E-ZR-uVC" secondAttribute="trailing" constant="20" id="9fj-d6-sTa"/>
+                <constraint firstItem="6hj-Om-n0n" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="DoV-TK-DaV"/>
+                <constraint firstAttribute="bottom" secondItem="17E-ZR-uVC" secondAttribute="bottom" constant="20" id="EZF-i9-8Bj"/>
+                <constraint firstItem="17E-ZR-uVC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="srz-88-hcr"/>
+                <constraint firstItem="6hj-Om-n0n" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="ykI-nV-fRM"/>
             </constraints>
             <point key="canvasLocation" x="-160" y="307"/>
         </view>
     </objects>
     <resources>
-        <image name="Wallpaper" width="375" height="667"/>
+        <image name="buttonWithText" width="335" height="50"/>
+        <image name="kore_logo_mask" width="116" height="116"/>
     </resources>
 </document>

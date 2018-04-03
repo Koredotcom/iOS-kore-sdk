@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,7 +15,6 @@
                 <outlet property="audioComposeContainerView" destination="h7Y-kP-4Xx" id="SEi-cL-oTX"/>
                 <outlet property="bottomConstraint" destination="b5y-qb-jo0" id="AUd-n2-7hm"/>
                 <outlet property="composeBarContainerView" destination="8ru-91-Smj" id="E4u-Wx-GOf"/>
-                <outlet property="menuButton" destination="fKn-qw-ehh" id="8hJ-5E-z26"/>
                 <outlet property="quickSelectContainerHeightConstraint" destination="BeV-1h-Rw4" id="7Qw-Ne-Nm4"/>
                 <outlet property="quickSelectContainerView" destination="y23-6f-O9g" id="zPj-te-g6g"/>
                 <outlet property="threadContainerView" destination="z3x-8O-A97" id="4up-O3-Uef"/>
@@ -27,17 +26,6 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Wallpaper" translatesAutoresizingMaskIntoConstraints="NO" id="e13-4K-rTr">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                </imageView>
-                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yFZ-hx-OMb">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="SaZ-DK-Ddt">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    </view>
-                    <blurEffect style="dark"/>
-                </visualEffectView>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z3x-8O-A97">
                     <rect key="frame" x="0.0" y="20" width="375" height="557"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -51,56 +39,29 @@
                 </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="8ru-91-Smj">
                     <rect key="frame" x="0.0" y="577" width="375" height="0.0"/>
-                    <color key="backgroundColor" red="0.1109450832" green="0.047388650480000002" blue="0.063362106680000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
                 <view contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="90" translatesAutoresizingMaskIntoConstraints="NO" id="h7Y-kP-4Xx">
                     <rect key="frame" x="0.0" y="577" width="375" height="90"/>
-                    <color key="backgroundColor" red="0.11094508320093155" green="0.047388650476932526" blue="0.063362106680870056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fKn-qw-ehh">
-                    <rect key="frame" x="305" y="20" width="70" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="70" id="QXv-v3-Jaj"/>
-                        <constraint firstAttribute="height" constant="50" id="UhN-se-xh8"/>
-                    </constraints>
-                    <state key="normal" image="DotMenu"/>
-                    <connections>
-                        <action selector="menuButtonAction:" destination="-1" eventType="touchUpInside" id="XvX-ns-jx1"/>
-                    </connections>
-                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="e13-4K-rTr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4sh-p9-GuJ"/>
                 <constraint firstItem="8ru-91-Smj" firstAttribute="top" secondItem="y23-6f-O9g" secondAttribute="bottom" id="5hp-Sg-7Qe"/>
                 <constraint firstItem="y23-6f-O9g" firstAttribute="top" secondItem="z3x-8O-A97" secondAttribute="bottom" id="8Kv-dg-OiJ"/>
-                <constraint firstItem="e13-4K-rTr" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="DaL-ut-0bG"/>
                 <constraint firstItem="y23-6f-O9g" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="E8u-iv-Arc"/>
                 <constraint firstAttribute="trailing" secondItem="z3x-8O-A97" secondAttribute="trailing" id="Hls-Eo-Deb"/>
                 <constraint firstItem="h7Y-kP-4Xx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="JWO-aq-HcR"/>
                 <constraint firstItem="z3x-8O-A97" firstAttribute="top" secondItem="0uF-el-Vxb" secondAttribute="top" id="MkF-qb-FT5"/>
                 <constraint firstItem="8ru-91-Smj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="T5H-X0-Phe"/>
-                <constraint firstItem="0uF-el-Vxb" firstAttribute="trailing" secondItem="fKn-qw-ehh" secondAttribute="trailing" id="UH1-fu-U7R"/>
                 <constraint firstItem="z3x-8O-A97" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Wld-We-VMY"/>
                 <constraint firstItem="h7Y-kP-4Xx" firstAttribute="top" secondItem="8ru-91-Smj" secondAttribute="bottom" id="Z1V-03-a8G"/>
-                <constraint firstAttribute="trailing" secondItem="yFZ-hx-OMb" secondAttribute="trailing" id="au0-87-RFy"/>
                 <constraint firstItem="0uF-el-Vxb" firstAttribute="bottom" secondItem="h7Y-kP-4Xx" secondAttribute="bottom" id="b5y-qb-jo0"/>
-                <constraint firstItem="yFZ-hx-OMb" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="fZ0-Aw-0rj"/>
-                <constraint firstAttribute="bottom" secondItem="yFZ-hx-OMb" secondAttribute="bottom" id="nIM-hb-xY6"/>
-                <constraint firstAttribute="bottom" secondItem="e13-4K-rTr" secondAttribute="bottom" id="rHH-cT-yba"/>
-                <constraint firstItem="yFZ-hx-OMb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="tDO-ox-778"/>
                 <constraint firstAttribute="trailing" secondItem="8ru-91-Smj" secondAttribute="trailing" id="v3q-WG-SDd"/>
-                <constraint firstItem="fKn-qw-ehh" firstAttribute="top" secondItem="0uF-el-Vxb" secondAttribute="top" id="wi7-ym-Ebq"/>
                 <constraint firstAttribute="trailing" secondItem="y23-6f-O9g" secondAttribute="trailing" id="wvZ-jC-PT0"/>
                 <constraint firstAttribute="trailing" secondItem="h7Y-kP-4Xx" secondAttribute="trailing" id="xWX-Qb-rsK"/>
-                <constraint firstAttribute="trailing" secondItem="e13-4K-rTr" secondAttribute="trailing" id="yz6-k2-2Ka"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="0uF-el-Vxb"/>
             <point key="canvasLocation" x="-249" y="22"/>
         </view>
     </objects>
-    <resources>
-        <image name="DotMenu" width="24" height="11"/>
-        <image name="Wallpaper" width="375" height="667"/>
-    </resources>
 </document>

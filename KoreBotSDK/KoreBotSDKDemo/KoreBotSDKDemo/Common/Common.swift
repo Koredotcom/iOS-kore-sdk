@@ -16,6 +16,9 @@ var showTableTemplateNotification = "ShowTableTemplateNotificationName"
 var reloadTableNotification = "reloadTableNotification"
 var isSpeakingEnabled = false
 
+let userColor: UIColor = UIColor(red: 138 / 255.0, green: 149 / 255.0, blue: 159 / 255.0, alpha: 1)
+let botColor: UIColor = UIColor(red: 237 / 255.0, green: 238 / 255.0, blue: 241 / 255.0, alpha: 1)
+
 open class Common : NSObject {
     open static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)

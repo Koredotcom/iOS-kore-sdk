@@ -113,7 +113,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         self.showMoreButton = UIButton.init(frame: CGRect.zero)
         self.showMoreButton.setTitle("Show More", for: .normal)
         self.showMoreButton.translatesAutoresizingMaskIntoConstraints = false
-        self.showMoreButton.setTitleColor(Common.UIColorRGB(0xFFFFFF), for: .normal)
+        self.showMoreButton.setTitleColor(UIColor(red: 95/255, green: 107/255, blue: 247/255, alpha: 1), for: .normal)
         self.showMoreButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
         self.showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
         self.showMoreButton.isHidden = true
