@@ -373,7 +373,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     let templateType: String = dictionary["template_type"] as! String
                     var tabledesign: String
                     
-                    tabledesign  = (dictionary["table_design"] != nil ? dictionary["table_design"] as? String : "")!
+                    tabledesign  = (dictionary["table_design"] != nil ? dictionary["table_design"] as? String : "responsive")!
                     let componentType = self.getComponentType(templateType,tabledesign)
                     
                     if componentType != .quickReply {
