@@ -13,6 +13,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
     var pcView: PieChartView!
     var lcView: LineChartView!
     var bcView: BarChartView!
+    var cardView : UIView!
     var xAxisValues: Array<String>!
     
     public var optionsAction: ((_ text: String?) -> Void)!
@@ -44,15 +45,33 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         return entry.data!["displayValue"] != nil ? entry.data!["displayValue"] as! String : "\(value)"
     }
     
+    func intializeCardLayout(){
+        self.cardView = UIView(frame:.zero)
+        self.cardView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.cardView)
+        cardView.layer.rasterizationScale =  UIScreen.main.scale
+        cardView.layer.shadowColor = UIColor(red: 232/255, green: 232/255, blue: 230/255, alpha: 1).cgColor
+        cardView.layer.shadowOpacity = 1
+        cardView.layer.shadowOffset =  CGSize(width: 0.0, height: -3.0)
+        cardView.layer.shadowRadius = 6.0
+        cardView.layer.shouldRasterize = true
+        cardView.backgroundColor =  UIColor.white
+        let cardViews: [String: UIView] = ["cardView": cardView]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+    }
+    
     // MARK: initialize chart views
     func intializePieChartView(_ pieType: String){
+        intializeCardLayout()
+        
         self.pcView = PieChartView()
         self.pcView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(self.pcView)
+        self.cardView.addSubview(self.pcView)
         
         let views: [String: UIView] = ["pcView": pcView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[pcView]|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[pcView]|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[pcView]-15-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[pcView]-15-|", options: [], metrics: nil, views: views))
         
         let l: Legend = self.pcView.legend
         if(pieType == "regular"){
@@ -61,7 +80,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             l.orientation = .vertical
             l.drawInside = false
             l.formSize = 12.0
-            l.textColor = .white
+            l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
             l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
             l.form = .circle
             
@@ -77,7 +96,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             l.orientation = .vertical
             l.drawInside = false
             l.formSize = 12.0
-            l.textColor = .white
+            l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
             l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
             
             self.pcView.chartDescription?.enabled = false
@@ -93,7 +112,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             l.orientation = .vertical
             l.drawInside = false
             l.formSize = 12.0
-            l.textColor = .white
+            l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
             l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
             l.form = .circle
             
@@ -107,13 +126,14 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
     }
     
     func intializeLineChartView(){
+        intializeCardLayout()
         self.lcView = LineChartView()
         self.lcView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(self.lcView)
+        self.cardView.addSubview(self.lcView)
         
         let views: [String: UIView] = ["lcView": lcView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[lcView]|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[lcView]|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[lcView]-15-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[lcView]-15-|", options: [], metrics: nil, views: views))
         
         self.lcView.chartDescription?.enabled = false
         self.lcView.isUserInteractionEnabled = false
@@ -121,11 +141,11 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         self.lcView.leftAxis.enabled = true
         self.lcView.leftAxis.drawAxisLineEnabled = true
         self.lcView.leftAxis.drawGridLinesEnabled = false
-        self.lcView.leftAxis.labelTextColor = UIColor.white
+        self.lcView.leftAxis.labelTextColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
         self.lcView.rightAxis.enabled = false
         
         self.lcView.xAxis.labelPosition = .bottom
-        self.lcView.xAxis.labelTextColor = UIColor.white
+        self.lcView.xAxis.labelTextColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
         self.lcView.xAxis.drawAxisLineEnabled = true
         self.lcView.xAxis.drawGridLinesEnabled = false
         self.lcView.xAxis.granularity = 1.0
@@ -143,23 +163,27 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         l.orientation = .horizontal
         l.drawInside = true
         l.formSize = 12.0
-        l.textColor = .white
+        l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
         l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
         l.form = .circle
     }
     
     func intializeBarChartView(_ direction:String){
+        
+       intializeCardLayout()
+        
         if(direction == "horizontal"){
             self.bcView = HorizontalBarChartView()
         }else{
             self.bcView = BarChartView()
         }
+        
         self.bcView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(self.bcView)
+        self.cardView.addSubview(self.bcView)
         
         let views: [String: UIView] = ["bcView": bcView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[bcView]|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[bcView]|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[bcView]-15-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[bcView]-15-|", options: [], metrics: nil, views: views))
         
         self.bcView.chartDescription?.enabled = false
         if(direction == "horizontal"){
@@ -169,11 +193,11 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         }
         self.bcView.leftAxis.drawAxisLineEnabled = true
         self.bcView.leftAxis.drawGridLinesEnabled = false
-        self.bcView.leftAxis.labelTextColor = UIColor.white
+        self.bcView.leftAxis.labelTextColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
         self.bcView.rightAxis.enabled = false
         
         self.bcView.xAxis.labelPosition = .bottom
-        self.bcView.xAxis.labelTextColor = UIColor.white
+        self.bcView.xAxis.labelTextColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
         self.bcView.xAxis.drawAxisLineEnabled = true
         self.bcView.xAxis.drawGridLinesEnabled = false
         self.bcView.xAxis.granularity = 1.0
@@ -190,7 +214,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         l.orientation = .horizontal
         l.drawInside = true
         l.formSize = 12.0
-        l.textColor = .white
+        l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
         l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
         
         let marker = BalloonMarker(color: UIColor.white.withAlphaComponent(0.9), font: UIFont(name: "HelveticaNeue-Bold", size: 12.0)!, textColor: .black, insets: UIEdgeInsetsMake(8.0, 8.0, 20.0, 8.0))
@@ -269,11 +293,11 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             pieChartDataSet.valueLinePart1OffsetPercentage = 0.8
             pieChartDataSet.valueLinePart1Length = 0.4
             pieChartDataSet.valueLinePart2Length = 0.4
-            pieChartDataSet.valueLineColor = UIColor.white
+            pieChartDataSet.valueLineColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
             let pieChartData = PieChartData(dataSet: pieChartDataSet)
             pieChartData.setValueFormatter(self)
             pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 12.0))
-            pieChartData.setValueTextColor(UIColor.white)
+            pieChartData.setValueTextColor(UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1))
             pieChartData.setDrawValues(true)
             self.pcView.extraRightOffset = rightOffset
             self.pcView.data = pieChartData
@@ -347,7 +371,6 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         self.lcView.xAxis.labelCount = headers.count
         lcView.animate(xAxisDuration: 1.0, easingOption: ChartEasingOption.easeInElastic)
     }
-    
     func setDataForBarChart(_ jsonObject: NSDictionary){
         let stacked = jsonObject["stacked"] != nil ? jsonObject["stacked"] as! Bool : false
         let elements: Array<Dictionary<String, Any>> = jsonObject["elements"] != nil ? jsonObject["elements"] as! Array<Dictionary<String, Any>> : []
@@ -360,7 +383,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             let dictionary = elements[i]
             let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
             titles.append(title)
-
+            
             let values: Array<NSNumber> = dictionary["values"] != nil ? dictionary["values"] as! Array<NSNumber> : []
             var subDataValues: Array<BarChartDataEntry> = Array<BarChartDataEntry>()
             for j in 0..<values.count {
@@ -368,20 +391,20 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             }
             dataValues.append(subDataValues)
         }
-
-//        dataValues = transpose(input: dataValues)
-
+        
+        //        dataValues = transpose(input: dataValues)
+        
         var colors = colorsPalet()
-
+        
         var dataSets: Array<BarChartDataSet> = Array<BarChartDataSet>()
         for i in 0..<titles.count {
             let dataSet = BarChartDataSet(values: dataValues[i], label: titles[i])
             dataSet.setColor(colors[i])
             dataSets.append(dataSet)
         }
-
+        
         let barChartData = BarChartData(dataSets: dataSets)
-        barChartData.setValueTextColor(.white)
+        barChartData.setValueTextColor(UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1))
         barChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 8.0))
         barChartData.setDrawValues(false)
         
@@ -395,7 +418,71 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         }
         
         self.xAxisValues = headers
+        bcView.fitBars = true
         self.bcView.data = barChartData
+        
+        self.bcView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
+        self.bcView.setVisibleXRangeMaximum(Double(headers.count))
+    }
+    
+    func setDataForStackedBarChart(_ jsonObject: NSDictionary){
+        let stacked = jsonObject["stacked"] != nil ? jsonObject["stacked"] as! Bool : false
+        let elements: Array<Dictionary<String, Any>> = jsonObject["elements"] != nil ? jsonObject["elements"] as! Array<Dictionary<String, Any>> : []
+        let headers: Array<String> = jsonObject["X_axis"] != nil ? jsonObject["X_axis"] as! Array<String> : []
+        var valuesArray: Array<Array<NSNumber>> = Array<Array<NSNumber>>()
+        let elementsCount: Int = elements.count
+        
+        var titles: Array<String> = Array<String>()
+        for i in 0..<elementsCount {
+            let dictionary = elements[i]
+            let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
+            titles.append(title)
+
+            let values: Array<NSNumber> = dictionary["values"] != nil ? dictionary["values"] as! Array<NSNumber> : []
+            valuesArray.append(values)
+        }
+        
+        var subDataValues: Array<BarChartDataEntry> = Array<BarChartDataEntry>()
+        for j in 0..<headers.count {
+            var values = [Double]();
+            for i in 0..<valuesArray.count {
+                values.append(valuesArray[i][j].doubleValue)
+            }
+            subDataValues.append(BarChartDataEntry(x: Double(j), yValues: values))
+        }
+      
+
+
+        var colors = colorsPalet()
+//        var colorsArray:  Array<UIColor> =  Array<UIColor>()
+//        colorsArray.append(colors[0])
+
+        var dataSets: Array<BarChartDataSet> = Array<BarChartDataSet>()
+        for _ in 0..<1 {
+            let dataSet = BarChartDataSet(values: subDataValues, label:"")
+            dataSet.stackLabels = titles
+            dataSet.setColors(colors[0],colors[1])
+            dataSets.append(dataSet)
+        }
+
+        let barChartData = BarChartData(dataSets: dataSets)
+        barChartData.setValueTextColor(UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1))
+        barChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 8.0))
+        barChartData.setDrawValues(false)
+        
+        // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
+        let groupSpace = 0.30
+        let barSpace = 0.01
+        let barWidth = ((1.0 - groupSpace)/Double(dataSets.count)) - barSpace
+        barChartData.barWidth = barWidth
+        if(!stacked){
+            barChartData.groupBars(fromX: -0.5, groupSpace: groupSpace, barSpace: barSpace)
+        }
+        
+        self.xAxisValues = headers
+        bcView.fitBars = true
+        self.bcView.data = barChartData
+       
         self.bcView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
         self.bcView.setVisibleXRangeMaximum(Double(headers.count))
     }
@@ -419,7 +506,13 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         }else if type == "linechart" {
             setDataForLineChart(jsonObject)
         }else if type == "barchart" {
-            setDataForBarChart(jsonObject)
+            let stacked = jsonObject["stacked"] != nil ? jsonObject["stacked"] as! Bool : false
+            if(!stacked){
+                setDataForBarChart(jsonObject)
+            }
+            else{
+                setDataForStackedBarChart(jsonObject)
+            }
         }
     }
     
