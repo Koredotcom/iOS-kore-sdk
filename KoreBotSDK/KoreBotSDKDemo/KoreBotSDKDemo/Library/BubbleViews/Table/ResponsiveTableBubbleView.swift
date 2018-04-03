@@ -14,6 +14,7 @@ import UIKit
 class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSource {
     var tableView: UITableView!
     var showMoreButton: UIButton!
+    var cardView : UIView!
     
     let cellReuseIdentifier = "CellIdentifier"
     let cellReuseIdentifier1 = "SubTableViewCell"
@@ -39,13 +40,28 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
             self.backgroundColor = .clear
         }
     }
-    
+    func intializeCardLayout(){
+        self.cardView = UIView(frame:.zero)
+        self.cardView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.cardView)
+        cardView.layer.rasterizationScale =  UIScreen.main.scale
+        cardView.layer.shadowColor = UIColor(red: 232/255, green: 232/255, blue: 230/255, alpha: 1).cgColor
+        cardView.layer.shadowOpacity = 1
+        cardView.layer.shadowOffset =  CGSize(width: 0.0, height: -3.0)
+        cardView.layer.shadowRadius = 6.0
+        cardView.layer.shouldRasterize = true
+        cardView.backgroundColor =  UIColor.white
+        let cardViews: [String: UIView] = ["cardView": cardView]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+    }
     override func initialize() {
         super.initialize()
+        intializeCardLayout()
         
         tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(tableView)
+        self.cardView.addSubview(tableView)
         tableView.register(ResponsiveCustonCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         tableView.register(SubTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier1)
         
@@ -72,15 +88,15 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
         self.showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
         self.showMoreButton.isHidden = false
         self.showMoreButton.clipsToBounds = true
-        self.addSubview(self.showMoreButton)
+        self.cardView.addSubview(self.showMoreButton)
 
         
         let views : [String: Any] = ["tableView": tableView,  "showMoreButton": showMoreButton]
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[tableView]-15-|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat:"V:|-[tableView]-|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[showMoreButton(44.0)]|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[showMoreButton]-15-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[tableView]-15-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat:"V:|-15-[tableView]-15-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[showMoreButton(44.0)]|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[showMoreButton]-15-|", options: [], metrics: nil, views: views))
         
     }
     

@@ -58,6 +58,7 @@ class TableData {
 class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var collectionView: UICollectionView!
     var showMoreButton: UIButton!
+    var cardView: UIView!
     
     let customCellIdentifier = "CustomCellIdentifier"
     var data: TableData = TableData()
@@ -76,10 +77,25 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
             self.backgroundColor = .clear
         }
     }
+    func intializeCardLayout(){
+        self.cardView = UIView(frame:.zero)
+        self.cardView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.cardView)
+        cardView.layer.rasterizationScale =  UIScreen.main.scale
+        cardView.layer.shadowColor = UIColor(red: 232/255, green: 232/255, blue: 230/255, alpha: 1).cgColor
+        cardView.layer.shadowOpacity = 1
+        cardView.layer.shadowOffset =  CGSize(width: 0.0, height: -3.0)
+        cardView.layer.shadowRadius = 6.0
+        cardView.layer.shouldRasterize = true
+        cardView.backgroundColor =  UIColor.white
+        let cardViews: [String: UIView] = ["cardView": cardView]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+    }
     
     override func initialize() {
         super.initialize()
-        
+        intializeCardLayout()
         let collectionViewLayout = CustomCollectionViewLayout()
         self.collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewLayout)
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -89,7 +105,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         self.collectionView.showsHorizontalScrollIndicator = false
         self.collectionView.showsVerticalScrollIndicator = false
         self.collectionView.bounces = false
-        self.addSubview(self.collectionView)
+        self.cardView.addSubview(self.collectionView)
         
         self.collectionView.register(UINib(nibName: "CustomCollectionViewCell", bundle: nil),
                                      forCellWithReuseIdentifier: customCellIdentifier)
@@ -102,15 +118,15 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         self.showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
         self.showMoreButton.isHidden = true
         self.showMoreButton.clipsToBounds = true
-        self.addSubview(self.showMoreButton)
+        self.cardView.addSubview(self.showMoreButton)
         
         let views: [String: UIView] = ["collectionView": collectionView, "showMoreButton": showMoreButton]
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[collectionView]|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[collectionView]|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[collectionView]-15-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[collectionView]-15-|", options: [], metrics: nil, views: views))
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[showMoreButton(36.0)]|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[showMoreButton]|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[showMoreButton(36.0)]|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[showMoreButton]-15-|", options: [], metrics: nil, views: views))
     }
     
     //MARK: collection view delegate methods

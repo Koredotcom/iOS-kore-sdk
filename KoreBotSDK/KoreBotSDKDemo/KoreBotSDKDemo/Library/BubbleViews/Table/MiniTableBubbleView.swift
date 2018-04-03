@@ -16,6 +16,7 @@ struct MiniHeader {
     var title: String = ""
     var alignment: NSTextAlignment = .left
     var percentage: Int = 0
+    
 }
 
 class MiniTableData {
@@ -66,7 +67,7 @@ class MiniTableData {
 
 class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSource {
     var tableView: UITableView!
-    
+    var cardView: UIView!
     let customCellIdentifier = "CustomCellIdentifier"
     var data: MiniTableData = MiniTableData()
     let rowsDataLimit = 6
@@ -83,9 +84,25 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         }
     }
     
+    func intializeCardLayout(){
+        self.cardView = UIView(frame:.zero)
+        self.cardView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.cardView)
+        cardView.layer.rasterizationScale =  UIScreen.main.scale
+        cardView.layer.shadowColor = UIColor(red: 232/255, green: 232/255, blue: 230/255, alpha: 1).cgColor
+        cardView.layer.shadowOpacity = 1
+        cardView.layer.shadowOffset =  CGSize(width: 0.0, height: -3.0)
+        cardView.layer.shadowRadius = 6.0
+        cardView.layer.shouldRasterize = true
+        cardView.backgroundColor =  UIColor.white
+        let cardViews: [String: UIView] = ["cardView": cardView]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+    }
+    
     override func initialize() {
         super.initialize()
-      
+        intializeCardLayout()
         self.tableView = UITableView(frame: CGRect.zero,style:.grouped)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.dataSource = self
@@ -95,13 +112,13 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.bounces = false
         self.tableView.separatorStyle = .none
-        self.addSubview(self.tableView)
+        self.cardView.addSubview(self.tableView)
         tableView.register(MiniTableViewCell.self, forCellReuseIdentifier: customCellIdentifier)
         
         let views: [String: UIView] = ["tableView": tableView]
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[tableView]|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[tableView]-15-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tableView]-15-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[tableView]-15-|", options: [], metrics: nil, views: views))
     }
  
     override func populateComponents() {
