@@ -235,7 +235,7 @@ class AudioComposeView: UIView {
         circleView.frame = CGRect(x: self.animateBGView.frame.size.width/2 - 2.5, y: self.animateBGView.frame.size.height/2 - 2.5, width: CGFloat(5), height: CGFloat(5))
         
         self.animateBGView.addSubview(circleView)
-        circleView.backgroundColor = .blue
+        circleView.backgroundColor = userColor
         circleView.layer.cornerRadius = circleView.frame.size.width / 2
         circleView.alpha = 1.0
         var radius:CGFloat = 7.0
