@@ -17,9 +17,9 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
     let cellReuseIdentifier = "Cell"
     var rows: Array<Array<String>> = Array<Array<String>>()
     var headers: Array<Header> = Array<Header>()
-    var section : Int = 0
+    var sec : Int = Int()
 
-    var i = 0
+//    var i = 0
     var count = 0
     
     
@@ -64,13 +64,22 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
         
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if(rows.count % 2 == 0)
-        {
-            count = rows.count/2
-        }
-        else{
-            count = (rows.count+1)/2
+        if(headers.count<rows[sec].count){
+            if(headers.count % 2 == 0)
+            {
+                count = headers.count/2
+            }
+            else{
+                count = (headers.count+1)/2
+            }
+        }else{
+            if(rows[sec].count % 2 == 0)
+            {
+                count = rows[sec].count/2
+            }
+            else{
+                count = (rows[sec].count+1)/2
+            }
         }
         return count
     }
@@ -85,7 +94,6 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
             cell.titleLbl.textAlignment = dict.alignment
             cell.titleLbl.font = UIFont(name: "Lato-Semibold", size: 1.0)
             cell.titleLbl.font = cell.titleLbl.font.withSize(10.0)
-
         }
         
         
@@ -96,13 +104,12 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
             cell.titleLbl1.font = UIFont(name: "Lato-Semibold", size: 1.0)
             cell.titleLbl1.font = cell.titleLbl.font.withSize(10.0)
         }
-        
-        let row = rows[section]
-        if(row.count > indexPath.row*2){
+        let row = rows[sec]
+        if(row.count > indexPath.row*2  && headers.count > indexPath.row*2){
             cell.valueLbl.text = row[indexPath.row*2]
         }
         cell.valueLbl.textAlignment = cell.titleLbl.textAlignment
-        if(row.count > indexPath.row*2+1){
+        if(row.count > indexPath.row*2+1 && headers.count > indexPath.row*2+1) {
             cell.valueLbl1.text = row[indexPath.row*2+1]
         }
         cell.valueLbl1.textAlignment = cell.titleLbl1.textAlignment

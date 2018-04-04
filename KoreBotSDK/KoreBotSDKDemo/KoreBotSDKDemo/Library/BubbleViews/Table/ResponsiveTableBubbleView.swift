@@ -104,7 +104,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPaths.count>0 {
             if indexPaths.contains(indexPath){
-                return CGFloat((data.headers.count)*44)
+                return CGFloat((data.rows[indexPath.section].count)*44)
             }
             else {
                 return UITableViewAutomaticDimension
@@ -137,7 +137,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
                 subtableViewCell.accessoryView = UIImageView(image: UIImage(named: "arrowSelected"))
                 subtableViewCell.rows = data.rows
                 subtableViewCell.headers = data.headers
-                subtableViewCell.section = indexPath.section
+                subtableViewCell.sec = indexPath.section
                 
                 return subtableViewCell
             }
@@ -229,8 +229,12 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
     override var intrinsicContentSize : CGSize {
         let rows = self.data.rows
         var height: CGFloat = 44.0
-        let noOfUnselectedRows = rowsDataLimit - indexPaths.count
-        height = (CGFloat(noOfUnselectedRows * 44)) + CGFloat(indexPaths.count * data.headers.count * 44)
+        let noOfUnselectedRows = rowsDataLimit - indexPaths.count   
+        height = (CGFloat(noOfUnselectedRows * 44)) + 36
+        for i in  0..<(indexPaths.count) {
+            height = height + CGFloat(data.rows[i].count * 44)
+        }
+        
         if self.showMore {
             height += 36.0
         }

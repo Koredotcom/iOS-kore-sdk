@@ -182,7 +182,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPaths.count>0 {
             if indexPaths.contains(indexPath){
-                return CGFloat((data.headers.count)*44)
+                return CGFloat((data.rows[indexPath.section].count)*44)
             }
             else {
                 return UITableViewAutomaticDimension
@@ -214,7 +214,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
                 subtableViewCell.accessoryView = UIImageView(image: UIImage(named: "arrowSelected"))
                 subtableViewCell.rows = data.rows
                 subtableViewCell.headers = data.headers
-                subtableViewCell.section = indexPath.section
+                subtableViewCell.sec = indexPath.section
                 
                 return subtableViewCell
             }
