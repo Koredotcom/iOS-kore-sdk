@@ -30,10 +30,12 @@ open class HTTPRequestManager : NSObject {
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
         let parameters: NSDictionary = ["assertion":token!, "botInfo": botInfo]
 
-        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: URL.init(string: Constants.URL.baseUrl) as URL!)
-        operationManager.responseSerializer = AFJSONResponseSerializer.init()
-        operationManager.requestSerializer = requestSerializer
-        operationManager.post(urlString, parameters: parameters, success: { (operation, responseObject) in
+        let sessionManager: AFHTTPSessionManager = AFHTTPSessionManager(baseURL: URL.init(string: Constants.URL.baseUrl) as URL!)
+        sessionManager.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager.requestSerializer = requestSerializer
+        sessionManager.post(urlString, parameters: parameters, progress: { (progress) in
+            
+        }, success: { (dataTask, responseObject) in
             print(responseObject)
             let error: Error?
             if responseObject is [AnyHashable: Any] {
@@ -46,11 +48,11 @@ open class HTTPRequestManager : NSObject {
             } else {
                 failure?(NSError(domain: "", code: 0, userInfo: [:]))
             }
-        }) { (operation, error) in
-            if (operation?.responseObject != nil) {
-                print(operation?.responseObject)
+        }) { (dataTask, error) in
+            if (error != nil) {
+                print(error)
             }
-            failure?(error!)
+            failure?(error)
         }
     }
     
@@ -64,19 +66,21 @@ open class HTTPRequestManager : NSObject {
         requestSerializer.setValue(accessToken, forHTTPHeaderField:"Authorization")
 
         let parameters: NSDictionary = ["botInfo": botInfo, "authorization": accessToken]
-        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: URL.init(string: Constants.URL.baseUrl) as URL!)
-        operationManager.responseSerializer = AFJSONResponseSerializer.init()
-        operationManager.requestSerializer = requestSerializer
-        operationManager.post(urlString, parameters: parameters, success: { (operation, responseObject) in
+        let sessionManager: AFHTTPSessionManager = AFHTTPSessionManager(baseURL: URL.init(string: Constants.URL.baseUrl) as URL!)
+        sessionManager.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager.requestSerializer = requestSerializer
+        sessionManager.post(urlString, parameters: parameters, progress: { (progress) in
+            
+        }, success: { (dataTask, responseObject) in
             print(responseObject)
             let error: NSError?
             let botInfo: BotInfoModel = try! (MTLJSONAdapter.model(of: BotInfoModel.self, fromJSONDictionary: responseObject! as! [AnyHashable: Any]) as! BotInfoModel)
             success?(botInfo)
-        }) { (operation, requestError) in
-            if (operation?.responseObject != nil) {
-                print(operation?.responseObject)
+        }) { (dataTask, error) in
+            if (error != nil) {
+                print(error)
             }
-            failure?(requestError!)
+            failure?(error)
         }
     }
     
@@ -97,16 +101,19 @@ open class HTTPRequestManager : NSObject {
         }
         let parameters: NSDictionary = ["deviceId": deviceId, "osType": "ios"]
         
-        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: URL.init(string: Constants.URL.baseUrl) as URL!)
-        operationManager.responseSerializer = AFJSONResponseSerializer.init()
-        operationManager.requestSerializer = requestSerializer
-        operationManager.post(urlString, parameters: parameters, success: { (operation, responseObject) in
+        let sessionManager: AFHTTPSessionManager = AFHTTPSessionManager(baseURL: URL.init(string: Constants.URL.baseUrl) as URL!)
+        sessionManager.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager.requestSerializer = requestSerializer
+        sessionManager.post(urlString, parameters: parameters, progress: { (progress) in
+            
+        }, success: { (dataTask, responseObject) in
+            print(responseObject)
             success?(true)
-        }) { (operation, error) in
-            if (operation?.responseObject != nil) {
-                print(operation?.responseObject)
+        }) { (dataTask, error) in
+            if (error != nil) {
+                print(error)
             }
-            failure?(error!)
+            failure?(error)
         }
     }
     
@@ -127,16 +134,16 @@ open class HTTPRequestManager : NSObject {
         
         let parameters: NSDictionary = ["deviceId": deviceId]
         
-        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: URL.init(string: Constants.URL.baseUrl) as URL!)
-        operationManager.responseSerializer = AFJSONResponseSerializer.init()
-        operationManager.requestSerializer = requestSerializer
-        operationManager.delete(urlString, parameters: parameters, success: { (operation, responseObject) in
+        let sessionManager: AFHTTPSessionManager = AFHTTPSessionManager(baseURL: URL.init(string: Constants.URL.baseUrl) as URL!)
+        sessionManager.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager.requestSerializer = requestSerializer
+        sessionManager.delete(urlString, parameters: parameters, success: { (operation, responseObject) in
             success?(true)
         }) { (operation, error) in
-            if (operation?.responseObject != nil) {
-                print(operation?.responseObject)
+            if (error != nil) {
+                print(error)
             }
-            failure?(error!)
+            failure?(error)
         }
     }
     
