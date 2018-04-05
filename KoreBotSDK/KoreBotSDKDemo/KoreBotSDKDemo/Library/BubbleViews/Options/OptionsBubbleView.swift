@@ -49,7 +49,7 @@ class OptionsBubbleView: BubbleView {
         
         self.textLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
         
-        self.optionsView.optionsButtonAction = {[weak self] (text) in
+        self.optionsView.optionsButtonAction = {[weak self] (text, payload) in
             if((self?.optionsAction) != nil){
                 self?.optionsAction(text)
             }

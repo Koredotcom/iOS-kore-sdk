@@ -560,8 +560,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             dataStoreManager.createNewMessageIn(thread: self.thread, message: composedMessage, completionBlock: { (success) in
                 let textComponent: Component = composedMessage.components[0] as! Component
                 let text: String = textComponent.payload as String
-                if(self.botClient != nil){
-                    self.botClient.sendMessage(text, options: [] as AnyObject)
+                if(self.botClient != nil) {
+                    self.botClient.sendMessage(text, options: [:])
                 }
                 self.textMessageSent()
             })
