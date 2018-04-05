@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
         ss.public_header_files = 'KoreBotSDK/KoreBotSDK.h'
 
         ss.dependency 'Mantle', '2.0.2'
-        ss.dependency 'AFNetworking', '2.5.4'
+        ss.dependency 'AFNetworking', '3.2.0'
         ss.dependency 'SocketRocket'
 
         ss.ios.frameworks = 'SystemConfiguration'
@@ -42,7 +42,7 @@ Pod::Spec.new do |s|
         #ss.exclude_files = "KoreBotSDK/Library/Widgets/Widgets/AppDelegate.{h}"
         #ss.exclude_files = "KoreBotSDK/Library/Widgets/Widgets/*.{*}"
 
-        ss.dependency 'AFNetworking', '2.5.4'
+        ss.dependency 'AFNetworking', '3.2.0'
 
         ss.ios.frameworks = 'SystemConfiguration'
     end

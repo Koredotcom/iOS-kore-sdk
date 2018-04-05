@@ -13,10 +13,57 @@ import Mantle
 @objc public protocol RTMPersistentConnectionDelegate {
     func rtmConnectionDidOpen()
     func rtmConnectionReady()
-    func rtmConnectionDidClose(_ code: Int, reason: String)
+    func rtmConnectionDidClose(_ code: Int, reason: String?)
     func rtmConnectionDidFailWithError(_ error: NSError)
     @objc optional func didReceiveMessage(_ message: BotMessageModel)
     @objc optional func didReceiveMessageAck(_ ack: Ack)
+}
+
+open class RTMTimer: NSObject {
+    public enum RTMTimerState {
+        case suspended
+        case resumed
+    }
+    open let pingInterval: TimeInterval = 5.0
+    open lazy var timer: DispatchSourceTimer = {
+        let intervalInNSec = pingInterval * Double(NSEC_PER_SEC)
+        let startTime = DispatchTime.now() + Double(intervalInNSec) / Double(NSEC_PER_SEC)
+
+        let t = DispatchSource.makeTimerSource(flags: [], queue: .main)
+        t.schedule(deadline: startTime, repeating: pingInterval)
+        t.setEventHandler(handler: { [weak self] in
+            self?.eventHandler?()
+        })
+        return t
+    }()
+    
+    open var eventHandler: (() -> Void)?
+    open var state: RTMTimerState = .suspended
+    
+    open func resume() {
+        if state == .resumed {
+            return
+        }
+        state = .resumed
+        timer.resume()
+    }
+    
+    open func suspend() {
+        if state == .suspended {
+            return
+        }
+        state = .suspended
+        timer.suspend()
+    }
+    
+    // MARK: -
+    deinit {
+        timer.setEventHandler {}
+        timer.cancel()
+        
+        resume()
+        eventHandler = nil
+    }
 }
 
 open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
@@ -25,15 +72,14 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     var websocket: SRWebSocket! = nil
     var connectionDelegate: RTMPersistentConnectionDelegate?
 
-    fileprivate let timerSource: DispatchSourceTimer
+    fileprivate var timerSource = RTMTimer()
     fileprivate let pingInterval: TimeInterval
     fileprivate var receivedLastPong = true
     open var tryReconnect = false
     
     // MARK: init
     public init(botInfo: BotInfoModel!, botInfoParameters: NSDictionary!, tryReconnect: Bool) {
-        self.pingInterval = 10
-        self.timerSource = DispatchSource.makeTimerSource(flags: [], queue: .main)
+        self.pingInterval = 5
         super.init()
         self.botInfo = botInfo
         self.botInfoParameters = botInfoParameters
@@ -59,24 +105,24 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     // MARK: WebSocketDelegate methods
     open func webSocketDidOpen(_ webSocket: SRWebSocket!) {
         self.connectionDelegate?.rtmConnectionDidOpen()
-        let intervalInNSec = pingInterval * Double(NSEC_PER_SEC)
-        let startTime = DispatchTime.now() + Double(intervalInNSec) / Double(NSEC_PER_SEC)
-        
-        timerSource.schedule(deadline: startTime, repeating: pingInterval, leeway: .nanoseconds(Int(NSEC_PER_SEC / 10)))
-        timerSource.setEventHandler(handler: { [weak self] in
+
+        timerSource.eventHandler = { [weak self] in
             if self!.receivedLastPong == false {
                 // we did not receive the last pong
                 // abort the socket so that we can spin up a new connection
                 self!.websocket.close()
+                self!.timerSource.suspend()
+                self!.connectionDelegate?.rtmConnectionDidFailWithError(NSError())
             } else if self!.websocket.readyState == .CLOSED || self!.websocket.readyState == .CLOSING {
                 self!.websocket.close()
+                self!.timerSource.suspend()
             } else {
                 // we got a pong recently
                 // send another ping
                 self!.receivedLastPong = false
                 self!.websocket.sendPing(nil)
             }
-        })
+        }
         timerSource.resume()
     }
     
@@ -84,9 +130,8 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
         self.connectionDelegate?.rtmConnectionDidFailWithError(error! as NSError)
     }
     
-    
     public func webSocket(_ webSocket: SRWebSocket!, didCloseWithCode code: Int, reason: String!, wasClean: Bool) {
-        self.connectionDelegate?.rtmConnectionDidClose(code, reason: reason as String)
+        self.connectionDelegate?.rtmConnectionDidClose(code, reason: reason)
     }
 
     open func webSocket(_ webSocket: SRWebSocket!, didReceivePong pongPayload: Data!) {

@@ -85,7 +85,8 @@ class AppLaunchViewController: UIViewController {
                     dataStoreManager.coreDataManager.saveChanges()
                     print(thread.threadId!)
                     
-                    let botClient: BotClient = BotClient(botInfoParameters: botInfo)
+                    let botClient: BotClient = BotClient()
+                    botClient.initialize(with: botInfo)
                     if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
                         botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
                     }
@@ -141,10 +142,12 @@ class AppLaunchViewController: UIViewController {
                                         "aud": "https://idproxy.kore.com/authorize",
                                         "isAnonymous": isAnonymous]
         
-        let operationManager: AFHTTPRequestOperationManager = AFHTTPRequestOperationManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL!)
-        operationManager.responseSerializer = AFJSONResponseSerializer.init()
-        operationManager.requestSerializer = requestSerializer
-        operationManager.post(urlString, parameters: parameters, success: { (operation, responseObject) in
+        let sessionManager: AFHTTPSessionManager = AFHTTPSessionManager(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL!)
+        sessionManager.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager.requestSerializer = requestSerializer
+        sessionManager.post(urlString, parameters: parameters, progress: { (progress) in
+            
+        }, success: { (dataTask, responseObject) in
             if (responseObject is NSDictionary) {
                 let dictionary: NSDictionary = responseObject as! NSDictionary
                 let jwToken: String = dictionary["jwt"] as! String
@@ -153,8 +156,8 @@ class AppLaunchViewController: UIViewController {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
             }
-        }) { (operation, error) in
-            failure?(error!)
+        }) { (dataTask, error) in
+            failure?(error)
         }
     }
     
