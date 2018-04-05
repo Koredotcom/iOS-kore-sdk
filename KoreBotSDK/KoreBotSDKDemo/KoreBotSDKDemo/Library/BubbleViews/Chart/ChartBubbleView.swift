@@ -281,7 +281,16 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             let pieChartData = PieChartData(dataSet: pieChartDataSet)
             pieChartData.setValueFormatter(self)
             pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 12.0))
-            pieChartData.setValueTextColor(UIColor.white)
+//            pieChartData.setValueTextColor(UIColor.white)
+            pieChartDataSet.yValuePosition = .outsideSlice
+            pieChartDataSet.valueLinePart1OffsetPercentage = 0.8
+            pieChartDataSet.valueLinePart1Length = 0.4
+            pieChartDataSet.valueLinePart2Length = 0.4
+            pieChartDataSet.valueLineColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
+            pieChartData.setValueFormatter(self)
+            pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 12.0))
+            pieChartData.setValueTextColor(UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1))
+            pieChartData.setDrawValues(true)
             self.pcView.extraRightOffset = rightOffset
             self.pcView.data = pieChartData
             self.pcView.highlightValues(nil)
