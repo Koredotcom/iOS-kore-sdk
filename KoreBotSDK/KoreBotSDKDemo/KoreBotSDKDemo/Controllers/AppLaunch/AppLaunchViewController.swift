@@ -19,8 +19,8 @@ class AppLaunchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let chatBotName: String = SDKConfiguration.botConfig.chatBotName
-        self.chatButton.setTitle(String(format: "Chat with %@", chatBotName), for: .normal)
+       // let chatBotName: String = SDKConfiguration.botConfig.chatBotName
+       // self.chatButton.setTitle(String(format: "%@", chatBotName), for: .normal)
         setInitialState()
         self.automaticallyAdjustsScrollViewInsets = false
     }
