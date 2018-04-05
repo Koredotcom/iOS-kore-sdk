@@ -16,6 +16,7 @@
 		0C6D099E206B9EB700CE166E /* ExpandedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D099B206B9EB600CE166E /* ExpandedTableViewCell.swift */; };
 		0C6D099F206B9EB700CE166E /* SubTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D099C206B9EB600CE166E /* SubTableViewCell.swift */; };
 		0CA5900020614502002DA3B6 /* MiniTableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA58FFF20614502002DA3B6 /* MiniTableBubbleView.swift */; };
+		0CD0CD492074E3E600FD46F9 /* MenuBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0CD482074E3E600FD46F9 /* MenuBubbleView.swift */; };
 		2E1E49F68222AAA4C970168B /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E1812F1242FE88925056F7C /* Pods_KoreBotSDKDemo.framework */; };
 		6E14F4691F2F4D8600F5C149 /* BotMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E14F4681F2F4D8600F5C149 /* BotMessagesView.swift */; };
 		6E202A581FBB22AF002A608C /* BalloonMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E202A571FBB22AF002A608C /* BalloonMarker.swift */; };
@@ -96,6 +97,7 @@
 		0C6D099B206B9EB600CE166E /* ExpandedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedTableViewCell.swift; sourceTree = "<group>"; };
 		0C6D099C206B9EB600CE166E /* SubTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubTableViewCell.swift; sourceTree = "<group>"; };
 		0CA58FFF20614502002DA3B6 /* MiniTableBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniTableBubbleView.swift; sourceTree = "<group>"; };
+		0CD0CD482074E3E600FD46F9 /* MenuBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuBubbleView.swift; path = KoreBotSDKDemo/Library/BubbleViews/Menu/MenuBubbleView.swift; sourceTree = SOURCE_ROOT; };
 		51D2300D7315E548B03ED7F4 /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		6E14F4681F2F4D8600F5C149 /* BotMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotMessagesView.swift; sourceTree = "<group>"; };
 		6E1812F1242FE88925056F7C /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -194,6 +196,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0CD0CD472074E3B500FD46F9 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				0CD0CD482074E3E600FD46F9 /* MenuBubbleView.swift */,
+			);
+			name = Menu;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		6E46A14D1F8B020F00E0AAF8 /* Table */ = {
 			isa = PBXGroup;
 			children = (
@@ -561,6 +572,7 @@
 				D1B944A61D04463F000AADA9 /* Image */,
 				D10A24571CF72FD400E2732C /* Text */,
 				D1F4E5031CF70A8E0044C093 /* BubbleView.swift */,
+				0CD0CD472074E3B500FD46F9 /* Menu */,
 			);
 			path = BubbleViews;
 			sourceTree = "<group>";
@@ -852,6 +864,7 @@
 				D150415D1DE2CD0D00F2F92E /* KREMessage+CoreDataProperties.swift in Sources */,
 				6EA472EF1FBD9BA200982255 /* TableTemplateViewController.swift in Sources */,
 				0C6D099F206B9EB700CE166E /* SubTableViewCell.swift in Sources */,
+				0CD0CD492074E3E600FD46F9 /* MenuBubbleView.swift in Sources */,
 				D1522ABA1DED45AC00D86407 /* OptionsBubbleView.swift in Sources */,
 				0C6D0997206B6DC800CE166E /* MiniTableViewCell.swift in Sources */,
 				D150415F1DE2CD0D00F2F92E /* KREContact+CoreDataProperties.swift in Sources */,
@@ -1014,6 +1027,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = KoreBotSDKDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk;
@@ -1036,6 +1050,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = KoreBotSDKDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk;

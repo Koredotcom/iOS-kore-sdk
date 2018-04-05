@@ -72,6 +72,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(TableBubbleCell.self, forCellReuseIdentifier:"TableBubbleCell")
         self.tableView.register(MiniTableBubbleCell.self, forCellReuseIdentifier:"MiniTableBubbleCell")
         self.tableView.register(ResponsiveTableBubbleCell.self, forCellReuseIdentifier:"ResponsiveTableBubbleCell")
+        self.tableView.register(MenuBubbleCell.self, forCellReuseIdentifier:"MenuBubbleCell")
 
 
     }
@@ -153,6 +154,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .responsiveTable:
                 cellIdentifier = "ResponsiveTableBubbleCell"
                 break
+            case .menu:
+                cellIdentifier = "MenuBubbleCell"
+                break
             }
             
         }
@@ -227,6 +231,18 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             break
         case .responsiveTable:
             break
+        case .menu:
+            let bubbleView: MenuBubbleView = cell.bubbleView as! MenuBubbleView
+            bubbleView.optionsAction = {[weak self] (text) in
+                self?.viewDelegate?.optionsButtonTapAction(text: text!)
+            }
+            bubbleView.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
+            
+            cell.bubbleView.drawBorder = true
+            break
+            
         }
         let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
         if firstIndexPath.isEqual(indexPath) {

@@ -27,7 +27,7 @@ public class KREAction: NSObject {
 }
 
 public enum KREOptionType : Int {
-    case button = 1, list = 2
+    case button = 1, list = 2, menu = 3
 }
 
 public class KREOption: NSObject {
@@ -77,6 +77,7 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
     
     fileprivate let optionCellIdentifier = "KREOptionsTableViewCell"
     fileprivate let listCellIdentifier = "KREListTableViewCell"
+    fileprivate let menuCellIdentifier = "KREMenuTableViewCell"
     
     let kMaxRowHeight: CGFloat = 44
   
@@ -127,9 +128,12 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
                 
                 let optionsCellNib = UINib(nibName: optionCellIdentifier, bundle: bundle)
                 let listCellNib = UINib(nibName: listCellIdentifier, bundle: bundle)
+                let menuCellNib = UINib(nibName: menuCellIdentifier, bundle: bundle)
+
 
                 optionsTableView.register(optionsCellNib, forCellReuseIdentifier: optionCellIdentifier)
                 optionsTableView.register(listCellNib, forCellReuseIdentifier: listCellIdentifier)
+                optionsTableView.register(menuCellNib, forCellReuseIdentifier: menuCellIdentifier)
                 
             }else {
                 assertionFailure("Could not load the bundle")
@@ -205,6 +209,41 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
             }
             
             return cell
+        }else if(option.optionType == KREOptionType.menu){
+            let cell: KREMenuTableViewCell = tableView.dequeueReusableCell(withIdentifier: menuCellIdentifier, for: indexPath) as! KREMenuTableViewCell
+            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            
+            cell.titleLabel.text = option.title
+            
+            if option.imageURL != "" {
+                cell.imgView.setImageWith(NSURL(string: option.imageURL!) as URL!,placeholderImage: UIImage.init(named: "placeholder_image"))
+                cell.imgViewWidthConstraint.constant = 30.0
+            } else {
+                cell.imageView?.image = nil
+                cell.imgViewWidthConstraint.constant = 0.0
+            }
+            
+            if(option.buttonAction != nil){
+                let buttonAction = option.buttonAction
+//                cell.actionButtonHeightConstraint.constant = 30.0
+//                cell.actionButton.setTitle(buttonAction?.title, for: .normal)
+//                cell.buttonAction = {[weak self] (text) in
+//                    if (buttonAction?.type == .webURL) {
+//                        if ((self?.detailLinkAction) != nil) {
+//                            self?.detailLinkAction(buttonAction?.payload)
+//                        }
+//                    } else if (buttonAction?.type == .postback) {
+//                        if (self?.optionsButtonAction != nil) {
+//                            self?.optionsButtonAction(buttonAction?.payload)
+//                        }
+//                    }
+//                }
+            }else{
+//                cell.actionButtonHeightConstraint.constant = 0.0
+//                cell.actionButton.setTitle(nil, for: .normal)
+            }
+            
+            return cell
         }
         return UITableViewCell.init()
     }
@@ -226,10 +265,19 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+      let option: KREOption = options[indexPath.row]
+        if(option.optionType == KREOptionType.menu){
+            return 36
+        }
+        
         return UITableViewAutomaticDimension
     }
     
     public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        let option: KREOption = options[indexPath.row]
+        if(option.optionType == KREOptionType.menu){
+            return 36
+        }
         return UITableViewAutomaticDimension
     }
     
@@ -244,6 +292,9 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
                 fittingSize.width = width
                 let size = cell.systemLayoutSizeFitting(fittingSize, withHorizontalFittingPriority: UILayoutPriority(rawValue: 1000), verticalFittingPriority: UILayoutPriority(rawValue: 250))
                 height += size.height
+            }
+            else if(option.optionType == KREOptionType.menu){
+                height += 36
             }
         }
         return height

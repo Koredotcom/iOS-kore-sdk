@@ -313,6 +313,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         else if (templateType == "mini_table") {
             return .minitable
         }
+        else if (templateType == "menu") {
+            return .menu
+        }
         return .text
     }
     
