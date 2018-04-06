@@ -10,7 +10,6 @@
 
 
 import UIKit
-import SquareMosaicLayout
 
 struct MiniHeader {
     var title: String = ""

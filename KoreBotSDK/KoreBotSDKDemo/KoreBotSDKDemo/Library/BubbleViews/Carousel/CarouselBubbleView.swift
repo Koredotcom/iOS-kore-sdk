@@ -77,7 +77,7 @@ class CarouselBubbleView: BubbleView {
                         cardInfo.setDefaultAction(action: Utilities.getKREActionFromDictionary(dictionary: defaultAction)!)
                     }
                     
-                    let buttons: Array<Dictionary<String, Any>> = dictionary["buttons"] as! Array<Dictionary<String, Any>>
+                    let buttons: Array<Dictionary<String, Any>> = dictionary["buttons"] != nil ? dictionary["buttons"] as! Array<Dictionary<String, Any>> : []
                     let buttonsCount: Int = min(buttons.count, KRECardInfo.buttonLimit)
                     var options: Array<KREOption> = Array<KREOption>()
                     
