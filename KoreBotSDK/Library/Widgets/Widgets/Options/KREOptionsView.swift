@@ -223,25 +223,25 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
                 cell.imgViewWidthConstraint.constant = 0.0
             }
             
-            if(option.buttonAction != nil){
-                let buttonAction = option.buttonAction
-//                cell.actionButtonHeightConstraint.constant = 30.0
-//                cell.actionButton.setTitle(buttonAction?.title, for: .normal)
-//                cell.buttonAction = {[weak self] (text) in
-//                    if (buttonAction?.type == .webURL) {
-//                        if ((self?.detailLinkAction) != nil) {
-//                            self?.detailLinkAction(buttonAction?.payload)
-//                        }
-//                    } else if (buttonAction?.type == .postback) {
-//                        if (self?.optionsButtonAction != nil) {
-//                            self?.optionsButtonAction(buttonAction?.payload)
-//                        }
-//                    }
-//                }
-            }else{
-//                cell.actionButtonHeightConstraint.constant = 0.0
-//                cell.actionButton.setTitle(nil, for: .normal)
-            }
+//            if(option.buttonAction != nil){
+//                let buttonAction = option.buttonAction
+////                cell.actionButtonHeightConstraint.constant = 30.0
+////                cell.actionButton.setTitle(buttonAction?.title, for: .normal)
+////                cell.buttonAction = {[weak self] (text) in
+////                    if (buttonAction?.type == .webURL) {
+////                        if ((self?.detailLinkAction) != nil) {
+////                            self?.detailLinkAction(buttonAction?.payload)
+////                        }
+////                    } else if (buttonAction?.type == .postback) {
+////                        if (self?.optionsButtonAction != nil) {
+////                            self?.optionsButtonAction(buttonAction?.payload)
+////                        }
+////                    }
+////                }
+//            }else{
+////                cell.actionButtonHeightConstraint.constant = 0.0
+////                cell.actionButton.setTitle(nil, for: .normal)
+//            }
             
             return cell
         }

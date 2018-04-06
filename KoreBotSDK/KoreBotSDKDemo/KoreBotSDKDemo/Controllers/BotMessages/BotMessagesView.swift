@@ -23,6 +23,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     var viewDelegate: BotMessagesViewDelegate?
     var shouldScrollToBottom: Bool = false
     var clearBackground = false
+    var userActive = false
     
     weak var thread: KREThread! {
         didSet{
@@ -171,8 +172,16 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         
         switch (cell.bubbleView.bubbleType!) {
         case .text:
+            
             let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
+            
             self.textLinkDetection(textLabel: bubbleView.textLabel)
+            if(bubbleView.textLabel.attributedText?.string == "Welcome John, You already hold a Savings account with Kore bank."){
+                userActive = true
+            }
+            if(userActive){
+                self.updtaeUserImage()
+            }
             
             bubbleView.onChange = { [weak self](reload) in
                 self?.tableView.reloadRows(at: [indexPath], with: .none)
@@ -347,6 +356,11 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             }
         }
     }
+    
+    @objc fileprivate func updtaeUserImage() {
+        NotificationCenter.default.post(name: Notification.Name(updateUserImageNotification), object: nil)
+    }
+    
     
     // MARK:- deinit
     deinit {

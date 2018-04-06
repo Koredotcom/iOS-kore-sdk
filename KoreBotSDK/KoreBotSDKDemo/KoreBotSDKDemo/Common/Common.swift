@@ -14,9 +14,10 @@ var startSpeakingNotification = "StartSpeakingNowNotificationName"
 var stopSpeakingNotification = "StopSpeakingNowNotificationName"
 var showTableTemplateNotification = "ShowTableTemplateNotificationName"
 var reloadTableNotification = "reloadTableNotification"
+var updateUserImageNotification = "updateUserImageNotification"
 var isSpeakingEnabled = false
 
-let userColor: UIColor = UIColor(red: 138 / 255.0, green: 149 / 255.0, blue: 159 / 255.0, alpha: 1)
+let userColor: UIColor = UIColor(red: 38 / 255.0, green: 52 / 255.0, blue: 74 / 255.0, alpha: 1)
 let botColor: UIColor = UIColor(red: 237 / 255.0, green: 238 / 255.0, blue: 241 / 255.0, alpha: 1)
 
 open class Common : NSObject {

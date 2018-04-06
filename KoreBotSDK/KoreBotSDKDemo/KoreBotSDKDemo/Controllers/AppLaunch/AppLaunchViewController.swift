@@ -13,6 +13,7 @@ import CoreData
 
 class AppLaunchViewController: UIViewController {
     
+    @IBOutlet weak var imgView: UIImageView!
     // MARK: properties
     @IBOutlet weak var chatButton: UIButton!
     // MARK: life-cycle events
@@ -23,6 +24,7 @@ class AppLaunchViewController: UIViewController {
        // self.chatButton.setTitle(String(format: "%@", chatBotName), for: .normal)
         setInitialState()
         self.automaticallyAdjustsScrollViewInsets = false
+        imgView.contentMode = .scaleAspectFit
     }
     
     override func viewDidAppear(_ animated: Bool) {

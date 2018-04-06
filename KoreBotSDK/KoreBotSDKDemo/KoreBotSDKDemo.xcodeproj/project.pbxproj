@@ -17,6 +17,9 @@
 		0C6D099F206B9EB700CE166E /* SubTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D099C206B9EB600CE166E /* SubTableViewCell.swift */; };
 		0CA5900020614502002DA3B6 /* MiniTableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA58FFF20614502002DA3B6 /* MiniTableBubbleView.swift */; };
 		0CD0CD492074E3E600FD46F9 /* MenuBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0CD482074E3E600FD46F9 /* MenuBubbleView.swift */; };
+		0CD0CD552077491200FD46F9 /* barrylogo@2x.png in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0CD522077491100FD46F9 /* barrylogo@2x.png */; };
+		0CD0CD562077491200FD46F9 /* barrylogo@3x.png in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0CD532077491100FD46F9 /* barrylogo@3x.png */; };
+		0CD0CD572077491200FD46F9 /* barrylogo.png in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0CD542077491100FD46F9 /* barrylogo.png */; };
 		2E1E49F68222AAA4C970168B /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E1812F1242FE88925056F7C /* Pods_KoreBotSDKDemo.framework */; };
 		6E14F4691F2F4D8600F5C149 /* BotMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E14F4681F2F4D8600F5C149 /* BotMessagesView.swift */; };
 		6E202A581FBB22AF002A608C /* BalloonMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E202A571FBB22AF002A608C /* BalloonMarker.swift */; };
@@ -98,6 +101,9 @@
 		0C6D099C206B9EB600CE166E /* SubTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubTableViewCell.swift; sourceTree = "<group>"; };
 		0CA58FFF20614502002DA3B6 /* MiniTableBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniTableBubbleView.swift; sourceTree = "<group>"; };
 		0CD0CD482074E3E600FD46F9 /* MenuBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuBubbleView.swift; path = KoreBotSDKDemo/Library/BubbleViews/Menu/MenuBubbleView.swift; sourceTree = SOURCE_ROOT; };
+		0CD0CD522077491100FD46F9 /* barrylogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "barrylogo@2x.png"; sourceTree = "<group>"; };
+		0CD0CD532077491100FD46F9 /* barrylogo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "barrylogo@3x.png"; sourceTree = "<group>"; };
+		0CD0CD542077491100FD46F9 /* barrylogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = barrylogo.png; sourceTree = "<group>"; };
 		51D2300D7315E548B03ED7F4 /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		6E14F4681F2F4D8600F5C149 /* BotMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotMessagesView.swift; sourceTree = "<group>"; };
 		6E1812F1242FE88925056F7C /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -414,6 +420,9 @@
 		D175AD411CEF0CD500BB9442 = {
 			isa = PBXGroup;
 			children = (
+				0CD0CD542077491100FD46F9 /* barrylogo.png */,
+				0CD0CD522077491100FD46F9 /* barrylogo@2x.png */,
+				0CD0CD532077491100FD46F9 /* barrylogo@3x.png */,
 				ACB6026E1FD15B5C00A5B815 /* KoreBotSDK.podspec */,
 				D1A12B6D1E84DD3500F4E2B4 /* SDKConfiguration.swift */,
 				D175AD4C1CEF0CD500BB9442 /* KoreBotSDKDemo */,
@@ -829,6 +838,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CD0CD552077491200FD46F9 /* barrylogo@2x.png in Sources */,
+				0CD0CD562077491200FD46F9 /* barrylogo@3x.png in Sources */,
+				0CD0CD572077491200FD46F9 /* barrylogo.png in Sources */,
 				D1AA2A351CF3489000BE9789 /* Common.swift in Sources */,
 				D1F4E5261CF716640044C093 /* Component.swift in Sources */,
 				D150415C1DE2CD0D00F2F92E /* KREMessage+CoreDataClass.swift in Sources */,
@@ -1030,7 +1042,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk.barry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1053,7 +1065,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk.barry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

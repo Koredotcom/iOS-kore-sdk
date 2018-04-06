@@ -68,6 +68,7 @@ class TextBubbleView : BubbleView {
                 let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
                 let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
                 self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
+                
             }
         }
     }

@@ -12,6 +12,7 @@ import AFNetworking
 class MessageBubbleCell : UITableViewCell {
     var bubbleContainerView: UIView!
     var senderImageView: UIImageView!
+    var userImageView: UIImageView!
     var bubbleView: BubbleView!
 
     var bubbleLeadingConstraint: NSLayoutConstraint!
@@ -37,10 +38,13 @@ class MessageBubbleCell : UITableViewCell {
                 self.bubbleLeadingConstraint.priority = UILayoutPriority.defaultHigh
                 self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultLow
                 self.senderImageView.isHidden = false
+                self.userImageView.isHidden = true
+
             } else {
                 self.bubbleLeadingConstraint.priority = UILayoutPriority.defaultLow
                 self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
                 self.senderImageView.isHidden = true
+                self.userImageView.isHidden = false
             }
             
             self.bubbleView.tailPosition = tailPosition
@@ -50,6 +54,7 @@ class MessageBubbleCell : UITableViewCell {
     
     override func prepareForReuse() {
         self.senderImageView.image = nil;
+        self.userImageView.image = nil
         self.bubbleView.prepareForReuse();
         self.bubbleView.invalidateIntrinsicContentSize()
     }
@@ -67,6 +72,13 @@ class MessageBubbleCell : UITableViewCell {
         self.senderImageView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(self.senderImageView)
         
+        self.userImageView = UIImageView()
+        self.userImageView.contentMode = .scaleAspectFit
+        self.userImageView.clipsToBounds = true
+        self.userImageView.layer.cornerRadius = 15
+        self.userImageView.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.addSubview(self.userImageView)
+        
         // Create the container view
         /*
          The bubble container view has fixed top and bottom constraints
@@ -82,10 +94,12 @@ class MessageBubbleCell : UITableViewCell {
         self.contentView.addSubview(self.bubbleContainerView)
         
         // Setting Constraints
-        let views: [String: UIView] = ["senderImageView": senderImageView, "bubbleContainerView": bubbleContainerView]
+        let views: [String: UIView] = ["senderImageView": senderImageView, "bubbleContainerView": bubbleContainerView, "userImageView": userImageView]
         
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(30)]", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[senderImageView(30)]-4-|", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[userImageView(30)]-8-|", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[userImageView(30)]-4-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[bubbleContainerView]", options:[], metrics:nil, views:views))
 
         self.bubbleBottomConstraint = NSLayoutConstraint(item:self.contentView, attribute:.bottom, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.bottom, multiplier:1.0, constant:4.0)
@@ -131,11 +145,15 @@ class MessageBubbleCell : UITableViewCell {
         
         let placeHolderIcon : UIImage = UIImage(named:"kora")!
         self.senderImageView.image = placeHolderIcon
+        if(self.userImageView.image == nil){
+            self.userImageView.image = UIImage(named:"faceIcon")!
+        }
         
         if (message.iconUrl != nil) {
             let fileUrl = URL(string: message.iconUrl!)
             self.senderImageView.setImageWith(fileUrl, placeholderImage: placeHolderIcon)
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(MessageBubbleCell.updateImage(notification:)), name: NSNotification.Name(rawValue: updateUserImageNotification), object: nil)
     }
 
     func components() -> NSArray {
@@ -149,11 +167,15 @@ class MessageBubbleCell : UITableViewCell {
         
         return height + 12.0
     }
+    @objc func updateImage(notification:Notification){
+        self.userImageView.image = UIImage(named:"john")!
+    }
     
     // MARK:- deinit
     deinit {
         self.bubbleContainerView = nil
         self.senderImageView = nil
+        self.userImageView = nil
         self.bubbleLeadingConstraint = nil
         self.bubbleTrailingConstraint = nil
         self.bubbleBottomConstraint = nil
@@ -164,6 +186,12 @@ class MessageBubbleCell : UITableViewCell {
 class TextBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .text
+    }
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
     }
 }
 
@@ -288,16 +316,12 @@ class MenuBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleLeadingConstraint.constant = 0
-            self.bubbleTrailingConstraint.constant = 0
+            self.bubbleLeadingConstraint.constant = 45
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
     
-    override func configureWithComponents(_ components: Array<KREComponent>) {
-        super.configureWithComponents(components)
-        self.senderImageView.isHidden = true
-    }
+   
 }
 class ResponsiveTableBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
@@ -316,4 +340,5 @@ class ResponsiveTableBubbleCell : MessageBubbleCell {
         super.configureWithComponents(components)
         self.senderImageView.isHidden = true
     }
+    
 }

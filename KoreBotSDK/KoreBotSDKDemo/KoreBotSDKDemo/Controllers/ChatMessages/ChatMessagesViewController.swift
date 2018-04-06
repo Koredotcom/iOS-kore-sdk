@@ -253,6 +253,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             
             botClient.connectionDidOpen = { [weak self] () in
                 self?.updateNavBarPrompt()
+                if(self?.botClient != nil){
+                    self?.botClient.sendMessage("Welpro", options: [] as AnyObject)
+                }
             }
             
             botClient.connectionReady = { () in
@@ -518,6 +521,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.showTableTemplateView), name: NSNotification.Name(rawValue: showTableTemplateNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.reloadTable(notification:)), name: NSNotification.Name(rawValue: reloadTableNotification), object: nil)
+        
     }
     
     func removeNotifications() {

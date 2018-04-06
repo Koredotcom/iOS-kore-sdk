@@ -11,7 +11,7 @@ import UIKit
 import KoreBotSDK
 
 class MenuBubbleView: BubbleView {
-    static let btnLimit: Int = 7
+    static let btnLimit: Int = 3
     static let headerTextLimit: Int = 640
     
     var textLabel: KREAttributedLabel!
@@ -42,26 +42,23 @@ class MenuBubbleView: BubbleView {
     override func initialize() {
         super.initialize()
         
-        self.intializeCardLayout()
         self.textLabel = KREAttributedLabel(frame: CGRect.zero)
-        self.textLabel.textColor = Common.UIColorRGB(0x444444)
+        self.textLabel.textColor = UIColor.white
+        
         self.textLabel.backgroundColor = UIColor.clear
-        self.textLabel.mentionTextColor = Common.UIColorRGB(0x8ac85a)
-        self.textLabel.hashtagTextColor = Common.UIColorRGB(0x8ac85a)
-        self.textLabel.linkTextColor = Common.UIColorRGB(0x0076FF)
         self.textLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
         self.textLabel.numberOfLines = 0
         self.textLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.textLabel.isUserInteractionEnabled = true
         self.textLabel.contentMode = UIViewContentMode.topLeft
         self.textLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.cardView.addSubview(self.textLabel)
+        self.addSubview(self.textLabel)
         
         self.optionsView = KREOptionsView()
         self.optionsView.translatesAutoresizingMaskIntoConstraints = false
         self.optionsView.isUserInteractionEnabled = true
         self.optionsView.contentMode = UIViewContentMode.topLeft
-        self.cardView.addSubview(self.optionsView)
+        self.addSubview(self.optionsView)
         
         self.showMoreButton = UIButton.init(frame: CGRect.zero)
         self.showMoreButton.setTitle("Show More", for: .normal)
@@ -71,14 +68,14 @@ class MenuBubbleView: BubbleView {
         self.showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
         self.showMoreButton.isHidden = true
         self.showMoreButton.clipsToBounds = true
-        self.cardView.addSubview(self.showMoreButton)
+        self.addSubview(self.showMoreButton)
         
         let views: [String: UIView] = ["textLabel": textLabel, "optionsView": optionsView, "showMoreButton": showMoreButton]
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[textLabel]-10-[optionsView]|", options: [], metrics: nil, views: views))
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[textLabel]-10-|", options: [], metrics: nil, views: views))
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[optionsView]-10-|", options: [], metrics: nil, views: views))
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[showMoreButton(36.0)]|", options: [], metrics: nil, views: views))
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[showMoreButton]-15-|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[textLabel]-10-[optionsView]|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[textLabel]-10-|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[optionsView]|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[showMoreButton(36.0)]|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[showMoreButton]-10-|", options: [], metrics: nil, views: views))
         
         self.textLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
         
@@ -93,7 +90,13 @@ class MenuBubbleView: BubbleView {
             }
         }
     }
-    
+   override func borderColor() -> UIColor {
+        if (self.tailPosition == BubbleMaskTailPosition.left) {
+            return userColor//BubbleViewLeftTint
+        }
+        
+        return BubbleViewRightTint
+    }
     // MARK: populate components
     override func populateComponents() {
         if (components.count > 0) {
@@ -110,9 +113,8 @@ class MenuBubbleView: BubbleView {
                    buttonsCount = buttons.count
                 }
                 else{
-                    buttonsCount = OptionsBubbleView.buttonsLimit
+                    buttonsCount = MenuBubbleView.btnLimit
                 }
-//                let buttonsCount: Int = min(buttons.count, OptionsBubbleView.buttonsLimit)
                 var options: Array<KREOption> = Array<KREOption>()
                 
                 for i in 0..<buttonsCount {
@@ -142,8 +144,11 @@ class MenuBubbleView: BubbleView {
         if(!self.showMoreButton.isHidden){
             showMoreheight = 36
         }
+        let limitingSize: CGSize  = CGSize(width: BubbleViewMaxWidth - 20, height: CGFloat.greatestFiniteMagnitude)
+        let textSize: CGSize = self.textLabel.sizeThatFits(limitingSize)
         let rowsHeight = self.optionsView.getExpectedHeight(width: BubbleViewMaxWidth)
-        return CGSize(width: BubbleViewMaxWidth, height: rowsHeight + 75.0 + showMoreheight)
+//        let rowsHeight = self.optionsView.getExpectedHeight(width: BubbleViewMaxWidth)
+        return CGSize(width: BubbleViewMaxWidth, height: rowsHeight  + textSize.height + showMoreheight + 20.0)
     }
     
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
