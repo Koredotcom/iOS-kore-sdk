@@ -144,10 +144,12 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
     var fromPlaceholder: UILabel!
     var toPlaceholder: UILabel!
     var ccPlaceholder: UILabel!
+    var attachmentLabel: UILabel!
     
     var fromLabel: UILabel!
     var toLabel: UILabel!
     var ccLabel: UILabel!
+    var subjectLabel: UILabel!
     
     var textView: UITextView!
     var footerView: UIView!
@@ -233,7 +235,16 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         ccLabel.lineBreakMode = .byTruncatingTail
         ccLabel.sizeToFit()
         self.addSubview(ccLabel)
-
+        
+        subjectLabel = UILabel(frame: .zero)
+        subjectLabel.translatesAutoresizingMaskIntoConstraints = false
+        subjectLabel.font = UIFont(name: "Lato-Bold", size: 14.0)!
+        subjectLabel.textColor = Common.UIColorRGB(0x484848)
+        subjectLabel.numberOfLines = 2
+        subjectLabel.lineBreakMode = .byTruncatingTail
+        subjectLabel.sizeToFit()
+        self.addSubview(subjectLabel)
+        
         textView = UITextView(frame: .zero)
         textView.backgroundColor = .white
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -244,6 +255,16 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         textView.sizeToFit()
         addSubview(textView)
         
+        attachmentLabel = UILabel(frame: CGRect.zero)
+        attachmentLabel.font = UIFont(name: "Lato-Regular", size: 12.0)
+        attachmentLabel.textColor = Common.UIColorRGB(0x8B93A0)
+        attachmentLabel.numberOfLines = 0
+        attachmentLabel.sizeToFit()
+        attachmentLabel.textAlignment = .right
+        attachmentLabel.isUserInteractionEnabled = true
+        attachmentLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(attachmentLabel)
+
         footerView = UIView(frame: .zero)
         footerView.backgroundColor = .white
         footerView.translatesAutoresizingMaskIntoConstraints = false
@@ -259,7 +280,7 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         button.addTarget(self, action: #selector(buttonAction(_:)), for: .touchUpInside)
         addSubview(button)
 
-        var views: [String: UIView] = ["fromPlaceholder": fromPlaceholder, "fromLabel": fromLabel, "toPlaceholder": toPlaceholder, "toLabel": toLabel, "ccPlaceholder": ccPlaceholder, "ccLabel": ccLabel, "textView": textView, "footerView": footerView, "button": button]
+        var views: [String: UIView] = ["fromPlaceholder": fromPlaceholder, "fromLabel": fromLabel, "toPlaceholder": toPlaceholder, "toLabel": toLabel, "ccPlaceholder": ccPlaceholder, "ccLabel": ccLabel, "textView": textView, "footerView": footerView, "button": button, "attachmentLabel":attachmentLabel, "subjectLabel": subjectLabel]
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[fromPlaceholder]", options: [], metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[fromLabel]", options: [], metrics: nil, views: views))
@@ -267,14 +288,17 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[fromLabel]-3-[toLabel]", options: [], metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[toLabel]-3-[ccPlaceholder]", options: [], metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[toLabel]-3-[ccLabel]", options: [], metrics: nil, views: views))
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[ccLabel]-6-[textView]-5-[footerView(15)]-[button]|", options: [], metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat:
+            "V:[ccLabel]-6-[subjectLabel]-0-[textView]-3-[attachmentLabel]-5-[footerView(15)]-[button]|", options: [], metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[fromPlaceholder(32)]-5-[fromLabel]-8-|", options: [], metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[toPlaceholder(32)]-5-[toLabel]-8-|", options: [], metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[ccPlaceholder(32)]-5-[ccLabel]-8-|", options: [], metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[textView]-5-|", options: [], metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[subjectLabel]-8-|", options: [], metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-6-[attachmentLabel]-6-|", options: [], metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[footerView]-10-|", options: [], metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[button]|", options: [], metrics: nil, views: views))
-
+        
         self.ccLabel.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: .vertical)
         self.textView.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .vertical)
         
@@ -318,17 +342,17 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
     }
     
     static func getAttributedString(for emailObject: KAEmailCardInfo) -> NSMutableAttributedString {
-        let subject = emailObject.subject ?? ""
-        let subjectString = formatHTMLEscapedString(subject)
+//        let subject = emailObject.subject ?? ""
+//        let subjectString = formatHTMLEscapedString(subject)
         let subjectAttributes = [NSAttributedStringKey.foregroundColor:Common.UIColorRGB(0x484848),
                             NSAttributedStringKey.font: UIFont(name: "Lato-Bold", size: 14.0)!]
-        let attributedString = NSMutableAttributedString(string: "\(subjectString)", attributes: subjectAttributes)
+        let attributedString = NSMutableAttributedString(string: "", attributes: subjectAttributes)
 
         let desc = emailObject.desc ?? ""
         let descString = formatHTMLEscapedString(desc)
         let descAttributes = [NSAttributedStringKey.foregroundColor:Common.UIColorRGB(0x777777),
                              NSAttributedStringKey.font: UIFont(name: "Lato-Regular", size: 14.0)!]
-        let descAttributedString = NSAttributedString(string: "\n\(descString)", attributes: descAttributes)
+        let descAttributedString = NSAttributedString(string: "\(descString)", attributes: descAttributes)
         attributedString.append(descAttributedString)
         return attributedString
     }
@@ -356,7 +380,12 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         fromLabel.attributedText = fromAttributedString
 
         let to = object.to?.joined(separator: ", ")
-        let toString = KAEmailCardView.formatHTMLEscapedString(to!)
+        var toString = KAEmailCardView.formatHTMLEscapedString(to!)
+        if toString.count == 0 {
+            toString = "  "
+        }
+        print(toString)
+        
         let toAttributes = [NSAttributedStringKey.foregroundColor:Common.UIColorRGB(0x1A1A1A),
                                  NSAttributedStringKey.font: UIFont(name: "Lato-Regular", size: 14.0)!]
         let toAttributedString = NSAttributedString(string: toString, attributes: toAttributes)
@@ -367,8 +396,34 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
             cc = (object.cc?.joined(separator: ", "))!
         }
         let ccString = KAEmailCardView.formatHTMLEscapedString(cc)
-        let ccAttributedString = NSAttributedString(string: ccString, attributes: toAttributes)
-        ccLabel.attributedText = ccAttributedString
+        if ccString.count == 1 || ccString.count == 0 {
+            ccLabel.text = ""
+            ccPlaceholder.text = ""
+            ccLabel.numberOfLines = 0
+        }else{
+            ccPlaceholder.text = "Cc"
+            let ccAttributedString = NSAttributedString(string: ccString, attributes: toAttributes)
+            ccLabel.attributedText = ccAttributedString
+        }
+        
+        let iconsSize = CGRect(x: 0, y: -2, width: 14, height: 14)
+        let attachment = NSTextAttachment()
+        attachment.bounds = iconsSize
+        attachment.image = UIImage(named: "inbox_attachment")
+        let attachmentAttributedString = NSMutableAttributedString()
+        attachmentAttributedString.append(NSAttributedString(attachment: attachment))
+        let attachmentsCount = object.attachments?.count ?? 0
+        if attachmentsCount == 0 {
+            attachmentLabel.text = ""
+        }else{
+            attachmentAttributedString.append(NSAttributedString(string: String(format: "%d %@",attachmentsCount, attachmentsCount == 1 ? "attachment" : "attachments")))
+            attachmentLabel.attributedText = attachmentAttributedString
+        }
+        
+        let subject = emailObject.subject ?? ""
+        let subjectString = KAEmailCardView.formatHTMLEscapedString(subject)
+        subjectLabel.text = subjectString
+        subjectLabel.backgroundColor = UIColor.clear
         
         textView.attributedText = KAEmailCardView.getAttributedString(for: object)
         textView.textContainer.maximumNumberOfLines = textView.numberOfLines()
