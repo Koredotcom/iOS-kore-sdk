@@ -42,7 +42,14 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
     }
     
     func stringForValue(_ value: Double, entry: ChartDataEntry, dataSetIndex: Int, viewPortHandler: ViewPortHandler?) -> String {
-        return entry.data!["displayValue"] != nil ? entry.data!["displayValue"] as! String : "\(value)"
+        let keys:[String] = entry.data!.allKeys as! [String]
+        
+        for i in 0..<keys.count {
+            if(keys[i] == "displayValue"){
+                return  entry.data!["displayValue"] as! String
+            }
+        }
+        return "\(value)"
     }
     
     func intializeCardLayout(){
@@ -317,9 +324,11 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             pieChartDataSet.selectionShift = 7
             let pieChartData = PieChartData(dataSet: pieChartDataSet)
             pieChartData.setDrawValues(false)
+             pieChartData.setValueFormatter(self)
             self.pcView.extraRightOffset = rightOffset
             self.pcView.data = pieChartData
             self.pcView.highlightValues(nil)
+            
             self.pcView.animate(yAxisDuration: 1.4, easingOption: ChartEasingOption.easeInOutBack)
             
         }
@@ -379,6 +388,8 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         }
 
         let lineChartData = LineChartData(dataSets: dataSets)
+        lineChartData.setValueFormatter(self)
+
 
         self.xAxisValues = headers
         self.lcView.data = lineChartData
@@ -421,6 +432,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         barChartData.setValueTextColor(UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1))
         barChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 8.0))
         barChartData.setDrawValues(false)
+        barChartData.setValueFormatter(self)
         
         // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
         let groupSpace = 0.30
@@ -485,7 +497,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         barChartData.setValueTextColor(UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1))
         barChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 8.0))
         barChartData.setDrawValues(false)
-        
+        barChartData.setValueFormatter(self)
         // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
         let groupSpace = 0.30
         let barSpace = 0.01
@@ -510,7 +522,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         }else if type == "linechart" {
             intializeLineChartView()
         }else if type == "barchart" {
-             let direction = jsonObject["direction"] != nil ? jsonObject["direction"] as! String : "vertical"
+             let direction = jsonObject["direction"] != nil ? jsonObject["direction"] as! String : "horizontal"
             intializeBarChartView(direction)
         }
     }
