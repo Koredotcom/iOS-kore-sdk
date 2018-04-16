@@ -104,7 +104,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             self.pcView.drawEntryLabelsEnabled = false
             self.pcView.extraRightOffset = 0.0
             self.pcView.rotationEnabled = false
-            self.pcView.legend.enabled = false
+//            self.pcView.legend.enabled = false
         }
         if(pieType == "donut_legend"){
             l.horizontalAlignment = .right
@@ -183,7 +183,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         
         let views: [String: UIView] = ["bcView": bcView]
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[bcView]-15-|", options: [], metrics: nil, views: views))
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[bcView]-15-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-30-[bcView]-15-|", options: [], metrics: nil, views: views))
         
         self.bcView.chartDescription?.enabled = false
         if(direction == "horizontal"){
@@ -314,7 +314,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             self.pcView.animate(yAxisDuration: 1.4, easingOption: ChartEasingOption.easeInOutBack)
         }
         else if(pietype == "donut_legend"){
-            pieChartDataSet.selectionShift = 50
+            pieChartDataSet.selectionShift = 7
             let pieChartData = PieChartData(dataSet: pieChartDataSet)
             pieChartData.setDrawValues(false)
             self.pcView.extraRightOffset = rightOffset
@@ -352,9 +352,14 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
             titles.append(title)
             
-            let values: Array<NSNumber> = dictionary["values"] != nil ? dictionary["values"] as! Array<NSNumber> : []
+            var values: Array<NSNumber> = dictionary["values"] != nil ? dictionary["values"] as! Array<NSNumber> : []
+            if(values.count<headers.count){
+                for _ in 0..<headers.count-values.count {
+                    values.append(0)
+                }
+            }
             var subDataValues: Array<ChartDataEntry> = Array<ChartDataEntry>()
-            for j in 0..<values.count {
+            for j in 0..<headers.count {
                 subDataValues.append(ChartDataEntry(x: Double(j), y: values[j].doubleValue))
             }
             dataValues.append(subDataValues)
@@ -462,7 +467,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
       
 
 
-        var colors = colorsPalet()
+        let colors = colorsPalet()
 //        var colorsArray:  Array<UIColor> =  Array<UIColor>()
 //        colorsArray.append(colors[0])
 
@@ -470,7 +475,9 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         for _ in 0..<1 {
             let dataSet = BarChartDataSet(values: subDataValues, label:"")
             dataSet.stackLabels = titles
-            dataSet.setColors(colors[0],colors[1])
+            let n = titles.count
+            let colorsArr:[NSUIColor] = Array(colors.prefix(n))
+            dataSet.colors = colorsArr
             dataSets.append(dataSet)
         }
 
