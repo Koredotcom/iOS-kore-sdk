@@ -27,6 +27,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
     var dataString: String!
     var data: TableData = TableData()
     let customCellIdentifier = "CustomCellIdentifier"
+     var itemWidth : CGFloat = 0.0
     
     // MARK: init
     init(dataString: String) {
@@ -75,6 +76,10 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
         }
     }
 
+    override func viewWillLayoutSubviews() {
+        collectionView.reloadData()
+        
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -122,7 +127,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
 //        }
         if indexPath.section == 0 {
             cell.textLabel.text = header.title
-            cell.textLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 16.0)!
+            cell.textLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)!
         } else if indexPath.section == 1 {
             cell.textLabel.text = ""
             cell.backgroundColor = Common.UIColorRGB(0xEDEFF2)
@@ -138,7 +143,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
                 cell.textLabel.font = UIFont(name: "HelveticaNeue", size: 15.0)!
             }
         }
-        
+        cell.textLabel.textAlignment = header.alignment
         return cell
     }
     
@@ -149,7 +154,13 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
         
         let viewWidth = UIScreen.main.bounds.size.width - 40
         let maxWidth: CGFloat = viewWidth
-        let itemWidth = floor((maxWidth*CGFloat(percentage)/100))
+        if(data.headers.count<5){
+            itemWidth = floor((maxWidth*CGFloat(percentage)/100))
+        }
+        else{
+            let width : CGFloat = (header.title as NSString).size(withAttributes: [NSAttributedStringKey.font : UIFont(name: "HelveticaNeue-Bold", size: 14.0)!]).width*2.0
+            itemWidth = width
+        }
         
         if indexPath.section == 0 {
             return CGSize(width: itemWidth, height: 44)
@@ -175,7 +186,15 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0.0
+//        if section == 0 {
+//            return (CGFloat(100/data.columns.count)-10.0)
+//        }
+        if(data.columns.count > 0){
+            return (CGFloat(100/data.columns.count))
+        }
+        else{
+            return 100.0
+        }
     }
     
     //MARK: table view delegate methods

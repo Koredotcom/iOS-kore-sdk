@@ -17,6 +17,7 @@ struct Header {
 class TableData {
     var headers: Array<Header> = Array<Header>()
     var rows: Array<Array<String>> = Array<Array<String>>()
+     var columns: Array<Array<String>> = Array<Array<String>>()
     var elements:Array<Dictionary<String, Any>> = Array<Dictionary<String, Any>>()
     var tableDesign:String!
     
@@ -25,6 +26,8 @@ class TableData {
         guard let columns = data["columns"] as? Array<Array<String>> else { return }
         guard let locelements = data["elements"] as? Array<Dictionary<String, Any>> else { return }
         elements = locelements
+        self.columns = columns
+        
         tableDesign = data["table_design"] != nil ? data["table_design"] as? String : "responsive"
         var percentage: Int = Int(floor(Double(100/columns.count)))
         for column in columns {
@@ -64,6 +67,8 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
     var data: TableData = TableData()
     let rowsDataLimit = 3
     var rows: Array<Array<String>> = Array<Array<String>>()
+    var itemWidth:CGFloat = 0.0
+    var count = 0
 
     
     var showMore = false
@@ -131,7 +136,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
     
     //MARK: collection view delegate methods
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        let rows = self.rows//self.data.rows
+        let rows = self.rows
         return rows.count + 2
     }
     
@@ -142,7 +147,6 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         } else if section == 1 {
             return 1
         } else {
-//            let rows = self.rows//self.data.rows
             let row = rows[section - 2]
             return row.count
         }
@@ -157,11 +161,14 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         let header = headers[indexPath.row]
         if indexPath.section == 0 {
             cell.textLabel.text = header.title
-            cell.textLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)!
-        } else if indexPath.section == 1 {
+            cell.textLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
+            cell.textLabel.textAlignment = header.alignment
+
         } else if indexPath.section == 1 {
             cell.textLabel.text = ""
             cell.backgroundColor = .white
+            cell.textLabel.textAlignment = header.alignment
+
         } else {
             let rows = self.data.rows
             let sec = indexPath.section - 2
@@ -173,6 +180,8 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
             } else {
                 cell.textLabel.text = row[indexPath.row]
                 cell.textLabel.font = UIFont(name: "HelveticaNeue", size: 14.0)!
+                cell.textLabel.textAlignment = header.alignment
+
             }
         }
         
@@ -187,7 +196,13 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         
         let viewWidth = UIScreen.main.bounds.size.width - 40
         let maxWidth: CGFloat = viewWidth - 5*(count-1)
-        let itemWidth = floor((maxWidth*CGFloat(percentage)/100))
+        if(data.headers.count<5){
+            itemWidth = floor((maxWidth*CGFloat(percentage)/100))
+        }
+        else{
+            let width : CGFloat = (header.title as NSString).size(withAttributes: [NSAttributedStringKey.font : UIFont(name: "HelveticaNeue-Bold", size: 14.0)!]).width*2.0
+            itemWidth = width
+        }
         
         if indexPath.section == 0 {
             return CGSize(width: itemWidth, height: 36)
@@ -198,7 +213,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
             let row = rows[indexPath.section - 2]
             let text = row[indexPath.row]
             if text == "---" {
-                return CGSize(width: viewWidth, height: 1)
+                return CGSize(width: 0, height: 1)
             }
             return CGSize(width: itemWidth, height: 36)
         }
@@ -213,7 +228,13 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 5.0
+        
+        if(data.columns.count > 0){
+            return (CGFloat(100/data.columns.count))
+        }
+        else{
+            return 100.0
+        }
     }
     
     override func populateComponents() {
@@ -241,7 +262,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
                 }
                 self.rows = Array(rowsData.dropLast(rowsData.count - index))
                 if self.showMore && self.data.rows[self.data.rows.count-1][0] != "---" {
-                    self.data.rows.append(["---"])
+//                    self.data.rows.append(["---"])
                 }
                 self.collectionView.collectionViewLayout.invalidateLayout()
                 self.collectionView.reloadData()
@@ -259,11 +280,11 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
             if text == "---" {
                 height += 1.0
             } else {
-                height += 36.0
+                height += 44.0
             }
         }
         if self.showMore {
-            height += 36.0
+            height += 44.0
         }
         
         return CGSize(width: 0.0, height: height)
