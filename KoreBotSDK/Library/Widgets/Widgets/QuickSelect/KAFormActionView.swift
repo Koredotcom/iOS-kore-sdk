@@ -103,6 +103,20 @@ extension KAFormAction: Decodable {
         }
     }
 }
+open class FormData {
+    public var workingHrs : Array<Dictionary<String, Any>> = Array<Dictionary<String, Any>>()
+    public convenience init(_ data: NSDictionary){
+        print(data)
+        self.init()
+        let formAction: Array<Dictionary<String, Any>> = data["form_actions"] != nil ? data["form_actions"] as! Array<Dictionary<String, Any>> : []
+        print(formAction)
+        let first = formAction.first
+        let customData: Dictionary<String, Any> = first!["customData"] != nil ? first!["customData"] as! Dictionary<String, Any> : [:]
+        print(customData)
+        workingHrs = customData["working_hours"] != nil ?customData["working_hours"] as! Array<Dictionary<String, Any>> : []
+        print(workingHrs)
+    }
+}
 
 public class KAFormActionView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var formActionList: [KAFormAction]!

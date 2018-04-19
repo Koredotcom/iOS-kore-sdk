@@ -651,6 +651,22 @@ extension Date {
         dateFormatter.dateFormat = "LLLL d, yyyy"
         return dateFormatter.string(from: date as Date)
     }
+    
+    //Friday, March 30 2018
+   public func formatAsDayDate(using date: NSDate) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE, LLLL d yyyy"
+        return dateFormatter.string(from: date as Date)
+    }
+    
+    public func formatAsTime(using date: NSDate) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        dateFormatter.amSymbol = "AM"
+        dateFormatter.pmSymbol = "PM"
+
+        return dateFormatter.string(from: date as Date)
+    }
 }
 
 extension UITextView {
