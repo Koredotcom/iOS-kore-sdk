@@ -105,6 +105,7 @@ extension KAFormAction: Decodable {
 }
 open class FormData {
     public var workingHrs : Array<Dictionary<String, Any>> = Array<Dictionary<String, Any>>()
+    public var persons : Array<Any> = Array<Any>()
     public convenience init(_ data: NSDictionary){
         print(data)
         self.init()
@@ -114,7 +115,9 @@ open class FormData {
         let customData: Dictionary<String, Any> = first!["customData"] != nil ? first!["customData"] as! Dictionary<String, Any> : [:]
         print(customData)
         workingHrs = customData["working_hours"] != nil ?customData["working_hours"] as! Array<Dictionary<String, Any>> : []
-        print(workingHrs)
+        persons = customData["persons"] != nil ?customData["persons"] as! Array<Any> : []
+        print(persons)
+        
     }
 }
 
