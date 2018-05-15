@@ -413,7 +413,7 @@ public class KACarouselView: KRECarouselView {
     }
 }
 
-extension Collection where Iterator.Element == String {
+public extension Collection where Iterator.Element == String {
     var hashTags: [String] {
         return map{ String(format: "#%@", $0) }
     }

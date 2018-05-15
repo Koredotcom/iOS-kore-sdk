@@ -161,7 +161,9 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                     }
                 }
             }, failure: { (error) in
-
+                if (self.failureClosure != nil) {
+                    self.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as? [String : Any]))
+                }
             })
         }
     }
