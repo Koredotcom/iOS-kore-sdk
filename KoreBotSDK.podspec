@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
         ss.source_files = 'KoreBotSDK/Library/KoreBotSDK/KoreBotSDK/**/*.{h,m,swift}'
         ss.public_header_files = 'KoreBotSDK/KoreBotSDK.h'
 
-        ss.dependency 'Mantle', '2.0.2'
+        ss.dependency 'Mantle', '2.1.0'
         ss.dependency 'AFNetworking', '3.2.0'
         ss.dependency 'SocketRocket'
 
