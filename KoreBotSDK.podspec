@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name = 'KoreBotSDK'
-    s.version = '0.0.9'
+    s.version = '0.1.0'
     s.license  = {:type => 'MIT', :file => 'KoreBotSDK/LICENSE' }
     s.summary = 'KoreBotSDK lets a user interact with Kore bots'
     s.homepage = 'https://kore.ai'
