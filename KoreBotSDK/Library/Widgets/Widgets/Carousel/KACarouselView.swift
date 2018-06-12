@@ -230,7 +230,7 @@ public class KACardView: KRECardView {
         
         titleLabel.text = cardInfo.title
         subTitleLabel.text = cardInfo.subTitle
-        informationLabel.text = "Link: News Article"
+        informationLabel.text = "Article"
         statusLabel.text = "Private"
         if let value = cardInfo.payload!["hashTag"] {
             let array = (value as? [String])
@@ -246,7 +246,7 @@ public class KACardView: KRECardView {
     public override func prepareForReuse() {
         titleLabel.text = ""
         subTitleLabel.text = ""
-        informationLabel.text = "Link: News Article"
+        informationLabel.text = "Article"
         statusLabel.text = "Private"
         hashTagsLabel.text = ""
     }
@@ -302,7 +302,7 @@ public class KAListTableViewCell: UITableViewCell {
         informationLabel.textAlignment = .left
         informationLabel.font = UIFont(name: "Lato-Regular", size: 12.0)
         informationLabel.textColor = UIColor.gray
-        informationLabel.text = "Link: News Article"
+        informationLabel.text = "Article"
         contentView.addSubview(informationLabel)
         
         statusLabel = UILabel(frame: .zero)
