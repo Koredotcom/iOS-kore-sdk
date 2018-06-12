@@ -430,7 +430,12 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         
         let dateFormatter: DateFormatter = DateFormatter()
         dateFormatter.dateFormat = "E, d MMM yyyy HH:mm:ss Z"
-        let date = dateFormatter.date(from: object.date!)
+        var dateString: String = object.date!
+        if dateString.contains("(UTC)") {
+            let range = dateString.range(of: "(UTC)")!
+            dateString = dateString.replacingCharacters(in: range, with: "")
+        }
+        let date = dateFormatter.date(from: dateString)
         dateTimeLabel.text = date?.formattedAsAgo()
         typeLabel.text = object.source ?? ""
     }
