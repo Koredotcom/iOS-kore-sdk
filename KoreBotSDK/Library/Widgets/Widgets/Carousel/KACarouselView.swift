@@ -231,7 +231,9 @@ public class KACardView: KRECardView {
         titleLabel.text = cardInfo.title
         subTitleLabel.text = cardInfo.subTitle
         informationLabel.text = "Article"
-        statusLabel.text = "Private"
+        if let sharesCount = cardInfo.payload!["sharesCount"] as? Int {
+            statusLabel.text = sharesCount > 0 ? "Shared" : "Private"
+        }
         if let value = cardInfo.payload!["hashTag"] {
             let array = (value as? [String])
             let predicate = NSPredicate(format: "length > 0")
