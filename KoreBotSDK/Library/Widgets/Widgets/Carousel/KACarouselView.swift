@@ -392,7 +392,8 @@ public class KACarouselView: KRECarouselView {
         cell.cardView.userIntent = { [weak self] (text) in
             let cardInfo = self!.cards[indexPath.row]
             if (self?.userIntent != nil) {
-                self?.userIntent(cardInfo.resourceId)
+                
+                self?.userIntent(text)
             }
         }
         
