@@ -320,7 +320,7 @@ public class KAListTableViewCell: UITableViewCell {
 
         contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLabel]-10-|", options: [], metrics: nil, views: views))
         contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[subTitleLabel]-10-|", options: [], metrics: nil, views: views))
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[hashTagsLabel]-10-|", options: [], metrics: nil, views: views))
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[hashTagsLabel]-20-|", options: [], metrics: nil, views: views))
         contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[informationLabel]", options: [], metrics: nil, views: views))
         contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[statusLabel]-10-|", options: [], metrics: nil, views: views))
         contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[statusLabel]-10-|", options: [], metrics: nil, views: views))
