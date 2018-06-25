@@ -17,7 +17,7 @@ var reloadTableNotification = "reloadTableNotification"
 var updateUserImageNotification = "updateUserImageNotification"
 var isSpeakingEnabled = false
 
-let userColor: UIColor = UIColor(red: 38 / 255.0, green: 52 / 255.0, blue: 74 / 255.0, alpha: 1)
+let userColor: UIColor = Common.UIColorRGB(0x466ea5)
 let botColor: UIColor = UIColor(red: 237 / 255.0, green: 238 / 255.0, blue: 241 / 255.0, alpha: 1)
 
 open class Common : NSObject {

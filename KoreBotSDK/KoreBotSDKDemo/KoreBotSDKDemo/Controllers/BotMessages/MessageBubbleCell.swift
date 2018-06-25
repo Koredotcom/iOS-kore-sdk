@@ -146,7 +146,8 @@ class MessageBubbleCell : UITableViewCell {
         let placeHolderIcon : UIImage = UIImage(named:"kora")!
         self.senderImageView.image = placeHolderIcon
         if(self.userImageView.image == nil){
-            self.userImageView.image = UIImage(named:"faceIcon")!
+            self.userImageView.image = UIImage(named:"happyfaceicon")!
+            self.userImageView.contentMode = .scaleAspectFit
         }
         
         if (message.iconUrl != nil) {
