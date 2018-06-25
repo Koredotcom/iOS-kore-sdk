@@ -10,12 +10,16 @@ import UIKit
 import AFNetworking
 import KoreBotSDK
 import CoreData
+import Foundation
 
 class AppLaunchViewController: UIViewController {
     
     @IBOutlet weak var imgView: UIImageView!
     // MARK: properties
     @IBOutlet weak var chatButton: UIButton!
+    
+    var sessionManager: AFHTTPSessionManager?
+    
     // MARK: life-cycle events
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -128,6 +132,13 @@ class AppLaunchViewController: UIViewController {
     // NOTE: Invokes a webservice and gets the JWT token.
     //       Developer has to host a webservice, which generates the JWT and that should be called from this method.
     func getJwTokenWithClientId(_ clientId: String!, clientSecret: String!, identity: String!, isAnonymous: Bool!, success:((_ jwToken: String?) -> Void)?, failure:((_ error: Error) -> Void)?) {
+        
+        // Session Configuration
+        let configuration = URLSessionConfiguration.default
+        
+        //Manager
+        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL!, sessionConfiguration: configuration)
+        
         // NOTE: You must set your URL to generate JWT. 
         let urlString: String = SDKConfiguration.serverConfig.koreJwtUrl()
         let requestSerializer = AFJSONRequestSerializer()
@@ -144,12 +155,9 @@ class AppLaunchViewController: UIViewController {
                                         "aud": "https://idproxy.kore.com/authorize",
                                         "isAnonymous": isAnonymous]
         
-        let sessionManager: AFHTTPSessionManager = AFHTTPSessionManager(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL!)
-        sessionManager.responseSerializer = AFJSONResponseSerializer.init()
-        sessionManager.requestSerializer = requestSerializer
-        sessionManager.post(urlString, parameters: parameters, progress: { (progress) in
-            
-        }, success: { (dataTask, responseObject) in
+        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.post(urlString, parameters: parameters, progress: nil, success: { (sessionDataTask, responseObject) in
             if (responseObject is NSDictionary) {
                 let dictionary: NSDictionary = responseObject as! NSDictionary
                 let jwToken: String = dictionary["jwt"] as! String
@@ -158,9 +166,10 @@ class AppLaunchViewController: UIViewController {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
             }
-        }) { (dataTask, error) in
+        }) { (sessionDataTask, error) in
             failure?(error)
         }
+    
     }
     
     func showAlert(title: String, message: String) {
