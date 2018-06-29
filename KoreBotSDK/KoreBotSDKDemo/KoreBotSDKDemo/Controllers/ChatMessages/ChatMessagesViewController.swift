@@ -11,12 +11,14 @@ import AVFoundation
 import KoreBotSDK
 import TOWebViewController
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate {
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, AVAudioPlayerDelegate {
     
     // MARK: properties
     var thread: KREThread!
     var botClient: BotClient!
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
+    var audioPlayer: AVAudioPlayer?
+    var audioDecodedData: Data?
     
     @IBOutlet weak var threadContainerView: UIView!
     @IBOutlet weak var quickSelectContainerView: UIView!
@@ -763,7 +765,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if(isSpeakingEnabled){
             var string: String = notification.object! as! String
             string = KREUtilities.getHTMLStrippedString(from: string)
-            self.readOutText(text: string)
+            //self.readOutText(text: string)
+            self.readText(text: string)
         }
     }
     
@@ -784,6 +787,31 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let speechUtterance = AVSpeechUtterance(string: string)
         self.speechSynthesizer.speak(speechUtterance)
     }
+    
+    func readText(text: String) {
+            let ttsService: GoogleTTSService = GoogleTTSService.init()
+                weak var weakSelf = self
+            let filteredText = text.stringByRemovingEmoji()
+            print(filteredText)
+            ttsService.initWithSpeechText(text: filteredText) { (url, encodeeString) in
+                weakSelf?.playAudio(from: url, encodedString: encodeeString)
+            }
+        }
+
+    func playAudio(from url: URL?, encodedString: String) {
+        
+        let decodedData = Data(base64Encoded: encodedString, options: [])
+        do {
+            try audioPlayer = AVAudioPlayer.init(data: decodedData!)
+        } catch {
+
+        }
+
+        audioPlayer?.delegate = self as AVAudioPlayerDelegate
+        audioPlayer?.prepareToPlay()
+        audioPlayer?.play()
+    }
+
     
     func stopTTS(){
         if(self.speechSynthesizer.isSpeaking){
@@ -809,5 +837,19 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     @objc func reloadTable(notification:Notification){
         botMessagesView.tableView.reloadData()
+    }
+}
+
+// code to remove emojis from string
+extension String {
+    func stringByRemovingEmoji() -> String {
+        return String(self.filter { !$0.isEmoji() })
+    }
+}
+
+extension Character {
+    fileprivate func isEmoji() -> Bool {
+        return Character(UnicodeScalar(UInt32(0x1d000))!) <= self && self <= Character(UnicodeScalar(UInt32(0x1f77f))!)
+            || Character(UnicodeScalar(UInt32(0x2100))!) <= self && self <= Character(UnicodeScalar(UInt32(0x26ff))!)
     }
 }
