@@ -19,6 +19,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
     var audioPlayer: AVAudioPlayer?
     var audioDecodedData: Data?
+    var isPlaybackInProgress: Bool?
+    var utterences: [Data] = []
     
     @IBOutlet weak var threadContainerView: UIView!
     @IBOutlet weak var quickSelectContainerView: UIView!
@@ -256,7 +258,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             botClient.connectionDidOpen = { [weak self] () in
                 self?.updateNavBarPrompt()
                 if(self?.botClient != nil){
-                    self?.botClient.sendMessage("Welpro", options: [] as AnyObject)
+//                    self?.botClient.sendMessage("Welpro", options: [] as AnyObject)
                 }
             }
             
@@ -793,29 +795,44 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 weak var weakSelf = self
             let filteredText = text.stringByRemovingEmoji()
             print(filteredText)
-            ttsService.initWithSpeechText(text: filteredText) { (url, encodeeString) in
-                weakSelf?.playAudio(from: url, encodedString: encodeeString)
+            ttsService.initWithSpeechText(text: filteredText) { (encodeeString) in
+                let decodedData = Data(base64Encoded: encodeeString, options: [])
+                if let isPlaying = self.isPlaybackInProgress, isPlaying == true {
+                    self.utterences.append(decodedData!)
+                    print("added uuterance")
+                    return
+                }
+                weakSelf?.playAudio(decodedData: decodedData!)
             }
         }
 
-    func playAudio(from url: URL?, encodedString: String) {
+    func playAudio(decodedData: Data) {
         
-        let decodedData = Data(base64Encoded: encodedString, options: [])
         do {
-            try audioPlayer = AVAudioPlayer.init(data: decodedData!)
+            try audioPlayer = AVAudioPlayer.init(data: decodedData)
         } catch {
 
         }
 
         audioPlayer?.delegate = self as AVAudioPlayerDelegate
         audioPlayer?.prepareToPlay()
+        self.isPlaybackInProgress = true
         audioPlayer?.play()
     }
 
     
     func stopTTS(){
-        if(self.speechSynthesizer.isSpeaking){
-            self.speechSynthesizer.stopSpeaking(at: AVSpeechBoundary.immediate)
+        self.isPlaybackInProgress = false
+        self.audioPlayer?.stop()
+    }
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        self.isPlaybackInProgress = false
+        if utterences.count != 0 {
+            if let firstObject = utterences.first {
+                playAudio(decodedData: firstObject)
+                utterences.removeFirst()
+            }
         }
     }
     
