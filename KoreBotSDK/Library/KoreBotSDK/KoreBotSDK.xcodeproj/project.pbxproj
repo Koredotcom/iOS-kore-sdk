@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		05C8C34920E5E1530073D412 /* TTSHTTPRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C8C34820E5E1530073D412 /* TTSHTTPRequestManager.swift */; };
 		37BBE78780451A770F694C4C /* Pods_KoreBotSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2AE598CFED53D8403BCD98 /* Pods_KoreBotSDK.framework */; };
 		D1200F191CC9F721009BBB1A /* KoreBotSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = D1200F181CC9F721009BBB1A /* KoreBotSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D1200F201CC9F721009BBB1A /* KoreBotSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1200F151CC9F721009BBB1A /* KoreBotSDK.framework */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		0357552329110C3624797E2A /* Pods-KoreBotSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDK.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDK/Pods-KoreBotSDK.release.xcconfig"; sourceTree = "<group>"; };
+		05C8C34820E5E1530073D412 /* TTSHTTPRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TTSHTTPRequestManager.swift; sourceTree = "<group>"; };
 		061DA5063014F993A829742A /* Pods-KoreBotSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDK/Pods-KoreBotSDK.debug.xcconfig"; sourceTree = "<group>"; };
 		AE2AE598CFED53D8403BCD98 /* Pods_KoreBotSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1200F151CC9F721009BBB1A /* KoreBotSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KoreBotSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +79,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		05C8C34220E5DF560073D412 /* GoogleTTS */ = {
+			isa = PBXGroup;
+			children = (
+				05C8C34820E5E1530073D412 /* TTSHTTPRequestManager.swift */,
+			);
+			path = GoogleTTS;
+			sourceTree = "<group>";
+		};
 		99927B5155B7E4A7A0F17F6C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -149,6 +159,7 @@
 		D14AAC991CFD897300AEF5FD /* REST */ = {
 			isa = PBXGroup;
 			children = (
+				05C8C34220E5DF560073D412 /* GoogleTTS */,
 				D14AAC9A1CFD897300AEF5FD /* HTTPRequestManager.swift */,
 			);
 			path = REST;
@@ -332,6 +343,7 @@
 				D14AACA61CFD897300AEF5FD /* RTMPersistentConnection.swift in Sources */,
 				D14AACAA1CFD897300AEF5FD /* JwtModel.swift in Sources */,
 				D14AACA91CFD897300AEF5FD /* ComponentModel.swift in Sources */,
+				05C8C34920E5E1530073D412 /* TTSHTTPRequestManager.swift in Sources */,
 				D14AACAB1CFD897300AEF5FD /* MessageModel.swift in Sources */,
 				D14AACA81CFD897300AEF5FD /* BotInfoModel.swift in Sources */,
 				D14AACA41CFD897300AEF5FD /* BotClient.swift in Sources */,

@@ -10,6 +10,7 @@
 		050267521DEC65BF001256D3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 050267511DEC65BF001256D3 /* AVFoundation.framework */; };
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
+		05C8C34720E5E01C0073D412 /* GoogleTTSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C8C34620E5E01C0073D412 /* GoogleTTSService.swift */; };
 		0C6D0997206B6DC800CE166E /* MiniTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D0996206B6DC700CE166E /* MiniTableViewCell.swift */; };
 		0C6D0999206B9ACC00CE166E /* ResponsiveTableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D0998206B9ACC00CE166E /* ResponsiveTableBubbleView.swift */; };
 		0C6D099D206B9EB700CE166E /* ResponsiveCustonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D099A206B9EB600CE166E /* ResponsiveCustonCell.swift */; };
@@ -94,6 +95,7 @@
 		0590F8411DED7A1B00107721 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		0590F8421DED7A1B00107721 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
+		05C8C34620E5E01C0073D412 /* GoogleTTSService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GoogleTTSService.swift; path = ../../../../../../../Desktop/GoogleTTSService.swift; sourceTree = "<group>"; };
 		0C6D0996206B6DC700CE166E /* MiniTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniTableViewCell.swift; sourceTree = "<group>"; };
 		0C6D0998206B9ACC00CE166E /* ResponsiveTableBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsiveTableBubbleView.swift; sourceTree = "<group>"; };
 		0C6D099A206B9EB600CE166E /* ResponsiveCustonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsiveCustonCell.swift; sourceTree = "<group>"; };
@@ -202,6 +204,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		05C8C34520E5DF830073D412 /* TextToSpeech */ = {
+			isa = PBXGroup;
+			children = (
+				05C8C34620E5E01C0073D412 /* GoogleTTSService.swift */,
+			);
+			path = TextToSpeech;
+			sourceTree = "<group>";
+		};
 		0CD0CD472074E3B500FD46F9 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -499,6 +509,7 @@
 		D1CAF08E1CF0AEA3001BCAEF /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				05C8C34520E5DF830073D412 /* TextToSpeech */,
 				6E5F21E01F8E347D00527A52 /* SpeechRecognition */,
 				D1F086791EACB6CB00A75AD6 /* Vendors */,
 				BB4D2DEC1E28AE4600A97E99 /* Animation */,
@@ -864,6 +875,7 @@
 				6E7E002F1F8E638B002F2789 /* GoogleASRService.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
 				BB4D2DE91E289FA000A97E99 /* KRETypingStatusView.m in Sources */,
+				05C8C34720E5E01C0073D412 /* GoogleTTSService.swift in Sources */,
 				6E7BA00D1F28B62700301C38 /* ChatMessagesViewController.swift in Sources */,
 				D150415B1DE2CD0D00F2F92E /* KREComponent+CoreDataProperties.swift in Sources */,
 				0C6D0999206B9ACC00CE166E /* ResponsiveTableBubbleView.swift in Sources */,
