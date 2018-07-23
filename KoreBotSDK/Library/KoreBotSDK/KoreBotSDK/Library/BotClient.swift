@@ -185,7 +185,9 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     }
     
     open func rtmConnectionDidClose(_ code: Int, reason: String?) {
-        if isNetworkAvailable == false { self.connectionState = .NO_NETWORK }
+        if isNetworkAvailable == false {
+            self.connectionState = .NO_NETWORK
+        }
         switch code {
         case 1000:
             if (self.connectionDidClose != nil) {
@@ -193,6 +195,9 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             }
             break
         default:
+            if (self.connectionDidClose != nil) {
+                self.connectionDidClose(code, reason)
+            }
             break
         }
     }
