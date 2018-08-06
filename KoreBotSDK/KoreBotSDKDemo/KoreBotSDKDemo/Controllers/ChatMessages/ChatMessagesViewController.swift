@@ -466,6 +466,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         case .NONE:
             self.navigationItem.prompt = nil
             break
+        case .CLOSING:
+            break
+       
         }
     }
     
