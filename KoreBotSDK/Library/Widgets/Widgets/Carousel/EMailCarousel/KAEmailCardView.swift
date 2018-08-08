@@ -664,7 +664,7 @@ extension Date {
         return dateFormatter.string(from: date as Date)
     }
     //Fri, Mar 30 2018
-    public func formatAsDayDate2(using date: NSDate) -> String {
+    public func formatAsDayShortDate(using date: NSDate) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEE, LLL d yyyy"
         return dateFormatter.string(from: date as Date)
