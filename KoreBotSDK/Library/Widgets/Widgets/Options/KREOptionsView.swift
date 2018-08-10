@@ -91,6 +91,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
   
     public var optionsButtonAction: ((_ title: String?, _ payload: String?) -> Void)!
     public var detailLinkAction: ((_ text: String?) -> Void)!
+    public var userIntentAction: ((_ title: String?, _ customData: [String: Any]?) -> Void)!
 
     // MARK:- properites
     public var options: Array<KREOption> = Array<KREOption>() {
@@ -122,6 +123,8 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
         optionsView.isScrollEnabled = false
         optionsView.estimatedRowHeight = UITableViewAutomaticDimension
         optionsView.rowHeight = UITableViewAutomaticDimension
+        optionsView.separatorStyle = UITableViewCellSeparatorStyle.singleLine
+        optionsView.separatorInset = .zero
         optionsView.setNeedsLayout()
         optionsView.layoutIfNeeded()
 
@@ -179,6 +182,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             
             cell.textLabel?.text = option.title
             cell.textLabel?.textAlignment = .center
+            cell.textLabel?.textColor = Common.UIColorRGB(0x6168E7)
             
             return cell
         }else if(option.optionType == KREOptionType.list){
@@ -232,6 +236,10 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             } else if (defaultAction?.type == .postback || defaultAction?.type == .postback_disp_payload) {
                 if (self.optionsButtonAction != nil) {
                     self.optionsButtonAction(defaultAction?.title, defaultAction?.payload)
+                }
+            }else if(defaultAction?.type == .user_intent ){
+                if (self.userIntentAction != nil) {
+                    self.userIntentAction(defaultAction?.title, defaultAction?.customData)
                 }
             }
         }
