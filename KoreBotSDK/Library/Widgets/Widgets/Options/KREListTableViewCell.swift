@@ -25,7 +25,7 @@ class KREListTableViewCell: UITableViewCell {
         
         actionButton.layer.cornerRadius = 5
         actionButton.layer.borderWidth = 1.0
-        actionButton.layer.borderColor = Common.UIColorRGB(0x0076ff).cgColor
+        actionButton.layer.borderColor = UIColor(hex: 0x0076ff).cgColor
     }
     
     @IBAction func btnAction(_ sender: Any) {

@@ -9,7 +9,7 @@
 import UIKit
 
 public class KAOptionsView: KREOptionsView {
-    public var userIntent:((_ action: Any?) -> Void)!
+    public var userIntent:((_ action: Any?) -> Void)?
 
     fileprivate let optionCellIdentifier = "KAOptionCellIdentifier"
     fileprivate let listCellIdentifier = "KAListTableViewCellIdentifier"
@@ -39,7 +39,7 @@ public class KAOptionsView: KREOptionsView {
             
             cell.textLabel?.text = option.title
             cell.textLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)
-            cell.textLabel?.textColor = Common.UIColorRGB(0x6168E7)
+            cell.textLabel?.textColor = UIColor(hex: 0x6168E7)
             cell.textLabel?.textAlignment = .center
             return cell
         } else if(option.optionType == KREOptionType.list) {
@@ -66,9 +66,7 @@ public class KAOptionsView: KREOptionsView {
                     self.optionsButtonAction(defaultAction?.title, defaultAction?.payload)
                 }
             } else if (defaultAction?.type == .user_intent) {
-                if (self.userIntent != nil) {
-                    self.userIntent(defaultAction)
-                }
+                self.userIntent?(defaultAction)
             }
         }
     }
@@ -154,10 +152,8 @@ public class KACardView: KRECardView {
         
         if (self.optionsView is KAOptionsView) {
             let ov = self.optionsView as! KAOptionsView
-            ov.userIntent = { [weak self] (object) in
-                if (self?.userIntent != nil) {
-                    self?.userIntent(object)
-                }
+            ov.userIntent = { [unowned self] (object) in
+                self.userIntent(object)
             }
         }
         
@@ -389,12 +385,8 @@ public class KACarouselView: KRECarouselView {
             }
         }
         
-        cell.cardView.userIntent = { [weak self] (text) in
-            let cardInfo = self!.cards[indexPath.row]
-            if (self?.userIntent != nil) {
-                
-                self?.userIntent(text)
-            }
+        cell.cardView.userIntent = { [unowned self] (text) in
+            self.userIntent?(text)
         }
         
         return cell

@@ -298,11 +298,33 @@ public class KREOptionsViewCell: UITableViewCell {
     }
 }
 
-open class Common : NSObject {
-    open static func UIColorRGB(_ rgb: Int) -> UIColor {
-        let blue = CGFloat(rgb & 0xFF)
-        let green = CGFloat((rgb >> 8) & 0xFF)
-        let red = CGFloat((rgb >> 16) & 0xFF)
-        return UIColor(red: red / 255.0, green: green / 255.0, blue: blue / 255.0, alpha: 1)
+extension UIColor {
+    convenience init(hex: Int, alpha: CGFloat = 1.0) {
+        self.init(
+            red: CGFloat((hex & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((hex & 0x00FF00) >> 8)  / 255.0,
+            blue: CGFloat((hex & 0x0000FF) >> 0)  / 255.0,
+            alpha: alpha
+        )
     }
+}
+
+extension DateFormatter {
+    static let iso8601Full: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
+    
+    static let yyyyMMdd: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
 }
