@@ -51,6 +51,8 @@ extension KADriveFileInfo: Decodable {
             sharedBy = try? values.decode(String.self, forKey: .sharedBy)
             thumbnailLink = try? values.decode(String.self, forKey: .thumbnailLink)
             lastModified = try? values.decode(String.self, forKey: .lastModified)
+            fileType = try? values.decode(String.self, forKey: .fileType)
+            fileSize = try? values.decode(String.self, forKey: .fileSize)
             buttons = try? values.decode([KAButtonInfo].self, forKey: .buttons)
         }
     }
@@ -86,9 +88,9 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
             button.titleLabel?.font = buttonFont
         }
     }
-    var extensionLabelFont: UIFont? {
+    var extensionButtonFont: UIFont? {
         didSet {
-            extensionLabel.font = extensionLabelFont
+            extensionButton.titleLabel?.font = extensionButtonFont
         }
     }
     var dateTimeLabelFont: UIFont? {
@@ -101,7 +103,7 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
     var titleLabel: UILabel = UILabel(frame: .zero)
     var sizeLabel: UILabel = UILabel(frame: .zero)
     var sharedByPlaceholder: UILabel = UILabel(frame: .zero)
-    var extensionLabel: UILabel = UILabel(frame: .zero)
+    var extensionButton: UIButton = UIButton(frame: .zero)
     var sharedByLabel: UILabel = UILabel(frame: .zero)
     var dateTimeLabel: UILabel = UILabel(frame: .zero)
     var button: UIButton  = UIButton(frame: .zero)
@@ -138,6 +140,7 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
         titleLabel.textAlignment = .left
         titleLabel.textColor = UIColor(hex: 0x262626)
         titleLabel.sizeToFit()
+        titleLabel.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .horizontal)
         self.addSubview(titleLabel)
 
         sharedByLabelFont = UIFont(name: "Lato-Regular", size: 14.0)
@@ -166,15 +169,17 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
         sharedByPlaceholder.sizeToFit()
         self.addSubview(sharedByPlaceholder)
         
-        extensionLabelFont = UIFont(name: "Lato-Bold", size: 11.0)
-        extensionLabel.font = extensionLabelFont
-        extensionLabel.textColor = UIColor(hex: 0xD0021B)
-        extensionLabel.layer.cornerRadius = 5
-        extensionLabel.textAlignment = .center
-        extensionLabel.layer.borderWidth = 1.5
-        extensionLabel.layer.borderColor = UIColor(hex: 0xD0021B).cgColor
-        extensionLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(extensionLabel)
+        extensionButtonFont = UIFont(name: "Lato-Bold", size: 11.0)
+        extensionButton.setTitleColor(UIColor(hex: 0xD0021B), for: .normal)
+        extensionButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 5.0, 0.0, 5.0)
+        extensionButton.layer.cornerRadius = 5
+        extensionButton.titleLabel?.font = extensionButtonFont
+        extensionButton.titleLabel?.textAlignment = .center
+        extensionButton.layer.borderWidth = 1.5
+        extensionButton.layer.borderColor = UIColor(hex: 0xD0021B).cgColor
+        extensionButton.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
+        extensionButton.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(extensionButton)
         
         dateTimeLabelFont = sizeLabelFont
         dateTimeLabel.font = dateTimeLabelFont
@@ -195,16 +200,16 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
         button.addTarget(self, action: #selector(buttonAction(_:)), for: .touchUpInside)
         addSubview(button)
 
-        let views: [String: UIView] = ["titleLabel": titleLabel, "sharedByLabel": sharedByLabel, "sizeLabel": sizeLabel, "dateTimeLabel": dateTimeLabel, "sharedByPlaceholder": sharedByPlaceholder, "button": button, "extensionLabel": extensionLabel]
+        let views: [String: UIView] = ["titleLabel": titleLabel, "sharedByLabel": sharedByLabel, "sizeLabel": sizeLabel, "dateTimeLabel": dateTimeLabel, "sharedByPlaceholder": sharedByPlaceholder, "button": button, "extensionButton": extensionButton]
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[extensionLabel(30)]-10-[titleLabel]-|", options: [], metrics: nil, views: views))
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[extensionLabel]-10-[sizeLabel]-|", options: [], metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[extensionButton]-10-[titleLabel]-|", options: [], metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[extensionButton]-10-[sizeLabel]-|", options: [], metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[sharedByPlaceholder]-5-[sharedByLabel]-|", options: [], metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[dateTimeLabel]-|", options: [], metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[button]|", options: [], metrics: nil, views: views))
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-14-[extensionLabel(30)]", options: [], metrics: nil, views: views))
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLabel]-1-[sizeLabel]-5-[sharedByPlaceholder]-1-[dateTimeLabel]-13-[button(48)]|", options: [], metrics: nil, views: views))
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[sizeLabel]-5-[sharedByLabel]-1-[dateTimeLabel]-13-[button(48)]|", options: [], metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-14-[extensionButton(30)]", options: [], metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLabel]-(-2)-[sizeLabel]-5-[sharedByPlaceholder]-2-[dateTimeLabel]-13-[button(48)]|", options: [], metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[sizeLabel]-5-[sharedByLabel]-2-[dateTimeLabel]-13-[button(48)]|", options: [], metrics: nil, views: views))
     }
     
     // MARK: - button action
@@ -217,18 +222,23 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
     
     func getExpectedHeight(for object: KADriveFileInfo, width: CGFloat) -> CGFloat {
         var height: CGFloat = 0.0
-        height += 10.0
+        height += 5.0
 
         var attributedString: NSAttributedString = NSAttributedString(string: object.fileName ?? "", attributes: [NSAttributedStringKey.font: titleLabelFont ?? defaultFont])
         var limitingSize: CGSize = CGSize(width: width - 60.0, height: CGFloat.greatestFiniteMagnitude)
         var rect: CGRect = attributedString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
         height += rect.height
         
-        attributedString = NSAttributedString(string: object.fileSize ?? "", attributes: [NSAttributedStringKey.font: sizeLabelFont ?? defaultFont])
+        if let value = object.fileSize, let fileSize = UInt64(value) {
+            attributedString = NSAttributedString(string: String(format: "\(getFileSize(with: fileSize))"), attributes: [NSAttributedStringKey.font: sizeLabelFont ?? defaultFont])
+        } else {
+            attributedString = NSAttributedString(string: " ", attributes: [NSAttributedStringKey.font: sizeLabelFont ?? defaultFont])
+        }
+
         rect = attributedString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
         height += rect.height
-        height += 5.0
-
+        height -= 2
+        
         attributedString = NSAttributedString(string: object.sharedBy ?? "", attributes: [NSAttributedStringKey.font: sizeLabelFont ?? defaultFont])
         limitingSize = CGSize(width: width - 87.0, height: CGFloat.greatestFiniteMagnitude)
         rect = attributedString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
@@ -242,7 +252,7 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
             limitingSize = CGSize(width: width - 20.0, height: CGFloat.greatestFiniteMagnitude)
             rect = attributedString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
             height += rect.height
-            height += 14.0
+            height += 15.0
         }
 
         if let buttonsCount = object.buttons?.count {
@@ -256,12 +266,17 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
         titleLabel.text = object.fileName ?? "".addingPercentEncoding(withAllowedCharacters: .controlCharacters)
         sharedByLabel.text = object.sharedBy ?? ""
         if let fileType = object.fileType {
-            extensionLabel.font = extensionLabelFont
-            extensionLabel.text = fileType.uppercased()
+            extensionButton.setTitle(fileType.uppercased(), for: .normal)
+            extensionButton.titleLabel?.font = extensionButtonFont
         } else {
-            extensionLabel.text = "***"
+            extensionButton.setTitle("***", for: .normal)
         }
-        sizeLabel.text = object.fileSize ?? ""
+        
+        if let value = object.fileSize, let fileSize = UInt64(value) {
+            sizeLabel.text = getFileSize(with: fileSize)
+        } else {
+            sizeLabel.text = String(format: " ")
+        }
         
         let formatter = DateFormatter.yyyyMMdd
         if let dateString  = object.lastModified, let date = formatter.date(from: dateString) {
@@ -341,6 +356,11 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
     
     public func prepareForReuse() {
         
+    }
+    
+    // MARK: -
+    func getFileSize(with size: UInt64) -> String {
+        return ByteCountFormatter.string(fromByteCount: Int64(size), countStyle: ByteCountFormatter.CountStyle.file)
     }
 }
 
