@@ -61,8 +61,8 @@ extension KADriveFileInfo: Decodable {
 // MARK:- KADriveFileView
 public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
     // MARK: - properties
-    static let kMaxRowHeight: CGFloat = 48.0
-    static let kMaxHeight: CGFloat = 103.0
+    let kMaxRowHeight: CGFloat = 48.0
+    let kMaxHeight: CGFloat = 153.0
     static let buttonLimit: Int = 1
     var isFirst: Bool = false
     var isLast: Bool = false
@@ -86,11 +86,6 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
     var buttonFont: UIFont? {
         didSet {
             button.titleLabel?.font = buttonFont
-        }
-    }
-    var extensionButtonFont: UIFont? {
-        didSet {
-            extensionButton.titleLabel?.font = extensionButtonFont
         }
     }
     var dateTimeLabelFont: UIFont? {
@@ -141,6 +136,7 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
         titleLabel.textColor = UIColor(hex: 0x262626)
         titleLabel.sizeToFit()
         titleLabel.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .horizontal)
+        titleLabel.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .vertical)
         self.addSubview(titleLabel)
 
         sharedByLabelFont = UIFont(name: "Lato-Regular", size: 14.0)
@@ -157,6 +153,7 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
         sizeLabel.translatesAutoresizingMaskIntoConstraints = false
         sizeLabel.font = sizeLabelFont
         sizeLabel.textColor = UIColor(hex: 0x858585)
+        sizeLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         sizeLabel.sizeToFit()
         self.addSubview(sizeLabel)
 
@@ -169,14 +166,11 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
         sharedByPlaceholder.sizeToFit()
         self.addSubview(sharedByPlaceholder)
         
-        extensionButtonFont = UIFont(name: "Lato-Bold", size: 11.0)
         extensionButton.setTitleColor(UIColor(hex: 0xD0021B), for: .normal)
         extensionButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 5.0, 0.0, 5.0)
         extensionButton.layer.cornerRadius = 5
-        extensionButton.titleLabel?.font = extensionButtonFont
         extensionButton.titleLabel?.textAlignment = .center
         extensionButton.layer.borderWidth = 1.5
-        extensionButton.layer.borderColor = UIColor(hex: 0xD0021B).cgColor
         extensionButton.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
         extensionButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(extensionButton)
@@ -208,8 +202,8 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[dateTimeLabel]-|", options: [], metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[button]|", options: [], metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-14-[extensionButton(30)]", options: [], metrics: nil, views: views))
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLabel]-(-2)-[sizeLabel]-5-[sharedByPlaceholder]-2-[dateTimeLabel]-13-[button(48)]|", options: [], metrics: nil, views: views))
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[sizeLabel]-5-[sharedByLabel]-2-[dateTimeLabel]-13-[button(48)]|", options: [], metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLabel(19)]-(0)-[sizeLabel]-5-[sharedByPlaceholder]-2-[dateTimeLabel]-13-[button(48)]|", options: [], metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[sizeLabel]-5-[sharedByLabel]-3-[dateTimeLabel]-13-[button(48)]|", options: [], metrics: nil, views: views))
     }
     
     // MARK: - button action
@@ -222,7 +216,7 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
     
     func getExpectedHeight(for object: KADriveFileInfo, width: CGFloat) -> CGFloat {
         var height: CGFloat = 0.0
-        height += 5.0
+        height += 10.0
 
         var attributedString: NSAttributedString = NSAttributedString(string: object.fileName ?? "", attributes: [NSAttributedStringKey.font: titleLabelFont ?? defaultFont])
         var limitingSize: CGSize = CGSize(width: width - 60.0, height: CGFloat.greatestFiniteMagnitude)
@@ -237,7 +231,6 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
 
         rect = attributedString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
         height += rect.height
-        height -= 2
         
         attributedString = NSAttributedString(string: object.sharedBy ?? "", attributes: [NSAttributedStringKey.font: sizeLabelFont ?? defaultFont])
         limitingSize = CGSize(width: width - 87.0, height: CGFloat.greatestFiniteMagnitude)
@@ -252,26 +245,32 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
             limitingSize = CGSize(width: width - 20.0, height: CGFloat.greatestFiniteMagnitude)
             rect = attributedString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
             height += rect.height
-            height += 15.0
+            height += 16.0
         }
 
         if let buttonsCount = object.buttons?.count {
             let count: Int = min(buttonsCount, KADriveFileView.buttonLimit)
-            height += KADriveFileView.kMaxRowHeight * CGFloat(count)
+            height += kMaxRowHeight * CGFloat(count)
         }
-        return height
+        return max(kMaxHeight, height)
     }
     
     public func configure(with object: KADriveFileInfo) {
         titleLabel.text = object.fileName ?? "".addingPercentEncoding(withAllowedCharacters: .controlCharacters)
         sharedByLabel.text = object.sharedBy ?? ""
-        if let fileType = object.fileType {
-            extensionButton.setTitle(fileType.uppercased(), for: .normal)
-            extensionButton.titleLabel?.font = extensionButtonFont
-        } else {
-            extensionButton.setTitle("***", for: .normal)
+        var fileType = "***"
+        if let fileExtension = object.fileType {
+            fileType = fileExtension.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         }
         
+        let extensionButtonFont = UIFont(withFileType: fileType)
+        extensionButton.setTitle(fileType, for: .normal)
+        extensionButton.titleLabel?.font = extensionButtonFont
+        
+        let extensionButtonColor = UIColor(withFileType: fileType)
+        extensionButton.setTitleColor(extensionButtonColor, for: .normal)
+        extensionButton.layer.borderColor = extensionButtonColor.cgColor
+
         if let value = object.fileSize, let fileSize = UInt64(value) {
             sizeLabel.text = getFileSize(with: fileSize)
         } else {

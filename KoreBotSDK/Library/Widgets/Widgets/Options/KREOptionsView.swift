@@ -308,6 +308,46 @@ extension UIColor {
             alpha: alpha
         )
     }
+    
+    convenience init(withFileType fileType: String) {
+        switch fileType.uppercased() {
+        case "GIF", "ICO":
+            self.init(hex: 0x00C9FD)
+        case "DOCX", "DOC", "PAGES", "GDOC", "RTF", "WPD", "JPEG", "MPEG", "PNG":
+            self.init(hex: 0x2F7BF1)
+        case "XLSX", "XLS", "GSHEET", "NUMBERS":
+            self.init(hex: 0x39A341)
+        case "PPT", "PPTX", "GSLIDE", "SLIDES":
+            self.init(hex: 0xD14219)
+        case "PDF":
+            self.init(hex: 0xEC0400)
+        case "MP3", "WAV", "AIF", "MOV", "MP4", "AVI":
+            self.init(hex: 0x9E68BC)
+        case "TXT", "HTML", "JS", "DAT", "JAVA", "SQL":
+            self.init(hex: 0x8B93A0)
+        case "SKETCH":
+            self.init(hex: 0x880010)
+        default:
+            self.init(hex: 0x333D4D)
+        }
+    }
+}
+
+extension UIFont {
+    convenience init?(withFileType fileType: String?) {
+        if let count = fileType?.count, count > 0 {
+            switch count {
+            case 3:
+                self.init(name: "Lato-Bold", size: 12.0)
+            case 4:
+                self.init(name: "Lato-Bold", size: 10.0)
+            default:
+                self.init(name: "Lato-Bold", size: 7.0)
+            }
+        } else {
+            self.init(name: "Lato-Bold", size: 12.0)
+        }
+    }
 }
 
 extension DateFormatter {
