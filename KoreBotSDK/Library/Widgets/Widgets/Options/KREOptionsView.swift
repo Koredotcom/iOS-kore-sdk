@@ -240,7 +240,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
                 }
             }else if(defaultAction?.type == .user_intent ){
                 if (self.userIntentAction != nil) {
-                    self.userIntentAction(defaultAction?.title, defaultAction?.customData)
+                    self.userIntentAction(defaultAction?.action, defaultAction?.customData)
                 }
             }
         }
