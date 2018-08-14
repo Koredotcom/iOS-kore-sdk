@@ -183,6 +183,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             cell.textLabel?.text = option.title
             cell.textLabel?.textAlignment = .center
             cell.textLabel?.textColor = UIColor(hex: 0x6168E7)
+            cell.textLabel?.font = UIFont(name: "Lato-Medium", size: 15.0)
             
             return cell
         }else if(option.optionType == KREOptionType.list){
