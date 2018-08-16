@@ -23,6 +23,7 @@ open class KRECardInfo: NSObject {
     var options: Array<KREOption>?
     var defaultAction: KREAction?
     public var payload: [String: Any]?
+    var isImagePresent : Bool = true
     
     // MARK:- init
     public override init() {
@@ -34,6 +35,9 @@ open class KRECardInfo: NSObject {
         self.title = truncateString(title, count: KRECardInfo.titleCharLimit)
         self.subTitle = truncateString(subTitle, count: KRECardInfo.subtitleCharLimit)
         self.imageURL = imageURL
+        if(imageURL == "" || imageURL == nil){
+            isImagePresent = false
+        }
     }
     
     public func setOptionData(title: String, subTitle: String, imageURL: String) {
@@ -83,6 +87,8 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     public var optionsAction: ((_ title: String?, _ payload: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
     public var userIntent: ((_ object: Any?) -> Void)!
+     public var userIntentAction: ((_ title: String?, _ customData: [String: Any]?) -> Void)!
+    var isImagePresent : Bool = true
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -143,9 +149,15 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
                 self?.linkAction(text)
             }
         }
+        self.optionsView.userIntentAction = { [weak self] (title, customData) in
+            if((self?.userIntentAction) != nil){
+                self?.userIntentAction(title, customData)
+            }
+        }
+        
         
         self.textLabel = UILabel(frame: CGRect.zero)
-        self.textLabel.font = UIFont(name: "HelveticaNeue", size: 16.0)
+        self.textLabel.font = UIFont(name: "Lato", size: 16.0)
         self.textLabel.textColor = UIColor(hex: 0x484848)
         self.textLabel.numberOfLines = 0
         self.textLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -179,7 +191,9 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         var height: CGFloat = 0.0
         
         //imageViw height
-        height += width*0.5
+        if(cardInfo.isImagePresent){
+            height += width*0.5
+        }
         
         let count: Int = min(cardInfo.options!.count, KRECardView.buttonLimit)
         height += KRECardView.kMaxRowHeight*CGFloat(count)
@@ -193,6 +207,8 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     }
     
     public func configureForCardInfo(cardInfo: KRECardInfo) {
+        
+        isImagePresent = cardInfo.isImagePresent
         self.imageView.setImageWith(NSURL(string: cardInfo.imageURL!) as URL!, placeholderImage: UIImage.init(named: "placeholder_image"))
         self.textLabel.attributedText = KRECardView.getAttributedString(cardInfo: cardInfo)
         self.optionsView.options.removeAll()
@@ -207,7 +223,13 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     }
     
     override public func layoutSubviews() {
-        self.imageViewHeightConstraint.constant = self.frame.size.width*0.5
+        if(isImagePresent){
+            self.textLabel.textAlignment = .left
+            self.imageViewHeightConstraint.constant = self.frame.size.width*0.5
+        }else{
+            self.textLabel.textAlignment = .center
+            self.imageViewHeightConstraint.constant = 0
+        }
         super.layoutSubviews()
         self.applyBubbleMask()
     }

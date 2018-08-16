@@ -38,6 +38,7 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
     public var optionsAction: ((_ title: String?, _ payload: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
     public var userIntent:((_ action: Any?) -> Void)!
+     public var userIntentAction: ((_ title: String?, _ customData: [String: Any]?) -> Void)!
     
     public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -104,6 +105,11 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
         cell.cardView.userIntent = { [weak self] (object) in
             if (self?.userIntent != nil) {
                 self?.userIntent(object)
+            }
+        }
+        cell.cardView.userIntentAction = { [weak self] (title, customData) in
+            if (self?.userIntentAction != nil) {
+                self?.userIntentAction(title, customData)
             }
         }
         return cell
@@ -178,7 +184,9 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
         var height: CGFloat = 0.0
         
         //imageViw height
-        height += width*0.5
+        if(cardInfo.isImagePresent){
+            height += width*0.5
+        }
         
         let count: Int = min(cardInfo.options!.count, KRECardView.buttonLimit)
         height += KRECardView.kMaxRowHeight * CGFloat(count)
