@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name = 'KoreBotSDK'
-    s.version = '0.1.0'
+    s.version = '0.1.1'
     s.license  = {:type => 'MIT', :file => 'KoreBotSDK/LICENSE' }
     s.summary = 'KoreBotSDK lets a user interact with Kore bots'
     s.homepage = 'https://kore.ai'
@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
         
         ss.dependency 'Mantle', '2.0.2'
         ss.dependency 'AFNetworking', '3.2.0'
-        ss.dependency 'SocketRocket'
+        ss.dependency 'Starscream', '~> 3.0.2'
         
         ss.ios.frameworks = 'SystemConfiguration'
     end

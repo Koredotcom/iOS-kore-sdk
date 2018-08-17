@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SocketRocket
+import Starscream
 
 public enum BotClientConnectionState : Int {
     case NONE
@@ -242,8 +242,8 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     
     // MARK: functions
     fileprivate func rtmConnectionWithBotInfoModel(_ botInfo: BotInfoModel, isReconnect: Bool) -> RTMPersistentConnection {
-        if (self.connection != nil && (self.connection.websocket.readyState == .OPEN || self.connection.websocket.readyState == .CONNECTING)) {
-            return self.connection
+        if connection != nil {
+            return connection
         } else {
             let rtmConnection: RTMPersistentConnection = RTMPersistentConnection(botInfo: botInfo, botInfoParameters: self.botInfoParameters, tryReconnect: isReconnect)
             rtmConnection.connectionDelegate = self
@@ -253,16 +253,13 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     }
     
     open func sendMessage(_ message: String!, options: AnyObject!) {
-        if (self.connection == nil) {
+        guard let socket = connection.socket else {
             NSLog("WebSocket connection not available")
-        } else {
-            switch self.connection.websocket.readyState {
-            case .OPEN:
-                self.connection.sendMessageModel(message, options: [] as AnyObject?)
-                break
-            default:
-                break
-            }
+            return
+        }
+        
+        if socket.isConnected {
+            connection.sendMessageModel(message, options: [] as AnyObject?)
         }
     }
     
