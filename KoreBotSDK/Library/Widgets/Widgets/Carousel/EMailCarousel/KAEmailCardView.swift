@@ -675,6 +675,12 @@ extension Date {
         dateFormatter.dateFormat = "EEEE, LLL d"
         return dateFormatter.string(from: date as Date)
     }
+    //Fri, Mar 30
+    public func formatAsDayShort(using date: NSDate) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEE, LLL d"
+        return dateFormatter.string(from: date as Date)
+    }
     
     public func formatAsTime(using date: NSDate) -> String {
         let dateFormatter = DateFormatter()
