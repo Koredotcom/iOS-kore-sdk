@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
 
     s.source_files = "SpeechToText/**/*.{h,m,swift}"
 
-    s.dependency 'AFNetworking', '2.5.4'
+    s.dependency 'AFNetworking', '3.2.0'
     s.dependency 'SocketRocket'
 
     s.framework = 'AVFoundation'

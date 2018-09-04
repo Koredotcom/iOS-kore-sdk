@@ -7,11 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		37BBE78780451A770F694C4C /* Pods_KoreBotSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2AE598CFED53D8403BCD98 /* Pods_KoreBotSDK.framework */; };
+		AF69A0BE600B90F67F3C3A06 /* Pods_KoreBotSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D5595BFED036DCA58E1FAB /* Pods_KoreBotSDK.framework */; };
 		D1200F191CC9F721009BBB1A /* KoreBotSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = D1200F181CC9F721009BBB1A /* KoreBotSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D1200F201CC9F721009BBB1A /* KoreBotSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1200F151CC9F721009BBB1A /* KoreBotSDK.framework */; };
 		D1200F251CC9F721009BBB1A /* KoreBotSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1200F241CC9F721009BBB1A /* KoreBotSDKTests.swift */; };
-		D1200F321CC9F797009BBB1A /* KoreBotSDK.podspec in Resources */ = {isa = PBXBuildFile; fileRef = D1200F311CC9F797009BBB1A /* KoreBotSDK.podspec */; };
 		D14AACA41CFD897300AEF5FD /* BotClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14AAC981CFD897300AEF5FD /* BotClient.swift */; };
 		D14AACA51CFD897300AEF5FD /* HTTPRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14AAC9A1CFD897300AEF5FD /* HTTPRequestManager.swift */; };
 		D14AACA61CFD897300AEF5FD /* RTMPersistentConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14AAC9C1CFD897300AEF5FD /* RTMPersistentConnection.swift */; };
@@ -35,16 +34,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0357552329110C3624797E2A /* Pods-KoreBotSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDK.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDK/Pods-KoreBotSDK.release.xcconfig"; sourceTree = "<group>"; };
-		061DA5063014F993A829742A /* Pods-KoreBotSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDK/Pods-KoreBotSDK.debug.xcconfig"; sourceTree = "<group>"; };
-		AE2AE598CFED53D8403BCD98 /* Pods_KoreBotSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		29D5595BFED036DCA58E1FAB /* Pods_KoreBotSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A05E1CEAB3A545128590C3DE /* Pods-KoreBotSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDK.debug.xcconfig"; path = "../../Pods/Target Support Files/Pods-KoreBotSDK/Pods-KoreBotSDK.debug.xcconfig"; sourceTree = "<group>"; };
+		CEBA37263CFCD229AAA833B9 /* Pods-KoreBotSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDK.release.xcconfig"; path = "../../Pods/Target Support Files/Pods-KoreBotSDK/Pods-KoreBotSDK.release.xcconfig"; sourceTree = "<group>"; };
 		D1200F151CC9F721009BBB1A /* KoreBotSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KoreBotSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1200F181CC9F721009BBB1A /* KoreBotSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KoreBotSDK.h; sourceTree = "<group>"; };
 		D1200F1A1CC9F721009BBB1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D1200F1F1CC9F721009BBB1A /* KoreBotSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KoreBotSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1200F241CC9F721009BBB1A /* KoreBotSDKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoreBotSDKTests.swift; sourceTree = "<group>"; };
 		D1200F261CC9F721009BBB1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D1200F311CC9F797009BBB1A /* KoreBotSDK.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KoreBotSDK.podspec; sourceTree = "<group>"; };
 		D14AAC981CFD897300AEF5FD /* BotClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotClient.swift; sourceTree = "<group>"; };
 		D14AAC9A1CFD897300AEF5FD /* HTTPRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPRequestManager.swift; sourceTree = "<group>"; };
 		D14AAC9C1CFD897300AEF5FD /* RTMPersistentConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RTMPersistentConnection.swift; sourceTree = "<group>"; };
@@ -62,7 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37BBE78780451A770F694C4C /* Pods_KoreBotSDK.framework in Frameworks */,
+				AF69A0BE600B90F67F3C3A06 /* Pods_KoreBotSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,19 +75,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		99927B5155B7E4A7A0F17F6C /* Pods */ = {
+		70FCA450C87A781D0070140E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				061DA5063014F993A829742A /* Pods-KoreBotSDK.debug.xcconfig */,
-				0357552329110C3624797E2A /* Pods-KoreBotSDK.release.xcconfig */,
+				A05E1CEAB3A545128590C3DE /* Pods-KoreBotSDK.debug.xcconfig */,
+				CEBA37263CFCD229AAA833B9 /* Pods-KoreBotSDK.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		A32E403E1F23BDA99C0BE746 /* Frameworks */ = {
+		B8FA465F3C32C05D0A8140B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AE2AE598CFED53D8403BCD98 /* Pods_KoreBotSDK.framework */,
+				29D5595BFED036DCA58E1FAB /* Pods_KoreBotSDK.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -97,12 +95,11 @@
 		D1200F0B1CC9F721009BBB1A = {
 			isa = PBXGroup;
 			children = (
-				D1200F311CC9F797009BBB1A /* KoreBotSDK.podspec */,
 				D1200F171CC9F721009BBB1A /* KoreBotSDK */,
 				D1200F231CC9F721009BBB1A /* KoreBotSDKTests */,
 				D1200F161CC9F721009BBB1A /* Products */,
-				99927B5155B7E4A7A0F17F6C /* Pods */,
-				A32E403E1F23BDA99C0BE746 /* Frameworks */,
+				70FCA450C87A781D0070140E /* Pods */,
+				B8FA465F3C32C05D0A8140B0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -201,12 +198,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D1200F291CC9F721009BBB1A /* Build configuration list for PBXNativeTarget "KoreBotSDK" */;
 			buildPhases = (
-				A67B2E0C968669913CA10372 /* [CP] Check Pods Manifest.lock */,
+				310A4E982779AF0C4D91656C /* [CP] Check Pods Manifest.lock */,
 				D1200F101CC9F721009BBB1A /* Sources */,
 				D1200F111CC9F721009BBB1A /* Frameworks */,
 				D1200F121CC9F721009BBB1A /* Headers */,
 				D1200F131CC9F721009BBB1A /* Resources */,
-				0C36FA434BE6F16F212A0EEF /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -278,7 +274,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1200F321CC9F797009BBB1A /* KoreBotSDK.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,34 +287,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0C36FA434BE6F16F212A0EEF /* [CP] Copy Pods Resources */ = {
+		310A4E982779AF0C4D91656C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-KoreBotSDK/Pods-KoreBotSDK-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A67B2E0C968669913CA10372 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-KoreBotSDK-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -456,7 +439,7 @@
 		};
 		D1200F2A1CC9F721009BBB1A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 061DA5063014F993A829742A /* Pods-KoreBotSDK.debug.xcconfig */;
+			baseConfigurationReference = A05E1CEAB3A545128590C3DE /* Pods-KoreBotSDK.debug.xcconfig */;
 			buildSettings = {
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -474,7 +457,7 @@
 		};
 		D1200F2B1CC9F721009BBB1A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0357552329110C3624797E2A /* Pods-KoreBotSDK.release.xcconfig */;
+			baseConfigurationReference = CEBA37263CFCD229AAA833B9 /* Pods-KoreBotSDK.release.xcconfig */;
 			buildSettings = {
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;

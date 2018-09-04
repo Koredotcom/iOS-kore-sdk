@@ -16,7 +16,7 @@
 		0590F83D1DED773A00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F83C1DED773A00107721 /* CoreAudio.framework */; };
 		0590F83F1DED774400107721 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F83E1DED774400107721 /* CoreAudioKit.framework */; };
 		059F51E71DDC77A700361C67 /* SpeechToText.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 059F51E61DDC77A700361C67 /* SpeechToText.podspec */; };
-		6DB2965F6882532A0FFE051C /* Pods_SpeechToText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4071D57B9AEB400ED5BF975A /* Pods_SpeechToText.framework */; };
+		1E41B41EA98CCC14CFE7A1CB /* Pods_SpeechToText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E0987E699DF646CBADA351B /* Pods_SpeechToText.framework */; };
 		6E50B8241F2A6E7800E10D7D /* SpeechToText-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E50B8221F2A6E7800E10D7D /* SpeechToText-Bridging-Header.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E50B8251F2A6E7800E10D7D /* STTConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E50B8231F2A6E7800E10D7D /* STTConstants.swift */; };
 		6E50B8291F2A6E8F00E10D7D /* STTRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E50B8271F2A6E8F00E10D7D /* STTRequestManager.swift */; };
@@ -50,17 +50,17 @@
 		0590F83C1DED773A00107721 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		0590F83E1DED774400107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		059F51E61DDC77A700361C67 /* SpeechToText.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SpeechToText.podspec; sourceTree = "<group>"; };
-		4071D57B9AEB400ED5BF975A /* Pods_SpeechToText.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SpeechToText.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4E83544246F9473BB075123C /* Pods-SpeechToText.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeechToText.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-SpeechToText/Pods-SpeechToText.debug.xcconfig"; sourceTree = "<group>"; };
 		6E50B8221F2A6E7800E10D7D /* SpeechToText-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SpeechToText-Bridging-Header.h"; sourceTree = "<group>"; };
 		6E50B8231F2A6E7800E10D7D /* STTConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STTConstants.swift; sourceTree = "<group>"; };
 		6E50B8271F2A6E8F00E10D7D /* STTRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STTRequestManager.swift; sourceTree = "<group>"; };
 		6E50B8281F2A6E8F00E10D7D /* STTClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STTClient.swift; sourceTree = "<group>"; };
+		7EA82EADC894714834C59C5F /* Pods-SpeechToText.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeechToText.debug.xcconfig"; path = "../../Pods/Target Support Files/Pods-SpeechToText/Pods-SpeechToText.debug.xcconfig"; sourceTree = "<group>"; };
+		8E0987E699DF646CBADA351B /* Pods_SpeechToText.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SpeechToText.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		95A7E3CD2566427E18535961 /* Pods-SpeechToText.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeechToText.release.xcconfig"; path = "../../Pods/Target Support Files/Pods-SpeechToText/Pods-SpeechToText.release.xcconfig"; sourceTree = "<group>"; };
 		D1CD35181E8274A300E5B7CD /* MCAudioInputQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCAudioInputQueue.h; sourceTree = "<group>"; };
 		D1CD35191E8274A300E5B7CD /* MCAudioInputQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCAudioInputQueue.m; sourceTree = "<group>"; };
 		D1CD351B1E8274A300E5B7CD /* KREWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KREWebSocket.h; sourceTree = "<group>"; };
 		D1CD351C1E8274A300E5B7CD /* KREWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KREWebSocket.m; sourceTree = "<group>"; };
-		F57A45D3BE935E412ED2B2D6 /* Pods-SpeechToText.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeechToText.release.xcconfig"; path = "../Pods/Target Support Files/Pods-SpeechToText/Pods-SpeechToText.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +73,7 @@
 				0590F83B1DED768300107721 /* AudioUnit.framework in Frameworks */,
 				0590F8391DED767D00107721 /* AudioToolbox.framework in Frameworks */,
 				050267501DEC64B7001256D3 /* AVFoundation.framework in Frameworks */,
-				6DB2965F6882532A0FFE051C /* Pods_SpeechToText.framework in Frameworks */,
+				1E41B41EA98CCC14CFE7A1CB /* Pods_SpeechToText.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,8 +95,8 @@
 				0565C8401DDC3DFB0012ACE6 /* SpeechToText */,
 				0565C84B1DDC3DFB0012ACE6 /* SpeechToTextTests */,
 				0565C83F1DDC3DFB0012ACE6 /* Products */,
-				55426D432FD4A33AD8CCB502 /* Pods */,
 				86517C2FB85C3B271D6B1DC2 /* Frameworks */,
+				1BFCB40207658C671161DCC3 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -129,11 +129,11 @@
 			path = SpeechToTextTests;
 			sourceTree = "<group>";
 		};
-		55426D432FD4A33AD8CCB502 /* Pods */ = {
+		1BFCB40207658C671161DCC3 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				4E83544246F9473BB075123C /* Pods-SpeechToText.debug.xcconfig */,
-				F57A45D3BE935E412ED2B2D6 /* Pods-SpeechToText.release.xcconfig */,
+				7EA82EADC894714834C59C5F /* Pods-SpeechToText.debug.xcconfig */,
+				95A7E3CD2566427E18535961 /* Pods-SpeechToText.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -154,7 +154,7 @@
 				0590F83A1DED768300107721 /* AudioUnit.framework */,
 				0590F8381DED767D00107721 /* AudioToolbox.framework */,
 				0502674F1DEC64B7001256D3 /* AVFoundation.framework */,
-				4071D57B9AEB400ED5BF975A /* Pods_SpeechToText.framework */,
+				8E0987E699DF646CBADA351B /* Pods_SpeechToText.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -218,12 +218,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0565C8521DDC3DFB0012ACE6 /* Build configuration list for PBXNativeTarget "SpeechToText" */;
 			buildPhases = (
-				A59569DBF6AD97C10DFDE6E8 /* [CP] Check Pods Manifest.lock */,
+				F00CFCAA64EB1FAAC531CDAB /* [CP] Check Pods Manifest.lock */,
 				0565C8391DDC3DFB0012ACE6 /* Sources */,
 				0565C83A1DDC3DFB0012ACE6 /* Frameworks */,
 				0565C83B1DDC3DFB0012ACE6 /* Headers */,
 				0565C83C1DDC3DFB0012ACE6 /* Resources */,
-				55FE001A43E8E34ADBF3E96C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -309,34 +308,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		55FE001A43E8E34ADBF3E96C /* [CP] Copy Pods Resources */ = {
+		F00CFCAA64EB1FAAC531CDAB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-SpeechToText/Pods-SpeechToText-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A59569DBF6AD97C10DFDE6E8 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SpeechToText-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -471,7 +458,7 @@
 		};
 		0565C8531DDC3DFB0012ACE6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E83544246F9473BB075123C /* Pods-SpeechToText.debug.xcconfig */;
+			baseConfigurationReference = 7EA82EADC894714834C59C5F /* Pods-SpeechToText.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -485,6 +472,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.speechToText.SpeechToText;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -492,7 +480,7 @@
 		};
 		0565C8541DDC3DFB0012ACE6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F57A45D3BE935E412ED2B2D6 /* Pods-SpeechToText.release.xcconfig */;
+			baseConfigurationReference = 95A7E3CD2566427E18535961 /* Pods-SpeechToText.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -506,6 +494,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.speechToText.SpeechToText;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

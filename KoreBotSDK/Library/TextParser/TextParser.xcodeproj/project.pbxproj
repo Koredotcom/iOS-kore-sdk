@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B150A7F6F119581C8CDD0E7 /* Pods_TextParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E59E5C0C9F2EE1884863DC /* Pods_TextParser.framework */; };
 		D19ABFED1DDDB10500CA6A99 /* KMAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ABFEC1DDDB10500CA6A99 /* KMAppDelegate.swift */; };
 		D19ABFEF1DDDB10500CA6A99 /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ABFEE1DDDB10500CA6A99 /* TextViewController.swift */; };
 		D19ABFF41DDDB10500CA6A99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D19ABFF31DDDB10500CA6A99 /* Assets.xcassets */; };
@@ -18,6 +19,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		395B14977631DA4EA9D436EF /* Pods-TextParser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextParser.release.xcconfig"; path = "../../Pods/Target Support Files/Pods-TextParser/Pods-TextParser.release.xcconfig"; sourceTree = "<group>"; };
+		50E59E5C0C9F2EE1884863DC /* Pods_TextParser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TextParser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		616D6F35989C3DA7119E1D2D /* Pods-TextParser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextParser.debug.xcconfig"; path = "../../Pods/Target Support Files/Pods-TextParser/Pods-TextParser.debug.xcconfig"; sourceTree = "<group>"; };
 		D19ABFE91DDDB10500CA6A99 /* TextParser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextParser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D19ABFEC1DDDB10500CA6A99 /* KMAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMAppDelegate.swift; sourceTree = "<group>"; };
 		D19ABFEE1DDDB10500CA6A99 /* TextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewController.swift; sourceTree = "<group>"; };
@@ -38,18 +42,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B150A7F6F119581C8CDD0E7 /* Pods_TextParser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B134875FAE66BE0750E96A2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				50E59E5C0C9F2EE1884863DC /* Pods_TextParser.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BC143E11458D425038214B23 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				616D6F35989C3DA7119E1D2D /* Pods-TextParser.debug.xcconfig */,
+				395B14977631DA4EA9D436EF /* Pods-TextParser.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		D19ABFE01DDDB10500CA6A99 = {
 			isa = PBXGroup;
 			children = (
 				D19ABFFE1DDDB13200CA6A99 /* KoreTextParser.podspec */,
 				D19ABFEB1DDDB10500CA6A99 /* TextParser */,
 				D19ABFEA1DDDB10500CA6A99 /* Products */,
+				BC143E11458D425038214B23 /* Pods */,
+				1B134875FAE66BE0750E96A2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -102,6 +126,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D19ABFFB1DDDB10500CA6A99 /* Build configuration list for PBXNativeTarget "TextParser" */;
 			buildPhases = (
+				6ED5ECDD2ABA9D1A2C0BB6CE /* [CP] Check Pods Manifest.lock */,
 				D19ABFE51DDDB10500CA6A99 /* Sources */,
 				D19ABFE61DDDB10500CA6A99 /* Frameworks */,
 				D19ABFE71DDDB10500CA6A99 /* Resources */,
@@ -163,6 +188,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6ED5ECDD2ABA9D1A2C0BB6CE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TextParser-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D19ABFE51DDDB10500CA6A99 /* Sources */ = {
@@ -285,26 +331,28 @@
 		};
 		D19ABFFC1DDDB10500CA6A99 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 616D6F35989C3DA7119E1D2D /* Pods-TextParser.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = TextParser/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.Kore.TextParser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/srinivasvasadi/Code/BotSDK/KoreBotSDK/TextParser/TextParser/Resources/TextParser-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/TextParser/Resources/TextParser-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		D19ABFFD1DDDB10500CA6A99 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 395B14977631DA4EA9D436EF /* Pods-TextParser.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = TextParser/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.Kore.TextParser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/srinivasvasadi/Code/BotSDK/KoreBotSDK/TextParser/TextParser/Resources/TextParser-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/TextParser/Resources/TextParser-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
 #s.exclude_files = "Widgets/AppDelegate.{h}"
 #s.exclude_files = "Widgets/Widgets/*.{*}"
 
-    s.dependency 'AFNetworking', '2.5.4'
+    s.dependency 'AFNetworking', '3.2.0'
     s.framework = 'SystemConfiguration'
     s.requires_arc = true
 end

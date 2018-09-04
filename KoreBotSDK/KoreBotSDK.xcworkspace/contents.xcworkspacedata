@@ -5,6 +5,24 @@
       location = "group:KoreBotSDKDemo/KoreBotSDKDemo.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:Library/KoreBotSDK/KoreBotSDK.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Library/Widgets/Widgets.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Library/Widgets/../TextParser/TextParser.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Library/Widgets/../SpeechToText/SpeechToText.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Library/SpeechToText/SpeechToText.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Library/TextParser/TextParser.xcodeproj">
    </FileRef>
 </Workspace>

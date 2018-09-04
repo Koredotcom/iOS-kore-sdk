@@ -600,9 +600,7 @@
 				D175AD471CEF0CD500BB9442 /* Frameworks */,
 				D175AD481CEF0CD500BB9442 /* Resources */,
 				4E7E61A580D6B9452ECC5FC1 /* [CP] Embed Pods Frameworks */,
-				02A028E5FB8530A5E7994665 /* [CP] Copy Pods Resources */,
 				C3C37409D761BE7FAEEC0057 /* 📦 Embed Pods Frameworks */,
-				BA575C1F20534E638AC297C6 /* 📦 Copy Pods Resources */,
 				07E514A1144A4F62F10E2252 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -673,21 +671,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		02A028E5FB8530A5E7994665 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		07E514A1144A4F62F10E2252 /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -766,21 +749,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		BA575C1F20534E638AC297C6 /* 📦 Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "📦 Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C3C37409D761BE7FAEEC0057 /* 📦 Embed Pods Frameworks */ = {

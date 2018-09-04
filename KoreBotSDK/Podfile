@@ -1,5 +1,9 @@
 workspace 'KoreBotSDK'
 project 'KoreBotSDKDemo/KoreBotSDKDemo.xcodeproj'
+project 'Library/KoreBotSDK/KoreBotSDK.xcodeproj'
+project 'Library/Widgets/Widgets.xcodeproj'
+project 'Library/TextParser/TextParser.xcodeproj'
+project 'Library/SpeechToText/SpeechToText.xcodeproj'
 
 inhibit_all_warnings!
 
@@ -14,7 +18,6 @@ target 'KoreBotSDKDemo' do
     pod 'Charts','3.0.5'
     pod 'SquareMosaicLayout', '0.6.2'
     
-
     use_frameworks!
     import_pods
     pod 'googleapis', :path=> '.'
@@ -22,3 +25,36 @@ target 'KoreBotSDKDemo' do
     pod 'KoreBotSDK', :path => '..'
     project 'KoreBotSDKDemo/KoreBotSDKDemo.xcodeproj'
 end
+
+target 'KoreBotSDK' do
+    platform :ios, '8.0'
+    use_frameworks!
+    pod 'Mantle', '2.0.2'
+    pod 'AFNetworking', '3.2.0'
+    pod 'SocketRocket'
+    project 'Library/KoreBotSDK/KoreBotSDK.xcodeproj'
+end
+
+target 'Widgets' do
+    platform :ios, '8.0'
+    use_frameworks!
+
+    pod 'AFNetworking', '3.2.0'
+    project 'Library/Widgets/Widgets.xcodeproj'
+end
+
+target 'TextParser' do
+    platform :ios, '8.0'
+    use_frameworks!
+    project 'Library/TextParser/TextParser.xcodeproj'
+end
+
+target 'SpeechToText' do
+    platform :ios, '8.0'
+    use_frameworks!
+    pod 'AFNetworking', '3.2.0'
+    pod 'SocketRocket'
+    project 'Library/SpeechToText/SpeechToText.xcodeproj'
+end
+
+
