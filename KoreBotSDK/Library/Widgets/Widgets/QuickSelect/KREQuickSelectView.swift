@@ -9,7 +9,7 @@
 import UIKit
 
 public class Word: NSObject {
-    static let titleCharLimit: Int = 20
+    static let titleCharLimit: Int = 40
     
     var title: String!
     var payload: String!
