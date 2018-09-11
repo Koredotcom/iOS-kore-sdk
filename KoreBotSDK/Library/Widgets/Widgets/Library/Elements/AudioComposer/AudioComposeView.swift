@@ -19,7 +19,7 @@ open class AudioComposeView: UIView {
     fileprivate var audiolabel: UILabel!
     fileprivate var keyboardButton: UIButton!
     fileprivate var playbackButton: UIButton!
-    
+    fileprivate var topLineView: UIView!
     fileprivate var audioImageWidthConstraint: NSLayoutConstraint!
     fileprivate var animationTimer:Timer!
     fileprivate var audioRecorderTimer:Timer!
@@ -66,10 +66,15 @@ open class AudioComposeView: UIView {
         self.audioImageView.translatesAutoresizingMaskIntoConstraints = false
         self.animateBGView.addSubview(self.audioImageView)
         
+        self.topLineView = UIView.init(frame: CGRect.zero)
+        self.topLineView.backgroundColor = UIColorRGB(0xE7E7E7)
+        self.topLineView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.topLineView)
+
         self.audiolabel = UILabel()
         self.audiolabel.text = "Tap to speak"
         self.audiolabel.font = UIFont(name: "HelveticaNeue", size: 11.0)!
-        self.audiolabel.textColor = .white
+        self.audiolabel.textColor = .black
         self.audiolabel.textAlignment = .center
         self.audiolabel.translatesAutoresizingMaskIntoConstraints = false
         self.animateBGView.addSubview(self.audiolabel)
@@ -103,8 +108,9 @@ open class AudioComposeView: UIView {
         self.playbackButton.clipsToBounds = true
         self.addSubview(self.playbackButton)
         
-        let views: [String : Any] = ["animateBGView": self.animateBGView, "audioActionView": self.audioActionView, "keyboardButton": self.keyboardButton, "playbackButton": self.playbackButton]
-        
+        let views: [String : Any] = ["topLineView": topLineView, "animateBGView": self.animateBGView, "audioActionView": self.audioActionView, "keyboardButton": self.keyboardButton, "playbackButton": self.playbackButton]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[topLineView]|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[topLineView(1)]", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[animateBGView(100)]", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[animateBGView(70)]", options:[], metrics:nil, views:views))
         self.addConstraint(NSLayoutConstraint.init(item: self.animateBGView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0))
@@ -146,11 +152,11 @@ open class AudioComposeView: UIView {
     public func enablePlayback(enable: Bool){
         if enable {
             self.playbackButton.setImage(UIImage(named: "unmute", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
-        } else {
+        }else{
             self.playbackButton.setImage(UIImage(named: "mute", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
         }
     }
-
+    
     //MARK:- removing refernces to elements
     public func prepareForDeinit(){
         if(self.animationTimer != nil){
@@ -180,7 +186,7 @@ open class AudioComposeView: UIView {
         if !self.isActive {
             checkAudioRecordingPermissions?(self) { [unowned self] (status) in
                 self.isActive = true
-                self.startRecording()
+                self.startAudioRecording()
             }
         } else {
             self.isActive = false
@@ -238,7 +244,7 @@ open class AudioComposeView: UIView {
         circleView.frame = CGRect(x: self.animateBGView.frame.size.width/2 - 2.5, y: self.animateBGView.frame.size.height/2 - 2.5, width: CGFloat(5), height: CGFloat(5))
         
         self.animateBGView.addSubview(circleView)
-//        circleView.backgroundColor = userColor
+        circleView.backgroundColor = KoreBotUIKit.User.BubbleView.backgroundColor
         circleView.layer.cornerRadius = circleView.frame.size.width / 2
         circleView.alpha = 1.0
         var radius:CGFloat = 7.0
@@ -265,7 +271,6 @@ open class AudioComposeView: UIView {
     }
     
     // MARK: Timers
-    
     fileprivate func startAnimationWaveTimer() {
         self.animationTimer = Timer.scheduledTimer(timeInterval: 0.35, target: self, selector: #selector(self.showCircleWaveAnimation), userInfo: nil, repeats: true)
         RunLoop.main.add(self.animationTimer, forMode: RunLoopMode.defaultRunLoopMode)
@@ -277,7 +282,6 @@ open class AudioComposeView: UIView {
     }
     
     // MARK: Decibel to Linear conversion
-    
     func decibelToLinear(power:Float) -> (Float) {
         let normalizedDecbl:Float = pow (10, power / 20);// converted to linear
         return normalizedDecbl * waveRadius ;
