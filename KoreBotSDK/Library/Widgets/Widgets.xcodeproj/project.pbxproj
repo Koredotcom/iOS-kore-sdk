@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C2FBAB521480A0600704220 /* PickerSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2FBAB421480A0600704220 /* PickerSelectView.swift */; };
 		ACE55F9D21413CE200829961 /* KoreBotUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE55F9C21413CE200829961 /* KoreBotUIKit.swift */; };
 		ACEF4006213EFB3500B6979A /* ListViewWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F7D213EFB3400B6979A /* ListViewWidgetViewController.swift */; };
 		ACEF4007213EFB3500B6979A /* ChatMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F7F213EFB3400B6979A /* ChatMessagesViewController.swift */; };
@@ -97,6 +98,7 @@
 
 /* Begin PBXFileReference section */
 		04ECB956FB18F943737CCE34 /* Pods-Widgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Widgets.debug.xcconfig"; path = "../../Pods/Target Support Files/Pods-Widgets/Pods-Widgets.debug.xcconfig"; sourceTree = "<group>"; };
+		0C2FBAB421480A0600704220 /* PickerSelectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerSelectView.swift; sourceTree = "<group>"; };
 		6B75DEE6911A00B4E860ED3D /* Pods_Widgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Widgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACE55F9C21413CE200829961 /* KoreBotUIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoreBotUIKit.swift; sourceTree = "<group>"; };
 		ACEF3F7D213EFB3400B6979A /* ListViewWidgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewWidgetViewController.swift; sourceTree = "<group>"; };
@@ -212,6 +214,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C2FBAB321480A0600704220 /* Picker */ = {
+			isa = PBXGroup;
+			children = (
+				0C2FBAB421480A0600704220 /* PickerSelectView.swift */,
+			);
+			path = Picker;
+			sourceTree = "<group>";
+		};
 		ACEF3F7C213EFB3400B6979A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -614,6 +624,7 @@
 		D1832B571DDC1EE700FDFB93 /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
+				0C2FBAB321480A0600704220 /* Picker */,
 				ACEF3FA6213EFB3400B6979A /* Carousel */,
 				ACEF4004213EFB3500B6979A /* Common */,
 				ACEF3F7C213EFB3400B6979A /* Controllers */,
@@ -824,6 +835,7 @@
 				ACEF402F213EFB3500B6979A /* NSMutableAttributedString+KREUtils.m in Sources */,
 				ACEF401B213EFB3500B6979A /* KRETokenCollectionViewCell.swift in Sources */,
 				ACEF4035213EFB3500B6979A /* BalloonMarker.swift in Sources */,
+				0C2FBAB521480A0600704220 /* PickerSelectView.swift in Sources */,
 				ACEF4009213EFB3500B6979A /* TableTemplateViewController.swift in Sources */,
 				ACEF401F213EFB3500B6979A /* KREGrowingTextView.swift in Sources */,
 				ACEF402E213EFB3500B6979A /* AudioComposeView.swift in Sources */,
