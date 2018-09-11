@@ -8,40 +8,40 @@
 
 import Foundation
 
-enum MessageType : Int {
+public enum MessageType : Int {
     case `default` = 1, reply = 2
 }
 
-class Message : NSObject {
-    var messageType: MessageType = .default
-    var sender: String?
-    var iconUrl: String?
-    var sentDate: Date?
-    var components: [Component] = [Component]()
-    var thread: Thread?
+public class Message : NSObject {
+    public var messageType: MessageType = .default
+    public var sender: String?
+    public var iconUrl: String?
+    public var sentDate: Date?
+    public var components: [Component] = [Component]()
+    public var thread: Thread?
         
-    override init() {
+    override public init() {
         super.init()
     }
     
-    func addComponent(_ component: Component) {
+    public func addComponent(_ component: Component) {
         component.message = self;
         self.components.append(component)
     }
     
-    func sameSenderAsMessage(_ compareMessage: Message) -> Bool {
+    public func sameSenderAsMessage(_ compareMessage: Message) -> Bool {
         return false
     }
     
-    func senderIdentity() -> Identity {
+    public func senderIdentity() -> Identity {
         return Identity()
     }
     
-    func messageAsString() -> String {
+    public func messageAsString() -> String {
         return ""
     }
     
-    func componentCount() -> Int {
+    public func componentCount() -> Int {
         return 0
     }
 }

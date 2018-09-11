@@ -32,7 +32,7 @@ open class HTTPRequestManager : NSObject {
         let configuration = URLSessionConfiguration.default
         
         //Manager
-        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: Constants.URL.baseUrl) as URL!, sessionConfiguration: configuration)
+        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: Constants.URL.baseUrl) as URL?, sessionConfiguration: configuration)
         
         // Request
         let requestSerializer = AFJSONRequestSerializer()
@@ -47,15 +47,13 @@ open class HTTPRequestManager : NSObject {
     }
     
     // MARK: requests
-    open func signInWithToken(_ token: AnyObject!, botInfo: AnyObject!, success:((_ user: UserModel?, _ authInfo: AuthInfoModel?) -> Void)?, failure:((_ error: Error) -> Void)?)  {
+    open func signInWithToken(_ token: String, botInfo: [String: Any], success:((_ user: UserModel?, _ authInfo: AuthInfoModel?) -> Void)?, failure:((_ error: Error) -> Void)?)  {
         let urlString: String = Constants.URL.jwtAuthorizationUrl
-        let parameters: NSDictionary = ["assertion":token!, "botInfo": botInfo]
+        let parameters: NSDictionary = ["assertion": token, "botInfo": botInfo]
 
         sessionManager?.post(urlString, parameters: parameters, progress: { (progress) in
             
         }, success: { (dataTask, responseObject) in
-            print(responseObject)
-            let error: Error?
             if responseObject is [AnyHashable: Any] {
                 let dictionary = responseObject as! [String : AnyObject]
                 let authorization: [AnyHashable: Any] = dictionary["authorization"] as! [AnyHashable: Any]
@@ -67,14 +65,11 @@ open class HTTPRequestManager : NSObject {
                 failure?(NSError(domain: "", code: 0, userInfo: [:]))
             }
         }) { (dataTask, error) in
-            if (error != nil) {
-                print(error)
-            }
             failure?(error)
         }
     }
     
-    open func getRtmUrlWithAuthInfoModel(_ authInfo: AuthInfoModel!, botInfo: AnyObject!, success:((_ botInfo: BotInfoModel?) -> Void)?, failure:((_ error: Error) -> Void)?)  {
+    open func getRtmUrlWithAuthInfoModel(_ authInfo: AuthInfoModel, botInfo: [String: Any], success:((_ botInfo: BotInfoModel?) -> Void)?, failure:((_ error: Error) -> Void)?)  {
         let urlString: String = Constants.URL.rtmUrl
         let accessToken: String = String(format: "%@ %@", authInfo.tokenType!, authInfo.accessToken!)
         sessionManager?.requestSerializer.setValue(accessToken, forHTTPHeaderField:"Authorization")
@@ -84,14 +79,9 @@ open class HTTPRequestManager : NSObject {
         sessionManager?.post(urlString, parameters: parameters, progress: { (progress) in
             
         }, success: { (dataTask, responseObject) in
-            print(responseObject)
-            let error: NSError?
             let botInfo: BotInfoModel = try! (MTLJSONAdapter.model(of: BotInfoModel.self, fromJSONDictionary: responseObject! as! [AnyHashable: Any]) as! BotInfoModel)
             success?(botInfo)
         }) { (dataTask, error) in
-            if (error != nil) {
-                print(error)
-            }
             failure?(error)
         }
     }
@@ -113,12 +103,8 @@ open class HTTPRequestManager : NSObject {
         sessionManager?.post(urlString, parameters: parameters, progress: { (progress) in
             
         }, success: { (dataTask, responseObject) in
-            print(responseObject)
             success?(true)
         }) { (dataTask, error) in
-            if (error != nil) {
-                print(error)
-            }
             failure?(error)
         }
     }
@@ -140,9 +126,6 @@ open class HTTPRequestManager : NSObject {
         sessionManager?.delete(urlString, parameters: parameters, success: { (operation, responseObject) in
             success?(true)
         }) { (operation, error) in
-            if (error != nil) {
-                print(error)
-            }
             failure?(error)
         }
     }

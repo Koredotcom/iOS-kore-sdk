@@ -267,9 +267,9 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
         if firstIndexPath.isEqual(indexPath) {
             if isQuickReply {
                 self.viewDelegate?.populateQuickReplyCards(with: message)
-            }else if isPicker {
+            } else if isPicker {
                 self.viewDelegate?.populatePickerView(with: message)
-            }else{
+            } else{
                  self.viewDelegate?.closeQuickReplyCards()
             }
         }

@@ -9,12 +9,12 @@
 import UIKit
 import Foundation
 
-var startSpeakingNotification = "StartSpeakingNowNotificationName"
-var stopSpeakingNotification = "StopSpeakingNowNotificationName"
-var showTableTemplateNotification = "ShowTableTemplateNotificationName"
-var reloadTableNotification = "reloadTableNotification"
-var updateUserImageNotification = "updateUserImageNotification"
-var isSpeakingEnabled = false
+public var startSpeakingNotification = "StartSpeakingNowNotificationName"
+public var stopSpeakingNotification = "StopSpeakingNowNotificationName"
+public var showTableTemplateNotification = "ShowTableTemplateNotificationName"
+public var reloadTableNotification = "reloadTableNotification"
+public var updateUserImageNotification = "updateUserImageNotification"
+public var isSpeakingEnabled = false
 
 public func UIColorRGB(_ rgb: Int) -> UIColor {
     let blue = CGFloat(rgb & 0xFF)

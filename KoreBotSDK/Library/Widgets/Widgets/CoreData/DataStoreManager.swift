@@ -9,10 +9,10 @@
 import UIKit
 import CoreData
 
-class DataStoreManager: NSObject {
+open class DataStoreManager: NSObject {
     
     // MARK:- datastore manager shared instance
-    var coreDataManager: CoreDataManager! = nil
+    public var coreDataManager: CoreDataManager! = nil
     static var instance: DataStoreManager!
 
     // MARK:- datastore manager shared instance
@@ -35,7 +35,7 @@ class DataStoreManager: NSObject {
     }
     
     // MARK:- contacts
-    func insertOrUpdateContact(dictionary: Dictionary<String, AnyObject>, withContext context: NSManagedObjectContext) -> KREContact {
+    public func insertOrUpdateContact(dictionary: Dictionary<String, AnyObject>, withContext context: NSManagedObjectContext) -> KREContact {
         
         let newItem = NSEntityDescription.insertNewObject(forEntityName: "KREContact", into: context) as! KREContact
         
@@ -47,18 +47,18 @@ class DataStoreManager: NSObject {
         return newItem
     }
     
-    func getContact(id: NSManagedObjectID, withContext context: NSManagedObjectContext) -> KREContact? {
+    public func getContact(id: NSManagedObjectID, withContext context: NSManagedObjectContext) -> KREContact? {
         return context.object(with: id) as? KREContact
     }
     
-    func deleteContact(id: NSManagedObjectID, withContext context: NSManagedObjectContext) {
+    public func deleteContact(id: NSManagedObjectID, withContext context: NSManagedObjectContext) {
         if let threadToDelete = getContact(id: id, withContext: context) {
             context.delete(threadToDelete)
         }
     }
     
     // MARK:- components
-    func insertOrUpdateComponent(dictionary: Dictionary<String, AnyObject>, withContext context: NSManagedObjectContext) -> KREComponent {
+    public func insertOrUpdateComponent(dictionary: Dictionary<String, AnyObject>, withContext context: NSManagedObjectContext) -> KREComponent {
         
         let newItem = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
         
@@ -68,18 +68,18 @@ class DataStoreManager: NSObject {
         return newItem
     }
     
-    func getComponent(id: NSManagedObjectID, withContext context: NSManagedObjectContext) -> KREComponent? {
+    public func getComponent(id: NSManagedObjectID, withContext context: NSManagedObjectContext) -> KREComponent? {
         return context.object(with: id) as? KREComponent
     }
 
-    func deleteComponent(id: NSManagedObjectID, withContext context: NSManagedObjectContext) {
+    public func deleteComponent(id: NSManagedObjectID, withContext context: NSManagedObjectContext) {
         if let threadToDelete = getComponent(id: id, withContext: context) {
             context.delete(threadToDelete)
         }
     }
     
     // MARK:- messages
-    func insertOrUpdateMessage(dictionary: Dictionary<String, AnyObject>, withContext context: NSManagedObjectContext) -> KREMessage {
+    public func insertOrUpdateMessage(dictionary: Dictionary<String, AnyObject>, withContext context: NSManagedObjectContext) -> KREMessage {
         
         let newMessage = NSEntityDescription.insertNewObject(forEntityName: "KREMessage", into: context) as! KREMessage
         
@@ -107,18 +107,18 @@ class DataStoreManager: NSObject {
         return newMessage
     }
     
-    func getMessage(id: NSManagedObjectID, withContext context: NSManagedObjectContext) -> KREMessage? {
+    public func getMessage(id: NSManagedObjectID, withContext context: NSManagedObjectContext) -> KREMessage? {
         return context.object(with: id) as? KREMessage
     }
     
-    func deleteMessage(id: NSManagedObjectID, withContext context: NSManagedObjectContext) {
+    public func deleteMessage(id: NSManagedObjectID, withContext context: NSManagedObjectContext) {
         if let messageToDelete = getComponent(id: id, withContext: context) {
             context.delete(messageToDelete)
         }
     }
     
     // MARK:- threads
-    func insertOrUpdateThread(dictionary: [String: Any], with context: NSManagedObjectContext) -> KREThread? {
+    public func insertOrUpdateThread(dictionary: [String: Any], with context: NSManagedObjectContext) -> KREThread? {
         guard let taskBotId = dictionary["taskBotId"] as? String, let chatBot = dictionary["chatBot"] as? String else {
             return nil
         }
@@ -143,12 +143,12 @@ class DataStoreManager: NSObject {
         return thread
     }
     
-    func getThread(id: NSManagedObjectID, withContext context: NSManagedObjectContext) -> KREThread? {
+    public func getThread(id: NSManagedObjectID, withContext context: NSManagedObjectContext) -> KREThread? {
         return context.object(with: id) as? KREThread
     }
     
     // method delete or persist conversation history with bot based on 'SDKConfiguration.dataStoreConfig.resetDataStoreOnConnect'.
-    func deleteThreadIfRequired(with threadId: String, resetDatastore reset: Bool, completion block: ((_ staus: Bool) -> Void)?) {
+    public func deleteThreadIfRequired(with threadId: String, resetDatastore reset: Bool, completion block: ((_ staus: Bool) -> Void)?) {
         var success: Bool = false
         if (reset == true) {
             var thread: KREThread! = nil
@@ -176,7 +176,7 @@ class DataStoreManager: NSObject {
     }
     
     // data management
-    func insertMessages(messages: Array<Dictionary<String, AnyObject>>) {
+    public func insertMessages(messages: Array<Dictionary<String, AnyObject>>) {
         let context: NSManagedObjectContext = coreDataManager.workerContext
         context.perform {
             
@@ -184,7 +184,7 @@ class DataStoreManager: NSObject {
         }
     }
     
-    func insertThreads(threads: Array<Dictionary<String, AnyObject>>) {
+    public func insertThreads(threads: Array<Dictionary<String, AnyObject>>) {
         let context: NSManagedObjectContext = coreDataManager.workerContext
         context.perform {
             for object in threads {
@@ -196,7 +196,7 @@ class DataStoreManager: NSObject {
         }
     }
     
-    func createNewMessageIn(thread: KREThread, message: Message, completion block: ((_ staus: Bool) -> Void)?) {
+    public func createNewMessageIn(thread: KREThread, message: Message, completion block: ((_ staus: Bool) -> Void)?) {
         let context: NSManagedObjectContext = coreDataManager.workerContext
         context.perform { [unowned self] in
             let nMessage = NSEntityDescription.insertNewObject(forEntityName: "KREMessage", into: context) as! KREMessage

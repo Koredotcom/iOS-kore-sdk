@@ -9,40 +9,43 @@
 import UIKit
 
 
-enum IdentityType: Int {
+public enum IdentityType: Int {
     case user = 1, bot = 2
 }
 
-class Identity: NSObject {
-    var identityType: IdentityType!
-    var identifier: String!
-    var thumbnailImage: UIImage!
-    var fullImage: UIImage!
-    var color: NSString!
+public class Identity: NSObject {
+    public var identityType: IdentityType!
+    public var identifier: String!
+    public var thumbnailImage: UIImage!
+    public var fullImage: UIImage!
+    public var color: NSString!
     
-    var fullName: NSString!
-    var shortName: NSString!
-    var accountName: NSString!
+    public var fullName: NSString!
+    public var shortName: NSString!
+    public var accountName: NSString!
     
     
-    func identityDictionary(_ identifier: NSString) -> NSDictionary {
+    public func identityDictionary(_ identifier: NSString) -> NSDictionary {
         return [:]
     }
-    func identity(_ identity: NSString) -> Identity {
+    
+    public func identity(_ identity: NSString) -> Identity {
         return Identity()
     }
-    func allUserIdentities() -> NSArray {
-        return []
-    }
-    func allIdentities() -> NSArray {
+    
+    public func allUserIdentities() -> NSArray {
         return []
     }
     
-    func initials() -> String {
+    public func allIdentities() -> NSArray {
+        return []
+    }
+    
+    public func initials() -> String {
         return ""
     }
     
-    func uniqueNameInList(_ identityList: NSArray) -> String {
+    public func uniqueNameInList(_ identityList: NSArray) -> String {
         return ""
     }
 }

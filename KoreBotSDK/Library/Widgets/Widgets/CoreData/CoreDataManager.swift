@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class CoreDataManager: NSObject {
+open class CoreDataManager: NSObject {
     // MaRK: - init
     override init() {
         super.init()
@@ -49,21 +49,21 @@ class CoreDataManager: NSObject {
     }()
     
     // MARK: - context's
-    lazy var privateContext: NSManagedObjectContext = {
+    public lazy var privateContext: NSManagedObjectContext = {
         let coordinator = self.persistentStoreCoordinator
         var privateContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         privateContext.persistentStoreCoordinator = coordinator
         return privateContext
     }()
     
-    lazy var mainContext: NSManagedObjectContext = {
+    public lazy var mainContext: NSManagedObjectContext = {
         let coordinator = self.persistentStoreCoordinator
         var mainContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         mainContext.parent = self.privateContext
         return mainContext
     }()
     
-    lazy var workerContext: NSManagedObjectContext = {
+    public lazy var workerContext: NSManagedObjectContext = {
         let coordinator = self.persistentStoreCoordinator
         var workerContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         workerContext.parent = self.mainContext
@@ -71,7 +71,7 @@ class CoreDataManager: NSObject {
     }()
     
     // MARK: - save changes
-    func saveChanges () {
+    public func saveChanges () {
         // save mainContext
         if mainContext.hasChanges {
             do {

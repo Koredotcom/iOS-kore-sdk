@@ -7,16 +7,17 @@
 //
 
 import Foundation
-enum ThreadKind: Int {
+
+public enum ThreadKind: Int {
     case chat = 1, email = 2, bot = 3
 }
 
-class Thread : NSObject {
+open class Thread : NSObject {
     
-    var subject: String!
-    var bot: String!
-    var threadKind: ThreadKind! = .bot
-    var messages: Array<Message>!
+    public var subject: String!
+    public var bot: String!
+    public var threadKind: ThreadKind! = .bot
+    public var messages: Array<Message>!
 
     // MARK: init
     override init() {
