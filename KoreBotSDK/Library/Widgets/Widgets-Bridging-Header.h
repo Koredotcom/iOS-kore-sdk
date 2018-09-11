@@ -12,4 +12,11 @@
 #import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
+#import "KREAttributedLabel.h"
+#import "KRELayoutManager.h"
+#import "KREUtilities.h"
+#import "NSMutableAttributedString+KREUtils.h"
+#import "KRETypingActivityIndicator.h"
+#import "KRETypingStatusView.h"
+
 #endif /* Widgets_Bridging_Header_h */

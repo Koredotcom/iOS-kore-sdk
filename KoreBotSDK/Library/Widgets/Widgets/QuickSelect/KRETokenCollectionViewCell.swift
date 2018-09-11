@@ -75,7 +75,7 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
         let layer:CALayer = self.layer
         layer.masksToBounds = true
         layer.cornerRadius = 19
-        layer.borderColor  = Common.UIColorRGB(0x0578FE).cgColor
+        layer.borderColor  = UIColorRGB(0x0578FE).cgColor
         layer.borderWidth = 1
         
         let views = ["label":label!, "image":imageView!] as [String : Any]

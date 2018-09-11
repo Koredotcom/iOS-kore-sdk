@@ -13,21 +13,16 @@ def import_pods
 end
 
 target 'KoreBotSDKDemo' do
-    platform :ios, '8.0'
-    pod 'DTCoreText','1.6.15'
-    pod 'Charts','3.0.5'
-    pod 'SquareMosaicLayout', '0.6.2'
-    
+    platform :ios, '10.0'
     use_frameworks!
     import_pods
     pod 'googleapis', :path=> '.'
-    pod 'TOWebViewController'
     pod 'KoreBotSDK', :path => '..'
     project 'KoreBotSDKDemo/KoreBotSDKDemo.xcodeproj'
 end
 
 target 'KoreBotSDK' do
-    platform :ios, '8.0'
+    platform :ios, '10.0'
     use_frameworks!
     pod 'Mantle', '2.0.2'
     pod 'AFNetworking', '3.2.0'
@@ -36,21 +31,24 @@ target 'KoreBotSDK' do
 end
 
 target 'Widgets' do
-    platform :ios, '8.0'
+    platform :ios, '10.0'
     use_frameworks!
+    import_pods
 
-    pod 'AFNetworking', '3.2.0'
+    pod 'DTCoreText','1.6.15'
+    pod 'Charts','3.0.5'
+    pod 'SquareMosaicLayout', '0.6.2'
     project 'Library/Widgets/Widgets.xcodeproj'
 end
 
 target 'TextParser' do
-    platform :ios, '8.0'
+    platform :ios, '10.0'
     use_frameworks!
     project 'Library/TextParser/TextParser.xcodeproj'
 end
 
 target 'SpeechToText' do
-    platform :ios, '8.0'
+    platform :ios, '10.0'
     use_frameworks!
     pod 'AFNetworking', '3.2.0'
     pod 'SocketRocket'

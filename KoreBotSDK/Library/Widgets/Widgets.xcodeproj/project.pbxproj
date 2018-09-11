@@ -7,61 +7,196 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6E50B8311F2A6EDD00E10D7D /* KREGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E50B82C1F2A6EDD00E10D7D /* KREGrowingTextView.swift */; };
-		6E50B8321F2A6EDD00E10D7D /* KRETextViewInternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E50B82D1F2A6EDD00E10D7D /* KRETextViewInternal.swift */; };
-		6E50B8331F2A6EDD00E10D7D /* KRECardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E50B82F1F2A6EDD00E10D7D /* KRECardView.swift */; };
-		6E50B8341F2A6EDD00E10D7D /* KRECarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E50B8301F2A6EDD00E10D7D /* KRECarouselView.swift */; };
-		ACE207F7213EA83300D118EC /* KREMenuTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACE207F5213EA83200D118EC /* KREMenuTableViewCell.xib */; };
-		ACE207F8213EA83300D118EC /* KREMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE207F6213EA83300D118EC /* KREMenuTableViewCell.swift */; };
-		BB7DB13C1E0B9FF500FF5A13 /* KREOptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7DB13A1E0B9FF500FF5A13 /* KREOptionsTableViewCell.swift */; };
-		BB7DB13D1E0B9FF500FF5A13 /* KREOptionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7DB13B1E0B9FF500FF5A13 /* KREOptionsTableViewCell.xib */; };
-		BBB4F95D1E0D260800C2A53A /* KREListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4F95B1E0D260800C2A53A /* KREListTableViewCell.swift */; };
-		BBB4F95E1E0D260800C2A53A /* KREListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBB4F95C1E0D260800C2A53A /* KREListTableViewCell.xib */; };
-		D1365FDA1DDC2B170017D80E /* KWAppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1365FD91DDC2B170017D80E /* KWAppLaunchViewController.swift */; };
-		D1365FDE1DDC2F0F0017D80E /* ListViewWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1365FDD1DDC2F0F0017D80E /* ListViewWidgetViewController.swift */; };
-		D1365FE01DDC2F240017D80E /* ButtonWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1365FDF1DDC2F240017D80E /* ButtonWidgetViewController.swift */; };
+		ACE55F9D21413CE200829961 /* KoreBotUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE55F9C21413CE200829961 /* KoreBotUIKit.swift */; };
+		ACEF4006213EFB3500B6979A /* ListViewWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F7D213EFB3400B6979A /* ListViewWidgetViewController.swift */; };
+		ACEF4007213EFB3500B6979A /* ChatMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F7F213EFB3400B6979A /* ChatMessagesViewController.swift */; };
+		ACEF4008213EFB3500B6979A /* ChatMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACEF3F80213EFB3400B6979A /* ChatMessagesViewController.xib */; };
+		ACEF4009213EFB3500B6979A /* TableTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F82213EFB3400B6979A /* TableTemplateViewController.swift */; };
+		ACEF400A213EFB3500B6979A /* TableTemplateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACEF3F83213EFB3400B6979A /* TableTemplateViewController.xib */; };
+		ACEF400B213EFB3500B6979A /* InputTOWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F84213EFB3400B6979A /* InputTOWebViewController.swift */; };
+		ACEF400C213EFB3500B6979A /* KRETypingActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F86213EFB3400B6979A /* KRETypingActivityIndicator.m */; };
+		ACEF400D213EFB3500B6979A /* KRETypingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACEF3F87213EFB3400B6979A /* KRETypingCollectionViewCell.xib */; };
+		ACEF400E213EFB3500B6979A /* KRETypingStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F8A213EFB3400B6979A /* KRETypingStatusView.m */; };
+		ACEF400F213EFB3500B6979A /* KRETypingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F8B213EFB3400B6979A /* KRETypingCollectionViewCell.m */; };
+		ACEF4010213EFB3500B6979A /* KWAppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F8D213EFB3400B6979A /* KWAppLaunchViewController.swift */; };
+		ACEF4011213EFB3500B6979A /* ButtonWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F8E213EFB3400B6979A /* ButtonWidgetViewController.swift */; };
+		ACEF4012213EFB3500B6979A /* BotMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F90213EFB3400B6979A /* BotMessagesView.swift */; };
+		ACEF4013213EFB3500B6979A /* KREFetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F91213EFB3400B6979A /* KREFetchedResultsController.swift */; };
+		ACEF4014213EFB3500B6979A /* MessageBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F92213EFB3400B6979A /* MessageBubbleCell.swift */; };
+		ACEF4015213EFB3500B6979A /* QuickSelectWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F93213EFB3400B6979A /* QuickSelectWidgetViewController.swift */; };
+		ACEF4018213EFB3500B6979A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACEF3F9A213EFB3400B6979A /* Images.xcassets */; };
+		ACEF4019213EFB3500B6979A /* Messages.plist in Resources */ = {isa = PBXBuildFile; fileRef = ACEF3F9D213EFB3400B6979A /* Messages.plist */; };
+		ACEF401A213EFB3500B6979A /* BotConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = ACEF3F9E213EFB3400B6979A /* BotConfiguration.plist */; };
+		ACEF401B213EFB3500B6979A /* KRETokenCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FA0213EFB3400B6979A /* KRETokenCollectionViewCell.swift */; };
+		ACEF401C213EFB3500B6979A /* KREQuickSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FA1213EFB3400B6979A /* KREQuickSelectView.swift */; };
+		ACEF401D213EFB3500B6979A /* KRECollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FA2213EFB3400B6979A /* KRECollectionView.swift */; };
+		ACEF401E213EFB3500B6979A /* KRETextViewInternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FA4213EFB3400B6979A /* KRETextViewInternal.swift */; };
+		ACEF401F213EFB3500B6979A /* KREGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FA5213EFB3400B6979A /* KREGrowingTextView.swift */; };
+		ACEF4020213EFB3500B6979A /* KRECardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FA7213EFB3400B6979A /* KRECardView.swift */; };
+		ACEF4021213EFB3500B6979A /* KRECarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FA8213EFB3400B6979A /* KRECarouselView.swift */; };
+		ACEF4022213EFB3500B6979A /* TSBaseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FAD213EFB3500B6979A /* TSBaseParser.m */; };
+		ACEF4023213EFB3500B6979A /* TSMarkdownParser.m in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FB0213EFB3500B6979A /* TSMarkdownParser.m */; };
+		ACEF4027213EFB3500B6979A /* CALayer+MBAnimationPersistence.m in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FB6213EFB3500B6979A /* CALayer+MBAnimationPersistence.m */; };
+		ACEF4028213EFB3500B6979A /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FB9213EFB3500B6979A /* Identity.swift */; };
+		ACEF4029213EFB3500B6979A /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FBA213EFB3500B6979A /* Message.swift */; };
+		ACEF402A213EFB3500B6979A /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FBB213EFB3500B6979A /* Thread.swift */; };
+		ACEF402B213EFB3500B6979A /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FBC213EFB3500B6979A /* Component.swift */; };
+		ACEF402C213EFB3500B6979A /* SectionedThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FBD213EFB3500B6979A /* SectionedThread.swift */; };
+		ACEF402D213EFB3500B6979A /* ComposeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FBF213EFB3500B6979A /* ComposeBarView.swift */; };
+		ACEF402E213EFB3500B6979A /* AudioComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FC2213EFB3500B6979A /* AudioComposeView.swift */; };
+		ACEF402F213EFB3500B6979A /* NSMutableAttributedString+KREUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FC4213EFB3500B6979A /* NSMutableAttributedString+KREUtils.m */; };
+		ACEF4030213EFB3500B6979A /* KRELayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FC8213EFB3500B6979A /* KRELayoutManager.m */; };
+		ACEF4031213EFB3500B6979A /* KREAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FCA213EFB3500B6979A /* KREAttributedLabel.m */; };
+		ACEF4032213EFB3500B6979A /* KREUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FCB213EFB3500B6979A /* KREUtilities.m */; };
+		ACEF4033213EFB3500B6979A /* OptionsBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FCE213EFB3500B6979A /* OptionsBubbleView.swift */; };
+		ACEF4034213EFB3500B6979A /* ChartBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FD0213EFB3500B6979A /* ChartBubbleView.swift */; };
+		ACEF4035213EFB3500B6979A /* BalloonMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FD1213EFB3500B6979A /* BalloonMarker.swift */; };
+		ACEF4036213EFB3500B6979A /* CarouselBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FD3213EFB3500B6979A /* CarouselBubbleView.swift */; };
+		ACEF4037213EFB3500B6979A /* MultiImageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FD6213EFB3500B6979A /* MultiImageBubbleView.swift */; };
+		ACEF4038213EFB3500B6979A /* ImageComponentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACEF3FD7213EFB3500B6979A /* ImageComponentCollectionViewCell.xib */; };
+		ACEF4039213EFB3500B6979A /* ImageComponentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FD8213EFB3500B6979A /* ImageComponentCollectionViewCell.swift */; };
+		ACEF403A213EFB3500B6979A /* MultiImageBubbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACEF3FD9213EFB3500B6979A /* MultiImageBubbleView.xib */; };
+		ACEF403B213EFB3500B6979A /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FDA213EFB3500B6979A /* BubbleView.swift */; };
+		ACEF403C213EFB3500B6979A /* ResponsiveTableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FDC213EFB3500B6979A /* ResponsiveTableBubbleView.swift */; };
+		ACEF403D213EFB3500B6979A /* MiniTableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FDD213EFB3500B6979A /* MiniTableBubbleView.swift */; };
+		ACEF403E213EFB3500B6979A /* CustomCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FDF213EFB3500B6979A /* CustomCollectionViewLayout.swift */; };
+		ACEF403F213EFB3500B6979A /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FE0213EFB3500B6979A /* CustomCollectionViewCell.swift */; };
+		ACEF4040213EFB3500B6979A /* CustomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACEF3FE1213EFB3500B6979A /* CustomCollectionViewCell.xib */; };
+		ACEF4041213EFB3500B6979A /* TableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FE2213EFB3500B6979A /* TableBubbleView.swift */; };
+		ACEF4042213EFB3500B6979A /* SubTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FE3213EFB3500B6979A /* SubTableViewCell.swift */; };
+		ACEF4043213EFB3500B6979A /* ExpandedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FE4213EFB3500B6979A /* ExpandedTableViewCell.swift */; };
+		ACEF4044213EFB3500B6979A /* ResponsiveCustonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FE5213EFB3500B6979A /* ResponsiveCustonCell.swift */; };
+		ACEF4045213EFB3500B6979A /* MiniTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FE6213EFB3500B6979A /* MiniTableViewCell.swift */; };
+		ACEF4046213EFB3500B6979A /* MenuBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FE8213EFB3500B6979A /* MenuBubbleView.swift */; };
+		ACEF4047213EFB3500B6979A /* ListBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FE9213EFB3500B6979A /* ListBubbleView.swift */; };
+		ACEF4048213EFB3500B6979A /* TextBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FEB213EFB3500B6979A /* TextBubbleView.swift */; };
+		ACEF4049213EFB3500B6979A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FED213EFB3500B6979A /* CoreDataManager.swift */; };
+		ACEF404A213EFB3500B6979A /* DataStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FEE213EFB3500B6979A /* DataStoreManager.swift */; };
+		ACEF404B213EFB3500B6979A /* KREOptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FF0213EFB3500B6979A /* KREOptionsTableViewCell.swift */; };
+		ACEF404C213EFB3500B6979A /* KREMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FF1213EFB3500B6979A /* KREMenuTableViewCell.swift */; };
+		ACEF404D213EFB3500B6979A /* KREMenuTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACEF3FF2213EFB3500B6979A /* KREMenuTableViewCell.xib */; };
+		ACEF404E213EFB3500B6979A /* KREOptionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACEF3FF3213EFB3500B6979A /* KREOptionsTableViewCell.xib */; };
+		ACEF404F213EFB3500B6979A /* KREListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACEF3FF4213EFB3500B6979A /* KREListTableViewCell.xib */; };
+		ACEF4050213EFB3500B6979A /* KREListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FF5213EFB3500B6979A /* KREListTableViewCell.swift */; };
+		ACEF4051213EFB3500B6979A /* KREOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FF6213EFB3500B6979A /* KREOptionsView.swift */; };
+		ACEF4052213EFB3500B6979A /* KREMessage+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FFA213EFB3500B6979A /* KREMessage+CoreDataProperties.swift */; };
+		ACEF4053213EFB3500B6979A /* KREThread+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FFB213EFB3500B6979A /* KREThread+CoreDataClass.swift */; };
+		ACEF4054213EFB3500B6979A /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FFC213EFB3500B6979A /* DataModel.xcdatamodeld */; };
+		ACEF4055213EFB3500B6979A /* KREThread+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FFE213EFB3500B6979A /* KREThread+CoreDataProperties.swift */; };
+		ACEF4056213EFB3500B6979A /* KREMessage+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3FFF213EFB3500B6979A /* KREMessage+CoreDataClass.swift */; };
+		ACEF4057213EFB3500B6979A /* KREContact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF4000213EFB3500B6979A /* KREContact+CoreDataProperties.swift */; };
+		ACEF4058213EFB3500B6979A /* KREContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF4001213EFB3500B6979A /* KREContact+CoreDataClass.swift */; };
+		ACEF4059213EFB3500B6979A /* KREComponent+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF4002213EFB3500B6979A /* KREComponent+CoreDataClass.swift */; };
+		ACEF405A213EFB3500B6979A /* KREComponent+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF4003213EFB3500B6979A /* KREComponent+CoreDataProperties.swift */; };
+		ACEF405B213EFB3500B6979A /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF4005213EFB3500B6979A /* Common.swift */; };
 		D150E0FC1DDDADE400E674FE /* KoreWidgets.podspec in Resources */ = {isa = PBXBuildFile; fileRef = D150E0FB1DDDADE400E674FE /* KoreWidgets.podspec */; };
 		D1832B591DDC1EE700FDFB93 /* KWAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1832B581DDC1EE700FDFB93 /* KWAppDelegate.swift */; };
-		D1832B601DDC1EE700FDFB93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1832B5F1DDC1EE700FDFB93 /* Assets.xcassets */; };
 		D1832B631DDC1EE700FDFB93 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1832B611DDC1EE700FDFB93 /* LaunchScreen.storyboard */; };
-		D1CE673C1DE713B0009B8AB9 /* KRECollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE67371DE713B0009B8AB9 /* KRECollectionView.swift */; };
-		D1CE673D1DE713B0009B8AB9 /* KREQuickSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE67381DE713B0009B8AB9 /* KREQuickSelectView.swift */; };
-		D1CE673E1DE713B0009B8AB9 /* KRETokenCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE67391DE713B0009B8AB9 /* KRETokenCollectionViewCell.swift */; };
-		D1CE67421DE714BF009B8AB9 /* QuickSelectWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE67411DE714BF009B8AB9 /* QuickSelectWidgetViewController.swift */; };
-		D1CE67451DE717F2009B8AB9 /* KREOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE67441DE717F2009B8AB9 /* KREOptionsView.swift */; };
-		D1CE674B1DE718EE009B8AB9 /* KREImagesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE67481DE718EE009B8AB9 /* KREImagesCollectionView.swift */; };
 		DF5BBD93AAE0D2C53BD4BFC1 /* Pods_Widgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B75DEE6911A00B4E860ED3D /* Pods_Widgets.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		04ECB956FB18F943737CCE34 /* Pods-Widgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Widgets.debug.xcconfig"; path = "../../Pods/Target Support Files/Pods-Widgets/Pods-Widgets.debug.xcconfig"; sourceTree = "<group>"; };
 		6B75DEE6911A00B4E860ED3D /* Pods_Widgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Widgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6E50B82C1F2A6EDD00E10D7D /* KREGrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREGrowingTextView.swift; sourceTree = "<group>"; };
-		6E50B82D1F2A6EDD00E10D7D /* KRETextViewInternal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETextViewInternal.swift; sourceTree = "<group>"; };
-		6E50B82F1F2A6EDD00E10D7D /* KRECardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECardView.swift; sourceTree = "<group>"; };
-		6E50B8301F2A6EDD00E10D7D /* KRECarouselView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECarouselView.swift; sourceTree = "<group>"; };
-		ACE207F5213EA83200D118EC /* KREMenuTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KREMenuTableViewCell.xib; sourceTree = "<group>"; };
-		ACE207F6213EA83300D118EC /* KREMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMenuTableViewCell.swift; sourceTree = "<group>"; };
-		BB7DB13A1E0B9FF500FF5A13 /* KREOptionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREOptionsTableViewCell.swift; sourceTree = "<group>"; };
-		BB7DB13B1E0B9FF500FF5A13 /* KREOptionsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KREOptionsTableViewCell.xib; sourceTree = "<group>"; };
-		BBB4F95B1E0D260800C2A53A /* KREListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREListTableViewCell.swift; sourceTree = "<group>"; };
-		BBB4F95C1E0D260800C2A53A /* KREListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KREListTableViewCell.xib; sourceTree = "<group>"; };
+		ACE55F9C21413CE200829961 /* KoreBotUIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoreBotUIKit.swift; sourceTree = "<group>"; };
+		ACEF3F7D213EFB3400B6979A /* ListViewWidgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewWidgetViewController.swift; sourceTree = "<group>"; };
+		ACEF3F7F213EFB3400B6979A /* ChatMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessagesViewController.swift; sourceTree = "<group>"; };
+		ACEF3F80213EFB3400B6979A /* ChatMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatMessagesViewController.xib; sourceTree = "<group>"; };
+		ACEF3F82213EFB3400B6979A /* TableTemplateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableTemplateViewController.swift; sourceTree = "<group>"; };
+		ACEF3F83213EFB3400B6979A /* TableTemplateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableTemplateViewController.xib; sourceTree = "<group>"; };
+		ACEF3F84213EFB3400B6979A /* InputTOWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTOWebViewController.swift; sourceTree = "<group>"; };
+		ACEF3F86213EFB3400B6979A /* KRETypingActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingActivityIndicator.m; sourceTree = "<group>"; };
+		ACEF3F87213EFB3400B6979A /* KRETypingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KRETypingCollectionViewCell.xib; sourceTree = "<group>"; };
+		ACEF3F88213EFB3400B6979A /* KRETypingCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingCollectionViewCell.h; sourceTree = "<group>"; };
+		ACEF3F89213EFB3400B6979A /* KRETypingStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingStatusView.h; sourceTree = "<group>"; };
+		ACEF3F8A213EFB3400B6979A /* KRETypingStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingStatusView.m; sourceTree = "<group>"; };
+		ACEF3F8B213EFB3400B6979A /* KRETypingCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingCollectionViewCell.m; sourceTree = "<group>"; };
+		ACEF3F8C213EFB3400B6979A /* KRETypingActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingActivityIndicator.h; sourceTree = "<group>"; };
+		ACEF3F8D213EFB3400B6979A /* KWAppLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KWAppLaunchViewController.swift; sourceTree = "<group>"; };
+		ACEF3F8E213EFB3400B6979A /* ButtonWidgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonWidgetViewController.swift; sourceTree = "<group>"; };
+		ACEF3F90213EFB3400B6979A /* BotMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotMessagesView.swift; sourceTree = "<group>"; };
+		ACEF3F91213EFB3400B6979A /* KREFetchedResultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREFetchedResultsController.swift; sourceTree = "<group>"; };
+		ACEF3F92213EFB3400B6979A /* MessageBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleCell.swift; sourceTree = "<group>"; };
+		ACEF3F93213EFB3400B6979A /* QuickSelectWidgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickSelectWidgetViewController.swift; sourceTree = "<group>"; };
+		ACEF3F9A213EFB3400B6979A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		ACEF3F9B213EFB3400B6979A /* KoreBotSDKDemo-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KoreBotSDKDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		ACEF3F9D213EFB3400B6979A /* Messages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Messages.plist; sourceTree = "<group>"; };
+		ACEF3F9E213EFB3400B6979A /* BotConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BotConfiguration.plist; sourceTree = "<group>"; };
+		ACEF3FA0213EFB3400B6979A /* KRETokenCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETokenCollectionViewCell.swift; sourceTree = "<group>"; };
+		ACEF3FA1213EFB3400B6979A /* KREQuickSelectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREQuickSelectView.swift; sourceTree = "<group>"; };
+		ACEF3FA2213EFB3400B6979A /* KRECollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECollectionView.swift; sourceTree = "<group>"; };
+		ACEF3FA4213EFB3400B6979A /* KRETextViewInternal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETextViewInternal.swift; sourceTree = "<group>"; };
+		ACEF3FA5213EFB3400B6979A /* KREGrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREGrowingTextView.swift; sourceTree = "<group>"; };
+		ACEF3FA7213EFB3400B6979A /* KRECardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECardView.swift; sourceTree = "<group>"; };
+		ACEF3FA8213EFB3400B6979A /* KRECarouselView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECarouselView.swift; sourceTree = "<group>"; };
+		ACEF3FAD213EFB3500B6979A /* TSBaseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSBaseParser.m; sourceTree = "<group>"; };
+		ACEF3FAE213EFB3500B6979A /* TSMarkdownParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMarkdownParser.h; sourceTree = "<group>"; };
+		ACEF3FAF213EFB3500B6979A /* TSBaseParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSBaseParser.h; sourceTree = "<group>"; };
+		ACEF3FB0213EFB3500B6979A /* TSMarkdownParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMarkdownParser.m; sourceTree = "<group>"; };
+		ACEF3FB6213EFB3500B6979A /* CALayer+MBAnimationPersistence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+MBAnimationPersistence.m"; sourceTree = "<group>"; };
+		ACEF3FB7213EFB3500B6979A /* CALayer+MBAnimationPersistence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+MBAnimationPersistence.h"; sourceTree = "<group>"; };
+		ACEF3FB9213EFB3500B6979A /* Identity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identity.swift; sourceTree = "<group>"; };
+		ACEF3FBA213EFB3500B6979A /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		ACEF3FBB213EFB3500B6979A /* Thread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
+		ACEF3FBC213EFB3500B6979A /* Component.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
+		ACEF3FBD213EFB3500B6979A /* SectionedThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionedThread.swift; sourceTree = "<group>"; };
+		ACEF3FBF213EFB3500B6979A /* ComposeBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeBarView.swift; sourceTree = "<group>"; };
+		ACEF3FC2213EFB3500B6979A /* AudioComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioComposeView.swift; sourceTree = "<group>"; };
+		ACEF3FC4213EFB3500B6979A /* NSMutableAttributedString+KREUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+KREUtils.m"; sourceTree = "<group>"; };
+		ACEF3FC5213EFB3500B6979A /* KRELayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRELayoutManager.h; sourceTree = "<group>"; };
+		ACEF3FC6213EFB3500B6979A /* KREUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KREUtilities.h; sourceTree = "<group>"; };
+		ACEF3FC7213EFB3500B6979A /* KREAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KREAttributedLabel.h; sourceTree = "<group>"; };
+		ACEF3FC8213EFB3500B6979A /* KRELayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRELayoutManager.m; sourceTree = "<group>"; };
+		ACEF3FC9213EFB3500B6979A /* NSMutableAttributedString+KREUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+KREUtils.h"; sourceTree = "<group>"; };
+		ACEF3FCA213EFB3500B6979A /* KREAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KREAttributedLabel.m; sourceTree = "<group>"; };
+		ACEF3FCB213EFB3500B6979A /* KREUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KREUtilities.m; sourceTree = "<group>"; };
+		ACEF3FCE213EFB3500B6979A /* OptionsBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsBubbleView.swift; sourceTree = "<group>"; };
+		ACEF3FD0213EFB3500B6979A /* ChartBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartBubbleView.swift; sourceTree = "<group>"; };
+		ACEF3FD1213EFB3500B6979A /* BalloonMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalloonMarker.swift; sourceTree = "<group>"; };
+		ACEF3FD3213EFB3500B6979A /* CarouselBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselBubbleView.swift; sourceTree = "<group>"; };
+		ACEF3FD6213EFB3500B6979A /* MultiImageBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiImageBubbleView.swift; sourceTree = "<group>"; };
+		ACEF3FD7213EFB3500B6979A /* ImageComponentCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageComponentCollectionViewCell.xib; sourceTree = "<group>"; };
+		ACEF3FD8213EFB3500B6979A /* ImageComponentCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageComponentCollectionViewCell.swift; sourceTree = "<group>"; };
+		ACEF3FD9213EFB3500B6979A /* MultiImageBubbleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultiImageBubbleView.xib; sourceTree = "<group>"; };
+		ACEF3FDA213EFB3500B6979A /* BubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
+		ACEF3FDC213EFB3500B6979A /* ResponsiveTableBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsiveTableBubbleView.swift; sourceTree = "<group>"; };
+		ACEF3FDD213EFB3500B6979A /* MiniTableBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniTableBubbleView.swift; sourceTree = "<group>"; };
+		ACEF3FDF213EFB3500B6979A /* CustomCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewLayout.swift; sourceTree = "<group>"; };
+		ACEF3FE0213EFB3500B6979A /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
+		ACEF3FE1213EFB3500B6979A /* CustomCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCollectionViewCell.xib; sourceTree = "<group>"; };
+		ACEF3FE2213EFB3500B6979A /* TableBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableBubbleView.swift; sourceTree = "<group>"; };
+		ACEF3FE3213EFB3500B6979A /* SubTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubTableViewCell.swift; sourceTree = "<group>"; };
+		ACEF3FE4213EFB3500B6979A /* ExpandedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandedTableViewCell.swift; sourceTree = "<group>"; };
+		ACEF3FE5213EFB3500B6979A /* ResponsiveCustonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsiveCustonCell.swift; sourceTree = "<group>"; };
+		ACEF3FE6213EFB3500B6979A /* MiniTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniTableViewCell.swift; sourceTree = "<group>"; };
+		ACEF3FE8213EFB3500B6979A /* MenuBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBubbleView.swift; sourceTree = "<group>"; };
+		ACEF3FE9213EFB3500B6979A /* ListBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBubbleView.swift; sourceTree = "<group>"; };
+		ACEF3FEB213EFB3500B6979A /* TextBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextBubbleView.swift; sourceTree = "<group>"; };
+		ACEF3FED213EFB3500B6979A /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		ACEF3FEE213EFB3500B6979A /* DataStoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStoreManager.swift; sourceTree = "<group>"; };
+		ACEF3FF0213EFB3500B6979A /* KREOptionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREOptionsTableViewCell.swift; sourceTree = "<group>"; };
+		ACEF3FF1213EFB3500B6979A /* KREMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMenuTableViewCell.swift; sourceTree = "<group>"; };
+		ACEF3FF2213EFB3500B6979A /* KREMenuTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KREMenuTableViewCell.xib; sourceTree = "<group>"; };
+		ACEF3FF3213EFB3500B6979A /* KREOptionsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KREOptionsTableViewCell.xib; sourceTree = "<group>"; };
+		ACEF3FF4213EFB3500B6979A /* KREListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KREListTableViewCell.xib; sourceTree = "<group>"; };
+		ACEF3FF5213EFB3500B6979A /* KREListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREListTableViewCell.swift; sourceTree = "<group>"; };
+		ACEF3FF6213EFB3500B6979A /* KREOptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREOptionsView.swift; sourceTree = "<group>"; };
+		ACEF3FFA213EFB3500B6979A /* KREMessage+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREMessage+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		ACEF3FFB213EFB3500B6979A /* KREThread+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREThread+CoreDataClass.swift"; sourceTree = "<group>"; };
+		ACEF3FFD213EFB3500B6979A /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		ACEF3FFE213EFB3500B6979A /* KREThread+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREThread+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		ACEF3FFF213EFB3500B6979A /* KREMessage+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREMessage+CoreDataClass.swift"; sourceTree = "<group>"; };
+		ACEF4000213EFB3500B6979A /* KREContact+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREContact+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		ACEF4001213EFB3500B6979A /* KREContact+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREContact+CoreDataClass.swift"; sourceTree = "<group>"; };
+		ACEF4002213EFB3500B6979A /* KREComponent+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREComponent+CoreDataClass.swift"; sourceTree = "<group>"; };
+		ACEF4003213EFB3500B6979A /* KREComponent+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREComponent+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		ACEF4005213EFB3500B6979A /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		BBCC6BA71E123D8200629BB5 /* Widgets-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Widgets-Bridging-Header.h"; sourceTree = "<group>"; };
-		D1365FD91DDC2B170017D80E /* KWAppLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KWAppLaunchViewController.swift; sourceTree = "<group>"; };
-		D1365FDD1DDC2F0F0017D80E /* ListViewWidgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewWidgetViewController.swift; sourceTree = "<group>"; };
-		D1365FDF1DDC2F240017D80E /* ButtonWidgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonWidgetViewController.swift; sourceTree = "<group>"; };
 		D150E0FB1DDDADE400E674FE /* KoreWidgets.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KoreWidgets.podspec; sourceTree = "<group>"; };
 		D1832B551DDC1EE700FDFB93 /* Widgets.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Widgets.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1832B581DDC1EE700FDFB93 /* KWAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KWAppDelegate.swift; sourceTree = "<group>"; };
-		D1832B5F1DDC1EE700FDFB93 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D1832B621DDC1EE700FDFB93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D1832B641DDC1EE700FDFB93 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D1CE67371DE713B0009B8AB9 /* KRECollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECollectionView.swift; sourceTree = "<group>"; };
-		D1CE67381DE713B0009B8AB9 /* KREQuickSelectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREQuickSelectView.swift; sourceTree = "<group>"; };
-		D1CE67391DE713B0009B8AB9 /* KRETokenCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETokenCollectionViewCell.swift; sourceTree = "<group>"; };
-		D1CE67411DE714BF009B8AB9 /* QuickSelectWidgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickSelectWidgetViewController.swift; sourceTree = "<group>"; };
-		D1CE67441DE717F2009B8AB9 /* KREOptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREOptionsView.swift; sourceTree = "<group>"; };
-		D1CE67481DE718EE009B8AB9 /* KREImagesCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREImagesCollectionView.swift; sourceTree = "<group>"; };
 		E4A91BB3F6FB508756602935 /* Pods-Widgets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Widgets.release.xcconfig"; path = "../../Pods/Target Support Files/Pods-Widgets/Pods-Widgets.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -77,22 +212,374 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6E50B82B1F2A6EDD00E10D7D /* GrowingTextView */ = {
+		ACEF3F7C213EFB3400B6979A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				6E50B82C1F2A6EDD00E10D7D /* KREGrowingTextView.swift */,
-				6E50B82D1F2A6EDD00E10D7D /* KRETextViewInternal.swift */,
+				ACEF3F7D213EFB3400B6979A /* ListViewWidgetViewController.swift */,
+				ACEF3F7E213EFB3400B6979A /* ChatMessages */,
+				ACEF3F81213EFB3400B6979A /* InputViews */,
+				ACEF3F85213EFB3400B6979A /* TypingStatus */,
+				ACEF3F8D213EFB3400B6979A /* KWAppLaunchViewController.swift */,
+				ACEF3F8E213EFB3400B6979A /* ButtonWidgetViewController.swift */,
+				ACEF3F8F213EFB3400B6979A /* BotMessages */,
+				ACEF3F93213EFB3400B6979A /* QuickSelectWidgetViewController.swift */,
+				ACEF3F97213EFB3400B6979A /* ChatWindow */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		ACEF3F7E213EFB3400B6979A /* ChatMessages */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3F7F213EFB3400B6979A /* ChatMessagesViewController.swift */,
+				ACEF3F80213EFB3400B6979A /* ChatMessagesViewController.xib */,
+			);
+			path = ChatMessages;
+			sourceTree = "<group>";
+		};
+		ACEF3F81213EFB3400B6979A /* InputViews */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3F82213EFB3400B6979A /* TableTemplateViewController.swift */,
+				ACEF3F83213EFB3400B6979A /* TableTemplateViewController.xib */,
+				ACEF3F84213EFB3400B6979A /* InputTOWebViewController.swift */,
+			);
+			path = InputViews;
+			sourceTree = "<group>";
+		};
+		ACEF3F85213EFB3400B6979A /* TypingStatus */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3F86213EFB3400B6979A /* KRETypingActivityIndicator.m */,
+				ACEF3F87213EFB3400B6979A /* KRETypingCollectionViewCell.xib */,
+				ACEF3F88213EFB3400B6979A /* KRETypingCollectionViewCell.h */,
+				ACEF3F89213EFB3400B6979A /* KRETypingStatusView.h */,
+				ACEF3F8A213EFB3400B6979A /* KRETypingStatusView.m */,
+				ACEF3F8B213EFB3400B6979A /* KRETypingCollectionViewCell.m */,
+				ACEF3F8C213EFB3400B6979A /* KRETypingActivityIndicator.h */,
+			);
+			path = TypingStatus;
+			sourceTree = "<group>";
+		};
+		ACEF3F8F213EFB3400B6979A /* BotMessages */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3F90213EFB3400B6979A /* BotMessagesView.swift */,
+				ACEF3F91213EFB3400B6979A /* KREFetchedResultsController.swift */,
+				ACEF3F92213EFB3400B6979A /* MessageBubbleCell.swift */,
+			);
+			path = BotMessages;
+			sourceTree = "<group>";
+		};
+		ACEF3F97213EFB3400B6979A /* ChatWindow */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ChatWindow;
+			sourceTree = "<group>";
+		};
+		ACEF3F98213EFB3400B6979A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3F99213EFB3400B6979A /* Images */,
+				ACEF3F9B213EFB3400B6979A /* KoreBotSDKDemo-Bridging-Header.h */,
+				ACEF3F9C213EFB3400B6979A /* Data */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		ACEF3F99213EFB3400B6979A /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3F9A213EFB3400B6979A /* Images.xcassets */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		ACEF3F9C213EFB3400B6979A /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3F9D213EFB3400B6979A /* Messages.plist */,
+				ACEF3F9E213EFB3400B6979A /* BotConfiguration.plist */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		ACEF3F9F213EFB3400B6979A /* QuickSelect */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FA0213EFB3400B6979A /* KRETokenCollectionViewCell.swift */,
+				ACEF3FA1213EFB3400B6979A /* KREQuickSelectView.swift */,
+				ACEF3FA2213EFB3400B6979A /* KRECollectionView.swift */,
+			);
+			path = QuickSelect;
+			sourceTree = "<group>";
+		};
+		ACEF3FA3213EFB3400B6979A /* GrowingTextView */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FA4213EFB3400B6979A /* KRETextViewInternal.swift */,
+				ACEF3FA5213EFB3400B6979A /* KREGrowingTextView.swift */,
 			);
 			path = GrowingTextView;
 			sourceTree = "<group>";
 		};
-		6E50B82E1F2A6EDD00E10D7D /* Carousel */ = {
+		ACEF3FA6213EFB3400B6979A /* Carousel */ = {
 			isa = PBXGroup;
 			children = (
-				6E50B82F1F2A6EDD00E10D7D /* KRECardView.swift */,
-				6E50B8301F2A6EDD00E10D7D /* KRECarouselView.swift */,
+				ACEF3FA7213EFB3400B6979A /* KRECardView.swift */,
+				ACEF3FA8213EFB3400B6979A /* KRECarouselView.swift */,
+				ACEF3FA9213EFB3400B6979A /* EMailCarousel */,
 			);
 			path = Carousel;
+			sourceTree = "<group>";
+		};
+		ACEF3FA9213EFB3400B6979A /* EMailCarousel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = EMailCarousel;
+			sourceTree = "<group>";
+		};
+		ACEF3FAA213EFB3500B6979A /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FAB213EFB3500B6979A /* Vendors */,
+				ACEF3FB5213EFB3500B6979A /* Animation */,
+				ACEF3FB8213EFB3500B6979A /* Models */,
+				ACEF3FBE213EFB3500B6979A /* ComposeBar */,
+				ACEF3FC0213EFB3500B6979A /* Elements */,
+				ACEF3FC3213EFB3500B6979A /* AttributedLabel */,
+				ACEF3FCC213EFB3500B6979A /* BubbleViews */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		ACEF3FAB213EFB3500B6979A /* Vendors */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FAC213EFB3500B6979A /* TSMarkdownParser */,
+			);
+			path = Vendors;
+			sourceTree = "<group>";
+		};
+		ACEF3FAC213EFB3500B6979A /* TSMarkdownParser */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FAD213EFB3500B6979A /* TSBaseParser.m */,
+				ACEF3FAE213EFB3500B6979A /* TSMarkdownParser.h */,
+				ACEF3FAF213EFB3500B6979A /* TSBaseParser.h */,
+				ACEF3FB0213EFB3500B6979A /* TSMarkdownParser.m */,
+			);
+			path = TSMarkdownParser;
+			sourceTree = "<group>";
+		};
+		ACEF3FB5213EFB3500B6979A /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FB6213EFB3500B6979A /* CALayer+MBAnimationPersistence.m */,
+				ACEF3FB7213EFB3500B6979A /* CALayer+MBAnimationPersistence.h */,
+			);
+			path = Animation;
+			sourceTree = "<group>";
+		};
+		ACEF3FB8213EFB3500B6979A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FB9213EFB3500B6979A /* Identity.swift */,
+				ACEF3FBA213EFB3500B6979A /* Message.swift */,
+				ACEF3FBB213EFB3500B6979A /* Thread.swift */,
+				ACEF3FBC213EFB3500B6979A /* Component.swift */,
+				ACEF3FBD213EFB3500B6979A /* SectionedThread.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		ACEF3FBE213EFB3500B6979A /* ComposeBar */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FBF213EFB3500B6979A /* ComposeBarView.swift */,
+			);
+			path = ComposeBar;
+			sourceTree = "<group>";
+		};
+		ACEF3FC0213EFB3500B6979A /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FC1213EFB3500B6979A /* AudioComposer */,
+			);
+			path = Elements;
+			sourceTree = "<group>";
+		};
+		ACEF3FC1213EFB3500B6979A /* AudioComposer */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FC2213EFB3500B6979A /* AudioComposeView.swift */,
+			);
+			path = AudioComposer;
+			sourceTree = "<group>";
+		};
+		ACEF3FC3213EFB3500B6979A /* AttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FC4213EFB3500B6979A /* NSMutableAttributedString+KREUtils.m */,
+				ACEF3FC5213EFB3500B6979A /* KRELayoutManager.h */,
+				ACEF3FC6213EFB3500B6979A /* KREUtilities.h */,
+				ACEF3FC7213EFB3500B6979A /* KREAttributedLabel.h */,
+				ACEF3FC8213EFB3500B6979A /* KRELayoutManager.m */,
+				ACEF3FC9213EFB3500B6979A /* NSMutableAttributedString+KREUtils.h */,
+				ACEF3FCA213EFB3500B6979A /* KREAttributedLabel.m */,
+				ACEF3FCB213EFB3500B6979A /* KREUtilities.m */,
+			);
+			path = AttributedLabel;
+			sourceTree = "<group>";
+		};
+		ACEF3FCC213EFB3500B6979A /* BubbleViews */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FCD213EFB3500B6979A /* Options */,
+				ACEF3FCF213EFB3500B6979A /* Chart */,
+				ACEF3FD2213EFB3500B6979A /* Carousel */,
+				ACEF3FD4213EFB3500B6979A /* Piechart */,
+				ACEF3FD5213EFB3500B6979A /* Image */,
+				ACEF3FDA213EFB3500B6979A /* BubbleView.swift */,
+				ACEF3FDB213EFB3500B6979A /* Table */,
+				ACEF3FE7213EFB3500B6979A /* Menu */,
+				ACEF3FE9213EFB3500B6979A /* ListBubbleView.swift */,
+				ACEF3FEA213EFB3500B6979A /* Text */,
+			);
+			path = BubbleViews;
+			sourceTree = "<group>";
+		};
+		ACEF3FCD213EFB3500B6979A /* Options */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FCE213EFB3500B6979A /* OptionsBubbleView.swift */,
+			);
+			path = Options;
+			sourceTree = "<group>";
+		};
+		ACEF3FCF213EFB3500B6979A /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FD0213EFB3500B6979A /* ChartBubbleView.swift */,
+				ACEF3FD1213EFB3500B6979A /* BalloonMarker.swift */,
+			);
+			path = Chart;
+			sourceTree = "<group>";
+		};
+		ACEF3FD2213EFB3500B6979A /* Carousel */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FD3213EFB3500B6979A /* CarouselBubbleView.swift */,
+			);
+			path = Carousel;
+			sourceTree = "<group>";
+		};
+		ACEF3FD4213EFB3500B6979A /* Piechart */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Piechart;
+			sourceTree = "<group>";
+		};
+		ACEF3FD5213EFB3500B6979A /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FD6213EFB3500B6979A /* MultiImageBubbleView.swift */,
+				ACEF3FD7213EFB3500B6979A /* ImageComponentCollectionViewCell.xib */,
+				ACEF3FD8213EFB3500B6979A /* ImageComponentCollectionViewCell.swift */,
+				ACEF3FD9213EFB3500B6979A /* MultiImageBubbleView.xib */,
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
+		ACEF3FDB213EFB3500B6979A /* Table */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FDC213EFB3500B6979A /* ResponsiveTableBubbleView.swift */,
+				ACEF3FDD213EFB3500B6979A /* MiniTableBubbleView.swift */,
+				ACEF3FDE213EFB3500B6979A /* CollectionView */,
+				ACEF3FE2213EFB3500B6979A /* TableBubbleView.swift */,
+				ACEF3FE3213EFB3500B6979A /* SubTableViewCell.swift */,
+				ACEF3FE4213EFB3500B6979A /* ExpandedTableViewCell.swift */,
+				ACEF3FE5213EFB3500B6979A /* ResponsiveCustonCell.swift */,
+				ACEF3FE6213EFB3500B6979A /* MiniTableViewCell.swift */,
+			);
+			path = Table;
+			sourceTree = "<group>";
+		};
+		ACEF3FDE213EFB3500B6979A /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FDF213EFB3500B6979A /* CustomCollectionViewLayout.swift */,
+				ACEF3FE0213EFB3500B6979A /* CustomCollectionViewCell.swift */,
+				ACEF3FE1213EFB3500B6979A /* CustomCollectionViewCell.xib */,
+			);
+			path = CollectionView;
+			sourceTree = "<group>";
+		};
+		ACEF3FE7213EFB3500B6979A /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FE8213EFB3500B6979A /* MenuBubbleView.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		ACEF3FEA213EFB3500B6979A /* Text */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FEB213EFB3500B6979A /* TextBubbleView.swift */,
+			);
+			path = Text;
+			sourceTree = "<group>";
+		};
+		ACEF3FEC213EFB3500B6979A /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FED213EFB3500B6979A /* CoreDataManager.swift */,
+				ACEF3FEE213EFB3500B6979A /* DataStoreManager.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		ACEF3FEF213EFB3500B6979A /* Options */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FF0213EFB3500B6979A /* KREOptionsTableViewCell.swift */,
+				ACEF3FF1213EFB3500B6979A /* KREMenuTableViewCell.swift */,
+				ACEF3FF2213EFB3500B6979A /* KREMenuTableViewCell.xib */,
+				ACEF3FF3213EFB3500B6979A /* KREOptionsTableViewCell.xib */,
+				ACEF3FF4213EFB3500B6979A /* KREListTableViewCell.xib */,
+				ACEF3FF5213EFB3500B6979A /* KREListTableViewCell.swift */,
+				ACEF3FF6213EFB3500B6979A /* KREOptionsView.swift */,
+			);
+			path = Options;
+			sourceTree = "<group>";
+		};
+		ACEF3FF9213EFB3500B6979A /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF3FFA213EFB3500B6979A /* KREMessage+CoreDataProperties.swift */,
+				ACEF3FFB213EFB3500B6979A /* KREThread+CoreDataClass.swift */,
+				ACEF3FFC213EFB3500B6979A /* DataModel.xcdatamodeld */,
+				ACEF3FFE213EFB3500B6979A /* KREThread+CoreDataProperties.swift */,
+				ACEF3FFF213EFB3500B6979A /* KREMessage+CoreDataClass.swift */,
+				ACEF4000213EFB3500B6979A /* KREContact+CoreDataProperties.swift */,
+				ACEF4001213EFB3500B6979A /* KREContact+CoreDataClass.swift */,
+				ACEF4002213EFB3500B6979A /* KREComponent+CoreDataClass.swift */,
+				ACEF4003213EFB3500B6979A /* KREComponent+CoreDataProperties.swift */,
+			);
+			path = DataModel;
+			sourceTree = "<group>";
+		};
+		ACEF4004213EFB3500B6979A /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF4005213EFB3500B6979A /* Common.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		BF3133DA607717F1675F90CE /* Pods */ = {
@@ -102,17 +589,6 @@
 				E4A91BB3F6FB508756602935 /* Pods-Widgets.release.xcconfig */,
 			);
 			name = Pods;
-			sourceTree = "<group>";
-		};
-		D1365FD81DDC2B170017D80E /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				D1CE67411DE714BF009B8AB9 /* QuickSelectWidgetViewController.swift */,
-				D1365FD91DDC2B170017D80E /* KWAppLaunchViewController.swift */,
-				D1365FDD1DDC2F0F0017D80E /* ListViewWidgetViewController.swift */,
-				D1365FDF1DDC2F240017D80E /* ButtonWidgetViewController.swift */,
-			);
-			path = Controllers;
 			sourceTree = "<group>";
 		};
 		D1832B4C1DDC1EE700FDFB93 = {
@@ -138,50 +614,22 @@
 		D1832B571DDC1EE700FDFB93 /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
-				6E50B82B1F2A6EDD00E10D7D /* GrowingTextView */,
-				6E50B82E1F2A6EDD00E10D7D /* Carousel */,
-				D1CE67461DE718A7009B8AB9 /* Images */,
-				D1CE67431DE717D5009B8AB9 /* Options */,
-				D1CE67361DE713B0009B8AB9 /* QuickSelect */,
-				D1365FD81DDC2B170017D80E /* Controllers */,
+				ACEF3FA6213EFB3400B6979A /* Carousel */,
+				ACEF4004213EFB3500B6979A /* Common */,
+				ACEF3F7C213EFB3400B6979A /* Controllers */,
+				ACEF3FEC213EFB3500B6979A /* CoreData */,
+				ACEF3FF9213EFB3500B6979A /* DataModel */,
+				ACEF3FA3213EFB3400B6979A /* GrowingTextView */,
+				ACEF3FAA213EFB3500B6979A /* Library */,
+				ACEF3FEF213EFB3500B6979A /* Options */,
+				ACEF3F9F213EFB3400B6979A /* QuickSelect */,
+				ACEF3F98213EFB3400B6979A /* Resources */,
 				D1832B581DDC1EE700FDFB93 /* KWAppDelegate.swift */,
-				D1832B5F1DDC1EE700FDFB93 /* Assets.xcassets */,
 				D1832B611DDC1EE700FDFB93 /* LaunchScreen.storyboard */,
 				D1832B641DDC1EE700FDFB93 /* Info.plist */,
+				ACE55F9C21413CE200829961 /* KoreBotUIKit.swift */,
 			);
 			path = Widgets;
-			sourceTree = "<group>";
-		};
-		D1CE67361DE713B0009B8AB9 /* QuickSelect */ = {
-			isa = PBXGroup;
-			children = (
-				D1CE67371DE713B0009B8AB9 /* KRECollectionView.swift */,
-				D1CE67381DE713B0009B8AB9 /* KREQuickSelectView.swift */,
-				D1CE67391DE713B0009B8AB9 /* KRETokenCollectionViewCell.swift */,
-			);
-			path = QuickSelect;
-			sourceTree = "<group>";
-		};
-		D1CE67431DE717D5009B8AB9 /* Options */ = {
-			isa = PBXGroup;
-			children = (
-				ACE207F6213EA83300D118EC /* KREMenuTableViewCell.swift */,
-				ACE207F5213EA83200D118EC /* KREMenuTableViewCell.xib */,
-				D1CE67441DE717F2009B8AB9 /* KREOptionsView.swift */,
-				BB7DB13A1E0B9FF500FF5A13 /* KREOptionsTableViewCell.swift */,
-				BB7DB13B1E0B9FF500FF5A13 /* KREOptionsTableViewCell.xib */,
-				BBB4F95B1E0D260800C2A53A /* KREListTableViewCell.swift */,
-				BBB4F95C1E0D260800C2A53A /* KREListTableViewCell.xib */,
-			);
-			path = Options;
-			sourceTree = "<group>";
-		};
-		D1CE67461DE718A7009B8AB9 /* Images */ = {
-			isa = PBXGroup;
-			children = (
-				D1CE67481DE718EE009B8AB9 /* KREImagesCollectionView.swift */,
-			);
-			path = Images;
 			sourceTree = "<group>";
 		};
 		E1294A2C115E92C495FE3BB7 /* Frameworks */ = {
@@ -253,11 +701,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBB4F95E1E0D260800C2A53A /* KREListTableViewCell.xib in Resources */,
 				D1832B631DDC1EE700FDFB93 /* LaunchScreen.storyboard in Resources */,
-				ACE207F7213EA83300D118EC /* KREMenuTableViewCell.xib in Resources */,
-				D1832B601DDC1EE700FDFB93 /* Assets.xcassets in Resources */,
-				BB7DB13D1E0B9FF500FF5A13 /* KREOptionsTableViewCell.xib in Resources */,
+				ACEF401A213EFB3500B6979A /* BotConfiguration.plist in Resources */,
+				ACEF403A213EFB3500B6979A /* MultiImageBubbleView.xib in Resources */,
+				ACEF400A213EFB3500B6979A /* TableTemplateViewController.xib in Resources */,
+				ACEF4008213EFB3500B6979A /* ChatMessagesViewController.xib in Resources */,
+				ACEF4040213EFB3500B6979A /* CustomCollectionViewCell.xib in Resources */,
+				ACEF4038213EFB3500B6979A /* ImageComponentCollectionViewCell.xib in Resources */,
+				ACEF404D213EFB3500B6979A /* KREMenuTableViewCell.xib in Resources */,
+				ACEF404F213EFB3500B6979A /* KREListTableViewCell.xib in Resources */,
+				ACEF400D213EFB3500B6979A /* KRETypingCollectionViewCell.xib in Resources */,
+				ACEF4019213EFB3500B6979A /* Messages.plist in Resources */,
+				ACEF4018213EFB3500B6979A /* Images.xcassets in Resources */,
+				ACEF404E213EFB3500B6979A /* KREOptionsTableViewCell.xib in Resources */,
 				D150E0FC1DDDADE400E674FE /* KoreWidgets.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -273,10 +729,20 @@
 			inputPaths = (
 				"${SRCROOT}/../../Pods/Target Support Files/Pods-Widgets/Pods-Widgets-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${BUILT_PRODUCTS_DIR}/DTCoreText/DTCoreText.framework",
+				"${BUILT_PRODUCTS_DIR}/DTFoundation/DTFoundation.framework",
+				"${BUILT_PRODUCTS_DIR}/Mantle/Mantle.framework",
+				"${BUILT_PRODUCTS_DIR}/SquareMosaicLayout/SquareMosaicLayout.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTCoreText.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTFoundation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mantle.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SquareMosaicLayout.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -308,23 +774,77 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1CE67421DE714BF009B8AB9 /* QuickSelectWidgetViewController.swift in Sources */,
-				BB7DB13C1E0B9FF500FF5A13 /* KREOptionsTableViewCell.swift in Sources */,
-				D1365FE01DDC2F240017D80E /* ButtonWidgetViewController.swift in Sources */,
-				6E50B8331F2A6EDD00E10D7D /* KRECardView.swift in Sources */,
-				6E50B8321F2A6EDD00E10D7D /* KRETextViewInternal.swift in Sources */,
-				D1CE673E1DE713B0009B8AB9 /* KRETokenCollectionViewCell.swift in Sources */,
-				BBB4F95D1E0D260800C2A53A /* KREListTableViewCell.swift in Sources */,
-				D1CE673D1DE713B0009B8AB9 /* KREQuickSelectView.swift in Sources */,
-				ACE207F8213EA83300D118EC /* KREMenuTableViewCell.swift in Sources */,
+				ACEF4011213EFB3500B6979A /* ButtonWidgetViewController.swift in Sources */,
+				ACEF403F213EFB3500B6979A /* CustomCollectionViewCell.swift in Sources */,
+				ACEF402A213EFB3500B6979A /* Thread.swift in Sources */,
+				ACEF400C213EFB3500B6979A /* KRETypingActivityIndicator.m in Sources */,
+				ACEF4058213EFB3500B6979A /* KREContact+CoreDataClass.swift in Sources */,
 				D1832B591DDC1EE700FDFB93 /* KWAppDelegate.swift in Sources */,
-				D1CE673C1DE713B0009B8AB9 /* KRECollectionView.swift in Sources */,
-				6E50B8311F2A6EDD00E10D7D /* KREGrowingTextView.swift in Sources */,
-				D1365FDA1DDC2B170017D80E /* KWAppLaunchViewController.swift in Sources */,
-				D1CE674B1DE718EE009B8AB9 /* KREImagesCollectionView.swift in Sources */,
-				D1365FDE1DDC2F0F0017D80E /* ListViewWidgetViewController.swift in Sources */,
-				D1CE67451DE717F2009B8AB9 /* KREOptionsView.swift in Sources */,
-				6E50B8341F2A6EDD00E10D7D /* KRECarouselView.swift in Sources */,
+				ACEF4010213EFB3500B6979A /* KWAppLaunchViewController.swift in Sources */,
+				ACEF4039213EFB3500B6979A /* ImageComponentCollectionViewCell.swift in Sources */,
+				ACEF4059213EFB3500B6979A /* KREComponent+CoreDataClass.swift in Sources */,
+				ACEF400E213EFB3500B6979A /* KRETypingStatusView.m in Sources */,
+				ACEF4034213EFB3500B6979A /* ChartBubbleView.swift in Sources */,
+				ACEF4055213EFB3500B6979A /* KREThread+CoreDataProperties.swift in Sources */,
+				ACEF4053213EFB3500B6979A /* KREThread+CoreDataClass.swift in Sources */,
+				ACEF4041213EFB3500B6979A /* TableBubbleView.swift in Sources */,
+				ACEF4012213EFB3500B6979A /* BotMessagesView.swift in Sources */,
+				ACEF4036213EFB3500B6979A /* CarouselBubbleView.swift in Sources */,
+				ACEF401E213EFB3500B6979A /* KRETextViewInternal.swift in Sources */,
+				ACEF4028213EFB3500B6979A /* Identity.swift in Sources */,
+				ACEF404B213EFB3500B6979A /* KREOptionsTableViewCell.swift in Sources */,
+				ACEF4048213EFB3500B6979A /* TextBubbleView.swift in Sources */,
+				ACEF403E213EFB3500B6979A /* CustomCollectionViewLayout.swift in Sources */,
+				ACEF400B213EFB3500B6979A /* InputTOWebViewController.swift in Sources */,
+				ACEF4032213EFB3500B6979A /* KREUtilities.m in Sources */,
+				ACEF4056213EFB3500B6979A /* KREMessage+CoreDataClass.swift in Sources */,
+				ACEF4020213EFB3500B6979A /* KRECardView.swift in Sources */,
+				ACEF403D213EFB3500B6979A /* MiniTableBubbleView.swift in Sources */,
+				ACE55F9D21413CE200829961 /* KoreBotUIKit.swift in Sources */,
+				ACEF400F213EFB3500B6979A /* KRETypingCollectionViewCell.m in Sources */,
+				ACEF4031213EFB3500B6979A /* KREAttributedLabel.m in Sources */,
+				ACEF4051213EFB3500B6979A /* KREOptionsView.swift in Sources */,
+				ACEF4043213EFB3500B6979A /* ExpandedTableViewCell.swift in Sources */,
+				ACEF402D213EFB3500B6979A /* ComposeBarView.swift in Sources */,
+				ACEF405A213EFB3500B6979A /* KREComponent+CoreDataProperties.swift in Sources */,
+				ACEF4014213EFB3500B6979A /* MessageBubbleCell.swift in Sources */,
+				ACEF4049213EFB3500B6979A /* CoreDataManager.swift in Sources */,
+				ACEF403C213EFB3500B6979A /* ResponsiveTableBubbleView.swift in Sources */,
+				ACEF4030213EFB3500B6979A /* KRELayoutManager.m in Sources */,
+				ACEF4046213EFB3500B6979A /* MenuBubbleView.swift in Sources */,
+				ACEF402C213EFB3500B6979A /* SectionedThread.swift in Sources */,
+				ACEF4021213EFB3500B6979A /* KRECarouselView.swift in Sources */,
+				ACEF4047213EFB3500B6979A /* ListBubbleView.swift in Sources */,
+				ACEF401D213EFB3500B6979A /* KRECollectionView.swift in Sources */,
+				ACEF4054213EFB3500B6979A /* DataModel.xcdatamodeld in Sources */,
+				ACEF403B213EFB3500B6979A /* BubbleView.swift in Sources */,
+				ACEF404A213EFB3500B6979A /* DataStoreManager.swift in Sources */,
+				ACEF4042213EFB3500B6979A /* SubTableViewCell.swift in Sources */,
+				ACEF4033213EFB3500B6979A /* OptionsBubbleView.swift in Sources */,
+				ACEF402F213EFB3500B6979A /* NSMutableAttributedString+KREUtils.m in Sources */,
+				ACEF401B213EFB3500B6979A /* KRETokenCollectionViewCell.swift in Sources */,
+				ACEF4035213EFB3500B6979A /* BalloonMarker.swift in Sources */,
+				ACEF4009213EFB3500B6979A /* TableTemplateViewController.swift in Sources */,
+				ACEF401F213EFB3500B6979A /* KREGrowingTextView.swift in Sources */,
+				ACEF402E213EFB3500B6979A /* AudioComposeView.swift in Sources */,
+				ACEF401C213EFB3500B6979A /* KREQuickSelectView.swift in Sources */,
+				ACEF4045213EFB3500B6979A /* MiniTableViewCell.swift in Sources */,
+				ACEF4050213EFB3500B6979A /* KREListTableViewCell.swift in Sources */,
+				ACEF4052213EFB3500B6979A /* KREMessage+CoreDataProperties.swift in Sources */,
+				ACEF404C213EFB3500B6979A /* KREMenuTableViewCell.swift in Sources */,
+				ACEF4015213EFB3500B6979A /* QuickSelectWidgetViewController.swift in Sources */,
+				ACEF4013213EFB3500B6979A /* KREFetchedResultsController.swift in Sources */,
+				ACEF4023213EFB3500B6979A /* TSMarkdownParser.m in Sources */,
+				ACEF4006213EFB3500B6979A /* ListViewWidgetViewController.swift in Sources */,
+				ACEF4057213EFB3500B6979A /* KREContact+CoreDataProperties.swift in Sources */,
+				ACEF4007213EFB3500B6979A /* ChatMessagesViewController.swift in Sources */,
+				ACEF4029213EFB3500B6979A /* Message.swift in Sources */,
+				ACEF4044213EFB3500B6979A /* ResponsiveCustonCell.swift in Sources */,
+				ACEF402B213EFB3500B6979A /* Component.swift in Sources */,
+				ACEF405B213EFB3500B6979A /* Common.swift in Sources */,
+				ACEF4027213EFB3500B6979A /* CALayer+MBAnimationPersistence.m in Sources */,
+				ACEF4037213EFB3500B6979A /* MultiImageBubbleView.swift in Sources */,
+				ACEF4022213EFB3500B6979A /* TSBaseParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,6 +963,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Widgets/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.Kore.Widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -457,6 +978,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Widgets/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.Kore.Widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -487,6 +1009,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		ACEF3FFC213EFB3500B6979A /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				ACEF3FFD213EFB3500B6979A /* DataModel.xcdatamodel */,
+			);
+			currentVersion = ACEF3FFD213EFB3500B6979A /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D1832B4D1DDC1EE700FDFB93 /* Project object */;
 }

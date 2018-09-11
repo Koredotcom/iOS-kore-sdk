@@ -16,7 +16,6 @@ class ListViewWidgetViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView?.backgroundColor = UIColor.white
-        tableView.register(KREImagesViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.separatorColor = UIColor.clear
     }
     
@@ -34,7 +33,7 @@ class ListViewWidgetViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: KREImagesViewCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! KREImagesViewCell
+        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! UITableViewCell
 
         return cell
     }

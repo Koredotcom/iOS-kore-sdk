@@ -328,12 +328,3 @@ public class KREOptionsViewCell: UITableViewCell {
         contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[optionsView]|", options: [], metrics: nil, views: views))
     }
 }
-
-open class Common : NSObject {
-    open static func UIColorRGB(_ rgb: Int) -> UIColor {
-        let blue = CGFloat(rgb & 0xFF)
-        let green = CGFloat((rgb >> 8) & 0xFF)
-        let red = CGFloat((rgb >> 16) & 0xFF)
-        return UIColor(red: red / 255.0, green: green / 255.0, blue: blue / 255.0, alpha: 1)
-    }
-}

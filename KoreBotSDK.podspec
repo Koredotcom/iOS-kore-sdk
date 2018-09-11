@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
     s.public_header_files = 'KoreBotSDK/Library/KoreBotSDK/KoreBotSDK/KoreBotSDK.h'
     s.source_files = 'KoreBotSDK/Library/KoreBotSDK/KoreBotSDK/KoreBotSDK.h'
 
-    s.ios.deployment_target = '8.0'
+    s.ios.deployment_target = '9.0'
     s.swift_version = '4.0'
 
     s.subspec 'Library' do |ss|
@@ -23,17 +23,22 @@ Pod::Spec.new do |s|
         ss.exclude_files = 'KoreBotSDK/Library/SpeechToText/*.{*}'
         ss.exclude_files = 'KoreBotSDK/Library/TextParser/*.{*}'
         ss.exclude_files = 'KoreBotSDK/Library/Widgets/*.{*}'
-        
+
         ss.dependency 'Mantle', '2.0.2'
         ss.dependency 'AFNetworking', '3.2.0'
         ss.dependency 'SocketRocket'
-        
+        ss.dependency 'DTCoreText','1.6.15'
+        ss.dependency 'Charts','3.0.5'
+        ss.dependency 'SquareMosaicLayout', '0.6.2'
+
         ss.ios.frameworks = 'SystemConfiguration'
     end
 
     s.subspec 'UIKit' do |ss|
         ss.ios.deployment_target = '8.0'
         ss.source_files = 'KoreBotSDK/Library/Widgets/Widgets/**/*.{h,m,txt,swift,xib}'
+        ss.resources = ['KoreBotSDK/Library/Widgets/Widgets/**/*.{xcdatamodeld}', 'KoreBotSDK/Library/Widgets/Widgets/**/**/*.{xcassets}']
+
         ss.resource_bundles = {
             'Widgets' => ['KoreBotSDK/Library/Widgets/Widgets/**/*.xib']
         }

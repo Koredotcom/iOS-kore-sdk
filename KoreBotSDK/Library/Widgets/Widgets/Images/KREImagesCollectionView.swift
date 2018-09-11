@@ -22,7 +22,9 @@ public class KREImageCollectionViewCell: UICollectionViewCell {
     // MARK:- image view
     let imageView: UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(named: "frozen")
+        if let image = UIImage(named: "frozen", in: Bundle(for: KREImageCollectionViewCell.self), compatibleWith: nil) {
+            iv.image = image
+        }
         iv.contentMode = .scaleAspectFill
         iv.layer.cornerRadius = 4
         iv.layer.masksToBounds = true

@@ -10,19 +10,13 @@
    <FileRef
       location = "group:Library/Widgets/Widgets.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:Library/Widgets/../TextParser/TextParser.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Library/Widgets/../SpeechToText/SpeechToText.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Pods/Pods.xcodeproj">
-   </FileRef>
-   <FileRef
+      <FileRef
       location = "group:Library/SpeechToText/SpeechToText.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Library/TextParser/TextParser.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>

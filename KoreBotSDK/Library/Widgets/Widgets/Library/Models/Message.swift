@@ -1,0 +1,47 @@
+//
+//  Message.swift
+//  KoreBotSDKDemo
+//
+//  Created by developer@kore.com on 09/05/16.
+//  Copyright © 2016 Kore Inc. All rights reserved.
+//
+
+import Foundation
+
+enum MessageType : Int {
+    case `default` = 1, reply = 2
+}
+
+class Message : NSObject {
+    var messageType: MessageType = .default
+    var sender: String?
+    var iconUrl: String?
+    var sentDate: Date?
+    var components: [Component] = [Component]()
+    var thread: Thread?
+        
+    override init() {
+        super.init()
+    }
+    
+    func addComponent(_ component: Component) {
+        component.message = self;
+        self.components.append(component)
+    }
+    
+    func sameSenderAsMessage(_ compareMessage: Message) -> Bool {
+        return false
+    }
+    
+    func senderIdentity() -> Identity {
+        return Identity()
+    }
+    
+    func messageAsString() -> String {
+        return ""
+    }
+    
+    func componentCount() -> Int {
+        return 0
+    }
+}

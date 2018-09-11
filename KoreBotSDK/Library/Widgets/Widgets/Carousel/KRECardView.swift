@@ -142,7 +142,7 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         
         self.textLabel = UILabel(frame: CGRect.zero)
         self.textLabel.font = UIFont(name: "HelveticaNeue", size: 16.0)
-        self.textLabel.textColor = Common.UIColorRGB(0x484848)
+        self.textLabel.textColor = UIColorRGB(0x484848)
         self.textLabel.numberOfLines = 0
         self.textLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.textLabel.isUserInteractionEnabled = true
@@ -160,11 +160,11 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 0.25 * 16.0
-        let myAttributes = [NSAttributedStringKey.foregroundColor:Common.UIColorRGB(0x484848),
+        let myAttributes = [NSAttributedStringKey.foregroundColor:UIColorRGB(0x484848),
                             NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Medium", size: 16.0)!,
                             NSAttributedStringKey.paragraphStyle:paragraphStyle ]
         let mutableAttrString = NSMutableAttributedString(string: title, attributes: myAttributes)
-        let myAttributes2 = [NSAttributedStringKey.foregroundColor:Common.UIColorRGB(0x777777),
+        let myAttributes2 = [NSAttributedStringKey.foregroundColor:UIColorRGB(0x777777),
                              NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 15.0)! ]
         let mutableAttrString2 = NSMutableAttributedString(string: "\n\(subtitle)", attributes: myAttributes2)
         mutableAttrString.append(mutableAttrString2)
@@ -223,7 +223,7 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         }
         self.borderLayer.path = self.maskLayer.path // Reuse the Bezier path
         self.borderLayer.fillColor = UIColor.clear.cgColor
-        self.borderLayer.strokeColor = Common.UIColorRGB(0xebebeb).cgColor
+        self.borderLayer.strokeColor = UIColorRGB(0xebebeb).cgColor
         self.borderLayer.lineWidth = 1.5
         self.borderLayer.frame = self.bounds
     }

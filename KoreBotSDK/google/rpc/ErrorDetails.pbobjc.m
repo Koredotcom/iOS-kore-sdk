@@ -19,7 +19,7 @@
  #import "google/protobuf/Duration.pbobjc.h"
 #endif
 
- #import "google/rpc/ErrorDetails.pbobjc.h"
+ #import "ErrorDetails.pbobjc.h"
 // @@protoc_insertion_point(imports)
 
 #pragma clang diagnostic push

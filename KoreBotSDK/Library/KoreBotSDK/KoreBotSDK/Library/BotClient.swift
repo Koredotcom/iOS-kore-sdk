@@ -73,7 +73,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         self.jwToken = jwtToken
         
         if (self.successClosure == nil) {
-            self.successClosure = success as ((BotClient?) -> Void)!
+            self.successClosure = success as ((BotClient?) -> Void)?
         }
         if (self.failureClosure == nil) {
             self.failureClosure = failure
@@ -86,7 +86,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             self.connectionState = .CONNECTING
             self.connect()
         }) { (error) in
-            failure!(error)
+            failure?(error)
         }
     }
     
@@ -129,7 +129,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             }, failure: { (error) in
                 self.reconnecting = false
                 if (self.failureClosure != nil) {
-                    self.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as! [AnyHashable : Any]? as! [String : Any]))
+                    self.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as? [String : Any]))
                 }
             })
         } else {
@@ -269,12 +269,12 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     // MARK: subscribe/ unsubscribe to push notifications
     open func subscribeToNotifications(_ deviceToken: Data!, success:((Bool) -> Void)?, failure:((NSError) -> Void)?) {
         let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-        requestManager.subscribeToNotifications(deviceToken as Data!, userInfo: self.userInfoModel, authInfo: self.authInfoModel, success: success, failure: failure as! ((Error) -> Void)?)
+        requestManager.subscribeToNotifications(deviceToken as Data?, userInfo: self.userInfoModel, authInfo: self.authInfoModel, success: success, failure: failure as! ((Error) -> Void)?)
     }
     
     open func unsubscribeToNotifications(_ deviceToken: Data!, success:((Bool) -> Void)?, failure:((NSError) -> Void)?) {
         let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-        requestManager.unsubscribeToNotifications(deviceToken as Data!, userInfo: self.userInfoModel, authInfo: self.authInfoModel, success: success, failure: failure as! ((Error) -> Void)?)
+        requestManager.unsubscribeToNotifications(deviceToken as Data?, userInfo: self.userInfoModel, authInfo: self.authInfoModel, success: success, failure: failure as! ((Error) -> Void)?)
     }
 
     deinit {

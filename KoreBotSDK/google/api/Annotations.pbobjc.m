@@ -13,9 +13,9 @@
  #import "GPBProtocolBuffers_RuntimeSupport.h"
 #endif
 
- #import "google/api/Annotations.pbobjc.h"
- #import "google/api/HTTP.pbobjc.h"
- #import "google/protobuf/Descriptor.pbobjc.h"
+ #import "Annotations.pbobjc.h"
+ #import "HTTP.pbobjc.h"
+ #import "Descriptor.pbobjc.h"
 // @@protoc_insertion_point(imports)
 
 #pragma clang diagnostic push

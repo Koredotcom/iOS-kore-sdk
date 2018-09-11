@@ -11,14 +11,6 @@
 
 #import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/UIImageView+AFNetworking.h>
-#import <TOWebViewController/TOWebViewController.h>
-
-#import "KREAttributedLabel.h"
-#import "KRELayoutManager.h"
-#import "KREUtilities.h"
-#import "NSMutableAttributedString+KREUtils.h"
-#import "KRETypingActivityIndicator.h"
-#import "KRETypingStatusView.h"
 
 #import <googleapis/CloudSpeech.pbobjc.h>
 #import <googleapis/CloudSpeech.pbrpc.h>

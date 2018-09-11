@@ -23,6 +23,13 @@ Pod::Spec.new do |s|
 #s.exclude_files = "Widgets/Widgets/*.{*}"
 
     s.dependency 'AFNetworking', '3.2.0'
+    s.dependency 'Mantle', '2.0.2'
+    s.dependency 'AFNetworking', '3.2.0'
+    s.dependency 'DTCoreText','1.6.15'
+    s.dependency 'Charts','3.0.5'
+    s.dependency 'SquareMosaicLayout', '0.6.2'
+
     s.framework = 'SystemConfiguration'
     s.requires_arc = true
+
 end

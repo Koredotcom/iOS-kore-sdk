@@ -1,4 +1,4 @@
-#import "google/cloud/speech/v1/CloudSpeech.pbrpc.h"
+#import "CloudSpeech.pbrpc.h"
 
 #import <ProtoRPC/ProtoRPC.h>
 #import <RxLibrary/GRXWriter+Immediate.h>

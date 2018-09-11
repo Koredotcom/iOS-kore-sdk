@@ -8,17 +8,21 @@
 
 import UIKit
 import AFNetworking
-import KoreBotSDK
 import CoreData
 import Foundation
+import KoreBotSDK
 
 class AppLaunchViewController: UIViewController {
     
-    @IBOutlet weak var imgView: UIImageView!
     // MARK: properties
+    @IBOutlet weak var imgView: UIImageView!
     @IBOutlet weak var chatButton: UIButton!
     
     var sessionManager: AFHTTPSessionManager?
+    
+//    let botUIKit: KoreBotUIKit = {
+//        return KoreBotUIKit()
+//    }()
     
     // MARK: life-cycle events
     override func viewDidLoad() {
@@ -76,47 +80,46 @@ class AppLaunchViewController: UIViewController {
             view.addSubview(activityIndicatorView)
             activityIndicatorView.startAnimating()
             
-            let botInfo: NSDictionary = ["chatBot": chatBotName, "taskBotId": botId]
-            
+            let botInfo = ["chatBot": chatBotName, "taskBotId": botId]
             self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: isAnonymous, success: { [weak self] (jwToken) in
                 
-                let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
-                let context: NSManagedObjectContext = dataStoreManager.coreDataManager.workerContext
-                context.perform {
-                    let resources: Dictionary<String, AnyObject> = ["threadId": botId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
-                    dataStoreManager.deleteThreadIfRequired(with: botId, completionBlock: { (success) in
-                        
-                    let thread: KREThread = dataStoreManager.insertOrUpdateThread(dictionary: resources, withContext: context)
-                    try! context.save()
-                    dataStoreManager.coreDataManager.saveChanges()
-                    print(thread.threadId!)
-                    
-                    let botClient: BotClient = BotClient(botInfoParameters: botInfo)
-                    if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
-                        botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
-                    }
-                    botClient.connectWithJwToken(jwToken, success: { [weak self] (client) in
-                        activityIndicatorView.stopAnimating()
-                        self?.chatButton.isUserInteractionEnabled = true
-                        
-                        let botViewController = ChatMessagesViewController(thread: thread)
-                        botViewController.botClient = client
-                        botViewController.title = SDKConfiguration.botConfig.chatBotName
-                        
-                        //Addition fade in animation
-                        let transition = CATransition()
-                        transition.duration = 0.5
-                        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                        transition.type = kCATransitionFade
-                        self?.navigationController?.view.layer.add(transition, forKey: nil)
-                    
-                        self!.navigationController?.pushViewController(botViewController, animated: false)
-                    }, failure: { (error) in
-                        activityIndicatorView.stopAnimating()
-                        self?.chatButton.isUserInteractionEnabled = true
-                    })
-                })
-                }
+//                let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
+//                let context: NSManagedObjectContext = dataStoreManager.coreDataManager.workerContext
+//                context.perform {
+//                    let resources: Dictionary<String, AnyObject> = ["threadId": botId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
+//                    dataStoreManager.deleteThreadIfRequired(with: botId, completionBlock: { (success) in
+//
+//                    let thread: KREThread = dataStoreManager.insertOrUpdateThread(dictionary: resources, withContext: context)
+//                    try! context.save()
+//                    dataStoreManager.coreDataManager.saveChanges()
+//                    print(thread.threadId!)
+//
+//                    let botClient: BotClient = BotClient(botInfoParameters: botInfo)
+//                    if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
+//                        botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
+//                    }
+//                    botClient.connectWithJwToken(jwToken, success: { [weak self] (client) in
+//                        activityIndicatorView.stopAnimating()
+//                        self?.chatButton.isUserInteractionEnabled = true
+                
+//                        let botViewController = ChatMessagesViewController(thread: thread)
+//                        botViewController.botClient = client
+//                        botViewController.title = SDKConfiguration.botConfig.chatBotName
+//                        
+//                        //Addition fade in animation
+//                        let transition = CATransition()
+//                        transition.duration = 0.5
+//                        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+//                        transition.type = kCATransitionFade
+//                        self?.navigationController?.view.layer.add(transition, forKey: nil)
+//                    
+//                        self!.navigationController?.pushViewController(botViewController, animated: false)
+//                    }, failure: { (error) in
+//                        activityIndicatorView.stopAnimating()
+//                        self?.chatButton.isUserInteractionEnabled = true
+//                    })
+//                })
+//                }
             }, failure: { (error) in
                 print(error)
                 activityIndicatorView.stopAnimating()
