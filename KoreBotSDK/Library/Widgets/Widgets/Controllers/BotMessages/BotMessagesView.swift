@@ -13,6 +13,7 @@ protocol BotMessagesViewDelegate {
     func optionsButtonTapAction(text:String)
     func linkButtonTapAction(urlString:String)
     func populateQuickReplyCards(with message: KREMessage?)
+    func populatePickerView(with message: KREMessage?)
     func closeQuickReplyCards()
 }
 
@@ -73,6 +74,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
         self.tableView.register(MiniTableBubbleCell.self, forCellReuseIdentifier:"MiniTableBubbleCell")
         self.tableView.register(ResponsiveTableBubbleCell.self, forCellReuseIdentifier:"ResponsiveTableBubbleCell")
         self.tableView.register(MenuBubbleCell.self, forCellReuseIdentifier:"MenuBubbleCell")
+        self.tableView.register(PickerBubbleCell.self, forCellReuseIdentifier:"PickerBubbleCell")
     }
     
     override open func layoutSubviews() {
@@ -158,6 +160,10 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             case .menu:
                 cellIdentifier = "MenuBubbleCell"
                 break
+            case .picker:
+                cellIdentifier = "PickerBubbleCell"
+                break
+            
             }
             
         }
@@ -169,6 +175,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
         }
         
         var isQuickReply = false
+        var isPicker = false
         
         switch (cell.bubbleView.bubbleType!) {
         case .text:
@@ -252,13 +259,18 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             cell.bubbleView.drawBorder = true
             break
             
+        case .picker:
+            isPicker = true
+             break
         }
         let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
         if firstIndexPath.isEqual(indexPath) {
             if isQuickReply {
                 self.viewDelegate?.populateQuickReplyCards(with: message)
-            } else {
-                self.viewDelegate?.closeQuickReplyCards()
+            }else if isPicker {
+                self.viewDelegate?.populatePickerView(with: message)
+            }else{
+                 self.viewDelegate?.closeQuickReplyCards()
             }
         }
         

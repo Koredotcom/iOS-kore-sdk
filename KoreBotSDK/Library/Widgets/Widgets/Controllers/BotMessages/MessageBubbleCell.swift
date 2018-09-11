@@ -206,7 +206,11 @@ class QuickReplyBubbleCell : MessageBubbleCell {
         return .quickReply
     }
 }
-
+class PickerBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .picker
+    }
+}
 class ErrorBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .error

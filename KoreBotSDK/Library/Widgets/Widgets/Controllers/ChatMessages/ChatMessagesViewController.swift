@@ -45,6 +45,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     public var composeView: ComposeBarView!
     public var audioComposeView: AudioComposeView!
     public var quickReplyView: KREQuickSelectView!
+    public var pickerView: PickerSelectView!
     public var typingStatusView: KRETypingStatusView!
     public var webViewController: InputTOWebViewController!
     public var speechSynthesizer: AVSpeechSynthesizer!
@@ -67,6 +68,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.configureComposeBar()
         self.configureAudioComposer()
         self.configureQuickReplyView()
+        self.configurePickerView()
         self.configureTypingStatusView()
         self.configureBotClient()
         self.configureSTTClient()
@@ -228,6 +230,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     
     func configureQuickReplyView() {
         self.quickReplyView = KREQuickSelectView()
+        self.quickReplyView.isHidden = true
         self.quickReplyView.translatesAutoresizingMaskIntoConstraints = false
         self.quickSelectContainerView.addSubview(self.quickReplyView)
         
@@ -236,6 +239,21 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         
         self.quickReplyView.sendQuickReplyAction = { [weak self] (text) in
             self?.sendTextMessage(text!)
+        }
+    }
+    func configurePickerView() {
+        self.pickerView = PickerSelectView()
+        self.pickerView.translatesAutoresizingMaskIntoConstraints = false
+        self.quickSelectContainerView.addSubview(self.pickerView)
+        self.pickerView.isHidden = true
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[pickerView]|", options:[], metrics:nil, views:["pickerView" : self.pickerView]))
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[pickerView(215)]|", options:[], metrics:nil, views:["pickerView" : self.pickerView]))
+        
+        self.pickerView.sendPickerAction = { [weak self] (text) in
+            self?.sendTextMessage(text!)
+        }
+        self.pickerView.cancelAction = {
+            self.closeQuickReplyCards()
         }
     }
     
@@ -277,6 +295,8 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             return .minitable
         } else if (templateType == "menu") {
             return .menu
+        }else if (templateType == "picker") {
+            return .picker
         }
         return .text
     }
@@ -332,7 +352,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                     tabledesign  = (dictionary["table_design"] != nil ? dictionary["table_design"] as? String : "responsive")!
                     let componentType = self.getComponentType(templateType,tabledesign)
                     
-                    if componentType != .quickReply {
+                    if componentType != .quickReply || componentType != .picker  {
                         self.showTypingStatusForBotsAction()
                     }
                     
@@ -555,6 +575,8 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     }
     
     func populateQuickReplyCards(with message: KREMessage?) {
+        self.quickReplyView.isHidden = false
+        self.pickerView.isHidden = true
         if message?.templateType == (ComponentType.quickReply.rawValue as NSNumber) {
             let component: KREComponent = message!.components![0] as! KREComponent
             if (!component.isKind(of: KREComponent.self)) {
@@ -585,6 +607,8 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     }
     
     func closeQuickReplyCards(){
+        self.audioComposeContainerHeightConstraint.isActive = false
+         self.audioComposeContainerView.isHidden = false
         self.closeQuickSelectViewConstraints()
     }
     
@@ -598,10 +622,50 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             
         }
     }
+    func populatePickerView(with message: KREMessage?) {
+        self.audioComposeContainerHeightConstraint.isActive = true
+        self.audioComposeContainerView.isHidden = true
+         self.pickerView.isHidden = false
+        self.quickReplyView.isHidden = true
+        if message?.templateType == (ComponentType.picker.rawValue as NSNumber) {
+            let component: KREComponent = message!.components![0] as! KREComponent
+            if (!component.isKind(of: KREComponent.self)) {
+                return;
+            }
+            if ((component.componentDesc) != nil) {
+                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
+                let pickerValues: Array<Dictionary<String, String>> = jsonObject["elements"] as! Array<Dictionary<String, String>>
+                var valuesArr: Array<String> = Array<String>()
+                
+                for dictionary in pickerValues {
+                    let title: String = dictionary["title"] != nil ? dictionary["title"]! : ""
+
+                    valuesArr.append(title)
+                }
+                self.pickerView.setValues(values:valuesArr)
+                updatePickerViewConstraints()
+            }
+        } else if(message != nil) {
+            let words: Array<String> = Array<String>()
+            self.pickerView.setValues(values: words)
+            self.closeQuickSelectViewConstraints()
+        }
+        
+    }
+
+    
+    func updatePickerViewConstraints() {
+        if self.quickSelectContainerHeightConstraint.constant == 259 {return}
+        self.quickSelectContainerHeightConstraint.constant = 259
+        UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
+            self.view.layoutIfNeeded()
+        }) { (Bool) in
+            
+        }
+    }
     
     func closeQuickSelectViewConstraints() {
         if self.quickSelectContainerHeightConstraint.constant == 0.0 {return}
-
         self.quickSelectContainerHeightConstraint.constant = 0.0
         UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: {
             self.view.layoutIfNeeded()

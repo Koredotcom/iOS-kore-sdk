@@ -89,6 +89,9 @@ class BubbleView: UIView {
         case .menu:
             bubbleView = MenuBubbleView()
             break
+        case .picker:
+            bubbleView = PickerBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         
