@@ -34,11 +34,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     @IBOutlet weak var quickSelectContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
-    public var composeBarContainerHeightConstraint: NSLayoutConstraint! {
-        didSet {
-            print("")
-        }
-    }
+    public var composeBarContainerHeightConstraint: NSLayoutConstraint!
     public var composeViewBottomConstraint: NSLayoutConstraint!
     public var audioComposeContainerHeightConstraint: NSLayoutConstraint!
     public var botMessagesView: BotMessagesView!
@@ -295,7 +291,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             return .minitable
         } else if (templateType == "menu") {
             return .menu
-        }else if (templateType == "picker") {
+        } else if (templateType == "picker") {
             return .picker
         }
         return .text
@@ -625,7 +621,9 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     func populatePickerView(with message: KREMessage?) {
         self.audioComposeContainerHeightConstraint.isActive = true
         self.audioComposeContainerView.isHidden = true
-         self.pickerView.isHidden = false
+        self.composeBarContainerHeightConstraint.isActive = true
+        self.composeBarContainerView.isHidden = true
+        self.pickerView.isHidden = false
         self.quickReplyView.isHidden = true
         if message?.templateType == (ComponentType.picker.rawValue as NSNumber) {
             let component: KREComponent = message!.components![0] as! KREComponent
@@ -652,10 +650,13 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         }
         
     }
-
+    
     
     func updatePickerViewConstraints() {
-        if self.quickSelectContainerHeightConstraint.constant == 259 {return}
+        if self.quickSelectContainerHeightConstraint.constant == 259 {
+            return
+        }
+        
         self.quickSelectContainerHeightConstraint.constant = 259
         UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
             self.view.layoutIfNeeded()
