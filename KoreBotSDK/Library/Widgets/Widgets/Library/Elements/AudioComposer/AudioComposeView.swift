@@ -25,6 +25,7 @@ open class AudioComposeView: UIView {
     fileprivate var audioRecorderTimer:Timer!
     fileprivate var audioPeakOutput:Float = 0.3
     fileprivate var waveRadius:Float = 25
+    public weak var messagesViewControllerDelegate: ChatMessagesViewControllerDelegate?
     
     public var getAudioPeakOutputPower: (() -> (Float))!
     public var voiceRecordingStarted: ((_ composeView: AudioComposeView?) -> Void)!
@@ -101,7 +102,11 @@ open class AudioComposeView: UIView {
         self.playbackButton = UIButton.init(frame: CGRect.zero)
         self.playbackButton.setTitle("", for: .normal)
         self.playbackButton.translatesAutoresizingMaskIntoConstraints = false
-        self.playbackButton.setImage(UIImage(named: "unmute", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
+        if(UserDefaults.standard.getsignifyBotStatus()){
+            self.playbackButton.setImage(UIImage(named: "unmute", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
+        }else{
+            self.playbackButton.setImage(UIImage(named: "mute", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
+        }
         self.playbackButton.imageView?.contentMode = .scaleAspectFit
         self.playbackButton.addTarget(self, action: #selector(self.playbackButtonAction), for: .touchUpInside)
 //        self.playbackButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
@@ -204,12 +209,15 @@ open class AudioComposeView: UIView {
     @objc fileprivate func playbackButtonAction() {
         if isSpeakingEnabled {
             self.playbackButton.setImage(UIImage(named: "mute", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
-            isSpeakingEnabled =  false
+             UserDefaults.standard.setSignifyBotStatus(with: !isSpeakingEnabled)
+            isSpeakingEnabled =  UserDefaults.standard.getsignifyBotStatus()
             NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
         }else{
             self.playbackButton.setImage(UIImage(named: "unmute", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
             NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: nil)
-            isSpeakingEnabled = true
+            UserDefaults.standard.setSignifyBotStatus(with: !isSpeakingEnabled)
+            isSpeakingEnabled =  UserDefaults.standard.getsignifyBotStatus()
+            
         }
 //        isSpeakingEnabled = !isSpeakingEnabled
 //        self.enablePlayback(enable: isSpeakingEnabled)

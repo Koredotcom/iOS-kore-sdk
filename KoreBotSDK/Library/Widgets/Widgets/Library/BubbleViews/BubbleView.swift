@@ -92,6 +92,9 @@ class BubbleView: UIView {
         case .picker:
             bubbleView = PickerBubbleView()
             break
+        case .sessionend:
+            bubbleView = SessionEndBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         

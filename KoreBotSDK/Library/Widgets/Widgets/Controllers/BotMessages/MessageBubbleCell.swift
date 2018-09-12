@@ -207,6 +207,11 @@ class PickerBubbleCell : MessageBubbleCell {
         return .picker
     }
 }
+class SessionEndBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .sessionend
+    }
+}
 class ErrorBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .error

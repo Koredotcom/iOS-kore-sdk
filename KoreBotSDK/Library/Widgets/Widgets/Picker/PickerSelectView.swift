@@ -95,7 +95,9 @@ public class PickerSelectView: UIView, UIPickerViewDataSource, UIPickerViewDeleg
         self.titleList = values
         self.picker.reloadAllComponents()
     }
-
+    public func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 40.0
+    }
     public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if self.titleList != nil {
             return self.titleList.count

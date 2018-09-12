@@ -14,6 +14,9 @@ public protocol ChatMessagesViewControllerDelegate: class {
     func sendMessageToBot(with text: String?)
     func voiceRecordingStarted()
     func voiceRecordingStopped()
+    func disconnectBot()
+    func setmuteValueInDefaults(_ muteVal: Bool)
+    func getmuteValueInDefaults() -> Bool
 }
 
 open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate {
@@ -44,10 +47,13 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     public var audioComposeView: AudioComposeView!
     public var quickReplyView: KREQuickSelectView!
     public var pickerView: PickerSelectView!
+    public var sessionEndView: SessionEndView!
     public var typingStatusView: KRETypingStatusView!
     public var webViewController: InputTOWebViewController!
     public var speechSynthesizer: AVSpeechSynthesizer!
+
     public var informationLabel: UILabel!
+
 
     // MARK: init
     public init(thread: KREThread?) {
@@ -68,11 +74,20 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.configureAudioComposer()
         self.configureQuickReplyView()
         self.configurePickerView()
+        self.configureSessionEndView()
         self.configureTypingStatusView()
         self.configureSTTClient()
+
         self.configureInformationView()
         
-        isSpeakingEnabled = true
+
+        if let muteVal: Bool = UserDefaults.standard.getsignifyBotStatus(){
+            isSpeakingEnabled = muteVal
+        }else{
+            UserDefaults.standard.setSignifyBotStatus(with: false)
+            isSpeakingEnabled = UserDefaults.standard.getsignifyBotStatus()
+        }
+
         self.speechSynthesizer = AVSpeechSynthesizer()
     }
     
@@ -252,6 +267,21 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.pickerView.cancelAction = {
             self.closeQuickReplyCards()
         }
+    }
+    
+    func configureSessionEndView() {
+    self.sessionEndView = SessionEndView()
+    self.sessionEndView.translatesAutoresizingMaskIntoConstraints = false
+    self.quickSelectContainerView.addSubview(self.sessionEndView)
+    self.sessionEndView.isHidden = true
+    self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[sessionEndView]|", options:[], metrics:nil, views:["sessionEndView" : self.sessionEndView]))
+    self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[sessionEndView(150)]|", options:[], metrics:nil, views:["sessionEndView" : self.sessionEndView]))
+    
+    self.sessionEndView.sendSessionAction = { [weak self] (value) in
+        self?.closeQuickReplyCards()
+        self?.messagesViewControllerDelegate?.disconnectBot()
+    }
+    
     }
     
     func configureTypingStatusView() {
@@ -445,6 +475,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     func populateQuickReplyCards(with message: KREMessage?) {
         self.quickReplyView.isHidden = false
         self.pickerView.isHidden = true
+        self.sessionEndView.isHidden = true
         if message?.templateType == (ComponentType.quickReply.rawValue as NSNumber) {
             let component: KREComponent = message!.components![0] as! KREComponent
             if (!component.isKind(of: KREComponent.self)) {
@@ -498,6 +529,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.composeBarContainerView.isHidden = true
         self.pickerView.isHidden = false
         self.quickReplyView.isHidden = true
+        self.sessionEndView.isHidden = true
         if message?.templateType == (ComponentType.picker.rawValue as NSNumber) {
             let component: KREComponent = message!.components![0] as! KREComponent
             if (!component.isKind(of: KREComponent.self)) {
@@ -522,7 +554,51 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             self.closeQuickSelectViewConstraints()
         }
     }
-    
+
+    func populateSessionEndView(with message: KREMessage?) {
+        self.audioComposeContainerHeightConstraint.isActive = true
+        self.audioComposeContainerView.isHidden = true
+        self.composeBarContainerHeightConstraint.isActive = true
+        self.composeBarContainerView.isHidden = true
+        self.pickerView.isHidden = true
+        self.quickReplyView.isHidden = true
+        self.sessionEndView.isHidden = false
+        if message?.templateType == (ComponentType.sessionend.rawValue as NSNumber) {
+            let component: KREComponent = message!.components![0] as! KREComponent
+            if (!component.isKind(of: KREComponent.self)) {
+                return;
+            }
+            if ((component.componentDesc) != nil) {
+                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
+                let sessionValues: Array<Dictionary<String, Any>> = jsonObject["buttons"] as! Array<Dictionary<String, Any>>
+                var valuesArr: Array<String> = Array<String>()
+                
+                for dictionary in sessionValues {
+                    let title: String = dictionary["title"] != nil ? dictionary["title"]! as! String : ""
+                    
+                    valuesArr.append(title)
+                }
+                self.sessionEndView.setValues(values:valuesArr)
+                updateSessionEnViewConstraints()
+            }
+        } else if(message != nil) {
+            let words: Array<String> = Array<String>()
+            self.sessionEndView.setValues(values: words)
+            self.closeQuickSelectViewConstraints()
+        }
+    }
+    func updateSessionEnViewConstraints() {
+        if self.quickSelectContainerHeightConstraint.constant == 150 {
+            return
+        }
+        self.quickSelectContainerHeightConstraint.constant = 150
+        UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
+            self.view.layoutIfNeeded()
+        }) { (Bool) in
+            
+        }
+    }
+
     func updatePickerViewConstraints() {
         if self.quickSelectContainerHeightConstraint.constant == 259 {
             return
@@ -706,5 +782,15 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     
     @objc func reloadTable(notification:Notification){
         botMessagesView.tableView.reloadData()
+    }
+}
+extension UserDefaults {
+    func setSignifyBotStatus(with mute: Bool) {
+        set(mute, forKey: "MuteSignifyBot")
+        synchronize()
+    }
+    
+    func getsignifyBotStatus() -> Bool {
+        return bool(forKey: "MuteSignifyBot")
     }
 }
