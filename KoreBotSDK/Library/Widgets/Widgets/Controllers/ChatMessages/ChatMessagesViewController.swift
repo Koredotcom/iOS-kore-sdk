@@ -29,11 +29,13 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     @IBOutlet weak public var quickSelectContainerView: UIView!
     @IBOutlet weak public var composeBarContainerView: UIView!
     @IBOutlet weak public var audioComposeContainerView: UIView!
+    @IBOutlet weak var informationView: UIView!
     @IBOutlet weak public var menuButton: UIButton!
     
     @IBOutlet weak var quickSelectContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-    
+    @IBOutlet weak var informationViewHeightConstraint: NSLayoutConstraint!
+
     public var composeBarContainerHeightConstraint: NSLayoutConstraint!
     public var composeViewBottomConstraint: NSLayoutConstraint!
     public var audioComposeContainerHeightConstraint: NSLayoutConstraint!
@@ -45,7 +47,8 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     public var typingStatusView: KRETypingStatusView!
     public var webViewController: InputTOWebViewController!
     public var speechSynthesizer: AVSpeechSynthesizer!
-    
+    public var informationLabel: UILabel!
+
     // MARK: init
     public init(thread: KREThread?) {
         super.init(nibName: "ChatMessagesViewController", bundle: Bundle(for: ChatMessagesViewController.self))
@@ -66,8 +69,8 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.configureQuickReplyView()
         self.configurePickerView()
         self.configureTypingStatusView()
-        self.configureBotClient()
         self.configureSTTClient()
+        self.configureInformationView()
         
         isSpeakingEnabled = true
         self.speechSynthesizer = AVSpeechSynthesizer()
@@ -89,7 +92,6 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
 
     override open func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override open func viewWillLayoutSubviews() {
@@ -113,7 +115,6 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     
     //MARK:- removing refernces to elements
     func prepareForDeinit(){
-        self.deConfigureBotClient()
         self.deConfigureSTTClient()
         self.stopTTS()
         self.composeView.growingTextView.viewDelegate = nil
@@ -264,146 +265,17 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[typingStatusView(40)][composeBarContainerView]", options:[], metrics:nil, views: views))
     }
     
-    func configureBotClient() {
-
-    }
-    
-    func deConfigureBotClient() {
+    func configureInformationView() {
+        informationLabel = UILabel(frame: .zero)
+        informationLabel.translatesAutoresizingMaskIntoConstraints = false
+        informationLabel.backgroundColor = .clear
+        informationLabel.textColor = .white
+        informationLabel.font = UIFont.systemFont(ofSize: 10.0)
+        informationLabel.textAlignment = .center
+        informationView.addSubview(informationLabel)
         
-    }
-    
-    func getComponentType(_ templateType: String,_ tabledesign:String) -> ComponentType {
-        if (templateType == "quick_replies") {
-            return .quickReply
-        } else if (templateType == "button") {
-            return .options
-        } else if (templateType == "list") {
-            return .list
-        } else if (templateType == "carousel") {
-            return .carousel
-        } else if (templateType == "piechart" || templateType == "linechart" || templateType == "barchart") {
-            return .chart
-        } else if (templateType == "table"  && tabledesign == "regular") {
-            return .table
-        } else if (templateType == "table"  && tabledesign == "responsive") {
-            return .responsiveTable
-        } else if (templateType == "mini_table") {
-            return .minitable
-        } else if (templateType == "menu") {
-            return .menu
-        } else if (templateType == "picker") {
-            return .picker
-        }
-        return .text
-    }
-    
-    public func onReceiveMessage(object: BotMessageModel?) {
-        var textMessage: Message?
-        let message: Message = Message()
-        message.messageType = .reply
-        message.sentDate = Date()
-        
-        if (object?.iconUrl != nil) {
-            message.iconUrl = object?.iconUrl
-        }
-        
-        if (webViewController != nil) {
-            webViewController.dismissInputView()
-            webViewController = nil
-        }
-        
-        if let messageObject = object?.messages.first {
-            guard let componentModel = messageObject.component, let payload = componentModel.payload as? [String: Any] else {
-                return
-            }
-
-            var ttsBody: String? = nil
-            if componentModel.type == "text" {
-                self.showTypingStatusForBotsAction()
-                
-                guard let text = payload["text"] as? String else {
-                    return
-                }
-                let textComponent: Component = Component()
-                textComponent.payload = text
-                ttsBody = text
-                
-                if (text.contains("use a web form")) {
-                    ttsBody = "Ok, Please fill in the details and submit"
-                }
-                message.addComponent(textComponent)
-                
-            } else if componentModel.type == "template" {
-                guard let type = payload["type"] as? String else {
-                    return
-                }
-                
-                if let speechHint = payload["speech_hint"] as? String {
-                    ttsBody = speechHint
-                }
-                
-                if type == "template", let dictionary = payload["payload"] as? [String: Any], let templateType = dictionary["template_type"] as? String {
-                    
-                    var tabledesign: String
-                    tabledesign  = (dictionary["table_design"] != nil ? dictionary["table_design"] as? String : "responsive")!
-                    let componentType = self.getComponentType(templateType,tabledesign)
-                    
-                    if componentType != .quickReply || componentType != .picker  {
-                        self.showTypingStatusForBotsAction()
-                    }
-                    
-                    let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
-                    ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
-                    
-                    if tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable) {
-                        textMessage = Message()
-                        textMessage?.messageType = .reply
-                        textMessage?.sentDate = Date()
-                        if (object?.iconUrl != nil) {
-                            textMessage?.iconUrl = object?.iconUrl
-                        }
-                        let textComponent: Component = Component()
-                        textComponent.payload = tText
-                        textMessage?.addComponent(textComponent)
-                    }
-                    
-                    let optionsComponent: Component = Component(componentType)
-                    optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                    message.sentDate = Date()
-                    message.addComponent(optionsComponent)
-                    
-                } else if(type == "error") {
-                    self.showTypingStatusForBotsAction()
-                    
-                    let dictionary: NSDictionary = payload["payload"] as! NSDictionary
-                    let errorComponent: Component = Component(.error)
-                    errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                    message.addComponent(errorComponent)
-                    
-                } else if let text = payload["text"] as? String {
-                    self.showTypingStatusForBotsAction()
-                    
-                    let textComponent: Component = Component()
-                    textComponent.payload = text
-                    message.addComponent(textComponent)
-                }
-            }
-            
-            if let thread = thread, let textMessage = textMessage, textMessage.components.count > 0 {
-                let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
-                dataStoreManager.createNewMessageIn(thread: thread, message: textMessage, completion: { (success) in
-                })
-            }
-            
-            if let thread = thread, message.components.count > 0 {
-                let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
-                dataStoreManager.createNewMessageIn(thread: thread, message: message, completion: { (success) in
-                })
-                if ttsBody != nil {
-                    NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: ttsBody)
-                }
-            }
-        }
+        informationView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[informationLabel]|", options:[], metrics:nil, views:["informationLabel" : self.informationLabel]))
+        informationView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[informationLabel]|", options:[], metrics:nil, views:["informationLabel" : self.informationLabel]))
     }
     
     open func configureSTTClient() {
@@ -618,6 +490,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             
         }
     }
+    
     func populatePickerView(with message: KREMessage?) {
         self.audioComposeContainerHeightConstraint.isActive = true
         self.audioComposeContainerView.isHidden = true
@@ -648,9 +521,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             self.pickerView.setValues(values: words)
             self.closeQuickSelectViewConstraints()
         }
-        
     }
-    
     
     func updatePickerViewConstraints() {
         if self.quickSelectContainerHeightConstraint.constant == 259 {
@@ -674,6 +545,85 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             
         }
     }
+    
+    // MARK: -
+    func configureViews(_ prepare: Bool) {
+        if (prepare) {
+            self.composeBarContainerHeightConstraint.isActive = prepare
+            self.composeViewBottomConstraint.isActive = prepare
+            self.audioComposeContainerHeightConstraint.isActive = prepare
+            self.audioComposeContainerView.clipsToBounds = prepare
+            self.composeView.configureViewForKeyboard(prepare)
+            self.composeBarContainerView.isHidden = prepare
+            self.audioComposeContainerView.isHidden = prepare
+        } else {
+            self.composeViewBottomConstraint.isActive = prepare
+            self.composeBarContainerHeightConstraint.isActive = !prepare
+            self.audioComposeContainerHeightConstraint.isActive = prepare
+            self.audioComposeContainerView.clipsToBounds = prepare
+            self.composeView.configureViewForKeyboard(prepare)
+            self.composeBarContainerView.isHidden = !prepare
+            self.audioComposeContainerView.isHidden = prepare
+        }
+    }
+    
+    // MARK: - information view
+    public func updateInformationViewConstraints(with connectionState: BotClientConnectionState) {
+        var text = "Connecting..."
+        var backgroundColor = UIColorRGB(0x2B86B2)
+        var edgeInsets = UIEdgeInsetsMake(24.0, 0.0, 0.0, 0.0)
+        switch connectionState {
+        case .CONNECTING:
+            text = "Connecting..."
+            break
+        case .CONNECTED:
+            text = "Connected"
+            edgeInsets = .zero
+            break
+        case .NO_NETWORK:
+            text = "No connection"
+            backgroundColor = UIColor.black
+            break
+        case .FAILED:
+            text = "Something is not right. We will be connecting shortly."
+            backgroundColor = .red
+            break
+        default:
+            break
+        }
+        if (connectionState == .CONNECTED) {
+            UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: { [unowned self] in
+                self.informationLabel.text = text
+                self.informationView.backgroundColor = UIColorRGB(0x2B86B2)
+            }) { [unowned self] (Bool) in
+                self.configureViews(false)
+                self.botMessagesView.tableView.contentInset = edgeInsets
+                self.informationViewHeightConstraint.constant = 0.0
+                UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: { [unowned self] in
+                    self.view.layoutIfNeeded()
+                }) { (Bool) in
+                    
+                }
+            }
+        } else {
+            UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: { [unowned self] in
+                self.view.endEditing(true)
+                self.informationLabel.text = text
+                self.informationView.backgroundColor = backgroundColor
+            }) { [unowned self] (Bool) in
+                self.closeQuickReplyCards()
+                self.configureViews(true)
+                self.botMessagesView.tableView.contentInset = edgeInsets
+                self.informationViewHeightConstraint.constant = 24.0
+                UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: { [unowned self] in
+                    self.view.layoutIfNeeded()
+                }) { (Bool) in
+                    
+                }
+            }
+        }
+    }
+
     
     // MARK: ComposeBarViewDelegate methods
     open func composeBarView(_: ComposeBarView, sendButtonAction text: String) {
@@ -736,11 +686,13 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     }
     
     // MARK: show tying status view
-    func showTypingStatusForBotsAction() {
-        let botId:String = "u-40d2bdc2-822a-51a2-bdcd-95bdf4po8331c9";
-        let info:NSMutableDictionary = NSMutableDictionary.init()
-        info.setValue(botId, forKey: "botId");
-        info.setValue("kora", forKey: "imageName");
+    public func showTypingStatusForBotsAction() {
+        self.botMessagesView.tableView.contentInset = UIEdgeInsetsMake(40.0, 0.0, 0.0, 0.0)
+
+        let botId = "u-40d2bdc2-822a-51a2-bdcd-95bdf4po8331c9"
+        let info = NSMutableDictionary()
+        info.setValue(botId, forKey: "botId")
+        info.setValue(KoreBotUIKit.Bot.BubbleView.imageName, forKey: "imageName")
         
         self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 2.0)
     }

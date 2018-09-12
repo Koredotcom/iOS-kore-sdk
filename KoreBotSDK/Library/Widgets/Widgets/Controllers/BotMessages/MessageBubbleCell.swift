@@ -14,7 +14,8 @@ class MessageBubbleCell : UITableViewCell {
     var senderImageView: UIImageView!
     var userImageView: UIImageView!
     var bubbleView: BubbleView!
-    var hideImageViews: Bool = true
+    var showUserImageView: Bool = false
+    var showSenderImageView: Bool = false
     var bubbleLeadingConstraint: NSLayoutConstraint!
     var bubbleTrailingConstraint: NSLayoutConstraint!
     var bubbleBottomConstraint: NSLayoutConstraint!
@@ -37,13 +38,13 @@ class MessageBubbleCell : UITableViewCell {
             if (tailPosition == .left) {
                 self.bubbleLeadingConstraint.priority = UILayoutPriority.defaultHigh
                 self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultLow
-                self.senderImageView.isHidden = hideImageViews
+                self.senderImageView.isHidden = !showSenderImageView
                 self.userImageView.isHidden = true
             } else {
                 self.bubbleLeadingConstraint.priority = UILayoutPriority.defaultLow
                 self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
                 self.senderImageView.isHidden = true
-                self.userImageView.isHidden = hideImageViews
+                self.userImageView.isHidden = !showUserImageView
             }
             
             self.bubbleView.tailPosition = tailPosition
@@ -103,9 +104,9 @@ class MessageBubbleCell : UITableViewCell {
 
         self.bubbleBottomConstraint = NSLayoutConstraint(item:self.contentView, attribute:.bottom, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.bottom, multiplier:1.0, constant:4.0)
         self.bubbleBottomConstraint.priority = UILayoutPriority.defaultHigh
-        self.bubbleLeadingConstraint = NSLayoutConstraint(item:self.bubbleContainerView, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier: 1.0, constant: hideImageViews ? 12.0 : 45.0)
+        self.bubbleLeadingConstraint = NSLayoutConstraint(item:self.bubbleContainerView, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier: 1.0, constant: showSenderImageView ? 45.0 : 12.0)
         self.bubbleLeadingConstraint.priority = UILayoutPriority.defaultHigh
-        self.bubbleTrailingConstraint = NSLayoutConstraint(item:self.contentView, attribute:.trailing, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.trailing, multiplier:1.0, constant: hideImageViews ? 12.0 : 45.0)
+        self.bubbleTrailingConstraint = NSLayoutConstraint(item:self.contentView, attribute:.trailing, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.trailing, multiplier:1.0, constant: showUserImageView ? 45.0 : 12.0)
         self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultLow
         
         self.contentView.addConstraints([self.bubbleTrailingConstraint, self.bubbleLeadingConstraint, self.bubbleBottomConstraint])
@@ -147,15 +148,19 @@ class MessageBubbleCell : UITableViewCell {
             self.senderImageView.image = placeHolderIcon
         }
         
-        if self.userImageView.image == nil, let image = UIImage(named: "faceIcon", in: Bundle(for: MessageBubbleCell.self), compatibleWith: nil) {
+        if self.userImageView.image == nil, let image = UIImage(named: KoreBotUIKit.User.BubbleView.imageName) {
+            self.userImageView.image = image
+        } else if let image = UIImage(named: "faceIcon", in: Bundle(for: MessageBubbleCell.self), compatibleWith: nil) {
             self.userImageView.image = image
         }
         
-        if let iconUrl = message.iconUrl, let fileUrl = URL(string: iconUrl), let placeHolderIcon = UIImage(named: "kora", in: Bundle(for: MessageBubbleCell.self), compatibleWith: nil) {
+        if let image = UIImage(named: KoreBotUIKit.Bot.BubbleView.imageName) {
+            self.senderImageView.image = image
+        } else if let iconUrl = message.iconUrl, let fileUrl = URL(string: iconUrl), let placeHolderIcon = UIImage(named: "kora", in: Bundle(for: MessageBubbleCell.self), compatibleWith: nil) {
             self.senderImageView.setImageWith(fileUrl, placeholderImage: placeHolderIcon)
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(MessageBubbleCell.updateImage(notification:)), name: NSNotification.Name(rawValue: updateUserImageNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MessageBubbleCell.updateImageNotification(_:)), name: NSNotification.Name(rawValue: updateUserImageNotification), object: nil)
     }
 
     func components() -> [KREComponent]? {
@@ -170,11 +175,8 @@ class MessageBubbleCell : UITableViewCell {
         return height + 12.0
     }
     
-    @objc func updateImage(notification:Notification) {
-        let bundle = Bundle(for: self.classForCoder)
-        if let image = UIImage(named: "john", in: bundle, compatibleWith: nil) {
-            self.userImageView.image = image
-        }
+    @objc func updateImageNotification(_ notification: Notification) {
+        
     }
     
     // MARK:- deinit
@@ -192,12 +194,6 @@ class MessageBubbleCell : UITableViewCell {
 class TextBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .text
-    }
-    override var tailPosition: BubbleMaskTailPosition {
-        didSet {
-            self.bubbleTrailingConstraint.constant = hideImageViews ? 12 : 45
-            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-        }
     }
 }
 
@@ -230,7 +226,7 @@ class OptionsBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = hideImageViews ? 12 : 45
+            self.bubbleTrailingConstraint.constant = showUserImageView ? 45.0 : 12.0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
@@ -243,7 +239,7 @@ class ListBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.constant = showUserImageView ? 45.0 : 12.0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
@@ -326,7 +322,7 @@ class MenuBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleLeadingConstraint.constant = hideImageViews ? 12 : 45
+            self.bubbleLeadingConstraint.constant = showSenderImageView ? 45.0 : 12.0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }

@@ -129,7 +129,10 @@
     KRETypingCollectionViewCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:@"TypingCell"
                                                                                        forIndexPath:indexPath];
     NSDictionary *dict = [self.dataSource objectAtIndex:indexPath.row];
-    [cell.customImageView setImage:[UIImage imageNamed:dict[@"imageName"]]];
+    UIImage* image = [UIImage imageNamed:dict[@"imageName"]];
+    if (image) {
+        [cell.customImageView setImage:image];
+    }
     return cell;
 }
 

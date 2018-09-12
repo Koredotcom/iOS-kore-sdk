@@ -15,21 +15,23 @@ open class KoreBotUIKit: NSObject {
             public static var textColor = UIColor.white
             public static var backgroundColor = UIColorRGB(0xEDEEF1)
             public static var contrastTint = UIColorRGB(0xBCBCBC)
+            public static var imageName = "faceIcon"
         }
         public struct SendButton {
             public static var textColor = UIColorRGB(0xB0B0B0)
             public static var titleFont = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.bold)
             public static var backgroundColor = UIColor.white
         }
-
     }
     public struct Bot {
         public struct BubbleView {
             public static var textColor = UIColorRGB(0x212121)
             public static var backgroundColor = UIColorRGB(0x26344A)
             public static var contrastTint = UIColorRGB(0xFFFFFF)
+            public static var imageName = "kora"
         }
     }
+    
     public struct Font {
         public static var sendButtonTextFont = UIFont.systemFont(ofSize: 16.0)
     }
