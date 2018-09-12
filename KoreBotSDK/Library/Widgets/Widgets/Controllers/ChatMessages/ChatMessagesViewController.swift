@@ -15,8 +15,6 @@ public protocol ChatMessagesViewControllerDelegate: class {
     func voiceRecordingStarted()
     func voiceRecordingStopped()
     func disconnectBot()
-    func setmuteValueInDefaults(_ muteVal: Bool)
-    func getmuteValueInDefaults() -> Bool
 }
 
 open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate {
@@ -784,7 +782,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         botMessagesView.tableView.reloadData()
     }
 }
-extension UserDefaults {
+public extension UserDefaults {
     func setSignifyBotStatus(with mute: Bool) {
         set(mute, forKey: "MuteSignifyBot")
         synchronize()
