@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C2FBAB521480A0600704220 /* PickerSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2FBAB421480A0600704220 /* PickerSelectView.swift */; };
+		AC89B84E214983CD008644EA /* SessionEndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC89B84D214983CD008644EA /* SessionEndView.swift */; };
 		ACE55F9D21413CE200829961 /* KoreBotUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE55F9C21413CE200829961 /* KoreBotUIKit.swift */; };
 		ACEF4006213EFB3500B6979A /* ListViewWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F7D213EFB3400B6979A /* ListViewWidgetViewController.swift */; };
 		ACEF4007213EFB3500B6979A /* ChatMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F7F213EFB3400B6979A /* ChatMessagesViewController.swift */; };
@@ -100,6 +101,7 @@
 		04ECB956FB18F943737CCE34 /* Pods-Widgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Widgets.debug.xcconfig"; path = "../../Pods/Target Support Files/Pods-Widgets/Pods-Widgets.debug.xcconfig"; sourceTree = "<group>"; };
 		0C2FBAB421480A0600704220 /* PickerSelectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerSelectView.swift; sourceTree = "<group>"; };
 		6B75DEE6911A00B4E860ED3D /* Pods_Widgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Widgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC89B84D214983CD008644EA /* SessionEndView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionEndView.swift; sourceTree = "<group>"; };
 		ACE55F9C21413CE200829961 /* KoreBotUIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoreBotUIKit.swift; sourceTree = "<group>"; };
 		ACEF3F7D213EFB3400B6979A /* ListViewWidgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewWidgetViewController.swift; sourceTree = "<group>"; };
 		ACEF3F7F213EFB3400B6979A /* ChatMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessagesViewController.swift; sourceTree = "<group>"; };
@@ -220,6 +222,14 @@
 				0C2FBAB421480A0600704220 /* PickerSelectView.swift */,
 			);
 			path = Picker;
+			sourceTree = "<group>";
+		};
+		AC89B84C214983CD008644EA /* SessionEnd */ = {
+			isa = PBXGroup;
+			children = (
+				AC89B84D214983CD008644EA /* SessionEndView.swift */,
+			);
+			path = SessionEnd;
 			sourceTree = "<group>";
 		};
 		ACEF3F7C213EFB3400B6979A /* Controllers */ = {
@@ -624,6 +634,7 @@
 		D1832B571DDC1EE700FDFB93 /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
+				AC89B84C214983CD008644EA /* SessionEnd */,
 				0C2FBAB321480A0600704220 /* Picker */,
 				ACEF3FA6213EFB3400B6979A /* Carousel */,
 				ACEF4004213EFB3500B6979A /* Common */,
@@ -818,6 +829,7 @@
 				ACEF4043213EFB3500B6979A /* ExpandedTableViewCell.swift in Sources */,
 				ACEF402D213EFB3500B6979A /* ComposeBarView.swift in Sources */,
 				ACEF405A213EFB3500B6979A /* KREComponent+CoreDataProperties.swift in Sources */,
+				AC89B84E214983CD008644EA /* SessionEndView.swift in Sources */,
 				ACEF4014213EFB3500B6979A /* MessageBubbleCell.swift in Sources */,
 				ACEF4049213EFB3500B6979A /* CoreDataManager.swift in Sources */,
 				ACEF403C213EFB3500B6979A /* ResponsiveTableBubbleView.swift in Sources */,
