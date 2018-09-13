@@ -27,6 +27,7 @@ target 'KoreBotSDK' do
     pod 'Mantle', '2.0.2'
     pod 'AFNetworking', '3.2.0'
     pod 'SocketRocket'
+    
     project 'Library/KoreBotSDK/KoreBotSDK.xcodeproj'
 end
 
@@ -38,6 +39,7 @@ target 'Widgets' do
     pod 'DTCoreText','1.6.15'
     pod 'Charts','3.0.5'
     pod 'SquareMosaicLayout', '0.6.2'
+	pod 'DottedProgressBar'
     project 'Library/Widgets/Widgets.xcodeproj'
 end
 

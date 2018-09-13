@@ -29,6 +29,7 @@ Pod::Spec.new do |s|
         ss.dependency 'SocketRocket'
         ss.dependency 'DTCoreText','1.6.15'
         ss.dependency 'Charts','3.0.5'
+        ss.dependency 'DottedProgressBar'
         ss.dependency 'SquareMosaicLayout', '0.6.2'
 
         ss.ios.frameworks = 'SystemConfiguration'

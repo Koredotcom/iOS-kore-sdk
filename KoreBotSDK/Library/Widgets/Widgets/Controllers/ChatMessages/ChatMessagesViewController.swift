@@ -46,6 +46,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     public var quickReplyView: KREQuickSelectView!
     public var pickerView: PickerSelectView!
     public var sessionEndView: SessionEndView!
+    public var loaderView: LoaderView!
     public var typingStatusView: KRETypingStatusView!
     public var webViewController: InputTOWebViewController!
     public var speechSynthesizer: AVSpeechSynthesizer!
@@ -75,7 +76,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.configureSessionEndView()
         self.configureTypingStatusView()
         self.configureSTTClient()
-
+        self.configureBottomView() 
         self.configureInformationView()
         
 
@@ -268,18 +269,32 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     }
     
     func configureSessionEndView() {
-    self.sessionEndView = SessionEndView()
-    self.sessionEndView.translatesAutoresizingMaskIntoConstraints = false
-    self.quickSelectContainerView.addSubview(self.sessionEndView)
-    self.sessionEndView.isHidden = true
-    self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[sessionEndView]|", options:[], metrics:nil, views:["sessionEndView" : self.sessionEndView]))
-    self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[sessionEndView(150)]|", options:[], metrics:nil, views:["sessionEndView" : self.sessionEndView]))
-    
-    self.sessionEndView.sendSessionAction = { [weak self] (value) in
-        self?.closeQuickReplyCards()
-        self?.messagesViewControllerDelegate?.disconnectBot()
+        self.sessionEndView = SessionEndView()
+        self.sessionEndView.translatesAutoresizingMaskIntoConstraints = false
+        self.quickSelectContainerView.addSubview(self.sessionEndView)
+        self.sessionEndView.isHidden = true
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[sessionEndView]|", options:[], metrics:nil, views:["sessionEndView" : self.sessionEndView]))
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[sessionEndView(150)]|", options:[], metrics:nil, views:["sessionEndView" : self.sessionEndView]))
+        
+        self.sessionEndView.sendSessionAction = { () in
+            self.closeQuickReplyCards()
+            self.messagesViewControllerDelegate?.disconnectBot()
+        }
+        
     }
-    
+    func configureBottomView() {
+        self.loaderView = LoaderView()
+        self.loaderView.translatesAutoresizingMaskIntoConstraints = false
+        self.quickSelectContainerView.addSubview(self.loaderView)
+        self.loaderView.isHidden = true
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[loaderView]|", options:[], metrics:nil, views:["loaderView" : self.loaderView]))
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[loaderView(150)]|", options:[], metrics:nil, views:["loaderView" : self.loaderView]))
+        
+//        self.sessionEndView.sendSessionAction = { [weak self] (value) in
+//            self?.closeQuickReplyCards()
+//            self?.messagesViewControllerDelegate?.disconnectBot()
+//        }
+        
     }
     
     func configureTypingStatusView() {
@@ -474,6 +489,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.quickReplyView.isHidden = false
         self.pickerView.isHidden = true
         self.sessionEndView.isHidden = true
+         self.loaderView.isHidden = true
         if message?.templateType == (ComponentType.quickReply.rawValue as NSNumber) {
             let component: KREComponent = message!.components![0] as! KREComponent
             if (!component.isKind(of: KREComponent.self)) {
@@ -528,6 +544,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.pickerView.isHidden = false
         self.quickReplyView.isHidden = true
         self.sessionEndView.isHidden = true
+         self.loaderView.isHidden = true
         if message?.templateType == (ComponentType.picker.rawValue as NSNumber) {
             let component: KREComponent = message!.components![0] as! KREComponent
             if (!component.isKind(of: KREComponent.self)) {
@@ -561,6 +578,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.pickerView.isHidden = true
         self.quickReplyView.isHidden = true
         self.sessionEndView.isHidden = false
+         self.loaderView.isHidden = true
         if message?.templateType == (ComponentType.sessionend.rawValue as NSNumber) {
             let component: KREComponent = message!.components![0] as! KREComponent
             if (!component.isKind(of: KREComponent.self)) {
@@ -568,20 +586,47 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             }
             if ((component.componentDesc) != nil) {
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
+                let text: String = jsonObject["text"] != nil ? jsonObject["text"]! as! String : ""
                 let sessionValues: Array<Dictionary<String, Any>> = jsonObject["buttons"] as! Array<Dictionary<String, Any>>
-                var valuesArr: Array<String> = Array<String>()
+                var titlesArr: Array<String> = Array<String>()
+                
                 
                 for dictionary in sessionValues {
                     let title: String = dictionary["title"] != nil ? dictionary["title"]! as! String : ""
                     
-                    valuesArr.append(title)
+                    titlesArr.append(title)
                 }
-                self.sessionEndView.setValues(values:valuesArr)
+                self.sessionEndView.setValues(titleArr: titlesArr, text: text)
                 updateSessionEnViewConstraints()
             }
         } else if(message != nil) {
-            let words: Array<String> = Array<String>()
-            self.sessionEndView.setValues(values: words)
+//            let words: Array<String> = Array<String>()
+//            self.sessionEndView.setValues(titleArr: words, textArr: nil)
+            self.closeQuickSelectViewConstraints()
+        }
+    }
+    func populateBottomTableView(with message: KREMessage?) {
+        self.audioComposeContainerHeightConstraint.isActive = true
+        self.audioComposeContainerView.isHidden = true
+        self.composeBarContainerHeightConstraint.isActive = true
+        self.composeBarContainerView.isHidden = true
+        self.pickerView.isHidden = true
+        self.quickReplyView.isHidden = true
+        self.sessionEndView.isHidden = true
+        self.loaderView.isHidden = false
+        if message?.templateType == (ComponentType.showProgress.rawValue as NSNumber) {
+            let component: KREComponent = message!.components![0] as! KREComponent
+            if (!component.isKind(of: KREComponent.self)) {
+                return;
+            }
+            if ((component.componentDesc) != nil) {
+                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
+                let strText: String = jsonObject["text"] as! String
+                self.loaderView.setValues(textLblTitle:strText)
+                updateSessionEnViewConstraints()
+            }
+        } else if(message != nil) {
+//            let words: Array<String> = Array<String>()
             self.closeQuickSelectViewConstraints()
         }
     }

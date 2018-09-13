@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 public enum ComponentType : Int {
-    case text = 1, image = 2, options = 3, quickReply = 4, list = 5, carousel = 6, error = 7, chart = 8, table = 9, minitable = 10, responsiveTable = 11, menu = 12, picker = 13, sessionend = 14
+    case text = 1, image = 2, options = 3, quickReply = 4, list = 5, carousel = 6, error = 7, chart = 8, table = 9, minitable = 10, responsiveTable = 11, menu = 12, picker = 13, sessionend = 14, showProgress = 15
 }
 
 open class Component : NSObject {

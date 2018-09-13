@@ -212,6 +212,11 @@ class SessionEndBubbleCell : MessageBubbleCell {
         return .sessionend
     }
 }
+class ShowProgressBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .showProgress
+    }
+}
 class ErrorBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .error

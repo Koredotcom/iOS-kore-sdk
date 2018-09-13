@@ -95,6 +95,8 @@ class BubbleView: UIView {
         case .sessionend:
             bubbleView = SessionEndBubbleView()
             break
+        case .showProgress:
+            bubbleView = BottombubbleView()
         }
         bubbleView.bubbleType = bubbleType
         
