@@ -78,6 +78,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.configureSTTClient()
         self.configureBottomView() 
         self.configureInformationView()
+        UserDefaults.standard.setSignifyBottomView(with: false)
         
 
         if let muteVal: Bool = UserDefaults.standard.getsignifyBotStatus(){
@@ -715,7 +716,12 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                 self.informationLabel.text = text
                 self.informationView.backgroundColor = UIColorRGB(0x2B86B2)
             }) { [unowned self] (Bool) in
-                self.configureViews(false)
+                
+                if(UserDefaults.standard.getSignifyBottomView()){
+                    self.configureViews(true)
+                }else{
+                    self.configureViews(false)
+                }
                 self.botMessagesView.tableView.contentInset = edgeInsets
                 self.informationViewHeightConstraint.constant = 0.0
                 UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: { [unowned self] in
@@ -835,5 +841,13 @@ public extension UserDefaults {
     
     func getsignifyBotStatus() -> Bool {
         return bool(forKey: "MuteSignifyBot")
+    }
+    func setSignifyBottomView(with isPresent: Bool) {
+        set(isPresent, forKey: "BottomViewSignifyBot")
+        synchronize()
+    }
+    
+    func getSignifyBottomView() -> Bool {
+        return bool(forKey: "BottomViewSignifyBot")
     }
 }

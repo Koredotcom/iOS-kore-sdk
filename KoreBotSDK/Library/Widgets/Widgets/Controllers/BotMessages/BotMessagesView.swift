@@ -285,10 +285,13 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             if isQuickReply {
                 self.viewDelegate?.populateQuickReplyCards(with: message)
             } else if isPicker {
+                UserDefaults.standard.setSignifyBottomView(with: true)
                 self.viewDelegate?.populatePickerView(with: message)
             }else if isSessionEnd {
+                UserDefaults.standard.setSignifyBottomView(with: true)
                 self.viewDelegate?.populateSessionEndView(with: message)
             }else if isshowProgress {
+                UserDefaults.standard.setSignifyBottomView(with: true)
                 self.viewDelegate?.populateBottomTableView(with: message)
             }else{
                  self.viewDelegate?.closeQuickReplyCards()
