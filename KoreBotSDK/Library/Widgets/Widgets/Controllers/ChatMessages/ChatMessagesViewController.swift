@@ -703,7 +703,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             edgeInsets = .zero
             break
         case .NO_NETWORK:
-            text = "No connection"
+            text = "No Internet"
             backgroundColor = UIColor.black
             break
         case .FAILED:
