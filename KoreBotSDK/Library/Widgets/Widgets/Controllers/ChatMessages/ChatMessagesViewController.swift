@@ -232,6 +232,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.audioComposeView.onKeyboardButtonAction = { [unowned self] () in
             _ = self.composeView.becomeFirstResponder()
             self.configureViewForKeyboard(true)
+//            self.composeView.isHidden = false
         }
         self.audioComposeView.checkAudioRecordingPermissions = { [unowned self] (composeBar, block) in
             self.composeBarViewSpeechToTextButtonAction(self.composeView)
@@ -520,8 +521,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     }
     
     func closeQuickReplyCards(){
-        self.audioComposeContainerHeightConstraint.isActive = false
-         self.audioComposeContainerView.isHidden = false
+        self.configureViews(false)
         self.closeQuickSelectViewConstraints()
     }
     
@@ -537,10 +537,11 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     }
     
     func populatePickerView(with message: KREMessage?) {
-        self.audioComposeContainerHeightConstraint.isActive = true
-        self.audioComposeContainerView.isHidden = true
-        self.composeBarContainerHeightConstraint.isActive = true
-        self.composeBarContainerView.isHidden = true
+//        self.audioComposeContainerHeightConstraint.isActive = true
+//        self.audioComposeContainerView.isHidden = true
+//        self.composeBarContainerHeightConstraint.isActive = true
+//        self.composeBarContainerView.isHidden = true
+        self.configureViews(true)
         self.pickerView.isHidden = false
         self.quickReplyView.isHidden = true
         self.sessionEndView.isHidden = true
@@ -571,10 +572,11 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     }
 
     func populateSessionEndView(with message: KREMessage?) {
-        self.audioComposeContainerHeightConstraint.isActive = true
-        self.audioComposeContainerView.isHidden = true
-        self.composeBarContainerHeightConstraint.isActive = true
-        self.composeBarContainerView.isHidden = true
+//        self.audioComposeContainerHeightConstraint.isActive = true
+//        self.audioComposeContainerView.isHidden = true
+//        self.composeBarContainerHeightConstraint.isActive = true
+//        self.composeBarContainerView.isHidden = true
+        self.configureViews(true)
         self.pickerView.isHidden = true
         self.quickReplyView.isHidden = true
         self.sessionEndView.isHidden = false
@@ -606,10 +608,11 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         }
     }
     func populateBottomTableView(with message: KREMessage?) {
-        self.audioComposeContainerHeightConstraint.isActive = true
-        self.audioComposeContainerView.isHidden = true
-        self.composeBarContainerHeightConstraint.isActive = true
-        self.composeBarContainerView.isHidden = true
+//        self.audioComposeContainerHeightConstraint.isActive = true
+//        self.audioComposeContainerView.isHidden = true
+//        self.composeBarContainerHeightConstraint.isActive = true
+//        self.composeBarContainerView.isHidden = true
+        configureViews(true)
         self.pickerView.isHidden = true
         self.quickReplyView.isHidden = true
         self.sessionEndView.isHidden = true
@@ -676,13 +679,13 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             self.composeBarContainerView.isHidden = prepare
             self.audioComposeContainerView.isHidden = prepare
         } else {
-            self.composeViewBottomConstraint.isActive = prepare
-            self.composeBarContainerHeightConstraint.isActive = !prepare
-            self.audioComposeContainerHeightConstraint.isActive = prepare
-            self.audioComposeContainerView.clipsToBounds = prepare
-            self.composeView.configureViewForKeyboard(prepare)
-            self.composeBarContainerView.isHidden = !prepare
-            self.audioComposeContainerView.isHidden = prepare
+            self.composeViewBottomConstraint.isActive = !prepare
+            self.composeBarContainerHeightConstraint.isActive = prepare
+            self.audioComposeContainerHeightConstraint.isActive = !prepare
+            self.audioComposeContainerView.clipsToBounds = !prepare
+            self.composeView.configureViewForKeyboard(!prepare)
+            self.composeBarContainerView.isHidden = prepare
+            self.audioComposeContainerView.isHidden = !prepare
         }
     }
     
