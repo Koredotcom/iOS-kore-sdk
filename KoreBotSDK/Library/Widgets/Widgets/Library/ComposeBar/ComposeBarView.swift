@@ -60,7 +60,7 @@ open class ComposeBarView: UIView {
         self.growingTextView.isUserInteractionEnabled = false
         
         let attributes: [NSAttributedStringKey : Any] = [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 14.0)!, NSAttributedStringKey.foregroundColor: UIColorRGB(0xB5B9BA)]
-        self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Say Something...", attributes:attributes)
+        self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Type your message …", attributes:attributes)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidBeginEditingNotification(_ :)), name: NSNotification.Name.UITextViewTextDidBeginEditing, object: self.growingTextView.textView)
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidChangeNotification(_ :)), name: NSNotification.Name.UITextViewTextDidChange, object: self.growingTextView.textView)
