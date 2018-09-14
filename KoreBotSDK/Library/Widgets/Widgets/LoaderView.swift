@@ -65,6 +65,7 @@ public class LoaderView: UIView, UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell : LoaderViewCell = self.tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! LoaderViewCell
         cell.textLbl.text = lblText
+        cell.selectionStyle = .none
         if(lblText != ""){
             cell.performAnimation()
             
