@@ -23,6 +23,7 @@ extension KREMessage {
     @NSManaged public var messageType: NSNumber?
     @NSManaged public var templateType: NSNumber?
     @NSManaged public var sentOn: NSDate?
+    @NSManaged public var sortDay: NSDate?
     @NSManaged public var isSender: Bool
     @NSManaged public var author: KREContact?
     @NSManaged public var components: NSOrderedSet?

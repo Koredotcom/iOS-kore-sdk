@@ -57,8 +57,6 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
         self.tableView.delegate = self
         self.addSubview(self.tableView)
         
-        self.tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
-        
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[tableView]|", options:[], metrics:nil, views:["tableView" : self.tableView]))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[tableView]|", options:[], metrics:nil, views:["tableView" : self.tableView]))
         
@@ -79,7 +77,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
         self.tableView.register(PickerBubbleCell.self, forCellReuseIdentifier:"PickerBubbleCell")
         self.tableView.register(SessionEndBubbleCell.self, forCellReuseIdentifier:"SessionEndBubbleCell")
         self.tableView.register(ShowProgressBubbleCell.self, forCellReuseIdentifier:"ShowProgressBubbleCell")
-        
+        self.tableView.register(BotMessagesHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "BotMessagesHeaderFooterView")
     }
     
     override open func layoutSubviews() {
@@ -96,10 +94,12 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
         if(self.thread != nil){
             let request: NSFetchRequest<KREMessage> = KREMessage.fetchRequest()
             request.predicate = NSPredicate(format: "thread.threadId == %@", self.thread.threadId!)
-            request.sortDescriptors = [NSSortDescriptor(key: "sentOn", ascending: false)]
+            let sortSection = NSSortDescriptor(key: "sortDay", ascending: true)
+            let sortDates = NSSortDescriptor(key: "sentOn", ascending: true)
+            request.sortDescriptors = [sortSection, sortDates]
             
             let mainContext: NSManagedObjectContext = DataStoreManager.sharedManager.coreDataManager.mainContext
-            fetchedResultsController = KREFetchedResultsController(fetchRequest: request as! NSFetchRequest<NSManagedObject>, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
+            fetchedResultsController = KREFetchedResultsController(fetchRequest: request as! NSFetchRequest<NSManagedObject>, managedObjectContext: mainContext, sectionNameKeyPath: "sortDay", cacheName: nil)
             fetchedResultsController?.tableView = self.tableView
             fetchedResultsController?.kreDelegate = self
             do {
@@ -112,19 +112,20 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
     
     // MARK: UITable view data source
     public func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return fetchedResultsController?.sections?.count ?? 0
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let rowsCount = fetchedResultsController?.fetchedObjects?.count else {
+        guard let sectionInfo = fetchedResultsController?.sections?[section] else {
             return 0
         }
-        return rowsCount
+        return sectionInfo.numberOfObjects
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        let message: KREMessage = fetchedResultsController!.object(at: indexPath) as! KREMessage
+        guard let message = fetchedResultsController?.object(at: indexPath) as? KREMessage else {
+            return UITableViewCell(style: .default, reuseIdentifier: "UITableViewCell")
+        }
         
         var cellIdentifier: String! = nil
         if let componentType = ComponentType(rawValue: (message.templateType?.intValue)!) {
@@ -280,20 +281,21 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             isshowProgress = true
             break
         }
-        let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
-        if firstIndexPath.isEqual(indexPath) {
+        
+        let lastIndexPath = getIndexPathForLastItem()
+        if lastIndexPath.compare(indexPath) == ComparisonResult.orderedSame {
             if isQuickReply {
                 self.viewDelegate?.populateQuickReplyCards(with: message)
             } else if isPicker {
                 UserDefaults.standard.setSignifyBottomView(with: true)
                 self.viewDelegate?.populatePickerView(with: message)
-            }else if isSessionEnd {
+            } else if isSessionEnd {
                 UserDefaults.standard.setSignifyBottomView(with: true)
                 self.viewDelegate?.populateSessionEndView(with: message)
-            }else if isshowProgress {
+            } else if isshowProgress {
                 UserDefaults.standard.setSignifyBottomView(with: true)
                 self.viewDelegate?.populateBottomTableView(with: message)
-            }else{
+            } else {
                  self.viewDelegate?.closeQuickReplyCards()
             }
         }
@@ -311,16 +313,11 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
     }
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView()
-        return view
-    }
-    
-    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         var date = Date()
         if let rowsCount = fetchedResultsController?.fetchedObjects?.count, rowsCount > 0 {
-            if let message = fetchedResultsController?.object(at: IndexPath(row: 0, section: 0)) as? KREMessage {
-                if message.sentOn != nil {
-                    date = message.sentOn! as Date
+            if let message = fetchedResultsController?.object(at: IndexPath(row: 0, section: section)) as? KREMessage {
+                if let sentOn = message.sentOn as Date? {
+                    date = sentOn
                 }
             }
         }
@@ -329,58 +326,98 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
         dateFormatter.dateFormat = "EEE, d MMMM YYYY"
         let dateString = dateFormatter.string(from: date)
         
-        let label = UILabel()
-        label.transform = CGAffineTransform(scaleX: 1, y: -1)
-        label.text = dateString
-        label.textAlignment = .center
-        label.textColor = UIColor.white.withAlphaComponent(0.8)
-        label.font = UIFont(name: "HelveticaNeue", size: 13)
-        return label
+        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "BotMessagesHeaderFooterView") as? BotMessagesHeaderFooterView ?? BotMessagesHeaderFooterView(reuseIdentifier: "BotMessagesHeaderFooterView")
+        headerView.titleLabel.text = dateString
+        return headerView
+    }
+    
+    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let view = UIView()
+        return view
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 5.0
+        return 36.0
     }
     
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 20.0
+        return 5.0
     }
     
     // MARK:- KREFetchedResultsControllerDelegate methods
     func fetchedControllerWillChangeContent() {
-        let visibleCelIndexPath: [IndexPath]? = self.tableView.indexPathsForVisibleRows
-        let firstIndexPath: NSIndexPath = NSIndexPath(row: 0, section: 0)
-        if (visibleCelIndexPath?.contains(firstIndexPath as IndexPath))!{
-            self.shouldScrollToBottom = true
+        let indexPath = getIndexPathForLastItem()
+        if let visibleCelIndexPaths = self.tableView.indexPathsForVisibleRows, visibleCelIndexPaths.contains(indexPath) {
+            shouldScrollToBottom = true
         }
     }
     
     func fetchedControllerDidChangeContent() {
+
+    }
+    
+    func fetchedControllerDidEndAnimation() {
         if (self.shouldScrollToBottom && !self.tableView.isDragging) {
             self.shouldScrollToBottom = false
-            self.scrollToTop(animate: true)
+            self.scrollToLastMessage()
         }
     }
     
-    func scrollToTop(animate: Bool){
-        self.tableView.scrollToRow(at: IndexPath.init(row: 0, section: 0), at: .bottom, animated: animate)
+    func scrollToLastMessage() {
+        CATransaction.begin()
+        CATransaction.setCompletionBlock({ () -> Void in
+            self.scrollToBottom(animated: true)
+        })
+        
+        // scroll down by 1 point: this causes the newly added cell to be dequeued and rendered.
+        var contentOffset = tableView.contentOffset
+        contentOffset.y += 1
+        self.tableView.setContentOffset(contentOffset, animated: true)
+        
+        CATransaction.commit()
     }
     
     // MARK: - scrollTo related methods
-    func getIndexPathForLastItem() -> NSIndexPath {
-        var indexPath: NSIndexPath = NSIndexPath.init(row: 0, section: 0);
+    func scrollWithOffset(_ offset: CGFloat, animated animate: Bool) {
+        if self.tableView.contentSize.height < self.frame.size.height { // when content is too less
+            return
+        }
+        if self.frame.size.height + self.tableView.contentOffset.y >= self.tableView.contentSize.height - 1.0/*fraction buffer*/ {
+            return
+        }
+
+        var contentOffset = self.tableView.contentOffset
+        contentOffset.y += offset
+        if contentOffset.y < -self.tableView.contentInset.top {
+            contentOffset.y = -self.tableView.contentInset.top
+        }
+        if self.tableView.frame.size.height + offset > self.tableView.contentSize.height {
+            contentOffset.y = self.tableView.contentSize.height - self.tableView.frame.size.height
+        }
+
+        self.tableView.setContentOffset(contentOffset, animated: animate)
+    }
+    
+    func scrollToBottom(animated animate: Bool) {
+        let indexPath: IndexPath = self.getIndexPathForLastItem()
+        if (indexPath.row > 0 || indexPath.section > 0) {
+            self.tableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: animate)
+        }
+    }
+    
+    func getIndexPathForLastItem() -> IndexPath {
+        var indexPath: IndexPath = IndexPath(row: 0, section: 0);
         let numberOfSections: Int = self.tableView.numberOfSections
         if numberOfSections > 0 {
             let numberOfRows: Int = self.tableView.numberOfRows(inSection: numberOfSections - 1)
             if numberOfRows > 0 {
-                indexPath = NSIndexPath(row: numberOfRows - 1, section: numberOfSections - 1)
+                indexPath = IndexPath(row: numberOfRows - 1, section: numberOfSections - 1)
             }
         }
         return indexPath
     }
     
     // MARK: helper functions
-    
     func textLinkDetection(textLabel:KREAttributedLabel) {
         textLabel.detectionBlock = {(hotword, string) in
             switch hotword {
@@ -404,3 +441,36 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
         self.fetchedResultsController = nil
     }
 }
+
+// MARK: - BotMessagesHeaderFooterView
+class BotMessagesHeaderFooterView: UITableViewHeaderFooterView {
+    // MARK: - properties
+    let titleLabel = UILabel()
+    var title: String?
+    
+    // MARK: -
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        
+        // content View
+        contentView.backgroundColor = .white
+        let marginGuide = contentView.layoutMarginsGuide
+        
+        // title label
+        contentView.addSubview(titleLabel)
+        titleLabel.textColor = UIColorRGB(0xB0B0B0)
+        titleLabel.backgroundColor = .clear
+        titleLabel.font = UIFont.systemFont(ofSize: 15.0)
+        titleLabel.textAlignment = .center
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.topAnchor.constraint(equalTo: marginGuide.topAnchor).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: marginGuide.trailingAnchor).isActive = true
+        titleLabel.bottomAnchor.constraint(equalTo: marginGuide.bottomAnchor).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: marginGuide.leadingAnchor).isActive = true
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+}
+

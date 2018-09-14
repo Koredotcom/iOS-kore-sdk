@@ -129,7 +129,7 @@ open class DataStoreManager: NSObject {
             thread = array.first
             return thread
         } else {
-            thread = NSEntityDescription.insertNewObject(forEntityName: "KREThread", into: context) as! KREThread
+            thread = NSEntityDescription.insertNewObject(forEntityName: "KREThread", into: context) as? KREThread
             thread?.threadId = taskBotId
             thread?.subject = chatBot
             if let messages = dictionary["messages"] as? Array<[String: Any]> {
@@ -201,6 +201,7 @@ open class DataStoreManager: NSObject {
         context.perform { [unowned self] in
             let nMessage = NSEntityDescription.insertNewObject(forEntityName: "KREMessage", into: context) as! KREMessage
             nMessage.sentOn = message.sentDate as NSDate?
+            nMessage.sortDay = self.dateAtBeginningOfDay(for: message.sentDate) as NSDate?
             nMessage.isSender = true
             if (message.messageType == .reply) {
                 nMessage.isSender = false
@@ -226,4 +227,36 @@ open class DataStoreManager: NSObject {
         }
     }
     
+    // MARK: - date at beginning of day from 
+    func dateAtBeginningOfDay(for inputDate: Date?) -> Date? {
+        if inputDate == nil {
+            return nil
+        }
+        
+        // use the user's current calendar and time zone
+        var calendar = Calendar.current
+        
+        let timeZone = TimeZone(abbreviation: "GMT")
+        if let aZone = timeZone {
+            calendar.timeZone = aZone
+        }
+        
+        // selectively convert the date components (year, month, day) of the input date
+        var dateComponents: DateComponents? = nil
+        if let aDate = inputDate {
+            dateComponents = calendar.dateComponents([.year, .month, .day], from: aDate)
+        }
+        
+        // set the time components manually
+        dateComponents?.hour = 0
+        dateComponents?.minute = 0
+        dateComponents?.second = 0
+        
+        // convert back
+        var beginningOfDay: Date? = nil
+        if let aComponents = dateComponents {
+            beginningOfDay = calendar.date(from: aComponents)
+        }
+        return beginningOfDay
+    }
 }

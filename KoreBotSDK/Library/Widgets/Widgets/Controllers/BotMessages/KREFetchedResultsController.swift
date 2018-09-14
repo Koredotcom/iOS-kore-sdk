@@ -12,6 +12,7 @@ import CoreData
 protocol KREFetchedResultsControllerDelegate {
     func fetchedControllerWillChangeContent()
     func fetchedControllerDidChangeContent()
+    func fetchedControllerDidEndAnimation()
 }
 
 class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, NSFetchedResultsControllerDelegate {
@@ -26,6 +27,7 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
         }
     }
     weak var tableView: UITableView?
+    var animateChanges: Bool = false
     var ignoreUpdates: Bool = false
     var shouldReload: Bool = false
     var maybePreMoveUpdateIndexPath: IndexPath? = nil
@@ -43,7 +45,7 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
         self.delegate = self
     }
     
-    // MARK:- 
+    // MARK:-
     func initSectionsAndRowsCache() {
         insertedSectionIndexes = IndexSet()
         deletedSectionIndexes = IndexSet()
@@ -71,35 +73,43 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
         if (self.shouldReload == true) {
             self.tableView?.reloadData()
         } else {
+            CATransaction.begin()
+            CATransaction.setCompletionBlock({ () -> Void in
+                // This block runs after the animations between CATransaction.begin
+                // and CATransaction.commit are finished.
+                self.kreDelegate?.fetchedControllerDidEndAnimation()
+            })
+            
             self.tableView?.beginUpdates()
             
             self.tableView?.deleteSections(self.deletedSectionIndexes!, with: .fade)
             self.tableView?.insertSections(self.insertedSectionIndexes!, with: .fade)
-
             self.tableView?.deleteRows(at: self.deletedRowIndexPaths!, with: .fade)
-            self.tableView?.insertRows(at: self.insertedRowIndexPaths!, with: .top)
+            self.tableView?.insertRows(at: self.insertedRowIndexPaths!, with: .bottom)
             self.tableView?.reloadRows(at: self.updatedRowIndexPaths!, with: .automatic)
 
             self.tableView?.endUpdates()
+            
+            CATransaction.commit()
             
             self.kreDelegate?.fetchedControllerDidChangeContent()
             clearSectionsAndRowsCache()
         }
     }
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-            switch (type) {
-            case .insert:
-                self.insertedSectionIndexes?.insert(sectionIndex)
-                break
-            case .delete:
-                self.deletedSectionIndexes?.insert(sectionIndex)
-                if let i = self.deletedRowIndexPaths?.index(where: {$0.section == sectionIndex}) {
-                    self.deletedRowIndexPaths?.remove(at: i)
-                }
-                break
-            default:
-                break
+        switch (type) {
+        case .insert:
+            self.insertedSectionIndexes?.insert(sectionIndex)
+            break
+        case .delete:
+            self.deletedSectionIndexes?.insert(sectionIndex)
+            if let i = self.deletedRowIndexPaths?.index(where: {$0.section == sectionIndex}) {
+                self.deletedRowIndexPaths?.remove(at: i)
             }
+            break
+        default:
+            break
+        }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
@@ -107,7 +117,6 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
         case .insert:
             if (indexPath == nil && newIndexPath != nil) {
                 if (self.insertedSectionIndexes?.contains((newIndexPath?.section)!) == true) {
-                
                 } else {
                     self.insertedRowIndexPaths?.append(newIndexPath!)
                 }
@@ -118,7 +127,6 @@ class KREFetchedResultsController: NSFetchedResultsController<NSManagedObject>, 
         case .delete:
             if (indexPath != nil && newIndexPath != nil) {
                 if (self.deletedSectionIndexes?.contains((indexPath?.section)!) == true) {
-
                 } else {
                     self.deletedRowIndexPaths?.append(indexPath!)
                 }

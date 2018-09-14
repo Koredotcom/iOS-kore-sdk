@@ -81,9 +81,9 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         UserDefaults.standard.setSignifyBottomView(with: false)
         
 
-        if let muteVal: Bool = UserDefaults.standard.getsignifyBotStatus(){
+        if let muteVal: Bool = UserDefaults.standard.getsignifyBotStatus() {
             isSpeakingEnabled = muteVal
-        }else{
+        } else {
             UserDefaults.standard.setSignifyBotStatus(with: false)
             isSpeakingEnabled = UserDefaults.standard.getsignifyBotStatus()
         }
@@ -361,20 +361,21 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     // MARK: notification handlers
     @objc func keyboardWillShow(_ notification: Notification) {
         let keyboardUserInfo: NSDictionary = NSDictionary(dictionary: (notification as NSNotification).userInfo!)
+        let keyboardFrameBegin: CGRect = ((keyboardUserInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue?)!.cgRectValue)
         let keyboardFrameEnd: CGRect = ((keyboardUserInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue?)!.cgRectValue)
         let options = UIViewAnimationOptions(rawValue: UInt((keyboardUserInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
         let durationValue = keyboardUserInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
         let duration = durationValue.doubleValue
         
-        var keyboardHeight = keyboardFrameEnd.size.height;
-        if #available(iOS 11.0, *) {
-            keyboardHeight -= self.view.safeAreaInsets.bottom
-        } else {
-            // Fallback on earlier versions
+        var diff = keyboardFrameBegin.origin.y - keyboardFrameEnd.origin.y
+        if !self.audioComposeContainerHeightConstraint.isActive {
+            let composeViewDiff = self.audioComposeContainerView.frame.size.height - self.composeView.frame.size.height
+            diff -= composeViewDiff
         }
-        self.bottomConstraint.constant = keyboardHeight
+        self.bottomConstraint.constant = keyboardFrameEnd.size.height
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
             self.view.layoutIfNeeded()
+            self.botMessagesView.scrollWithOffset(diff, animated: false)
         }, completion: { (Bool) in
             
         })
@@ -382,13 +383,17 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     
     @objc func keyboardWillHide(_ notification: Notification) {
         let keyboardUserInfo: NSDictionary = NSDictionary(dictionary: (notification as NSNotification).userInfo!)
+        let keyboardFrameBegin: CGRect = ((keyboardUserInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue?)!.cgRectValue)
+        let keyboardFrameEnd: CGRect = ((keyboardUserInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue?)!.cgRectValue)
         let durationValue = keyboardUserInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
         let duration = durationValue.doubleValue
         let options = UIViewAnimationOptions(rawValue: UInt((keyboardUserInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
         
+        let diff = keyboardFrameBegin.origin.y - keyboardFrameEnd.origin.y
         self.bottomConstraint.constant = 0
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
             self.view.layoutIfNeeded()
+            self.botMessagesView.scrollWithOffset(diff, animated: false)
         }, completion: { (Bool) in
             
         })
@@ -440,7 +445,6 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     
     func textMessageSent() {
         self.composeView.clear()
-        self.botMessagesView.scrollToTop(animate: true)
     }
     
     public func speechToTextButtonAction() {
@@ -812,7 +816,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     
     // MARK: show tying status view
     public func showTypingStatusForBotsAction() {
-        self.botMessagesView.tableView.contentInset = UIEdgeInsetsMake(40.0, 0.0, 0.0, 0.0)
+        self.botMessagesView.tableView.contentInset = UIEdgeInsetsMake(0.0, 0.0, 40.0, 0.0)
 
         let botId = "u-40d2bdc2-822a-51a2-bdcd-95bdf4po8331c9"
         let info = NSMutableDictionary()
