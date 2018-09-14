@@ -7,14 +7,12 @@
 
 import UIKit
 
-public class SessionEndView: UIView {
-    
-    public var blueLineLbl: UILabel!
-    public var convLbl: UILabel!
-    public var chatBtn: UIButton!
-    public var sendSessionAction: ((_ value: Bool?) -> Void)!
-    var btnTitle: String = "Chat with an expert"
-    
+public class SessionEndView: UIView, UITableViewDelegate, UITableViewDataSource, SessionEndCellDelegate  {
+    var tableView: UITableView!
+    let cellReuseIdentifier = "SessionEndCell"
+    var lblText: String = ""
+    var btnTitle: String = ""
+    public var sendSessionAction: (() -> Void)!
     // MARK:- init
     override init (frame: CGRect) {
         super.init(frame: frame)
@@ -35,8 +33,86 @@ public class SessionEndView: UIView {
         
     }
     
-    // MARK:- setup collectionView
+    // MARK:- setup tableView
     func setup() {
+        tableView = UITableView(frame: .zero, style: .plain)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(tableView)
+        tableView.register(SessionEndCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+        tableView.backgroundColor = UIColor.white
+        tableView.delegate = self
+        tableView.dataSource = self
+        self.tableView.showsHorizontalScrollIndicator = false
+        self.tableView.showsVerticalScrollIndicator = false
+        self.tableView.bounces = false
+        
+        let views: [String: UIView] = ["tableView": tableView]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[tableView]|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[tableView]|", options:[], metrics:nil, views:views))
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 150
+    }
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell : SessionEndCell = self.tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! SessionEndCell
+        cell.convLbl.text = lblText
+        cell.chatBtn.setTitle(btnTitle, for: .normal)
+        cell.delegate = self
+        return cell
+    }
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
+    public func setValues(titleArr: Array<String>?, text: String) {
+        btnTitle = (titleArr?.first)!
+        lblText = text
+        tableView.reloadData()
+    }
+    func chatBtnClicked(_ sender: SessionEndCell) {
+        if(sendSessionAction != nil){
+            self.sendSessionAction()
+        }
+    }
+    
+}
+
+class SessionEndCell: UITableViewCell {
+    // MARK: - properties
+    
+    public var blueLineLbl: UILabel!
+    public var convLbl: UILabel!
+    public var chatBtn: UIButton!
+    var btnTitle: String = ""
+    var delegate: SessionEndCellDelegate!
+    
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.initialize()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: properties with observers
+    override func prepareForReuse() {
+        convLbl.text = ""
+    }
+    
+    func initialize() {
+        self.selectionStyle = .default
+        self.clipsToBounds = true
         
         blueLineLbl = UILabel(frame: .zero)
         blueLineLbl.translatesAutoresizingMaskIntoConstraints = false
@@ -47,7 +123,7 @@ public class SessionEndView: UIView {
         convLbl.translatesAutoresizingMaskIntoConstraints = false
         convLbl.textAlignment = .center
         convLbl.numberOfLines = 2
-//        convLbl.font = UIFont(name: "Lato-Regular", size: 16.0)
+        convLbl.font = UIFont(name: "Helvetica", size: 16.0)
         convLbl.textColor =  UIColor(red: 43/255, green: 134/255, blue: 179/255, alpha: 1)
         convLbl.text = "This conversation thread has been marked as closed. If you wish to make other queries, tap below."
         self.addSubview(convLbl)
@@ -72,14 +148,19 @@ public class SessionEndView: UIView {
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[blueLineLbl(1)]-15-[convLbl(48)]-18-[chatBtn(49)]-20-|", options:[], metrics:nil, views:views))
     }
-    public func setValues(values:Array<String>) {
-        btnTitle = values.first!
-        setNeedsLayout()
-    }
+    
     @objc func chatBtnAction(_ sender: UIButton){
-        if(self.sendSessionAction != nil){
-            self.sendSessionAction(false)
-        }
-        
+        delegate.chatBtnClicked(self)
+    }
+    
+    // MARK:- deinit
+    deinit {
+        convLbl = nil
     }
 }
+protocol SessionEndCellDelegate : class {
+    func chatBtnClicked(_ sender: SessionEndCell)
+    
+}
+
+
