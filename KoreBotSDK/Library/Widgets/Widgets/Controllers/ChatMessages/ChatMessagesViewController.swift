@@ -537,10 +537,9 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     }
     
     func populatePickerView(with message: KREMessage?) {
-//        self.audioComposeContainerHeightConstraint.isActive = true
-//        self.audioComposeContainerView.isHidden = true
-//        self.composeBarContainerHeightConstraint.isActive = true
-//        self.composeBarContainerView.isHidden = true
+        if (self.composeView.isFirstResponder) {
+            _ = self.composeView.resignFirstResponder()
+        }
         self.configureViews(true)
         self.pickerView.isHidden = false
         self.quickReplyView.isHidden = true
@@ -572,10 +571,9 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     }
 
     func populateSessionEndView(with message: KREMessage?) {
-//        self.audioComposeContainerHeightConstraint.isActive = true
-//        self.audioComposeContainerView.isHidden = true
-//        self.composeBarContainerHeightConstraint.isActive = true
-//        self.composeBarContainerView.isHidden = true
+        if (self.composeView.isFirstResponder) {
+            _ = self.composeView.resignFirstResponder()
+        }
         self.configureViews(true)
         self.pickerView.isHidden = true
         self.quickReplyView.isHidden = true
@@ -608,10 +606,9 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         }
     }
     func populateBottomTableView(with message: KREMessage?) {
-//        self.audioComposeContainerHeightConstraint.isActive = true
-//        self.audioComposeContainerView.isHidden = true
-//        self.composeBarContainerHeightConstraint.isActive = true
-//        self.composeBarContainerView.isHidden = true
+        if (self.composeView.isFirstResponder) {
+            _ = self.composeView.resignFirstResponder()
+        }
         configureViews(true)
         self.pickerView.isHidden = true
         self.quickReplyView.isHidden = true
