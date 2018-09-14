@@ -97,6 +97,7 @@ class BubbleView: UIView {
             break
         case .showProgress:
             bubbleView = BottombubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         

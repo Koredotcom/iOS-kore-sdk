@@ -148,13 +148,13 @@ class PickerBubbleView: TextBubbleView {
         }
     }
 }
-class SessionEndBubbleView: TextBubbleView {
+class SessionEndBubbleView: BubbleView {
     
     override func populateComponents() {
         
     }
 }
-class BottombubbleView: TextBubbleView {
+class BottombubbleView: BubbleView {
     
     override func populateComponents() {
         
