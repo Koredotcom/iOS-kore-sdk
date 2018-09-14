@@ -100,18 +100,18 @@ open class AudioComposeView: UIView {
         self.addSubview(self.keyboardButton)
         
         self.playbackButton = UIButton.init(frame: CGRect.zero)
-        self.playbackButton.setTitle("", for: .normal)
-        self.playbackButton.translatesAutoresizingMaskIntoConstraints = false
-        if(UserDefaults.standard.getsignifyBotStatus()){
-            self.playbackButton.setImage(UIImage(named: "unmute", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
-        }else{
-            self.playbackButton.setImage(UIImage(named: "mute", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
-        }
-        self.playbackButton.imageView?.contentMode = .scaleAspectFit
-        self.playbackButton.addTarget(self, action: #selector(self.playbackButtonAction), for: .touchUpInside)
-//        self.playbackButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
-        self.playbackButton.clipsToBounds = true
-        self.addSubview(self.playbackButton)
+//        self.playbackButton.setTitle("", for: .normal)
+//        self.playbackButton.translatesAutoresizingMaskIntoConstraints = false
+//        if(UserDefaults.standard.getsignifyBotStatus()){
+//            self.playbackButton.setImage(UIImage(named: "unmute", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
+//        }else{
+//            self.playbackButton.setImage(UIImage(named: "mute", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
+//        }
+//        self.playbackButton.imageView?.contentMode = .scaleAspectFit
+//        self.playbackButton.addTarget(self, action: #selector(self.playbackButtonAction), for: .touchUpInside)
+////        self.playbackButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
+//        self.playbackButton.clipsToBounds = true
+//        self.addSubview(self.playbackButton)
         
         let views: [String : Any] = ["topLineView": topLineView, "animateBGView": self.animateBGView, "audioActionView": self.audioActionView, "keyboardButton": self.keyboardButton, "playbackButton": self.playbackButton]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[topLineView]|", options:[], metrics:nil, views:views))
