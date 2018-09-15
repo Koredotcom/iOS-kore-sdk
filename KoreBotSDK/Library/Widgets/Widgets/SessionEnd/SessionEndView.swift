@@ -66,6 +66,7 @@ public class SessionEndView: UIView, UITableViewDelegate, UITableViewDataSource,
         let cell : SessionEndCell = self.tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! SessionEndCell
         cell.convLbl.text = lblText
         cell.chatBtn.setTitle(btnTitle, for: .normal)
+        cell.selectionStyle = .none
         cell.delegate = self
         return cell
     }
