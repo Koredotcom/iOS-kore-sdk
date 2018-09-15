@@ -79,7 +79,6 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.configureBottomView() 
         self.configureInformationView()
         UserDefaults.standard.setSignifyBottomView(with: false)
-        
 
         if let muteVal: Bool = UserDefaults.standard.getsignifyBotStatus() {
             isSpeakingEnabled = muteVal
@@ -87,7 +86,6 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             UserDefaults.standard.setSignifyBotStatus(with: false)
             isSpeakingEnabled = UserDefaults.standard.getsignifyBotStatus()
         }
-
         self.speechSynthesizer = AVSpeechSynthesizer()
     }
     
@@ -526,6 +524,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     }
     
     func closeQuickReplyCards(){
+        UserDefaults.standard.setSignifyBottomView(with: false)
         self.configureViews(false)
         self.closeQuickSelectViewConstraints()
     }
@@ -740,7 +739,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                 self.informationLabel.text = text
                 self.informationView.backgroundColor = backgroundColor
             }) { [unowned self] (Bool) in
-                self.closeQuickReplyCards()
+//                self.closeQuickSelectViewConstraints()
                 self.configureViews(true)
                 self.botMessagesView.tableView.contentInset = edgeInsets
                 self.informationViewHeightConstraint.constant = 24.0
