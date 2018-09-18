@@ -223,6 +223,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             self.messagesViewControllerDelegate?.voiceRecordingStarted()
         }
         self.audioComposeView.voiceRecordingStopped = { [unowned self] (composeBar) in
+           
             self.messagesViewControllerDelegate?.voiceRecordingStopped()
         }
         self.audioComposeView.getAudioPeakOutputPower = { () in
@@ -692,6 +693,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     
     // MARK: - information view
     public func updateInformationViewConstraints(with connectionState: BotClientConnectionState) {
+        return
         var text = "Connecting..."
         var backgroundColor = UIColorRGB(0x2B86B2)
         var edgeInsets = UIEdgeInsetsMake(24.0, 0.0, 0.0, 0.0)

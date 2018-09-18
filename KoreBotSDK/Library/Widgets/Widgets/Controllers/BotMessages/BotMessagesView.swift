@@ -23,7 +23,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
     var tableView: UITableView
     var fetchedResultsController: KREFetchedResultsController?
     var viewDelegate: BotMessagesViewDelegate?
-    var shouldScrollToBottom: Bool = false
+    var shouldScrollToBottom: Bool = true
     var clearBackground = false
     var userActive = false
     

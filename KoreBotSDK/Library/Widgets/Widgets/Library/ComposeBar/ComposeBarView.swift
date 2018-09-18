@@ -21,8 +21,8 @@ open class ComposeBarView: UIView {
     fileprivate var topLineView: UIView!
     fileprivate var bottomLineView: UIView!
     public var growingTextView: KREGrowingTextView!
-    fileprivate var sendButton: UIButton!
-    fileprivate var speechToTextButton: UIButton!
+    public var sendButton: UIButton!
+    public var speechToTextButton: UIButton!
 
     fileprivate var textViewTrailingConstraint: NSLayoutConstraint!
     fileprivate(set) public var isKeyboardEnabled: Bool = false
@@ -139,6 +139,7 @@ open class ComposeBarView: UIView {
     @objc fileprivate func sendButtonAction(_ sender: AnyObject!) {
         var text = self.growingTextView.textView.text
         text = text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+         self.speechToTextButton.isHidden = false
         
         // is there any text?
         if let text = text, text.count > 0 {

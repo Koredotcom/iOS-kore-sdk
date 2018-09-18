@@ -57,6 +57,7 @@ open class AudioComposeView: UIView {
         
         self.audioActionView = UIView.init(frame: CGRect.zero)
         self.audioActionView.translatesAutoresizingMaskIntoConstraints = false
+        self.audioActionView.backgroundColor = UIColor.clear
         self.addSubview(self.audioActionView)
         
         self.audioImageView = UIImageView(frame: .zero)
@@ -73,21 +74,8 @@ open class AudioComposeView: UIView {
         self.addSubview(self.topLineView)
 
         self.audiolabel = UILabel()
-        self.audiolabel.text = "Tap to speak"
-        self.audiolabel.font = UIFont(name: "HelveticaNeue", size: 11.0)!
-        self.audiolabel.textColor = .black
-        self.audiolabel.textAlignment = .center
-        self.audiolabel.translatesAutoresizingMaskIntoConstraints = false
-        self.animateBGView.addSubview(self.audiolabel)
-        
-        self.animateBGView.addConstraint(NSLayoutConstraint.init(item: self.audioImageView, attribute: .centerY, relatedBy: .equal, toItem: self.animateBGView, attribute: .centerY, multiplier: 1.0, constant: 0.0))
-        self.animateBGView.addConstraint(NSLayoutConstraint.init(item: self.audioImageView, attribute: .centerX, relatedBy: .equal, toItem: self.animateBGView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-        self.animateBGView.addConstraint(NSLayoutConstraint.init(item: self.audioImageView, attribute: .width, relatedBy: .equal, toItem: self.audioImageView, attribute: .height, multiplier: 1.0, constant: 0.0))
-        self.audioImageWidthConstraint = NSLayoutConstraint.init(item: self.audioImageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40.0)
-        self.animateBGView.addConstraint(self.audioImageWidthConstraint)
-        
-        self.animateBGView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[audiolabel]-|", options:[], metrics:nil, views:["audiolabel": self.audiolabel]))
-        self.animateBGView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[audiolabel]|", options:[], metrics:nil, views:["audiolabel": self.audiolabel]))
+        self.animateBGView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[audioImageView]-|", options:[], metrics:nil, views:["audioImageView": self.audioImageView]))
+        self.animateBGView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[audioImageView]|", options:[], metrics:nil, views:["audioImageView": self.audioImageView]))
         
         self.keyboardButton = UIButton.init(frame: CGRect.zero)
         self.keyboardButton.setTitle("", for: .normal)
@@ -100,42 +88,25 @@ open class AudioComposeView: UIView {
         self.addSubview(self.keyboardButton)
         
         self.playbackButton = UIButton.init(frame: CGRect.zero)
-//        self.playbackButton.setTitle("", for: .normal)
-//        self.playbackButton.translatesAutoresizingMaskIntoConstraints = false
-//        if(UserDefaults.standard.getsignifyBotStatus()){
-//            self.playbackButton.setImage(UIImage(named: "unmute", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
-//        }else{
-//            self.playbackButton.setImage(UIImage(named: "mute", in: Bundle(for: self.classForCoder), compatibleWith: nil), for: .normal)
-//        }
-//        self.playbackButton.imageView?.contentMode = .scaleAspectFit
-//        self.playbackButton.addTarget(self, action: #selector(self.playbackButtonAction), for: .touchUpInside)
-////        self.playbackButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
-//        self.playbackButton.clipsToBounds = true
-//        self.addSubview(self.playbackButton)
+
         
         let views: [String : Any] = ["topLineView": topLineView, "animateBGView": self.animateBGView, "audioActionView": self.audioActionView, "keyboardButton": self.keyboardButton, "playbackButton": self.playbackButton]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[topLineView]|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[topLineView(1)]", options:[], metrics:nil, views:views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[animateBGView(100)]", options:[], metrics:nil, views:views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[animateBGView(70)]", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[animateBGView]", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[animateBGView]-30-|", options:[], metrics:nil, views:views))
         self.addConstraint(NSLayoutConstraint.init(item: self.animateBGView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-        self.addConstraint(NSLayoutConstraint.init(item: self.animateBGView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[audioActionView(100)]", options:[], metrics:nil, views:views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[audioActionView(70)]", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[audioActionView(150)]", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[audioActionView(150)]-10-|", options:[], metrics:nil, views:views))
         self.addConstraint(NSLayoutConstraint.init(item: self.audioActionView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-        self.addConstraint(NSLayoutConstraint.init(item: self.audioActionView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         
         let audioGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(self.audioButtonAction))
         self.audioActionView.addGestureRecognizer(audioGestureRecognizer)
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[keyboardButton(50)]", options:[], metrics:nil, views:views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[keyboardButton(50)]", options:[], metrics:nil, views:views))
-        self.addConstraint(NSLayoutConstraint.init(item: self.keyboardButton, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
-        
-//        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[playbackButton(60)]-10-|", options:[], metrics:nil, views:views))
-//        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[playbackButton(60)]", options:[], metrics:nil, views:views))
-//        self.addConstraint(NSLayoutConstraint.init(item: self.playbackButton, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[keyboardButton]-25-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[keyboardButton]-30-|", options:[], metrics:nil, views:views))
+
     }
     
     override open var intrinsicContentSize: CGSize {
@@ -219,8 +190,7 @@ open class AudioComposeView: UIView {
             isSpeakingEnabled =  UserDefaults.standard.getsignifyBotStatus()
             
         }
-//        isSpeakingEnabled = !isSpeakingEnabled
-//        self.enablePlayback(enable: isSpeakingEnabled)
+
     }
     
     fileprivate func startAudioRecording(){
@@ -249,20 +219,22 @@ open class AudioComposeView: UIView {
     
     @objc fileprivate func showCircleWaveAnimation() {
         let circleView = UIView()
-        circleView.frame = CGRect(x: self.animateBGView.frame.size.width/2 - 2.5, y: self.animateBGView.frame.size.height/2 - 2.5, width: CGFloat(5), height: CGFloat(5))
+        circleView.frame = CGRect(x: self.animateBGView.frame.size.width/2 - 2.5, y: self.animateBGView.frame.size.height/2 - 2.5, width: CGFloat(10), height: CGFloat(10))
         
         self.animateBGView.addSubview(circleView)
-        circleView.backgroundColor = KoreBotUIKit.User.BubbleView.backgroundColor
         circleView.layer.cornerRadius = circleView.frame.size.width / 2
         circleView.alpha = 1.0
         var radius:CGFloat = 7.0
         if(self.audioPeakOutput > 0.9){
             radius = CGFloat(self.randomInt(min: 17, max: 25))
         }
+        
         self.animateBGView.bringSubview(toFront: self.audioImageView)
-        circleView.layer.shadowColor = UIColor.white.cgColor
-        circleView.layer.shadowOpacity = 0.6
-        circleView.layer.shadowRadius = 1.0
+        circleView.layer.borderColor = KoreBotUIKit.User.BubbleView.backgroundColor.cgColor
+        circleView.layer.borderWidth = 0.25
+        circleView.layer.shadowColor = UIColor.clear.cgColor
+//        circleView.layer.shadowOpacity = 0.6
+//        circleView.layer.shadowRadius = 1.0
         circleView.layer.shadowOffset = CGSize(width: CGFloat(0.0), height: CGFloat(0.0))
         UIView.animate(withDuration: 1.95, animations: {() -> Void in
             circleView.transform = CGAffineTransform(scaleX: radius, y: radius)
