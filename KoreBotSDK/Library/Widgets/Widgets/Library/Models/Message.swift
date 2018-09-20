@@ -9,7 +9,7 @@
 import Foundation
 
 public enum MessageType : Int {
-    case `default` = 1, reply = 2
+    case `default` = 1, timeline = 2
 }
 
 public class Message : NSObject {
@@ -19,6 +19,7 @@ public class Message : NSObject {
     public var sentDate: Date?
     public var components: [Component] = [Component]()
     public var thread: Thread?
+    public var isSender: Bool = true
         
     override public init() {
         super.init()

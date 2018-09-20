@@ -80,12 +80,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.configureInformationView()
         UserDefaults.standard.setSignifyBottomView(with: false)
 
-        if let muteVal: Bool = UserDefaults.standard.getsignifyBotStatus() {
-            isSpeakingEnabled = muteVal
-        } else {
-            UserDefaults.standard.setSignifyBotStatus(with: false)
-            isSpeakingEnabled = UserDefaults.standard.getsignifyBotStatus()
-        }
+        isSpeakingEnabled = UserDefaults.standard.getsignifyBotStatus()
         self.speechSynthesizer = AVSpeechSynthesizer()
     }
     
@@ -838,6 +833,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         botMessagesView.tableView.reloadData()
     }
 }
+
 public extension UserDefaults {
     func setSignifyBotStatus(with mute: Bool) {
         set(mute, forKey: "MuteSignifyBot")

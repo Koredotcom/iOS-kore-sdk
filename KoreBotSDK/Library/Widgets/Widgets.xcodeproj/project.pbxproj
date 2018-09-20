@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C2FBAB521480A0600704220 /* PickerSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2FBAB421480A0600704220 /* PickerSelectView.swift */; };
+		AC1BEF0521525DD2005CBB0D /* MessageTimeLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1BEF0421525DD2005CBB0D /* MessageTimeLineCell.swift */; };
 		AC89B84E214983CD008644EA /* SessionEndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC89B84D214983CD008644EA /* SessionEndView.swift */; };
 		ACE55F9D21413CE200829961 /* KoreBotUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE55F9C21413CE200829961 /* KoreBotUIKit.swift */; };
 		ACEF4006213EFB3500B6979A /* ListViewWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEF3F7D213EFB3400B6979A /* ListViewWidgetViewController.swift */; };
@@ -101,6 +102,7 @@
 		04ECB956FB18F943737CCE34 /* Pods-Widgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Widgets.debug.xcconfig"; path = "../../Pods/Target Support Files/Pods-Widgets/Pods-Widgets.debug.xcconfig"; sourceTree = "<group>"; };
 		0C2FBAB421480A0600704220 /* PickerSelectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerSelectView.swift; sourceTree = "<group>"; };
 		6B75DEE6911A00B4E860ED3D /* Pods_Widgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Widgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC1BEF0421525DD2005CBB0D /* MessageTimeLineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTimeLineCell.swift; sourceTree = "<group>"; };
 		AC89B84D214983CD008644EA /* SessionEndView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionEndView.swift; sourceTree = "<group>"; };
 		ACE55F9C21413CE200829961 /* KoreBotUIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoreBotUIKit.swift; sourceTree = "<group>"; };
 		ACEF3F7D213EFB3400B6979A /* ListViewWidgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewWidgetViewController.swift; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 				ACEF3F90213EFB3400B6979A /* BotMessagesView.swift */,
 				ACEF3F91213EFB3400B6979A /* KREFetchedResultsController.swift */,
 				ACEF3F92213EFB3400B6979A /* MessageBubbleCell.swift */,
+				AC1BEF0421525DD2005CBB0D /* MessageTimeLineCell.swift */,
 			);
 			path = BotMessages;
 			sourceTree = "<group>";
@@ -816,6 +819,7 @@
 				ACEF4036213EFB3500B6979A /* CarouselBubbleView.swift in Sources */,
 				ACEF401E213EFB3500B6979A /* KRETextViewInternal.swift in Sources */,
 				ACEF4028213EFB3500B6979A /* Identity.swift in Sources */,
+				AC1BEF0521525DD2005CBB0D /* MessageTimeLineCell.swift in Sources */,
 				ACEF404B213EFB3500B6979A /* KREOptionsTableViewCell.swift in Sources */,
 				ACEF4048213EFB3500B6979A /* TextBubbleView.swift in Sources */,
 				ACEF403E213EFB3500B6979A /* CustomCollectionViewLayout.swift in Sources */,

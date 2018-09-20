@@ -77,6 +77,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
         self.tableView.register(PickerBubbleCell.self, forCellReuseIdentifier:"PickerBubbleCell")
         self.tableView.register(SessionEndBubbleCell.self, forCellReuseIdentifier:"SessionEndBubbleCell")
         self.tableView.register(ShowProgressBubbleCell.self, forCellReuseIdentifier:"ShowProgressBubbleCell")
+        self.tableView.register(MessageTimeLineCell.self, forCellReuseIdentifier: "MessageTimeLineCell")
         self.tableView.register(BotMessagesHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "BotMessagesHeaderFooterView")
     }
     
@@ -127,8 +128,16 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             return UITableViewCell(style: .default, reuseIdentifier: "UITableViewCell")
         }
         
-        var cellIdentifier: String! = nil
-        if let componentType = ComponentType(rawValue: (message.templateType?.intValue)!) {
+        if let messageType = message.messageType?.intValue, messageType == MessageType.timeline.rawValue {
+            let cellIdentifier = "MessageTimeLineCell"
+            if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageTimeLineCell {
+                cell.configure(with: message)
+                return cell
+            }
+        }
+        
+        var cellIdentifier = "TextBubbleCell"
+        if let templateType = message.templateType?.intValue, let componentType = ComponentType(rawValue: templateType) {
             switch componentType {
             case .text:
                 cellIdentifier = "TextBubbleCell"
@@ -173,9 +182,9 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                 cellIdentifier = "SessionEndBubbleCell"
                 break
             case .showProgress:
-                 cellIdentifier = "ShowProgressBubbleCell"
+                cellIdentifier = "ShowProgressBubbleCell"
+                break
             }
-            
         }
         
         let cell: MessageBubbleCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! MessageBubbleCell
@@ -198,7 +207,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             if(bubbleView.textLabel.attributedText?.string == "Welcome John, You already hold a Savings account with Kore bank."){
                 userActive = true
             }
-            if(userActive){
+            if userActive {
                 self.updtaeUserImage()
             }
             

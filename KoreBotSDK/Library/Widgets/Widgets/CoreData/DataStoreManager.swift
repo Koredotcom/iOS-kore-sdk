@@ -175,6 +175,19 @@ open class DataStoreManager: NSObject {
         block?(success)
     }
     
+    public func getLatestMessage(with block: ((_ message: KREMessage?) -> Void)?) {
+        let request = NSFetchRequest<KREMessage>(entityName: "KREMessage")
+        let sortDates = NSSortDescriptor(key: "sentOn", ascending: false)
+        request.sortDescriptors = [sortDates]
+        request.fetchLimit = 1
+        let context = coreDataManager.workerContext
+        var message: KREMessage?
+        if let array = try? context.fetch(request), array.count > 0 {
+            message = array.first
+        }
+        block?(message)
+    }
+    
     // data management
     public func insertMessages(messages: Array<Dictionary<String, AnyObject>>) {
         let context: NSManagedObjectContext = coreDataManager.workerContext
@@ -201,12 +214,10 @@ open class DataStoreManager: NSObject {
         context.perform { [unowned self] in
             let nMessage = NSEntityDescription.insertNewObject(forEntityName: "KREMessage", into: context) as! KREMessage
             nMessage.sentOn = message.sentDate as NSDate?
-            nMessage.sortDay = self.dateAtBeginningOfDay(for: message.sentDate) as NSDate?
+            nMessage.sortDay = self.date(for: message.sentDate, hour: nil, minute: nil, second: nil) as NSDate?
             nMessage.isSender = true
-            if (message.messageType == .reply) {
-                nMessage.isSender = false
-            }
-            
+            nMessage.isSender = message.isSender
+            nMessage.messageType = NSNumber(value: message.messageType.rawValue)
             nMessage.iconUrl = message.iconUrl
             
             for component in message.components {
@@ -228,7 +239,7 @@ open class DataStoreManager: NSObject {
     }
     
     // MARK: - date at beginning of day from 
-    func dateAtBeginningOfDay(for inputDate: Date?) -> Date? {
+    public func date(for inputDate: Date?, hour hourOffset: Int?, minute minuteOffset: Int?, second secondOffset: Int?, timezone status: Bool = true) -> Date? {
         if inputDate == nil {
             return nil
         }
@@ -236,21 +247,37 @@ open class DataStoreManager: NSObject {
         // use the user's current calendar and time zone
         var calendar = Calendar.current
         
-        let timeZone = TimeZone(abbreviation: "GMT")
-        if let aZone = timeZone {
-            calendar.timeZone = aZone
+        if status {
+            let timeZone = TimeZone(abbreviation: "GMT")
+            if let aZone = timeZone {
+                calendar.timeZone = aZone
+            }
+        } else {
+            calendar.timeZone = .current
         }
         
         // selectively convert the date components (year, month, day) of the input date
         var dateComponents: DateComponents? = nil
         if let aDate = inputDate {
-            dateComponents = calendar.dateComponents([.year, .month, .day], from: aDate)
+            dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: aDate)
         }
         
         // set the time components manually
-        dateComponents?.hour = 0
-        dateComponents?.minute = 0
-        dateComponents?.second = 0
+        if let hour = dateComponents?.hour, let hourOffset = hourOffset {
+            dateComponents?.hour = hour + hourOffset
+        } else {
+            dateComponents?.hour = 0
+        }
+        if let minute = dateComponents?.minute, let minuteOffset = minuteOffset {
+            dateComponents?.minute = minute + minuteOffset
+        } else {
+            dateComponents?.minute = 0
+        }
+        if let second = dateComponents?.second, let secondOffset = secondOffset {
+            dateComponents?.second = second + secondOffset
+        } else {
+            dateComponents?.second = 0
+        }
         
         // convert back
         var beginningOfDay: Date? = nil
