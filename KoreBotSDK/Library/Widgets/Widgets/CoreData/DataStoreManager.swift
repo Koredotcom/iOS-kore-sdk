@@ -35,7 +35,7 @@ open class DataStoreManager: NSObject {
     }
     
     // MARK:- contacts
-    public func insertOrUpdateContact(dictionary: Dictionary<String, AnyObject>, withContext context: NSManagedObjectContext) -> KREContact {
+    public func insertOrUpdateContact(dictionary: [String: Any], withContext context: NSManagedObjectContext) -> KREContact {
         
         let newItem = NSEntityDescription.insertNewObject(forEntityName: "KREContact", into: context) as! KREContact
         
@@ -58,13 +58,10 @@ open class DataStoreManager: NSObject {
     }
     
     // MARK:- components
-    public func insertOrUpdateComponent(dictionary: Dictionary<String, AnyObject>, withContext context: NSManagedObjectContext) -> KREComponent {
-        
+    public func insertOrUpdateComponent(dictionary: [String: Any], withContext context: NSManagedObjectContext) -> KREComponent {
         let newItem = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
-        
-        newItem.componentId = dictionary["id"] as! String?
-        newItem.componentDesc = dictionary["componentDesc"] as! String?
-        
+        newItem.componentId = dictionary["id"] as? String
+        newItem.componentDesc = dictionary["componentDesc"] as? String
         return newItem
     }
     
@@ -86,13 +83,12 @@ open class DataStoreManager: NSObject {
         newMessage.clientId = dictionary["clientId"] as! String?
         newMessage.messageId = dictionary["id"] as! String?
         newMessage.isSender = dictionary["isSender"] as! Bool
-        if ((dictionary["author"]) != nil) {
-            let author: KREContact = insertOrUpdateContact(dictionary: dictionary["author"] as! Dictionary<String, AnyObject>, withContext: context)
+        if let authorInfo = dictionary["author"] as? [String: Any] {
+            let author: KREContact = insertOrUpdateContact(dictionary: authorInfo, withContext: context)
             newMessage.author = author
         }
         
-        if ((dictionary["components"]) != nil) {
-            let components: Array<Dictionary<String, AnyObject>> = dictionary["components"] as! Array
+        if let components = dictionary["components"] as? Array<[String: Any]> {
             for object in components {
                 let component: KREComponent = self.insertOrUpdateComponent(dictionary: object, withContext: context)
                 newMessage.addComponentsObject(_value: component)
@@ -175,17 +171,35 @@ open class DataStoreManager: NSObject {
         block?(success)
     }
     
-    public func getLatestMessage(with block: ((_ message: KREMessage?) -> Void)?) {
+    public func getLastMessage(with block: ((_ message: KREMessage?) -> Void)?) {
         let request = NSFetchRequest<KREMessage>(entityName: "KREMessage")
         let sortDates = NSSortDescriptor(key: "sentOn", ascending: false)
         request.sortDescriptors = [sortDates]
         request.fetchLimit = 1
         let context = coreDataManager.workerContext
-        var message: KREMessage?
-        if let array = try? context.fetch(request), array.count > 0 {
-            message = array.first
+        context.perform {
+            var message: KREMessage?
+            if let array = try? context.fetch(request), array.count > 0 {
+                message = array.first
+            }
+            block?(message)
         }
-        block?(message)
+    }
+    
+    public func getComposeBarStatus(with block: ((_ hideComposeBar: Bool) -> Void)?) {
+        var hideComposeBar: Bool = false
+        let request = NSFetchRequest<KREMessage>(entityName: "KREMessage")
+        request.predicate = NSPredicate(format: "isSender == \(false)")
+        let sortDates = NSSortDescriptor(key: "sentOn", ascending: false)
+        request.sortDescriptors = [sortDates]
+        request.fetchLimit = 1
+        let context = coreDataManager.workerContext
+        context.perform {
+            if let array = try? context.fetch(request), array.count > 0, let value = array.first?.hideComposeBar {
+                hideComposeBar = value
+            }
+            block?(hideComposeBar)
+        }
     }
     
     // data management
@@ -219,6 +233,7 @@ open class DataStoreManager: NSObject {
             nMessage.isSender = message.isSender
             nMessage.messageType = NSNumber(value: message.messageType.rawValue)
             nMessage.iconUrl = message.iconUrl
+            nMessage.hideComposeBar = message.hideComposeBar
             
             for component in message.components {
                 let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent

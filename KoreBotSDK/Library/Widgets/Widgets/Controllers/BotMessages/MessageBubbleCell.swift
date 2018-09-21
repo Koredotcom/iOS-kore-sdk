@@ -416,3 +416,9 @@ class ResponsiveTableBubbleCell : MessageBubbleCell {
         self.senderImageView.isHidden = true
     }
 }
+
+class AgentTransferModeBubbleCell: MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .agentTransferMode
+    }
+}

@@ -50,7 +50,8 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     public var typingStatusView: KRETypingStatusView!
     public var webViewController: InputTOWebViewController!
     public var speechSynthesizer: AVSpeechSynthesizer!
-
+    public var hideComposeBar: Bool = false
+    public var hideAudioComposerView: Bool = true
     public var informationLabel: UILabel!
 
 
@@ -278,6 +279,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         }
         
     }
+
     func configureBottomView() {
         self.loaderView = LoaderView()
         self.loaderView.translatesAutoresizingMaskIntoConstraints = false
@@ -285,12 +287,6 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.loaderView.isHidden = true
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[loaderView]|", options:[], metrics:nil, views:["loaderView" : self.loaderView]))
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[loaderView(150)]|", options:[], metrics:nil, views:["loaderView" : self.loaderView]))
-        
-//        self.sessionEndView.sendSessionAction = { [weak self] (value) in
-//            self?.closeQuickReplyCards()
-//            self?.messagesViewControllerDelegate?.disconnectBot()
-//        }
-        
     }
     
     func configureTypingStatusView() {
@@ -495,7 +491,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             if (!component.isKind(of: KREComponent.self)) {
                 return;
             }
-            if ((component.componentDesc) != nil) {
+            if (component.componentDesc != nil) {
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
                 let quickReplies: Array<Dictionary<String, String>> = jsonObject["quick_replies"] as! Array<Dictionary<String, String>>
                 var words: Array<Word> = Array<Word>()
@@ -519,10 +515,15 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         }
     }
     
-    func closeQuickReplyCards(){
+    func closeQuickReplyCards() {
         UserDefaults.standard.setSignifyBottomView(with: false)
-        self.configureViews(false)
+        self.configureViews(hideComposeBar)
         self.closeQuickSelectViewConstraints()
+    }
+    
+    func setComposeBarHidden(_ isHidden: Bool) {
+        hideComposeBar = isHidden
+        configureViews(isHidden)
     }
     
     func updateQuickSelectViewConstraints() {
@@ -544,7 +545,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.pickerView.isHidden = false
         self.quickReplyView.isHidden = true
         self.sessionEndView.isHidden = true
-         self.loaderView.isHidden = true
+        self.loaderView.isHidden = true
         if message?.templateType == (ComponentType.picker.rawValue as NSNumber) {
             let component: KREComponent = message!.components![0] as! KREComponent
             if (!component.isKind(of: KREComponent.self)) {
@@ -578,33 +579,35 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.pickerView.isHidden = true
         self.quickReplyView.isHidden = true
         self.sessionEndView.isHidden = false
-         self.loaderView.isHidden = true
-        if message?.templateType == (ComponentType.sessionend.rawValue as NSNumber) {
+        self.loaderView.isHidden = true
+
+        if message?.templateType?.intValue == ComponentType.sessionend.rawValue {
             let component: KREComponent = message!.components![0] as! KREComponent
             if (!component.isKind(of: KREComponent.self)) {
-                return;
+                return
             }
-            if ((component.componentDesc) != nil) {
-                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
-                let text: String = jsonObject["text"] != nil ? jsonObject["text"]! as! String : ""
-                let sessionValues: Array<Dictionary<String, Any>> = jsonObject["buttons"] as! Array<Dictionary<String, Any>>
-                var titlesArr: Array<String> = Array<String>()
-                
-                
-                for dictionary in sessionValues {
-                    let title: String = dictionary["title"] != nil ? dictionary["title"]! as! String : ""
-                    
-                    titlesArr.append(title)
+            if let componentDesc = component.componentDesc, let jsonObject = Utilities.jsonObjectFromString(jsonString: componentDesc) as? [String: Any] {
+                var titlesArr: [String] = [String]()
+                if let sessionValues = jsonObject["buttons"] as? Array<[String: Any]> {
+                    for dictionary in sessionValues {
+                        if let title = dictionary["title"] as? String {
+                            titlesArr.append(title)
+                        } else {
+                            titlesArr.append("")
+                        }
+                    }
                 }
-                self.sessionEndView.setValues(titleArr: titlesArr, text: text)
-                updateSessionEnViewConstraints()
+                
+                if let text = jsonObject["text"] as? String {
+                    self.sessionEndView.setValues(titleArr: titlesArr, text: text)
+                }
+                updateSessionEndViewConstraints()
             }
-        } else if(message != nil) {
-//            let words: Array<String> = Array<String>()
-//            self.sessionEndView.setValues(titleArr: words, textArr: nil)
+        } else if (message != nil) {
             self.closeQuickSelectViewConstraints()
         }
     }
+    
     func populateBottomTableView(with message: KREMessage?) {
         if (self.composeView.isFirstResponder) {
             _ = self.composeView.resignFirstResponder()
@@ -623,14 +626,14 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
                 let strText: String = jsonObject["text"] as! String
                 self.loaderView.setValues(textLblTitle:strText)
-                updateSessionEnViewConstraints()
+                updateSessionEndViewConstraints()
             }
         } else if(message != nil) {
-//            let words: Array<String> = Array<String>()
             self.closeQuickSelectViewConstraints()
         }
     }
-    func updateSessionEnViewConstraints() {
+    
+    func updateSessionEndViewConstraints() {
         if self.quickSelectContainerHeightConstraint.constant == 150 {
             return
         }
@@ -668,21 +671,25 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     // MARK: -
     func configureViews(_ prepare: Bool) {
         if (prepare) {
-            self.composeBarContainerHeightConstraint.isActive = prepare
-            self.composeViewBottomConstraint.isActive = prepare
-            self.audioComposeContainerHeightConstraint.isActive = prepare
-            self.audioComposeContainerView.clipsToBounds = prepare
-            self.composeView.configureViewForKeyboard(prepare)
-            self.composeBarContainerView.isHidden = prepare
-            self.audioComposeContainerView.isHidden = prepare
+            UIView.animate(withDuration: 0.5) {
+                self.composeBarContainerHeightConstraint.isActive = prepare
+                self.composeViewBottomConstraint.isActive = prepare
+                self.audioComposeContainerHeightConstraint.isActive = prepare
+                self.audioComposeContainerView.clipsToBounds = prepare
+                self.composeView.configureViewForKeyboard(prepare)
+                self.composeBarContainerView.isHidden = prepare
+                self.audioComposeContainerView.isHidden = prepare
+            }
         } else {
-            self.composeViewBottomConstraint.isActive = !prepare
-            self.composeBarContainerHeightConstraint.isActive = prepare
-            self.audioComposeContainerHeightConstraint.isActive = !prepare
-            self.audioComposeContainerView.clipsToBounds = !prepare
-            self.composeView.configureViewForKeyboard(!prepare)
-            self.composeBarContainerView.isHidden = prepare
-            self.audioComposeContainerView.isHidden = !prepare
+            UIView.animate(withDuration: 0.4) {
+                self.composeViewBottomConstraint.isActive = !prepare
+                self.composeBarContainerHeightConstraint.isActive = prepare
+                self.audioComposeContainerHeightConstraint.isActive = self.hideComposeBar ? self.hideComposeBar : !prepare
+                self.audioComposeContainerView.clipsToBounds = self.hideComposeBar ? self.hideComposeBar : !prepare
+                self.composeView.configureViewForKeyboard(!prepare)
+                self.composeBarContainerView.isHidden = prepare
+                self.audioComposeContainerView.isHidden = !prepare
+            }
         }
     }
     
@@ -717,9 +724,9 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                 self.informationView.backgroundColor = UIColorRGB(0x2B86B2)
             }) { [unowned self] (Bool) in
                 
-                if(UserDefaults.standard.getSignifyBottomView()){
+                if UserDefaults.standard.getSignifyBottomView() {
                     self.configureViews(true)
-                }else{
+                } else {
                     self.configureViews(false)
                 }
                 self.botMessagesView.tableView.contentInset = edgeInsets

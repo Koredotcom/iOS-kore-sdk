@@ -20,13 +20,14 @@ public class Message : NSObject {
     public var components: [Component] = [Component]()
     public var thread: Thread?
     public var isSender: Bool = true
-        
+    public var hideComposeBar = false
+    
     override public init() {
         super.init()
     }
     
     public func addComponent(_ component: Component) {
-        component.message = self;
+        component.message = self
         self.components.append(component)
     }
     

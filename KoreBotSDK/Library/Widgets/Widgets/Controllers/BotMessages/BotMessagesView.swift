@@ -16,6 +16,7 @@ protocol BotMessagesViewDelegate {
     func populatePickerView(with message: KREMessage?)
     func populateSessionEndView(with message: KREMessage?)
     func populateBottomTableView(with message: KREMessage?)
+    func setComposeBarHidden(_ isHidden: Bool)
     func closeQuickReplyCards()
 }
 
@@ -78,6 +79,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
         self.tableView.register(SessionEndBubbleCell.self, forCellReuseIdentifier:"SessionEndBubbleCell")
         self.tableView.register(ShowProgressBubbleCell.self, forCellReuseIdentifier:"ShowProgressBubbleCell")
         self.tableView.register(MessageTimeLineCell.self, forCellReuseIdentifier: "MessageTimeLineCell")
+        self.tableView.register(AgentTransferModeBubbleCell.self, forCellReuseIdentifier: "AgentTransferModeBubbleCell")
         self.tableView.register(BotMessagesHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "BotMessagesHeaderFooterView")
     }
     
@@ -105,6 +107,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             fetchedResultsController?.kreDelegate = self
             do {
                 try fetchedResultsController?.performFetch()
+                scrollToBottom(animated: true)
             } catch {
                 fatalError("Failed to initialize FetchedResultsController: \(error)")
             }
@@ -184,11 +187,16 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             case .showProgress:
                 cellIdentifier = "ShowProgressBubbleCell"
                 break
+            case .agentTransferMode:
+                cellIdentifier = "AgentTransferModeBubbleCell"
+                break
             }
         }
         
         let cell: MessageBubbleCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! MessageBubbleCell
-        cell.configureWithComponents(message.components?.array as! Array<KREComponent>)
+        if let components = message.components?.array as? [KREComponent] {
+            cell.configureWithComponents(components)
+        }
         if self.clearBackground {
             cell.backgroundColor = .clear
         }
@@ -200,11 +208,9 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
         
         switch (cell.bubbleView.bubbleType!) {
         case .text:
-            
             let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
-            
             self.textLinkDetection(textLabel: bubbleView.textLabel)
-            if(bubbleView.textLabel.attributedText?.string == "Welcome John, You already hold a Savings account with Kore bank."){
+            if (bubbleView.textLabel.attributedText?.string == "Welcome John, You already hold a Savings account with Kore bank."){
                 userActive = true
             }
             if userActive {
@@ -258,41 +264,44 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             self.textLinkDetection(textLabel: bubbleView.textLabel)
             break
         case .chart:
-            
             break
         case .table:
-            
             break
         case .minitable:
-            
             break
         case .responsiveTable:
             break
         case .menu:
             let bubbleView: MenuBubbleView = cell.bubbleView as! MenuBubbleView
-            bubbleView.optionsAction = {[weak self] (text) in
+            bubbleView.optionsAction = { [weak self] (text) in
                 self?.viewDelegate?.optionsButtonTapAction(text: text!)
             }
-            bubbleView.linkAction = {[weak self] (text) in
+            bubbleView.linkAction = { [weak self] (text) in
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
             }
             
             cell.bubbleView.drawBorder = true
             break
-            
         case .picker:
             isPicker = true
-             break
+            break
         case .sessionend:
             isSessionEnd = true
             break
         case .showProgress:
             isshowProgress = true
             break
+        case .agentTransferMode:
+            break
         }
         
         let lastIndexPath = getIndexPathForLastItem()
         if lastIndexPath.compare(indexPath) == ComparisonResult.orderedSame {
+            DataStoreManager.sharedManager.getComposeBarStatus { (hideComposeBar) in
+                DispatchQueue.main.async { [unowned self] in
+                    self.viewDelegate?.setComposeBarHidden(hideComposeBar)
+                }
+            }
             if isQuickReply {
                 self.viewDelegate?.populateQuickReplyCards(with: message)
             } else if isPicker {

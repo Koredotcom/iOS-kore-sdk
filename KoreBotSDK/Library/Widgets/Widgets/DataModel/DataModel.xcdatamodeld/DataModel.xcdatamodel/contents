@@ -14,6 +14,7 @@
     </entity>
     <entity name="KREMessage" representedClassName="KREMessage" versionHashModifier="1" syncable="YES">
         <attribute name="clientId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hideComposeBar" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="iconUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isSender" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="messageId" optional="YES" attributeType="String" syncable="YES"/>
@@ -33,7 +34,7 @@
     <elements>
         <element name="KREComponent" positionX="-27" positionY="36" width="128" height="105"/>
         <element name="KREContact" positionX="-63" positionY="-18" width="128" height="105"/>
-        <element name="KREMessage" positionX="-45" positionY="27" width="128" height="210"/>
+        <element name="KREMessage" positionX="-45" positionY="27" width="128" height="225"/>
         <element name="KREThread" positionX="-9" positionY="45" width="128" height="90"/>
     </elements>
 </model>

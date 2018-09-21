@@ -102,7 +102,6 @@ class QuickReplyBubbleView : TextBubbleView {
 }
 
 class ErrorBubbleView: TextBubbleView {
-    
     override func populateComponents() {
         if let component = components?.first, let jsonString = component.componentDesc {
             let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString) as! NSDictionary
@@ -124,8 +123,8 @@ class ErrorBubbleView: TextBubbleView {
         }
     }
 }
+
 class PickerBubbleView: TextBubbleView {
-    
     override func populateComponents() {
         if let component = components?.first {
             if (!component.isKind(of: KREComponent.self)) {
@@ -141,23 +140,37 @@ class PickerBubbleView: TextBubbleView {
                     let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
                     let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
                     self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
-                }else{
+                } else {
                     self.textLabel.setHTMLString("", withWidth: kMaxTextWidth)
                 }
             }
         }
     }
 }
+
 class SessionEndBubbleView: BubbleView {
-    
     override func populateComponents() {
         
     }
 }
+
 class BottombubbleView: BubbleView {
-    
     override func populateComponents() {
         
+    }
+}
+
+class AgentTransferModeBubbleView: TextBubbleView {
+    override func populateComponents() {
+        if let component = components?.first {
+            self.textLabel.setHTMLString("", withWidth: kMaxTextWidth)
+            
+            if let jsonString = component.componentDesc, let jsonObject = Utilities.jsonObjectFromString(jsonString: jsonString) as? [String: Any], let string: String = jsonObject["text"] as? String {
+                let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
+                let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
+                self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
+            }
+        }
     }
 }
 

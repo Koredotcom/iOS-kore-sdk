@@ -53,33 +53,33 @@ class BubbleView: UIView {
         var bubbleView: BubbleView!
         
         switch (bubbleType) {
-            case .text:
-                bubbleView = TextBubbleView()
-                break
-            case .image:
-                bubbleView = Bundle(for: BubbleView.self).loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as! BubbleView
-                break
-            case .options:
-                bubbleView = OptionsBubbleView()
-                break
-            case .quickReply:
-                bubbleView = QuickReplyBubbleView()
-                break
-            case .list:
-                bubbleView = ListBubbleView()
-                break
-            case .carousel:
-                bubbleView = CarouselBubbleView()
-                break
-            case .error:
-                bubbleView = ErrorBubbleView()
-                break
-            case .chart:
-                bubbleView = ChartBubbleView()
-                break
-            case .table:
-                bubbleView = TableBubbleView()
-                break
+        case .text:
+            bubbleView = TextBubbleView()
+            break
+        case .image:
+            bubbleView = Bundle(for: BubbleView.self).loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as! BubbleView
+            break
+        case .options:
+            bubbleView = OptionsBubbleView()
+            break
+        case .quickReply:
+            bubbleView = QuickReplyBubbleView()
+            break
+        case .list:
+            bubbleView = ListBubbleView()
+            break
+        case .carousel:
+            bubbleView = CarouselBubbleView()
+            break
+        case .error:
+            bubbleView = ErrorBubbleView()
+            break
+        case .chart:
+            bubbleView = ChartBubbleView()
+            break
+        case .table:
+            bubbleView = TableBubbleView()
+            break
         case .minitable:
             bubbleView = MiniTableBubbleView()
             break
@@ -98,9 +98,12 @@ class BubbleView: UIView {
         case .showProgress:
             bubbleView = BottombubbleView()
             break
+        case .agentTransferMode:
+            bubbleView = AgentTransferModeBubbleView()
+            break
         }
+
         bubbleView.bubbleType = bubbleType
-        
         return bubbleView
     }
     
