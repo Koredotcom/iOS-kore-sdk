@@ -9,6 +9,7 @@
 import UIKit
 
 class MessageTimeLineCell: UITableViewCell {
+    var subView: UIView = UIView(frame: .zero)
     var timeLineLabel: UILabel = UILabel(frame: .zero)
     var leftLineView: UIView = UIView(frame: .zero)
     var rightLineView: UIView = UIView(frame: .zero)
@@ -30,14 +31,17 @@ class MessageTimeLineCell: UITableViewCell {
     func initialize() {
         selectionStyle = .none
         clipsToBounds = true
+        subView.backgroundColor = .clear
+        subView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(subView)
         
         leftLineView.backgroundColor = UIColorRGB(0xB0B0B0)
         leftLineView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(leftLineView)
+        subView.addSubview(leftLineView)
         
         rightLineView.backgroundColor = UIColorRGB(0xB0B0B0)
         rightLineView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(rightLineView)
+        subView.addSubview(rightLineView)
 
         timeLineLabel.numberOfLines = 0
         timeLineLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -45,17 +49,21 @@ class MessageTimeLineCell: UITableViewCell {
         timeLineLabel.backgroundColor = .clear
         timeLineLabel.textColor = UIColorRGB(0xB0B0B0)
         timeLineLabel.sizeToFit()
-        contentView.addSubview(timeLineLabel)
-        contentView.bringSubview(toFront: timeLineLabel)
+        subView.addSubview(timeLineLabel)
+        subView.bringSubview(toFront: timeLineLabel)
         
         // Setting Constraints
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[subView]-|", options:[], metrics: nil, views:["subView":subView]))
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[subView(31)]-|", options:[], metrics: nil, views:["subView":subView]))
+        
         let views: [String: UIView] = ["timeLineLabel": timeLineLabel, "leftLineView": leftLineView, "rightLineView": rightLineView]
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-2-[leftLineView]-9-[timeLineLabel]-9-[rightLineView]-2-|", options:[], metrics: nil, views:views))
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[leftLineView(1)]-|", options:[], metrics: nil, views:views))
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[rightLineView(1)]-|", options:[], metrics: nil, views:views))
+        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-2-[leftLineView]-9-[timeLineLabel]-9-[rightLineView]-2-|", options:[], metrics: nil, views:views))
+        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[leftLineView(1)]-15-|", options:[], metrics: nil, views:views))
+        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[rightLineView(1)]-15-|", options:[], metrics: nil, views:views))
+        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[timeLineLabel]-|", options:[], metrics: nil, views:views))
 
-        timeLineLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        timeLineLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        timeLineLabel.centerXAnchor.constraint(equalTo: subView.centerXAnchor).isActive = true
+        timeLineLabel.centerYAnchor.constraint(equalTo: subView.centerYAnchor).isActive = true
     }
     
     func configure(with message: KREMessage?) {
