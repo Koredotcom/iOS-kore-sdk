@@ -303,6 +303,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                 }
             }
             if isQuickReply {
+                UserDefaults.standard.setSignifyBottomView(with: true)
                 self.viewDelegate?.populateQuickReplyCards(with: message)
             } else if isPicker {
                 UserDefaults.standard.setSignifyBottomView(with: true)
