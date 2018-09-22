@@ -376,7 +376,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
     
     func fetchedControllerDidEndAnimation() {
         if (self.shouldScrollToBottom && !self.tableView.isDragging) {
-            self.shouldScrollToBottom = false
+            self.shouldScrollToBottom = true
             self.scrollToLastMessage()
         }
     }
