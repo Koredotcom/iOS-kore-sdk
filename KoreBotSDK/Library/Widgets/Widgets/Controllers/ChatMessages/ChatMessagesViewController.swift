@@ -53,6 +53,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     public var hideComposeBar: Bool = false
     public var hideAudioComposerView: Bool = true
     public var informationLabel: UILabel!
+    public var isSessionEndBtnClicked: Bool = false
 
 
     // MARK: init
@@ -274,6 +275,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[sessionEndView(150)]|", options:[], metrics:nil, views:["sessionEndView" : self.sessionEndView]))
         
         self.sessionEndView.sendSessionAction = { () in
+            self.isSessionEndBtnClicked = true
             self.closeQuickReplyCards()
             self.messagesViewControllerDelegate?.disconnectBot()
         }
@@ -634,14 +636,16 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     }
     
     func updateSessionEndViewConstraints() {
-        if self.quickSelectContainerHeightConstraint.constant == 150 {
-            return
-        }
-        self.quickSelectContainerHeightConstraint.constant = 150
-        UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
-            self.view.layoutIfNeeded()
-        }) { (Bool) in
-            
+        if !isSessionEndBtnClicked{
+            if self.quickSelectContainerHeightConstraint.constant == 150 {
+                return
+            }
+            self.quickSelectContainerHeightConstraint.constant = 150
+            UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
+                self.view.layoutIfNeeded()
+            }) { (Bool) in
+                
+            }
         }
     }
 
