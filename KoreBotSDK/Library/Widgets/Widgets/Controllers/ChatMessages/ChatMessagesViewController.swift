@@ -80,7 +80,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.configureSTTClient()
         self.configureBottomView() 
         self.configureInformationView()
-        UserDefaults.standard.setSignifyBottomView(with: false)
+        UserDefaults.standard.setSignifyBottomView(with: true)
 
         isSpeakingEnabled = UserDefaults.standard.getsignifyBotStatus()
         self.speechSynthesizer = AVSpeechSynthesizer()

@@ -134,6 +134,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
         if let messageType = message.messageType?.intValue, messageType == MessageType.timeline.rawValue {
             let cellIdentifier = "MessageTimeLineCell"
             if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageTimeLineCell {
+                UserDefaults.standard.setSignifyBottomView(with: true)
                 cell.configure(with: message)
                 return cell
             }
