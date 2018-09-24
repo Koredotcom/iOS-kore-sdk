@@ -636,7 +636,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     }
     
     func updateSessionEndViewConstraints() {
-        if !isSessionEndBtnClicked{
+//        if !isSessionEndBtnClicked{
             if self.quickSelectContainerHeightConstraint.constant == 150 {
                 return
             }
@@ -646,7 +646,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             }) { (Bool) in
                 
             }
-        }
+//        }
     }
 
     func updatePickerViewConstraints() {
@@ -748,6 +748,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                 self.informationView.backgroundColor = backgroundColor
             }) { [unowned self] (Bool) in
 //                self.closeQuickSelectViewConstraints()
+                edgeInsets = .zero
                 self.configureViews(true)
                 self.botMessagesView.tableView.contentInset = edgeInsets
                 self.informationViewHeightConstraint.constant = 24.0
