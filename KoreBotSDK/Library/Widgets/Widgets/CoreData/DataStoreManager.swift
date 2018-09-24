@@ -74,7 +74,21 @@ open class DataStoreManager: NSObject {
             context.delete(threadToDelete)
         }
     }
-    
+    @objc public func deleteEntity(_ name: String?) {
+        let context: NSManagedObjectContext = (coreDataManager?.mainContext)!
+        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: name!)
+        deleteFetch.includesPropertyValues = false
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch as! NSFetchRequest<NSFetchRequestResult>)
+        do
+        {
+            try context.execute(deleteRequest)
+            try context.save()
+        }
+        catch
+        {
+            print ("There was an error")
+        }
+    }
     // MARK:- messages
     public func insertOrUpdateMessage(dictionary: Dictionary<String, AnyObject>, withContext context: NSManagedObjectContext) -> KREMessage {
         
