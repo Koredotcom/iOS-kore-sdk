@@ -735,7 +735,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
 
                  self.quickSelectContainerView.isUserInteractionEnabled = true
                 let fontVlaue = UIFont(name: "Helvetica", size: 23)
-                self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue, NSAttributedStringKey.foregroundColor : UIColor.white]
+                self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue!, NSAttributedStringKey.foregroundColor : UIColor.white]
                 self.navigationItem.title = text
                 self.navigationItem.title = "Ask Siggy"
                 UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: { [unowned self] in
