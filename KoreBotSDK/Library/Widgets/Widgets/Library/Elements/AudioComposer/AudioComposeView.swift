@@ -40,12 +40,12 @@ open class AudioComposeView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.setupViews()
+//        self.setupViews()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.setupViews()
+//        self.setupViews()
     }
     
     fileprivate func setupViews() {
