@@ -708,7 +708,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             text = "Connecting..."
             break
         case .CONNECTED:
-            text = "Connected"
+            text = ""
             edgeInsets = .zero
             break
         case .NO_NETWORK:
@@ -724,8 +724,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         }
         if (connectionState == .CONNECTED) {
             UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: { [unowned self] in
-                self.informationLabel.text = text
-                self.informationView.backgroundColor = UIColorRGB(0x2B86B2)
+
             }) { [unowned self] (Bool) in
                 
                 if UserDefaults.standard.getSignifyBottomView() {
@@ -733,8 +732,9 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                 } else {
                     self.configureViews(false)
                 }
-                self.botMessagesView.tableView.contentInset = edgeInsets
-                self.informationViewHeightConstraint.constant = 0.0
+
+                 self.quickSelectContainerView.isUserInteractionEnabled = true
+                self.navigationItem.title = "Ask Siggy"
                 UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: { [unowned self] in
                     self.view.layoutIfNeeded()
                 }) { (Bool) in
@@ -742,16 +742,19 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                 }
             }
         } else {
+            if (connectionState == .CONNECTING || connectionState == .NONE) {
+                self.closeQuickSelectViewConstraints()
+            }
             UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: { [unowned self] in
                 self.view.endEditing(true)
-                self.informationLabel.text = text
-                self.informationView.backgroundColor = backgroundColor
+                self.navigationItem.title = text
+
+                self.quickSelectContainerView.isUserInteractionEnabled = false
             }) { [unowned self] (Bool) in
-//                self.closeQuickSelectViewConstraints()
+                
                 edgeInsets = .zero
                 self.configureViews(true)
                 self.botMessagesView.tableView.contentInset = edgeInsets
-                self.informationViewHeightConstraint.constant = 24.0
                 UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: { [unowned self] in
                     self.view.layoutIfNeeded()
                 }) { (Bool) in
