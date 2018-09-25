@@ -16,6 +16,8 @@ protocol BotMessagesViewDelegate {
     func populatePickerView(with message: KREMessage?)
     func populateSessionEndView(with message: KREMessage?)
     func populateBottomTableView(with message: KREMessage?)
+    func startWaitTimerTasks()
+    func stopWaitTimerTasks()
     func setComposeBarHidden(_ isHidden: Bool)
     func closeQuickReplyCards()
 }
@@ -80,6 +82,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
         self.tableView.register(ShowProgressBubbleCell.self, forCellReuseIdentifier:"ShowProgressBubbleCell")
         self.tableView.register(MessageTimeLineCell.self, forCellReuseIdentifier: "MessageTimeLineCell")
         self.tableView.register(AgentTransferModeBubbleCell.self, forCellReuseIdentifier: "AgentTransferModeBubbleCell")
+        self.tableView.register(TimerTaskBubbleCell.self, forCellReuseIdentifier: "TimerTaskBubbleCell")
         self.tableView.register(BotMessagesHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "BotMessagesHeaderFooterView")
     }
     
@@ -192,6 +195,8 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             case .agentTransferMode:
                 cellIdentifier = "AgentTransferModeBubbleCell"
                 break
+            case .timerTask:
+                cellIdentifier = "TimerTaskBubbleCell"
             }
         }
         
@@ -207,6 +212,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
         var isPicker = false
         var isSessionEnd = false
         var isshowProgress = false
+        var agentTransferMode = false
         
         switch (cell.bubbleView.bubbleType!) {
         case .text:
@@ -294,6 +300,9 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             isshowProgress = true
             break
         case .agentTransferMode:
+            agentTransferMode = true
+            break
+        case .timerTask:
             break
         }
         
@@ -304,6 +313,11 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                     self.viewDelegate?.setComposeBarHidden(hideComposeBar)
                 }
             }
+            
+            if agentTransferMode {
+                self.viewDelegate?.startWaitTimerTasks()
+            }
+            
             if isQuickReply {
                 UserDefaults.standard.setSignifyBottomView(with: true)
                 self.viewDelegate?.populateQuickReplyCards(with: message)
@@ -319,6 +333,11 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             } else {
                  self.viewDelegate?.closeQuickReplyCards()
             }
+        }
+        
+        if let bubbleType = cell.bubbleView.bubbleType, bubbleType != .timerTask {
+            agentTransferMode = false
+            self.viewDelegate?.stopWaitTimerTasks()
         }
         
         return cell

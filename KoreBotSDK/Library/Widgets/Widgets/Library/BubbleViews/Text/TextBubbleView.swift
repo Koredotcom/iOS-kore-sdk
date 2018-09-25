@@ -174,3 +174,16 @@ class AgentTransferModeBubbleView: TextBubbleView {
     }
 }
 
+class TimerTaskBubbleView: TextBubbleView {
+    override func populateComponents() {
+        if let component = components?.first {
+            self.textLabel.setHTMLString("", withWidth: kMaxTextWidth)
+            
+            if let jsonString = component.componentDesc, let jsonObject = Utilities.jsonObjectFromString(jsonString: jsonString) as? [String: Any], let string: String = jsonObject["text"] as? String {
+                let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
+                let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
+                self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
+            }
+        }
+    }
+}

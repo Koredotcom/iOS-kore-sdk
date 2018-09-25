@@ -54,8 +54,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     public var hideAudioComposerView: Bool = true
     public var informationLabel: UILabel!
     public var isSessionEndBtnClicked: Bool = false
-
-
+    
     // MARK: init
     public init(thread: KREThread?) {
         super.init(nibName: "ChatMessagesViewController", bundle: Bundle(for: ChatMessagesViewController.self))
@@ -672,6 +671,14 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         }
     }
     
+    open func startWaitTimerTasks() {
+
+    }
+    
+    open func stopWaitTimerTasks() {
+
+    }
+
     // MARK: -
     func configureViews(_ prepare: Bool) {
         if (prepare) {
@@ -723,7 +730,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             break
         }
         if (connectionState == .CONNECTED) {
-            UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: { [unowned self] in
+            UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
 
             }) { [unowned self] (Bool) in
                 

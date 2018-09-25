@@ -101,6 +101,9 @@ class BubbleView: UIView {
         case .agentTransferMode:
             bubbleView = AgentTransferModeBubbleView()
             break
+        case .timerTask:
+            bubbleView = TimerTaskBubbleView()
+            break
         }
 
         bubbleView.bubbleType = bubbleType

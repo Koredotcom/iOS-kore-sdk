@@ -422,3 +422,9 @@ class AgentTransferModeBubbleCell: MessageBubbleCell {
         return .agentTransferMode
     }
 }
+
+class TimerTaskBubbleCell: MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .timerTask
+    }
+}
