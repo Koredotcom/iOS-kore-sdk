@@ -124,9 +124,11 @@ class SessionEndCell: UITableViewCell {
         convLbl.translatesAutoresizingMaskIntoConstraints = false
         convLbl.textAlignment = .center
         convLbl.numberOfLines = 2
+        convLbl.adjustsFontSizeToFitWidth = true
+        convLbl.minimumScaleFactor=0.5;
         convLbl.font = UIFont(name: "Helvetica", size: 16.0)
         convLbl.textColor =  UIColor(red: 43/255, green: 134/255, blue: 179/255, alpha: 1)
-        convLbl.text = "This conversation thread has been marked as closed. If you wish to make other queries, tap below."
+//        convLbl.text = "This conversation thread has been marked as closed. If you wish to make other queries, tap below."
         self.addSubview(convLbl)
         
         chatBtn = UIButton.init(type: .custom)
