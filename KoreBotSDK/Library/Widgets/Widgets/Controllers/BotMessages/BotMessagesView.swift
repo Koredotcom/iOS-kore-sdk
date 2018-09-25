@@ -136,6 +136,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageTimeLineCell {
                 UserDefaults.standard.setSignifyBottomView(with: true)
                 cell.configure(with: message)
+                self.viewDelegate?.closeQuickReplyCards()
                 return cell
             }
         }

@@ -70,7 +70,13 @@ class MessageTimeLineCell: UITableViewCell {
         if let message = message, let sentOn = message.sentOn as Date? {
             let dateFormatter: DateFormatter = DateFormatter()
             dateFormatter.dateFormat = "h:mm a"
-            timeLineLabel.text = String(format: "Conversation ended at \(dateFormatter.string(from: sentOn))");
+            if let components = message.components?.array as? [KREComponent], let component = components.first {
+                if let desc = component.componentDesc, desc.count > 0 {
+                    timeLineLabel.text = String(format: "\(desc) at \(dateFormatter.string(from: sentOn))")
+                } else {
+                    timeLineLabel.text = String(format: "Conversation ended at \(dateFormatter.string(from: sentOn))");
+                }
+            }
         }
     }
     
