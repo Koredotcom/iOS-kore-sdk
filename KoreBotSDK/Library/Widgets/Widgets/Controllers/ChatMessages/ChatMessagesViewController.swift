@@ -712,7 +712,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             edgeInsets = .zero
             break
         case .NO_NETWORK:
-            text = "No Internet"
+            text = "Waiting for network..."
             backgroundColor = UIColor.black
             break
         case .FAILED:
@@ -734,6 +734,9 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                 }
 
                  self.quickSelectContainerView.isUserInteractionEnabled = true
+                let fontVlaue = UIFont(name: "Helvetica", size: 23)
+                self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue, NSAttributedStringKey.foregroundColor : UIColor.white]
+                self.navigationItem.title = text
                 self.navigationItem.title = "Ask Siggy"
                 UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: { [unowned self] in
                     self.view.layoutIfNeeded()
@@ -742,12 +745,18 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                 }
             }
         } else {
-            if (connectionState == .CONNECTING || connectionState == .NONE) {
-                self.closeQuickSelectViewConstraints()
-            }
+//            if (connectionState == .CONNECTING || connectionState == .NONE) {
+//                self.closeQuickSelectViewConstraints()
+//            }
             UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: { [unowned self] in
                 self.view.endEditing(true)
+                
+               
+                
+                let fontVlaue = UIFont(name: "Helvetica", size: 18)
+                self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue!, NSAttributedStringKey.foregroundColor : UIColor.white]
                 self.navigationItem.title = text
+                
 
                 self.quickSelectContainerView.isUserInteractionEnabled = false
             }) { [unowned self] (Bool) in
