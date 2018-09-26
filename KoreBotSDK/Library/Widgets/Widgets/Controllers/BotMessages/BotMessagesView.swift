@@ -29,7 +29,8 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
     var shouldScrollToBottom: Bool = true
     var clearBackground = false
     var userActive = false
-    
+    var agentTransferMode = false
+
     weak var thread: KREThread! {
         didSet {
             self.initializeFetchedResultsController()
@@ -212,7 +213,6 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
         var isPicker = false
         var isSessionEnd = false
         var isshowProgress = false
-        var agentTransferMode = false
         
         switch (cell.bubbleView.bubbleType!) {
         case .text:
@@ -295,12 +295,14 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             break
         case .sessionend:
             isSessionEnd = true
+           
             break
         case .showProgress:
             isshowProgress = true
             break
         case .agentTransferMode:
             agentTransferMode = true
+           
             break
         case .timerTask:
             break
@@ -312,10 +314,6 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                 DispatchQueue.main.async { [unowned self] in
                     self.viewDelegate?.setComposeBarHidden(hideComposeBar)
                 }
-            }
-            
-            if agentTransferMode {
-                self.viewDelegate?.startWaitTimerTasks()
             }
             
             if isQuickReply {
@@ -333,13 +331,15 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             } else {
                  self.viewDelegate?.closeQuickReplyCards()
             }
+            
+            if agentTransferMode, let bubbleType = cell.bubbleView.bubbleType, bubbleType == .text {
+                self.viewDelegate?.stopWaitTimerTasks()
+                self.viewDelegate?.startWaitTimerTasks()
+            } else if agentTransferMode, let bubbleType = cell.bubbleView.bubbleType, bubbleType == .sessionend {
+                agentTransferMode = false
+                self.viewDelegate?.stopWaitTimerTasks()
+            }
         }
-        
-        if let bubbleType = cell.bubbleView.bubbleType, bubbleType != .timerTask {
-            agentTransferMode = false
-            self.viewDelegate?.stopWaitTimerTasks()
-        }
-        
         return cell
     }
     
