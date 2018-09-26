@@ -141,6 +141,10 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                 UserDefaults.standard.setSignifyBottomView(with: true)
                 cell.configure(with: message)
 //                self.viewDelegate?.closeQuickReplyCards()
+                if agentTransferMode {
+                    agentTransferMode = false
+                    self.viewDelegate?.stopWaitTimerTasks()
+                }
                 return cell
             }
         }
