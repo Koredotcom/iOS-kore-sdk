@@ -271,7 +271,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.quickSelectContainerView.addSubview(self.sessionEndView)
         self.sessionEndView.isHidden = true
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[sessionEndView]|", options:[], metrics:nil, views:["sessionEndView" : self.sessionEndView]))
-        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[sessionEndView(150)]|", options:[], metrics:nil, views:["sessionEndView" : self.sessionEndView]))
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[sessionEndView]|", options:[], metrics:nil, views:["sessionEndView" : self.sessionEndView]))
         
         self.sessionEndView.sendSessionAction = { () in
             self.isSessionEndBtnClicked = true
@@ -287,7 +287,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.quickSelectContainerView.addSubview(self.loaderView)
         self.loaderView.isHidden = true
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[loaderView]|", options:[], metrics:nil, views:["loaderView" : self.loaderView]))
-        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[loaderView(150)]|", options:[], metrics:nil, views:["loaderView" : self.loaderView]))
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[loaderView]|", options:[], metrics:nil, views:["loaderView" : self.loaderView]))
     }
     
     func configureTypingStatusView() {
