@@ -226,7 +226,7 @@ open class DataStoreManager: NSObject {
         }
     }
     
-    public func insertThreads(threads: Array<Dictionary<String, AnyObject>>) {
+    public func insertThreads(threads: Array<[String: Any]>) {
         let context: NSManagedObjectContext = coreDataManager.workerContext
         context.perform {
             for object in threads {
@@ -238,33 +238,35 @@ open class DataStoreManager: NSObject {
         }
     }
     
+    public func createNewMessageIn(thread: KREThread, message: Message, with context: NSManagedObjectContext) {
+        let nMessage = NSEntityDescription.insertNewObject(forEntityName: "KREMessage", into: context) as! KREMessage
+        nMessage.sentOn = message.sentDate as NSDate?
+        nMessage.sortDay = self.date(for: message.sentDate, hour: nil, minute: nil, second: nil) as NSDate?
+        nMessage.isSender = true
+        nMessage.isSender = message.isSender
+        nMessage.messageType = NSNumber(value: message.messageType.rawValue)
+        nMessage.iconUrl = message.iconUrl
+        nMessage.hideComposeBar = message.hideComposeBar
+        nMessage.messageId = message.messageId
+        
+        for component in message.components {
+            let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
+            nComponent.componentId = ""
+            nComponent.componentDesc = component.payload as String?
+            nMessage.addComponentsObject(_value: nComponent)
+            nComponent.message = nMessage
+            nMessage.templateType = component.componentType.rawValue as NSNumber?
+            nMessage.thread = thread
+            thread.addToMessages(_value: nMessage)
+        }
+    }
+
     public func createNewMessageIn(thread: KREThread, message: Message, completion block: ((_ staus: Bool) -> Void)?) {
         let context: NSManagedObjectContext = coreDataManager.workerContext
         context.perform { [unowned self] in
-            let nMessage = NSEntityDescription.insertNewObject(forEntityName: "KREMessage", into: context) as! KREMessage
-            nMessage.sentOn = message.sentDate as NSDate?
-            nMessage.sortDay = self.date(for: message.sentDate, hour: nil, minute: nil, second: nil) as NSDate?
-            nMessage.isSender = true
-            nMessage.isSender = message.isSender
-            nMessage.messageType = NSNumber(value: message.messageType.rawValue)
-            nMessage.iconUrl = message.iconUrl
-            nMessage.hideComposeBar = message.hideComposeBar
-            nMessage.messageId = message.messageId
-
-            for component in message.components {
-                let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
-                nComponent.componentId = ""
-                nComponent.componentDesc = component.payload as String?
-                nMessage.addComponentsObject(_value: nComponent)
-                nComponent.message = nMessage
-                nMessage.templateType = component.componentType.rawValue as NSNumber?
-                nMessage.thread = thread
-                thread.addToMessages(_value: nMessage)
-            }
-
+            self.createNewMessageIn(thread: thread, message: message, with: context)
             try? context.save()
             self.coreDataManager.saveChanges()
-            
             block?(true)
         }
     }
