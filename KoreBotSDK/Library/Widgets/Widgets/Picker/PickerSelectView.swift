@@ -87,7 +87,7 @@ public class PickerSelectView: UIView, UIPickerViewDataSource, UIPickerViewDeleg
         let toolBarviews: [String: UIView] = ["cancelBtn": cancelBtn, "doneBtn": doneBtn ]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[cancelBtn]", options:[], metrics:nil, views:toolBarviews))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[cancelBtn]|", options:[], metrics:nil, views:toolBarviews))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[doneBtn]-8-|", options:[], metrics:nil, views:toolBarviews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[doneBtn]-10-|", options:[], metrics:nil, views:toolBarviews))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[doneBtn]|", options:[], metrics:nil, views:toolBarviews))
         self.toolbarView.bringSubview(toFront: doneBtn)
     }

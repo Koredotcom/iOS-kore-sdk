@@ -149,7 +149,7 @@ class SessionEndCell: UITableViewCell {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-14-[chatBtn]-14-|", options:[], metrics:nil, views:views))
 
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[blueLineLbl(1)]-15-[convLbl(48)]-18-[chatBtn(49)]-20-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[blueLineLbl(1)]-15-[convLbl]-18-[chatBtn(49)]-20-|", options:[], metrics:nil, views:views))
     }
     
     @objc func chatBtnAction(_ sender: UIButton){
