@@ -53,6 +53,9 @@ class BubbleView: UIView {
         var bubbleView: BubbleView!
         
         switch (bubbleType) {
+        case .startEvent:
+            bubbleView = StartEventBubbleView()
+            break
         case .text:
             bubbleView = TextBubbleView()
             break

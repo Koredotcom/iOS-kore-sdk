@@ -761,7 +761,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                     self.configureViews(false)
                 }
 
-                 self.quickSelectContainerView.isUserInteractionEnabled = true
+                self.quickSelectContainerView.isUserInteractionEnabled = true
                 let fontVlaue = UIFont(name: "Helvetica", size: 23)
                 self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue!, NSAttributedStringKey.foregroundColor : UIColor.white]
                 self.navigationItem.title = text
@@ -778,14 +778,10 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
 //            }
             UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: { [unowned self] in
                 self.view.endEditing(true)
-                
-               
-                
+
                 let fontVlaue = UIFont(name: "Helvetica", size: 18)
                 self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue!, NSAttributedStringKey.foregroundColor : UIColor.white]
                 self.navigationItem.title = text
-                
-
                 self.quickSelectContainerView.isUserInteractionEnabled = false
             }) { [unowned self] (Bool) in
                 

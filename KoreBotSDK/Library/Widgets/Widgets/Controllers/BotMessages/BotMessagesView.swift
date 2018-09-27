@@ -65,6 +65,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
         
         //Register reusable cells
         self.tableView.register(MessageBubbleCell.self, forCellReuseIdentifier:"MessageBubbleCell")
+        self.tableView.register(StartEventBubbleCell.self, forCellReuseIdentifier: "StartEventBubbleCell")
         self.tableView.register(TextBubbleCell.self, forCellReuseIdentifier:"TextBubbleCell")
         self.tableView.register(ImageBubbleCell.self, forCellReuseIdentifier:"ImageBubbleCell")
         self.tableView.register(OptionsBubbleCell.self, forCellReuseIdentifier:"OptionsBubbleCell")
@@ -134,174 +135,180 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             return UITableViewCell(style: .default, reuseIdentifier: "UITableViewCell")
         }
         
+        var isQuickReply = false
+        var isPicker = false
+        var isSessionEnd = false
+        var isshowProgress = false
+        var tableViewCell: UITableViewCell?
+        
         if let messageType = message.messageType?.intValue, messageType == MessageType.timeline.rawValue {
             let cellIdentifier = "MessageTimeLineCell"
             if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageTimeLineCell {
                 UserDefaults.standard.setSignifyBottomView(with: true)
                 cell.configure(with: message)
-//                self.viewDelegate?.closeQuickReplyCards()
-                return cell
+                tableViewCell = cell
             }
-        }
-        
-        var cellIdentifier = "TextBubbleCell"
-        if let templateType = message.templateType?.intValue, let componentType = ComponentType(rawValue: templateType) {
-            switch componentType {
+        } else {
+            var cellIdentifier = "TextBubbleCell"
+            if let templateType = message.templateType?.intValue, let componentType = ComponentType(rawValue: templateType) {
+                switch componentType {
+                case .startEvent:
+                    cellIdentifier = "StartEventBubbleCell"
+                    break
+                case .text:
+                    cellIdentifier = "TextBubbleCell"
+                    break
+                case .image:
+                    cellIdentifier = "ImageBubbleCell"
+                    break
+                case .options:
+                    cellIdentifier = "OptionsBubbleCell"
+                    break
+                case .quickReply:
+                    cellIdentifier = "QuickReplyBubbleCell"
+                    break
+                case .list:
+                    cellIdentifier = "ListBubbleCell"
+                    break
+                case .carousel:
+                    cellIdentifier = "CarouselBubbleCell"
+                    break
+                case .error:
+                    cellIdentifier = "ErrorBubbleCell"
+                    break
+                case .chart:
+                    cellIdentifier = "PiechartBubbleCell"
+                    break
+                case .minitable:
+                    cellIdentifier = "MiniTableBubbleCell"
+                    break
+                case .table:
+                    cellIdentifier = "TableBubbleCell"
+                    break
+                case .responsiveTable:
+                    cellIdentifier = "ResponsiveTableBubbleCell"
+                    break
+                case .menu:
+                    cellIdentifier = "MenuBubbleCell"
+                    break
+                case .picker:
+                    cellIdentifier = "PickerBubbleCell"
+                    break
+                case .sessionend:
+                    cellIdentifier = "SessionEndBubbleCell"
+                    break
+                case .showProgress:
+                    cellIdentifier = "ShowProgressBubbleCell"
+                    break
+                case .agentTransferMode:
+                    cellIdentifier = "AgentTransferModeBubbleCell"
+                    break
+                case .timerTask:
+                    cellIdentifier = "TimerTaskBubbleCell"
+                }
+            }
+            
+            let cell: MessageBubbleCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! MessageBubbleCell
+            if let components = message.components?.array as? [KREComponent] {
+                cell.configureWithComponents(components)
+            }
+            if self.clearBackground {
+                cell.backgroundColor = .clear
+            }
+            
+            switch (cell.bubbleView.bubbleType!) {
+            case .startEvent:
+                break
             case .text:
-                cellIdentifier = "TextBubbleCell"
+                let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
+                self.textLinkDetection(textLabel: bubbleView.textLabel)
+                if (bubbleView.textLabel.attributedText?.string == "Welcome John, You already hold a Savings account with Kore bank."){
+                    userActive = true
+                }
+                if userActive {
+                    self.updtaeUserImage()
+                }
+                
+                bubbleView.onChange = { [weak self](reload) in
+                    self?.tableView.reloadRows(at: [indexPath], with: .none)
+                }
+                
                 break
             case .image:
-                cellIdentifier = "ImageBubbleCell"
                 break
             case .options:
-                cellIdentifier = "OptionsBubbleCell"
-                break
-            case .quickReply:
-                cellIdentifier = "QuickReplyBubbleCell"
+                let bubbleView: OptionsBubbleView = cell.bubbleView as! OptionsBubbleView
+                self.textLinkDetection(textLabel: bubbleView.textLabel);
+                bubbleView.optionsAction = {[weak self] (text) in
+                    self?.viewDelegate?.optionsButtonTapAction(text: text!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                
+                cell.bubbleView.drawBorder = true
                 break
             case .list:
-                cellIdentifier = "ListBubbleCell"
+                let bubbleView: ListBubbleView = cell.bubbleView as! ListBubbleView
+                bubbleView.optionsAction = {[weak self] (text) in
+                    self?.viewDelegate?.optionsButtonTapAction(text: text!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                
+                cell.bubbleView.drawBorder = true
+                break
+            case .quickReply:
+                isQuickReply = true
                 break
             case .carousel:
-                cellIdentifier = "CarouselBubbleCell"
+                let bubbleView: CarouselBubbleView = cell.bubbleView as! CarouselBubbleView
+                bubbleView.optionsAction = {[weak self] (text) in
+                    self?.viewDelegate?.optionsButtonTapAction(text: text!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
                 break
             case .error:
-                cellIdentifier = "ErrorBubbleCell"
+                let bubbleView: ErrorBubbleView = cell.bubbleView as! ErrorBubbleView
+                self.textLinkDetection(textLabel: bubbleView.textLabel)
                 break
             case .chart:
-                cellIdentifier = "PiechartBubbleCell"
-                break
-            case .minitable:
-                cellIdentifier = "MiniTableBubbleCell"
                 break
             case .table:
-                cellIdentifier = "TableBubbleCell"
+                break
+            case .minitable:
                 break
             case .responsiveTable:
-                cellIdentifier = "ResponsiveTableBubbleCell"
                 break
             case .menu:
-                cellIdentifier = "MenuBubbleCell"
+                let bubbleView: MenuBubbleView = cell.bubbleView as! MenuBubbleView
+                bubbleView.optionsAction = { [weak self] (text) in
+                    self?.viewDelegate?.optionsButtonTapAction(text: text!)
+                }
+                bubbleView.linkAction = { [weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                
+                cell.bubbleView.drawBorder = true
                 break
             case .picker:
-                cellIdentifier = "PickerBubbleCell"
+                isPicker = true
                 break
             case .sessionend:
-                cellIdentifier = "SessionEndBubbleCell"
+                isSessionEnd = true
                 break
             case .showProgress:
-                cellIdentifier = "ShowProgressBubbleCell"
+                isshowProgress = true
                 break
             case .agentTransferMode:
-                cellIdentifier = "AgentTransferModeBubbleCell"
                 break
             case .timerTask:
-                cellIdentifier = "TimerTaskBubbleCell"
+                break
             }
-        }
-        
-        let cell: MessageBubbleCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! MessageBubbleCell
-        if let components = message.components?.array as? [KREComponent] {
-            cell.configureWithComponents(components)
-        }
-        if self.clearBackground {
-            cell.backgroundColor = .clear
-        }
-        
-        var isQuickReply = false
-        var isPicker = false
-        var isSessionEnd = false
-        var isshowProgress = false
-        
-        switch (cell.bubbleView.bubbleType!) {
-        case .text:
-            let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
-            self.textLinkDetection(textLabel: bubbleView.textLabel)
-            if (bubbleView.textLabel.attributedText?.string == "Welcome John, You already hold a Savings account with Kore bank."){
-                userActive = true
-            }
-            if userActive {
-                self.updtaeUserImage()
-            }
-            
-            bubbleView.onChange = { [weak self](reload) in
-                self?.tableView.reloadRows(at: [indexPath], with: .none)
-            }
-            
-            break
-        case .image:
-            break
-        case .options:
-            let bubbleView: OptionsBubbleView = cell.bubbleView as! OptionsBubbleView
-            self.textLinkDetection(textLabel: bubbleView.textLabel);
-            bubbleView.optionsAction = {[weak self] (text) in
-                self?.viewDelegate?.optionsButtonTapAction(text: text!)
-            }
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
-            }
-            
-            cell.bubbleView.drawBorder = true
-            break
-        case .list:
-            let bubbleView: ListBubbleView = cell.bubbleView as! ListBubbleView
-            bubbleView.optionsAction = {[weak self] (text) in
-                self?.viewDelegate?.optionsButtonTapAction(text: text!)
-            }
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
-            }
-            
-            cell.bubbleView.drawBorder = true
-            break
-        case .quickReply:
-            isQuickReply = true
-            break
-        case .carousel:
-            let bubbleView: CarouselBubbleView = cell.bubbleView as! CarouselBubbleView
-            bubbleView.optionsAction = {[weak self] (text) in
-                self?.viewDelegate?.optionsButtonTapAction(text: text!)
-            }
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
-            }
-            break
-        case .error:
-            let bubbleView: ErrorBubbleView = cell.bubbleView as! ErrorBubbleView
-            self.textLinkDetection(textLabel: bubbleView.textLabel)
-            break
-        case .chart:
-            break
-        case .table:
-            break
-        case .minitable:
-            break
-        case .responsiveTable:
-            break
-        case .menu:
-            let bubbleView: MenuBubbleView = cell.bubbleView as! MenuBubbleView
-            bubbleView.optionsAction = { [weak self] (text) in
-                self?.viewDelegate?.optionsButtonTapAction(text: text!)
-            }
-            bubbleView.linkAction = { [weak self] (text) in
-                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
-            }
-            
-            cell.bubbleView.drawBorder = true
-            break
-        case .picker:
-            isPicker = true
-            break
-        case .sessionend:
-            isSessionEnd = true
-            break
-        case .showProgress:
-            isshowProgress = true
-            break
-        case .agentTransferMode:
-            break
-        case .timerTask:
-            break
+            tableViewCell = cell
         }
         
         let lastIndexPath = getIndexPathForLastItem()
@@ -328,7 +335,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                 self.viewDelegate?.closeQuickReplyCards()
             }
             
-            if let bubbleType = cell.bubbleView.bubbleType, let messageId = message.messageId {
+            if let cell = tableViewCell as? MessageBubbleCell, let bubbleType = cell.bubbleView.bubbleType, let messageId = message.messageId {
                 switch bubbleType {
                 case .agentTransferMode:
                     self.viewDelegate?.startWaitTimerTasks(for: messageId)
@@ -339,7 +346,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                 }
             }
         }
-        return cell
+        return tableViewCell ?? UITableViewCell(style: .default, reuseIdentifier: "UITableViewCell")
     }
     
     // MARK: UITable view delegate source

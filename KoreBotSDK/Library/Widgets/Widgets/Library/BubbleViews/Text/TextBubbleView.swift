@@ -154,6 +154,12 @@ class SessionEndBubbleView: BubbleView {
     }
 }
 
+class StartEventBubbleView: BubbleView {
+    override func populateComponents() {
+        
+    }
+}
+
 class BottombubbleView: BubbleView {
     override func populateComponents() {
         

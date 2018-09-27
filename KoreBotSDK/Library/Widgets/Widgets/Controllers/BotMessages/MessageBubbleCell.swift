@@ -245,6 +245,21 @@ class PickerBubbleCell : MessageBubbleCell {
     }
 }
 
+class StartEventBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .startEvent
+    }
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleLeadingConstraint.constant = 0
+            self.bubbleTrailingConstraint.constant = 0
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelHeightConstraint.isActive = true
+        }
+    }
+}
+
+
 class SessionEndBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .sessionend
