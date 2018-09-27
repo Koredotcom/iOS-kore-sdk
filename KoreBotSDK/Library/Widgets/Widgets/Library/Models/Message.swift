@@ -21,6 +21,7 @@ public class Message : NSObject {
     public var thread: Thread?
     public var isSender: Bool = true
     public var hideComposeBar = false
+    public var messageId: String?
     
     override public init() {
         super.init()

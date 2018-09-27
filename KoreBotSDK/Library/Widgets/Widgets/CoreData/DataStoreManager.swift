@@ -74,29 +74,30 @@ open class DataStoreManager: NSObject {
             context.delete(threadToDelete)
         }
     }
+    
     @objc public func deleteEntity(_ name: String?) {
         let context: NSManagedObjectContext = (coreDataManager?.mainContext)!
         let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: name!)
         deleteFetch.includesPropertyValues = false
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch as! NSFetchRequest<NSFetchRequestResult>)
-        do
-        {
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+        do {
             try context.execute(deleteRequest)
             try context.save()
-        }
-        catch
-        {
+        } catch {
             print ("There was an error")
         }
     }
+    
     // MARK:- messages
-    public func insertOrUpdateMessage(dictionary: Dictionary<String, AnyObject>, withContext context: NSManagedObjectContext) -> KREMessage {
+    public func insertOrUpdateMessage(dictionary: [String: Any], withContext context: NSManagedObjectContext) -> KREMessage {
         
         let newMessage = NSEntityDescription.insertNewObject(forEntityName: "KREMessage", into: context) as! KREMessage
         
-        newMessage.clientId = dictionary["clientId"] as! String?
-        newMessage.messageId = dictionary["id"] as! String?
-        newMessage.isSender = dictionary["isSender"] as! Bool
+        newMessage.clientId = dictionary["clientId"] as? String
+        newMessage.messageId = dictionary["messageId"] as? String
+        if let isSender = dictionary["isSender"] as? Bool {
+            newMessage.isSender = isSender
+        }
         if let authorInfo = dictionary["author"] as? [String: Any] {
             let author: KREContact = insertOrUpdateContact(dictionary: authorInfo, withContext: context)
             newMessage.author = author
@@ -248,7 +249,8 @@ open class DataStoreManager: NSObject {
             nMessage.messageType = NSNumber(value: message.messageType.rawValue)
             nMessage.iconUrl = message.iconUrl
             nMessage.hideComposeBar = message.hideComposeBar
-            
+            nMessage.messageId = message.messageId
+
             for component in message.components {
                 let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
                 nComponent.componentId = ""

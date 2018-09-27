@@ -163,6 +163,7 @@ class BottombubbleView: BubbleView {
 class AgentTransferModeBubbleView: TextBubbleView {
     override func populateComponents() {
         if let component = components?.first {
+            setTextColor()
             self.textLabel.setHTMLString("", withWidth: kMaxTextWidth)
             
             if let jsonString = component.componentDesc, let jsonObject = Utilities.jsonObjectFromString(jsonString: jsonString) as? [String: Any], let string: String = jsonObject["text"] as? String {
@@ -177,6 +178,7 @@ class AgentTransferModeBubbleView: TextBubbleView {
 class TimerTaskBubbleView: TextBubbleView {
     override func populateComponents() {
         if let component = components?.first {
+            setTextColor()
             self.textLabel.setHTMLString("", withWidth: kMaxTextWidth)
             
             if let jsonString = component.componentDesc, let jsonObject = Utilities.jsonObjectFromString(jsonString: jsonString) as? [String: Any], let string: String = jsonObject["text"] as? String {

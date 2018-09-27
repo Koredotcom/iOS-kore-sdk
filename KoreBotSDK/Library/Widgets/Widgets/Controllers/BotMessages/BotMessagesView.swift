@@ -16,7 +16,7 @@ protocol BotMessagesViewDelegate {
     func populatePickerView(with message: KREMessage?)
     func populateSessionEndView(with message: KREMessage?)
     func populateBottomTableView(with message: KREMessage?)
-    func startWaitTimerTasks()
+    func startWaitTimerTasks(for messageId: String)
     func stopWaitTimerTasks()
     func setComposeBarHidden(_ isHidden: Bool)
     func closeQuickReplyCards()
@@ -29,7 +29,6 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
     var shouldScrollToBottom: Bool = true
     var clearBackground = false
     var userActive = false
-    var agentTransferMode = false
 
     weak var thread: KREThread! {
         didSet {
@@ -141,10 +140,6 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                 UserDefaults.standard.setSignifyBottomView(with: true)
                 cell.configure(with: message)
 //                self.viewDelegate?.closeQuickReplyCards()
-                if agentTransferMode {
-                    agentTransferMode = false
-                    self.viewDelegate?.stopWaitTimerTasks()
-                }
                 return cell
             }
         }
@@ -299,14 +294,11 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             break
         case .sessionend:
             isSessionEnd = true
-           
             break
         case .showProgress:
             isshowProgress = true
             break
         case .agentTransferMode:
-            agentTransferMode = true
-           
             break
         case .timerTask:
             break
@@ -333,15 +325,18 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                 UserDefaults.standard.setSignifyBottomView(with: true)
                 self.viewDelegate?.populateBottomTableView(with: message)
             } else {
-                 self.viewDelegate?.closeQuickReplyCards()
+                self.viewDelegate?.closeQuickReplyCards()
             }
             
-            if agentTransferMode, let bubbleType = cell.bubbleView.bubbleType, bubbleType == .text {
-                self.viewDelegate?.stopWaitTimerTasks()
-                self.viewDelegate?.startWaitTimerTasks()
-            } else if agentTransferMode, let bubbleType = cell.bubbleView.bubbleType, bubbleType == .sessionend {
-                agentTransferMode = false
-                self.viewDelegate?.stopWaitTimerTasks()
+            if let bubbleType = cell.bubbleView.bubbleType, let messageId = message.messageId {
+                switch bubbleType {
+                case .agentTransferMode:
+                    self.viewDelegate?.startWaitTimerTasks(for: messageId)
+                case .timerTask:
+                    break
+                default:
+                    self.viewDelegate?.stopWaitTimerTasks()
+                }
             }
         }
         return cell

@@ -60,4 +60,13 @@ open class KoreBotUIKit: NSObject {
             })
         }
     }
+    
+}
+
+open class KoreConstants: NSObject {
+    open static func getUUID() -> String {
+        let uuid = UUID().uuidString
+        let date: Date = Date()
+        return String(format: "ms-\(uuid)-%.0f", date.timeIntervalSince1970)
+    }
 }
