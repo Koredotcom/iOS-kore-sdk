@@ -319,6 +319,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                     self.viewDelegate?.populatePickerView(with: message)
                 case .sessionend:
                     UserDefaults.standard.setSignifyBottomView(with: true)
+                    self.viewDelegate?.stopWaitTimerTasks()
                     break
                 case .showProgress:
                     UserDefaults.standard.setSignifyBottomView(with: true)
@@ -333,6 +334,8 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                     self.viewDelegate?.closeQuickReplyCards()
                     self.viewDelegate?.stopWaitTimerTasks()
                 }
+            } else {
+                self.viewDelegate?.stopWaitTimerTasks()
             }
         }
         return tableViewCell ?? UITableViewCell(style: .default, reuseIdentifier: "UITableViewCell")
