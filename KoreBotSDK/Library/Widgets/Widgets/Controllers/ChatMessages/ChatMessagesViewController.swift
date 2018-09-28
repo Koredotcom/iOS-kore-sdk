@@ -596,7 +596,10 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         }
     }
 
-    func populateSessionEndView(with message: KREMessage?) {
+    open func populateSessionEndView(with message: Message?) {
+        guard let component = message?.components.first else {
+            return
+        }
         if (self.composeView.isFirstResponder) {
             _ = self.composeView.resignFirstResponder()
         }
@@ -606,30 +609,22 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         self.sessionEndView.isHidden = false
         self.loaderView.isHidden = true
 
-        if message?.templateType?.intValue == ComponentType.sessionend.rawValue {
-            let component: KREComponent = message!.components![0] as! KREComponent
-            if (!component.isKind(of: KREComponent.self)) {
-                return
-            }
-            if let componentDesc = component.componentDesc, let jsonObject = Utilities.jsonObjectFromString(jsonString: componentDesc) as? [String: Any] {
-                var titlesArr: [String] = [String]()
-                if let sessionValues = jsonObject["buttons"] as? Array<[String: Any]> {
-                    for dictionary in sessionValues {
-                        if let title = dictionary["title"] as? String {
-                            titlesArr.append(title)
-                        } else {
-                            titlesArr.append("")
-                        }
+        if component.componentType == ComponentType.sessionend, let payload = component.payload, let jsonObject = Utilities.jsonObjectFromString(jsonString: payload) as? [String: Any]  {
+            var titlesArr: [String] = [String]()
+            if let sessionValues = jsonObject["buttons"] as? Array<[String: Any]> {
+                for dictionary in sessionValues {
+                    if let title = dictionary["title"] as? String {
+                        titlesArr.append(title)
+                    } else {
+                        titlesArr.append("")
                     }
                 }
-                
-                if let text = jsonObject["text"] as? String {
-                    self.sessionEndView.setValues(titleArr: titlesArr, text: text)
-                }
-                updateSessionEndViewConstraints()
             }
-        } else if (message != nil) {
-            self.closeQuickSelectViewConstraints()
+            
+            if let text = jsonObject["text"] as? String {
+                self.sessionEndView.setValues(titleArr: titlesArr, text: text)
+            }
+            updateSessionEndViewConstraints()
         }
     }
     

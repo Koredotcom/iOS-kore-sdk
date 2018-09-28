@@ -14,7 +14,6 @@ protocol BotMessagesViewDelegate {
     func linkButtonTapAction(urlString:String)
     func populateQuickReplyCards(with message: KREMessage?)
     func populatePickerView(with message: KREMessage?)
-    func populateSessionEndView(with message: KREMessage?)
     func populateBottomTableView(with message: KREMessage?)
     func startWaitTimerTasks(for messageId: String)
     func stopWaitTimerTasks()
@@ -135,12 +134,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             return UITableViewCell(style: .default, reuseIdentifier: "UITableViewCell")
         }
         
-        var isQuickReply = false
-        var isPicker = false
-        var isSessionEnd = false
-        var isshowProgress = false
         var tableViewCell: UITableViewCell?
-        
         if let messageType = message.messageType?.intValue, messageType == MessageType.timeline.rawValue {
             let cellIdentifier = "MessageTimeLineCell"
             if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MessageTimeLineCell {
@@ -260,7 +254,6 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                 cell.bubbleView.drawBorder = true
                 break
             case .quickReply:
-                isQuickReply = true
                 break
             case .carousel:
                 let bubbleView: CarouselBubbleView = cell.bubbleView as! CarouselBubbleView
@@ -295,13 +288,10 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                 cell.bubbleView.drawBorder = true
                 break
             case .picker:
-                isPicker = true
                 break
             case .sessionend:
-                isSessionEnd = true
                 break
             case .showProgress:
-                isshowProgress = true
                 break
             case .agentTransferMode:
                 break
@@ -319,29 +309,28 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                 }
             }
             
-            if isQuickReply {
-                UserDefaults.standard.setSignifyBottomView(with: true)
-                self.viewDelegate?.populateQuickReplyCards(with: message)
-            } else if isPicker {
-                UserDefaults.standard.setSignifyBottomView(with: true)
-                self.viewDelegate?.populatePickerView(with: message)
-            } else if isSessionEnd {
-                UserDefaults.standard.setSignifyBottomView(with: true)
-                self.viewDelegate?.populateSessionEndView(with: message)
-            } else if isshowProgress {
-                UserDefaults.standard.setSignifyBottomView(with: true)
-                self.viewDelegate?.populateBottomTableView(with: message)
-            } else {
-                self.viewDelegate?.closeQuickReplyCards()
-            }
-            
             if let cell = tableViewCell as? MessageBubbleCell, let bubbleType = cell.bubbleView.bubbleType, let messageId = message.messageId {
                 switch bubbleType {
+                case .quickReply:
+                    UserDefaults.standard.setSignifyBottomView(with: true)
+                    self.viewDelegate?.populateQuickReplyCards(with: message)
+                case .picker:
+                    UserDefaults.standard.setSignifyBottomView(with: true)
+                    self.viewDelegate?.populatePickerView(with: message)
+                case .sessionend:
+                    UserDefaults.standard.setSignifyBottomView(with: true)
+                    break
+                case .showProgress:
+                    UserDefaults.standard.setSignifyBottomView(with: true)
+                    self.viewDelegate?.populateBottomTableView(with: message)
                 case .agentTransferMode:
                     self.viewDelegate?.startWaitTimerTasks(for: messageId)
+                    self.viewDelegate?.closeQuickReplyCards()
                 case .timerTask:
+                    self.viewDelegate?.closeQuickReplyCards()
                     break
                 default:
+                    self.viewDelegate?.closeQuickReplyCards()
                     self.viewDelegate?.stopWaitTimerTasks()
                 }
             }
