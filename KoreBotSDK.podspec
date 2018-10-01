@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
         ss.dependency 'Charts','3.0.5'
         ss.dependency 'DottedProgressBar'
         ss.dependency 'SquareMosaicLayout', '0.6.2'
-
+        ss.dependency 'JSONWebToken'
         ss.ios.frameworks = 'SystemConfiguration'
     end
 

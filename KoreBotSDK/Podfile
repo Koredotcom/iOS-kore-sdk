@@ -27,7 +27,7 @@ target 'KoreBotSDK' do
     pod 'Mantle', '2.0.2'
     pod 'AFNetworking', '3.2.0'
     pod 'SocketRocket'
-    
+    pod 'JSONWebToken'
     project 'Library/KoreBotSDK/KoreBotSDK.xcodeproj'
 end
 
