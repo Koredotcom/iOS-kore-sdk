@@ -68,7 +68,7 @@ open class RTMTimer: NSObject {
 
 open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     var botInfo: BotInfoModel!
-    fileprivate var botInfoParameters: NSDictionary! = nil
+    fileprivate var botInfoParameters: [String: Any]?
     var websocket: SRWebSocket! = nil
     var connectionDelegate: RTMPersistentConnectionDelegate?
 
@@ -78,8 +78,8 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     open var tryReconnect = false
     
     // MARK: init
-    public init(botInfo: BotInfoModel!, botInfoParameters: NSDictionary!, tryReconnect: Bool) {
-        self.pingInterval = 5
+    public init(botInfo: BotInfoModel, botInfoParameters: [String: Any]?, tryReconnect: Bool) {
+        self.pingInterval = 5.0
         super.init()
         self.botInfo = botInfo
         self.botInfoParameters = botInfoParameters
@@ -91,7 +91,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
         if (self.tryReconnect == true) {
             url.append("&isReconnect=true")
         }
-        self.websocket = SRWebSocket(urlRequest: URLRequest(url: URL(string: url)! as URL) as URLRequest!)
+        self.websocket = SRWebSocket(urlRequest: URLRequest(url: URL(string: url)! as URL) as URLRequest?)
         self.websocket.delegate = self
         self.websocket.open()
     }
@@ -116,7 +116,8 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             } else if self.websocket.readyState == .CLOSED || self.websocket.readyState == .CLOSING {
                 self.websocket.close()
                 self.timerSource.suspend()
-            } else {
+            } else if self.websocket.readyState == .OPEN {
+                
                 // we got a pong recently
                 // send another ping
                 self.receivedLastPong = false
