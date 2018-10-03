@@ -12,6 +12,7 @@ import CoreData
 protocol BotMessagesViewDelegate {
     func optionsButtonTapAction(text:String)
     func linkButtonTapAction(urlString:String)
+    func phoneNumTapAction(urlString:String)
     func populateQuickReplyCards(with message: KREMessage?)
     func populatePickerView(with message: KREMessage?)
     func populateBottomTableView(with message: KREMessage?)
@@ -294,6 +295,8 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             case .showProgress:
                 break
             case .agentTransferMode:
+                let bubbleView: AgentTransferModeBubbleView = cell.bubbleView as! AgentTransferModeBubbleView
+                                self.textLinkDetection(textLabel: bubbleView.textLabel)
                 break
             case .timerTask:
                 break
@@ -461,6 +464,9 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
             switch hotword {
             case KREAttributedHotWordLink:
                 self.viewDelegate?.linkButtonTapAction(urlString: string!)
+                break
+            case KREAttributedHotWordPhoneNumber:
+                self.viewDelegate?.phoneNumTapAction(urlString: string!)
                 break
             default:
                 break

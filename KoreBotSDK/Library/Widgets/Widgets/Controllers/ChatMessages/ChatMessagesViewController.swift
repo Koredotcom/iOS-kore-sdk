@@ -498,14 +498,36 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     
     func linkButtonTapAction(urlString: String) {
         if (urlString.count > 0) {
-            let url: URL = URL(string: urlString)!
+            var url: URL = URL(string: urlString)!
+            
+            if urlString.hasPrefix("https://") || urlString.hasPrefix("http://"){
+                url = URL(string: urlString)!
+            }else {
+                let correctedURL = "http://\(urlString)"
+                 url = URL(string: correctedURL)!
+            }
             let webViewController: SFSafariViewController = SFSafariViewController(url: url)
             let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
             webNavigationController.tabBarItem.title = "Bots"
             self.present(webNavigationController, animated: true, completion:nil)
         }
     }
-    
+    open func phoneNumTapAction(urlString: String) {
+        self.callNumber(urlString)
+    }
+    func callNumber(_ str : String){
+        var uc = URLComponents()
+        uc.scheme = "tel"
+        uc.path = str
+        if let url: URL = uc.url {
+            print(url)
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        }
+    }
     func populateQuickReplyCards(with message: KREMessage?) {
         self.quickReplyView.isHidden = false
         self.pickerView.isHidden = true
