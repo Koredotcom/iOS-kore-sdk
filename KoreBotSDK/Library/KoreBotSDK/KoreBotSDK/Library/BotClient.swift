@@ -162,9 +162,13 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             return
         }
         self.parameters = parameters
-        self.successClosure = success
-        self.failureClosure = failure
         
+        if (self.successClosure == nil) {
+            self.successClosure = success as ((BotClient?) -> Void)?
+        }
+        if (self.failureClosure == nil) {
+            self.failureClosure = failure
+        }
         if let botInfoParameters = botInfoParameters {
             let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
             requestManager.signInWithToken(jwtToken, botInfo: botInfoParameters, success: { [unowned self] (user, authInfo) in
