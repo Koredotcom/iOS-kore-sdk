@@ -9,6 +9,7 @@
 import Foundation
 import AFNetworking
 import Mantle
+import CoreData
 
 open class HTTPRequestManager : NSObject {
     var options: AnyObject?
@@ -81,6 +82,79 @@ open class HTTPRequestManager : NSObject {
         }, success: { (dataTask, responseObject) in
             let botInfo: BotInfoModel = try! (MTLJSONAdapter.model(of: BotInfoModel.self, fromJSONDictionary: responseObject! as! [AnyHashable: Any]) as! BotInfoModel)
             success?(botInfo)
+           
+        }) { (dataTask, error) in
+            failure?(error)
+        }
+    }
+    
+    open func getHistory(_ messageID: String,_ authInfo: AuthInfoModel, botInfo: [String: Any], success:((_ responseObject: [String: Any]?) -> Void)?, failure:((_ error: Error) -> Void)?)  {
+        let urlString: String = Constants.URL.historyUrl
+         let accessToken: String = String(format: "%@ %@", authInfo.tokenType!, authInfo.accessToken!)
+         sessionManager?.requestSerializer.setValue(accessToken, forHTTPHeaderField:"Authorization")
+        let parameters: NSDictionary = ["botId": botInfo["taskBotId"],"msgId": messageID, "forward": "true", "limit": "100"]
+        
+        sessionManager?.get(urlString, parameters: parameters, progress: { (progress) in
+            
+        }, success: { (dataTask, responseObject) in
+            if (responseObject is [String: Any]) {
+                success?(responseObject as? [String : Any])
+//                guard let objects = responseObject as? [String: Any] else {
+//                    return
+//                }
+//                guard let messagesArr = objects["messages"] as? [[String: Any]] else {
+//                    return
+//                }
+//                do {
+//                    let historyArr = try MTLJSONAdapter.models(of: HistoryModel.self, fromJSONArray: objects["messages"] as? [[String: Any]]) as? [HistoryModel]
+//                    if let components = historyArr?.fircomponents, let data : [String: Any] = (components.data){
+//                        let text = data["text"]
+//                        print(text)
+//                    }
+                   
+//                    var textArr : Array<String> = Array<String>()
+//                    for message in historyArr! {
+//                        var components : [Components] = [Components]()
+//                        components = (message.components)!
+////                        if let components: [Components] = message.components {
+//                            if let data : [String: Any] = (components.first?.data){
+//                                let jsonString = data["text"]
+//                                print(jsonString)
+//
+//
+//                                let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
+//                                let textMessage = Message()
+//                                textMessage.isSender = false
+//                                textMessage.messageType = .default
+//                                textMessage.sentDate = Date()
+//                                textMessage.messageId = KoreConstants.getUUID()
+//
+//                                let component: Component = Component(ComponentType.timerTask)
+//                                component.payload = jsonString as! String
+//                                textMessage.addComponent(component)
+//                                let coreDataManager = CoreDataManager()
+//                                let context: NSManagedObjectContext = coreDataManager.workerContext
+//
+//                                let thread = NSEntityDescription.insertNewObject(forEntityName: "KREThread", into: context) as? KREThread
+//                                thread?.threadId = "st-ce7cbc71-4a56-58d0-95bb-b45b4dccba7c"
+////                                thread?.subject = "StagingQA"
+//                                if  textMessage.components.count > 0 {
+//                                    dataStoreManager.createNewMessageIn(thread: thread!, message: textMessage, completion: { (success) in
+//                                    })
+//                                }
+////                                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString as! String) as! NSDictionary
+////                                let textElements: Array<Dictionary<String, Any>> = jsonObject["text"] != nil ? jsonObject["text"] as! Array<Dictionary<String, Any>> : []
+////                                print(textElements)
+//                            }
+////                        }
+//                    }
+//
+//                } catch {
+//                    print(error)
+//                }
+            } else {
+                failure?(NSError(domain: "", code: 0, userInfo: [:]))
+            }
         }) { (dataTask, error) in
             failure?(error)
         }

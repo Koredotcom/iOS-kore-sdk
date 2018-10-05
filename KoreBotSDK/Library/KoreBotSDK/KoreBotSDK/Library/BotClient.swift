@@ -9,6 +9,8 @@
 import UIKit
 import JWT
 import SocketRocket
+import CoreData
+import Mantle
 
 public enum BotClientConnectionState : Int {
     case NONE
@@ -206,6 +208,86 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                 self.connection = self.rtmConnectionWithBotInfoModel(botInfo!, isReconnect: self.reconnects)
                 if self.reconnects == false {
                     self.successClosure?(self)
+                }else{
+                    let dataStoreManager = CoreDataManager()
+                        let request = NSFetchRequest<KREMessage>(entityName: "KREMessage")
+                        request.predicate = NSPredicate(format: "isSender == \(false)")
+                        let sortDates = NSSortDescriptor(key: "sentOn", ascending: false)
+                        request.sortDescriptors = [sortDates]
+                        request.fetchLimit = 10
+                        let context = dataStoreManager.workerContext
+                        context.perform {
+                            if let array = try? context.fetch(request), array.count > 0, let ID = array.first?.messageId {
+                                
+                                if let authInfo = self.authInfoModel, let botInfoParams = self.botInfoParameters{
+                                    requestManager.getHistory( ID, authInfo, botInfo:botInfoParams  , success: { (responseObject) in
+                                        print("Sowmya******")
+                                        if (responseObject != nil){
+                                            guard let objects = responseObject else {
+                                                return
+                                            }
+                                            
+                                            do {
+                                                let historyArr = try MTLJSONAdapter.models(of: HistoryModel.self, fromJSONArray: objects["messages"] as? [[String: Any]]) as? [HistoryModel]
+                                                
+                                                if((historyArr?.count)! > 1){
+                                                    for message in historyArr! {
+                                                        if message != historyArr![0] {
+                                                            var components : [Components] = [Components]()
+                                                            components = (message.components)!
+                                                            
+                                                            if let data : [String: Any] = (components.first?.data){
+                                                                let jsonString: String = data["text"] as! String
+                                                                print(jsonString)
+                                                                
+                                                                let object: BotMessageModel = BotMessageModel()
+                                                                object.createdOn = message.createdOn
+                                                                object.messageId = message.messageId
+                                                                
+                                                                let messageModel: MessageModel = MessageModel()
+                                                                
+                                                                let componentModel: ComponentModel = ComponentModel()
+                                                                
+                                                                if(jsonString.contains("payload")){
+                                                                    let jsonObject: [String: Any] = (Utilities.jsonObjectFromString(jsonString: jsonString ) as! [String : Any])
+                                                                    print(jsonObject)
+                                                                    
+                                                                    componentModel.type = jsonObject["type"] as? String
+                                                                    
+                                                                    var payloadObj: [String: Any] = [String: Any]()
+                                                                    payloadObj["payload"] = jsonObject["payload"] as! [String : Any]
+                                                                    payloadObj["type"] = jsonObject["type"]
+                                                                    componentModel.payload = payloadObj
+                                                                }else{
+                                                                    var payloadObj: [String: Any] = [String: Any]()
+                                                                    payloadObj["text"] = jsonString
+                                                                    payloadObj["type"] = "text"
+                                                                    componentModel.type = "text"
+                                                                    componentModel.payload = payloadObj
+                                                                }
+                                                                
+                                                                messageModel.type = "text"
+                                                                messageModel.component = componentModel
+                                                                object.messages = [messageModel]
+                                                                self.onMessage!(object)
+                                                            }
+                                                            
+                                                        }
+                                                    }
+                                                }
+                                                
+                                            } catch {
+                                                print(error)
+                                            }
+                                        }
+                                    }, failure: { (error) in
+                                        print(error)
+                                        print("******")
+                                    })
+                                }
+                            }
+                        }
+
                 }
             }, failure: { (error) in
                 self.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as? [String : Any]))
