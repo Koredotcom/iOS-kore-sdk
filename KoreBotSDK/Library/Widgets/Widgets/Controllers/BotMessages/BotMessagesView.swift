@@ -16,8 +16,6 @@ protocol BotMessagesViewDelegate {
     func populateQuickReplyCards(with message: KREMessage?)
     func populatePickerView(with message: KREMessage?)
     func populateBottomTableView(with message: KREMessage?)
-    func startWaitTimerTasks(for messageId: String)
-    func stopWaitTimerTasks()
     func setComposeBarHidden(_ isHidden: Bool)
     func closeQuickReplyCards()
 }
@@ -316,7 +314,7 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                 }
             }
             
-            if let cell = tableViewCell as? MessageBubbleCell, let bubbleType = cell.bubbleView.bubbleType, let messageId = message.messageId {
+            if let cell = tableViewCell as? MessageBubbleCell, let bubbleType = cell.bubbleView.bubbleType {
                 switch bubbleType {
                 case .quickReply:
                     UserDefaults.standard.setSignifyBottomView(with: true)
@@ -326,23 +324,18 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                     self.viewDelegate?.populatePickerView(with: message)
                 case .sessionend:
                     UserDefaults.standard.setSignifyBottomView(with: true)
-                    self.viewDelegate?.stopWaitTimerTasks()
                     break
                 case .showProgress:
                     UserDefaults.standard.setSignifyBottomView(with: true)
                     self.viewDelegate?.populateBottomTableView(with: message)
                 case .agentTransferMode:
-                    self.viewDelegate?.startWaitTimerTasks(for: messageId)
                     self.viewDelegate?.closeQuickReplyCards()
                 case .timerTask:
                     self.viewDelegate?.closeQuickReplyCards()
                     break
                 default:
                     self.viewDelegate?.closeQuickReplyCards()
-                    self.viewDelegate?.stopWaitTimerTasks()
                 }
-            } else {
-                self.viewDelegate?.stopWaitTimerTasks()
             }
         }
         return tableViewCell ?? UITableViewCell(style: .default, reuseIdentifier: "UITableViewCell")

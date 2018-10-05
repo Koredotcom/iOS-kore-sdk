@@ -417,45 +417,22 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         if let thread = thread, message.components.count > 0 {
             let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
             dataStoreManager.createNewMessageIn(thread: thread, message: message, completion: { [unowned self] (success) in
-                guard let component = message.components.first else {
-                    return
+                if let textComponent = message.components.first  {
+                    self.messagesViewControllerDelegate?.sendMessageToBot(with: textComponent.payload)
+                    self.textMessageSent()
                 }
-                switch component.componentType {
-                case .agentTransferMode:
-                    if let jsonString = component.payload, let jsonObject = Utilities.jsonObjectFromString(jsonString: jsonString) as? [String: Any], let text = jsonObject["text"] as? String {
-                        self.messagesViewControllerDelegate?.sendMessageToBot(with: text)
-                    }
-                default:
-                    self.messagesViewControllerDelegate?.sendMessageToBot(with: component.payload)
-                }
-                self.textMessageSent()
             })
         }
     }
     
-    public func sendTextMessage(_ text: String) {
-        let dataStoreManager = DataStoreManager.sharedManager
-        dataStoreManager.getLastMessage { [unowned self] (kreMesssage) in
-            let message: Message = Message()
-            message.messageType = .default
-            message.sentDate = Date()
-            message.messageId = KoreConstants.getUUID()
-
-            if let templateType = kreMesssage?.templateType?.intValue, let componentType = ComponentType(rawValue: templateType), let _ = self.timer, (componentType == .agentTransferMode || componentType == .timerTask)  {
-                let component: Component = Component(ComponentType.agentTransferMode)
-                let payload = ["template_type": "agent_transfer_mode", "text": text]
-                if let jsonString = Utilities.stringFromJSONObject(object: payload) {
-                    component.payload = jsonString
-                    message.addComponent(component)
-                    self.sendMessage(message)
-                }
-            } else {
-                let textComponent: Component = Component()
-                textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-                message.addComponent(textComponent)
-                self.sendMessage(message)
-            }
-        }
+    public func sendTextMessage(_ text:String) {
+        let message: Message = Message()
+        message.messageType = .default
+        message.sentDate = Date()
+        let textComponent: Component = Component()
+        textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        message.addComponent(textComponent)
+        self.sendMessage(message)
     }
     
     func textMessageSent() {
@@ -710,14 +687,6 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
         }) { (Bool) in
             
         }
-    }
-    
-    open func startWaitTimerTasks(for messageId: String) {
-
-    }
-    
-    open func stopWaitTimerTasks() {
-
     }
 
     // MARK: -

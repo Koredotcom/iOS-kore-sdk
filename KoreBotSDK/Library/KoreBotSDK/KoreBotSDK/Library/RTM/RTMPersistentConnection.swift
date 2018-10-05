@@ -26,7 +26,7 @@ open class RTMTimer: NSObject {
     }
     open let pingInterval: TimeInterval = 30.0
     open lazy var timer: DispatchSourceTimer = {
-        let intervalInNSec = pingInterval * Double(NSEC_PER_SEC)
+        let intervalInNSec = self.pingInterval * Double(NSEC_PER_SEC)
         let startTime = DispatchTime.now() + Double(intervalInNSec) / Double(NSEC_PER_SEC)
         
         let t = DispatchSource.makeTimerSource(flags: [], queue: .main)
