@@ -214,7 +214,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                         request.predicate = NSPredicate(format: "isSender == \(false)")
                         let sortDates = NSSortDescriptor(key: "sentOn", ascending: false)
                         request.sortDescriptors = [sortDates]
-                        request.fetchLimit = 10
+//                        request.fetchLimit = 10
                         let context = dataStoreManager.workerContext
                         context.perform {
                             if let array = try? context.fetch(request), array.count > 0, let ID = array.first?.messageId {
@@ -233,6 +233,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                                                 if((historyArr?.count)! > 1){
                                                     for message in historyArr! {
                                                         if message != historyArr![0] {
+                                                            if message.type == "outgoing"{
                                                             var components : [Components] = [Components]()
                                                             components = (message.components)!
                                                             
@@ -271,7 +272,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                                                                 object.messages = [messageModel]
                                                                 self.onMessage!(object)
                                                             }
-                                                            
+                                                        }
                                                         }
                                                     }
                                                 }
