@@ -255,6 +255,8 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                 cell.bubbleView.drawBorder = true
                 break
             case .quickReply:
+                let bubbleView: QuickReplyBubbleView = cell.bubbleView as! QuickReplyBubbleView
+                self.textLinkDetection(textLabel: bubbleView.textLabel)
                 break
             case .carousel:
                 let bubbleView: CarouselBubbleView = cell.bubbleView as! CarouselBubbleView
@@ -296,9 +298,11 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                 break
             case .agentTransferMode:
                 let bubbleView: AgentTransferModeBubbleView = cell.bubbleView as! AgentTransferModeBubbleView
-                                self.textLinkDetection(textLabel: bubbleView.textLabel)
+                self.textLinkDetection(textLabel: bubbleView.textLabel)
                 break
             case .timerTask:
+                let bubbleView: TimerTaskBubbleView = cell.bubbleView as! TimerTaskBubbleView
+                self.textLinkDetection(textLabel: bubbleView.textLabel)
                 break
             }
             tableViewCell = cell

@@ -507,9 +507,9 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                  url = URL(string: correctedURL)!
             }
             let webViewController: SFSafariViewController = SFSafariViewController(url: url)
-            let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
-            webNavigationController.tabBarItem.title = "Bots"
-            self.present(webNavigationController, animated: true, completion:nil)
+//            let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
+//            webNavigationController.tabBarItem.title = "Bots"
+            self.present(webViewController, animated: true, completion:nil)
         }
     }
     open func phoneNumTapAction(urlString: String) {
