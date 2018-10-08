@@ -211,15 +211,32 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                 }else{
                     let dataStoreManager = CoreDataManager()
                         let request = NSFetchRequest<KREMessage>(entityName: "KREMessage")
-                        request.predicate = NSPredicate(format: "isSender == \(false)")
+                    let isSenderPredicate = NSPredicate(format: "isSender == \(false)")
+                    let timerPredicate = NSPredicate(format: "templateType != \(17)")
+                    let andPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: [isSenderPredicate, timerPredicate])
+                        request.predicate = andPredicate//NSPredicate(format: "isSender == \(false)")
+//                    request.predicate = NSPredicate(format: "templateType == \(17)")
                         let sortDates = NSSortDescriptor(key: "sentOn", ascending: false)
                         request.sortDescriptors = [sortDates]
 //                        request.fetchLimit = 10
                         let context = dataStoreManager.workerContext
                         context.perform {
                             if let array = try? context.fetch(request), array.count > 0, let ID = array.first?.messageId {
+//                                var messageID = ID
+//
+                                let templateType = array.first?.templateType
+                                print(templateType)
+//                                if(templateType == 17){
+//                                for arrVal in array {
+//                                    if(templateType != 17){
+//                                        messageID = arrVal.messageId!
+//                                        break
+//                                    }
+//                                }
+//                                }
                                 
                                 if let authInfo = self.authInfoModel, let botInfoParams = self.botInfoParameters{
+//                                    if(messageID != nil){
                                     requestManager.getHistory( ID, authInfo, botInfo:botInfoParams  , success: { (responseObject) in
                                         print("Sowmya******")
                                         if (responseObject != nil){
@@ -285,8 +302,10 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                                         print(error)
                                         print("******")
                                     })
-                                }
+//                                }
                             }
+                            }
+                            
                         }
 
                 }
