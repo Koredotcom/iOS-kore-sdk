@@ -15,6 +15,7 @@ public protocol ChatMessagesViewControllerDelegate: class {
     func voiceRecordingStarted()
     func voiceRecordingStopped()
     func disconnectBot()
+    func refreshButton(_ enable : Bool)
 }
 
 open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate {
@@ -777,7 +778,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                 } else {
                     self.configureViews(false)
                 }
-
+                self.messagesViewControllerDelegate?.refreshButton(true)
                 self.quickSelectContainerView.isUserInteractionEnabled = true
                 let fontVlaue = UIFont(name: "Helvetica", size: 23)
                 self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue!, NSAttributedStringKey.foregroundColor : UIColor.white]
@@ -793,6 +794,8 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
 //            if (connectionState == .CONNECTING || connectionState == .NONE) {
 //                self.closeQuickSelectViewConstraints()
 //            }
+            self.messagesViewControllerDelegate?.refreshButton(false)
+            stopWaitTimerTasks()
             UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: { [unowned self] in
                 self.view.endEditing(true)
 
