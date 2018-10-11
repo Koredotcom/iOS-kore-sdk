@@ -74,10 +74,10 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     var isLast: Bool = false
     var urlString: String!
     
-    var imageView: UIImageView!
-    var optionsView: KREOptionsView!
-    var textLabel: UILabel!
-    
+    var imageView: UIImageView = UIImageView()
+    var optionsView: KREOptionsView = KREOptionsView()
+    var textLabel: UILabel = UILabel(frame: CGRect.zero)
+
     var maskLayer: CAShapeLayer!
     var borderLayer: CAShapeLayer!
     
@@ -107,7 +107,6 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     
     public func setup() {
         let width = self.frame.size.width
-        self.imageView = UIImageView()
         self.imageView.contentMode = .scaleAspectFit
         self.imageView.backgroundColor = UIColor.white
         self.imageView.clipsToBounds = true
@@ -124,7 +123,6 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         self.imageViewHeightConstraint = NSLayoutConstraint(item: self.imageView, attribute:.height, relatedBy:.equal, toItem:nil, attribute:.notAnAttribute, multiplier:1.0, constant:width*0.5)
         self.imageView.addConstraint(self.imageViewHeightConstraint)
         
-        self.optionsView = KREOptionsView()
         self.optionsView.translatesAutoresizingMaskIntoConstraints = false
         self.optionsView.isUserInteractionEnabled = true
         self.optionsView.contentMode = UIViewContentMode.topLeft
@@ -156,7 +154,6 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         }
         
         
-        self.textLabel = UILabel(frame: CGRect.zero)
         self.textLabel.font = UIFont(name: "Lato", size: 16.0)
         self.textLabel.textColor = UIColor(hex: 0x484848)
         self.textLabel.numberOfLines = 0
