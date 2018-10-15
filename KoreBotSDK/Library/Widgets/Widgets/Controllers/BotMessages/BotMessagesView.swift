@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-protocol BotMessagesViewDelegate {
+protocol BotMessagesViewDelegate: class {
     func optionsButtonTapAction(text:String)
     func linkButtonTapAction(urlString:String)
     func phoneNumTapAction(urlString:String)
@@ -25,7 +25,7 @@ protocol BotMessagesViewDelegate {
 open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFetchedResultsControllerDelegate {
     var tableView: UITableView
     var fetchedResultsController: KREFetchedResultsController?
-    var viewDelegate: BotMessagesViewDelegate?
+    weak var viewDelegate: BotMessagesViewDelegate?
     var shouldScrollToBottom: Bool = true
     var clearBackground = false
     var userActive = false
