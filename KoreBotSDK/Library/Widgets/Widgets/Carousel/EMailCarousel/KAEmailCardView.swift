@@ -681,7 +681,11 @@ extension Date {
         dateFormatter.dateFormat = "EEE, LLL d"
         return dateFormatter.string(from: date as Date)
     }
-    
+    public func formatAsDateASMMDDYY(using date: NSDate) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        return dateFormatter.string(from: date as Date)
+    }
     public func formatAsTime(using date: NSDate) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "h:mm a"
