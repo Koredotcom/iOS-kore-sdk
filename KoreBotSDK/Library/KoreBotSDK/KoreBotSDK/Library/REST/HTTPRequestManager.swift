@@ -13,7 +13,7 @@ import Mantle
 open class HTTPRequestManager : NSObject {
     var options: AnyObject?
     static var instance: HTTPRequestManager!
-    
+    let reachabilityManager = AFNetworkReachabilityManager.shared()
     var sessionManager: AFHTTPSessionManager?
 
     // MARK: request manager shared instance
@@ -128,17 +128,6 @@ open class HTTPRequestManager : NSObject {
         }) { (operation, error) in
             failure?(error)
         }
-    }
-    
-    open func startNewtorkMonitoring(_ block: ((AFNetworkReachabilityStatus) -> Void)?) {
-        AFNetworkReachabilityManager.shared().setReachabilityStatusChange { (status) in
-            if block != nil { block!(status) }
-        }
-        AFNetworkReachabilityManager.shared().startMonitoring()
-    }
-    
-    open func stopNewtorkMonitoring() {
-        AFNetworkReachabilityManager.shared().stopMonitoring()
     }
 }
 

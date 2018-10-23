@@ -8,6 +8,7 @@
 
 import UIKit
 import SocketRocket
+import AFNetworking
 
 public enum BotClientConnectionState : Int {
     case NONE
@@ -54,7 +55,6 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     // MARK: - init
     public override init() {
         super.init()
-        startNewtorkMonitoring()
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -67,41 +67,39 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     }
     
     // MARK: - start network monitoring
-    func startNewtorkMonitoring() {
-        let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-        requestManager.startNewtorkMonitoring { [unowned self] (status) in
-            if status == .reachableViaWiFi || status == .reachableViaWWAN {
-                self.isNetworkAvailable = true
-                guard let connection = self.connection else {
-                    // webSocket connection not available
-                    self.connectionState = .CONNECTING
-                    self.connectionWillOpen?()
-                    return
-                }
-
-                switch connection.websocket.readyState {
-                case .OPEN:
-                    self.connectionState = .CONNECTED
-                    break
-                case .CLOSED:
-                    self.connectionState = .CLOSED
-                    self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: nil))
-                    break
-                case .CLOSING:
-                    self.connectionState = .CLOSING
-                    self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: nil))
-                    break
-                case .CONNECTING:
-                    self.connectionState = .CONNECTING
-                    self.connectionWillOpen?()
-                    break
-                }
-            } else {
-                self.isNetworkAvailable = false
-                self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: ["descripiton": "Network is not available"]))
+    public func setReachabilityStatusChange(_ status: AFNetworkReachabilityStatus) {
+        if status == .reachableViaWiFi || status == .reachableViaWWAN {
+            self.isNetworkAvailable = true
+            guard let connection = self.connection else {
+                // webSocket connection not available
+                self.connectionState = .CONNECTING
+                self.connectionWillOpen?()
+                return
             }
+            
+            switch connection.websocket.readyState {
+            case .OPEN:
+                self.connectionState = .CONNECTED
+                break
+            case .CLOSED:
+                self.connectionState = .CLOSED
+                self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: nil))
+                break
+            case .CLOSING:
+                self.connectionState = .CLOSING
+                self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: nil))
+                break
+            case .CONNECTING:
+                self.connectionState = .CONNECTING
+                self.connectionWillOpen?()
+                break
+            }
+        } else {
+            self.isNetworkAvailable = false
+            self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: ["descripiton": "Network is not available"]))
         }
     }
+   
     
     // MARK: set server url
     open func setKoreBotServerUrl(url: String) {
@@ -139,8 +137,6 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             connection.connectionDelegate = nil
         }
         connection = nil
-        let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-        requestManager.stopNewtorkMonitoring()
     }
     
     // MARK:connect
@@ -192,7 +188,11 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     }
     
     open func rtmConnectionDidFailWithError(_ error: NSError) {
-        if isNetworkAvailable == false { connectionState = .NO_NETWORK }
+        if isNetworkAvailable == false {
+            connectionState = .NO_NETWORK
+        } else {
+            connectionState = .CLOSED
+        }
         connectionDidFailWithError?(error)
     }
     
