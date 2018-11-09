@@ -31,8 +31,8 @@ open class RTMTimer: NSObject {
 
         let t = DispatchSource.makeTimerSource(flags: [], queue: .main)
         t.schedule(deadline: startTime, repeating: pingInterval)
-        t.setEventHandler(handler: { [unowned self] in
-            self.eventHandler?()
+        t.setEventHandler(handler: { [weak self] in
+            self?.eventHandler?()
         })
         return t
     }()
@@ -106,22 +106,22 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     open func webSocketDidOpen(_ webSocket: SRWebSocket!) {
         self.connectionDelegate?.rtmConnectionDidOpen()
 
-        timerSource.eventHandler = { [unowned self] in
-            if self.receivedLastPong == false {
+        timerSource.eventHandler = { [weak self] in
+            if self?.receivedLastPong == false {
                 // we did not receive the last pong
                 // abort the socket so that we can spin up a new connection
-                self.websocket.close()
-                self.timerSource.suspend()
-                self.connectionDelegate?.rtmConnectionDidFailWithError(NSError())
-            } else if self.websocket.readyState == .CLOSED || self.websocket.readyState == .CLOSING {
-                self.websocket.close()
-                self.timerSource.suspend()
-            } else if self.websocket.readyState == .OPEN {
+                // self.websocket.close()
+                // self.timerSource.suspend()
+                // self.connectionDelegate?.rtmConnectionDidFailWithError(NSError())
+            } else if self?.websocket.readyState == .CLOSED || self?.websocket.readyState == .CLOSING {
+                self?.websocket.close()
+                self?.timerSource.suspend()
+            } else if self?.websocket.readyState == .OPEN {
                 
                 // we got a pong recently
                 // send another ping
-                self.receivedLastPong = false
-                self.websocket.sendPing(nil)
+                self?.receivedLastPong = false
+                self?.websocket.sendPing(nil)
             }
         }
         timerSource.resume()
