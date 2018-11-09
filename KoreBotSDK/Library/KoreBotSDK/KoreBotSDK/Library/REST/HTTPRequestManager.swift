@@ -89,7 +89,7 @@ open class HTTPRequestManager : NSObject {
     // MARK: history from lastMessage
     open func getHistory(after messageId: String, _ authInfo: AuthInfoModel, botInfo: [String: Any], success:((_ responseObject: [String: Any]?) -> Void)?, failure:((_ error: Error?) -> Void)?) {
         let urlString: String = Constants.URL.historyUrl
-        if let tokenType = authInfo.accessToken, let accessToken = authInfo.accessToken {
+        if let tokenType = authInfo.tokenType, let accessToken = authInfo.accessToken {
             let token = String(format: "%@ %@", tokenType, accessToken)
             sessionManager?.requestSerializer.setValue(token, forHTTPHeaderField: "Authorization")
         }
