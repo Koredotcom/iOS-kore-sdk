@@ -15,6 +15,7 @@ open class Constants: NSObject {
         
         static let jwtAuthorizationUrl = String(format: "%@/api/1.1/oAuth/token/jwtgrant", KORE_BOT_SERVER)
         static let rtmUrl = String(format: "%@/api/rtm/start", KORE_BOT_SERVER)
+        static let historyUrl = String(format: "%@api/1.1/botmessages/rtm", KORE_BOT_SERVER)
         static func subscribeUrl(_ userId: String!) -> String {
             return  String(format: "%@/api/users/%@/sdknotifications/subscribe", KORE_BOT_SERVER, userId)
         }
