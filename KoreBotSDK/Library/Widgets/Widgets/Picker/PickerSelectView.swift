@@ -52,7 +52,7 @@ public class PickerSelectView: UIView, UIPickerViewDataSource, UIPickerViewDeleg
         doneBtn = UIButton.init(type: .custom)
         doneBtn.translatesAutoresizingMaskIntoConstraints = false
         doneBtn.titleLabel?.font = UIFont(name: "Helvetica-Bold", size: 17.0)
-        let btnColor : UIColor =  UIColor(red: 43/255, green: 134/255, blue: 179/255, alpha: 1)
+        let btnColor : UIColor =  UIColor(red: 20/255, green: 230/255, blue: 150/255, alpha: 1)
         doneBtn.titleLabel?.textAlignment = .center
         doneBtn.titleLabel?.textColor = btnColor
         doneBtn.setTitle("Done", for: .normal)

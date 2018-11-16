@@ -112,7 +112,7 @@ class LoaderViewCell: UITableViewCell {
         textLbl.numberOfLines = 2
         
         textLbl.font = UIFont(name: "Helvetica", size: 16.0)
-        textLbl.textColor = UIColor(red: 43/255, green: 134/255, blue: 179/255, alpha: 1)
+        textLbl.textColor = UIColor(red: 20/255, green: 230/255, blue: 150/255, alpha: 1)
         contentView.addSubview(textLbl)
         setupProgressBar()
         
@@ -128,8 +128,8 @@ class LoaderViewCell: UITableViewCell {
         //appearance
         progressBar.progressAppearance = DottedProgressBar.DottedProgressAppearance(
             dotRadius: 8.0,
-            dotsColor: UIColor(red: 43/255, green: 134/255, blue: 179/255, alpha: 0.4),
-            dotsProgressColor: UIColor(red: 43/255, green: 134/255, blue: 179/255, alpha: 1),
+            dotsColor: UIColor(red: 20/255, green: 230/255, blue: 150/255, alpha: 0.4),
+            dotsProgressColor: UIColor(red: 20/255, green: 230/255, blue: 150/255, alpha: 1),
             backColor: UIColor.clear
         )
         progressBar.translatesAutoresizingMaskIntoConstraints = false
