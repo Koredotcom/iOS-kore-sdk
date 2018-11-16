@@ -781,7 +781,9 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                 self.messagesViewControllerDelegate?.refreshButton(true)
                 self.quickSelectContainerView.isUserInteractionEnabled = true
                 let fontVlaue = UIFont(name: "Helvetica", size: 23)
-                self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue!, NSAttributedStringKey.foregroundColor : UIColor.white]
+
+                self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue!, NSAttributedStringKey.foregroundColor : UIColor(red: 60/255, green: 60/255, blue: 65/255, alpha: 1)]
+
                 self.navigationItem.title = text
                 self.navigationItem.title = "Ask Siggy"
                 UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: { [unowned self] in
@@ -800,7 +802,8 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                 self.view.endEditing(true)
 
                 let fontVlaue = UIFont(name: "Helvetica", size: 18)
-                self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue!, NSAttributedStringKey.foregroundColor : UIColor.white]
+
+                self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue!, NSAttributedStringKey.foregroundColor : UIColor(red: 60/255, green: 60/255, blue: 65/255, alpha: 1)];
                 self.navigationItem.title = text
                 self.quickSelectContainerView.isUserInteractionEnabled = false
             }) { [unowned self] (Bool) in

@@ -18,8 +18,8 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
                 self.label.textColor = UIColor.white
                 self.label.backgroundColor = tintColor
             } else {
-                self.label.textColor = self.tintColor
-                self.label.backgroundColor = UIColor.clear
+                self.label.textColor = UIColor.white
+                self.label.backgroundColor = UIColorRGB(0x1432FF)
             }
         }
     }
@@ -75,7 +75,7 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
         let layer:CALayer = self.layer
         layer.masksToBounds = true
         layer.cornerRadius = 19
-        layer.borderColor  = UIColorRGB(0x0578FE).cgColor
+        layer.borderColor  = UIColorRGB(0x1432FF).cgColor
         layer.borderWidth = 1
         
         let views = ["label":label!, "image":imageView!] as [String : Any]

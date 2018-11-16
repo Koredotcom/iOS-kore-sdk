@@ -171,11 +171,11 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         }
         if let botInfoParameters = botInfoParameters {
             let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-            requestManager.signInWithToken(jwtToken, botInfo: botInfoParameters, success: { [unowned self] (user, authInfo) in
-                self.authInfoModel = authInfo
-                self.userInfoModel = user
-                self.connectionState = .CONNECTING
-                self.connect()
+            requestManager.signInWithToken(jwtToken, botInfo: botInfoParameters, success: { [weak self] (user, authInfo) in
+                self?.authInfoModel = authInfo
+                self?.userInfoModel = user
+                self?.connectionState = .CONNECTING
+                self?.connect()
             }) { (error) in
                 failure?(error)
             }
@@ -304,6 +304,8 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                                     })
 //                                }
                             }
+                            }else{
+                                self.successClosure?(self)
                             }
                             
                         }

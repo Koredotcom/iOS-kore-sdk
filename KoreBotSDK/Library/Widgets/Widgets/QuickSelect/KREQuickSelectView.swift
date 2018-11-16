@@ -112,6 +112,7 @@ public class KREQuickSelectView: UIView, UICollectionViewDelegate, UICollectionV
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "KRETokenCollectionViewCell", for: indexPath) as! KRETokenCollectionViewCell
         let word = wordList[(indexPath as NSIndexPath).row]
+        cell.backgroundColor = UIColorRGB(0x1432FF)
         cell.labelText = word.title
         cell.imageURL = word.imageURL
         cell.krefocused = false

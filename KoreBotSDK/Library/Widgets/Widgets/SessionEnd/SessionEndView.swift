@@ -117,7 +117,7 @@ class SessionEndCell: UITableViewCell {
         
         blueLineLbl = UILabel(frame: .zero)
         blueLineLbl.translatesAutoresizingMaskIntoConstraints = false
-        blueLineLbl.backgroundColor = UIColor(red: 43/255, green: 134/255, blue: 179/255, alpha: 1)
+        blueLineLbl.backgroundColor = UIColor(red: 20/255, green: 50/255, blue: 255/255, alpha: 1)
         self.addSubview(blueLineLbl)
         
         convLbl = UILabel(frame: .zero)
@@ -127,14 +127,14 @@ class SessionEndCell: UITableViewCell {
         convLbl.adjustsFontSizeToFitWidth = true
         convLbl.minimumScaleFactor=0.5;
         convLbl.font = UIFont(name: "Helvetica", size: 16.0)
-        convLbl.textColor =  UIColor(red: 43/255, green: 134/255, blue: 179/255, alpha: 1)
+        convLbl.textColor =  UIColor(red: 20/255, green: 50/255, blue: 255/255, alpha: 1)
 //        convLbl.text = "This conversation thread has been marked as closed. If you wish to make other queries, tap below."
         self.addSubview(convLbl)
         
         chatBtn = UIButton.init(type: .custom)
         chatBtn.translatesAutoresizingMaskIntoConstraints = false
         //        doneBtn.titleLabel?.font = UIFont(name: "System-Bold", size: 12.0)
-        let btnColor : UIColor =  UIColor(red: 43/255, green: 134/255, blue: 179/255, alpha: 1)
+        let btnColor : UIColor =  UIColor(red: 20/255, green: 50/255, blue: 255/255, alpha: 1)
         chatBtn.titleLabel?.textAlignment = .center
         chatBtn.titleLabel?.textColor = UIColor.white
         chatBtn.backgroundColor = btnColor
