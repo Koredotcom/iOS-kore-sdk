@@ -13,7 +13,7 @@ open class KoreBotUIKit: NSObject {
     public struct User {
         public struct BubbleView {
             public static var textColor = UIColor.white
-            public static var backgroundColor = UIColor(red: 20/255, green: 230/255, blue: 150/255, alpha: 1)
+            public static var backgroundColor = UIColor(red: 43/255, green: 134/255, blue: 179/255, alpha: 1)
             public static var contrastTint = UIColorRGB(0xBCBCBC)
             public static var imageName = "faceIcon"
         }

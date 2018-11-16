@@ -70,7 +70,7 @@ open class ComposeBarView: UIView {
         self.sendButton.backgroundColor = KoreBotUIKit.User.SendButton.backgroundColor
         self.sendButton.layer.cornerRadius = 5
         self.sendButton.setTitleColor(UIColorRGB(0x999999), for: .disabled)
-        self.sendButton.setTitleColor(UIColorRGB(0x14E696), for: .normal)
+        self.sendButton.setTitleColor(UIColorRGB(0x2B86B3), for: .normal)
         self.sendButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
         self.sendButton.addTarget(self, action: #selector(self.sendButtonAction(_:)), for: .touchUpInside)
         self.sendButton.isHidden = false

@@ -339,7 +339,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.Kore.TextParser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/TextParser/Resources/TextParser-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -353,7 +353,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.Kore.TextParser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/TextParser/Resources/TextParser-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
