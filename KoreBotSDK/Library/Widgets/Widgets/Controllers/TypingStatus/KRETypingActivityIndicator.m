@@ -39,7 +39,7 @@
     for (int i=0; i<MAXDOTS; i++) {
         CALayer *layer = [CALayer layer];
         layer.contentsScale = [UIScreen mainScreen].scale;
-        layer.backgroundColor =  UIColorRGB(0x1432FF).CGColor;
+        layer.backgroundColor =  UIColorRGB(0x14E696).CGColor;
         [self.layer addSublayer:layer];
     }
     self.clipsToBounds = YES;
