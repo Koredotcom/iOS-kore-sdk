@@ -33,7 +33,8 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     public var userInfoModel: UserModel?
     public private(set) var isNetworkAvailable = false
     public var connectionState: BotClientConnectionState = .NONE
-    fileprivate var reconnects = false
+    public var reconnects = false
+    public var reset = false
     
     open var connectionWillOpen: (() -> Void)?
     open var connectionDidOpen: (() -> Void)?
