@@ -86,7 +86,7 @@ class LoaderViewCell: UITableViewCell {
     // MARK: - properties
     
     var textLbl: UILabel!
-    var progressBar: DottedProgressBar!
+    var progressBar: UIActivityIndicatorView!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -118,51 +118,20 @@ class LoaderViewCell: UITableViewCell {
         
         let views: [String: UIView] = ["textLabel": textLbl, "progressBar": progressBar]
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-14-[textLabel]-14-|", options:[], metrics:nil, views:views))
-         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-100-[progressBar]-100-|", options:[.alignAllCenterX], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-14-[textLabel]-14-[progressBar]-14-|", options:[], metrics:nil, views:views))
+         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[progressBar]|", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-14-[textLabel]-8-[progressBar]-20-|", options:[], metrics:nil, views:views))
         
     }
     func setupProgressBar(){
-        progressBar = DottedProgressBar(frame:.zero)
-        
-        //appearance
-        progressBar.progressAppearance = DottedProgressBar.DottedProgressAppearance(
-            dotRadius: 8.0,
-            dotsColor: UIColor(red: 20/255, green: 50/255, blue: 255/255, alpha: 0.4),
-            dotsProgressColor: UIColor(red: 20/255, green: 50/255, blue: 255/255, alpha: 1),
-            backColor: UIColor.clear
-        )
+        progressBar = UIActivityIndicatorView(frame:.zero)
+        progressBar.activityIndicatorViewStyle = .whiteLarge
+        progressBar.color = UIColor(red: 20/255, green: 50/255, blue: 255/255, alpha: 1)
         progressBar.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(progressBar)
-        
-        //set number of steps and current progress
-        progressBar.setNumberOfDots(5, animated: false)
-        progressBar.setProgress(5, animated: false)
-        
-        //customize animation
-        progressBar.dotsNumberChangeAnimationDuration = 0.6
-        progressBar.progressChangeAnimationDuration = 0.7
-        progressBar.pauseBetweenConsecutiveAnimations = 1.0
-        progressBar.zoomIncreaseValueOnProgressAnimation = 3
-        
-        
-    
-        
     }
 //    MARK: perform animations
     func performAnimation(){
-        var i = 1
-        for  _ in 1..<100{
-            i = i+1
-            if(i > 5 ){
-                i = 1
-                progressBar.setProgress(i)
-                progressBar.setNumberOfDots(5)
-            }else{
-                progressBar.setProgress(i)
-                progressBar.setNumberOfDots(5)
-            }
-        }
+        self.progressBar.startAnimating()
     }
     
     
