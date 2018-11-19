@@ -46,7 +46,7 @@ class TextBubbleView : BubbleView {
     func setTextColor() {
         if self.tailPosition == BubbleMaskTailPosition.left {
             self.textLabel.textColor = UIColorRGB(0x484848)
-            self.textLabel.linkTextColor = UIColorRGB(0x0076FF)
+            self.textLabel.linkTextColor = UIColorRGB(0x1432FF)
         } else {
             self.textLabel.textColor = UIColorRGB(0xFFFFFF)
             self.textLabel.linkTextColor = UIColorRGB(0xFFFFFF)

@@ -67,7 +67,8 @@
     _focusedHighlighting = NO;
     _mentionTextColor = [UIColor darkGrayColor];
     _hashtagTextColor = [UIColor darkGrayColor];
-    _linkTextColor = UIColorRGB(0x0076FF);
+    if(self.linkTextColor == nil)
+        _linkTextColor = UIColorRGB(0x0076FF);
     
     _touchableWords = [[NSMutableArray alloc] init];
     _touchableLocations = [[NSMutableArray alloc] init];
@@ -247,7 +248,8 @@
     __weak typeof(self) weakSelf = self;
     NSString *originalString = sString;
     NSString *string = [KREUtilities getHTMLStrippedStringFromString:sString];
-    NSMutableAttributedString *attributedString = [[self.markdownParser attributedStringFromMarkdown:string] mutableCopy];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:string];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:self.textColor range:[string rangeOfString:string]];
     string = attributedString.string;
     
     //initialize layout manager

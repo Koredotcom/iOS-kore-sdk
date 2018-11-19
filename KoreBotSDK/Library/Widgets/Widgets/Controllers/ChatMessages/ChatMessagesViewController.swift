@@ -780,7 +780,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                 }
                 self.messagesViewControllerDelegate?.refreshButton(true)
                 self.quickSelectContainerView.isUserInteractionEnabled = true
-                let fontVlaue = UIFont(name: "Helvetica", size: 23)
+                let fontVlaue = UIFont(name: "Helvetica", size: 21)
 
                 self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue!, NSAttributedStringKey.foregroundColor : UIColor(red: 60/255, green: 60/255, blue: 65/255, alpha: 1)]
 
