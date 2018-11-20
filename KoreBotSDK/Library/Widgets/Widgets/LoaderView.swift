@@ -111,7 +111,7 @@ class LoaderViewCell: UITableViewCell {
         textLbl.textAlignment = .center
         textLbl.numberOfLines = 2
         
-        textLbl.font = UIFont(name: "Helvetica", size: 16.0)
+        textLbl.font = UIFont(name: "Roboto-Regular", size: 16.0)
         textLbl.textColor = UIColor(red: 189/255, green: 190/255, blue: 199/255, alpha: 1)
         contentView.addSubview(textLbl)
         setupProgressBar()

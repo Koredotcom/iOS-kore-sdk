@@ -52,13 +52,13 @@ open class ComposeBarView: UIView {
         self.growingTextView.textView.textColor = .black
         self.growingTextView.textView.textAlignment = .right
         self.growingTextView.maxNumberOfLines = 10
-        self.growingTextView.font = UIFont(name: "HelveticaNeue", size: 15.0)!
+        self.growingTextView.font = UIFont(name: "Roboto-Regular", size: 15.0)!
         self.growingTextView.textContainerInset = UIEdgeInsets(top: 22, left: 6, bottom: 14, right: 0)
         self.growingTextView.animateHeightChange = true
         self.growingTextView.backgroundColor = .clear
         self.growingTextView.isUserInteractionEnabled = false
         
-        let attributes: [NSAttributedStringKey : Any] = [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 14.0)!, NSAttributedStringKey.foregroundColor: UIColorRGB(0xB5B9BA)]
+        let attributes: [NSAttributedStringKey : Any] = [NSAttributedStringKey.font: UIFont(name: "Roboto-Regular", size: 14.0)!, NSAttributedStringKey.foregroundColor: UIColorRGB(0xB5B9BA)]
         self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Type your message …", attributes:attributes)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidBeginEditingNotification(_ :)), name: NSNotification.Name.UITextViewTextDidBeginEditing, object: self.growingTextView.textView)
@@ -71,7 +71,7 @@ open class ComposeBarView: UIView {
         self.sendButton.layer.cornerRadius = 5
         self.sendButton.setTitleColor(UIColorRGB(0x999999), for: .disabled)
         self.sendButton.setTitleColor(UIColorRGB(0x1432FF), for: .normal)
-        self.sendButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
+        self.sendButton.titleLabel?.font = UIFont(name: "Roboto-Bold", size: 14.0)!
         self.sendButton.addTarget(self, action: #selector(self.sendButtonAction(_:)), for: .touchUpInside)
         self.sendButton.isHidden = false
         self.sendButton.contentEdgeInsets = UIEdgeInsetsMake(20.0, 14.0, 18.0, 18.0)

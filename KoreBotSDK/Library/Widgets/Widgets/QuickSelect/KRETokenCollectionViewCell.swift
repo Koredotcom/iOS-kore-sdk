@@ -65,7 +65,7 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.blue
         label.textAlignment = NSTextAlignment.center
-        label.font = UIFont(name: "HelveticaNeue-Medium", size: 17.0)
+        label.font = UIFont(name: "Roboto-Medium", size: 17.0)
         label.clipsToBounds = true
         contentView.addSubview(label)
         

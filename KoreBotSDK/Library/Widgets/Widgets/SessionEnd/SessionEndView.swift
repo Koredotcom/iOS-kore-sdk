@@ -126,7 +126,7 @@ class SessionEndCell: UITableViewCell {
         convLbl.numberOfLines = 2
         convLbl.adjustsFontSizeToFitWidth = true
         convLbl.minimumScaleFactor=0.5;
-        convLbl.font = UIFont(name: "Helvetica", size: 16.0)
+        convLbl.font = UIFont(name: "Roboto-Regular", size: 16.0)
         convLbl.textColor =  UIColor(red: 189/255, green: 190/255, blue: 199/255, alpha: 1)
 //        convLbl.text = "This conversation thread has been marked as closed. If you wish to make other queries, tap below."
         self.addSubview(convLbl)

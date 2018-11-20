@@ -127,7 +127,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
 //        }
         if indexPath.section == 0 {
             cell.textLabel.text = header.title
-            cell.textLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)!
+            cell.textLabel.font = UIFont(name: "Roboto-Bold", size: 15.0)!
         } else if indexPath.section == 1 {
             cell.textLabel.text = ""
             cell.backgroundColor = UIColorRGB(0xEDEFF2)
@@ -140,7 +140,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
                 cell.backgroundColor = UIColorRGB(0xEDEFF2)
             } else {
                 cell.textLabel.text = row[indexPath.row]
-                cell.textLabel.font = UIFont(name: "HelveticaNeue", size: 15.0)!
+                cell.textLabel.font = UIFont(name: "Roboto-Regular", size: 15.0)!
             }
         }
         cell.textLabel.textAlignment = header.alignment
@@ -158,7 +158,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
             itemWidth = floor((maxWidth*CGFloat(percentage)/100))
         }
         else{
-            let width : CGFloat = (header.title as NSString).size(withAttributes: [NSAttributedStringKey.font : UIFont(name: "HelveticaNeue-Bold", size: 14.0)!]).width*2.0
+            let width : CGFloat = (header.title as NSString).size(withAttributes: [NSAttributedStringKey.font : UIFont(name: "Roboto-Bold", size: 14.0)!]).width*2.0
             itemWidth = width
         }
         

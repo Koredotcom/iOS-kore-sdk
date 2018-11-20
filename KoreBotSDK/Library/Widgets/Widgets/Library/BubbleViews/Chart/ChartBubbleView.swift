@@ -88,7 +88,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             l.drawInside = false
             l.formSize = 12.0
             l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
-            l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
+            l.font = UIFont(name: "Roboto-Medium", size: 12.0)!
             l.form = .circle
             
             self.pcView.chartDescription?.enabled = false
@@ -104,7 +104,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             l.drawInside = false
             l.formSize = 12.0
             l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
-            l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
+            l.font = UIFont(name: "Roboto-Medium", size: 12.0)!
             
             self.pcView.chartDescription?.enabled = false
             self.pcView.drawHoleEnabled = true
@@ -120,7 +120,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             l.drawInside = false
             l.formSize = 12.0
             l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
-            l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
+            l.font = UIFont(name: "Roboto-Medium", size: 12.0)!
             l.form = .circle
             
             self.pcView.chartDescription?.enabled = false
@@ -171,7 +171,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         l.drawInside = true
         l.formSize = 12.0
         l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
-        l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
+        l.font = UIFont(name: "Roboto-Medium", size: 12.0)!
         l.form = .circle
     }
     
@@ -222,9 +222,9 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         l.drawInside = true
         l.formSize = 12.0
         l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
-        l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
+        l.font = UIFont(name: "Roboto-Medium", size: 12.0)!
         
-        let marker = BalloonMarker(color: UIColor.white.withAlphaComponent(0.9), font: UIFont(name: "HelveticaNeue-Bold", size: 12.0)!, textColor: .black, insets: UIEdgeInsetsMake(8.0, 8.0, 20.0, 8.0))
+        let marker = BalloonMarker(color: UIColor.white.withAlphaComponent(0.9), font: UIFont(name: "Roboto-Bold", size: 12.0)!, textColor: .black, insets: UIEdgeInsetsMake(8.0, 8.0, 20.0, 8.0))
         self.bcView.marker = marker
     }
     
@@ -278,7 +278,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             }
             values.append(pieChartDataEntry)
             
-            rightOffset = CGFloat.maximum(rightOffset, (title as NSString).size(withAttributes: [NSAttributedStringKey.font : UIFont(name: "HelveticaNeue-Medium", size: 12.0)!]).width)
+            rightOffset = CGFloat.maximum(rightOffset, (title as NSString).size(withAttributes: [NSAttributedStringKey.font : UIFont(name: "Roboto-Medium", size: 12.0)!]).width)
         }
         let pieChartDataSet = PieChartDataSet(values: values, label: "")
         pieChartDataSet.colors = colorsPalet()
@@ -287,7 +287,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         if(pietype == "regular"){
             let pieChartData = PieChartData(dataSet: pieChartDataSet)
             pieChartData.setValueFormatter(self)
-            pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 12.0))
+            pieChartData.setValueFont(UIFont(name: "Roboto-Medium", size: 12.0))
 //            pieChartData.setValueTextColor(UIColor.white)
             pieChartDataSet.yValuePosition = .outsideSlice
             pieChartDataSet.valueLinePart1OffsetPercentage = 0.8
@@ -295,7 +295,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             pieChartDataSet.valueLinePart2Length = 0.4
             pieChartDataSet.valueLineColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
             pieChartData.setValueFormatter(self)
-            pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 12.0))
+            pieChartData.setValueFont(UIFont(name: "Roboto-Medium", size: 12.0))
             pieChartData.setValueTextColor(UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1))
             pieChartData.setDrawValues(true)
             self.pcView.extraRightOffset = rightOffset

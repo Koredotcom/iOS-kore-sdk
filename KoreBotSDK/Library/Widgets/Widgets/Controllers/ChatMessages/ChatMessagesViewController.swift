@@ -780,12 +780,12 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                 }
                 self.messagesViewControllerDelegate?.refreshButton(true)
                 self.quickSelectContainerView.isUserInteractionEnabled = true
-                let fontVlaue = UIFont(name: "Helvetica", size: 16)
+                let fontVlaue = UIFont(name: "Roboto-Regular", size: 21)
 
                 self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue!, NSAttributedStringKey.foregroundColor : UIColor(red: 60/255, green: 60/255, blue: 65/255, alpha: 1)]
 
                 self.navigationItem.title = text
-                self.navigationItem.title = "Signify Application Support"
+                self.navigationItem.title = ""
                 UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: { [unowned self] in
                     self.view.layoutIfNeeded()
                 }) { (Bool) in
@@ -801,7 +801,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: { [unowned self] in
                 self.view.endEditing(true)
 
-                let fontVlaue = UIFont(name: "Helvetica", size: 14)
+                let fontVlaue = UIFont(name: "Roboto-Regular", size: 16)
 
                 self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue!, NSAttributedStringKey.foregroundColor : UIColor(red: 60/255, green: 60/255, blue: 65/255, alpha: 1)];
                 self.navigationItem.title = text

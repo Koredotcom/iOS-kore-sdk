@@ -331,15 +331,18 @@ open class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, 
                 case .showProgress:
                     UserDefaults.standard.setSignifyBottomView(with: true)
                     self.viewDelegate?.populateBottomTableView(with: message)
+                    break
                 case .agentTransferMode:
-                    self.viewDelegate?.startWaitTimerTasks(for: messageId)
+//                    self.viewDelegate?.startWaitTimerTasks(for: messageId)
                     self.viewDelegate?.closeQuickReplyCards()
+                    break
                 case .timerTask:
                     self.viewDelegate?.closeQuickReplyCards()
                     break
                 default:
                     self.viewDelegate?.closeQuickReplyCards()
                     self.viewDelegate?.stopWaitTimerTasks()
+                    break
                 }
             } else {
                 self.viewDelegate?.stopWaitTimerTasks()
