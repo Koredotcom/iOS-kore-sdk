@@ -785,7 +785,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                 self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue!, NSAttributedStringKey.foregroundColor : UIColor(red: 60/255, green: 60/255, blue: 65/255, alpha: 1)]
 
                 self.navigationItem.title = text
-                self.navigationItem.title = ""
+                self.navigationItem.title = "Support"
                 UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: { [unowned self] in
                     self.view.layoutIfNeeded()
                 }) { (Bool) in
