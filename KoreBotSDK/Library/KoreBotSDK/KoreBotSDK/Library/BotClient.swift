@@ -363,11 +363,12 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         if let connection = connection, (connection.websocket.readyState == .OPEN || connection.websocket.readyState == .CONNECTING) {
             return connection
         } else if let botInfoParameters = botInfoParameters {
-            connection = nil
-            let rtmConnection: RTMPersistentConnection = RTMPersistentConnection(botInfo: botInfo, botInfoParameters: botInfoParameters, tryReconnect: isReconnect)
-            rtmConnection.connectionDelegate = self
-            rtmConnection.start()
-            return rtmConnection
+            if connection == nil {
+                connection = RTMPersistentConnection()
+            }
+            connection?.connect(botInfo: botInfo, botInfoParameters: botInfoParameters, tryReconnect: isReconnect)
+            connection?.connectionDelegate = self
+            return connection
         }
         return nil
     }

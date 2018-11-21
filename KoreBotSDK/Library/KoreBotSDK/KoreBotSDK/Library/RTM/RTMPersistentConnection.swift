@@ -73,17 +73,19 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     var connectionDelegate: RTMPersistentConnectionDelegate?
     
     fileprivate var timerSource = RTMTimer()
-    fileprivate let pingInterval: TimeInterval
     fileprivate var receivedLastPong = true
     open var tryReconnect = false
     
     // MARK: init
-    public init(botInfo: BotInfoModel, botInfoParameters: [String: Any]?, tryReconnect: Bool) {
-        self.pingInterval = 30.0
+    override public init() {
         super.init()
+    }
+    
+    public func connect(botInfo: BotInfoModel, botInfoParameters: [String: Any]?, tryReconnect: Bool) {
         self.botInfo = botInfo
         self.botInfoParameters = botInfoParameters
         self.tryReconnect = tryReconnect
+        start()
     }
     
     open func start() {
