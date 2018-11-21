@@ -10,7 +10,7 @@
 import UIKit
 
 public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
-    
+    // MARK: - properties
     static public let cardPadding: CGFloat = 10.0
     static public let cardLimit: Int = 10
     public var maxCardHeight: CGFloat = 0.0
@@ -18,7 +18,7 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
     public var numberOfItems: Int = 0
     public var pageIndex = 0
     
-    public var cards: Array<KRECardInfo> = Array<KRECardInfo>() {
+    public var cards: [KRECardInfo] = [KRECardInfo]() {
         didSet {
             self.numberOfItems = min(cards.count, KRECarouselView.cardLimit)
             
@@ -26,7 +26,7 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
             for i in 0..<self.numberOfItems {
                 let cardInfo = cards[i]
                 let height = getExpectedHeight(cardInfo: cardInfo, width: maxCardWidth - KRECarouselView.cardPadding)
-                if(height > maxHeight){
+                if height > maxHeight {
                     maxHeight = height
                 }
             }
@@ -35,11 +35,12 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
         }
     }
     
-    public var optionsAction: ((_ title: String?, _ payload: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
-    public var userIntent:((_ action: Any?) -> Void)!
-     public var userIntentAction: ((_ title: String?, _ customData: [String: Any]?) -> Void)!
+    public var optionsAction: ((_ title: String?, _ payload: String?) -> Void)?
+    public var linkAction: ((_ text: String?) -> Void)?
+    public var userIntent:((_ action: Any?) -> Void)?
+    public var userIntentAction: ((_ title: String?, _ customData: [String: Any]?) -> Void)?
     
+    // MARK: - init
     public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
     }
@@ -82,36 +83,29 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
         let cardInfo = cards[indexPath.row]
         cell.cardView.configureForCardInfo(cardInfo: cardInfo)
         
-        if(indexPath.row == 0){
+        if indexPath.row == 0 {
             cell.cardView.isFirst = true
-        }else{
+        } else {
             cell.cardView.isFirst = false
         }
-        if(indexPath.row == self.numberOfItems-1){
+        if indexPath.row == self.numberOfItems - 1 {
             cell.cardView.isLast = true
-        }else{
+        } else {
             cell.cardView.isLast = false
         }
         cell.cardView.optionsAction = { [weak self] (title, payload) in
-            if((self?.optionsAction) != nil){
-                self?.optionsAction(title, payload)
-            }
+            self?.optionsAction?(title, payload)
         }
         cell.cardView.linkAction = {[weak self] (text) in
-            if(self?.linkAction != nil){
-                self?.linkAction(text)
-            }
+            self?.linkAction?(text)
         }
         cell.cardView.userIntent = { [weak self] (object) in
-            if (self?.userIntent != nil) {
-                self?.userIntent(object)
-            }
+            self?.userIntent?(object)
         }
         cell.cardView.userIntentAction = { [weak self] (title, customData) in
-            if (self?.userIntentAction != nil) {
-                self?.userIntentAction(title, customData)
-            }
+            self?.userIntentAction?(title, customData)
         }
+        cell.cardView.layoutSubviews()
         return cell
     }
     
@@ -124,18 +118,12 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
         let cardInfo = cards[indexPath.row]
         if (cardInfo.defaultAction != nil){
             let defaultAction = cardInfo.defaultAction
-            if (defaultAction?.type == .webURL) {
-                if ((self.linkAction) != nil) {
-                    self.linkAction(defaultAction?.payload)
-                }
-            } else if (defaultAction?.type == .postback || defaultAction?.type == .postback_disp_payload) {
-                if (self.optionsAction != nil) {
-                    self.optionsAction(defaultAction?.title, defaultAction?.payload)
-                }
-            } else if (defaultAction?.type == .user_intent) {
-                if (self.userIntent != nil) {
-                    self.userIntent(defaultAction)
-                }
+            if defaultAction?.type == .webURL {
+                self.linkAction?(defaultAction?.payload)
+            } else if defaultAction?.type == .postback || defaultAction?.type == .postback_disp_payload {
+                self.optionsAction?(defaultAction?.title, defaultAction?.payload)
+            } else if defaultAction?.type == .user_intent {
+                self.userIntent?(defaultAction)
             }
         }
     }
@@ -183,18 +171,19 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
     public func getExpectedHeight(cardInfo: KRECardInfo, width: CGFloat) -> CGFloat {
         var height: CGFloat = 0.0
         
-        //imageViw height
-        if(cardInfo.isImagePresent){
-            height += width*0.5
+        // imageView height
+        if cardInfo.isImagePresent {
+            height += width * 0.5
         }
         
-        let count: Int = min(cardInfo.options!.count, KRECardView.buttonLimit)
-        height += KRECardView.kMaxRowHeight * CGFloat(count)
+        if let count = cardInfo.options?.count {
+            height += KRECardView.kMaxRowHeight * CGFloat(min(count, KRECardView.buttonLimit))
+        }
         
         let attrString: NSMutableAttributedString = KRECardView.getAttributedString(cardInfo: cardInfo)
-        let limitingSize: CGSize = CGSize(width: width-20.0, height: CGFloat.greatestFiniteMagnitude)
+        let limitingSize: CGSize = CGSize(width: width - 20.0, height: CGFloat.greatestFiniteMagnitude)
         let rect: CGRect = attrString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
-        height += rect.size.height + 20.0
+        height += rect.size.height + 32.0
         
         return height
     }

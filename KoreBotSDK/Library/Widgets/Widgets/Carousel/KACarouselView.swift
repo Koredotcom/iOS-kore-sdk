@@ -139,21 +139,17 @@ public class KACardView: KRECardView {
         self.optionsView.addConstraint(self.optionsViewHeightConstraint)
         
         self.optionsView.optionsButtonAction = { [weak self] (title, payload) in
-            if ((self?.optionsAction) != nil) {
-                self?.optionsAction(title, payload)
-            }
+            self?.optionsAction?(title, payload)
         }
         
         self.optionsView.detailLinkAction = {[weak self] (text) in
-            if (self?.linkAction != nil) {
-                self?.linkAction(text)
-            }
+            self?.linkAction?(text)
         }
         
         if (self.optionsView is KAOptionsView) {
             let ov = self.optionsView as! KAOptionsView
             ov.userIntent = { [unowned self] (object) in
-                self.userIntent(object)
+                self.userIntent?(object)
             }
         }
         
@@ -362,27 +358,23 @@ public class KACarouselView: KRECarouselView {
         let cardInfo = cards[indexPath.row]
         cell.cardView.configureForCardInfo(cardInfo: cardInfo)
         
-        if (indexPath.row == 0) {
+        if indexPath.row == 0 {
             cell.cardView.isFirst = true
         } else {
             cell.cardView.isFirst = false
         }
-        if (indexPath.row == self.numberOfItems - 1) {
+        if indexPath.row == self.numberOfItems - 1 {
             cell.cardView.isLast = true
         } else {
             cell.cardView.isLast = false
         }
         
         cell.cardView.optionsAction = { [weak self] (title, payload) in
-            if ((self?.optionsAction) != nil) {
-                self?.optionsAction(title, payload)
-            }
+            self?.optionsAction?(title, payload)
         }
         
         cell.cardView.linkAction = { [weak self] (text) in
-            if(self?.linkAction != nil){
-                self?.linkAction(text)
-            }
+            self?.linkAction?(text)
         }
         
         cell.cardView.userIntent = { [unowned self] (text) in

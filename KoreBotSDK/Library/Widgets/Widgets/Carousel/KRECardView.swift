@@ -23,7 +23,7 @@ open class KRECardInfo: NSObject {
     var options: Array<KREOption>?
     var defaultAction: KREAction?
     public var payload: [String: Any]?
-    var isImagePresent : Bool = true
+    var isImagePresent: Bool = true
     
     // MARK:- init
     public override init() {
@@ -32,17 +32,17 @@ open class KRECardInfo: NSObject {
     
     public init(title: String, subTitle: String, imageURL: String) {
         super.init()
-        self.title = truncateString(title, count: KRECardInfo.titleCharLimit)
-        self.subTitle = truncateString(subTitle, count: KRECardInfo.subtitleCharLimit)
+        self.title = title
+        self.subTitle = subTitle
         self.imageURL = imageURL
-        if(imageURL == "" || imageURL == nil){
+        if imageURL == "" || imageURL == nil {
             isImagePresent = false
         }
     }
     
     public func setOptionData(title: String, subTitle: String, imageURL: String) {
-        self.title = truncateString(title, count: KRECardInfo.titleCharLimit)
-        self.subTitle = truncateString(subTitle, count: KRECardInfo.subtitleCharLimit)
+        self.title = title
+        self.subTitle = subTitle
         self.imageURL = imageURL
     }
     
@@ -56,7 +56,7 @@ open class KRECardInfo: NSObject {
     
     func truncateString(_ string: String, count: Int) -> String{
         var tmpString = string
-        if (tmpString.characters.count > count) {
+        if tmpString.characters.count > count {
             tmpString = tmpString.substring(to: tmpString.index(tmpString.startIndex, offsetBy: count-3)) + "..."
         }
         return tmpString
@@ -84,10 +84,10 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     var imageViewHeightConstraint: NSLayoutConstraint!
     var optionsViewHeightConstraint: NSLayoutConstraint!
     
-    public var optionsAction: ((_ title: String?, _ payload: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
-    public var userIntent: ((_ object: Any?) -> Void)!
-     public var userIntentAction: ((_ title: String?, _ customData: [String: Any]?) -> Void)!
+    public var optionsAction: ((_ title: String?, _ payload: String?) -> Void)?
+    public var linkAction: ((_ text: String?) -> Void)?
+    public var userIntent: ((_ object: Any?) -> Void)?
+     public var userIntentAction: ((_ title: String?, _ customData: [String: Any]?) -> Void)?
     var isImagePresent : Bool = true
     
     public override init(frame: CGRect) {
@@ -138,21 +138,14 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         self.optionsView.addConstraint(self.optionsViewHeightConstraint)
         
         self.optionsView.optionsButtonAction = { [weak self] (title, payload) in
-            if ((self?.optionsAction) != nil) {
-                self?.optionsAction(title, payload)
-            }
+            self?.optionsAction?(title, payload)
         }
         self.optionsView.detailLinkAction = {[weak self] (text) in
-            if(self?.linkAction != nil){
-                self?.linkAction(text)
-            }
+            self?.linkAction?(text)
         }
         self.optionsView.userIntentAction = { [weak self] (title, customData) in
-            if((self?.userIntentAction) != nil){
-                self?.userIntentAction(title, customData)
-            }
+            self?.userIntentAction?(title, customData)
         }
-        
         
         self.textLabel.font = UIFont(name: "Lato", size: 16.0)
         self.textLabel.textColor = UIColor(hex: 0x484848)
@@ -168,17 +161,17 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     }
     
     static func getAttributedString(cardInfo: KRECardInfo) -> NSMutableAttributedString {
-        let title = cardInfo.title! as String
-        let subtitle = cardInfo.subTitle! as String
+        let title = cardInfo.title ?? ""
+        let subtitle = cardInfo.subTitle ?? ""
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 0.25 * 16.0
         let myAttributes = [NSAttributedStringKey.foregroundColor:UIColor(hex: 0x484848),
-                            NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Medium", size: 16.0)!,
-                            NSAttributedStringKey.paragraphStyle:paragraphStyle ]
+                            NSAttributedStringKey.font: UIFont(name: "Lato", size: 16.0)!,
+                            NSAttributedStringKey.paragraphStyle:paragraphStyle]
         let mutableAttrString = NSMutableAttributedString(string: title, attributes: myAttributes)
         let myAttributes2 = [NSAttributedStringKey.foregroundColor:UIColor(hex: 0x777777),
-                             NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 15.0)! ]
+                             NSAttributedStringKey.font: UIFont(name: "Lato", size: 15.0)!]
         let mutableAttrString2 = NSMutableAttributedString(string: "\n\(subtitle)", attributes: myAttributes2)
         mutableAttrString.append(mutableAttrString2)
         return mutableAttrString
@@ -187,24 +180,24 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     static func getExpectedHeight(cardInfo: KRECardInfo, width: CGFloat) -> CGFloat {
         var height: CGFloat = 0.0
         
-        //imageViw height
-        if(cardInfo.isImagePresent){
-            height += width*0.5
+        // imageView height
+        if cardInfo.isImagePresent {
+            height += width * 0.5
         }
         
-        let count: Int = min(cardInfo.options!.count, KRECardView.buttonLimit)
-        height += KRECardView.kMaxRowHeight*CGFloat(count)
+        if let count = cardInfo.options?.count {
+            height += KRECardView.kMaxRowHeight * CGFloat(min(count, KRECardView.buttonLimit))
+        }
         
         let attrString: NSMutableAttributedString = KRECardView.getAttributedString(cardInfo: cardInfo)
-        let limitingSize: CGSize = CGSize(width: width-20.0, height: CGFloat.greatestFiniteMagnitude)
+        let limitingSize: CGSize = CGSize(width: width - 20.0, height: CGFloat.greatestFiniteMagnitude)
         let rect: CGRect = attrString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
-        height += rect.size.height + 20.0
+        height += rect.size.height + 32.0
         
         return height
     }
     
     public func configureForCardInfo(cardInfo: KRECardInfo) {
-        
         isImagePresent = cardInfo.isImagePresent
         self.imageView.setImageWith(NSURL(string: cardInfo.imageURL!) as URL!, placeholderImage: UIImage.init(named: "placeholder_image"))
         self.textLabel.attributedText = KRECardView.getAttributedString(cardInfo: cardInfo)
@@ -258,25 +251,25 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         let aPath = UIBezierPath()
         let frame = self.bounds
         
-        if(self.isLast){
+        if self.isLast {
             aPath.move(to: CGPoint(x: CGFloat(frame.maxX - extCornerRadius), y: CGFloat(frame.origin.y)))
             aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.origin.y + extCornerRadius)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.origin.y)))
             aPath.addLine(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY - extCornerRadius)))
             aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX - extCornerRadius), y: CGFloat(frame.maxY)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY)))
-        }else{
+        } else {
             aPath.move(to: CGPoint(x: CGFloat(frame.maxX - cornerRadius), y: CGFloat(frame.origin.y)))
             aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.origin.y + cornerRadius)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.origin.y)))
             aPath.addLine(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY - cornerRadius)))
             aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX - cornerRadius), y: CGFloat(frame.maxY)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY)))
         }
         
-        if(self.isFirst){
+        if self.isFirst {
             aPath.addLine(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY)))
             aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY)), controlPoint: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY)))
             aPath.addLine(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.origin.y + extCornerRadius)))
             aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x + extCornerRadius), y: CGFloat(frame.origin.y)), controlPoint: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.origin.y)))
             aPath.addLine(to: CGPoint(x: CGFloat(frame.maxX - extCornerRadius), y: CGFloat(frame.origin.y)))
-        }else{
+        } else {
             aPath.addLine(to: CGPoint(x: CGFloat(frame.origin.x + cornerRadius), y: CGFloat(frame.maxY)))
             aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY - cornerRadius)), controlPoint: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY)))
             aPath.addLine(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.origin.y + cornerRadius)))
@@ -294,10 +287,10 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
 }
 
 public class KRECardCollectionViewCell: UICollectionViewCell {
-
+    // MARK: - properties
     public static let cellReuseIdentifier: String = "KRECardCollectionViewCell"
     public var cardView: KRECardView!
-    
+    // MARK: - init
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.clear
