@@ -31,8 +31,8 @@ open class RTMTimer: NSObject {
         
         let t = DispatchSource.makeTimerSource(flags: [], queue: .main)
         t.schedule(deadline: startTime, repeating: pingInterval)
-        t.setEventHandler(handler: { [unowned self] in
-            self.eventHandler?()
+        t.setEventHandler(handler: { [weak self] in
+            self?.eventHandler?()
         })
         return t
     }()
