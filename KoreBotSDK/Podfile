@@ -16,7 +16,7 @@ target 'KoreBotSDKDemo' do
     platform :ios, '10.0'
     use_frameworks!
     import_pods
-    pod 'googleapis', :path=> '.'
+#    pod 'googleapis', :path=> '.'
     pod 'KoreBotSDK', :path => '..'
     project 'KoreBotSDKDemo/KoreBotSDKDemo.xcodeproj'
 end
