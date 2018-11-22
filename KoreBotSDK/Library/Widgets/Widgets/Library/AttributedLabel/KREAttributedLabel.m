@@ -67,8 +67,7 @@
     _focusedHighlighting = NO;
     _mentionTextColor = [UIColor darkGrayColor];
     _hashtagTextColor = [UIColor darkGrayColor];
-    if(self.linkTextColor == nil)
-        _linkTextColor = UIColorRGB(0x0076FF);
+    _linkTextColor = UIColorRGB(0x0076FF);
     
     _touchableWords = [[NSMutableArray alloc] init];
     _touchableLocations = [[NSMutableArray alloc] init];
@@ -254,6 +253,7 @@
     
     //initialize layout manager
     NSMutableAttributedString *layoutManagerString = [attributedString mutableCopy];
+    [layoutManagerString addAttributes:@{NSFontAttributeName:self.font} range:[string rangeOfString:string]];
     KRELayoutManager *layoutManager = [[KRELayoutManager alloc] initWithAttributedString:layoutManagerString andWidth:width];
     layoutManager.edgeInset = self.edgeInset;
     
@@ -271,6 +271,12 @@
                 [attributedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:range];
                 
                 CGRect pos = [layoutManager boundingRectForCharacterRange:range];
+                
+                // extended region
+                pos.origin.x -= 10;
+                pos.origin.y -= 5;
+                pos.size.width += 14;
+                pos.size.height += 10;
                 [_touchableWords addObject:url];
                 [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
                 [_touchableLocations addObject:[NSValue valueWithCGRect:pos]];
