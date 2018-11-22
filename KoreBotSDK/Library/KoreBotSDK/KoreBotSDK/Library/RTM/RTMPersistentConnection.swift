@@ -93,6 +93,8 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
         if (self.tryReconnect == true) {
             url.append("&isReconnect=true")
         }
+        
+        self.receivedLastPong = true
         self.websocket = SRWebSocket(urlRequest: URLRequest(url: URL(string: url)! as URL) as URLRequest?)
         self.websocket.delegate = self
         self.websocket.open()
