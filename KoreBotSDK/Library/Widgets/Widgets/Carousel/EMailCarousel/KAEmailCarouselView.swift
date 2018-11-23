@@ -12,7 +12,7 @@ import UIKit
 public class KAEmailCarouselView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
     
     static public let cardPadding: CGFloat = 10.0
-    static public let cardLimit: Int = 10
+    static public let cardLimit: Int = 100
     public var maxCardHeight: CGFloat = 0.0
     public var maxCardWidth: CGFloat = 0.0
     public var numberOfItems: Int = 0

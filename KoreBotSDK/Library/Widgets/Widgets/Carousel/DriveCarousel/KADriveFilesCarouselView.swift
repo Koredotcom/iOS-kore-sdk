@@ -12,7 +12,7 @@ import UIKit
 public class KADriveFilesCarouselView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
     // MARK: - properties
     public let cardPadding: CGFloat = 10.0
-    public let cardLimit: Int = 10
+    public let cardLimit: Int = 100
     public var maxCardHeight: CGFloat = 0.0
     public var maxCardWidth: CGFloat = 0.0
     public var numberOfItems: Int = 0
