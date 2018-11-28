@@ -69,7 +69,13 @@ open class RTMTimer: NSObject {
 open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     var botInfo: BotInfoModel!
     fileprivate var botInfoParameters: [String: Any]?
-    var websocket: SRWebSocket! = nil
+    var websocket: SRWebSocket? {
+        didSet {
+            if websocket == nil {
+                print("")
+            }
+        }
+    }
     var connectionDelegate: RTMPersistentConnectionDelegate?
 
     fileprivate var timerSource = RTMTimer()
@@ -96,14 +102,12 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
         }
         self.receivedLastPong = true
         self.websocket = SRWebSocket(urlRequest: URLRequest(url: URL(string: url)! as URL) as URLRequest?)
-        self.websocket.delegate = self
-        self.websocket.open()
+        self.websocket?.delegate = self
+        self.websocket?.open()
     }
     
     open func disconnect() {
-        if (self.websocket != nil) {
-            self.websocket.close()
-        }
+        self.websocket?.close()
     }
     
     // MARK: WebSocketDelegate methods
@@ -117,15 +121,15 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
                 // self.websocket.close()
                 // self.timerSource.suspend()
                 // self.connectionDelegate?.rtmConnectionDidFailWithError(NSError())
-            } else if self?.websocket.readyState == .CLOSED || self?.websocket.readyState == .CLOSING {
-                self?.websocket.close()
+            } else if self?.websocket?.readyState == .CLOSED || self?.websocket?.readyState == .CLOSING {
+                self?.websocket?.close()
                 self?.timerSource.suspend()
-            } else if self?.websocket.readyState == .OPEN {
+            } else if self?.websocket?.readyState == .OPEN {
                 
                 // we got a pong recently
                 // send another ping
                 self?.receivedLastPong = false
-                self?.websocket.sendPing(nil)
+                self?.websocket?.sendPing(nil)
             }
         }
         timerSource.resume()
@@ -166,7 +170,10 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     
     // MARK: sending message
     open func sendMessage(_ message: String, parameters: [String: Any], options: [String: Any]?) {
-        switch (self.websocket.readyState) {
+        guard let readyState = self.websocket?.readyState else {
+            return
+        }
+        switch (readyState) {
         case .CONNECTING:
             print("Socket is in CONNECTING state")
             break
@@ -197,7 +204,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             print("send: \(dictionary)")
 
             let jsonData = try! JSONSerialization.data(withJSONObject: dictionary, options: JSONSerialization.WritingOptions.prettyPrinted)
-            self.websocket.send(jsonData)
+            self.websocket?.send(jsonData)
             break
         }
     }
