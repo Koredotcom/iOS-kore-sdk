@@ -24,7 +24,7 @@ open class RTMTimer: NSObject {
         case suspended
         case resumed
     }
-    open let pingInterval: TimeInterval = 30.0
+    open let pingInterval: TimeInterval = 10.0
     open lazy var timer: DispatchSourceTimer = {
         let intervalInNSec = pingInterval * Double(NSEC_PER_SEC)
         let startTime = DispatchTime.now() + Double(intervalInNSec) / Double(NSEC_PER_SEC)
@@ -69,13 +69,7 @@ open class RTMTimer: NSObject {
 open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     var botInfo: BotInfoModel!
     fileprivate var botInfoParameters: [String: Any]?
-    var websocket: SRWebSocket? {
-        didSet {
-            if websocket == nil {
-                print("")
-            }
-        }
-    }
+    var websocket: SRWebSocket?
     var connectionDelegate: RTMPersistentConnectionDelegate?
 
     fileprivate var timerSource = RTMTimer()
@@ -129,7 +123,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
                 // we got a pong recently
                 // send another ping
                 self?.receivedLastPong = false
-                self?.websocket?.sendPing(nil)
+                self?.websocket?.sendPing(Data())
             }
         }
         timerSource.resume()
