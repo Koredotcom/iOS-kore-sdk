@@ -195,6 +195,10 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             let uuid: String = Constants.getUUID()
             dictionary.setObject(uuid, forKey: "id" as NSCopying)
             dictionary.setObject(uuid, forKey: "clientMessageId" as NSCopying)
+            
+            let meta = ["timezone": TimeZone.current.identifier, "locale": Locale.current.identifier]
+            dictionary.setValue(meta, forKey: "meta")
+            
             print("send: \(dictionary)")
 
             let jsonData = try! JSONSerialization.data(withJSONObject: dictionary, options: JSONSerialization.WritingOptions.prettyPrinted)
