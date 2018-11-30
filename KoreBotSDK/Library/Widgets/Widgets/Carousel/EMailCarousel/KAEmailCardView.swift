@@ -44,20 +44,21 @@ extension KAEmailCardInfo: Encodable {
 
 extension KAEmailCardInfo: Decodable {
     public init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        from = try values.decode(String.self, forKey: .from)
-        to = try values.decode([String].self, forKey: .to)
-        cc = try values.decode([String].self, forKey: .cc)
-        subject = try values.decode(String.self, forKey: .subject)
-        desc = try values.decode(String.self, forKey: .desc)
-        date = try values.decode(String.self, forKey: .date)
-        attachments = try values.decode([String].self, forKey: .attachments)
+        if let values = try? decoder.container(keyedBy: CodingKeys.self){
+        from = try? values.decode(String.self, forKey: .from)
+        to = try? values.decode([String].self, forKey: .to)
+        cc = try? values.decode([String].self, forKey: .cc)
+        subject = try? values.decode(String.self, forKey: .subject)
+        desc = try? values.decode(String.self, forKey: .desc)
+        date = try? values.decode(String.self, forKey: .date)
+        attachments = try? values.decode([String].self, forKey: .attachments)
         do {
             buttons = try values.decode([KAButtonInfo].self, forKey: .buttons)
         } catch {
             print(error.localizedDescription)
         }
-        source = try values.decode(String.self, forKey: .source)
+        source = try? values.decode(String.self, forKey: .source)
+        }
     }
 }
 
