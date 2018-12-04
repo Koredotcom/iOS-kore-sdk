@@ -24,11 +24,11 @@ open class RTMTimer: NSObject {
         case suspended
         case resumed
     }
-    open let pingInterval: TimeInterval = 30.0
+    open let pingInterval: TimeInterval = 10.0
     open lazy var timer: DispatchSourceTimer = {
         let intervalInNSec = pingInterval * Double(NSEC_PER_SEC)
         let startTime = DispatchTime.now() + Double(intervalInNSec) / Double(NSEC_PER_SEC)
-        
+
         let t = DispatchSource.makeTimerSource(flags: [], queue: .main)
         t.schedule(deadline: startTime, repeating: pingInterval)
         t.setEventHandler(handler: { [weak self] in
@@ -69,7 +69,7 @@ open class RTMTimer: NSObject {
 open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     var botInfo: BotInfoModel!
     fileprivate var botInfoParameters: [String: Any]?
-    var websocket: SRWebSocket! = nil
+    var websocket: SRWebSocket?
     var connectionDelegate: RTMPersistentConnectionDelegate?
     
     fileprivate var timerSource = RTMTimer()
@@ -96,36 +96,34 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
         
         self.receivedLastPong = true
         self.websocket = SRWebSocket(urlRequest: URLRequest(url: URL(string: url)! as URL) as URLRequest?)
-        self.websocket.delegate = self
-        self.websocket.open()
+        self.websocket?.delegate = self
+        self.websocket?.open()
     }
     
     open func disconnect() {
-        if (self.websocket != nil) {
-            self.websocket.close()
-        }
+        self.websocket?.close()
     }
     
     // MARK: WebSocketDelegate methods
     open func webSocketDidOpen(_ webSocket: SRWebSocket!) {
         self.connectionDelegate?.rtmConnectionDidOpen()
         
-        timerSource.eventHandler = { [unowned self] in
-            if self.receivedLastPong == false {
+        timerSource.eventHandler = { [weak self] in
+            if self?.receivedLastPong == false {
                 // we did not receive the last pong
                 // abort the socket so that we can spin up a new connection
-                self.websocket.close()
-                self.timerSource.suspend()
-                self.connectionDelegate?.rtmConnectionDidFailWithError(NSError())
-            } else if self.websocket.readyState == .CLOSED || self.websocket.readyState == .CLOSING {
-                self.websocket.close()
-                self.timerSource.suspend()
-            } else if self.websocket.readyState == .OPEN {
- 
+                // self.websocket.close()
+                // self.timerSource.suspend()
+                // self.connectionDelegate?.rtmConnectionDidFailWithError(NSError())
+            } else if self?.websocket?.readyState == .CLOSED || self?.websocket?.readyState == .CLOSING {
+                self?.websocket?.close()
+                self?.timerSource.suspend()
+            } else if self?.websocket?.readyState == .OPEN {
+
                 // we got a pong recently
                 // send another ping
-                self.receivedLastPong = false
-                self.websocket.sendPing(nil)
+                self?.receivedLastPong = false
+                self?.websocket?.sendPing(Data())
             }
         }
         timerSource.resume()
@@ -166,7 +164,10 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     
     // MARK: sending message
     open func sendMessage(_ message: String, options: [String: Any]?) {
-        switch (self.websocket.readyState) {
+        guard let readyState = self.websocket?.readyState else {
+            return
+        }
+        switch (readyState) {
         case .CONNECTING:
             print("Socket is in CONNECTING state")
             break
@@ -180,7 +181,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
         case .OPEN:
             print("Socket is in OPEN state")
             let parameters: NSMutableDictionary = NSMutableDictionary()
-            let messageObject = ["body":message, "attachments":[]] as [String : Any];
+            let messageObject = ["body": message, "attachments":[]] as [String : Any]
             parameters.setObject(messageObject, forKey: "message" as NSCopying)
             parameters.setObject("/bot.message", forKey: "resourceid" as NSCopying)
             if let botInfoParameters = botInfoParameters {
@@ -191,7 +192,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             parameters.setObject(uuid, forKey: "clientMessageId" as NSCopying)
             
             let jsonData = try? JSONSerialization.data(withJSONObject: parameters, options: JSONSerialization.WritingOptions.prettyPrinted)
-            self.websocket.send(jsonData)
+            self.websocket?.send(jsonData)
             break
         }
     }
