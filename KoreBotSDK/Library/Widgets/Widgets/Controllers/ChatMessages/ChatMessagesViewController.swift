@@ -56,6 +56,7 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     public var informationLabel: UILabel!
     public var isSessionEndBtnClicked: Bool = false
     public var timer: Timer?
+    private var isBotConnected: Bool = false
     
     // MARK: init
     public init(thread: KREThread?) {
@@ -570,8 +571,8 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     }
     
     func setComposeBarHidden(_ isHidden: Bool) {
-        hideComposeBar = isHidden
-        configureViews(isHidden)
+        hideComposeBar = isHidden || !isBotConnected
+        configureViews(hideComposeBar)
     }
     
     func updateQuickSelectViewConstraints() {
@@ -748,21 +749,22 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
     
     // MARK: - information view
     public func updateInformationViewConstraints(with connectionState: BotClientConnectionState) {
-        
         var text = "Connecting..."
         var edgeInsets = UIEdgeInsetsMake(24.0, 0.0, 0.0, 0.0)
         switch connectionState {
         case .CONNECTING:
+            isBotConnected = false
             text = "Connecting..."
-            break
         case .CONNECTED:
+            isBotConnected = true
             text = ""
             edgeInsets = .zero
-            break
         case .NO_NETWORK:
+            isBotConnected = false
             text = "Waiting for network..."
             break
         case .FAILED:
+            isBotConnected = false
             text = "Something is not right. We will be connecting shortly."
             break
         default:
@@ -772,7 +774,6 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
             UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
 
             }) { [unowned self] (Bool) in
-                
                 if UserDefaults.standard.getSignifyBottomView() {
                     self.configureViews(true)
                 } else {
@@ -793,21 +794,17 @@ open class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate
                 }
             }
         } else {
-//            if (connectionState == .CONNECTING || connectionState == .NONE) {
-//                self.closeQuickSelectViewConstraints()
-//            }
             self.messagesViewControllerDelegate?.refreshButton(false)
             stopWaitTimerTasks()
             UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: { [unowned self] in
-                self.view.endEditing(true)
-
-                let fontVlaue = UIFont(name: "Roboto-Regular", size: 16)
-
-                self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue!, NSAttributedStringKey.foregroundColor : UIColor(red: 60/255, green: 60/255, blue: 65/255, alpha: 1)];
-                self.navigationItem.title = text
-                self.quickSelectContainerView.isUserInteractionEnabled = false
+                DispatchQueue.main.async {
+                    self.view.endEditing(true)
+                    let fontVlaue = UIFont(name: "Roboto-Regular", size: 16)
+                    self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: fontVlaue!, NSAttributedStringKey.foregroundColor : UIColor(red: 60/255, green: 60/255, blue: 65/255, alpha: 1)];
+                    self.navigationItem.title = text
+                    self.quickSelectContainerView.isUserInteractionEnabled = false
+                }
             }) { [unowned self] (Bool) in
-                
                 edgeInsets = .zero
                 self.configureViews(true)
                 self.botMessagesView.tableView.contentInset = edgeInsets

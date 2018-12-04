@@ -366,6 +366,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     // MARK: functions
     fileprivate func rtmConnectionWithBotInfoModel(_ botInfo: BotInfoModel, isReconnect: Bool) -> RTMPersistentConnection? {
         if let connection = connection, (connection.websocket?.readyState == .OPEN || connection.websocket?.readyState == .CONNECTING) {
+            rtmConnectionReady()
             return connection
         } else if let botInfoParameters = botInfoParameters {
             if connection == nil {
