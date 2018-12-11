@@ -620,6 +620,47 @@ extension Date {
         return result
     }
     
+    public func formattedshortAsAgo()-> String {
+        let calendar = Calendar.current
+        let now = NSDate()
+        let from = self
+        let earliest = now.earlierDate(self)
+        let latest = (earliest == now as Date) ? self : now as Date
+        let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: self, to: Date())
+        
+        var result = ""
+        
+        if components.year! >= 2 {
+            result = formatAsOther(using: self as NSDate)
+        } else if components.year! >= 1 {
+            result = self.formatAsLastYear(using: self as NSDate)
+        } else if components.month! >= 2 {
+            result = "\(components.month!) months"
+        } else if components.month! >= 1 {
+            result = formatAsLastMonth(using: self as NSDate)
+//        } else if components.weekOfYear! >= 2 {
+//            result = "\(components.weekOfYear!) weeks"
+//        } else if components.weekOfYear! >= 1 {
+//            result = formatAsLastWeek(using: self as NSDate)
+        } else if components.day! >= 2 {
+            result = "\(components.day!) days"
+        } else if components.day! >= 1 {
+            result = self.formatAsYesterday(using: self as NSDate)
+        } else if components.hour! >= 2 {
+            result = "\(components.hour!) hrs"
+        } else if components.hour! >= 1 {
+            result = "1 hr"
+        } else if components.minute! >= 2 {
+            result = "\(components.minute!) mins"
+        } else if components.minute! >= 1 {
+            result = "1 min"
+        } else {
+            result = "now"
+        }
+        
+        return result
+    }
+    
     
     // Yesterday = "Yesterday at 1:28 PM"
     func formatAsYesterday(using date: NSDate) -> String {
