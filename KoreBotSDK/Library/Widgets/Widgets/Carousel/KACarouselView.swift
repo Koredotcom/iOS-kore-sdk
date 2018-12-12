@@ -160,7 +160,7 @@ public class KACardView: KRECardView {
         titleLabel = UILabel(frame: .zero)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textAlignment = .left
-        titleLabel.font = UIFont(name: "Lato-Regular", size: 15.0)
+        titleLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .regular)
         titleLabel.numberOfLines = 2
         titleLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         titleLabel.textColor = UIColor.black
@@ -169,7 +169,7 @@ public class KACardView: KRECardView {
         subTitleLabel = UILabel(frame: .zero)
         subTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subTitleLabel.textAlignment = .left
-        subTitleLabel.font = UIFont(name: "Lato-Regular", size: 14.0)
+        subTitleLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
         subTitleLabel.textColor = UIColor.gray
         subTitleLabel.numberOfLines = 2
         subTitleLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -178,7 +178,7 @@ public class KACardView: KRECardView {
         hashTagsLabel = UILabel(frame: .zero)
         hashTagsLabel.translatesAutoresizingMaskIntoConstraints = false
         hashTagsLabel.textAlignment = .left
-        hashTagsLabel.font = UIFont(name: "Lato-Regular", size: 14.0)
+        hashTagsLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
         hashTagsLabel.textColor = UIColor.blue
         hashTagsLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         containterView.addSubview(self.hashTagsLabel)
@@ -186,7 +186,7 @@ public class KACardView: KRECardView {
         informationLabel = UILabel(frame: .zero)
         informationLabel.translatesAutoresizingMaskIntoConstraints = false
         informationLabel.textAlignment = .left
-        informationLabel.font = UIFont(name: "Lato-Regular", size: 12.0)
+        informationLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
         informationLabel.textColor = UIColor.gray
         informationLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         containterView.addSubview(informationLabel)
@@ -194,7 +194,7 @@ public class KACardView: KRECardView {
         statusLabel = UILabel(frame: .zero)
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
         statusLabel.textAlignment = .left
-        statusLabel.font = UIFont(name: "Lato-Regular", size: 12.0)
+        statusLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
         statusLabel.textColor = UIColor.gray
         statusLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         containterView.addSubview(statusLabel)
@@ -268,7 +268,7 @@ public class KAListTableViewCell: UITableViewCell {
         titleLabel = UILabel(frame: .zero)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textAlignment = .left
-        titleLabel.font = UIFont(name: "Lato-Regular", size: 15.0)
+        titleLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .regular)
         titleLabel.numberOfLines = 2
         titleLabel.textColor = UIColor.black
         titleLabel.text = "Six Simple Steps To Mastering Marketing Automation"
@@ -277,7 +277,7 @@ public class KAListTableViewCell: UITableViewCell {
         subTitleLabel = UILabel(frame: .zero)
         subTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subTitleLabel.textAlignment = .left
-        subTitleLabel.font = UIFont(name: "Lato-Regular", size: 14.0)
+        subTitleLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
         subTitleLabel.textColor = UIColor.gray
         subTitleLabel.numberOfLines = 2
         subTitleLabel.text = "When choosing a marketing automation solution, remember that the tool itself i…"
@@ -286,7 +286,7 @@ public class KAListTableViewCell: UITableViewCell {
         hashTagsLabel = UILabel(frame: .zero)
         hashTagsLabel.translatesAutoresizingMaskIntoConstraints = false
         hashTagsLabel.textAlignment = .left
-        hashTagsLabel.font = UIFont(name: "Lato-Regular", size: 14.0)
+        hashTagsLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
         hashTagsLabel.textColor = UIColor.blue
         hashTagsLabel.text = "#welcome   #newemployee"
         contentView.addSubview(self.hashTagsLabel)
@@ -294,7 +294,7 @@ public class KAListTableViewCell: UITableViewCell {
         informationLabel = UILabel(frame: .zero)
         informationLabel.translatesAutoresizingMaskIntoConstraints = false
         informationLabel.textAlignment = .left
-        informationLabel.font = UIFont(name: "Lato-Regular", size: 12.0)
+        informationLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
         informationLabel.textColor = UIColor.gray
         informationLabel.text = "Article"
         contentView.addSubview(informationLabel)
@@ -302,7 +302,7 @@ public class KAListTableViewCell: UITableViewCell {
         statusLabel = UILabel(frame: .zero)
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
         statusLabel.textAlignment = .left
-        statusLabel.font = UIFont(name: "Lato-Regular", size: 12.0)
+        statusLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
         statusLabel.textColor = UIColor.gray
         statusLabel.text = "Private"
         contentView.addSubview(statusLabel)

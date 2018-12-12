@@ -93,7 +93,7 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
             dateTimeLabel.font = dateTimeLabelFont
         }
     }
-    let defaultFont: UIFont = UIFont(name: "Lato-Regular", size: 14.0)!
+    let defaultFont: UIFont = UIFont.systemFont(ofSize: 14.0, weight: .regular)
 
     var titleLabel: UILabel = UILabel(frame: .zero)
     var sizeLabel: UILabel = UILabel(frame: .zero)
@@ -129,7 +129,7 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
     
     // MARK: - set up
     public func setup() {
-        titleLabelFont = UIFont(name: "Lato-Bold", size: 14.0)
+        titleLabelFont = UIFont.systemFont(ofSize: 14.0, weight: .bold)
         titleLabel.numberOfLines = 1
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textAlignment = .left
@@ -139,7 +139,7 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
         titleLabel.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .vertical)
         self.addSubview(titleLabel)
 
-        sharedByLabelFont = UIFont(name: "Lato-Regular", size: 14.0)
+        sharedByLabelFont = UIFont.systemFont(ofSize: 14.0, weight: .regular)
         sharedByLabel.translatesAutoresizingMaskIntoConstraints = false
         sharedByLabel.font = sharedByLabelFont
         sharedByLabel.textColor = UIColor(hex: 0x1A1A1A)
@@ -148,7 +148,7 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
         sharedByLabel.sizeToFit()
         self.addSubview(sharedByLabel)
         
-        sizeLabelFont = UIFont(name: "Lato-Regular", size: 12.0)
+        sizeLabelFont = UIFont.systemFont(ofSize: 12.0, weight: .regular)
         sizeLabel.textAlignment = .left
         sizeLabel.translatesAutoresizingMaskIntoConstraints = false
         sizeLabel.font = sizeLabelFont
@@ -263,7 +263,7 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
             fileType = fileExtension.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         }
         
-        let extensionButtonFont = UIFont(withFileType: fileType)
+        let extensionButtonFont = UIFont.font(withFileType: fileType)
         extensionButton.setTitle(fileType, for: .normal)
         extensionButton.titleLabel?.font = extensionButtonFont
         

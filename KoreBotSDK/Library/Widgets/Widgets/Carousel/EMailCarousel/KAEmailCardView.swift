@@ -187,14 +187,14 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         fromPlaceholder.translatesAutoresizingMaskIntoConstraints = false
         fromPlaceholder.text = "From"
         fromPlaceholder.textAlignment = .right
-        fromPlaceholder.font = UIFont(name: "Lato-Regular", size: 14.0)!
+        fromPlaceholder.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
         fromPlaceholder.textColor = UIColor(hex: 0x8B93A0)
         fromPlaceholder.sizeToFit()
         self.addSubview(fromPlaceholder)
 
         fromLabel = UILabel(frame: .zero)
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont(name: "Lato-Regular", size: 14.0)!
+        fromLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
         fromLabel.textColor = UIColor(hex: 0x1A1A1A)
         fromLabel.numberOfLines = 2
         fromLabel.lineBreakMode = .byTruncatingTail
@@ -205,14 +205,14 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         toPlaceholder.text = "To"
         toPlaceholder.textAlignment = .right
         toPlaceholder.translatesAutoresizingMaskIntoConstraints = false
-        toPlaceholder.font = UIFont(name: "Lato-Regular", size: 14.0)!
+        toPlaceholder.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
         toPlaceholder.textColor = UIColor(hex: 0x8B93A0)
         toPlaceholder.sizeToFit()
         self.addSubview(toPlaceholder)
 
         toLabel = UILabel(frame: .zero)
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont(name: "Lato-Regular", size: 14.0)!
+        toLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
         toLabel.textColor = UIColor(hex: 0x1A1A1A)
         toLabel.numberOfLines = 2
         toLabel.lineBreakMode = .byTruncatingTail
@@ -223,14 +223,14 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         ccPlaceholder.translatesAutoresizingMaskIntoConstraints = false
         ccPlaceholder.text = "Cc"
         ccPlaceholder.textAlignment = .right
-        ccPlaceholder.font = UIFont(name: "Lato-Regular", size: 14.0)!
+        ccPlaceholder.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
         ccPlaceholder.textColor = UIColor(hex: 0x8B93A0)
         ccPlaceholder.sizeToFit()
         self.addSubview(ccPlaceholder)
 
         ccLabel = UILabel(frame: .zero)
         ccLabel.translatesAutoresizingMaskIntoConstraints = false
-        ccLabel.font = UIFont(name: "Lato-Regular", size: 14.0)!
+        ccLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
         ccLabel.textColor = UIColor(hex: 0x1A1A1A)
         ccLabel.numberOfLines = 2
         ccLabel.lineBreakMode = .byTruncatingTail
@@ -239,7 +239,7 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         
         subjectLabel = UILabel(frame: .zero)
         subjectLabel.translatesAutoresizingMaskIntoConstraints = false
-        subjectLabel.font = UIFont(name: "Lato-Bold", size: 14.0)!
+        subjectLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .bold)
         subjectLabel.textColor = UIColor(hex: 0x484848)
         subjectLabel.numberOfLines = 2
         subjectLabel.lineBreakMode = .byTruncatingTail
@@ -257,7 +257,7 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         addSubview(textView)
         
         attachmentLabel = UILabel(frame: CGRect.zero)
-        attachmentLabel.font = UIFont(name: "Lato-Regular", size: 12.0)
+        attachmentLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
         attachmentLabel.textColor = UIColor(hex: 0x8B93A0)
         attachmentLabel.numberOfLines = 0
         attachmentLabel.sizeToFit()
@@ -307,7 +307,7 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         button.addConstraint(buttonHeightConstraint)
 
         typeLabel = UILabel(frame: CGRect.zero)
-        typeLabel.font = UIFont(name: "Lato-Regular", size: 12.0)
+        typeLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
         typeLabel.textColor = UIColor(hex: 0xA7B0BE)
         typeLabel.numberOfLines = 0
         typeLabel.textAlignment = .left
@@ -317,7 +317,7 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         footerView.addSubview(typeLabel)
 
         dateTimeLabel = UILabel(frame: CGRect.zero)
-        dateTimeLabel.font = UIFont(name: "Lato-Regular", size: 12.0)
+        dateTimeLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
         dateTimeLabel.textColor = UIColor(hex: 0xA7B0BE)
         dateTimeLabel.numberOfLines = 0
         dateTimeLabel.textAlignment = .right
@@ -346,13 +346,13 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
 //        let subject = emailObject.subject ?? ""
 //        let subjectString = formatHTMLEscapedString(subject)
         let subjectAttributes = [NSAttributedStringKey.foregroundColor:UIColor(hex: 0x484848),
-                            NSAttributedStringKey.font: UIFont(name: "Lato-Bold", size: 14.0)!]
+                            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0, weight: .bold)]
         let attributedString = NSMutableAttributedString(string: "", attributes: subjectAttributes)
 
         let desc = emailObject.desc ?? ""
         let descString = formatHTMLEscapedString(desc)
         let descAttributes = [NSAttributedStringKey.foregroundColor:UIColor(hex: 0x777777),
-                             NSAttributedStringKey.font: UIFont(name: "Lato-Regular", size: 14.0)!]
+                             NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0, weight: .regular)]
         let descAttributedString = NSAttributedString(string: "\(descString)", attributes: descAttributes)
         attributedString.append(descAttributedString)
         return attributedString
@@ -375,7 +375,7 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
     public func configure(with object: KAEmailCardInfo) {
         let from = object.from ?? "".addingPercentEncoding(withAllowedCharacters: .controlCharacters)
         let fromAttributes = [NSAttributedStringKey.foregroundColor:UIColor(hex: 0x6168E7),
-                            NSAttributedStringKey.font: UIFont(name: "Lato-Regular", size: 14.0)!]
+                            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0, weight: .regular)]
         let fromString = KAEmailCardView.formatHTMLEscapedString(from!)
         let fromAttributedString = NSAttributedString(string: "\(fromString)\n", attributes: fromAttributes)
         fromLabel.attributedText = fromAttributedString
@@ -388,7 +388,7 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         print(toString)
         
         let toAttributes = [NSAttributedStringKey.foregroundColor:UIColor(hex: 0x1A1A1A),
-                                 NSAttributedStringKey.font: UIFont(name: "Lato-Regular", size: 14.0)!]
+                                 NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0, weight: .regular)]
         let toAttributedString = NSAttributedString(string: toString, attributes: toAttributes)
         toLabel.attributedText = toAttributedString
         

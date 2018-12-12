@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
     s.source_files = "KoreBotSDK/Library/KoreBotSDK/KoreBotSDK/**/*.{h,m,swift}"
     s.public_header_files = 'KoreBotSDK/Library/KoreBotSDK/KoreBotSDK/KoreBotSDK.h'
 
-    s.ios.deployment_target = '8.0'
+    s.ios.deployment_target = '9.0'
 
     s.exclude_files = "KoreBotSDK/Library/KoreBotSDK/KoreBotSDK/KoreBotSDK.{h}"
     s.exclude_files = "KoreBotSDK/KoreBotSDKDemo/*.{*}"
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
     s.exclude_files = "KoreBotSDK/Library/Widgets/*.{*}"
 
     s.subspec 'Bot' do |ss|
-        ss.ios.deployment_target = '8.0'
+        ss.ios.deployment_target = '9.0'
         ss.source_files = 'KoreBotSDK/Library/KoreBotSDK/KoreBotSDK/**/*.{h,m,swift}'
         ss.public_header_files = 'KoreBotSDK/KoreBotSDK.h'
 
@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
     end
 
     s.subspec 'Widgets' do |ss|
-        ss.ios.deployment_target = '8.0'
+        ss.ios.deployment_target = '9.0'
         ss.source_files = 'KoreBotSDK/Library/Widgets/Widgets/**/*.{h,m,txt,swift,xib}'
         ss.public_header_files = 'KoreBotSDK/Widgets.h'
         ss.resource_bundles = {

@@ -183,7 +183,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             cell.textLabel?.text = option.title
             cell.textLabel?.textAlignment = .center
             cell.textLabel?.textColor = UIColor(hex: 0x6168E7)
-            cell.textLabel?.font = UIFont(name: "Lato-Medium", size: 15.0)
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 15.0, weight: .medium)
             
             return cell
         }else if(option.optionType == KREOptionType.list){
@@ -334,18 +334,18 @@ extension UIColor {
 }
 
 extension UIFont {
-    convenience init?(withFileType fileType: String?) {
+    class func font(withFileType fileType: String?) -> UIFont {
         if let count = fileType?.count, count > 0 {
             switch count {
             case 3:
-                self.init(name: "Lato-Bold", size: 12.0)
+                return systemFont(ofSize: 12.0, weight: .bold)
             case 4:
-                self.init(name: "Lato-Bold", size: 10.0)
+                return systemFont(ofSize: 10.0, weight: .bold)
             default:
-                self.init(name: "Lato-Bold", size: 7.0)
+                return systemFont(ofSize: 7.0, weight: .bold)
             }
         } else {
-            self.init(name: "Lato-Bold", size: 12.0)
+            return systemFont(ofSize: 12.0, weight: .bold)
         }
     }
 }
