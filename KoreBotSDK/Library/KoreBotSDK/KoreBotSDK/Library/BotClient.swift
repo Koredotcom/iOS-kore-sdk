@@ -134,10 +134,10 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         
         if let botInfoParameters = botInfoParameters {
             let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-            requestManager.signInWithToken(jwtToken, botInfo: botInfoParameters, success: { [unowned self] (user, authInfo) in
-                self.authInfoModel = authInfo
-                self.userInfoModel = user
-                self.connect()
+            requestManager.signInWithToken(jwtToken, botInfo: botInfoParameters, success: { [weak self] (user, authInfo) in
+                self?.authInfoModel = authInfo
+                self?.userInfoModel = user
+                self?.connect()
             }) { (error) in
                 failure?(error)
             }
@@ -164,13 +164,13 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             })
         } else if let authInfoModel = authInfoModel, let botInfoParameters = botInfoParameters {
             let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-            requestManager.getRtmUrlWithAuthInfoModel(authInfoModel, botInfo: botInfoParameters, success: { (botInfo) in
-                self.connection = self.rtmConnectionWithBotInfoModel(botInfo!, isReconnect: self.reconnects)
-                if self.reconnects == false {
-                    self.successClosure?(self)
+            requestManager.getRtmUrlWithAuthInfoModel(authInfoModel, botInfo: botInfoParameters, success: { [weak self] (botInfo) in
+                self?.connection = self?.rtmConnectionWithBotInfoModel(botInfo!, isReconnect: self?.reconnects ?? false)
+                if self?.reconnects == false {
+                    self?.successClosure?(self)
                 }
-            }, failure: { (error) in
-                self.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as? [String : Any]))
+            }, failure: { [weak self] (error) in
+                self?.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as? [String : Any]))
             })
         } else {
             failureClosure?(NSError(domain: "RTM", code: 0, userInfo: nil))
