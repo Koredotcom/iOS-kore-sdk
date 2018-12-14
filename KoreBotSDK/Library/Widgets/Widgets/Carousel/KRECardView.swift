@@ -147,7 +147,7 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
             self?.userIntentAction?(title, customData)
         }
         
-        self.textLabel.font = UIFont(name: "Lato", size: 16.0)
+        self.textLabel.font = UIFont.systemFont(ofSize: 16.0, weight: .regular)
         self.textLabel.textColor = UIColor(hex: 0x484848)
         self.textLabel.numberOfLines = 0
         self.textLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -167,11 +167,11 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 0.25 * 16.0
         let myAttributes = [NSAttributedStringKey.foregroundColor:UIColor(hex: 0x484848),
-                            NSAttributedStringKey.font: UIFont(name: "Lato", size: 16.0)!,
+                            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16.0, weight: .regular),
                             NSAttributedStringKey.paragraphStyle:paragraphStyle]
         let mutableAttrString = NSMutableAttributedString(string: title, attributes: myAttributes)
         let myAttributes2 = [NSAttributedStringKey.foregroundColor:UIColor(hex: 0x777777),
-                             NSAttributedStringKey.font: UIFont(name: "Lato", size: 15.0)!]
+                             NSAttributedStringKey.font: UIFont.systemFont(ofSize: 15.0, weight: .regular)]
         let mutableAttrString2 = NSMutableAttributedString(string: "\n\(subtitle)", attributes: myAttributes2)
         mutableAttrString.append(mutableAttrString2)
         return mutableAttrString

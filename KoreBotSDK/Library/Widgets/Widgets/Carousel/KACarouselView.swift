@@ -38,7 +38,7 @@ public class KAOptionsView: KREOptionsView {
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             
             cell.textLabel?.text = option.title
-            cell.textLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 15.0, weight: .bold)
             cell.textLabel?.textColor = UIColor(hex: 0x6168E7)
             cell.textLabel?.textAlignment = .center
             return cell

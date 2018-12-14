@@ -276,7 +276,7 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         button.layer.borderWidth = 0.5
         button.layer.borderColor = UIColor.lightGray.cgColor
         button.setTitleColor(UIColor(hex: 0x6168E7), for: .normal)
-        button.titleLabel?.font = UIFont(name: "HelveticaNeue-Medium", size: 15.0)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 15.0, weight: .medium)
         button.setTitle("View Details", for: .normal)
         button.addTarget(self, action: #selector(buttonAction(_:)), for: .touchUpInside)
         addSubview(button)

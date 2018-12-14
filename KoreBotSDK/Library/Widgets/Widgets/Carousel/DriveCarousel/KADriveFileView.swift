@@ -185,7 +185,7 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
         dateTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(dateTimeLabel)
 
-        buttonFont = UIFont(name: "HelveticaNeue-Medium", size: 15.0)
+        buttonFont = UIFont.systemFont(ofSize: 15.0, weight: .medium)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.borderWidth = 0.5
         button.layer.borderColor = UIColor.lightGray.cgColor
