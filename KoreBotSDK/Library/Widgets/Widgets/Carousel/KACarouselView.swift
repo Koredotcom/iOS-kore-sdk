@@ -35,16 +35,20 @@ public class KAOptionsView: KREOptionsView {
         
         if (option.optionType == KREOptionType.button) {
             let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: optionCellIdentifier, for: indexPath)
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             
             cell.textLabel?.text = option.title
-            cell.textLabel?.font = UIFont.systemFont(ofSize: 15.0, weight: .bold)
+            if #available(iOS 8.2, *) {
+                cell.textLabel?.font = UIFont.systemFont(ofSize: 15.0, weight: .bold)
+            } else {
+                // Fallback on earlier versions
+            }
             cell.textLabel?.textColor = UIColor(hex: 0x6168E7)
             cell.textLabel?.textAlignment = .center
             return cell
         } else if(option.optionType == KREOptionType.list) {
             let cell: KAListTableViewCell = tableView.dequeueReusableCell(withIdentifier: listCellIdentifier, for: indexPath) as! KAListTableViewCell
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             
             cell.titleLabel.text = option.title
             cell.subTitleLabel.text = option.subTitle
@@ -78,7 +82,7 @@ public class KAOptionsView: KREOptionsView {
                 height += kMaxRowHeight
             }else if(option.optionType == KREOptionType.list){
                 let cell:KREListTableViewCell = self.tableView(optionsTableView, cellForRowAt: IndexPath(row: options.index(of: option)!, section: 0)) as! KREListTableViewCell
-                var fittingSize = UILayoutFittingCompressedSize
+                var fittingSize = UIView.layoutFittingCompressedSize
                 fittingSize.width = width
                 let size = cell.systemLayoutSizeFitting(fittingSize, withHorizontalFittingPriority: UILayoutPriority(rawValue: 1000), verticalFittingPriority: UILayoutPriority(rawValue: 250))
                 height += size.height
@@ -129,7 +133,7 @@ public class KACardView: KRECardView {
         self.optionsView = KAOptionsView()
         self.optionsView.translatesAutoresizingMaskIntoConstraints = false
         self.optionsView.isUserInteractionEnabled = true
-        self.optionsView.contentMode = UIViewContentMode.topLeft
+        self.optionsView.contentMode = UIView.ContentMode.topLeft
         self.optionsView.layer.borderWidth = 0.5
         self.optionsView.layer.borderColor = UIColor.lightGray.cgColor
         self.optionsView.optionsTableView.separatorInset = UIEdgeInsets.zero
@@ -160,7 +164,11 @@ public class KACardView: KRECardView {
         titleLabel = UILabel(frame: .zero)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textAlignment = .left
-        titleLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            titleLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         titleLabel.numberOfLines = 2
         titleLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         titleLabel.textColor = UIColor.black
@@ -169,7 +177,11 @@ public class KACardView: KRECardView {
         subTitleLabel = UILabel(frame: .zero)
         subTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subTitleLabel.textAlignment = .left
-        subTitleLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            subTitleLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         subTitleLabel.textColor = UIColor.gray
         subTitleLabel.numberOfLines = 2
         subTitleLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -178,7 +190,11 @@ public class KACardView: KRECardView {
         hashTagsLabel = UILabel(frame: .zero)
         hashTagsLabel.translatesAutoresizingMaskIntoConstraints = false
         hashTagsLabel.textAlignment = .left
-        hashTagsLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            hashTagsLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         hashTagsLabel.textColor = UIColor.blue
         hashTagsLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         containterView.addSubview(self.hashTagsLabel)
@@ -186,7 +202,11 @@ public class KACardView: KRECardView {
         informationLabel = UILabel(frame: .zero)
         informationLabel.translatesAutoresizingMaskIntoConstraints = false
         informationLabel.textAlignment = .left
-        informationLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            informationLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         informationLabel.textColor = UIColor.gray
         informationLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         containterView.addSubview(informationLabel)
@@ -194,7 +214,11 @@ public class KACardView: KRECardView {
         statusLabel = UILabel(frame: .zero)
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
         statusLabel.textAlignment = .left
-        statusLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            statusLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         statusLabel.textColor = UIColor.gray
         statusLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         containterView.addSubview(statusLabel)
@@ -254,7 +278,7 @@ public class KAListTableViewCell: UITableViewCell {
     var statusLabel: UILabel!
     
     // MARK:- init
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
     }
@@ -268,7 +292,11 @@ public class KAListTableViewCell: UITableViewCell {
         titleLabel = UILabel(frame: .zero)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textAlignment = .left
-        titleLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            titleLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         titleLabel.numberOfLines = 2
         titleLabel.textColor = UIColor.black
         titleLabel.text = "Six Simple Steps To Mastering Marketing Automation"
@@ -277,7 +305,11 @@ public class KAListTableViewCell: UITableViewCell {
         subTitleLabel = UILabel(frame: .zero)
         subTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subTitleLabel.textAlignment = .left
-        subTitleLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            subTitleLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         subTitleLabel.textColor = UIColor.gray
         subTitleLabel.numberOfLines = 2
         subTitleLabel.text = "When choosing a marketing automation solution, remember that the tool itself i…"
@@ -286,7 +318,11 @@ public class KAListTableViewCell: UITableViewCell {
         hashTagsLabel = UILabel(frame: .zero)
         hashTagsLabel.translatesAutoresizingMaskIntoConstraints = false
         hashTagsLabel.textAlignment = .left
-        hashTagsLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            hashTagsLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         hashTagsLabel.textColor = UIColor.blue
         hashTagsLabel.text = "#welcome   #newemployee"
         contentView.addSubview(self.hashTagsLabel)
@@ -294,7 +330,11 @@ public class KAListTableViewCell: UITableViewCell {
         informationLabel = UILabel(frame: .zero)
         informationLabel.translatesAutoresizingMaskIntoConstraints = false
         informationLabel.textAlignment = .left
-        informationLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            informationLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         informationLabel.textColor = UIColor.gray
         informationLabel.text = "Article"
         contentView.addSubview(informationLabel)
@@ -302,7 +342,11 @@ public class KAListTableViewCell: UITableViewCell {
         statusLabel = UILabel(frame: .zero)
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
         statusLabel.textAlignment = .left
-        statusLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            statusLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         statusLabel.textColor = UIColor.gray
         statusLabel.text = "Private"
         contentView.addSubview(statusLabel)

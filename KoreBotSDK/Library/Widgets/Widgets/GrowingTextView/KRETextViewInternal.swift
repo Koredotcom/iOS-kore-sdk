@@ -18,7 +18,7 @@ internal class KRETextViewInternal: UITextView {
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(KRETextViewInternal.textDidChangeNotification(_ :)), name: NSNotification.Name.UITextViewTextDidChange, object: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(KRETextViewInternal.textDidChangeNotification(_ :)), name: UITextView.textDidChangeNotification, object: self)
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -44,10 +44,10 @@ public class KADriveFilesCarouselView: UICollectionView, UICollectionViewDelegat
     
     convenience init () {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = UICollectionViewScrollDirection.horizontal
+        flowLayout.scrollDirection = UICollectionView.ScrollDirection.horizontal
         flowLayout.minimumInteritemSpacing = 10.0
         flowLayout.minimumLineSpacing = 10.0
-        flowLayout.sectionInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
+        flowLayout.sectionInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
         
         self.init(frame: CGRect.zero, collectionViewLayout: flowLayout)
         self.backgroundColor = UIColor.clear
@@ -59,7 +59,7 @@ public class KADriveFilesCarouselView: UICollectionView, UICollectionViewDelegat
         self.delegate = self
         
         self.register(KADriveFileCollectionViewCell.self, forCellWithReuseIdentifier: KADriveFileCollectionViewCell.cellReuseIdentifier)
-        self.register(KADriveFilesHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "KADriveFilesHeaderView")
+        self.register(KADriveFilesHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "KADriveFilesHeaderView")
     }
 
     required public init?(coder aDecoder: NSCoder) {

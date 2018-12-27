@@ -121,9 +121,9 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
         optionsView.showsVerticalScrollIndicator = false
         optionsView.showsHorizontalScrollIndicator = false
         optionsView.isScrollEnabled = false
-        optionsView.estimatedRowHeight = UITableViewAutomaticDimension
-        optionsView.rowHeight = UITableViewAutomaticDimension
-        optionsView.separatorStyle = UITableViewCellSeparatorStyle.singleLine
+        optionsView.estimatedRowHeight = UITableView.automaticDimension
+        optionsView.rowHeight = UITableView.automaticDimension
+        optionsView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
         optionsView.separatorInset = .zero
         optionsView.setNeedsLayout()
         optionsView.layoutIfNeeded()
@@ -178,17 +178,21 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         if(option.optionType == KREOptionType.button){
             let cell:KREOptionsTableViewCell = tableView.dequeueReusableCell(withIdentifier: optionCellIdentifier, for: indexPath) as! KREOptionsTableViewCell
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             
             cell.textLabel?.text = option.title
             cell.textLabel?.textAlignment = .center
             cell.textLabel?.textColor = UIColor(hex: 0x6168E7)
-            cell.textLabel?.font = UIFont.systemFont(ofSize: 15.0, weight: .medium)
+            if #available(iOS 8.2, *) {
+                cell.textLabel?.font = UIFont.systemFont(ofSize: 15.0, weight: .medium)
+            } else {
+                // Fallback on earlier versions
+            }
             
             return cell
         }else if(option.optionType == KREOptionType.list){
             let cell:KREListTableViewCell = tableView.dequeueReusableCell(withIdentifier: listCellIdentifier, for: indexPath) as! KREListTableViewCell
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             
             cell.titleLabel.text = option.title
             cell.subTitleLabel.text = option.subTitle
@@ -247,11 +251,11 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
     
     public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
     
     public func getExpectedHeight(width: CGFloat) -> CGFloat {
@@ -261,7 +265,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
                 height += kMaxRowHeight
             }else if(option.optionType == KREOptionType.list){
                 let cell:KREListTableViewCell = self.tableView(optionsTableView, cellForRowAt: IndexPath(row: options.index(of: option)!, section: 0)) as! KREListTableViewCell
-                var fittingSize = UILayoutFittingCompressedSize
+                var fittingSize = UIView.layoutFittingCompressedSize
                 fittingSize.width = width
                 let size = cell.systemLayoutSizeFitting(fittingSize, withHorizontalFittingPriority: UILayoutPriority(rawValue: 1000), verticalFittingPriority: UILayoutPriority(rawValue: 250))
                 height += size.height
@@ -273,7 +277,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
 
 public class KREOptionsViewCell: UITableViewCell {
     // MARK:- init
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
     }

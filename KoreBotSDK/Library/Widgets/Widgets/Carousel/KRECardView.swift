@@ -125,7 +125,7 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         
         self.optionsView.translatesAutoresizingMaskIntoConstraints = false
         self.optionsView.isUserInteractionEnabled = true
-        self.optionsView.contentMode = UIViewContentMode.topLeft
+        self.optionsView.contentMode = UIView.ContentMode.topLeft
         self.optionsView.layer.borderWidth = 0.5
         self.optionsView.layer.borderColor = UIColor.lightGray.cgColor
         self.optionsView.optionsTableView.separatorInset = UIEdgeInsets.zero
@@ -147,7 +147,11 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
             self?.userIntentAction?(title, customData)
         }
         
-        self.textLabel.font = UIFont.systemFont(ofSize: 16.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            self.textLabel.font = UIFont.systemFont(ofSize: 16.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         self.textLabel.textColor = UIColor(hex: 0x484848)
         self.textLabel.numberOfLines = 0
         self.textLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -166,12 +170,12 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 0.25 * 16.0
-        let myAttributes = [NSAttributedStringKey.foregroundColor:UIColor(hex: 0x484848),
-                            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16.0, weight: .regular),
-                            NSAttributedStringKey.paragraphStyle:paragraphStyle]
+        let myAttributes = [NSAttributedString.Key.foregroundColor:UIColor(hex: 0x484848),
+                            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16.0, weight: .regular),
+                            NSAttributedString.Key.paragraphStyle:paragraphStyle]
         let mutableAttrString = NSMutableAttributedString(string: title, attributes: myAttributes)
-        let myAttributes2 = [NSAttributedStringKey.foregroundColor:UIColor(hex: 0x777777),
-                             NSAttributedStringKey.font: UIFont.systemFont(ofSize: 15.0, weight: .regular)]
+        let myAttributes2 = [NSAttributedString.Key.foregroundColor:UIColor(hex: 0x777777),
+                             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15.0, weight: .regular)]
         let mutableAttrString2 = NSMutableAttributedString(string: "\n\(subtitle)", attributes: myAttributes2)
         mutableAttrString.append(mutableAttrString2)
         return mutableAttrString

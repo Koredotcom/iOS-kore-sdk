@@ -55,22 +55,26 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 16
-        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         contentView.addSubview(imageView)
         
-        imageView.setContentHuggingPriority(UILayoutPriority.defaultLow, for: UILayoutConstraintAxis.horizontal)
-        imageView.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: UILayoutConstraintAxis.horizontal)
+        imageView.setContentHuggingPriority(UILayoutPriority.defaultLow, for: NSLayoutConstraint.Axis.horizontal)
+        imageView.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: NSLayoutConstraint.Axis.horizontal)
         
         label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(red: 97/255, green: 104/255, blue: 231/255, alpha: 1)
         label.textAlignment = NSTextAlignment.center
-        label.font = UIFont.systemFont(ofSize: 14.0, weight: .medium)
+        if #available(iOS 8.2, *) {
+            label.font = UIFont.systemFont(ofSize: 14.0, weight: .medium)
+        } else {
+            // Fallback on earlier versions
+        }
         label.clipsToBounds = true
         contentView.addSubview(label)
         
-        label.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.horizontal)
-        label.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.horizontal)
+        label.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.horizontal)
+        label.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.horizontal)
         
         let layer:CALayer = self.layer
         layer.masksToBounds = true

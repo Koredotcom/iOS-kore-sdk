@@ -59,6 +59,7 @@ extension KADriveFileInfo: Decodable {
 }
 
 // MARK:- KADriveFileView
+@available(iOS 8.2, *)
 public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
     // MARK: - properties
     let kMaxRowHeight: CGFloat = 48.0
@@ -167,7 +168,7 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
         self.addSubview(sharedByPlaceholder)
         
         extensionButton.setTitleColor(UIColor(hex: 0xD0021B), for: .normal)
-        extensionButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 5.0, 0.0, 5.0)
+        extensionButton.contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 5.0, bottom: 0.0, right: 5.0)
         extensionButton.layer.cornerRadius = 5
         extensionButton.titleLabel?.textAlignment = .center
         extensionButton.layer.borderWidth = 1.5
@@ -218,21 +219,21 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
         var height: CGFloat = 0.0
         height += 10.0
 
-        var attributedString: NSAttributedString = NSAttributedString(string: object.fileName ?? "", attributes: [NSAttributedStringKey.font: titleLabelFont ?? defaultFont])
+        var attributedString: NSAttributedString = NSAttributedString(string: object.fileName ?? "", attributes: [NSAttributedString.Key.font: titleLabelFont ?? defaultFont])
         var limitingSize: CGSize = CGSize(width: width - 60.0, height: CGFloat.greatestFiniteMagnitude)
         var rect: CGRect = attributedString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
         height += rect.height
         
         if let value = object.fileSize, let fileSize = UInt64(value) {
-            attributedString = NSAttributedString(string: String(format: "\(getFileSize(with: fileSize))"), attributes: [NSAttributedStringKey.font: sizeLabelFont ?? defaultFont])
+            attributedString = NSAttributedString(string: String(format: "\(getFileSize(with: fileSize))"), attributes: [NSAttributedString.Key.font: sizeLabelFont ?? defaultFont])
         } else {
-            attributedString = NSAttributedString(string: " ", attributes: [NSAttributedStringKey.font: sizeLabelFont ?? defaultFont])
+            attributedString = NSAttributedString(string: " ", attributes: [NSAttributedString.Key.font: sizeLabelFont ?? defaultFont])
         }
 
         rect = attributedString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
         height += rect.height
         
-        attributedString = NSAttributedString(string: object.sharedBy ?? "", attributes: [NSAttributedStringKey.font: sizeLabelFont ?? defaultFont])
+        attributedString = NSAttributedString(string: object.sharedBy ?? "", attributes: [NSAttributedString.Key.font: sizeLabelFont ?? defaultFont])
         limitingSize = CGSize(width: width - 87.0, height: CGFloat.greatestFiniteMagnitude)
         rect = attributedString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
         height += rect.height
@@ -241,7 +242,7 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
         let formatter = DateFormatter.yyyyMMdd
         if let dateString  = object.lastModified, let date = formatter.date(from: dateString) {
             let text = "Last edited " + date.formattedAsAgo()
-            attributedString = NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: sizeLabelFont ?? defaultFont])
+            attributedString = NSAttributedString(string: text, attributes: [NSAttributedString.Key.font: sizeLabelFont ?? defaultFont])
             limitingSize = CGSize(width: width - 20.0, height: CGFloat.greatestFiniteMagnitude)
             rect = attributedString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
             height += rect.height
@@ -363,6 +364,7 @@ public class KADriveFileView: UIView, UIGestureRecognizerDelegate {
     }
 }
 
+@available(iOS 8.2, *)
 public class KADriveFileCollectionViewCell: UICollectionViewCell {
     // MARK: - properties
     public static let cellReuseIdentifier: String = "KADriveFileCollectionViewCell"
@@ -417,6 +419,7 @@ public class KADriveFilesHeaderView: UICollectionReusableView {
     }
 }
 
+@available(iOS 8.2, *)
 extension KADriveFileView {
     class func formatHTMLEscapedString(_ string: String) -> String {
         if string.count == 0 {

@@ -43,10 +43,10 @@ public class KAEmailCarouselView: UICollectionView, UICollectionViewDelegate, UI
     
     convenience init () {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = UICollectionViewScrollDirection.horizontal
+        flowLayout.scrollDirection = UICollectionView.ScrollDirection.horizontal
         flowLayout.minimumInteritemSpacing = 10.0
         flowLayout.minimumLineSpacing = 10.0
-        flowLayout.sectionInset = UIEdgeInsetsMake(0.0, 45.0, 0.0, 45.0)
+        flowLayout.sectionInset = UIEdgeInsets(top: 0.0, left: 45.0, bottom: 0.0, right: 45.0)
         
         self.init(frame: CGRect.zero, collectionViewLayout: flowLayout)
         self.backgroundColor = UIColor.clear
@@ -58,7 +58,7 @@ public class KAEmailCarouselView: UICollectionView, UICollectionViewDelegate, UI
         self.delegate = self
         
         self.register(KAEmailCardCollectionViewCell.self, forCellWithReuseIdentifier: KAEmailCardCollectionViewCell.cellReuseIdentifier)
-        self.register(KAEmailCardHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "KAEmailCardHeaderView")
+        self.register(KAEmailCardHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "KAEmailCardHeaderView")
     }
 
     required public init?(coder aDecoder: NSCoder) {

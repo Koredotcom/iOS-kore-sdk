@@ -92,13 +92,13 @@ public class KREImagesCollectionView: UIView, UICollectionViewDataSource, UIColl
         
         appsCollectionView.register(KREImageCollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-14-[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": topDividerLineView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-14-[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": topDividerLineView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-14-[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": bottomDividerLineView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-14-[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": bottomDividerLineView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": appsCollectionView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": appsCollectionView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0(0.5)][v1][v2(0.5)]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": topDividerLineView, "v1": appsCollectionView, "v2": bottomDividerLineView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0(0.5)][v1][v2(0.5)]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": topDividerLineView, "v1": appsCollectionView, "v2": bottomDividerLineView]))
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -114,13 +114,13 @@ public class KREImagesCollectionView: UIView, UICollectionViewDataSource, UIColl
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0, 1, 0, 1)
+        return UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     }
 }
 
 public class KREImagesViewCell: UITableViewCell {
     // MARK:- init
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
     }

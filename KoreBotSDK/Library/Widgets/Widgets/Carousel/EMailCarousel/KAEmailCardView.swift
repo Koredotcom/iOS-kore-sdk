@@ -187,14 +187,22 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         fromPlaceholder.translatesAutoresizingMaskIntoConstraints = false
         fromPlaceholder.text = "From"
         fromPlaceholder.textAlignment = .right
-        fromPlaceholder.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            fromPlaceholder.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         fromPlaceholder.textColor = UIColor(hex: 0x8B93A0)
         fromPlaceholder.sizeToFit()
         self.addSubview(fromPlaceholder)
 
         fromLabel = UILabel(frame: .zero)
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            fromLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         fromLabel.textColor = UIColor(hex: 0x1A1A1A)
         fromLabel.numberOfLines = 2
         fromLabel.lineBreakMode = .byTruncatingTail
@@ -205,14 +213,22 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         toPlaceholder.text = "To"
         toPlaceholder.textAlignment = .right
         toPlaceholder.translatesAutoresizingMaskIntoConstraints = false
-        toPlaceholder.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            toPlaceholder.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         toPlaceholder.textColor = UIColor(hex: 0x8B93A0)
         toPlaceholder.sizeToFit()
         self.addSubview(toPlaceholder)
 
         toLabel = UILabel(frame: .zero)
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            toLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         toLabel.textColor = UIColor(hex: 0x1A1A1A)
         toLabel.numberOfLines = 2
         toLabel.lineBreakMode = .byTruncatingTail
@@ -223,14 +239,22 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         ccPlaceholder.translatesAutoresizingMaskIntoConstraints = false
         ccPlaceholder.text = "Cc"
         ccPlaceholder.textAlignment = .right
-        ccPlaceholder.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            ccPlaceholder.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         ccPlaceholder.textColor = UIColor(hex: 0x8B93A0)
         ccPlaceholder.sizeToFit()
         self.addSubview(ccPlaceholder)
 
         ccLabel = UILabel(frame: .zero)
         ccLabel.translatesAutoresizingMaskIntoConstraints = false
-        ccLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            ccLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         ccLabel.textColor = UIColor(hex: 0x1A1A1A)
         ccLabel.numberOfLines = 2
         ccLabel.lineBreakMode = .byTruncatingTail
@@ -239,7 +263,11 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         
         subjectLabel = UILabel(frame: .zero)
         subjectLabel.translatesAutoresizingMaskIntoConstraints = false
-        subjectLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .bold)
+        if #available(iOS 8.2, *) {
+            subjectLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .bold)
+        } else {
+            // Fallback on earlier versions
+        }
         subjectLabel.textColor = UIColor(hex: 0x484848)
         subjectLabel.numberOfLines = 2
         subjectLabel.lineBreakMode = .byTruncatingTail
@@ -257,7 +285,11 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         addSubview(textView)
         
         attachmentLabel = UILabel(frame: CGRect.zero)
-        attachmentLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            attachmentLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         attachmentLabel.textColor = UIColor(hex: 0x8B93A0)
         attachmentLabel.numberOfLines = 0
         attachmentLabel.sizeToFit()
@@ -276,7 +308,11 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         button.layer.borderWidth = 0.5
         button.layer.borderColor = UIColor.lightGray.cgColor
         button.setTitleColor(UIColor(hex: 0x6168E7), for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 15.0, weight: .medium)
+        if #available(iOS 8.2, *) {
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 15.0, weight: .medium)
+        } else {
+            // Fallback on earlier versions
+        }
         button.setTitle("View Details", for: .normal)
         button.addTarget(self, action: #selector(buttonAction(_:)), for: .touchUpInside)
         addSubview(button)
@@ -307,7 +343,11 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         button.addConstraint(buttonHeightConstraint)
 
         typeLabel = UILabel(frame: CGRect.zero)
-        typeLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            typeLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         typeLabel.textColor = UIColor(hex: 0xA7B0BE)
         typeLabel.numberOfLines = 0
         typeLabel.textAlignment = .left
@@ -317,7 +357,11 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
         footerView.addSubview(typeLabel)
 
         dateTimeLabel = UILabel(frame: CGRect.zero)
-        dateTimeLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
+        if #available(iOS 8.2, *) {
+            dateTimeLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .regular)
+        } else {
+            // Fallback on earlier versions
+        }
         dateTimeLabel.textColor = UIColor(hex: 0xA7B0BE)
         dateTimeLabel.numberOfLines = 0
         dateTimeLabel.textAlignment = .right
@@ -343,19 +387,35 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
     }
     
     static func getAttributedString(for emailObject: KAEmailCardInfo) -> NSMutableAttributedString {
-//        let subject = emailObject.subject ?? ""
-//        let subjectString = formatHTMLEscapedString(subject)
-        let subjectAttributes = [NSAttributedStringKey.foregroundColor:UIColor(hex: 0x484848),
-                            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0, weight: .bold)]
+        //        let subject = emailObject.subject ?? ""
+        //        let subjectString = formatHTMLEscapedString(subject)
+        var subjectAttributes : [NSAttributedString.Key: NSObject]?
+        
+        if #available(iOS 8.2, *) {
+            subjectAttributes = [NSAttributedString.Key.foregroundColor:UIColor(hex: 0x484848),
+                                 NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0, weight: .bold)]
+            
+        } else {
+            // Fallback on earlier versions
+            
+        }
         let attributedString = NSMutableAttributedString(string: "", attributes: subjectAttributes)
-
+        
         let desc = emailObject.desc ?? ""
         let descString = formatHTMLEscapedString(desc)
-        let descAttributes = [NSAttributedStringKey.foregroundColor:UIColor(hex: 0x777777),
-                             NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0, weight: .regular)]
+        var descAttributes : [NSAttributedString.Key: NSObject]?
+        if #available(iOS 8.2, *) {
+            descAttributes = [NSAttributedString.Key.foregroundColor:UIColor(hex: 0x777777),
+                              NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0, weight: .regular)]
+            
+        } else {
+            // Fallback on earlier versions
+            
+        }
         let descAttributedString = NSAttributedString(string: "\(descString)", attributes: descAttributes)
         attributedString.append(descAttributedString)
         return attributedString
+        
     }
     
     static func getExpectedHeight(for object: KAEmailCardInfo, width: CGFloat) -> CGFloat {
@@ -374,8 +434,13 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
     
     public func configure(with object: KAEmailCardInfo) {
         let from = object.from ?? "".addingPercentEncoding(withAllowedCharacters: .controlCharacters)
-        let fromAttributes = [NSAttributedStringKey.foregroundColor:UIColor(hex: 0x6168E7),
-                            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0, weight: .regular)]
+        var fromAttributes : [NSAttributedString.Key: NSObject]?
+        if #available(iOS 8.2, *) {
+            let fromAttributes = [NSAttributedString.Key.foregroundColor:UIColor(hex: 0x6168E7),
+                                  NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0, weight: .regular)]
+        } else {
+            // Fallback on earlier versions
+        }
         let fromString = KAEmailCardView.formatHTMLEscapedString(from!)
         let fromAttributedString = NSAttributedString(string: "\(fromString)\n", attributes: fromAttributes)
         fromLabel.attributedText = fromAttributedString
@@ -386,9 +451,13 @@ public class KAEmailCardView: UIView, UIGestureRecognizerDelegate {
             toString = "  "
         }
         print(toString)
-        
-        let toAttributes = [NSAttributedStringKey.foregroundColor:UIColor(hex: 0x1A1A1A),
-                                 NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0, weight: .regular)]
+        var toAttributes : [NSAttributedString.Key: NSObject]?
+        if #available(iOS 8.2, *) {
+            toAttributes = [NSAttributedString.Key.foregroundColor:UIColor(hex: 0x1A1A1A),
+                            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0, weight: .regular)]
+        } else {
+            // Fallback on earlier versions
+        }
         let toAttributedString = NSAttributedString(string: toString, attributes: toAttributes)
         toLabel.attributedText = toAttributedString
         

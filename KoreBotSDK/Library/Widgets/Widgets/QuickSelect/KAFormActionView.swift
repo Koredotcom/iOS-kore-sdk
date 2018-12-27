@@ -159,10 +159,10 @@ public class KAFormActionView: UIView, UICollectionViewDelegate, UICollectionVie
         // configure layout
         flowLayout = KACenterAlignedCollectionViewFlowLayout()
         flowLayout.itemSize = CGSize.zero
-        flowLayout.scrollDirection = UICollectionViewScrollDirection.horizontal
+        flowLayout.scrollDirection = UICollectionView.ScrollDirection.horizontal
         flowLayout.minimumInteritemSpacing = 8.0
         flowLayout.minimumLineSpacing = 1
-        flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 10.0, 10.0, 10.0)
+        flowLayout.sectionInset = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
         
         // collectionView initialization
         collectionView = KRECollectionView(frame: self.bounds, collectionViewLayout: flowLayout)
