@@ -203,15 +203,7 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     
     public func configureForCardInfo(cardInfo: KRECardInfo) {
         isImagePresent = cardInfo.isImagePresent
-        if let urlstr = cardInfo.imageURL, let url = URL(string: urlstr){
-            DispatchQueue.main.async {
-                if let data = try? Data(contentsOf: url){
-                    self.imageView.image = UIImage(data: data)
-                    
-                }
-            }
-        }
-
+        self.imageView.setImageWith(NSURL(string: cardInfo.imageURL!) as URL!, placeholderImage: UIImage.init(named: "placeholder_image"))
         self.textLabel.attributedText = KRECardView.getAttributedString(cardInfo: cardInfo)
         self.optionsView.options.removeAll()
         self.optionsView.options = cardInfo.options!
