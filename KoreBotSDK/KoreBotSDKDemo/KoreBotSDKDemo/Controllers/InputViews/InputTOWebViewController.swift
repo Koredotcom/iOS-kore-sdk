@@ -59,17 +59,17 @@ class InputTOWebViewController: UIViewController {
     }
     
     private func add(asChildViewController viewController: UIViewController) {
-        addChildViewController(viewController)
+        addChild(viewController)
         menuView.addSubview(viewController.view)
         viewController.view.frame = menuView.bounds
         viewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        viewController.didMove(toParentViewController: self)
+        viewController.didMove(toParent: self)
     }
 
     private func remove(asChildViewController viewController: UIViewController) {
-        viewController.willMove(toParentViewController: nil)
+        viewController.willMove(toParent: nil)
         viewController.view.removeFromSuperview()
-        viewController.removeFromParentViewController()
+        viewController.removeFromParent()
     }
     
     public func dismissInputView() {

@@ -14,9 +14,9 @@ class MiniTableViewCell: UITableViewCell {
     
     var headerLabel: UILabel!
     var secondLbl : UILabel!
-   
-
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.initialize()
     }
@@ -29,7 +29,7 @@ class MiniTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         headerLabel.text = ""
         secondLbl.text = ""
-    
+        
     }
     
     func initialize() {
@@ -41,7 +41,7 @@ class MiniTableViewCell: UITableViewCell {
         headerLabel.textAlignment = .left
         headerLabel.font = UIFont(name: "Lato-Regular", size: 15.0)
         headerLabel.font = headerLabel.font.withSize(15.0)
-
+        
         headerLabel.textColor = UIColor.black
         contentView.addSubview(headerLabel)
         
@@ -50,17 +50,17 @@ class MiniTableViewCell: UITableViewCell {
         secondLbl.textAlignment = .left
         secondLbl.font = UIFont(name: "Lato-Regular", size: 15.0)
         secondLbl.font = secondLbl.font.withSize(15.0)
-
+        
         secondLbl.textColor = UIColor.black
         contentView.addSubview(secondLbl)
         
         let views: [String: UIView] = ["headerLabel": headerLabel, "secondLbl":secondLbl]
-         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[headerLabel]-[secondLbl]-15-|", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[headerLabel]-[secondLbl]-15-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[headerLabel]-15-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[secondLbl]-15-|", options:[], metrics:nil, views:views))
         
         
-
+        
     }
     
     // MARK:- deinit
@@ -68,6 +68,6 @@ class MiniTableViewCell: UITableViewCell {
         
         headerLabel = nil
         secondLbl = nil
-    
+        
     }
 }

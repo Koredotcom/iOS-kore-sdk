@@ -123,7 +123,7 @@ class AudioComposeView: UIView {
     }
     
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: UIViewNoIntrinsicMetric, height: 80.0)
+        return CGSize(width: UIView.noIntrinsicMetric, height: 80.0)
     }
     
     public func startRecording() {
@@ -242,7 +242,7 @@ class AudioComposeView: UIView {
         if(self.audioPeakOutput > 0.9){
             radius = CGFloat(self.randomInt(min: 17, max: 25))
         }
-        self.animateBGView.bringSubview(toFront: self.audioImageView)
+        self.animateBGView.bringSubviewToFront(self.audioImageView)
         circleView.layer.shadowColor = UIColor.white.cgColor
         circleView.layer.shadowOpacity = 0.6
         circleView.layer.shadowRadius = 1.0
@@ -265,12 +265,12 @@ class AudioComposeView: UIView {
     
     fileprivate func startAnimationWaveTimer() {
         self.animationTimer = Timer.scheduledTimer(timeInterval: 0.35, target: self, selector: #selector(self.showCircleWaveAnimation), userInfo: nil, repeats: true)
-        RunLoop.main.add(self.animationTimer, forMode: RunLoopMode.defaultRunLoopMode)
+        RunLoop.main.add(self.animationTimer, forMode: RunLoop.Mode.default)
     }
     
     fileprivate func audioRecordTimer() {
         self.audioRecorderTimer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(self.updateRecordTimer), userInfo: nil, repeats: true)
-        RunLoop.main.add(self.audioRecorderTimer, forMode: RunLoopMode.defaultRunLoopMode)
+        RunLoop.main.add(self.audioRecorderTimer, forMode: RunLoop.Mode.default)
     }
     
     // MARK: Decibel to Linear conversion

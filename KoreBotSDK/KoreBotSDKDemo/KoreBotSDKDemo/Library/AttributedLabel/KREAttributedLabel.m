@@ -145,11 +145,11 @@
                 // mask the repeated word with asterisk to avaoid duplicates for highlighting.-> hack
                 dupString = [[self replaceStringWithAsterisk:dupString inRange:range] mutableCopy];
                 if(range.length){
-                    [attrString addAttribute:NSForegroundColorAttributeName value:_mentionTextColor range:range];
+                    [attrString addAttribute:NSForegroundColorAttributeName value:weakSelf.mentionTextColor range:range];
                     CGRect pos = [layoutManager boundingRectForCharacterRange:range];
-                    [_touchableWords addObject:validWord];
-                    [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordMention]];
-                    [_touchableLocations addObject:[NSValue valueWithCGRect:pos]];
+                    [weakSelf.touchableWords addObject:validWord];
+                    [weakSelf.touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordMention]];
+                    [weakSelf.touchableLocations addObject:[NSValue valueWithCGRect:pos]];
                     [weakSelf addTouchableLayerWithRect:pos];
                 }
             }
@@ -162,12 +162,12 @@
             result = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
             [result enumerateObjectsUsingBlock:^(NSTextCheckingResult *match, NSUInteger idx, BOOL *stop) {
                 NSString *validWord = [string substringWithRange:match.range];
-                [attrString addAttribute:NSForegroundColorAttributeName value:_hashtagTextColor range:match.range];
+                [attrString addAttribute:NSForegroundColorAttributeName value:weakSelf.hashtagTextColor range:match.range];
                 
                 CGRect pos = [layoutManager boundingRectForCharacterRange:match.range];
-                [_touchableWords addObject:validWord];
-                [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordHashtag]];
-                [_touchableLocations addObject:[NSValue valueWithCGRect:pos]];
+                [weakSelf.touchableWords addObject:validWord];
+                [weakSelf.touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordHashtag]];
+                [weakSelf.touchableLocations addObject:[NSValue valueWithCGRect:pos]];
                 [weakSelf addTouchableLayerWithRect:pos];
             }];
             //end
@@ -177,18 +177,18 @@
         regex = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink|NSTextCheckingTypePhoneNumber error:nil];
         result = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
         [result enumerateObjectsUsingBlock:^(NSTextCheckingResult *match, NSUInteger idx, BOOL *stop) {
-            [attrString addAttribute:NSForegroundColorAttributeName value:_linkTextColor range:match.range];
+            [attrString addAttribute:NSForegroundColorAttributeName value:weakSelf.linkTextColor range:match.range];
             [attrString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:match.range];
             
             CGRect pos = [layoutManager boundingRectForCharacterRange:match.range];
             if ([match resultType] == NSTextCheckingTypeLink) {
-                [_touchableWords addObject:[[match URL] absoluteString]];
-                [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
+                [weakSelf.touchableWords addObject:[[match URL] absoluteString]];
+                [weakSelf.touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
             } else if ([match resultType] == NSTextCheckingTypePhoneNumber) {
-                [_touchableWords addObject:[match phoneNumber]];
-                [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordPhoneNumber]];
+                [weakSelf.touchableWords addObject:[match phoneNumber]];
+                [weakSelf.touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordPhoneNumber]];
             }
-            [_touchableLocations addObject:[NSValue valueWithCGRect:pos]];
+            [weakSelf.touchableLocations addObject:[NSValue valueWithCGRect:pos]];
             [weakSelf addTouchableLayerWithRect:pos];
         }];
         //end
@@ -265,13 +265,13 @@
         if(tempString.length){
             NSRange range = [string rangeOfString:[KREUtilities getHTMLStrippedStringFromString:tempString]];
             if(range.length){
-                [attributedString addAttribute:NSForegroundColorAttributeName value:_linkTextColor range:range];
+                [attributedString addAttribute:NSForegroundColorAttributeName value:weakSelf.linkTextColor range:range];
                 [attributedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:range];
                 
                 CGRect pos = [layoutManager boundingRectForCharacterRange:range];
-                [_touchableWords addObject:url];
-                [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
-                [_touchableLocations addObject:[NSValue valueWithCGRect:pos]];
+                [weakSelf.touchableWords addObject:url];
+                [weakSelf.touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
+                [weakSelf.touchableLocations addObject:[NSValue valueWithCGRect:pos]];
                 [weakSelf addTouchableLayerWithRect:pos];
             }
         }
@@ -282,9 +282,9 @@
     [attributedString enumerateAttribute:NSLinkAttributeName inRange:NSMakeRange(0, [string length]) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
         if (value != NULL) {
             CGRect pos = [layoutManager boundingRectForCharacterRange:range];
-            [_touchableWords addObject:[value absoluteString]];
-            [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
-            [_touchableLocations addObject:[NSValue valueWithCGRect:pos]];
+            [weakSelf.touchableWords addObject:[value absoluteString]];
+            [weakSelf.touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
+            [weakSelf.touchableLocations addObject:[NSValue valueWithCGRect:pos]];
             [weakSelf addTouchableLayerWithRect:pos];
         }
     }];
@@ -294,18 +294,18 @@
     regex = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink|NSTextCheckingTypePhoneNumber error:nil];
     result = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
     [result enumerateObjectsUsingBlock:^(NSTextCheckingResult *match, NSUInteger idx, BOOL *stop) {
-        [attributedString addAttribute:NSForegroundColorAttributeName value:_linkTextColor range:match.range];
+        [attributedString addAttribute:NSForegroundColorAttributeName value:weakSelf.linkTextColor range:match.range];
         [attributedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:match.range];
         
         CGRect pos = [layoutManager boundingRectForCharacterRange:match.range];
         if ([match resultType] == NSTextCheckingTypeLink) {
-            [_touchableWords addObject:[[match URL] absoluteString]];
-            [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
+            [weakSelf.touchableWords addObject:[[match URL] absoluteString]];
+            [weakSelf.touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
         } else if ([match resultType] == NSTextCheckingTypePhoneNumber) {
-            [_touchableWords addObject:[match phoneNumber]];
-            [_touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordPhoneNumber]];
+            [weakSelf.touchableWords addObject:[match phoneNumber]];
+            [weakSelf.touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordPhoneNumber]];
         }
-        [_touchableLocations addObject:[NSValue valueWithCGRect:pos]];
+        [weakSelf.touchableLocations addObject:[NSValue valueWithCGRect:pos]];
         [weakSelf addTouchableLayerWithRect:pos];
     }];
     //end
@@ -396,14 +396,15 @@
 }
 
 - (BOOL) gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
+    __weak __typeof(self) weakSelf = self;
     if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]] && [(UITapGestureRecognizer*)gestureRecognizer numberOfTapsRequired] == 1){
         CGPoint touchLocation = [gestureRecognizer locationInView:self];
         __block BOOL shouldDetect = NO;
         [_touchableLocations enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSValue *location = obj;
             if(CGRectContainsPoint([location CGRectValue], touchLocation)){
-                _currentSelectedType = (KREAttributedHotWord)[[_touchableWordsType objectAtIndex:idx] integerValue];
-                _currentSelectedString = [_touchableWords objectAtIndex:idx];
+                weakSelf.currentSelectedType = (KREAttributedHotWord)[[weakSelf.touchableWordsType objectAtIndex:idx] integerValue];
+                weakSelf.currentSelectedString = [weakSelf.touchableWords objectAtIndex:idx];
                 shouldDetect = YES;
                 *stop = YES;
             }

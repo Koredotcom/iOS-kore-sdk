@@ -200,7 +200,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
             itemWidth = floor((maxWidth*CGFloat(percentage)/100))
         }
         else{
-            let width : CGFloat = (header.title as NSString).size(withAttributes: [NSAttributedStringKey.font : UIFont(name: "HelveticaNeue-Bold", size: 14.0)!]).width*2.0
+            let width : CGFloat = (header.title as NSString).size(withAttributes: [NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Bold", size: 14.0)!]).width*2.0
             itemWidth = width
         }
         

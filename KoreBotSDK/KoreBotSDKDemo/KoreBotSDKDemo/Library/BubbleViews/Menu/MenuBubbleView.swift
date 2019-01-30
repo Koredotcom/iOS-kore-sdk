@@ -50,14 +50,14 @@ class MenuBubbleView: BubbleView {
         self.textLabel.numberOfLines = 0
         self.textLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.textLabel.isUserInteractionEnabled = true
-        self.textLabel.contentMode = UIViewContentMode.topLeft
+        self.textLabel.contentMode = UIView.ContentMode.topLeft
         self.textLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.textLabel)
         
         self.optionsView = KREOptionsView()
         self.optionsView.translatesAutoresizingMaskIntoConstraints = false
         self.optionsView.isUserInteractionEnabled = true
-        self.optionsView.contentMode = UIViewContentMode.topLeft
+        self.optionsView.contentMode = UIView.ContentMode.topLeft
         self.addSubview(self.optionsView)
         
         self.showMoreButton = UIButton.init(frame: CGRect.zero)
@@ -77,7 +77,7 @@ class MenuBubbleView: BubbleView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[showMoreButton(36.0)]|", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[showMoreButton]-10-|", options: [], metrics: nil, views: views))
         
-        self.textLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
+        self.textLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.vertical)
         
         self.optionsView.optionsButtonAction = {[weak self] (text) in
             if((self?.optionsAction) != nil){
@@ -90,7 +90,7 @@ class MenuBubbleView: BubbleView {
             }
         }
     }
-   override func borderColor() -> UIColor {
+    override func borderColor() -> UIColor {
         if (self.tailPosition == BubbleMaskTailPosition.left) {
             return userColor//BubbleViewLeftTint
         }
@@ -105,12 +105,12 @@ class MenuBubbleView: BubbleView {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
                 let buttons: Array<Dictionary<String, Any>> = jsonObject["buttons"] != nil ? jsonObject["buttons"] as! Array<Dictionary<String, Any>> : []
-               var buttonsCount: Int = Int ()
+                var buttonsCount: Int = Int ()
                 if(buttons.count > OptionsBubbleView.buttonsLimit && !showMore){
                     self.showMoreButton.isHidden = false
                 }
                 if(self.showMoreButton.isHidden){
-                   buttonsCount = buttons.count
+                    buttonsCount = buttons.count
                 }
                 else{
                     buttonsCount = MenuBubbleView.btnLimit
@@ -147,7 +147,7 @@ class MenuBubbleView: BubbleView {
         let limitingSize: CGSize  = CGSize(width: BubbleViewMaxWidth - 20, height: CGFloat.greatestFiniteMagnitude)
         let textSize: CGSize = self.textLabel.sizeThatFits(limitingSize)
         let rowsHeight = self.optionsView.getExpectedHeight(width: BubbleViewMaxWidth)
-//        let rowsHeight = self.optionsView.getExpectedHeight(width: BubbleViewMaxWidth)
+        //        let rowsHeight = self.optionsView.getExpectedHeight(width: BubbleViewMaxWidth)
         return CGSize(width: BubbleViewMaxWidth, height: rowsHeight  + textSize.height + showMoreheight + 20.0)
     }
     

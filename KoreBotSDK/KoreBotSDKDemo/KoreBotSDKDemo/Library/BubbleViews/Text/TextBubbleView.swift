@@ -29,7 +29,7 @@ class TextBubbleView : BubbleView {
         self.textLabel.numberOfLines = 0
         self.textLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.textLabel.isUserInteractionEnabled = true
-        self.textLabel.contentMode = UIViewContentMode.topLeft
+        self.textLabel.contentMode = UIView.ContentMode.topLeft
         self.textLabel.translatesAutoresizingMaskIntoConstraints = false
         self.textLabel.imageDetectionBlock = {[weak self] (reload) in
             self?.onChange(reload)

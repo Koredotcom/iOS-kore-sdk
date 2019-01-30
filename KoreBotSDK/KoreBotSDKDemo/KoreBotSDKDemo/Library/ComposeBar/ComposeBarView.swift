@@ -16,7 +16,7 @@ protocol ComposeBarViewDelegate {
 }
 
 class ComposeBarView: UIView {
-
+    
     public var delegate: ComposeBarViewDelegate?
     
     fileprivate var topLineView: UIView!
@@ -24,7 +24,7 @@ class ComposeBarView: UIView {
     public var growingTextView: KREGrowingTextView!
     fileprivate var sendButton: UIButton!
     fileprivate var speechToTextButton: UIButton!
-
+    
     fileprivate var textViewTrailingConstraint: NSLayoutConstraint!
     fileprivate(set) public var isKeyboardEnabled: Bool = false
     
@@ -45,7 +45,7 @@ class ComposeBarView: UIView {
     fileprivate func setupViews() {
         self.backgroundColor = .clear
         
-        self.growingTextView = KREGrowingTextView.init(frame: CGRect.zero)
+        self.growingTextView = KREGrowingTextView(frame: CGRect.zero)
         self.growingTextView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.growingTextView)
         self.growingTextView.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .horizontal)
@@ -60,11 +60,11 @@ class ComposeBarView: UIView {
         self.growingTextView.backgroundColor = .clear
         self.growingTextView.isUserInteractionEnabled = false
         
-        let attributes: [NSAttributedStringKey : Any] = [NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 14.0)!, NSAttributedStringKey.foregroundColor: Common.UIColorRGB(0xB5B9BA)]
+        let attributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: UIFont(name: "HelveticaNeue", size: 14.0)!, NSAttributedString.Key.foregroundColor: Common.UIColorRGB(0xB5B9BA)]
         self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Say Something...", attributes:attributes)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.textDidBeginEditingNotification(_ :)), name: NSNotification.Name.UITextViewTextDidBeginEditing, object: self.growingTextView.textView)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.textDidChangeNotification(_ :)), name: NSNotification.Name.UITextViewTextDidChange, object: self.growingTextView.textView)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.textDidBeginEditingNotification(_ :)), name: UITextView.textDidBeginEditingNotification, object: self.growingTextView.textView)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.textDidChangeNotification(_ :)), name: UITextView.textDidChangeNotification, object: self.growingTextView.textView)
         
         self.sendButton = UIButton.init(frame: CGRect.zero)
         self.sendButton.setTitle("Send", for: .normal)
@@ -76,7 +76,7 @@ class ComposeBarView: UIView {
         self.sendButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
         self.sendButton.addTarget(self, action: #selector(self.sendButtonAction(_:)), for: .touchUpInside)
         self.sendButton.isHidden = true
-        self.sendButton.contentEdgeInsets = UIEdgeInsetsMake(9.0, 3.0, 7.0, 3.0)
+        self.sendButton.contentEdgeInsets = UIEdgeInsets(top: 9.0, left: 3.0, bottom: 7.0, right: 3.0)
         self.sendButton.clipsToBounds = true
         self.addSubview(self.sendButton)
         
@@ -87,7 +87,7 @@ class ComposeBarView: UIView {
         self.speechToTextButton.imageView?.contentMode = .scaleAspectFit
         self.speechToTextButton.addTarget(self, action: #selector(self.speechToTextButtonAction(_:)), for: .touchUpInside)
         self.speechToTextButton.isHidden = true
-        self.speechToTextButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 3.0, 5.0, 3.0)
+        self.speechToTextButton.contentEdgeInsets = UIEdgeInsets(top: 6.0, left: 3.0, bottom: 5.0, right: 3.0)
         self.speechToTextButton.clipsToBounds = true
         self.addSubview(self.speechToTextButton)
         
@@ -138,14 +138,14 @@ class ComposeBarView: UIView {
     
     public func setText(_ text: String) -> Void {
         self.growingTextView.textView.text = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        self.textDidChangeNotification(Notification(name: NSNotification.Name.UITextViewTextDidChange))
+        self.textDidChangeNotification(Notification(name: UITextView.textDidChangeNotification))
     }
     
     //MARK: Private methods
     
     @objc fileprivate func clearButtonAction(_ sender: AnyObject!) {
         self.growingTextView.textView.text = "";
-        self.textDidChangeNotification(Notification(name: NSNotification.Name.UITextViewTextDidChange))
+        self.textDidChangeNotification(Notification(name: UITextView.textDidChangeNotification))
     }
     
     @objc fileprivate func sendButtonAction(_ sender: AnyObject!) {
@@ -182,7 +182,7 @@ class ComposeBarView: UIView {
     @objc fileprivate func textDidChangeNotification(_ notification: Notification) {
         self.valueChanged()
     }
-
+    
     // MARK: UIResponder Methods
     
     open override var isFirstResponder: Bool {

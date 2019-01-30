@@ -64,7 +64,7 @@ class ImageComponentCollectionViewCell : UICollectionViewCell {
         return self.imageComponent.image!
     }
     
-    func transitionContentMode() -> UIViewContentMode {
+    func transitionContentMode() -> UIView.ContentMode {
         return .scaleAspectFill
     }
 

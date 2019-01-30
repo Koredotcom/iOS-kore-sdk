@@ -107,10 +107,10 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
                 return CGFloat((data.rows[indexPath.section].count)*44)
             }
             else {
-                return UITableViewAutomaticDimension
+                return UITableView.automaticDimension
             }
         }
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -152,7 +152,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
                     cell.secondLbl.text = row[indexPath.row*2+1]
                 }
                 cell.accessoryView = UIImageView(image: UIImage(named: "arrowUnselected"))
-                cell.separatorInset = UIEdgeInsetsMake(0, 20, 0, 22)
+                cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 22)
                 return cell
                 
             }
@@ -167,7 +167,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
                 cell.secondLbl.text = row[indexPath.row*2+1]
             }
             cell.accessoryView = UIImageView(image: UIImage(named: "arrowUnselected"))
-            cell.separatorInset = UIEdgeInsetsMake(0, 20, 0, 22)
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 22)
 
             
             return cell

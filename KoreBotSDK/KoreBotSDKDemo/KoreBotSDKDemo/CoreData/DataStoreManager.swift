@@ -17,7 +17,7 @@ class DataStoreManager: NSObject {
     static var instance: DataStoreManager!
 
     // MARK:- datastore manager shared instance
-    open static let sharedManager : DataStoreManager = {
+    public static let sharedManager : DataStoreManager = {
         if (instance == nil) {
             instance = DataStoreManager()
         }

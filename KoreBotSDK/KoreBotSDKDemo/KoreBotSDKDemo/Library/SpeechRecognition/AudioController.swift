@@ -37,7 +37,7 @@ class AudioController {
         
         let session = AVAudioSession.sharedInstance()
         do {
-            try session.setCategory(AVAudioSessionCategoryRecord)
+            try session.setCategory(AVAudioSession.Category.playAndRecord, mode: AVAudioSession.Mode.default, options: AVAudioSession.CategoryOptions.defaultToSpeaker)
             try session.setPreferredIOBufferDuration(0.02)
             try session.setPreferredSampleRate(44100)
         } catch {

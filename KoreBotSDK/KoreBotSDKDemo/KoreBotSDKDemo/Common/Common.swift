@@ -21,14 +21,14 @@ let userColor: UIColor = UIColor(red: 38 / 255.0, green: 52 / 255.0, blue: 74 / 
 let botColor: UIColor = UIColor(red: 237 / 255.0, green: 238 / 255.0, blue: 241 / 255.0, alpha: 1)
 
 open class Common : NSObject {
-    open static func UIColorRGB(_ rgb: Int) -> UIColor {
+    public static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)
         let green = CGFloat((rgb >> 8) & 0xFF)
         let red = CGFloat((rgb >> 16) & 0xFF)
         return UIColor(red: red / 255.0, green: green / 255.0, blue: blue / 255.0, alpha: 1)
     }
     
-    open static func UIColorRGBA(_ rgb: Int, a: CGFloat) -> UIColor {
+    public static func UIColorRGBA(_ rgb: Int, a: CGFloat) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)
         let green = CGFloat((rgb >> 8) & 0xFF)
         let red = CGFloat((rgb >> 16) & 0xFF)
@@ -38,7 +38,7 @@ open class Common : NSObject {
 
 open class Utilities: NSObject {
     // MARK:-
-    open static func stringFromJSONObject(object: Any) -> NSString {
+    public static func stringFromJSONObject(object: Any) -> NSString {
         var jsonString: NSString!
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: object, options: .prettyPrinted)
@@ -49,7 +49,7 @@ open class Utilities: NSObject {
         return jsonString
     }
     
-    open static func jsonObjectFromString(jsonString: String) -> Any? {
+    public static func jsonObjectFromString(jsonString: String) -> Any? {
         var jsonObject: Any?
         do {
             let data: Data = jsonString.data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))! as Data
@@ -61,7 +61,7 @@ open class Utilities: NSObject {
         return jsonObject
     }
     
-    open static func getKREActionFromDictionary(dictionary: Dictionary<String, Any>) -> KREAction? {
+    public static func getKREActionFromDictionary(dictionary: Dictionary<String, Any>) -> KREAction? {
         let actionInfo:Dictionary<String,Any> = dictionary
         let actionType: String = actionInfo["type"] != nil ? actionInfo["type"] as! String : ""
         let title: String = actionInfo["title"] != nil ? actionInfo["title"] as! String : ""
