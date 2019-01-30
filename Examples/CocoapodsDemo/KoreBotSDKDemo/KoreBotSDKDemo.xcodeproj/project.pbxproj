@@ -10,80 +10,80 @@
 		050267521DEC65BF001256D3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 050267511DEC65BF001256D3 /* AVFoundation.framework */; };
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
-		0C6D0997206B6DC800CE166E /* MiniTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D0996206B6DC700CE166E /* MiniTableViewCell.swift */; };
-		0C6D0999206B9ACC00CE166E /* ResponsiveTableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D0998206B9ACC00CE166E /* ResponsiveTableBubbleView.swift */; };
-		0C6D099D206B9EB700CE166E /* ResponsiveCustonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D099A206B9EB600CE166E /* ResponsiveCustonCell.swift */; };
-		0C6D099E206B9EB700CE166E /* ExpandedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D099B206B9EB600CE166E /* ExpandedTableViewCell.swift */; };
-		0C6D099F206B9EB700CE166E /* SubTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D099C206B9EB600CE166E /* SubTableViewCell.swift */; };
-		0CA5900020614502002DA3B6 /* MiniTableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA58FFF20614502002DA3B6 /* MiniTableBubbleView.swift */; };
-		0CD0CD492074E3E600FD46F9 /* MenuBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0CD482074E3E600FD46F9 /* MenuBubbleView.swift */; };
 		0CD0CD552077491200FD46F9 /* barrylogo@2x.png in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0CD522077491100FD46F9 /* barrylogo@2x.png */; };
 		0CD0CD562077491200FD46F9 /* barrylogo@3x.png in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0CD532077491100FD46F9 /* barrylogo@3x.png */; };
 		0CD0CD572077491200FD46F9 /* barrylogo.png in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0CD542077491100FD46F9 /* barrylogo.png */; };
 		2E1E49F68222AAA4C970168B /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E1812F1242FE88925056F7C /* Pods_KoreBotSDKDemo.framework */; };
-		6E14F4691F2F4D8600F5C149 /* BotMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E14F4681F2F4D8600F5C149 /* BotMessagesView.swift */; };
-		6E202A581FBB22AF002A608C /* BalloonMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E202A571FBB22AF002A608C /* BalloonMarker.swift */; };
-		6E202A5C1FBC7B33002A608C /* CustomCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E202A5B1FBC7B33002A608C /* CustomCollectionViewLayout.swift */; };
-		6E50B77A1F29042000E10D7D /* ComposeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E50B7791F29042000E10D7D /* ComposeBarView.swift */; };
-		6E5F21E41F8E34AC00527A52 /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5F21E21F8E34AC00527A52 /* AudioController.swift */; };
-		6E7BA00D1F28B62700301C38 /* ChatMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7BA00B1F28B62700301C38 /* ChatMessagesViewController.swift */; };
-		6E7BA00E1F28B62700301C38 /* ChatMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E7BA00C1F28B62700301C38 /* ChatMessagesViewController.xib */; };
-		6E8410211FADF0C900A26C8F /* ChartBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8410201FADF0C900A26C8F /* ChartBubbleView.swift */; };
-		6E9C0E401F162FFB003550F8 /* CarouselBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9C0E3F1F162FFB003550F8 /* CarouselBubbleView.swift */; };
-		6EA472EF1FBD9BA200982255 /* TableTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA472ED1FBD9BA200982255 /* TableTemplateViewController.swift */; };
-		6EA472F01FBD9BA200982255 /* TableTemplateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EA472EE1FBD9BA200982255 /* TableTemplateViewController.xib */; };
-		6ECD5CD01F2B3ECB00B9790E /* AudioComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECD5CCF1F2B3ECB00B9790E /* AudioComposeView.swift */; };
-		7D5861C51F8B6A7E00389DCB /* TableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5861C41F8B6A7E00389DCB /* TableBubbleView.swift */; };
-		7D63B37F1F8B9D6800D08701 /* InputTOWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D63B37E1F8B9D6800D08701 /* InputTOWebViewController.swift */; };
-		BB4D2DE61E289FA000A97E99 /* KRETypingActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4D2DE01E289FA000A97E99 /* KRETypingActivityIndicator.m */; };
-		BB4D2DE71E289FA000A97E99 /* KRETypingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4D2DE21E289FA000A97E99 /* KRETypingCollectionViewCell.m */; };
-		BB4D2DE81E289FA000A97E99 /* KRETypingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB4D2DE31E289FA000A97E99 /* KRETypingCollectionViewCell.xib */; };
-		BB4D2DE91E289FA000A97E99 /* KRETypingStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4D2DE51E289FA000A97E99 /* KRETypingStatusView.m */; };
-		BB4D2DEF1E28AE4600A97E99 /* CALayer+MBAnimationPersistence.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4D2DEE1E28AE4600A97E99 /* CALayer+MBAnimationPersistence.m */; };
-		BBB4F95A1E0D1A8400C2A53A /* ListBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4F9591E0D1A8400C2A53A /* ListBubbleView.swift */; };
-		D10A245A1CF72FD400E2732C /* TextBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10A24591CF72FD400E2732C /* TextBubbleView.swift */; };
-		D10A24741CF808A300E2732C /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10A24731CF808A300E2732C /* Identity.swift */; };
-		D1132F661D8181130083FC10 /* KREAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D1132F5F1D8181130083FC10 /* KREAttributedLabel.m */; };
-		D1132F671D8181130083FC10 /* KRELayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D1132F611D8181130083FC10 /* KRELayoutManager.m */; };
-		D1132F681D8181130083FC10 /* KREUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D1132F631D8181130083FC10 /* KREUtilities.m */; };
-		D1132F691D8181130083FC10 /* NSMutableAttributedString+KREUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D1132F651D8181130083FC10 /* NSMutableAttributedString+KREUtils.m */; };
-		D14BD4B81DDED95C0032BD80 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D14BD4B61DDED95C0032BD80 /* DataModel.xcdatamodeld */; };
-		D14BD4BE1DDEDBAD0032BD80 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14BD4BD1DDEDBAD0032BD80 /* CoreDataManager.swift */; };
 		D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */ = {isa = PBXBuildFile; fileRef = D15041081DE2C4BC00F2F92E /* Messages.plist */; };
-		D150415A1DE2CD0D00F2F92E /* KREComponent+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15041521DE2CD0D00F2F92E /* KREComponent+CoreDataClass.swift */; };
-		D150415B1DE2CD0D00F2F92E /* KREComponent+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15041531DE2CD0D00F2F92E /* KREComponent+CoreDataProperties.swift */; };
-		D150415C1DE2CD0D00F2F92E /* KREMessage+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15041541DE2CD0D00F2F92E /* KREMessage+CoreDataClass.swift */; };
-		D150415D1DE2CD0D00F2F92E /* KREMessage+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15041551DE2CD0D00F2F92E /* KREMessage+CoreDataProperties.swift */; };
-		D150415E1DE2CD0D00F2F92E /* KREContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15041561DE2CD0D00F2F92E /* KREContact+CoreDataClass.swift */; };
-		D150415F1DE2CD0D00F2F92E /* KREContact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15041571DE2CD0D00F2F92E /* KREContact+CoreDataProperties.swift */; };
-		D15041601DE2CD0D00F2F92E /* KREThread+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15041581DE2CD0D00F2F92E /* KREThread+CoreDataClass.swift */; };
-		D15041611DE2CD0D00F2F92E /* KREThread+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15041591DE2CD0D00F2F92E /* KREThread+CoreDataProperties.swift */; };
-		D15041631DE2F93D00F2F92E /* DataStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15041621DE2F93D00F2F92E /* DataStoreManager.swift */; };
 		D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = D15045D41DE422CB008DE46E /* BotConfiguration.plist */; };
-		D15045D71DE475FC008DE46E /* KREFetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15045D61DE475FC008DE46E /* KREFetchedResultsController.swift */; };
-		D1522ABA1DED45AC00D86407 /* OptionsBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1522AB91DED45AC00D86407 /* OptionsBubbleView.swift */; };
-		D17550541F8BADCB00022853 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17550521F8BADCB00022853 /* CustomCollectionViewCell.swift */; };
-		D17550551F8BADCB00022853 /* CustomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D17550531F8BADCB00022853 /* CustomCollectionViewCell.xib */; };
 		D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */; };
 		D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D175AD561CEF0CD500BB9442 /* LaunchScreen.storyboard */; };
 		D1A12B6E1E84DD3500F4E2B4 /* SDKConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A12B6D1E84DD3500F4E2B4 /* SDKConfiguration.swift */; };
-		D1AA2A351CF3489000BE9789 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AA2A341CF3489000BE9789 /* Common.swift */; };
-		D1B944AB1D04463F000AADA9 /* ImageComponentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B944A71D04463F000AADA9 /* ImageComponentCollectionViewCell.swift */; };
-		D1B944AC1D04463F000AADA9 /* ImageComponentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1B944A81D04463F000AADA9 /* ImageComponentCollectionViewCell.xib */; };
-		D1B944AD1D04463F000AADA9 /* MultiImageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B944A91D04463F000AADA9 /* MultiImageBubbleView.swift */; };
-		D1B944AE1D04463F000AADA9 /* MultiImageBubbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1B944AA1D04463F000AADA9 /* MultiImageBubbleView.xib */; };
-		D1CAF15E1CF0AEA3001BCAEF /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CAF07D1CF0AEA3001BCAEF /* AppLaunchViewController.swift */; };
-		D1CAF15F1CF0AEA3001BCAEF /* AppLaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1CAF07E1CF0AEA3001BCAEF /* AppLaunchViewController.xib */; };
 		D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1CAF1531CF0AEA3001BCAEF /* Assets.xcassets */; };
-		D1F086801EACB6CB00A75AD6 /* TSBaseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F0867C1EACB6CB00A75AD6 /* TSBaseParser.m */; };
-		D1F086811EACB6CB00A75AD6 /* TSMarkdownParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F0867F1EACB6CB00A75AD6 /* TSMarkdownParser.m */; };
-		D1F337882201C1FC005BE5F1 /* KoraASRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337872201C1FC005BE5F1 /* KoraASRService.swift */; };
-		D1F4E4FB1CF709C40044C093 /* MessageBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F4E4F21CF709C40044C093 /* MessageBubbleCell.swift */; };
-		D1F4E5041CF70A8E0044C093 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F4E5031CF70A8E0044C093 /* BubbleView.swift */; };
-		D1F4E5261CF716640044C093 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F4E51C1CF716640044C093 /* Component.swift */; };
-		D1F4E5281CF716640044C093 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F4E51E1CF716640044C093 /* Message.swift */; };
-		D1F4E52B1CF716640044C093 /* SectionedThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F4E5211CF716640044C093 /* SectionedThread.swift */; };
-		D1F4E52C1CF716640044C093 /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F4E5221CF716640044C093 /* Thread.swift */; };
+		D1F338142201D595005BE5F1 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337AE2201D595005BE5F1 /* CoreDataManager.swift */; };
+		D1F338152201D595005BE5F1 /* DataStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337AF2201D595005BE5F1 /* DataStoreManager.swift */; };
+		D1F338162201D595005BE5F1 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337B12201D595005BE5F1 /* Common.swift */; };
+		D1F338172201D595005BE5F1 /* KREMessage+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337B32201D595005BE5F1 /* KREMessage+CoreDataProperties.swift */; };
+		D1F338182201D595005BE5F1 /* KREThread+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337B42201D595005BE5F1 /* KREThread+CoreDataClass.swift */; };
+		D1F338192201D595005BE5F1 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D1F337B52201D595005BE5F1 /* DataModel.xcdatamodeld */; };
+		D1F3381A2201D595005BE5F1 /* KREThread+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337B72201D595005BE5F1 /* KREThread+CoreDataProperties.swift */; };
+		D1F3381B2201D595005BE5F1 /* KREMessage+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337B82201D595005BE5F1 /* KREMessage+CoreDataClass.swift */; };
+		D1F3381C2201D595005BE5F1 /* KREContact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337B92201D595005BE5F1 /* KREContact+CoreDataProperties.swift */; };
+		D1F3381D2201D595005BE5F1 /* KREContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337BA2201D595005BE5F1 /* KREContact+CoreDataClass.swift */; };
+		D1F3381E2201D595005BE5F1 /* KREComponent+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337BB2201D595005BE5F1 /* KREComponent+CoreDataClass.swift */; };
+		D1F3381F2201D595005BE5F1 /* KREComponent+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337BC2201D595005BE5F1 /* KREComponent+CoreDataProperties.swift */; };
+		D1F338202201D595005BE5F1 /* TSBaseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F337C02201D595005BE5F1 /* TSBaseParser.m */; };
+		D1F338212201D595005BE5F1 /* TSMarkdownParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F337C32201D595005BE5F1 /* TSMarkdownParser.m */; };
+		D1F338222201D595005BE5F1 /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337C52201D595005BE5F1 /* AudioController.swift */; };
+		D1F338232201D595005BE5F1 /* KoraASRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337C62201D595005BE5F1 /* KoraASRService.swift */; };
+		D1F338242201D595005BE5F1 /* CALayer+MBAnimationPersistence.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F337C82201D595005BE5F1 /* CALayer+MBAnimationPersistence.m */; };
+		D1F338252201D595005BE5F1 /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337CB2201D595005BE5F1 /* Identity.swift */; };
+		D1F338262201D595005BE5F1 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337CC2201D595005BE5F1 /* Message.swift */; };
+		D1F338272201D595005BE5F1 /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337CD2201D595005BE5F1 /* Thread.swift */; };
+		D1F338282201D595005BE5F1 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337CE2201D595005BE5F1 /* Component.swift */; };
+		D1F338292201D595005BE5F1 /* SectionedThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337CF2201D595005BE5F1 /* SectionedThread.swift */; };
+		D1F3382A2201D595005BE5F1 /* ComposeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337D12201D595005BE5F1 /* ComposeBarView.swift */; };
+		D1F3382B2201D595005BE5F1 /* AudioComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337D42201D595005BE5F1 /* AudioComposeView.swift */; };
+		D1F3382C2201D595005BE5F1 /* NSMutableAttributedString+KREUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F337D62201D595005BE5F1 /* NSMutableAttributedString+KREUtils.m */; };
+		D1F3382D2201D595005BE5F1 /* KRELayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F337DA2201D595005BE5F1 /* KRELayoutManager.m */; };
+		D1F3382E2201D595005BE5F1 /* KREAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F337DC2201D595005BE5F1 /* KREAttributedLabel.m */; };
+		D1F3382F2201D595005BE5F1 /* KREUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F337DD2201D595005BE5F1 /* KREUtilities.m */; };
+		D1F338302201D595005BE5F1 /* OptionsBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337E02201D595005BE5F1 /* OptionsBubbleView.swift */; };
+		D1F338312201D595005BE5F1 /* ChartBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337E22201D595005BE5F1 /* ChartBubbleView.swift */; };
+		D1F338322201D595005BE5F1 /* BalloonMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337E32201D595005BE5F1 /* BalloonMarker.swift */; };
+		D1F338332201D595005BE5F1 /* CarouselBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337E52201D595005BE5F1 /* CarouselBubbleView.swift */; };
+		D1F338342201D595005BE5F1 /* MultiImageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337E72201D595005BE5F1 /* MultiImageBubbleView.swift */; };
+		D1F338352201D595005BE5F1 /* ImageComponentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F337E82201D595005BE5F1 /* ImageComponentCollectionViewCell.xib */; };
+		D1F338362201D595005BE5F1 /* ImageComponentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337E92201D595005BE5F1 /* ImageComponentCollectionViewCell.swift */; };
+		D1F338372201D595005BE5F1 /* MultiImageBubbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F337EA2201D595005BE5F1 /* MultiImageBubbleView.xib */; };
+		D1F338382201D595005BE5F1 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337EB2201D595005BE5F1 /* BubbleView.swift */; };
+		D1F338392201D595005BE5F1 /* ResponsiveTableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337ED2201D595005BE5F1 /* ResponsiveTableBubbleView.swift */; };
+		D1F3383A2201D595005BE5F1 /* MiniTableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337EE2201D595005BE5F1 /* MiniTableBubbleView.swift */; };
+		D1F3383B2201D595005BE5F1 /* CustomCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337F02201D595005BE5F1 /* CustomCollectionViewLayout.swift */; };
+		D1F3383C2201D595005BE5F1 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337F12201D595005BE5F1 /* CustomCollectionViewCell.swift */; };
+		D1F3383D2201D595005BE5F1 /* CustomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F337F22201D595005BE5F1 /* CustomCollectionViewCell.xib */; };
+		D1F3383E2201D595005BE5F1 /* TableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337F32201D595005BE5F1 /* TableBubbleView.swift */; };
+		D1F3383F2201D595005BE5F1 /* SubTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337F42201D595005BE5F1 /* SubTableViewCell.swift */; };
+		D1F338402201D595005BE5F1 /* ExpandedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337F52201D595005BE5F1 /* ExpandedTableViewCell.swift */; };
+		D1F338412201D595005BE5F1 /* ResponsiveCustonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337F62201D595005BE5F1 /* ResponsiveCustonCell.swift */; };
+		D1F338422201D595005BE5F1 /* MiniTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337F72201D595005BE5F1 /* MiniTableViewCell.swift */; };
+		D1F338432201D595005BE5F1 /* MenuBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337F92201D595005BE5F1 /* MenuBubbleView.swift */; };
+		D1F338442201D595005BE5F1 /* ListBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337FA2201D595005BE5F1 /* ListBubbleView.swift */; };
+		D1F338452201D595005BE5F1 /* TextBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337FC2201D595005BE5F1 /* TextBubbleView.swift */; };
+		D1F338462201D595005BE5F1 /* ChatMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337FF2201D595005BE5F1 /* ChatMessagesViewController.swift */; };
+		D1F338472201D595005BE5F1 /* ChatMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338002201D595005BE5F1 /* ChatMessagesViewController.xib */; };
+		D1F338482201D595005BE5F1 /* TableTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338022201D595005BE5F1 /* TableTemplateViewController.swift */; };
+		D1F338492201D595005BE5F1 /* TableTemplateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338032201D595005BE5F1 /* TableTemplateViewController.xib */; };
+		D1F3384A2201D595005BE5F1 /* InputTOWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338042201D595005BE5F1 /* InputTOWebViewController.swift */; };
+		D1F3384B2201D595005BE5F1 /* KRETypingActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F338062201D595005BE5F1 /* KRETypingActivityIndicator.m */; };
+		D1F3384C2201D595005BE5F1 /* KRETypingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338072201D595005BE5F1 /* KRETypingCollectionViewCell.xib */; };
+		D1F3384D2201D595005BE5F1 /* KRETypingStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F3380A2201D595005BE5F1 /* KRETypingStatusView.m */; };
+		D1F3384E2201D595005BE5F1 /* KRETypingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F3380B2201D595005BE5F1 /* KRETypingCollectionViewCell.m */; };
+		D1F3384F2201D595005BE5F1 /* BotMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3380E2201D595005BE5F1 /* BotMessagesView.swift */; };
+		D1F338502201D595005BE5F1 /* KREFetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3380F2201D595005BE5F1 /* KREFetchedResultsController.swift */; };
+		D1F338512201D595005BE5F1 /* MessageBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338102201D595005BE5F1 /* MessageBubbleCell.swift */; };
+		D1F338522201D595005BE5F1 /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338122201D595005BE5F1 /* AppLaunchViewController.swift */; };
+		D1F338532201D595005BE5F1 /* AppLaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338132201D595005BE5F1 /* AppLaunchViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,95 +92,95 @@
 		0590F8411DED7A1B00107721 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		0590F8421DED7A1B00107721 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
-		0C6D0996206B6DC700CE166E /* MiniTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniTableViewCell.swift; sourceTree = "<group>"; };
-		0C6D0998206B9ACC00CE166E /* ResponsiveTableBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsiveTableBubbleView.swift; sourceTree = "<group>"; };
-		0C6D099A206B9EB600CE166E /* ResponsiveCustonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsiveCustonCell.swift; sourceTree = "<group>"; };
-		0C6D099B206B9EB600CE166E /* ExpandedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedTableViewCell.swift; sourceTree = "<group>"; };
-		0C6D099C206B9EB600CE166E /* SubTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubTableViewCell.swift; sourceTree = "<group>"; };
-		0CA58FFF20614502002DA3B6 /* MiniTableBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniTableBubbleView.swift; sourceTree = "<group>"; };
-		0CD0CD482074E3E600FD46F9 /* MenuBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuBubbleView.swift; path = KoreBotSDKDemo/Library/BubbleViews/Menu/MenuBubbleView.swift; sourceTree = SOURCE_ROOT; };
 		0CD0CD522077491100FD46F9 /* barrylogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "barrylogo@2x.png"; sourceTree = "<group>"; };
 		0CD0CD532077491100FD46F9 /* barrylogo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "barrylogo@3x.png"; sourceTree = "<group>"; };
 		0CD0CD542077491100FD46F9 /* barrylogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = barrylogo.png; sourceTree = "<group>"; };
 		51D2300D7315E548B03ED7F4 /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
-		6E14F4681F2F4D8600F5C149 /* BotMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotMessagesView.swift; sourceTree = "<group>"; };
 		6E1812F1242FE88925056F7C /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6E202A571FBB22AF002A608C /* BalloonMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalloonMarker.swift; sourceTree = "<group>"; };
-		6E202A5B1FBC7B33002A608C /* CustomCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewLayout.swift; sourceTree = "<group>"; };
-		6E50B7791F29042000E10D7D /* ComposeBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeBarView.swift; sourceTree = "<group>"; };
-		6E5F21E21F8E34AC00527A52 /* AudioController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
-		6E7BA00B1F28B62700301C38 /* ChatMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessagesViewController.swift; sourceTree = "<group>"; };
-		6E7BA00C1F28B62700301C38 /* ChatMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatMessagesViewController.xib; sourceTree = "<group>"; };
-		6E8410201FADF0C900A26C8F /* ChartBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartBubbleView.swift; sourceTree = "<group>"; };
-		6E9C0E3F1F162FFB003550F8 /* CarouselBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselBubbleView.swift; sourceTree = "<group>"; };
-		6EA472ED1FBD9BA200982255 /* TableTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableTemplateViewController.swift; sourceTree = "<group>"; };
-		6EA472EE1FBD9BA200982255 /* TableTemplateViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableTemplateViewController.xib; sourceTree = "<group>"; };
-		6ECD5CCF1F2B3ECB00B9790E /* AudioComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioComposeView.swift; sourceTree = "<group>"; };
 		7092CBEB046F0BC9247CE8CE /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		7D5861C41F8B6A7E00389DCB /* TableBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableBubbleView.swift; sourceTree = "<group>"; };
-		7D63B37E1F8B9D6800D08701 /* InputTOWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTOWebViewController.swift; sourceTree = "<group>"; };
-		BB4D2DDF1E289FA000A97E99 /* KRETypingActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingActivityIndicator.h; sourceTree = "<group>"; };
-		BB4D2DE01E289FA000A97E99 /* KRETypingActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingActivityIndicator.m; sourceTree = "<group>"; };
-		BB4D2DE11E289FA000A97E99 /* KRETypingCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingCollectionViewCell.h; sourceTree = "<group>"; };
-		BB4D2DE21E289FA000A97E99 /* KRETypingCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingCollectionViewCell.m; sourceTree = "<group>"; };
-		BB4D2DE31E289FA000A97E99 /* KRETypingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KRETypingCollectionViewCell.xib; sourceTree = "<group>"; };
-		BB4D2DE41E289FA000A97E99 /* KRETypingStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingStatusView.h; sourceTree = "<group>"; };
-		BB4D2DE51E289FA000A97E99 /* KRETypingStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingStatusView.m; sourceTree = "<group>"; };
-		BB4D2DED1E28AE4600A97E99 /* CALayer+MBAnimationPersistence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+MBAnimationPersistence.h"; sourceTree = "<group>"; };
-		BB4D2DEE1E28AE4600A97E99 /* CALayer+MBAnimationPersistence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+MBAnimationPersistence.m"; sourceTree = "<group>"; };
-		BBB4F9591E0D1A8400C2A53A /* ListBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBubbleView.swift; sourceTree = "<group>"; };
-		D10A24591CF72FD400E2732C /* TextBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextBubbleView.swift; sourceTree = "<group>"; };
-		D10A24731CF808A300E2732C /* Identity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identity.swift; sourceTree = "<group>"; };
-		D1132F5E1D8181130083FC10 /* KREAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KREAttributedLabel.h; sourceTree = "<group>"; };
-		D1132F5F1D8181130083FC10 /* KREAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KREAttributedLabel.m; sourceTree = "<group>"; };
-		D1132F601D8181130083FC10 /* KRELayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRELayoutManager.h; sourceTree = "<group>"; };
-		D1132F611D8181130083FC10 /* KRELayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRELayoutManager.m; sourceTree = "<group>"; };
-		D1132F621D8181130083FC10 /* KREUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KREUtilities.h; sourceTree = "<group>"; };
-		D1132F631D8181130083FC10 /* KREUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KREUtilities.m; sourceTree = "<group>"; };
-		D1132F641D8181130083FC10 /* NSMutableAttributedString+KREUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+KREUtils.h"; sourceTree = "<group>"; };
-		D1132F651D8181130083FC10 /* NSMutableAttributedString+KREUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+KREUtils.m"; sourceTree = "<group>"; };
-		D14BD4B71DDED95C0032BD80 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
-		D14BD4BD1DDEDBAD0032BD80 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		D15041081DE2C4BC00F2F92E /* Messages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Messages.plist; sourceTree = "<group>"; };
-		D15041521DE2CD0D00F2F92E /* KREComponent+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREComponent+CoreDataClass.swift"; sourceTree = "<group>"; };
-		D15041531DE2CD0D00F2F92E /* KREComponent+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREComponent+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		D15041541DE2CD0D00F2F92E /* KREMessage+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREMessage+CoreDataClass.swift"; sourceTree = "<group>"; };
-		D15041551DE2CD0D00F2F92E /* KREMessage+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREMessage+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		D15041561DE2CD0D00F2F92E /* KREContact+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREContact+CoreDataClass.swift"; sourceTree = "<group>"; };
-		D15041571DE2CD0D00F2F92E /* KREContact+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREContact+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		D15041581DE2CD0D00F2F92E /* KREThread+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREThread+CoreDataClass.swift"; sourceTree = "<group>"; };
-		D15041591DE2CD0D00F2F92E /* KREThread+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREThread+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		D15041621DE2F93D00F2F92E /* DataStoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStoreManager.swift; sourceTree = "<group>"; };
 		D15045D41DE422CB008DE46E /* BotConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BotConfiguration.plist; sourceTree = "<group>"; };
-		D15045D61DE475FC008DE46E /* KREFetchedResultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREFetchedResultsController.swift; sourceTree = "<group>"; };
-		D1522AB91DED45AC00D86407 /* OptionsBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsBubbleView.swift; sourceTree = "<group>"; };
-		D17550521F8BADCB00022853 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
-		D17550531F8BADCB00022853 /* CustomCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCollectionViewCell.xib; sourceTree = "<group>"; };
 		D175AD4A1CEF0CD500BB9442 /* KoreBotSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KoreBotSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D175AD571CEF0CD500BB9442 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D175AD591CEF0CD500BB9442 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D1A12B6D1E84DD3500F4E2B4 /* SDKConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDKConfiguration.swift; sourceTree = "<group>"; };
-		D1AA2A341CF3489000BE9789 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
-		D1B944A71D04463F000AADA9 /* ImageComponentCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageComponentCollectionViewCell.swift; sourceTree = "<group>"; };
-		D1B944A81D04463F000AADA9 /* ImageComponentCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageComponentCollectionViewCell.xib; sourceTree = "<group>"; };
-		D1B944A91D04463F000AADA9 /* MultiImageBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiImageBubbleView.swift; sourceTree = "<group>"; };
-		D1B944AA1D04463F000AADA9 /* MultiImageBubbleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultiImageBubbleView.xib; sourceTree = "<group>"; };
-		D1CAF07D1CF0AEA3001BCAEF /* AppLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchViewController.swift; sourceTree = "<group>"; };
-		D1CAF07E1CF0AEA3001BCAEF /* AppLaunchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppLaunchViewController.xib; sourceTree = "<group>"; };
 		D1CAF1531CF0AEA3001BCAEF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D1CAF1541CF0AEA3001BCAEF /* KoreBotSDKDemo-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KoreBotSDKDemo-Bridging-Header.h"; sourceTree = "<group>"; };
-		D1F0867B1EACB6CB00A75AD6 /* TSBaseParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSBaseParser.h; sourceTree = "<group>"; };
-		D1F0867C1EACB6CB00A75AD6 /* TSBaseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSBaseParser.m; sourceTree = "<group>"; };
-		D1F0867E1EACB6CB00A75AD6 /* TSMarkdownParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMarkdownParser.h; sourceTree = "<group>"; };
-		D1F0867F1EACB6CB00A75AD6 /* TSMarkdownParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMarkdownParser.m; sourceTree = "<group>"; };
-		D1F337872201C1FC005BE5F1 /* KoraASRService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraASRService.swift; sourceTree = "<group>"; };
-		D1F4E4F21CF709C40044C093 /* MessageBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleCell.swift; sourceTree = "<group>"; };
-		D1F4E5031CF70A8E0044C093 /* BubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
-		D1F4E51C1CF716640044C093 /* Component.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
-		D1F4E51E1CF716640044C093 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
-		D1F4E5211CF716640044C093 /* SectionedThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionedThread.swift; sourceTree = "<group>"; };
-		D1F4E5221CF716640044C093 /* Thread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
+		D1F337AE2201D595005BE5F1 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		D1F337AF2201D595005BE5F1 /* DataStoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStoreManager.swift; sourceTree = "<group>"; };
+		D1F337B12201D595005BE5F1 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		D1F337B32201D595005BE5F1 /* KREMessage+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREMessage+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D1F337B42201D595005BE5F1 /* KREThread+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREThread+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D1F337B62201D595005BE5F1 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		D1F337B72201D595005BE5F1 /* KREThread+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREThread+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D1F337B82201D595005BE5F1 /* KREMessage+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREMessage+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D1F337B92201D595005BE5F1 /* KREContact+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREContact+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D1F337BA2201D595005BE5F1 /* KREContact+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREContact+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D1F337BB2201D595005BE5F1 /* KREComponent+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREComponent+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D1F337BC2201D595005BE5F1 /* KREComponent+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREComponent+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D1F337C02201D595005BE5F1 /* TSBaseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSBaseParser.m; sourceTree = "<group>"; };
+		D1F337C12201D595005BE5F1 /* TSMarkdownParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMarkdownParser.h; sourceTree = "<group>"; };
+		D1F337C22201D595005BE5F1 /* TSBaseParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSBaseParser.h; sourceTree = "<group>"; };
+		D1F337C32201D595005BE5F1 /* TSMarkdownParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMarkdownParser.m; sourceTree = "<group>"; };
+		D1F337C52201D595005BE5F1 /* AudioController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
+		D1F337C62201D595005BE5F1 /* KoraASRService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraASRService.swift; sourceTree = "<group>"; };
+		D1F337C82201D595005BE5F1 /* CALayer+MBAnimationPersistence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+MBAnimationPersistence.m"; sourceTree = "<group>"; };
+		D1F337C92201D595005BE5F1 /* CALayer+MBAnimationPersistence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+MBAnimationPersistence.h"; sourceTree = "<group>"; };
+		D1F337CB2201D595005BE5F1 /* Identity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identity.swift; sourceTree = "<group>"; };
+		D1F337CC2201D595005BE5F1 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		D1F337CD2201D595005BE5F1 /* Thread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
+		D1F337CE2201D595005BE5F1 /* Component.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
+		D1F337CF2201D595005BE5F1 /* SectionedThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionedThread.swift; sourceTree = "<group>"; };
+		D1F337D12201D595005BE5F1 /* ComposeBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeBarView.swift; sourceTree = "<group>"; };
+		D1F337D42201D595005BE5F1 /* AudioComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioComposeView.swift; sourceTree = "<group>"; };
+		D1F337D62201D595005BE5F1 /* NSMutableAttributedString+KREUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+KREUtils.m"; sourceTree = "<group>"; };
+		D1F337D72201D595005BE5F1 /* KRELayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRELayoutManager.h; sourceTree = "<group>"; };
+		D1F337D82201D595005BE5F1 /* KREUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KREUtilities.h; sourceTree = "<group>"; };
+		D1F337D92201D595005BE5F1 /* KREAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KREAttributedLabel.h; sourceTree = "<group>"; };
+		D1F337DA2201D595005BE5F1 /* KRELayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRELayoutManager.m; sourceTree = "<group>"; };
+		D1F337DB2201D595005BE5F1 /* NSMutableAttributedString+KREUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+KREUtils.h"; sourceTree = "<group>"; };
+		D1F337DC2201D595005BE5F1 /* KREAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KREAttributedLabel.m; sourceTree = "<group>"; };
+		D1F337DD2201D595005BE5F1 /* KREUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KREUtilities.m; sourceTree = "<group>"; };
+		D1F337E02201D595005BE5F1 /* OptionsBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsBubbleView.swift; sourceTree = "<group>"; };
+		D1F337E22201D595005BE5F1 /* ChartBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartBubbleView.swift; sourceTree = "<group>"; };
+		D1F337E32201D595005BE5F1 /* BalloonMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalloonMarker.swift; sourceTree = "<group>"; };
+		D1F337E52201D595005BE5F1 /* CarouselBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselBubbleView.swift; sourceTree = "<group>"; };
+		D1F337E72201D595005BE5F1 /* MultiImageBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiImageBubbleView.swift; sourceTree = "<group>"; };
+		D1F337E82201D595005BE5F1 /* ImageComponentCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageComponentCollectionViewCell.xib; sourceTree = "<group>"; };
+		D1F337E92201D595005BE5F1 /* ImageComponentCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageComponentCollectionViewCell.swift; sourceTree = "<group>"; };
+		D1F337EA2201D595005BE5F1 /* MultiImageBubbleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultiImageBubbleView.xib; sourceTree = "<group>"; };
+		D1F337EB2201D595005BE5F1 /* BubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
+		D1F337ED2201D595005BE5F1 /* ResponsiveTableBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsiveTableBubbleView.swift; sourceTree = "<group>"; };
+		D1F337EE2201D595005BE5F1 /* MiniTableBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniTableBubbleView.swift; sourceTree = "<group>"; };
+		D1F337F02201D595005BE5F1 /* CustomCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewLayout.swift; sourceTree = "<group>"; };
+		D1F337F12201D595005BE5F1 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
+		D1F337F22201D595005BE5F1 /* CustomCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCollectionViewCell.xib; sourceTree = "<group>"; };
+		D1F337F32201D595005BE5F1 /* TableBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableBubbleView.swift; sourceTree = "<group>"; };
+		D1F337F42201D595005BE5F1 /* SubTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubTableViewCell.swift; sourceTree = "<group>"; };
+		D1F337F52201D595005BE5F1 /* ExpandedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandedTableViewCell.swift; sourceTree = "<group>"; };
+		D1F337F62201D595005BE5F1 /* ResponsiveCustonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsiveCustonCell.swift; sourceTree = "<group>"; };
+		D1F337F72201D595005BE5F1 /* MiniTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniTableViewCell.swift; sourceTree = "<group>"; };
+		D1F337F92201D595005BE5F1 /* MenuBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBubbleView.swift; sourceTree = "<group>"; };
+		D1F337FA2201D595005BE5F1 /* ListBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBubbleView.swift; sourceTree = "<group>"; };
+		D1F337FC2201D595005BE5F1 /* TextBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextBubbleView.swift; sourceTree = "<group>"; };
+		D1F337FF2201D595005BE5F1 /* ChatMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessagesViewController.swift; sourceTree = "<group>"; };
+		D1F338002201D595005BE5F1 /* ChatMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatMessagesViewController.xib; sourceTree = "<group>"; };
+		D1F338022201D595005BE5F1 /* TableTemplateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableTemplateViewController.swift; sourceTree = "<group>"; };
+		D1F338032201D595005BE5F1 /* TableTemplateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableTemplateViewController.xib; sourceTree = "<group>"; };
+		D1F338042201D595005BE5F1 /* InputTOWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTOWebViewController.swift; sourceTree = "<group>"; };
+		D1F338062201D595005BE5F1 /* KRETypingActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingActivityIndicator.m; sourceTree = "<group>"; };
+		D1F338072201D595005BE5F1 /* KRETypingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KRETypingCollectionViewCell.xib; sourceTree = "<group>"; };
+		D1F338082201D595005BE5F1 /* KRETypingCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingCollectionViewCell.h; sourceTree = "<group>"; };
+		D1F338092201D595005BE5F1 /* KRETypingStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingStatusView.h; sourceTree = "<group>"; };
+		D1F3380A2201D595005BE5F1 /* KRETypingStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingStatusView.m; sourceTree = "<group>"; };
+		D1F3380B2201D595005BE5F1 /* KRETypingCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingCollectionViewCell.m; sourceTree = "<group>"; };
+		D1F3380C2201D595005BE5F1 /* KRETypingActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingActivityIndicator.h; sourceTree = "<group>"; };
+		D1F3380E2201D595005BE5F1 /* BotMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotMessagesView.swift; sourceTree = "<group>"; };
+		D1F3380F2201D595005BE5F1 /* KREFetchedResultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREFetchedResultsController.swift; sourceTree = "<group>"; };
+		D1F338102201D595005BE5F1 /* MessageBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleCell.swift; sourceTree = "<group>"; };
+		D1F338122201D595005BE5F1 /* AppLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchViewController.swift; sourceTree = "<group>"; };
+		D1F338132201D595005BE5F1 /* AppLaunchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppLaunchViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,74 +198,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0CD0CD472074E3B500FD46F9 /* Menu */ = {
-			isa = PBXGroup;
-			children = (
-				0CD0CD482074E3E600FD46F9 /* MenuBubbleView.swift */,
-			);
-			name = Menu;
-			path = "New Group";
-			sourceTree = "<group>";
-		};
-		6E46A14D1F8B020F00E0AAF8 /* Table */ = {
-			isa = PBXGroup;
-			children = (
-				D17550511F8BADCB00022853 /* CollectionView */,
-				7D5861C41F8B6A7E00389DCB /* TableBubbleView.swift */,
-				0C6D0998206B9ACC00CE166E /* ResponsiveTableBubbleView.swift */,
-				0C6D099B206B9EB600CE166E /* ExpandedTableViewCell.swift */,
-				0C6D099A206B9EB600CE166E /* ResponsiveCustonCell.swift */,
-				0C6D099C206B9EB600CE166E /* SubTableViewCell.swift */,
-				0CA58FFF20614502002DA3B6 /* MiniTableBubbleView.swift */,
-				0C6D0996206B6DC700CE166E /* MiniTableViewCell.swift */,
-			);
-			path = Table;
-			sourceTree = "<group>";
-		};
-		6E50B7781F2903F100E10D7D /* ComposeBar */ = {
-			isa = PBXGroup;
-			children = (
-				6E50B7791F29042000E10D7D /* ComposeBarView.swift */,
-			);
-			path = ComposeBar;
-			sourceTree = "<group>";
-		};
-		6E5F21E01F8E347D00527A52 /* SpeechRecognition */ = {
-			isa = PBXGroup;
-			children = (
-				D1F337872201C1FC005BE5F1 /* KoraASRService.swift */,
-				6E5F21E21F8E34AC00527A52 /* AudioController.swift */,
-			);
-			path = SpeechRecognition;
-			sourceTree = "<group>";
-		};
-		6E84101F1FADF09800A26C8F /* Chart */ = {
-			isa = PBXGroup;
-			children = (
-				6E202A571FBB22AF002A608C /* BalloonMarker.swift */,
-				6E8410201FADF0C900A26C8F /* ChartBubbleView.swift */,
-			);
-			path = Chart;
-			sourceTree = "<group>";
-		};
-		6E9C0E3E1F162FFB003550F8 /* Carousel */ = {
-			isa = PBXGroup;
-			children = (
-				6E9C0E3F1F162FFB003550F8 /* CarouselBubbleView.swift */,
-			);
-			path = Carousel;
-			sourceTree = "<group>";
-		};
-		7D63B37D1F8B9D6800D08701 /* InputViews */ = {
-			isa = PBXGroup;
-			children = (
-				7D63B37E1F8B9D6800D08701 /* InputTOWebViewController.swift */,
-				6EA472ED1FBD9BA200982255 /* TableTemplateViewController.swift */,
-				6EA472EE1FBD9BA200982255 /* TableTemplateViewController.xib */,
-			);
-			path = InputViews;
-			sourceTree = "<group>";
-		};
 		86187009BF585E2DB9E1A9D4 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -288,103 +220,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		BB361E1A1DF5501900D2F0DB /* AudioComposer */ = {
-			isa = PBXGroup;
-			children = (
-				6ECD5CCF1F2B3ECB00B9790E /* AudioComposeView.swift */,
-			);
-			name = AudioComposer;
-			path = Elements/AudioComposer;
-			sourceTree = "<group>";
-		};
-		BB4D2DDE1E289FA000A97E99 /* TypingStatus */ = {
-			isa = PBXGroup;
-			children = (
-				BB4D2DDF1E289FA000A97E99 /* KRETypingActivityIndicator.h */,
-				BB4D2DE01E289FA000A97E99 /* KRETypingActivityIndicator.m */,
-				BB4D2DE11E289FA000A97E99 /* KRETypingCollectionViewCell.h */,
-				BB4D2DE21E289FA000A97E99 /* KRETypingCollectionViewCell.m */,
-				BB4D2DE31E289FA000A97E99 /* KRETypingCollectionViewCell.xib */,
-				BB4D2DE41E289FA000A97E99 /* KRETypingStatusView.h */,
-				BB4D2DE51E289FA000A97E99 /* KRETypingStatusView.m */,
-			);
-			path = TypingStatus;
-			sourceTree = "<group>";
-		};
-		BB4D2DEC1E28AE4600A97E99 /* Animation */ = {
-			isa = PBXGroup;
-			children = (
-				BB4D2DED1E28AE4600A97E99 /* CALayer+MBAnimationPersistence.h */,
-				BB4D2DEE1E28AE4600A97E99 /* CALayer+MBAnimationPersistence.m */,
-			);
-			path = Animation;
-			sourceTree = "<group>";
-		};
-		BBB4F9581E0D095D00C2A53A /* List */ = {
-			isa = PBXGroup;
-			children = (
-				BBB4F9591E0D1A8400C2A53A /* ListBubbleView.swift */,
-			);
-			name = List;
-			sourceTree = "<group>";
-		};
-		D10A24571CF72FD400E2732C /* Text */ = {
-			isa = PBXGroup;
-			children = (
-				D10A24591CF72FD400E2732C /* TextBubbleView.swift */,
-			);
-			path = Text;
-			sourceTree = "<group>";
-		};
-		D1132F5D1D8181130083FC10 /* AttributedLabel */ = {
-			isa = PBXGroup;
-			children = (
-				D1132F5E1D8181130083FC10 /* KREAttributedLabel.h */,
-				D1132F5F1D8181130083FC10 /* KREAttributedLabel.m */,
-				D1132F601D8181130083FC10 /* KRELayoutManager.h */,
-				D1132F611D8181130083FC10 /* KRELayoutManager.m */,
-				D1132F621D8181130083FC10 /* KREUtilities.h */,
-				D1132F631D8181130083FC10 /* KREUtilities.m */,
-				D1132F641D8181130083FC10 /* NSMutableAttributedString+KREUtils.h */,
-				D1132F651D8181130083FC10 /* NSMutableAttributedString+KREUtils.m */,
-			);
-			path = AttributedLabel;
-			sourceTree = "<group>";
-		};
-		D137B0A01D009285005E938E /* ChatMessages */ = {
-			isa = PBXGroup;
-			children = (
-				6E7BA00B1F28B62700301C38 /* ChatMessagesViewController.swift */,
-				6E7BA00C1F28B62700301C38 /* ChatMessagesViewController.xib */,
-			);
-			path = ChatMessages;
-			sourceTree = "<group>";
-		};
-		D14BD4B51DDED95C0032BD80 /* DataModel */ = {
-			isa = PBXGroup;
-			children = (
-				D15041521DE2CD0D00F2F92E /* KREComponent+CoreDataClass.swift */,
-				D15041531DE2CD0D00F2F92E /* KREComponent+CoreDataProperties.swift */,
-				D15041541DE2CD0D00F2F92E /* KREMessage+CoreDataClass.swift */,
-				D15041551DE2CD0D00F2F92E /* KREMessage+CoreDataProperties.swift */,
-				D15041561DE2CD0D00F2F92E /* KREContact+CoreDataClass.swift */,
-				D15041571DE2CD0D00F2F92E /* KREContact+CoreDataProperties.swift */,
-				D15041581DE2CD0D00F2F92E /* KREThread+CoreDataClass.swift */,
-				D15041591DE2CD0D00F2F92E /* KREThread+CoreDataProperties.swift */,
-				D14BD4B61DDED95C0032BD80 /* DataModel.xcdatamodeld */,
-			);
-			path = DataModel;
-			sourceTree = "<group>";
-		};
-		D14BD4B91DDED9B50032BD80 /* CoreData */ = {
-			isa = PBXGroup;
-			children = (
-				D14BD4BD1DDEDBAD0032BD80 /* CoreDataManager.swift */,
-				D15041621DE2F93D00F2F92E /* DataStoreManager.swift */,
-			);
-			path = CoreData;
-			sourceTree = "<group>";
-		};
 		D15041071DE2C48A00F2F92E /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -392,24 +227,6 @@
 				D15045D41DE422CB008DE46E /* BotConfiguration.plist */,
 			);
 			path = Data;
-			sourceTree = "<group>";
-		};
-		D1522AB81DED45AC00D86407 /* Options */ = {
-			isa = PBXGroup;
-			children = (
-				D1522AB91DED45AC00D86407 /* OptionsBubbleView.swift */,
-			);
-			path = Options;
-			sourceTree = "<group>";
-		};
-		D17550511F8BADCB00022853 /* CollectionView */ = {
-			isa = PBXGroup;
-			children = (
-				6E202A5B1FBC7B33002A608C /* CustomCollectionViewLayout.swift */,
-				D17550521F8BADCB00022853 /* CustomCollectionViewCell.swift */,
-				D17550531F8BADCB00022853 /* CustomCollectionViewCell.xib */,
-			);
-			path = CollectionView;
 			sourceTree = "<group>";
 		};
 		D175AD411CEF0CD500BB9442 = {
@@ -437,84 +254,17 @@
 		D175AD4C1CEF0CD500BB9442 /* KoreBotSDKDemo */ = {
 			isa = PBXGroup;
 			children = (
-				D14BD4B91DDED9B50032BD80 /* CoreData */,
-				D14BD4B51DDED95C0032BD80 /* DataModel */,
-				D1AA2A321CF3473600BE9789 /* Common */,
-				D1CAF07B1CF0AEA3001BCAEF /* Controllers */,
-				D1CAF08E1CF0AEA3001BCAEF /* Library */,
+				D1F337B02201D595005BE5F1 /* Common */,
+				D1F337FD2201D595005BE5F1 /* Controllers */,
+				D1F337AD2201D595005BE5F1 /* CoreData */,
+				D1F337B22201D595005BE5F1 /* DataModel */,
+				D1F337BD2201D595005BE5F1 /* Library */,
 				D1CAF09E1CF0AEA3001BCAEF /* Resources */,
 				D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */,
 				D175AD561CEF0CD500BB9442 /* LaunchScreen.storyboard */,
 				D175AD591CEF0CD500BB9442 /* Info.plist */,
 			);
 			path = KoreBotSDKDemo;
-			sourceTree = "<group>";
-		};
-		D1AA2A321CF3473600BE9789 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				D1AA2A341CF3489000BE9789 /* Common.swift */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		D1B944A61D04463F000AADA9 /* Image */ = {
-			isa = PBXGroup;
-			children = (
-				D1B944A71D04463F000AADA9 /* ImageComponentCollectionViewCell.swift */,
-				D1B944A81D04463F000AADA9 /* ImageComponentCollectionViewCell.xib */,
-				D1B944A91D04463F000AADA9 /* MultiImageBubbleView.swift */,
-				D1B944AA1D04463F000AADA9 /* MultiImageBubbleView.xib */,
-			);
-			path = Image;
-			sourceTree = "<group>";
-		};
-		D1CAF07B1CF0AEA3001BCAEF /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				7D63B37D1F8B9D6800D08701 /* InputViews */,
-				BB4D2DDE1E289FA000A97E99 /* TypingStatus */,
-				D137B0A01D009285005E938E /* ChatMessages */,
-				D1F4E4F01CF708850044C093 /* BotMessages */,
-				D1CAF07C1CF0AEA3001BCAEF /* AppLaunch */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
-		D1CAF07C1CF0AEA3001BCAEF /* AppLaunch */ = {
-			isa = PBXGroup;
-			children = (
-				D1CAF07D1CF0AEA3001BCAEF /* AppLaunchViewController.swift */,
-				D1CAF07E1CF0AEA3001BCAEF /* AppLaunchViewController.xib */,
-			);
-			path = AppLaunch;
-			sourceTree = "<group>";
-		};
-		D1CAF08E1CF0AEA3001BCAEF /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				6E5F21E01F8E347D00527A52 /* SpeechRecognition */,
-				D1F086791EACB6CB00A75AD6 /* Vendors */,
-				BB4D2DEC1E28AE4600A97E99 /* Animation */,
-				BB361E1A1DF5501900D2F0DB /* AudioComposer */,
-				D1132F5D1D8181130083FC10 /* AttributedLabel */,
-				D1F4E5021CF70A720044C093 /* BubbleViews */,
-				6E50B7781F2903F100E10D7D /* ComposeBar */,
-				D1CAF0941CF0AEA3001BCAEF /* Models */,
-			);
-			path = Library;
-			sourceTree = "<group>";
-		};
-		D1CAF0941CF0AEA3001BCAEF /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				D1F4E51C1CF716640044C093 /* Component.swift */,
-				D1F4E51E1CF716640044C093 /* Message.swift */,
-				D1F4E5211CF716640044C093 /* SectionedThread.swift */,
-				D1F4E5221CF716640044C093 /* Thread.swift */,
-				D10A24731CF808A300E2732C /* Identity.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		D1CAF09E1CF0AEA3001BCAEF /* Resources */ = {
@@ -535,49 +285,302 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
-		D1F086791EACB6CB00A75AD6 /* Vendors */ = {
+		D1F337AD2201D595005BE5F1 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				D1F0867A1EACB6CB00A75AD6 /* TSMarkdownParser */,
+				D1F337AE2201D595005BE5F1 /* CoreDataManager.swift */,
+				D1F337AF2201D595005BE5F1 /* DataStoreManager.swift */,
+			);
+			name = CoreData;
+			path = ../../../Shared/CoreData;
+			sourceTree = "<group>";
+		};
+		D1F337B02201D595005BE5F1 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337B12201D595005BE5F1 /* Common.swift */,
+			);
+			name = Common;
+			path = ../../../Shared/Common;
+			sourceTree = "<group>";
+		};
+		D1F337B22201D595005BE5F1 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337B32201D595005BE5F1 /* KREMessage+CoreDataProperties.swift */,
+				D1F337B42201D595005BE5F1 /* KREThread+CoreDataClass.swift */,
+				D1F337B52201D595005BE5F1 /* DataModel.xcdatamodeld */,
+				D1F337B72201D595005BE5F1 /* KREThread+CoreDataProperties.swift */,
+				D1F337B82201D595005BE5F1 /* KREMessage+CoreDataClass.swift */,
+				D1F337B92201D595005BE5F1 /* KREContact+CoreDataProperties.swift */,
+				D1F337BA2201D595005BE5F1 /* KREContact+CoreDataClass.swift */,
+				D1F337BB2201D595005BE5F1 /* KREComponent+CoreDataClass.swift */,
+				D1F337BC2201D595005BE5F1 /* KREComponent+CoreDataProperties.swift */,
+			);
+			name = DataModel;
+			path = ../../../Shared/DataModel;
+			sourceTree = "<group>";
+		};
+		D1F337BD2201D595005BE5F1 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337BE2201D595005BE5F1 /* Vendors */,
+				D1F337C42201D595005BE5F1 /* SpeechRecognition */,
+				D1F337C72201D595005BE5F1 /* Animation */,
+				D1F337CA2201D595005BE5F1 /* Models */,
+				D1F337D02201D595005BE5F1 /* ComposeBar */,
+				D1F337D22201D595005BE5F1 /* Elements */,
+				D1F337D52201D595005BE5F1 /* AttributedLabel */,
+				D1F337DE2201D595005BE5F1 /* BubbleViews */,
+			);
+			name = Library;
+			path = ../../../Shared/Library;
+			sourceTree = "<group>";
+		};
+		D1F337BE2201D595005BE5F1 /* Vendors */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337BF2201D595005BE5F1 /* TSMarkdownParser */,
 			);
 			path = Vendors;
 			sourceTree = "<group>";
 		};
-		D1F0867A1EACB6CB00A75AD6 /* TSMarkdownParser */ = {
+		D1F337BF2201D595005BE5F1 /* TSMarkdownParser */ = {
 			isa = PBXGroup;
 			children = (
-				D1F0867B1EACB6CB00A75AD6 /* TSBaseParser.h */,
-				D1F0867C1EACB6CB00A75AD6 /* TSBaseParser.m */,
-				D1F0867E1EACB6CB00A75AD6 /* TSMarkdownParser.h */,
-				D1F0867F1EACB6CB00A75AD6 /* TSMarkdownParser.m */,
+				D1F337C02201D595005BE5F1 /* TSBaseParser.m */,
+				D1F337C12201D595005BE5F1 /* TSMarkdownParser.h */,
+				D1F337C22201D595005BE5F1 /* TSBaseParser.h */,
+				D1F337C32201D595005BE5F1 /* TSMarkdownParser.m */,
 			);
 			path = TSMarkdownParser;
 			sourceTree = "<group>";
 		};
-		D1F4E4F01CF708850044C093 /* BotMessages */ = {
+		D1F337C42201D595005BE5F1 /* SpeechRecognition */ = {
 			isa = PBXGroup;
 			children = (
-				D1F4E4F21CF709C40044C093 /* MessageBubbleCell.swift */,
-				D15045D61DE475FC008DE46E /* KREFetchedResultsController.swift */,
-				6E14F4681F2F4D8600F5C149 /* BotMessagesView.swift */,
+				D1F337C52201D595005BE5F1 /* AudioController.swift */,
+				D1F337C62201D595005BE5F1 /* KoraASRService.swift */,
+			);
+			path = SpeechRecognition;
+			sourceTree = "<group>";
+		};
+		D1F337C72201D595005BE5F1 /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337C82201D595005BE5F1 /* CALayer+MBAnimationPersistence.m */,
+				D1F337C92201D595005BE5F1 /* CALayer+MBAnimationPersistence.h */,
+			);
+			path = Animation;
+			sourceTree = "<group>";
+		};
+		D1F337CA2201D595005BE5F1 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337CB2201D595005BE5F1 /* Identity.swift */,
+				D1F337CC2201D595005BE5F1 /* Message.swift */,
+				D1F337CD2201D595005BE5F1 /* Thread.swift */,
+				D1F337CE2201D595005BE5F1 /* Component.swift */,
+				D1F337CF2201D595005BE5F1 /* SectionedThread.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D1F337D02201D595005BE5F1 /* ComposeBar */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337D12201D595005BE5F1 /* ComposeBarView.swift */,
+			);
+			path = ComposeBar;
+			sourceTree = "<group>";
+		};
+		D1F337D22201D595005BE5F1 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337D32201D595005BE5F1 /* AudioComposer */,
+			);
+			path = Elements;
+			sourceTree = "<group>";
+		};
+		D1F337D32201D595005BE5F1 /* AudioComposer */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337D42201D595005BE5F1 /* AudioComposeView.swift */,
+			);
+			path = AudioComposer;
+			sourceTree = "<group>";
+		};
+		D1F337D52201D595005BE5F1 /* AttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337D62201D595005BE5F1 /* NSMutableAttributedString+KREUtils.m */,
+				D1F337D72201D595005BE5F1 /* KRELayoutManager.h */,
+				D1F337D82201D595005BE5F1 /* KREUtilities.h */,
+				D1F337D92201D595005BE5F1 /* KREAttributedLabel.h */,
+				D1F337DA2201D595005BE5F1 /* KRELayoutManager.m */,
+				D1F337DB2201D595005BE5F1 /* NSMutableAttributedString+KREUtils.h */,
+				D1F337DC2201D595005BE5F1 /* KREAttributedLabel.m */,
+				D1F337DD2201D595005BE5F1 /* KREUtilities.m */,
+			);
+			path = AttributedLabel;
+			sourceTree = "<group>";
+		};
+		D1F337DE2201D595005BE5F1 /* BubbleViews */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337DF2201D595005BE5F1 /* Options */,
+				D1F337E12201D595005BE5F1 /* Chart */,
+				D1F337E42201D595005BE5F1 /* Carousel */,
+				D1F337E62201D595005BE5F1 /* Image */,
+				D1F337EB2201D595005BE5F1 /* BubbleView.swift */,
+				D1F337EC2201D595005BE5F1 /* Table */,
+				D1F337F82201D595005BE5F1 /* Menu */,
+				D1F337FA2201D595005BE5F1 /* ListBubbleView.swift */,
+				D1F337FB2201D595005BE5F1 /* Text */,
+			);
+			path = BubbleViews;
+			sourceTree = "<group>";
+		};
+		D1F337DF2201D595005BE5F1 /* Options */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337E02201D595005BE5F1 /* OptionsBubbleView.swift */,
+			);
+			path = Options;
+			sourceTree = "<group>";
+		};
+		D1F337E12201D595005BE5F1 /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337E22201D595005BE5F1 /* ChartBubbleView.swift */,
+				D1F337E32201D595005BE5F1 /* BalloonMarker.swift */,
+			);
+			path = Chart;
+			sourceTree = "<group>";
+		};
+		D1F337E42201D595005BE5F1 /* Carousel */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337E52201D595005BE5F1 /* CarouselBubbleView.swift */,
+			);
+			path = Carousel;
+			sourceTree = "<group>";
+		};
+		D1F337E62201D595005BE5F1 /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337E72201D595005BE5F1 /* MultiImageBubbleView.swift */,
+				D1F337E82201D595005BE5F1 /* ImageComponentCollectionViewCell.xib */,
+				D1F337E92201D595005BE5F1 /* ImageComponentCollectionViewCell.swift */,
+				D1F337EA2201D595005BE5F1 /* MultiImageBubbleView.xib */,
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
+		D1F337EC2201D595005BE5F1 /* Table */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337ED2201D595005BE5F1 /* ResponsiveTableBubbleView.swift */,
+				D1F337EE2201D595005BE5F1 /* MiniTableBubbleView.swift */,
+				D1F337EF2201D595005BE5F1 /* CollectionView */,
+				D1F337F32201D595005BE5F1 /* TableBubbleView.swift */,
+				D1F337F42201D595005BE5F1 /* SubTableViewCell.swift */,
+				D1F337F52201D595005BE5F1 /* ExpandedTableViewCell.swift */,
+				D1F337F62201D595005BE5F1 /* ResponsiveCustonCell.swift */,
+				D1F337F72201D595005BE5F1 /* MiniTableViewCell.swift */,
+			);
+			path = Table;
+			sourceTree = "<group>";
+		};
+		D1F337EF2201D595005BE5F1 /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337F02201D595005BE5F1 /* CustomCollectionViewLayout.swift */,
+				D1F337F12201D595005BE5F1 /* CustomCollectionViewCell.swift */,
+				D1F337F22201D595005BE5F1 /* CustomCollectionViewCell.xib */,
+			);
+			path = CollectionView;
+			sourceTree = "<group>";
+		};
+		D1F337F82201D595005BE5F1 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337F92201D595005BE5F1 /* MenuBubbleView.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		D1F337FB2201D595005BE5F1 /* Text */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337FC2201D595005BE5F1 /* TextBubbleView.swift */,
+			);
+			path = Text;
+			sourceTree = "<group>";
+		};
+		D1F337FD2201D595005BE5F1 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337FE2201D595005BE5F1 /* ChatMessages */,
+				D1F338012201D595005BE5F1 /* InputViews */,
+				D1F338052201D595005BE5F1 /* TypingStatus */,
+				D1F3380D2201D595005BE5F1 /* BotMessages */,
+				D1F338112201D595005BE5F1 /* AppLaunch */,
+			);
+			name = Controllers;
+			path = ../../../Shared/Controllers;
+			sourceTree = "<group>";
+		};
+		D1F337FE2201D595005BE5F1 /* ChatMessages */ = {
+			isa = PBXGroup;
+			children = (
+				D1F337FF2201D595005BE5F1 /* ChatMessagesViewController.swift */,
+				D1F338002201D595005BE5F1 /* ChatMessagesViewController.xib */,
+			);
+			path = ChatMessages;
+			sourceTree = "<group>";
+		};
+		D1F338012201D595005BE5F1 /* InputViews */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338022201D595005BE5F1 /* TableTemplateViewController.swift */,
+				D1F338032201D595005BE5F1 /* TableTemplateViewController.xib */,
+				D1F338042201D595005BE5F1 /* InputTOWebViewController.swift */,
+			);
+			path = InputViews;
+			sourceTree = "<group>";
+		};
+		D1F338052201D595005BE5F1 /* TypingStatus */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338062201D595005BE5F1 /* KRETypingActivityIndicator.m */,
+				D1F338072201D595005BE5F1 /* KRETypingCollectionViewCell.xib */,
+				D1F338082201D595005BE5F1 /* KRETypingCollectionViewCell.h */,
+				D1F338092201D595005BE5F1 /* KRETypingStatusView.h */,
+				D1F3380A2201D595005BE5F1 /* KRETypingStatusView.m */,
+				D1F3380B2201D595005BE5F1 /* KRETypingCollectionViewCell.m */,
+				D1F3380C2201D595005BE5F1 /* KRETypingActivityIndicator.h */,
+			);
+			path = TypingStatus;
+			sourceTree = "<group>";
+		};
+		D1F3380D2201D595005BE5F1 /* BotMessages */ = {
+			isa = PBXGroup;
+			children = (
+				D1F3380E2201D595005BE5F1 /* BotMessagesView.swift */,
+				D1F3380F2201D595005BE5F1 /* KREFetchedResultsController.swift */,
+				D1F338102201D595005BE5F1 /* MessageBubbleCell.swift */,
 			);
 			path = BotMessages;
 			sourceTree = "<group>";
 		};
-		D1F4E5021CF70A720044C093 /* BubbleViews */ = {
+		D1F338112201D595005BE5F1 /* AppLaunch */ = {
 			isa = PBXGroup;
 			children = (
-				6E84101F1FADF09800A26C8F /* Chart */,
-				6E46A14D1F8B020F00E0AAF8 /* Table */,
-				6E9C0E3E1F162FFB003550F8 /* Carousel */,
-				BBB4F9581E0D095D00C2A53A /* List */,
-				D1522AB81DED45AC00D86407 /* Options */,
-				D1B944A61D04463F000AADA9 /* Image */,
-				D10A24571CF72FD400E2732C /* Text */,
-				D1F4E5031CF70A8E0044C093 /* BubbleView.swift */,
-				0CD0CD472074E3B500FD46F9 /* Menu */,
+				D1F338122201D595005BE5F1 /* AppLaunchViewController.swift */,
+				D1F338132201D595005BE5F1 /* AppLaunchViewController.xib */,
 			);
-			path = BubbleViews;
+			path = AppLaunch;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -647,17 +650,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1F338532201D595005BE5F1 /* AppLaunchViewController.xib in Resources */,
 				D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */,
-				BB4D2DE81E289FA000A97E99 /* KRETypingCollectionViewCell.xib in Resources */,
-				6EA472F01FBD9BA200982255 /* TableTemplateViewController.xib in Resources */,
-				D1CAF15F1CF0AEA3001BCAEF /* AppLaunchViewController.xib in Resources */,
-				D1B944AE1D04463F000AADA9 /* MultiImageBubbleView.xib in Resources */,
-				D17550551F8BADCB00022853 /* CustomCollectionViewCell.xib in Resources */,
 				D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */,
+				D1F338372201D595005BE5F1 /* MultiImageBubbleView.xib in Resources */,
+				D1F338492201D595005BE5F1 /* TableTemplateViewController.xib in Resources */,
 				D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */,
+				D1F338352201D595005BE5F1 /* ImageComponentCollectionViewCell.xib in Resources */,
+				D1F3384C2201D595005BE5F1 /* KRETypingCollectionViewCell.xib in Resources */,
 				D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */,
-				6E7BA00E1F28B62700301C38 /* ChatMessagesViewController.xib in Resources */,
-				D1B944AC1D04463F000AADA9 /* ImageComponentCollectionViewCell.xib in Resources */,
+				D1F338472201D595005BE5F1 /* ChatMessagesViewController.xib in Resources */,
+				D1F3383D2201D595005BE5F1 /* CustomCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -783,68 +786,68 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1F338192201D595005BE5F1 /* DataModel.xcdatamodeld in Sources */,
+				D1F338162201D595005BE5F1 /* Common.swift in Sources */,
+				D1F3382D2201D595005BE5F1 /* KRELayoutManager.m in Sources */,
+				D1F338322201D595005BE5F1 /* BalloonMarker.swift in Sources */,
+				D1F338142201D595005BE5F1 /* CoreDataManager.swift in Sources */,
 				0CD0CD552077491200FD46F9 /* barrylogo@2x.png in Sources */,
+				D1F338202201D595005BE5F1 /* TSBaseParser.m in Sources */,
 				0CD0CD562077491200FD46F9 /* barrylogo@3x.png in Sources */,
+				D1F338302201D595005BE5F1 /* OptionsBubbleView.swift in Sources */,
+				D1F3381C2201D595005BE5F1 /* KREContact+CoreDataProperties.swift in Sources */,
+				D1F3383A2201D595005BE5F1 /* MiniTableBubbleView.swift in Sources */,
+				D1F338382201D595005BE5F1 /* BubbleView.swift in Sources */,
 				0CD0CD572077491200FD46F9 /* barrylogo.png in Sources */,
-				D1AA2A351CF3489000BE9789 /* Common.swift in Sources */,
-				D1F4E5261CF716640044C093 /* Component.swift in Sources */,
-				D150415C1DE2CD0D00F2F92E /* KREMessage+CoreDataClass.swift in Sources */,
-				D1132F661D8181130083FC10 /* KREAttributedLabel.m in Sources */,
-				6E5F21E41F8E34AC00527A52 /* AudioController.swift in Sources */,
-				BBB4F95A1E0D1A8400C2A53A /* ListBubbleView.swift in Sources */,
-				D15041601DE2CD0D00F2F92E /* KREThread+CoreDataClass.swift in Sources */,
-				6E8410211FADF0C900A26C8F /* ChartBubbleView.swift in Sources */,
+				D1F3383B2201D595005BE5F1 /* CustomCollectionViewLayout.swift in Sources */,
+				D1F3384B2201D595005BE5F1 /* KRETypingActivityIndicator.m in Sources */,
+				D1F3382E2201D595005BE5F1 /* KREAttributedLabel.m in Sources */,
+				D1F3381A2201D595005BE5F1 /* KREThread+CoreDataProperties.swift in Sources */,
+				D1F3382A2201D595005BE5F1 /* ComposeBarView.swift in Sources */,
+				D1F3381E2201D595005BE5F1 /* KREComponent+CoreDataClass.swift in Sources */,
+				D1F338222201D595005BE5F1 /* AudioController.swift in Sources */,
+				D1F3382F2201D595005BE5F1 /* KREUtilities.m in Sources */,
+				D1F338272201D595005BE5F1 /* Thread.swift in Sources */,
+				D1F3384A2201D595005BE5F1 /* InputTOWebViewController.swift in Sources */,
+				D1F338152201D595005BE5F1 /* DataStoreManager.swift in Sources */,
+				D1F338242201D595005BE5F1 /* CALayer+MBAnimationPersistence.m in Sources */,
 				D1A12B6E1E84DD3500F4E2B4 /* SDKConfiguration.swift in Sources */,
-				D14BD4BE1DDEDBAD0032BD80 /* CoreDataManager.swift in Sources */,
-				D10A245A1CF72FD400E2732C /* TextBubbleView.swift in Sources */,
-				0C6D099D206B9EB700CE166E /* ResponsiveCustonCell.swift in Sources */,
-				7D5861C51F8B6A7E00389DCB /* TableBubbleView.swift in Sources */,
-				6E14F4691F2F4D8600F5C149 /* BotMessagesView.swift in Sources */,
-				D1F4E5041CF70A8E0044C093 /* BubbleView.swift in Sources */,
-				7D63B37F1F8B9D6800D08701 /* InputTOWebViewController.swift in Sources */,
-				0C6D099E206B9EB700CE166E /* ExpandedTableViewCell.swift in Sources */,
-				D1132F691D8181130083FC10 /* NSMutableAttributedString+KREUtils.m in Sources */,
-				D150415E1DE2CD0D00F2F92E /* KREContact+CoreDataClass.swift in Sources */,
-				D1F4E4FB1CF709C40044C093 /* MessageBubbleCell.swift in Sources */,
+				D1F338172201D595005BE5F1 /* KREMessage+CoreDataProperties.swift in Sources */,
+				D1F338342201D595005BE5F1 /* MultiImageBubbleView.swift in Sources */,
+				D1F338182201D595005BE5F1 /* KREThread+CoreDataClass.swift in Sources */,
+				D1F3381D2201D595005BE5F1 /* KREContact+CoreDataClass.swift in Sources */,
+				D1F338512201D595005BE5F1 /* MessageBubbleCell.swift in Sources */,
+				D1F3384E2201D595005BE5F1 /* KRETypingCollectionViewCell.m in Sources */,
+				D1F3381B2201D595005BE5F1 /* KREMessage+CoreDataClass.swift in Sources */,
+				D1F3384D2201D595005BE5F1 /* KRETypingStatusView.m in Sources */,
+				D1F338282201D595005BE5F1 /* Component.swift in Sources */,
+				D1F338332201D595005BE5F1 /* CarouselBubbleView.swift in Sources */,
+				D1F338412201D595005BE5F1 /* ResponsiveCustonCell.swift in Sources */,
+				D1F3382B2201D595005BE5F1 /* AudioComposeView.swift in Sources */,
+				D1F338462201D595005BE5F1 /* ChatMessagesViewController.swift in Sources */,
+				D1F3384F2201D595005BE5F1 /* BotMessagesView.swift in Sources */,
+				D1F338442201D595005BE5F1 /* ListBubbleView.swift in Sources */,
+				D1F338362201D595005BE5F1 /* ImageComponentCollectionViewCell.swift in Sources */,
+				D1F338312201D595005BE5F1 /* ChartBubbleView.swift in Sources */,
+				D1F3383E2201D595005BE5F1 /* TableBubbleView.swift in Sources */,
+				D1F3381F2201D595005BE5F1 /* KREComponent+CoreDataProperties.swift in Sources */,
+				D1F338422201D595005BE5F1 /* MiniTableViewCell.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
-				BB4D2DE91E289FA000A97E99 /* KRETypingStatusView.m in Sources */,
-				6E7BA00D1F28B62700301C38 /* ChatMessagesViewController.swift in Sources */,
-				D150415B1DE2CD0D00F2F92E /* KREComponent+CoreDataProperties.swift in Sources */,
-				0C6D0999206B9ACC00CE166E /* ResponsiveTableBubbleView.swift in Sources */,
-				6ECD5CD01F2B3ECB00B9790E /* AudioComposeView.swift in Sources */,
-				6E202A581FBB22AF002A608C /* BalloonMarker.swift in Sources */,
-				D1B944AB1D04463F000AADA9 /* ImageComponentCollectionViewCell.swift in Sources */,
-				BB4D2DE71E289FA000A97E99 /* KRETypingCollectionViewCell.m in Sources */,
-				D1F4E52C1CF716640044C093 /* Thread.swift in Sources */,
-				D150415D1DE2CD0D00F2F92E /* KREMessage+CoreDataProperties.swift in Sources */,
-				6EA472EF1FBD9BA200982255 /* TableTemplateViewController.swift in Sources */,
-				0C6D099F206B9EB700CE166E /* SubTableViewCell.swift in Sources */,
-				0CD0CD492074E3E600FD46F9 /* MenuBubbleView.swift in Sources */,
-				D1522ABA1DED45AC00D86407 /* OptionsBubbleView.swift in Sources */,
-				0C6D0997206B6DC800CE166E /* MiniTableViewCell.swift in Sources */,
-				D150415F1DE2CD0D00F2F92E /* KREContact+CoreDataProperties.swift in Sources */,
-				6E9C0E401F162FFB003550F8 /* CarouselBubbleView.swift in Sources */,
-				D1F4E5281CF716640044C093 /* Message.swift in Sources */,
-				D15041611DE2CD0D00F2F92E /* KREThread+CoreDataProperties.swift in Sources */,
-				BB4D2DEF1E28AE4600A97E99 /* CALayer+MBAnimationPersistence.m in Sources */,
-				D15045D71DE475FC008DE46E /* KREFetchedResultsController.swift in Sources */,
-				D10A24741CF808A300E2732C /* Identity.swift in Sources */,
-				D1CAF15E1CF0AEA3001BCAEF /* AppLaunchViewController.swift in Sources */,
-				D1132F671D8181130083FC10 /* KRELayoutManager.m in Sources */,
-				D1132F681D8181130083FC10 /* KREUtilities.m in Sources */,
-				D1F337882201C1FC005BE5F1 /* KoraASRService.swift in Sources */,
-				D150415A1DE2CD0D00F2F92E /* KREComponent+CoreDataClass.swift in Sources */,
-				0CA5900020614502002DA3B6 /* MiniTableBubbleView.swift in Sources */,
-				D1F086811EACB6CB00A75AD6 /* TSMarkdownParser.m in Sources */,
-				D17550541F8BADCB00022853 /* CustomCollectionViewCell.swift in Sources */,
-				D1F4E52B1CF716640044C093 /* SectionedThread.swift in Sources */,
-				D14BD4B81DDED95C0032BD80 /* DataModel.xcdatamodeld in Sources */,
-				D1F086801EACB6CB00A75AD6 /* TSBaseParser.m in Sources */,
-				D1B944AD1D04463F000AADA9 /* MultiImageBubbleView.swift in Sources */,
-				BB4D2DE61E289FA000A97E99 /* KRETypingActivityIndicator.m in Sources */,
-				6E50B77A1F29042000E10D7D /* ComposeBarView.swift in Sources */,
-				6E202A5C1FBC7B33002A608C /* CustomCollectionViewLayout.swift in Sources */,
-				D15041631DE2F93D00F2F92E /* DataStoreManager.swift in Sources */,
+				D1F338392201D595005BE5F1 /* ResponsiveTableBubbleView.swift in Sources */,
+				D1F338212201D595005BE5F1 /* TSMarkdownParser.m in Sources */,
+				D1F338432201D595005BE5F1 /* MenuBubbleView.swift in Sources */,
+				D1F3382C2201D595005BE5F1 /* NSMutableAttributedString+KREUtils.m in Sources */,
+				D1F338482201D595005BE5F1 /* TableTemplateViewController.swift in Sources */,
+				D1F338262201D595005BE5F1 /* Message.swift in Sources */,
+				D1F338402201D595005BE5F1 /* ExpandedTableViewCell.swift in Sources */,
+				D1F338252201D595005BE5F1 /* Identity.swift in Sources */,
+				D1F338232201D595005BE5F1 /* KoraASRService.swift in Sources */,
+				D1F338292201D595005BE5F1 /* SectionedThread.swift in Sources */,
+				D1F3383F2201D595005BE5F1 /* SubTableViewCell.swift in Sources */,
+				D1F338502201D595005BE5F1 /* KREFetchedResultsController.swift in Sources */,
+				D1F3383C2201D595005BE5F1 /* CustomCollectionViewCell.swift in Sources */,
+				D1F338452201D595005BE5F1 /* TextBubbleView.swift in Sources */,
+				D1F338522201D595005BE5F1 /* AppLaunchViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1046,12 +1049,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		D14BD4B61DDED95C0032BD80 /* DataModel.xcdatamodeld */ = {
+		D1F337B52201D595005BE5F1 /* DataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				D14BD4B71DDED95C0032BD80 /* DataModel.xcdatamodel */,
+				D1F337B62201D595005BE5F1 /* DataModel.xcdatamodel */,
 			);
-			currentVersion = D14BD4B71DDED95C0032BD80 /* DataModel.xcdatamodel */;
+			currentVersion = D1F337B62201D595005BE5F1 /* DataModel.xcdatamodel */;
 			path = DataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
