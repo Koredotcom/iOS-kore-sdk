@@ -1,0 +1,5 @@
+github "AFNetworking/AFNetworking" "3.2.1"
+github "Koredotcom/iOS-kore-sdk" "eb3d3d9a30c98685de1d588a5bfeda3a280ef410"
+github "Mantle/Mantle" "2.1.0"
+github "danielgindi/Charts" "v3.2.1"
+github "facebook/SocketRocket" "0a023409b138039d1ab5ac5431fe61c5f334e86b"
