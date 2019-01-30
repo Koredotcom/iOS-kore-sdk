@@ -212,7 +212,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
                 self.data = TableData(data)
                 self.showMore = false
                 var rowsDataCount = 0
-                for row in self.data.rows {
+                for _ in self.data.rows {
                     rowsDataCount += 1
                     if rowsDataCount == rowsDataLimit {
                         self.showMore = true
@@ -227,7 +227,6 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
     }
     
     override var intrinsicContentSize : CGSize {
-        let rows = self.data.rows
         var height: CGFloat = 44.0
         let noOfUnselectedRows = rowsDataLimit - indexPaths.count   
         height = (CGFloat(noOfUnselectedRows * 44)) + 36
