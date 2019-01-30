@@ -173,7 +173,7 @@ class AudioComposeView: UIView {
     
     @objc fileprivate func audioButtonAction() {
         if !self.isActive {
-            GoogleASRService.checkAudioRecordPermission(block: { [weak self] in
+            KoraASRService.shared.checkAudioRecordPermission({ [weak self] in
                 self?.isActive = true
                 self?.startAudioRecording()
             })

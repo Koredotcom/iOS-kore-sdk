@@ -37,7 +37,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var typingStatusView: KRETypingStatusView!
     var webViewController: InputTOWebViewController!
 
-    let sttClient: GoogleASRService = GoogleASRService(api_key: SDKConfiguration.speechConfig.API_KEY)
+    let sttClient = KoraASRService.shared
     var speechSynthesizer: AVSpeechSynthesizer!
     
     // MARK: init
@@ -206,10 +206,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         self.audioComposeView.voiceRecordingStarted = { [weak self] (composeBar) in
             self?.stopTTS()
-            self?.sttClient.start()
+            self?.composeView.isHidden = true
         }
         self.audioComposeView.voiceRecordingStopped = { [weak self] (composeBar) in
-            self?.sttClient.stop()
+            self?.sttClient.stopRecording()
         }
         self.audioComposeView.getAudioPeakOutputPower = { () in
             return 0.0
@@ -442,7 +442,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func configureSTTClient() {
-        self.sttClient.onError = { [weak self] (error) in
+        self.sttClient.onError = { [weak self] (error, userInfo) in
             guard let strongSelf = self else {
                 return
             }
@@ -451,6 +451,29 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             strongSelf.composeViewBottomConstraint.isActive = false
             strongSelf.composeBarContainerHeightConstraint.isActive = true
             strongSelf.composeBarContainerView.isHidden = true
+            
+            if let message = userInfo?["message"] as? String {
+                let alert = UIAlertController(title: message, message: nil, preferredStyle: .alert)
+                
+                if let navigateToSettings = userInfo?["settings"] as? Bool, navigateToSettings {
+                    let settingsAction = UIAlertAction(title: "Settings", style: .default, handler: { (action) in
+                        if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
+                            UIApplication.shared.open(settingsUrl, options: [:], completionHandler: nil)
+                        }
+                    })
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+                        
+                    })
+                    alert.addAction(settingsAction)
+                    alert.addAction(cancelAction)
+                } else {
+                    let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
+                        
+                    })
+                    alert.addAction(cancelAction)
+                }
+                self?.present(alert, animated: true, completion: nil)
+            }
         }
         self.sttClient.onResponse = { [weak self] (transcript, isFinal) in
             guard let strongSelf = self else {
@@ -733,7 +756,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func composeBarViewSpeechToTextButtonAction(_: ComposeBarView) {
-        GoogleASRService.checkAudioRecordPermission(block: { [weak self] in
+        KoraASRService.shared.checkAudioRecordPermission({ [weak self] in
             self?.speechToTextButtonAction()
         })
     }

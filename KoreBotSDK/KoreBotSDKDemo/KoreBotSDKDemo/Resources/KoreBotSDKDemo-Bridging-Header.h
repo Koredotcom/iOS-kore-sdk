@@ -20,7 +20,4 @@
 #import "KRETypingActivityIndicator.h"
 #import "KRETypingStatusView.h"
 
-#import <googleapis/CloudSpeech.pbobjc.h>
-#import <googleapis/CloudSpeech.pbrpc.h>
-
 #endif /* KoreBotSDKDemo_Bridging_Header_h */

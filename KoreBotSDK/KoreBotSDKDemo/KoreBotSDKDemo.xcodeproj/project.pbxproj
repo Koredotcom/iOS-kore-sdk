@@ -25,11 +25,9 @@
 		6E202A581FBB22AF002A608C /* BalloonMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E202A571FBB22AF002A608C /* BalloonMarker.swift */; };
 		6E202A5C1FBC7B33002A608C /* CustomCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E202A5B1FBC7B33002A608C /* CustomCollectionViewLayout.swift */; };
 		6E50B77A1F29042000E10D7D /* ComposeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E50B7791F29042000E10D7D /* ComposeBarView.swift */; };
-		6E5F21E31F8E34AC00527A52 /* SpeechRecognitionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5F21E11F8E34AC00527A52 /* SpeechRecognitionService.swift */; };
 		6E5F21E41F8E34AC00527A52 /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5F21E21F8E34AC00527A52 /* AudioController.swift */; };
 		6E7BA00D1F28B62700301C38 /* ChatMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7BA00B1F28B62700301C38 /* ChatMessagesViewController.swift */; };
 		6E7BA00E1F28B62700301C38 /* ChatMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E7BA00C1F28B62700301C38 /* ChatMessagesViewController.xib */; };
-		6E7E002F1F8E638B002F2789 /* GoogleASRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7E002E1F8E638B002F2789 /* GoogleASRService.swift */; };
 		6E8410211FADF0C900A26C8F /* ChartBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8410201FADF0C900A26C8F /* ChartBubbleView.swift */; };
 		6E9C0E401F162FFB003550F8 /* CarouselBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9C0E3F1F162FFB003550F8 /* CarouselBubbleView.swift */; };
 		6EA472EF1FBD9BA200982255 /* TableTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA472ED1FBD9BA200982255 /* TableTemplateViewController.swift */; };
@@ -80,6 +78,7 @@
 		D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1CAF1531CF0AEA3001BCAEF /* Assets.xcassets */; };
 		D1F086801EACB6CB00A75AD6 /* TSBaseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F0867C1EACB6CB00A75AD6 /* TSBaseParser.m */; };
 		D1F086811EACB6CB00A75AD6 /* TSMarkdownParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F0867F1EACB6CB00A75AD6 /* TSMarkdownParser.m */; };
+		D1F337882201C1FC005BE5F1 /* KoraASRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F337872201C1FC005BE5F1 /* KoraASRService.swift */; };
 		D1F4E4FB1CF709C40044C093 /* MessageBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F4E4F21CF709C40044C093 /* MessageBubbleCell.swift */; };
 		D1F4E5041CF70A8E0044C093 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F4E5031CF70A8E0044C093 /* BubbleView.swift */; };
 		D1F4E5261CF716640044C093 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F4E51C1CF716640044C093 /* Component.swift */; };
@@ -110,11 +109,9 @@
 		6E202A571FBB22AF002A608C /* BalloonMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalloonMarker.swift; sourceTree = "<group>"; };
 		6E202A5B1FBC7B33002A608C /* CustomCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewLayout.swift; sourceTree = "<group>"; };
 		6E50B7791F29042000E10D7D /* ComposeBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeBarView.swift; sourceTree = "<group>"; };
-		6E5F21E11F8E34AC00527A52 /* SpeechRecognitionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionService.swift; sourceTree = "<group>"; };
 		6E5F21E21F8E34AC00527A52 /* AudioController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
 		6E7BA00B1F28B62700301C38 /* ChatMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessagesViewController.swift; sourceTree = "<group>"; };
 		6E7BA00C1F28B62700301C38 /* ChatMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatMessagesViewController.xib; sourceTree = "<group>"; };
-		6E7E002E1F8E638B002F2789 /* GoogleASRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleASRService.swift; sourceTree = "<group>"; };
 		6E8410201FADF0C900A26C8F /* ChartBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartBubbleView.swift; sourceTree = "<group>"; };
 		6E9C0E3F1F162FFB003550F8 /* CarouselBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselBubbleView.swift; sourceTree = "<group>"; };
 		6EA472ED1FBD9BA200982255 /* TableTemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableTemplateViewController.swift; sourceTree = "<group>"; };
@@ -179,6 +176,7 @@
 		D1F0867C1EACB6CB00A75AD6 /* TSBaseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSBaseParser.m; sourceTree = "<group>"; };
 		D1F0867E1EACB6CB00A75AD6 /* TSMarkdownParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMarkdownParser.h; sourceTree = "<group>"; };
 		D1F0867F1EACB6CB00A75AD6 /* TSMarkdownParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMarkdownParser.m; sourceTree = "<group>"; };
+		D1F337872201C1FC005BE5F1 /* KoraASRService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraASRService.swift; sourceTree = "<group>"; };
 		D1F4E4F21CF709C40044C093 /* MessageBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleCell.swift; sourceTree = "<group>"; };
 		D1F4E5031CF70A8E0044C093 /* BubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
 		D1F4E51C1CF716640044C093 /* Component.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
@@ -237,9 +235,8 @@
 		6E5F21E01F8E347D00527A52 /* SpeechRecognition */ = {
 			isa = PBXGroup;
 			children = (
+				D1F337872201C1FC005BE5F1 /* KoraASRService.swift */,
 				6E5F21E21F8E34AC00527A52 /* AudioController.swift */,
-				6E5F21E11F8E34AC00527A52 /* SpeechRecognitionService.swift */,
-				6E7E002E1F8E638B002F2789 /* GoogleASRService.swift */,
 			);
 			path = SpeechRecognition;
 			sourceTree = "<group>";
@@ -601,7 +598,6 @@
 				D175AD481CEF0CD500BB9442 /* Resources */,
 				4E7E61A580D6B9452ECC5FC1 /* [CP] Embed Pods Frameworks */,
 				C3C37409D761BE7FAEEC0057 /* 📦 Embed Pods Frameworks */,
-				BA575C1F20534E638AC297C6 /* 📦 Copy Pods Resources */,
 				07E514A1144A4F62F10E2252 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -695,42 +691,26 @@
 			inputPaths = (
 				"${SRCROOT}/../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
-				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
 				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/DTCoreText/DTCoreText.framework",
 				"${BUILT_PRODUCTS_DIR}/DTFoundation/DTFoundation.framework",
 				"${BUILT_PRODUCTS_DIR}/KoreBotSDK/KoreBotSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/Mantle/Mantle.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket/SocketRocket.framework",
 				"${BUILT_PRODUCTS_DIR}/SquareMosaicLayout/SquareMosaicLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/TOWebViewController/TOWebViewController.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
-				"${BUILT_PRODUCTS_DIR}/googleapis/googleapis.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTCoreText.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTFoundation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KoreBotSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mantle.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SquareMosaicLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TOWebViewController.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/googleapis.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -750,21 +730,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		BA575C1F20534E638AC297C6 /* 📦 Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "📦 Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C3C37409D761BE7FAEEC0057 /* 📦 Embed Pods Frameworks */ = {
@@ -845,7 +810,6 @@
 				D1132F691D8181130083FC10 /* NSMutableAttributedString+KREUtils.m in Sources */,
 				D150415E1DE2CD0D00F2F92E /* KREContact+CoreDataClass.swift in Sources */,
 				D1F4E4FB1CF709C40044C093 /* MessageBubbleCell.swift in Sources */,
-				6E7E002F1F8E638B002F2789 /* GoogleASRService.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
 				BB4D2DE91E289FA000A97E99 /* KRETypingStatusView.m in Sources */,
 				6E7BA00D1F28B62700301C38 /* ChatMessagesViewController.swift in Sources */,
@@ -853,7 +817,6 @@
 				0C6D0999206B9ACC00CE166E /* ResponsiveTableBubbleView.swift in Sources */,
 				6ECD5CD01F2B3ECB00B9790E /* AudioComposeView.swift in Sources */,
 				6E202A581FBB22AF002A608C /* BalloonMarker.swift in Sources */,
-				6E5F21E31F8E34AC00527A52 /* SpeechRecognitionService.swift in Sources */,
 				D1B944AB1D04463F000AADA9 /* ImageComponentCollectionViewCell.swift in Sources */,
 				BB4D2DE71E289FA000A97E99 /* KRETypingCollectionViewCell.m in Sources */,
 				D1F4E52C1CF716640044C093 /* Thread.swift in Sources */,
@@ -873,6 +836,7 @@
 				D1CAF15E1CF0AEA3001BCAEF /* AppLaunchViewController.swift in Sources */,
 				D1132F671D8181130083FC10 /* KRELayoutManager.m in Sources */,
 				D1132F681D8181130083FC10 /* KREUtilities.m in Sources */,
+				D1F337882201C1FC005BE5F1 /* KoraASRService.swift in Sources */,
 				D150415A1DE2CD0D00F2F92E /* KREComponent+CoreDataClass.swift in Sources */,
 				0CA5900020614502002DA3B6 /* MiniTableBubbleView.swift in Sources */,
 				D1F086811EACB6CB00A75AD6 /* TSMarkdownParser.m in Sources */,
