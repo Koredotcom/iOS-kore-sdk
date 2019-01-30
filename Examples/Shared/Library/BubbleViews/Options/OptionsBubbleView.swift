@@ -92,7 +92,7 @@ class OptionsBubbleView: BubbleView {
             }
         }
     }
-    
+
     override var intrinsicContentSize : CGSize {
         let limitingSize: CGSize  = CGSize(width: BubbleViewMaxWidth - 20, height: CGFloat.greatestFiniteMagnitude)
         let textSize: CGSize = self.textLabel.sizeThatFits(limitingSize)

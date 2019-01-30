@@ -9,7 +9,7 @@
 import UIKit
 
 class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSource {
-    
+   
     
     // MARK: - properties
     
@@ -18,8 +18,8 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
     var rows: Array<Array<String>> = Array<Array<String>>()
     var headers: Array<Header> = Array<Header>()
     var sec : Int = Int()
-    
-    //    var i = 0
+
+//    var i = 0
     var count = 0
     
     
@@ -35,14 +35,14 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
     
     // MARK: properties with observers
     override func prepareForReuse() {
-        
+       
         
     }
     
     func initialize() {
         self.selectionStyle = .none
         self.clipsToBounds = true
-        
+
         subTableView = UITableView(frame:.zero)
         subTableView.translatesAutoresizingMaskIntoConstraints = false
         subTableView.delegate = self
@@ -55,9 +55,9 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
         self.subTableView.allowsSelection = false
         
         subTableView.register(ExpandedTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
-        
+       
         contentView.addSubview(subTableView)
-        
+       
         let views: [String: UIView] = ["subTableView": subTableView]
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[subTableView]|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[subTableView]-15-|", options:[], metrics:nil, views:views))
@@ -87,7 +87,7 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ExpandedTableViewCell = self.subTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! ExpandedTableViewCell
         cell.headers = headers
-        
+       
         if (headers.count > (indexPath.row * 2)){
             let dict = headers[indexPath.row*2]
             cell.titleLbl?.text = dict.title
@@ -113,8 +113,8 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
             cell.valueLbl1.text = row[indexPath.row*2+1]
         }
         cell.valueLbl1.textAlignment = cell.titleLbl1.textAlignment
-        
-        
+
+       
         cell.backgroundColor = UIColor.white
         return cell
     }

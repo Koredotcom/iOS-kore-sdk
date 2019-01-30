@@ -111,7 +111,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             self.pcView.drawEntryLabelsEnabled = false
             self.pcView.extraRightOffset = 0.0
             self.pcView.rotationEnabled = false
-            //            self.pcView.legend.enabled = false
+//            self.pcView.legend.enabled = false
         }
         if(pieType == "donut_legend"){
             l.horizontalAlignment = .right
@@ -177,7 +177,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
     
     func intializeBarChartView(_ direction:String){
         
-        intializeCardLayout()
+       intializeCardLayout()
         
         if(direction == "horizontal"){
             self.bcView = HorizontalBarChartView()
@@ -196,7 +196,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         if(direction == "horizontal"){
             self.bcView.leftAxis.enabled = false
         }else{
-            self.bcView.leftAxis.enabled = true
+           self.bcView.leftAxis.enabled = true
         }
         self.bcView.leftAxis.drawAxisLineEnabled = true
         self.bcView.leftAxis.drawGridLinesEnabled = false
@@ -234,12 +234,12 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
     
     func colorsPalet() -> [NSUIColor]{
         var colors: Array<UIColor> = Array<UIColor>()
-        //        colors.append(Common.UIColorRGB(0x5F6BF7))
-        //        colors.append(Common.UIColorRGB(0xF78083))
-        //        colors.append(Common.UIColorRGB(0x41C5D3))
-        //        colors.append(Common.UIColorRGB(0xC4AFF0))
-        //        colors.append(Common.UIColorRGB(0x2ecc71))
-        //        colors.append(Common.UIColorRGB(0x1abc9c))
+//        colors.append(Common.UIColorRGB(0x5F6BF7))
+//        colors.append(Common.UIColorRGB(0xF78083))
+//        colors.append(Common.UIColorRGB(0x41C5D3))
+//        colors.append(Common.UIColorRGB(0xC4AFF0))
+//        colors.append(Common.UIColorRGB(0x2ecc71))
+//        colors.append(Common.UIColorRGB(0x1abc9c))
         colors.append( UIColor(red: 95/255, green: 107/255, blue: 247/255, alpha: 1))
         colors.append( UIColor(red: 153/255, green: 237/255, blue: 158/255, alpha: 1))
         colors.append( UIColor(red: 247/255, green: 128/255, blue: 131/255, alpha: 1))
@@ -251,8 +251,8 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         colors.append( UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1))
         colors.append( UIColor(red: 156/255, green: 235/255, blue: 249/255, alpha: 1))
         colors.append( UIColor(red: 247/255, green: 199/255, blue: 244/255, alpha: 1))
-        
-        
+
+
         colors.append(contentsOf: ChartColorTemplates.colorful())
         colors.append(contentsOf: ChartColorTemplates.joyful())
         colors.append(contentsOf: ChartColorTemplates.liberty())
@@ -288,7 +288,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             let pieChartData = PieChartData(dataSet: pieChartDataSet)
             pieChartData.setValueFormatter(self)
             pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 12.0))
-            //            pieChartData.setValueTextColor(UIColor.white)
+//            pieChartData.setValueTextColor(UIColor.white)
             pieChartDataSet.yValuePosition = .outsideSlice
             pieChartDataSet.valueLinePart1OffsetPercentage = 0.8
             pieChartDataSet.valueLinePart1Length = 0.4
@@ -324,7 +324,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             pieChartDataSet.selectionShift = 7
             let pieChartData = PieChartData(dataSet: pieChartDataSet)
             pieChartData.setDrawValues(false)
-            pieChartData.setValueFormatter(self)
+             pieChartData.setValueFormatter(self)
             self.pcView.extraRightOffset = rightOffset
             self.pcView.data = pieChartData
             self.pcView.highlightValues(nil)
@@ -333,8 +333,8 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             
         }
         
-        
-        
+
+       
     }
     
     public func transpose<T>(input: [[T]]) -> [[T]] {
@@ -375,7 +375,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         }
         
         var colors = colorsPalet()
-        
+
         var dataSets: Array<LineChartDataSet> = Array<LineChartDataSet>()
         for i in 0..<titles.count {
             let dataSet = LineChartDataSet(values: dataValues[i], label: titles[i])
@@ -386,11 +386,11 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             dataSet.drawValuesEnabled = false
             dataSets.append(dataSet)
         }
-        
+
         let lineChartData = LineChartData(dataSets: dataSets)
         lineChartData.setValueFormatter(self)
-        
-        
+
+
         self.xAxisValues = headers
         self.lcView.data = lineChartData
         self.lcView.xAxis.labelCount = headers.count
@@ -463,7 +463,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             let dictionary = elements[i]
             let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
             titles.append(title)
-            
+
             let values: Array<NSNumber> = dictionary["values"] != nil ? dictionary["values"] as! Array<NSNumber> : []
             valuesArray.append(values)
         }
@@ -476,13 +476,13 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             }
             subDataValues.append(BarChartDataEntry(x: Double(j), yValues: values))
         }
-        
-        
-        
+      
+
+
         let colors = colorsPalet()
-        //        var colorsArray:  Array<UIColor> =  Array<UIColor>()
-        //        colorsArray.append(colors[0])
-        
+//        var colorsArray:  Array<UIColor> =  Array<UIColor>()
+//        colorsArray.append(colors[0])
+
         var dataSets: Array<BarChartDataSet> = Array<BarChartDataSet>()
         for _ in 0..<1 {
             let dataSet = BarChartDataSet(values: subDataValues, label:"")
@@ -492,7 +492,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             dataSet.colors = colorsArr
             dataSets.append(dataSet)
         }
-        
+
         let barChartData = BarChartData(dataSets: dataSets)
         barChartData.setValueTextColor(UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1))
         barChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 8.0))
@@ -510,7 +510,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         self.xAxisValues = headers
         bcView.fitBars = true
         self.bcView.data = barChartData
-        
+       
         self.bcView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
         self.bcView.setVisibleXRangeMaximum(Double(headers.count))
     }
@@ -522,7 +522,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         }else if type == "linechart" {
             intializeLineChartView()
         }else if type == "barchart" {
-            let direction = jsonObject["direction"] != nil ? jsonObject["direction"] as! String : "horizontal"
+             let direction = jsonObject["direction"] != nil ? jsonObject["direction"] as! String : "horizontal"
             intializeBarChartView(direction)
         }
     }

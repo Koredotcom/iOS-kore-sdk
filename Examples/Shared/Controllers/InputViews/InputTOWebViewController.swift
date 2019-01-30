@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import TOWebViewController
+import SafariServices
 
 class InputTOWebViewController: UIViewController {
     var url: URL!
@@ -49,8 +49,7 @@ class InputTOWebViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(InputTOWebViewController.handleTap(_:)))
         backdropView.addGestureRecognizer(tapGesture)
         
-        let webViewController: TOWebViewController = TOWebViewController(url: url)
-        webViewController.showUrlWhileLoading = false
+        let webViewController = SFSafariViewController(url: url)
         self.add(asChildViewController: webViewController)
     }
     

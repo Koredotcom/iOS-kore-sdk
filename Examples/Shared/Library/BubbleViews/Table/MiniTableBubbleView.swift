@@ -119,7 +119,7 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tableView]-15-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[tableView]-15-|", options: [], metrics: nil, views: views))
     }
-    
+ 
     override func populateComponents() {
         if (components.count > 0) {
             let component: KREComponent = components.firstObject as! KREComponent
@@ -146,46 +146,46 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
             }
         }
     }
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        return UITableView.automaticDimension
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return data.rows[section].count/2
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        
-        return data.elements.count
-    }
-    
-    
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell : MiniTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: customCellIdentifier) as! MiniTableViewCell
-        let rows = data.rows[indexPath.section]
-        if (rows.count > (indexPath.row * 2)){
-            cell.headerLabel.text = rows[indexPath.row*2]
-            cell.headerLabel.font = UIFont(name: "Lato-Regular", size: 15.0)
-            cell.headerLabel.font = cell.headerLabel.font.withSize(15.0)
-            cell.headerLabel.textColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
-        }
-        if (rows.count > (indexPath.row * 2+1)){
-            cell.secondLbl.text = rows[indexPath.row*2+1]
-            cell.secondLbl.font = UIFont(name: "Lato-Regular", size: 15.0)
-            cell.secondLbl.font = cell.headerLabel.font.withSize(15.0)
+         func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
             
-            cell.secondLbl.textColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
+            return UITableView.automaticDimension
         }
-        cell.backgroundColor = UIColor.white
+        
+         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            
+            return data.rows[section].count/2
+        }
+        
+         func numberOfSections(in tableView: UITableView) -> Int {
+            
+            return data.elements.count
+        }
         
         
-        return cell
         
-    }
-    
+         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let cell : MiniTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: customCellIdentifier) as! MiniTableViewCell
+            let rows = data.rows[indexPath.section]
+            if (rows.count > (indexPath.row * 2)){
+                cell.headerLabel.text = rows[indexPath.row*2]
+                cell.headerLabel.font = UIFont(name: "Lato-Regular", size: 15.0)
+                cell.headerLabel.font = cell.headerLabel.font.withSize(15.0)
+                cell.headerLabel.textColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
+            }
+            if (rows.count > (indexPath.row * 2+1)){
+                cell.secondLbl.text = rows[indexPath.row*2+1]
+                cell.secondLbl.font = UIFont(name: "Lato-Regular", size: 15.0)
+                cell.secondLbl.font = cell.headerLabel.font.withSize(15.0)
+
+                cell.secondLbl.textColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
+            }
+            cell.backgroundColor = UIColor.white
+            
+            
+            return cell
+           
+        }
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
         
@@ -194,7 +194,7 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         headerLabel.textAlignment = .left
         headerLabel.font = UIFont(name: "Lato-Bold", size: 15.0)
         headerLabel.font = headerLabel.font.withSize(15.0)
-        
+
         headerLabel.textColor = UIColor(red: 38/255, green: 52/255, blue: 74/255, alpha: 1)
         headerLabel.text =  data.headers[section*2].title
         view.addSubview(headerLabel)
@@ -224,8 +224,8 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         view.layer.shadowOpacity = 1.0
         return view
     }
-    
-    override var intrinsicContentSize : CGSize {
+
+       override var intrinsicContentSize : CGSize {
         let rows = self.data.rows
         var height: CGFloat = 38.0
         for i in 0..<rows.count {

@@ -7,7 +7,6 @@
 //
 
 #import "KREUtilities.h"
-#import "NSString+HTML.h"
 
 @implementation KREUtilities
 
@@ -56,7 +55,7 @@
                             range:NSMakeRange(0, [str length])
                      withTemplate:@""];
     NSString *sString = [str copy];
-    sString = [[sString stringByReplacingHTMLEntities] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+//    sString = [[sString stringByReplacingHTMLEntities] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     sString = [KREUtilities getMarkdownStringFromString:sString];
     return sString;
 }

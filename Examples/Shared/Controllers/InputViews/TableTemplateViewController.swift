@@ -27,7 +27,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
     var dataString: String!
     var data: TableData = TableData()
     let customCellIdentifier = "CustomCellIdentifier"
-    var itemWidth : CGFloat = 0.0
+     var itemWidth : CGFloat = 0.0
     
     // MARK: init
     init(dataString: String) {
@@ -72,10 +72,10 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
             let section = 0
             selectedIndex = IndexPath(row: row, section: section)
             tableView.tableFooterView = UIView(frame: .zero)
-            
+
         }
     }
-    
+
     override func viewWillLayoutSubviews() {
         collectionView.reloadData()
         
@@ -84,7 +84,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     // MARK: cancel
     @IBAction func closeButtonAction(_ sender: UIButton!) {
         self.dismiss(animated: true, completion: nil)
@@ -103,7 +103,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
         } else if section == 1 {
             return 1
         } else {
-            let rows = self.data.rows
+             let rows = self.data.rows
             let row = rows[section - 2]
             return row.count
         }
@@ -115,16 +115,16 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
         cell.backgroundColor = .white
         cell.textLabel.textColor = Common.UIColorRGB(0x26344A)
         
-        let headers = self.data.headers
+         let headers = self.data.headers
         let header = headers[indexPath.row]
-        //        let alignment = header.alignment != nil ? header.alignment as! String : ""
-        //        if alignment == "right" {
-        //            cell.textLabel.textAlignment = .right
-        //        }else if alignment == "center" {
-        //            cell.textLabel.textAlignment = .center
-        //        }else {
-        //            cell.textLabel.textAlignment = .left
-        //        }
+//        let alignment = header.alignment != nil ? header.alignment as! String : ""
+//        if alignment == "right" {
+//            cell.textLabel.textAlignment = .right
+//        }else if alignment == "center" {
+//            cell.textLabel.textAlignment = .center
+//        }else {
+//            cell.textLabel.textAlignment = .left
+//        }
         if indexPath.section == 0 {
             cell.textLabel.text = header.title
             cell.textLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)!
@@ -167,7 +167,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
         } else if indexPath.section == 1 {
             return CGSize(width: -1, height: 2)
         } else {
-            let rows = self.data.rows
+             let rows = self.data.rows
             let row = rows[indexPath.section - 2]
             let text = row[indexPath.row]
             if text == "---" {
@@ -186,9 +186,9 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        //        if section == 0 {
-        //            return (CGFloat(100/data.columns.count)-10.0)
-        //        }
+//        if section == 0 {
+//            return (CGFloat(100/data.columns.count)-10.0)
+//        }
         if(data.columns.count > 0){
             return (CGFloat(100/data.columns.count))
         }
@@ -249,7 +249,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
                 }
                 cell.accessoryView = UIImageView(image: UIImage(named: "arrowUnselected"))
                 cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 22)
-                
+
                 return cell
                 
             }
@@ -265,7 +265,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
             }
             cell.accessoryView = UIImageView(image: UIImage(named: "arrowUnselected"))
             cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 22)
-            
+
             return cell
             
         }

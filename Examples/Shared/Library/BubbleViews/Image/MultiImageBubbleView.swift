@@ -80,7 +80,7 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
         
         let cell: ImageComponentCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageComponentCollectionViewCell", for:indexPath) as! ImageComponentCollectionViewCell
         
-        cell.component = self.components.object(at: (indexPath as NSIndexPath).row) as? Component
+        cell.component = self.components.object(at: (indexPath as NSIndexPath).row) as! Component
         //        cell.index = [indexPath.row]
         
         if (((indexPath as NSIndexPath).row == 4) && (self.components.count > MAX_CELLS)) {

@@ -16,7 +16,7 @@ protocol ComposeBarViewDelegate {
 }
 
 class ComposeBarView: UIView {
-    
+
     public var delegate: ComposeBarViewDelegate?
     
     fileprivate var topLineView: UIView!
@@ -24,7 +24,7 @@ class ComposeBarView: UIView {
     public var growingTextView: KREGrowingTextView!
     fileprivate var sendButton: UIButton!
     fileprivate var speechToTextButton: UIButton!
-    
+
     fileprivate var textViewTrailingConstraint: NSLayoutConstraint!
     fileprivate(set) public var isKeyboardEnabled: Bool = false
     
@@ -182,7 +182,7 @@ class ComposeBarView: UIView {
     @objc fileprivate func textDidChangeNotification(_ notification: Notification) {
         self.valueChanged()
     }
-    
+
     // MARK: UIResponder Methods
     
     open override var isFirstResponder: Bool {
