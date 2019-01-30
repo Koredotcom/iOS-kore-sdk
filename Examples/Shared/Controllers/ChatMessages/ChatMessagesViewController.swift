@@ -8,8 +8,8 @@
 
 import UIKit
 import AVFoundation
+import SafariServices
 import KoreBotSDK
-import TOWebViewController
 
 class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate {
     
@@ -35,7 +35,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var audioComposeView: AudioComposeView!
     var quickReplyView: KREQuickSelectView!
     var typingStatusView: KRETypingStatusView!
-    var webViewController: InputTOWebViewController!
+    var webViewController: SFSafariViewController!
 
     let sttClient = KoraASRService.shared
     var speechSynthesizer: AVSpeechSynthesizer!
@@ -229,7 +229,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
         
         self.quickReplyView.sendQuickReplyAction = { [weak self] (text) in
-            self?.sendTextMessage(text!)
+            if let text = text {
+                self?.sendTextMessage(text, options: nil)
+            }
         }
     }
     
@@ -253,9 +255,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             
             botClient.connectionDidOpen = { [weak self] () in
                 self?.updateNavBarPrompt()
-                if(self?.botClient != nil){
-                    self?.botClient.sendMessage("Welpro", options: [] as AnyObject)
-                }
+                self?.botClient?.sendMessage("Welpro", options: nil)
             }
             
             botClient.connectionReady = { () in
@@ -333,7 +333,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
         
         if (webViewController != nil) {
-            webViewController.dismissInputView()
+            webViewController.dismiss(animated: true, completion: nil)
             webViewController = nil
         }
         
@@ -358,9 +358,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     let urlString: String? = text.substring(with: NSMakeRange(range.location+range.length, 44))
                     if (urlString != nil) {
                         let url: URL = URL(string: urlString!)!
-                        webViewController = InputTOWebViewController(url: url)
+                        webViewController = SFSafariViewController(url: url)
                         webViewController.modalPresentationStyle = .custom
-                        self.present(webViewController, animated: true, completion:nil)
+                        present(webViewController, animated: true, completion:nil)
                     }
                     ttsBody = "Ok, Please fill in the details and submit"
                 }
@@ -484,7 +484,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 strongSelf.composeView.setText(transcript)
                 if !strongSelf.composeView.isKeyboardEnabled {
                     strongSelf.audioComposeView.stopRecording()
-                    strongSelf.sendTextMessage(transcript)
+                    strongSelf.sendTextMessage(transcript, options: nil)
                     strongSelf.composeView.setText("")
                     strongSelf.composeViewBottomConstraint.isActive = false
                     strongSelf.composeBarContainerHeightConstraint.isActive = true
@@ -526,7 +526,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         case .NO_NETWORK:
             self.navigationItem.prompt = "No Network"
             break
-        case .NONE:
+        case .NONE, .CLOSING:
             self.navigationItem.prompt = nil
             break
         }
@@ -557,7 +557,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: stopSpeakingNotification), object: nil)
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showTableTemplateNotification), object: nil)
-          NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: reloadTableNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: reloadTableNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -618,7 +618,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     // MARK: Helper functions
     
-    func sendMessage(_ message:Message){
+    func sendMessage(_ message: Message, options: [String: Any]?) {
         NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
         let composedMessage: Message = message
         if (composedMessage.components.count > 0) {
@@ -627,21 +627,21 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 let textComponent: Component = composedMessage.components[0] as! Component
                 let text: String = textComponent.payload as String
                 if(self.botClient != nil){
-                    self.botClient.sendMessage(text, options: [] as AnyObject)
+                    self.botClient.sendMessage(text, options: options)
                 }
                 self.textMessageSent()
             })
         }
     }
     
-    func sendTextMessage(_ text:String) {
+    func sendTextMessage(_ text: String, options: [String: Any]?) {
         let message: Message = Message()
         message.messageType = .default
         message.sentDate = Date()
         let textComponent: Component = Component()
         textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) as NSString!
         message.addComponent(textComponent)
-        self.sendMessage(message)
+        self.sendMessage(message, options: options)
     }
     
     func textMessageSent() {
@@ -680,16 +680,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     // MARK: BotMessagesDelegate methods
     func optionsButtonTapAction(text: String) {
-        self.sendTextMessage(text)
+        self.sendTextMessage(text, options: nil)
     }
     
     func linkButtonTapAction(urlString: String) {
         if (urlString.count > 0) {
             let url: URL = URL(string: urlString)!
-            let webViewController: TOWebViewController = TOWebViewController(url: url)
-            let webNavigationController: UINavigationController = UINavigationController(rootViewController: webViewController)
-            webNavigationController.tabBarItem.title = "Bots"
-            self.present(webNavigationController, animated: true, completion:nil)
+            let webViewController = SFSafariViewController(url: url)
+            present(webViewController, animated: true, completion:nil)
         }
     }
     
@@ -752,7 +750,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: ComposeBarViewDelegate methods
     
     func composeBarView(_: ComposeBarView, sendButtonAction text: String) {
-        self.sendTextMessage(text)
+        self.sendTextMessage(text, options: nil)
     }
     
     func composeBarViewSpeechToTextButtonAction(_: ComposeBarView) {
@@ -828,7 +826,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     @objc func showTableTemplateView(notification:Notification) {
         let dataString: String = notification.object as! String
         let tableTemplateViewController = TableTemplateViewController(dataString: dataString)
-            self.navigationController?.present(tableTemplateViewController, animated: true, completion: nil)
+        self.navigationController?.present(tableTemplateViewController, animated: true, completion: nil)
     }
     @objc func reloadTable(notification:Notification){
         botMessagesView.tableView.reloadData()

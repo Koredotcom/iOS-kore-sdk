@@ -19,7 +19,8 @@ class AppLaunchViewController: UIViewController {
     @IBOutlet weak var chatButton: UIButton!
     
     var sessionManager: AFHTTPSessionManager?
-    
+    let botClient = BotClient()
+
     // MARK: life-cycle events
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +77,7 @@ class AppLaunchViewController: UIViewController {
             view.addSubview(activityIndicatorView)
             activityIndicatorView.startAnimating()
             
-            let botInfo: NSDictionary = ["chatBot": chatBotName, "taskBotId": botId]
+            let botInfo: [String: Any] = ["chatBot": chatBotName, "taskBotId": botId]
             
             self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: isAnonymous, success: { [weak self] (jwToken) in
                 
@@ -87,15 +88,15 @@ class AppLaunchViewController: UIViewController {
                     dataStoreManager.deleteThreadIfRequired(with: botId, completionBlock: { (success) in
                         
                     let thread: KREThread = dataStoreManager.insertOrUpdateThread(dictionary: resources, withContext: context)
-                    try! context.save()
+                    try? context.save()
                     dataStoreManager.coreDataManager.saveChanges()
                     print(thread.threadId!)
                     
-                    let botClient: BotClient = BotClient(botInfoParameters: botInfo)
+                    self?.botClient.initialize(with: botInfo)
                     if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
-                        botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
+                        self?.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
                     }
-                    botClient.connectWithJwToken(jwToken, success: { [weak self] (client) in
+                    self?.botClient.connectWithJwToken(jwToken, success: { [weak self] (client) in
                         activityIndicatorView.stopAnimating()
                         self?.chatButton.isUserInteractionEnabled = true
                         
@@ -110,7 +111,7 @@ class AppLaunchViewController: UIViewController {
                         transition.type = CATransitionType.fade
                         self?.navigationController?.view.layer.add(transition, forKey: nil)
                     
-                        self!.navigationController?.pushViewController(botViewController, animated: false)
+                        self?.navigationController?.pushViewController(botViewController, animated: false)
                     }, failure: { (error) in
                         activityIndicatorView.stopAnimating()
                         self?.chatButton.isUserInteractionEnabled = true
@@ -137,7 +138,7 @@ class AppLaunchViewController: UIViewController {
         let configuration = URLSessionConfiguration.default
         
         //Manager
-        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL!, sessionConfiguration: configuration)
+        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
         
         // NOTE: You must set your URL to generate JWT. 
         let urlString: String = SDKConfiguration.serverConfig.koreJwtUrl()

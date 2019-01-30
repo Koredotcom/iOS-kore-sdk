@@ -19,5 +19,5 @@ target 'KoreBotSDKDemo' do
     import_pods
     pod 'TOWebViewController'
     pod 'KoreBotSDK', :path => '../../'
-    project 'KoreBotSDKDemo/KoreBotSDKDemo.xcodeproj'
+    project 'KoreBotSDKDemo.xcodeproj'
 end

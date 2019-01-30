@@ -1,0 +1,997 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		050267521DEC65BF001256D3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 050267511DEC65BF001256D3 /* AVFoundation.framework */; };
+		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
+		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
+		804D45444D7446B9E3ED1B3E /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9029D8713243221897F5EF4 /* Pods_KoreBotSDKDemo.framework */; };
+		D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */ = {isa = PBXBuildFile; fileRef = D15041081DE2C4BC00F2F92E /* Messages.plist */; };
+		D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = D15045D41DE422CB008DE46E /* BotConfiguration.plist */; };
+		D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */; };
+		D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D175AD561CEF0CD500BB9442 /* LaunchScreen.storyboard */; };
+		D1A12B6E1E84DD3500F4E2B4 /* SDKConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A12B6D1E84DD3500F4E2B4 /* SDKConfiguration.swift */; };
+		D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1CAF1531CF0AEA3001BCAEF /* Assets.xcassets */; };
+		D1F338C32201D99A005BE5F1 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3385D2201D99A005BE5F1 /* CoreDataManager.swift */; };
+		D1F338C42201D99A005BE5F1 /* DataStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3385E2201D99A005BE5F1 /* DataStoreManager.swift */; };
+		D1F338C52201D99A005BE5F1 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338602201D99A005BE5F1 /* Common.swift */; };
+		D1F338C62201D99A005BE5F1 /* KREMessage+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338622201D99A005BE5F1 /* KREMessage+CoreDataProperties.swift */; };
+		D1F338C72201D99A005BE5F1 /* KREThread+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338632201D99A005BE5F1 /* KREThread+CoreDataClass.swift */; };
+		D1F338C82201D99A005BE5F1 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D1F338642201D99A005BE5F1 /* DataModel.xcdatamodeld */; };
+		D1F338C92201D99A005BE5F1 /* KREThread+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338662201D99A005BE5F1 /* KREThread+CoreDataProperties.swift */; };
+		D1F338CA2201D99A005BE5F1 /* KREMessage+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338672201D99A005BE5F1 /* KREMessage+CoreDataClass.swift */; };
+		D1F338CB2201D99A005BE5F1 /* KREContact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338682201D99A005BE5F1 /* KREContact+CoreDataProperties.swift */; };
+		D1F338CC2201D99A005BE5F1 /* KREContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338692201D99A005BE5F1 /* KREContact+CoreDataClass.swift */; };
+		D1F338CD2201D99A005BE5F1 /* KREComponent+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3386A2201D99A005BE5F1 /* KREComponent+CoreDataClass.swift */; };
+		D1F338CE2201D99A005BE5F1 /* KREComponent+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3386B2201D99A005BE5F1 /* KREComponent+CoreDataProperties.swift */; };
+		D1F338CF2201D99A005BE5F1 /* TSBaseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F3386F2201D99A005BE5F1 /* TSBaseParser.m */; };
+		D1F338D02201D99A005BE5F1 /* TSMarkdownParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F338722201D99A005BE5F1 /* TSMarkdownParser.m */; };
+		D1F338D12201D99A005BE5F1 /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338742201D99A005BE5F1 /* AudioController.swift */; };
+		D1F338D22201D99A005BE5F1 /* KoraASRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338752201D99A005BE5F1 /* KoraASRService.swift */; };
+		D1F338D32201D99A005BE5F1 /* CALayer+MBAnimationPersistence.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F338772201D99A005BE5F1 /* CALayer+MBAnimationPersistence.m */; };
+		D1F338D42201D99A005BE5F1 /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3387A2201D99A005BE5F1 /* Identity.swift */; };
+		D1F338D52201D99A005BE5F1 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3387B2201D99A005BE5F1 /* Message.swift */; };
+		D1F338D62201D99A005BE5F1 /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3387C2201D99A005BE5F1 /* Thread.swift */; };
+		D1F338D72201D99A005BE5F1 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3387D2201D99A005BE5F1 /* Component.swift */; };
+		D1F338D82201D99A005BE5F1 /* SectionedThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3387E2201D99A005BE5F1 /* SectionedThread.swift */; };
+		D1F338D92201D99A005BE5F1 /* ComposeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338802201D99A005BE5F1 /* ComposeBarView.swift */; };
+		D1F338DA2201D99A005BE5F1 /* AudioComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338832201D99A005BE5F1 /* AudioComposeView.swift */; };
+		D1F338DB2201D99A005BE5F1 /* NSMutableAttributedString+KREUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F338852201D99A005BE5F1 /* NSMutableAttributedString+KREUtils.m */; };
+		D1F338DC2201D99A005BE5F1 /* KRELayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F338892201D99A005BE5F1 /* KRELayoutManager.m */; };
+		D1F338DD2201D99A005BE5F1 /* KREAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F3388B2201D99A005BE5F1 /* KREAttributedLabel.m */; };
+		D1F338DE2201D99A005BE5F1 /* KREUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F3388C2201D99A005BE5F1 /* KREUtilities.m */; };
+		D1F338DF2201D99A005BE5F1 /* OptionsBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3388F2201D99A005BE5F1 /* OptionsBubbleView.swift */; };
+		D1F338E02201D99A005BE5F1 /* ChartBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338912201D99A005BE5F1 /* ChartBubbleView.swift */; };
+		D1F338E12201D99A005BE5F1 /* BalloonMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338922201D99A005BE5F1 /* BalloonMarker.swift */; };
+		D1F338E22201D99A005BE5F1 /* CarouselBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338942201D99A005BE5F1 /* CarouselBubbleView.swift */; };
+		D1F338E32201D99A005BE5F1 /* MultiImageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338962201D99A005BE5F1 /* MultiImageBubbleView.swift */; };
+		D1F338E42201D99A005BE5F1 /* ImageComponentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338972201D99A005BE5F1 /* ImageComponentCollectionViewCell.xib */; };
+		D1F338E52201D99A005BE5F1 /* ImageComponentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338982201D99A005BE5F1 /* ImageComponentCollectionViewCell.swift */; };
+		D1F338E62201D99A005BE5F1 /* MultiImageBubbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338992201D99A005BE5F1 /* MultiImageBubbleView.xib */; };
+		D1F338E72201D99A005BE5F1 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3389A2201D99A005BE5F1 /* BubbleView.swift */; };
+		D1F338E82201D99A005BE5F1 /* ResponsiveTableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3389C2201D99A005BE5F1 /* ResponsiveTableBubbleView.swift */; };
+		D1F338E92201D99A005BE5F1 /* MiniTableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3389D2201D99A005BE5F1 /* MiniTableBubbleView.swift */; };
+		D1F338EA2201D99A005BE5F1 /* CustomCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3389F2201D99A005BE5F1 /* CustomCollectionViewLayout.swift */; };
+		D1F338EB2201D99A005BE5F1 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338A02201D99A005BE5F1 /* CustomCollectionViewCell.swift */; };
+		D1F338EC2201D99A005BE5F1 /* CustomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338A12201D99A005BE5F1 /* CustomCollectionViewCell.xib */; };
+		D1F338ED2201D99A005BE5F1 /* TableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338A22201D99A005BE5F1 /* TableBubbleView.swift */; };
+		D1F338EE2201D99A005BE5F1 /* SubTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338A32201D99A005BE5F1 /* SubTableViewCell.swift */; };
+		D1F338EF2201D99A005BE5F1 /* ExpandedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338A42201D99A005BE5F1 /* ExpandedTableViewCell.swift */; };
+		D1F338F02201D99A005BE5F1 /* ResponsiveCustonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338A52201D99A005BE5F1 /* ResponsiveCustonCell.swift */; };
+		D1F338F12201D99A005BE5F1 /* MiniTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338A62201D99A005BE5F1 /* MiniTableViewCell.swift */; };
+		D1F338F22201D99A005BE5F1 /* MenuBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338A82201D99A005BE5F1 /* MenuBubbleView.swift */; };
+		D1F338F32201D99A005BE5F1 /* ListBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338A92201D99A005BE5F1 /* ListBubbleView.swift */; };
+		D1F338F42201D99A005BE5F1 /* TextBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338AB2201D99A005BE5F1 /* TextBubbleView.swift */; };
+		D1F338F52201D99A005BE5F1 /* ChatMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338AE2201D99A005BE5F1 /* ChatMessagesViewController.swift */; };
+		D1F338F62201D99A005BE5F1 /* ChatMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338AF2201D99A005BE5F1 /* ChatMessagesViewController.xib */; };
+		D1F338F72201D99A005BE5F1 /* TableTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338B12201D99A005BE5F1 /* TableTemplateViewController.swift */; };
+		D1F338F82201D99A005BE5F1 /* TableTemplateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338B22201D99A005BE5F1 /* TableTemplateViewController.xib */; };
+		D1F338F92201D99A005BE5F1 /* InputTOWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338B32201D99A005BE5F1 /* InputTOWebViewController.swift */; };
+		D1F338FA2201D99A005BE5F1 /* KRETypingActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F338B52201D99A005BE5F1 /* KRETypingActivityIndicator.m */; };
+		D1F338FB2201D99A005BE5F1 /* KRETypingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338B62201D99A005BE5F1 /* KRETypingCollectionViewCell.xib */; };
+		D1F338FC2201D99A005BE5F1 /* KRETypingStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F338B92201D99A005BE5F1 /* KRETypingStatusView.m */; };
+		D1F338FD2201D99A005BE5F1 /* KRETypingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F338BA2201D99A005BE5F1 /* KRETypingCollectionViewCell.m */; };
+		D1F338FE2201D99A005BE5F1 /* BotMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338BD2201D99A005BE5F1 /* BotMessagesView.swift */; };
+		D1F338FF2201D99A005BE5F1 /* KREFetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338BE2201D99A005BE5F1 /* KREFetchedResultsController.swift */; };
+		D1F339002201D99A005BE5F1 /* MessageBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338BF2201D99A005BE5F1 /* MessageBubbleCell.swift */; };
+		D1F339012201D99A005BE5F1 /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338C12201D99A005BE5F1 /* AppLaunchViewController.swift */; };
+		D1F339022201D99A005BE5F1 /* AppLaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338C22201D99A005BE5F1 /* AppLaunchViewController.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		050267511DEC65BF001256D3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		0590F8401DED7A1B00107721 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		0590F8411DED7A1B00107721 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		0590F8421DED7A1B00107721 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
+		599D0254B34B322BC0BDD059 /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
+		D15041081DE2C4BC00F2F92E /* Messages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Messages.plist; sourceTree = "<group>"; };
+		D15045D41DE422CB008DE46E /* BotConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BotConfiguration.plist; sourceTree = "<group>"; };
+		D175AD4A1CEF0CD500BB9442 /* KoreBotSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KoreBotSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D175AD571CEF0CD500BB9442 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D175AD591CEF0CD500BB9442 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D1A12B6D1E84DD3500F4E2B4 /* SDKConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDKConfiguration.swift; sourceTree = "<group>"; };
+		D1CAF1531CF0AEA3001BCAEF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D1CAF1541CF0AEA3001BCAEF /* KoreBotSDKDemo-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KoreBotSDKDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		D1F3385D2201D99A005BE5F1 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		D1F3385E2201D99A005BE5F1 /* DataStoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStoreManager.swift; sourceTree = "<group>"; };
+		D1F338602201D99A005BE5F1 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		D1F338622201D99A005BE5F1 /* KREMessage+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREMessage+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D1F338632201D99A005BE5F1 /* KREThread+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREThread+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D1F338652201D99A005BE5F1 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		D1F338662201D99A005BE5F1 /* KREThread+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREThread+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D1F338672201D99A005BE5F1 /* KREMessage+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREMessage+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D1F338682201D99A005BE5F1 /* KREContact+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREContact+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D1F338692201D99A005BE5F1 /* KREContact+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREContact+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D1F3386A2201D99A005BE5F1 /* KREComponent+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREComponent+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D1F3386B2201D99A005BE5F1 /* KREComponent+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREComponent+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D1F3386F2201D99A005BE5F1 /* TSBaseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSBaseParser.m; sourceTree = "<group>"; };
+		D1F338702201D99A005BE5F1 /* TSMarkdownParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMarkdownParser.h; sourceTree = "<group>"; };
+		D1F338712201D99A005BE5F1 /* TSBaseParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSBaseParser.h; sourceTree = "<group>"; };
+		D1F338722201D99A005BE5F1 /* TSMarkdownParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMarkdownParser.m; sourceTree = "<group>"; };
+		D1F338742201D99A005BE5F1 /* AudioController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
+		D1F338752201D99A005BE5F1 /* KoraASRService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraASRService.swift; sourceTree = "<group>"; };
+		D1F338772201D99A005BE5F1 /* CALayer+MBAnimationPersistence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+MBAnimationPersistence.m"; sourceTree = "<group>"; };
+		D1F338782201D99A005BE5F1 /* CALayer+MBAnimationPersistence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+MBAnimationPersistence.h"; sourceTree = "<group>"; };
+		D1F3387A2201D99A005BE5F1 /* Identity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identity.swift; sourceTree = "<group>"; };
+		D1F3387B2201D99A005BE5F1 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		D1F3387C2201D99A005BE5F1 /* Thread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
+		D1F3387D2201D99A005BE5F1 /* Component.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
+		D1F3387E2201D99A005BE5F1 /* SectionedThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionedThread.swift; sourceTree = "<group>"; };
+		D1F338802201D99A005BE5F1 /* ComposeBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeBarView.swift; sourceTree = "<group>"; };
+		D1F338832201D99A005BE5F1 /* AudioComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioComposeView.swift; sourceTree = "<group>"; };
+		D1F338852201D99A005BE5F1 /* NSMutableAttributedString+KREUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+KREUtils.m"; sourceTree = "<group>"; };
+		D1F338862201D99A005BE5F1 /* KRELayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRELayoutManager.h; sourceTree = "<group>"; };
+		D1F338872201D99A005BE5F1 /* KREUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KREUtilities.h; sourceTree = "<group>"; };
+		D1F338882201D99A005BE5F1 /* KREAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KREAttributedLabel.h; sourceTree = "<group>"; };
+		D1F338892201D99A005BE5F1 /* KRELayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRELayoutManager.m; sourceTree = "<group>"; };
+		D1F3388A2201D99A005BE5F1 /* NSMutableAttributedString+KREUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+KREUtils.h"; sourceTree = "<group>"; };
+		D1F3388B2201D99A005BE5F1 /* KREAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KREAttributedLabel.m; sourceTree = "<group>"; };
+		D1F3388C2201D99A005BE5F1 /* KREUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KREUtilities.m; sourceTree = "<group>"; };
+		D1F3388F2201D99A005BE5F1 /* OptionsBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsBubbleView.swift; sourceTree = "<group>"; };
+		D1F338912201D99A005BE5F1 /* ChartBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartBubbleView.swift; sourceTree = "<group>"; };
+		D1F338922201D99A005BE5F1 /* BalloonMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalloonMarker.swift; sourceTree = "<group>"; };
+		D1F338942201D99A005BE5F1 /* CarouselBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselBubbleView.swift; sourceTree = "<group>"; };
+		D1F338962201D99A005BE5F1 /* MultiImageBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiImageBubbleView.swift; sourceTree = "<group>"; };
+		D1F338972201D99A005BE5F1 /* ImageComponentCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageComponentCollectionViewCell.xib; sourceTree = "<group>"; };
+		D1F338982201D99A005BE5F1 /* ImageComponentCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageComponentCollectionViewCell.swift; sourceTree = "<group>"; };
+		D1F338992201D99A005BE5F1 /* MultiImageBubbleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultiImageBubbleView.xib; sourceTree = "<group>"; };
+		D1F3389A2201D99A005BE5F1 /* BubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
+		D1F3389C2201D99A005BE5F1 /* ResponsiveTableBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsiveTableBubbleView.swift; sourceTree = "<group>"; };
+		D1F3389D2201D99A005BE5F1 /* MiniTableBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniTableBubbleView.swift; sourceTree = "<group>"; };
+		D1F3389F2201D99A005BE5F1 /* CustomCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewLayout.swift; sourceTree = "<group>"; };
+		D1F338A02201D99A005BE5F1 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
+		D1F338A12201D99A005BE5F1 /* CustomCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCollectionViewCell.xib; sourceTree = "<group>"; };
+		D1F338A22201D99A005BE5F1 /* TableBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableBubbleView.swift; sourceTree = "<group>"; };
+		D1F338A32201D99A005BE5F1 /* SubTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubTableViewCell.swift; sourceTree = "<group>"; };
+		D1F338A42201D99A005BE5F1 /* ExpandedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandedTableViewCell.swift; sourceTree = "<group>"; };
+		D1F338A52201D99A005BE5F1 /* ResponsiveCustonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsiveCustonCell.swift; sourceTree = "<group>"; };
+		D1F338A62201D99A005BE5F1 /* MiniTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniTableViewCell.swift; sourceTree = "<group>"; };
+		D1F338A82201D99A005BE5F1 /* MenuBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBubbleView.swift; sourceTree = "<group>"; };
+		D1F338A92201D99A005BE5F1 /* ListBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBubbleView.swift; sourceTree = "<group>"; };
+		D1F338AB2201D99A005BE5F1 /* TextBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextBubbleView.swift; sourceTree = "<group>"; };
+		D1F338AE2201D99A005BE5F1 /* ChatMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessagesViewController.swift; sourceTree = "<group>"; };
+		D1F338AF2201D99A005BE5F1 /* ChatMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatMessagesViewController.xib; sourceTree = "<group>"; };
+		D1F338B12201D99A005BE5F1 /* TableTemplateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableTemplateViewController.swift; sourceTree = "<group>"; };
+		D1F338B22201D99A005BE5F1 /* TableTemplateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableTemplateViewController.xib; sourceTree = "<group>"; };
+		D1F338B32201D99A005BE5F1 /* InputTOWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTOWebViewController.swift; sourceTree = "<group>"; };
+		D1F338B52201D99A005BE5F1 /* KRETypingActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingActivityIndicator.m; sourceTree = "<group>"; };
+		D1F338B62201D99A005BE5F1 /* KRETypingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KRETypingCollectionViewCell.xib; sourceTree = "<group>"; };
+		D1F338B72201D99A005BE5F1 /* KRETypingCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingCollectionViewCell.h; sourceTree = "<group>"; };
+		D1F338B82201D99A005BE5F1 /* KRETypingStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingStatusView.h; sourceTree = "<group>"; };
+		D1F338B92201D99A005BE5F1 /* KRETypingStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingStatusView.m; sourceTree = "<group>"; };
+		D1F338BA2201D99A005BE5F1 /* KRETypingCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingCollectionViewCell.m; sourceTree = "<group>"; };
+		D1F338BB2201D99A005BE5F1 /* KRETypingActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingActivityIndicator.h; sourceTree = "<group>"; };
+		D1F338BD2201D99A005BE5F1 /* BotMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotMessagesView.swift; sourceTree = "<group>"; };
+		D1F338BE2201D99A005BE5F1 /* KREFetchedResultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREFetchedResultsController.swift; sourceTree = "<group>"; };
+		D1F338BF2201D99A005BE5F1 /* MessageBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleCell.swift; sourceTree = "<group>"; };
+		D1F338C12201D99A005BE5F1 /* AppLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchViewController.swift; sourceTree = "<group>"; };
+		D1F338C22201D99A005BE5F1 /* AppLaunchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppLaunchViewController.xib; sourceTree = "<group>"; };
+		DD1604DBA7E2A121E6E39FB7 /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		F9029D8713243221897F5EF4 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D175AD471CEF0CD500BB9442 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */,
+				0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */,
+				050267521DEC65BF001256D3 /* AVFoundation.framework in Frameworks */,
+				804D45444D7446B9E3ED1B3E /* Pods_KoreBotSDKDemo.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A851461715333BEDEFC8310F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0590F8401DED7A1B00107721 /* AudioToolbox.framework */,
+				0590F8411DED7A1B00107721 /* AudioUnit.framework */,
+				0590F8421DED7A1B00107721 /* CoreAudio.framework */,
+				0590F8431DED7A1B00107721 /* CoreAudioKit.framework */,
+				050267511DEC65BF001256D3 /* AVFoundation.framework */,
+				F9029D8713243221897F5EF4 /* Pods_KoreBotSDKDemo.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D15041071DE2C48A00F2F92E /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				D15041081DE2C4BC00F2F92E /* Messages.plist */,
+				D15045D41DE422CB008DE46E /* BotConfiguration.plist */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		D175AD411CEF0CD500BB9442 = {
+			isa = PBXGroup;
+			children = (
+				D1A12B6D1E84DD3500F4E2B4 /* SDKConfiguration.swift */,
+				D175AD4C1CEF0CD500BB9442 /* KoreBotSDKDemo */,
+				D175AD4B1CEF0CD500BB9442 /* Products */,
+				A851461715333BEDEFC8310F /* Frameworks */,
+				F4CB5D9EF5CDFC12B4ACC642 /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		D175AD4B1CEF0CD500BB9442 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D175AD4A1CEF0CD500BB9442 /* KoreBotSDKDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D175AD4C1CEF0CD500BB9442 /* KoreBotSDKDemo */ = {
+			isa = PBXGroup;
+			children = (
+				D1F3385F2201D99A005BE5F1 /* Common */,
+				D1F338AC2201D99A005BE5F1 /* Controllers */,
+				D1F3385C2201D99A005BE5F1 /* CoreData */,
+				D1F338612201D99A005BE5F1 /* DataModel */,
+				D1F3386C2201D99A005BE5F1 /* Library */,
+				D1CAF09E1CF0AEA3001BCAEF /* Resources */,
+				D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */,
+				D175AD561CEF0CD500BB9442 /* LaunchScreen.storyboard */,
+				D175AD591CEF0CD500BB9442 /* Info.plist */,
+			);
+			path = KoreBotSDKDemo;
+			sourceTree = "<group>";
+		};
+		D1CAF09E1CF0AEA3001BCAEF /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D15041071DE2C48A00F2F92E /* Data */,
+				D1CAF1521CF0AEA3001BCAEF /* Images */,
+				D1CAF1541CF0AEA3001BCAEF /* KoreBotSDKDemo-Bridging-Header.h */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D1CAF1521CF0AEA3001BCAEF /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				D1CAF1531CF0AEA3001BCAEF /* Assets.xcassets */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		D1F3385C2201D99A005BE5F1 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				D1F3385D2201D99A005BE5F1 /* CoreDataManager.swift */,
+				D1F3385E2201D99A005BE5F1 /* DataStoreManager.swift */,
+			);
+			name = CoreData;
+			path = ../../Shared/CoreData;
+			sourceTree = "<group>";
+		};
+		D1F3385F2201D99A005BE5F1 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338602201D99A005BE5F1 /* Common.swift */,
+			);
+			name = Common;
+			path = ../../Shared/Common;
+			sourceTree = "<group>";
+		};
+		D1F338612201D99A005BE5F1 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338622201D99A005BE5F1 /* KREMessage+CoreDataProperties.swift */,
+				D1F338632201D99A005BE5F1 /* KREThread+CoreDataClass.swift */,
+				D1F338642201D99A005BE5F1 /* DataModel.xcdatamodeld */,
+				D1F338662201D99A005BE5F1 /* KREThread+CoreDataProperties.swift */,
+				D1F338672201D99A005BE5F1 /* KREMessage+CoreDataClass.swift */,
+				D1F338682201D99A005BE5F1 /* KREContact+CoreDataProperties.swift */,
+				D1F338692201D99A005BE5F1 /* KREContact+CoreDataClass.swift */,
+				D1F3386A2201D99A005BE5F1 /* KREComponent+CoreDataClass.swift */,
+				D1F3386B2201D99A005BE5F1 /* KREComponent+CoreDataProperties.swift */,
+			);
+			name = DataModel;
+			path = ../../Shared/DataModel;
+			sourceTree = "<group>";
+		};
+		D1F3386C2201D99A005BE5F1 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				D1F3386D2201D99A005BE5F1 /* Vendors */,
+				D1F338732201D99A005BE5F1 /* SpeechRecognition */,
+				D1F338762201D99A005BE5F1 /* Animation */,
+				D1F338792201D99A005BE5F1 /* Models */,
+				D1F3387F2201D99A005BE5F1 /* ComposeBar */,
+				D1F338812201D99A005BE5F1 /* Elements */,
+				D1F338842201D99A005BE5F1 /* AttributedLabel */,
+				D1F3388D2201D99A005BE5F1 /* BubbleViews */,
+			);
+			name = Library;
+			path = ../../Shared/Library;
+			sourceTree = "<group>";
+		};
+		D1F3386D2201D99A005BE5F1 /* Vendors */ = {
+			isa = PBXGroup;
+			children = (
+				D1F3386E2201D99A005BE5F1 /* TSMarkdownParser */,
+			);
+			path = Vendors;
+			sourceTree = "<group>";
+		};
+		D1F3386E2201D99A005BE5F1 /* TSMarkdownParser */ = {
+			isa = PBXGroup;
+			children = (
+				D1F3386F2201D99A005BE5F1 /* TSBaseParser.m */,
+				D1F338702201D99A005BE5F1 /* TSMarkdownParser.h */,
+				D1F338712201D99A005BE5F1 /* TSBaseParser.h */,
+				D1F338722201D99A005BE5F1 /* TSMarkdownParser.m */,
+			);
+			path = TSMarkdownParser;
+			sourceTree = "<group>";
+		};
+		D1F338732201D99A005BE5F1 /* SpeechRecognition */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338742201D99A005BE5F1 /* AudioController.swift */,
+				D1F338752201D99A005BE5F1 /* KoraASRService.swift */,
+			);
+			path = SpeechRecognition;
+			sourceTree = "<group>";
+		};
+		D1F338762201D99A005BE5F1 /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338772201D99A005BE5F1 /* CALayer+MBAnimationPersistence.m */,
+				D1F338782201D99A005BE5F1 /* CALayer+MBAnimationPersistence.h */,
+			);
+			path = Animation;
+			sourceTree = "<group>";
+		};
+		D1F338792201D99A005BE5F1 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D1F3387A2201D99A005BE5F1 /* Identity.swift */,
+				D1F3387B2201D99A005BE5F1 /* Message.swift */,
+				D1F3387C2201D99A005BE5F1 /* Thread.swift */,
+				D1F3387D2201D99A005BE5F1 /* Component.swift */,
+				D1F3387E2201D99A005BE5F1 /* SectionedThread.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D1F3387F2201D99A005BE5F1 /* ComposeBar */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338802201D99A005BE5F1 /* ComposeBarView.swift */,
+			);
+			path = ComposeBar;
+			sourceTree = "<group>";
+		};
+		D1F338812201D99A005BE5F1 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338822201D99A005BE5F1 /* AudioComposer */,
+			);
+			path = Elements;
+			sourceTree = "<group>";
+		};
+		D1F338822201D99A005BE5F1 /* AudioComposer */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338832201D99A005BE5F1 /* AudioComposeView.swift */,
+			);
+			path = AudioComposer;
+			sourceTree = "<group>";
+		};
+		D1F338842201D99A005BE5F1 /* AttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338852201D99A005BE5F1 /* NSMutableAttributedString+KREUtils.m */,
+				D1F338862201D99A005BE5F1 /* KRELayoutManager.h */,
+				D1F338872201D99A005BE5F1 /* KREUtilities.h */,
+				D1F338882201D99A005BE5F1 /* KREAttributedLabel.h */,
+				D1F338892201D99A005BE5F1 /* KRELayoutManager.m */,
+				D1F3388A2201D99A005BE5F1 /* NSMutableAttributedString+KREUtils.h */,
+				D1F3388B2201D99A005BE5F1 /* KREAttributedLabel.m */,
+				D1F3388C2201D99A005BE5F1 /* KREUtilities.m */,
+			);
+			path = AttributedLabel;
+			sourceTree = "<group>";
+		};
+		D1F3388D2201D99A005BE5F1 /* BubbleViews */ = {
+			isa = PBXGroup;
+			children = (
+				D1F3388E2201D99A005BE5F1 /* Options */,
+				D1F338902201D99A005BE5F1 /* Chart */,
+				D1F338932201D99A005BE5F1 /* Carousel */,
+				D1F338952201D99A005BE5F1 /* Image */,
+				D1F3389A2201D99A005BE5F1 /* BubbleView.swift */,
+				D1F3389B2201D99A005BE5F1 /* Table */,
+				D1F338A72201D99A005BE5F1 /* Menu */,
+				D1F338A92201D99A005BE5F1 /* ListBubbleView.swift */,
+				D1F338AA2201D99A005BE5F1 /* Text */,
+			);
+			path = BubbleViews;
+			sourceTree = "<group>";
+		};
+		D1F3388E2201D99A005BE5F1 /* Options */ = {
+			isa = PBXGroup;
+			children = (
+				D1F3388F2201D99A005BE5F1 /* OptionsBubbleView.swift */,
+			);
+			path = Options;
+			sourceTree = "<group>";
+		};
+		D1F338902201D99A005BE5F1 /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338912201D99A005BE5F1 /* ChartBubbleView.swift */,
+				D1F338922201D99A005BE5F1 /* BalloonMarker.swift */,
+			);
+			path = Chart;
+			sourceTree = "<group>";
+		};
+		D1F338932201D99A005BE5F1 /* Carousel */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338942201D99A005BE5F1 /* CarouselBubbleView.swift */,
+			);
+			path = Carousel;
+			sourceTree = "<group>";
+		};
+		D1F338952201D99A005BE5F1 /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338962201D99A005BE5F1 /* MultiImageBubbleView.swift */,
+				D1F338972201D99A005BE5F1 /* ImageComponentCollectionViewCell.xib */,
+				D1F338982201D99A005BE5F1 /* ImageComponentCollectionViewCell.swift */,
+				D1F338992201D99A005BE5F1 /* MultiImageBubbleView.xib */,
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
+		D1F3389B2201D99A005BE5F1 /* Table */ = {
+			isa = PBXGroup;
+			children = (
+				D1F3389C2201D99A005BE5F1 /* ResponsiveTableBubbleView.swift */,
+				D1F3389D2201D99A005BE5F1 /* MiniTableBubbleView.swift */,
+				D1F3389E2201D99A005BE5F1 /* CollectionView */,
+				D1F338A22201D99A005BE5F1 /* TableBubbleView.swift */,
+				D1F338A32201D99A005BE5F1 /* SubTableViewCell.swift */,
+				D1F338A42201D99A005BE5F1 /* ExpandedTableViewCell.swift */,
+				D1F338A52201D99A005BE5F1 /* ResponsiveCustonCell.swift */,
+				D1F338A62201D99A005BE5F1 /* MiniTableViewCell.swift */,
+			);
+			path = Table;
+			sourceTree = "<group>";
+		};
+		D1F3389E2201D99A005BE5F1 /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				D1F3389F2201D99A005BE5F1 /* CustomCollectionViewLayout.swift */,
+				D1F338A02201D99A005BE5F1 /* CustomCollectionViewCell.swift */,
+				D1F338A12201D99A005BE5F1 /* CustomCollectionViewCell.xib */,
+			);
+			path = CollectionView;
+			sourceTree = "<group>";
+		};
+		D1F338A72201D99A005BE5F1 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338A82201D99A005BE5F1 /* MenuBubbleView.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		D1F338AA2201D99A005BE5F1 /* Text */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338AB2201D99A005BE5F1 /* TextBubbleView.swift */,
+			);
+			path = Text;
+			sourceTree = "<group>";
+		};
+		D1F338AC2201D99A005BE5F1 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338AD2201D99A005BE5F1 /* ChatMessages */,
+				D1F338B02201D99A005BE5F1 /* InputViews */,
+				D1F338B42201D99A005BE5F1 /* TypingStatus */,
+				D1F338BC2201D99A005BE5F1 /* BotMessages */,
+				D1F338C02201D99A005BE5F1 /* AppLaunch */,
+			);
+			name = Controllers;
+			path = ../../Shared/Controllers;
+			sourceTree = "<group>";
+		};
+		D1F338AD2201D99A005BE5F1 /* ChatMessages */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338AE2201D99A005BE5F1 /* ChatMessagesViewController.swift */,
+				D1F338AF2201D99A005BE5F1 /* ChatMessagesViewController.xib */,
+			);
+			path = ChatMessages;
+			sourceTree = "<group>";
+		};
+		D1F338B02201D99A005BE5F1 /* InputViews */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338B12201D99A005BE5F1 /* TableTemplateViewController.swift */,
+				D1F338B22201D99A005BE5F1 /* TableTemplateViewController.xib */,
+				D1F338B32201D99A005BE5F1 /* InputTOWebViewController.swift */,
+			);
+			path = InputViews;
+			sourceTree = "<group>";
+		};
+		D1F338B42201D99A005BE5F1 /* TypingStatus */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338B52201D99A005BE5F1 /* KRETypingActivityIndicator.m */,
+				D1F338B62201D99A005BE5F1 /* KRETypingCollectionViewCell.xib */,
+				D1F338B72201D99A005BE5F1 /* KRETypingCollectionViewCell.h */,
+				D1F338B82201D99A005BE5F1 /* KRETypingStatusView.h */,
+				D1F338B92201D99A005BE5F1 /* KRETypingStatusView.m */,
+				D1F338BA2201D99A005BE5F1 /* KRETypingCollectionViewCell.m */,
+				D1F338BB2201D99A005BE5F1 /* KRETypingActivityIndicator.h */,
+			);
+			path = TypingStatus;
+			sourceTree = "<group>";
+		};
+		D1F338BC2201D99A005BE5F1 /* BotMessages */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338BD2201D99A005BE5F1 /* BotMessagesView.swift */,
+				D1F338BE2201D99A005BE5F1 /* KREFetchedResultsController.swift */,
+				D1F338BF2201D99A005BE5F1 /* MessageBubbleCell.swift */,
+			);
+			path = BotMessages;
+			sourceTree = "<group>";
+		};
+		D1F338C02201D99A005BE5F1 /* AppLaunch */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338C12201D99A005BE5F1 /* AppLaunchViewController.swift */,
+				D1F338C22201D99A005BE5F1 /* AppLaunchViewController.xib */,
+			);
+			path = AppLaunch;
+			sourceTree = "<group>";
+		};
+		F4CB5D9EF5CDFC12B4ACC642 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DD1604DBA7E2A121E6E39FB7 /* Pods-KoreBotSDKDemo.debug.xcconfig */,
+				599D0254B34B322BC0BDD059 /* Pods-KoreBotSDKDemo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D175AD491CEF0CD500BB9442 /* KoreBotSDKDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D175AD5C1CEF0CD500BB9442 /* Build configuration list for PBXNativeTarget "KoreBotSDKDemo" */;
+			buildPhases = (
+				8F251CC8EB747BE1A6121E0F /* [CP] Check Pods Manifest.lock */,
+				D175AD461CEF0CD500BB9442 /* Sources */,
+				D175AD471CEF0CD500BB9442 /* Frameworks */,
+				D175AD481CEF0CD500BB9442 /* Resources */,
+				FEB523C0E2957FDB222C4829 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KoreBotSDKDemo;
+			productName = KoreBotSDKDemo;
+			productReference = D175AD4A1CEF0CD500BB9442 /* KoreBotSDKDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D175AD421CEF0CD500BB9442 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = Kore;
+				TargetAttributes = {
+					D175AD491CEF0CD500BB9442 = {
+						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = TUE6KHKZ4Z;
+						LastSwiftMigration = 0820;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = D175AD451CEF0CD500BB9442 /* Build configuration list for PBXProject "KoreBotSDKDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D175AD411CEF0CD500BB9442;
+			productRefGroup = D175AD4B1CEF0CD500BB9442 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D175AD491CEF0CD500BB9442 /* KoreBotSDKDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D175AD481CEF0CD500BB9442 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1F339022201D99A005BE5F1 /* AppLaunchViewController.xib in Resources */,
+				D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */,
+				D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */,
+				D1F338E62201D99A005BE5F1 /* MultiImageBubbleView.xib in Resources */,
+				D1F338F82201D99A005BE5F1 /* TableTemplateViewController.xib in Resources */,
+				D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */,
+				D1F338E42201D99A005BE5F1 /* ImageComponentCollectionViewCell.xib in Resources */,
+				D1F338FB2201D99A005BE5F1 /* KRETypingCollectionViewCell.xib in Resources */,
+				D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */,
+				D1F338F62201D99A005BE5F1 /* ChatMessagesViewController.xib in Resources */,
+				D1F338EC2201D99A005BE5F1 /* CustomCollectionViewCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8F251CC8EB747BE1A6121E0F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-KoreBotSDKDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FEB523C0E2957FDB222C4829 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${BUILT_PRODUCTS_DIR}/DTCoreText/DTCoreText.framework",
+				"${BUILT_PRODUCTS_DIR}/DTFoundation/DTFoundation.framework",
+				"${BUILT_PRODUCTS_DIR}/KoreBotSDK/KoreBotSDK.framework",
+				"${BUILT_PRODUCTS_DIR}/Mantle/Mantle.framework",
+				"${BUILT_PRODUCTS_DIR}/SocketRocket/SocketRocket.framework",
+				"${BUILT_PRODUCTS_DIR}/SquareMosaicLayout/SquareMosaicLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/TOWebViewController/TOWebViewController.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTCoreText.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTFoundation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KoreBotSDK.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mantle.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SquareMosaicLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TOWebViewController.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D175AD461CEF0CD500BB9442 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1F338C82201D99A005BE5F1 /* DataModel.xcdatamodeld in Sources */,
+				D1F338C52201D99A005BE5F1 /* Common.swift in Sources */,
+				D1F338DC2201D99A005BE5F1 /* KRELayoutManager.m in Sources */,
+				D1F338E12201D99A005BE5F1 /* BalloonMarker.swift in Sources */,
+				D1F338C32201D99A005BE5F1 /* CoreDataManager.swift in Sources */,
+				D1F338CF2201D99A005BE5F1 /* TSBaseParser.m in Sources */,
+				D1F338DF2201D99A005BE5F1 /* OptionsBubbleView.swift in Sources */,
+				D1F338CB2201D99A005BE5F1 /* KREContact+CoreDataProperties.swift in Sources */,
+				D1F338E92201D99A005BE5F1 /* MiniTableBubbleView.swift in Sources */,
+				D1F338E72201D99A005BE5F1 /* BubbleView.swift in Sources */,
+				D1F338EA2201D99A005BE5F1 /* CustomCollectionViewLayout.swift in Sources */,
+				D1F338FA2201D99A005BE5F1 /* KRETypingActivityIndicator.m in Sources */,
+				D1F338DD2201D99A005BE5F1 /* KREAttributedLabel.m in Sources */,
+				D1F338C92201D99A005BE5F1 /* KREThread+CoreDataProperties.swift in Sources */,
+				D1F338D92201D99A005BE5F1 /* ComposeBarView.swift in Sources */,
+				D1F338CD2201D99A005BE5F1 /* KREComponent+CoreDataClass.swift in Sources */,
+				D1F338D12201D99A005BE5F1 /* AudioController.swift in Sources */,
+				D1F338DE2201D99A005BE5F1 /* KREUtilities.m in Sources */,
+				D1F338D62201D99A005BE5F1 /* Thread.swift in Sources */,
+				D1F338F92201D99A005BE5F1 /* InputTOWebViewController.swift in Sources */,
+				D1F338C42201D99A005BE5F1 /* DataStoreManager.swift in Sources */,
+				D1F338D32201D99A005BE5F1 /* CALayer+MBAnimationPersistence.m in Sources */,
+				D1A12B6E1E84DD3500F4E2B4 /* SDKConfiguration.swift in Sources */,
+				D1F338C62201D99A005BE5F1 /* KREMessage+CoreDataProperties.swift in Sources */,
+				D1F338E32201D99A005BE5F1 /* MultiImageBubbleView.swift in Sources */,
+				D1F338C72201D99A005BE5F1 /* KREThread+CoreDataClass.swift in Sources */,
+				D1F338CC2201D99A005BE5F1 /* KREContact+CoreDataClass.swift in Sources */,
+				D1F339002201D99A005BE5F1 /* MessageBubbleCell.swift in Sources */,
+				D1F338FD2201D99A005BE5F1 /* KRETypingCollectionViewCell.m in Sources */,
+				D1F338CA2201D99A005BE5F1 /* KREMessage+CoreDataClass.swift in Sources */,
+				D1F338FC2201D99A005BE5F1 /* KRETypingStatusView.m in Sources */,
+				D1F338D72201D99A005BE5F1 /* Component.swift in Sources */,
+				D1F338E22201D99A005BE5F1 /* CarouselBubbleView.swift in Sources */,
+				D1F338F02201D99A005BE5F1 /* ResponsiveCustonCell.swift in Sources */,
+				D1F338DA2201D99A005BE5F1 /* AudioComposeView.swift in Sources */,
+				D1F338F52201D99A005BE5F1 /* ChatMessagesViewController.swift in Sources */,
+				D1F338FE2201D99A005BE5F1 /* BotMessagesView.swift in Sources */,
+				D1F338F32201D99A005BE5F1 /* ListBubbleView.swift in Sources */,
+				D1F338E52201D99A005BE5F1 /* ImageComponentCollectionViewCell.swift in Sources */,
+				D1F338E02201D99A005BE5F1 /* ChartBubbleView.swift in Sources */,
+				D1F338ED2201D99A005BE5F1 /* TableBubbleView.swift in Sources */,
+				D1F338CE2201D99A005BE5F1 /* KREComponent+CoreDataProperties.swift in Sources */,
+				D1F338F12201D99A005BE5F1 /* MiniTableViewCell.swift in Sources */,
+				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
+				D1F338E82201D99A005BE5F1 /* ResponsiveTableBubbleView.swift in Sources */,
+				D1F338D02201D99A005BE5F1 /* TSMarkdownParser.m in Sources */,
+				D1F338F22201D99A005BE5F1 /* MenuBubbleView.swift in Sources */,
+				D1F338DB2201D99A005BE5F1 /* NSMutableAttributedString+KREUtils.m in Sources */,
+				D1F338F72201D99A005BE5F1 /* TableTemplateViewController.swift in Sources */,
+				D1F338D52201D99A005BE5F1 /* Message.swift in Sources */,
+				D1F338EF2201D99A005BE5F1 /* ExpandedTableViewCell.swift in Sources */,
+				D1F338D42201D99A005BE5F1 /* Identity.swift in Sources */,
+				D1F338D22201D99A005BE5F1 /* KoraASRService.swift in Sources */,
+				D1F338D82201D99A005BE5F1 /* SectionedThread.swift in Sources */,
+				D1F338EE2201D99A005BE5F1 /* SubTableViewCell.swift in Sources */,
+				D1F338FF2201D99A005BE5F1 /* KREFetchedResultsController.swift in Sources */,
+				D1F338EB2201D99A005BE5F1 /* CustomCollectionViewCell.swift in Sources */,
+				D1F338F42201D99A005BE5F1 /* TextBubbleView.swift in Sources */,
+				D1F339012201D99A005BE5F1 /* AppLaunchViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		D175AD561CEF0CD500BB9442 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D175AD571CEF0CD500BB9442 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D175AD5A1CEF0CD500BB9442 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Kore, Inc";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Kore, Inc";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_ACTIVITY_MODE = "";
+				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = TUE6KHKZ4Z;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D175AD5B1CEF0CD500BB9442 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Kore, Inc";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Kore, Inc";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_ACTIVITY_MODE = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = TUE6KHKZ4Z;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D175AD5D1CEF0CD500BB9442 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD1604DBA7E2A121E6E39FB7 /* Pods-KoreBotSDKDemo.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = KoreBotSDKDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk.barry;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/KoreBotSDKDemo/Resources/KoreBotSDKDemo-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		D175AD5E1CEF0CD500BB9442 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 599D0254B34B322BC0BDD059 /* Pods-KoreBotSDKDemo.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = KoreBotSDKDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk.barry;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/KoreBotSDKDemo/Resources/KoreBotSDKDemo-Bridging-Header.h";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D175AD451CEF0CD500BB9442 /* Build configuration list for PBXProject "KoreBotSDKDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D175AD5A1CEF0CD500BB9442 /* Debug */,
+				D175AD5B1CEF0CD500BB9442 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D175AD5C1CEF0CD500BB9442 /* Build configuration list for PBXNativeTarget "KoreBotSDKDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D175AD5D1CEF0CD500BB9442 /* Debug */,
+				D175AD5E1CEF0CD500BB9442 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		D1F338642201D99A005BE5F1 /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D1F338652201D99A005BE5F1 /* DataModel.xcdatamodel */,
+			);
+			currentVersion = D1F338652201D99A005BE5F1 /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = D175AD421CEF0CD500BB9442 /* Project object */;
+}
