@@ -13,7 +13,7 @@ open class BotInfoModel: MTLModel, MTLJSONSerializing {
     @objc open var botUrl: String?
     
     // MARK: MTLJSONSerializing methods
-    open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
+    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["botUrl":"url"]
     }
 }

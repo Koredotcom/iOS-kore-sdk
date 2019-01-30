@@ -9,7 +9,7 @@
 import UIKit
 
 open class Constants: NSObject {
-    open static var KORE_BOT_SERVER = String(format: "https://pilot-bots.kore.com/")
+    public static var KORE_BOT_SERVER = String(format: "https://pilot-bots.kore.com/")
     struct URL {
         static let baseUrl = KORE_BOT_SERVER
         
@@ -23,7 +23,7 @@ open class Constants: NSObject {
         }
     }
     
-    open static func getUUID() -> String {
+    public static func getUUID() -> String {
         let uuid = UUID().uuidString
         let date: Date = Date()
         return String(format: "%@-%.0f", uuid, date.timeIntervalSince1970)

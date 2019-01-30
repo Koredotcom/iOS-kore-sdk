@@ -16,17 +16,17 @@ open class ComponentModel: MTLModel, MTLJSONSerializing {
     @objc open var payload: Any?
 
     // MARK: MTLJSONSerializing methods
-    open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
+    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["type":"type",
                 "payload":"payload"
                 ]
     }
     
-    open static func payloadJSONTransformer() -> ValueTransformer {
+    public static func payloadJSONTransformer() -> ValueTransformer {
         return MTLValueTransformer.reversibleTransformer(forwardBlock: { (payload) in
-                return payload
-            }, reverse: { (payload) in
-                return nil
+            return payload
+        }, reverse: { (payload) in
+            return nil
         })
     }
 }

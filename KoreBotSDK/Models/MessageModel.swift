@@ -18,12 +18,12 @@ open class MessageModel: MTLModel, MTLJSONSerializing {
     @objc open var botInfo: AnyObject?
     
     // MARK: MTLJSONSerializing methods
-    open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
+    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["type":"type",
                 "component":"component",
                 "cInfo":"cInfo"]
     }
-    @objc open static func componentJSONTransformer() -> ValueTransformer {
+    @objc public static func componentJSONTransformer() -> ValueTransformer {
         return ValueTransformer.mtl_JSONDictionaryTransformer(withModelClass: ComponentModel.self)
     }
 }
@@ -36,18 +36,18 @@ open class BotMessageModel: MTLModel, MTLJSONSerializing {
     @objc open var createdOn: Date?
 
     // MARK: MTLJSONSerializing methods
-    open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
+    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["type":"type",
                 "iconUrl":"icon",
                 "messages":"message",
                 "createdOn":"createdOn"]
     }
     
-    @objc open static func messagesJSONTransformer() -> ValueTransformer {
+    @objc public static func messagesJSONTransformer() -> ValueTransformer {
         return ValueTransformer.mtl_JSONArrayTransformer(withModelClass: MessageModel.self)
     }
     
-    @objc open static func createdOnJSONTransformer() -> ValueTransformer {
+    @objc public static func createdOnJSONTransformer() -> ValueTransformer {
         return MTLValueTransformer.reversibleTransformer(forwardBlock: { (dateString) in
             return self.dateFormatter().date(from: dateString as! String)
             }, reverse: { (date) in
@@ -55,7 +55,7 @@ open class BotMessageModel: MTLModel, MTLJSONSerializing {
         })
     }
     
-    open static func dateFormatter() -> DateFormatter {
+    public static func dateFormatter() -> DateFormatter {
         let dateFormatter: DateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
@@ -69,7 +69,7 @@ open class Ack: MTLModel, MTLJSONSerializing {
     @objc open var clientId: String?
     
     // MARK: MTLJSONSerializing methods
-    open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
+    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["status":"ok",
                 "clientId":"replyto"]
     }

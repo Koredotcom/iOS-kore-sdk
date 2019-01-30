@@ -20,7 +20,7 @@ open class UserModel: MTLModel, MTLJSONSerializing {
     @objc open var identity: String?
 
     // MARK: MTLJSONSerializing methods
-    open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
+    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["userId":"id",
                 "resourceOwnerID":"resourceOwnerID",
                 "enrollType":"enrollType",

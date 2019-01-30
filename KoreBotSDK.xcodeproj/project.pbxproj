@@ -36,6 +36,9 @@
 		D1F337AA2201CD26005BE5F1 /* KRECarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3379A2201CD25005BE5F1 /* KRECarouselView.swift */; };
 		D1F337AB2201CD26005BE5F1 /* KRETextViewInternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3379C2201CD25005BE5F1 /* KRETextViewInternal.swift */; };
 		D1F337AC2201CD26005BE5F1 /* KREGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3379D2201CD25005BE5F1 /* KREGrowingTextView.swift */; };
+		D1F338582201D667005BE5F1 /* SocketRocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F338552201D667005BE5F1 /* SocketRocket.framework */; };
+		D1F338592201D667005BE5F1 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F338562201D667005BE5F1 /* Mantle.framework */; };
+		D1F3385A2201D667005BE5F1 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F338572201D667005BE5F1 /* AFNetworking.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +84,9 @@
 		D1F3379A2201CD25005BE5F1 /* KRECarouselView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECarouselView.swift; sourceTree = "<group>"; };
 		D1F3379C2201CD25005BE5F1 /* KRETextViewInternal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETextViewInternal.swift; sourceTree = "<group>"; };
 		D1F3379D2201CD25005BE5F1 /* KREGrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREGrowingTextView.swift; sourceTree = "<group>"; };
+		D1F338552201D667005BE5F1 /* SocketRocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SocketRocket.framework; path = Carthage/Build/iOS/SocketRocket.framework; sourceTree = "<group>"; };
+		D1F338562201D667005BE5F1 /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mantle.framework; path = Carthage/Build/iOS/Mantle.framework; sourceTree = "<group>"; };
+		D1F338572201D667005BE5F1 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = Carthage/Build/iOS/AFNetworking.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +94,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1F338582201D667005BE5F1 /* SocketRocket.framework in Frameworks */,
+				D1F338592201D667005BE5F1 /* Mantle.framework in Frameworks */,
+				D1F3385A2201D667005BE5F1 /* AFNetworking.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,6 +119,7 @@
 				D1200F231CC9F721009BBB1A /* KoreBotSDKTests */,
 				D1200F161CC9F721009BBB1A /* Products */,
 				D1F337892201CD25005BE5F1 /* Widgets */,
+				D1F338542201D666005BE5F1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -252,6 +262,16 @@
 			path = GrowingTextView;
 			sourceTree = "<group>";
 		};
+		D1F338542201D666005BE5F1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D1F338572201D667005BE5F1 /* AFNetworking.framework */,
+				D1F338562201D667005BE5F1 /* Mantle.framework */,
+				D1F338552201D667005BE5F1 /* SocketRocket.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -274,6 +294,7 @@
 				D1200F111CC9F721009BBB1A /* Frameworks */,
 				D1200F121CC9F721009BBB1A /* Headers */,
 				D1200F131CC9F721009BBB1A /* Resources */,
+				D1F3385B2201D66F005BE5F1 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -315,6 +336,7 @@
 					D1200F141CC9F721009BBB1A = {
 						CreatedOnToolsVersion = 7.3;
 						LastSwiftMigration = 0830;
+						ProvisioningStyle = Manual;
 					};
 					D1200F1E1CC9F721009BBB1A = {
 						CreatedOnToolsVersion = 7.3;
@@ -360,6 +382,29 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D1F3385B2201D66F005BE5F1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/AFNetworking.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Mantle.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SocketRocket.framework",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D1200F101CC9F721009BBB1A /* Sources */ = {
@@ -506,15 +551,22 @@
 		D1200F2A1CC9F721009BBB1A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = KoreBotSDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kore.Kore.KoreBotSDK;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kore.Kore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
 			};
@@ -523,15 +575,22 @@
 		D1200F2B1CC9F721009BBB1A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = KoreBotSDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kore.Kore.KoreBotSDK;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kore.Kore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
 			};

@@ -8,6 +8,7 @@
 
 import UIKit
 import SocketRocket
+import AFNetworking
 
 public enum BotClientConnectionState : Int {
     case NONE
@@ -15,53 +16,106 @@ public enum BotClientConnectionState : Int {
     case CONNECTED
     case FAILED
     case CLOSED
+    case CLOSING
     case NO_NETWORK
 }
 
 open class BotClient: NSObject, RTMPersistentConnectionDelegate {
-    
     // MARK: properties
-    fileprivate var connection: RTMPersistentConnection! = nil
-    fileprivate var jwToken: String! = nil
-    fileprivate var clientId: String! = nil
-    fileprivate var botInfoParameters: NSDictionary! = nil
-    public var authInfoModel: AuthInfoModel! = nil
-    public var userInfoModel: UserModel! = nil
+    fileprivate var connection: RTMPersistentConnection?
+    fileprivate var jwToken: String?
+    fileprivate var clientId: String?
+    fileprivate var botInfoParameters: [String: Any]?
+    public var authInfoModel: AuthInfoModel?
+    public var userInfoModel: UserModel?
     public private(set) var isNetworkAvailable = false
-    public var connectionState: BotClientConnectionState = .NONE
-    
-    fileprivate var reconnects = false
-    fileprivate var reconnecting = false
-    fileprivate var currentReconnectAttempt = 0
-    fileprivate(set) var reconnectAttempts = 3
-    fileprivate var reconnectTimer: Timer!
-    
-    open var connectionWillOpen: (() -> Void)!
-    open var connectionDidOpen: (() -> Void)!
-    open var connectionReady: (() -> Void)!
-    open var connectionDidClose: ((Int, String) -> Void)!
-    open var connectionDidFailWithError: ((NSError) -> Void)!
-    open var onMessage: ((BotMessageModel?) -> Void)!
-    open var onMessageAck: ((Ack?) -> Void)!
-    
-    fileprivate var successClosure: ((BotClient?) -> Void)!
-    fileprivate var failureClosure: ((NSError) -> Void)!
-    
-    // MARK: init
-    public convenience init(botInfoParameters: NSDictionary!) {
-        self.init()
-        self.botInfoParameters = botInfoParameters
-        let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-        requestManager.startNewtorkMonitoring {[weak self] (status) in
-            if status == .reachableViaWiFi || status == .reachableViaWWAN {
-                self?.isNetworkAvailable = true
-                if (self?.reconnects)! { self?.reconnect() }
-            } else {
-                self?.isNetworkAvailable = false
-                self?.connectionState = .NO_NETWORK
+    public var connectionState: BotClientConnectionState {
+        get {
+            if isNetworkAvailable == false {
+                return .NO_NETWORK
+            }
+            guard let readyState = connection?.websocket?.readyState else {
+                return .NONE
+            }
+            switch readyState {
+            case .OPEN:
+                return .CONNECTED
+            case .CLOSED:
+                return.CLOSED
+            case .CLOSING:
+                return .CLOSING
+            case .CONNECTING:
+                return .CONNECTING
             }
         }
     }
+    fileprivate var reconnects = false
+    
+    open var connectionWillOpen: (() -> Void)?
+    open var connectionDidOpen: (() -> Void)?
+    open var connectionReady: (() -> Void)?
+    open var connectionDidClose: ((Int?, String?) -> Void)?
+    open var connectionDidFailWithError: ((NSError?) -> Void)?
+    open var onMessage: ((BotMessageModel?) -> Void)?
+    open var onMessageAck: ((Ack?) -> Void)?
+    
+    open var botsUrl: String {
+        get {
+            return Constants.KORE_BOT_SERVER
+        }
+        set(newValue) {
+            Constants.KORE_BOT_SERVER = newValue
+        }
+    }
+    
+    fileprivate var successClosure: ((BotClient?) -> Void)?
+    fileprivate var failureClosure: ((NSError) -> Void)?
+    
+    // MARK: - init
+    public override init() {
+        super.init()
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: -
+    public func initialize(with botInfoParameters: [String: Any]?) {
+        self.botInfoParameters = botInfoParameters
+    }
+    
+    // MARK: - start network monitoring
+    public func setReachabilityStatusChange(_ status: AFNetworkReachabilityStatus) {
+        if status == .reachableViaWiFi || status == .reachableViaWWAN {
+            self.isNetworkAvailable = true
+            guard let connection = self.connection else {
+                // webSocket connection not available
+                self.connectionWillOpen?()
+                return
+            }
+            guard let readyState = connection.websocket?.readyState else {
+                return
+            }
+            switch readyState {
+            case .OPEN:
+                break
+            case .CLOSED:
+                self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: nil))
+                break
+            case .CLOSING:
+                self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: nil))
+                break
+            case .CONNECTING:
+                self.connectionWillOpen?()
+                break
+            }
+        } else {
+            self.isNetworkAvailable = false
+            self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: ["descripiton": "Network is not available"]))
+        }
+    }
+    
     
     // MARK: set server url
     open func setKoreBotServerUrl(url: String) {
@@ -69,215 +123,154 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     }
     
     // MARK: make connection
-    open func connectWithJwToken(_ jwtToken: String!, success:((BotClient?) -> Void)?, failure:((Error) -> Void)?)  {
+    open func connectWithJwToken(_ jwtToken: String?, success:((BotClient?) -> Void)?, failure:((Error?) -> Void)?)  {
+        guard let jwtToken = jwtToken else {
+            failure?(nil)
+            return
+        }
         self.jwToken = jwtToken
+        successClosure = success
+        failureClosure = failure
         
-        if (self.successClosure == nil) {
-            self.successClosure = success as ((BotClient?) -> Void)!
-        }
-        if (self.failureClosure == nil) {
-            self.failureClosure = failure
-        }
-        
-        let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-        requestManager.signInWithToken(jwtToken as AnyObject, botInfo: self.botInfoParameters, success: { (user, authInfo) in
-            self.authInfoModel = authInfo
-            self.userInfoModel = user
-            self.connectionState = .CONNECTING
-            self.connect()
-        }) { (error) in
-            failure!(error)
-        }
-    }
-    
-    @objc open func reconnect() {
-        if self.reconnecting == false && self.isNetworkAvailable {
-            self.reconnecting = true
-            self.connectionState = .CONNECTING
-            
-            if (self.connectionWillOpen != nil) {
-                self.connectionWillOpen()
+        if let botInfoParameters = botInfoParameters {
+            let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
+            requestManager.signInWithToken(jwtToken, botInfo: botInfoParameters, success: { [weak self] (user, authInfo) in
+                self?.authInfoModel = authInfo
+                self?.userInfoModel = user
+                self?.connect()
+            }) { (error) in
+                failure?(error)
             }
-            
-            self.connect()
+        } else {
+            failure?(nil)
         }
-    }
-    
-    open func reconnectAfter(_ timeInterval: TimeInterval) {
-        self.addReconnectTimer(timeInterval)
     }
     
     open func disconnect() {
-        self.removeReconnectTimer()
-        if self.connection != nil {
-            self.connection.disconnect()
-            self.connection.connectionDelegate = nil
-            self.connection = nil
+        if let connection = connection {
+            connection.disconnect()
+            connection.connectionDelegate = nil
         }
-        let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-        requestManager.stopNewtorkMonitoring()
+        connection = nil
     }
     
-    // MARK:
+    // MARK:connect
     @objc fileprivate func connect() {
-        if (self.authInfoModel == nil) {
+        if authInfoModel == nil {
             self.connectWithJwToken(jwToken, success: { (client) in
-                self.reconnecting = false
-                if (self.successClosure != nil) {
-                    self.successClosure(client)
-                }
+                self.successClosure?(client)
             }, failure: { (error) in
-                self.reconnecting = false
-                if (self.failureClosure != nil) {
-                    self.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as! [AnyHashable : Any]? as! [String : Any]))
+                self.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error?._userInfo as? [String : Any]))
+            })
+        } else if let authInfoModel = authInfoModel, let botInfoParameters = botInfoParameters {
+            let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
+            requestManager.getRtmUrlWithAuthInfoModel(authInfoModel, botInfo: botInfoParameters, success: { [weak self] (botInfo) in
+                self?.connection = self?.rtmConnectionWithBotInfoModel(botInfo!, isReconnect: self?.reconnects ?? false)
+                if self?.reconnects == false {
+                    self?.successClosure?(self)
                 }
+                }, failure: { [weak self] (error) in
+                    self?.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as? [String : Any]))
             })
         } else {
-            let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-            requestManager.getRtmUrlWithAuthInfoModel(self.authInfoModel, botInfo: self.botInfoParameters, success: { (botInfo) in
-                self.connection = self.rtmConnectionWithBotInfoModel(botInfo!, isReconnect: self.reconnects)
-                self.reconnecting = false
-                if (self.reconnects == false) {
-                    if (self.successClosure != nil) {
-                        self.successClosure(self)
-                    }
-                }
-            }, failure: { (error) in
-                self.reconnecting = false
-                self.tryReconnect()
-            })
-        }
-    }
-    
-    fileprivate func tryReconnect() {
-        if self.reconnecting == false && self.isNetworkAvailable {
-            self.reconnecting = true
-        
-            if currentReconnectAttempt + 1 > reconnectAttempts {
-                if (self.connectionDidClose != nil) {
-                    self.connectionDidClose(100, "Reconnect Failed")
-                }
-                if (self.reconnects == false) {
-                    if (self.failureClosure != nil) {
-                        self.failureClosure(NSError(domain: "RTM", code: 0, userInfo: ["message": "connection timed-out"]))
-                    }
-                }
-                return
-            }
-            
-            self.connectionState = .CONNECTING
-            if (self.connectionWillOpen != nil) {
-                self.connectionWillOpen()
-            }
-            
-            currentReconnectAttempt += 1
-            self.connect()
-        }
-    }
-    
-    fileprivate func addReconnectTimer(_ interval: TimeInterval) {
-        self.removeReconnectTimer()
-        self.reconnectTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.reconnect), userInfo: nil, repeats: false)
-        RunLoop.main.add(self.reconnectTimer, forMode: RunLoop.Mode.default)
-    }
-    
-    fileprivate func removeReconnectTimer() {
-        if self.reconnectTimer != nil {
-            self.reconnectTimer.invalidate()
-            self.reconnectTimer = nil
+            failureClosure?(NSError(domain: "RTM", code: 0, userInfo: nil))
         }
     }
     
     // MARK: WebSocketDelegate methods
-    
     open func rtmConnectionDidOpen() {
-        self.currentReconnectAttempt = 0
-        self.reconnects = true
-        self.reconnecting = false
-        self.connectionState = .CONNECTED
-        if (self.connectionDidOpen != nil) {
-            self.connectionDidOpen()
-        }
+        reconnects = true
+        connectionDidOpen?()
     }
     
     public func rtmConnectionReady() {
-        if (self.connectionReady != nil) {
-            self.connectionReady()
-        }
+        connectionReady?()
     }
     
-    open func rtmConnectionDidClose(_ code: Int, reason: String) {
-        if self.isNetworkAvailable { self.connectionState = .CLOSED }
+    open func rtmConnectionDidClose(_ code: Int, reason: String?) {
         switch code {
         case 1000:
-            if (self.connectionDidClose != nil) {
-                self.connectionDidClose(code, reason)
-            }
+            connectionDidClose?(code, reason)
             break
         default:
-            self.reconnect()
+            connectionDidClose?(code, reason)
             break
         }
     }
     
     open func rtmConnectionDidFailWithError(_ error: NSError) {
-        self.reconnecting = false
-        if self.isNetworkAvailable { self.connectionState = .FAILED }
-        if (self.connectionDidFailWithError != nil) {
-            self.connectionDidFailWithError(error)
-        }
-        self.tryReconnect()
+        connectionDidFailWithError?(error)
     }
     
     open func didReceiveMessage(_ message: BotMessageModel) {
-        if (self.onMessage != nil) {
-            self.onMessage(message)
-        }
+        onMessage?(message)
     }
+    
     open func didReceiveMessageAck(_ ack: Ack) {
-        if (self.onMessageAck != nil) {
-            self.onMessageAck(ack)
-        }
+        onMessageAck?(ack)
     }
     
     // MARK: functions
-    fileprivate func rtmConnectionWithBotInfoModel(_ botInfo: BotInfoModel, isReconnect: Bool) -> RTMPersistentConnection {
-        if (self.connection != nil && (self.connection.websocket.readyState == .OPEN || self.connection.websocket.readyState == .CONNECTING)) {
-            return self.connection
-        } else {
-            let rtmConnection: RTMPersistentConnection = RTMPersistentConnection(botInfo: botInfo, botInfoParameters: self.botInfoParameters, tryReconnect: isReconnect)
-            rtmConnection.connectionDelegate = self
-            rtmConnection.start()
-            return rtmConnection
-        }
-    }
-    
-    open func sendMessage(_ message: String!, options: AnyObject!) {
-        if (self.connection == nil) {
-            NSLog("WebSocket connection not available")
-        } else {
-            switch self.connection.websocket.readyState {
-            case .OPEN:
-                self.connection.sendMessageModel(message, options: [] as AnyObject?)
-                break
-            default:
-                break
+    fileprivate func rtmConnectionWithBotInfoModel(_ botInfo: BotInfoModel, isReconnect: Bool) -> RTMPersistentConnection? {
+        if let connection = connection, (connection.websocket?.readyState == .OPEN || connection.websocket?.readyState == .CONNECTING) {
+            return connection
+        } else if let botInfoParameters = botInfoParameters {
+            if connection == nil {
+                connection = RTMPersistentConnection()
             }
+            connection?.connect(botInfo: botInfo, botInfoParameters: botInfoParameters, tryReconnect: isReconnect)
+            connection?.connectionDelegate = self
+            return connection
+        }
+        return nil
+    }
+    
+    open func sendMessage(_ message: String, options: [String: Any]?) {
+        guard let connection = connection else {
+            NSLog("WebSocket connection not available")
+            return
+        }
+        guard let readyState = connection.websocket?.readyState else {
+            NSLog("WebSocket connection not available")
+            return
+        }
+        switch readyState {
+        case .OPEN:
+            var parameters: [String: Any] = [:]
+            if let kmToken = botInfoParameters?["kmToken"] {
+                parameters["kmToken"] = kmToken
+            }
+            if let kmUId = botInfoParameters?["kmUId"] {
+                parameters["kmUId"] = kmUId
+            }
+            if let botToken = authInfoModel?.accessToken {
+                parameters["botToken"] = botToken
+            }
+            connection.sendMessage(message, parameters: parameters, options: options)
+            break
+        case .CLOSED:
+            break
+        case .CLOSING:
+            break
+        case .CONNECTING:
+            break
         }
     }
     
-    // MARK: subscribe/ unsubscribe to push notifications
+    // MARK: subscribe/unsubscribe to push notifications
     open func subscribeToNotifications(_ deviceToken: Data!, success:((Bool) -> Void)?, failure:((NSError) -> Void)?) {
         let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-        requestManager.subscribeToNotifications(deviceToken as Data!, userInfo: self.userInfoModel, authInfo: self.authInfoModel, success: success, failure: failure as! ((Error) -> Void)?)
+        requestManager.subscribeToNotifications(deviceToken as Data?, userInfo: userInfoModel, authInfo: authInfoModel, success: success, failure: failure as! ((Error) -> Void)?)
     }
     
     open func unsubscribeToNotifications(_ deviceToken: Data!, success:((Bool) -> Void)?, failure:((NSError) -> Void)?) {
         let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-        requestManager.unsubscribeToNotifications(deviceToken as Data!, userInfo: self.userInfoModel, authInfo: self.authInfoModel, success: success, failure: failure as! ((Error) -> Void)?)
+        requestManager.unsubscribeToNotifications(deviceToken as Data?, userInfo: userInfoModel, authInfo: authInfoModel, success: success, failure: failure as! ((Error) -> Void)?)
     }
 
+    
+    // MARK: - deinit
     deinit {
-        NSLog("BotClient dealloc")
+        print("BotClient dealloc")
     }
 }

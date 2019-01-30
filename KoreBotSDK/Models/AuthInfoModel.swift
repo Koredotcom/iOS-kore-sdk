@@ -26,7 +26,7 @@ open class AuthInfoModel : MTLModel, MTLJSONSerializing {
     @objc open var issuedDate: Date?
     
     // MARK: MTLJSONSerializing methods
-    open static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
+    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["identity":"identity",
                 "resourceOwnerID":"resourceOwnerID",
                 "orgID":"orgID",

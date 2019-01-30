@@ -13,31 +13,80 @@ import Mantle
 @objc public protocol RTMPersistentConnectionDelegate {
     func rtmConnectionDidOpen()
     func rtmConnectionReady()
-    func rtmConnectionDidClose(_ code: Int, reason: String)
+    func rtmConnectionDidClose(_ code: Int, reason: String?)
     func rtmConnectionDidFailWithError(_ error: NSError)
     @objc optional func didReceiveMessage(_ message: BotMessageModel)
     @objc optional func didReceiveMessageAck(_ ack: Ack)
 }
 
+open class RTMTimer: NSObject {
+    public enum RTMTimerState {
+        case suspended
+        case resumed
+    }
+    public let pingInterval: TimeInterval = 10.0
+    open lazy var timer: DispatchSourceTimer = {
+        let intervalInNSec = pingInterval * Double(NSEC_PER_SEC)
+        let startTime = DispatchTime.now() + Double(intervalInNSec) / Double(NSEC_PER_SEC)
+        
+        let t = DispatchSource.makeTimerSource(flags: [], queue: .main)
+        t.schedule(deadline: startTime, repeating: pingInterval)
+        t.setEventHandler(handler: { [weak self] in
+            self?.eventHandler?()
+        })
+        return t
+    }()
+    
+    open var eventHandler: (() -> Void)?
+    open var state: RTMTimerState = .suspended
+    
+    open func resume() {
+        if state == .resumed {
+            return
+        }
+        state = .resumed
+        timer.resume()
+    }
+    
+    open func suspend() {
+        if state == .suspended {
+            return
+        }
+        state = .suspended
+        timer.suspend()
+    }
+    
+    // MARK: -
+    deinit {
+        timer.setEventHandler {}
+        timer.cancel()
+        
+        resume()
+        eventHandler = nil
+    }
+}
+
 open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     var botInfo: BotInfoModel!
-    fileprivate var botInfoParameters: NSDictionary! = nil
-    var websocket: SRWebSocket! = nil
+    fileprivate var botInfoParameters: [String: Any]?
+    var websocket: SRWebSocket?
     var connectionDelegate: RTMPersistentConnectionDelegate?
-
-    fileprivate let timerSource: DispatchSourceTimer
-    fileprivate let pingInterval: TimeInterval
+    
+    fileprivate var timerSource = RTMTimer()
+    //    fileprivate let pingInterval: TimeInterval
     fileprivate var receivedLastPong = true
     open var tryReconnect = false
     
     // MARK: init
-    public init(botInfo: BotInfoModel!, botInfoParameters: NSDictionary!, tryReconnect: Bool) {
-        self.pingInterval = 10
-        self.timerSource = DispatchSource.makeTimerSource(flags: [], queue: .main)
+    override public init() {
         super.init()
+    }
+    
+    public func connect(botInfo: BotInfoModel, botInfoParameters: [String: Any]?, tryReconnect: Bool) {
         self.botInfo = botInfo
         self.botInfoParameters = botInfoParameters
         self.tryReconnect = tryReconnect
+        start()
     }
     
     open func start() {
@@ -45,54 +94,54 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
         if (self.tryReconnect == true) {
             url.append("&isReconnect=true")
         }
-        self.websocket = SRWebSocket(urlRequest: URLRequest(url: URL(string: url)! as URL) as URLRequest!)
-        self.websocket.delegate = self
-        self.websocket.open()
+        self.receivedLastPong = true
+        self.websocket = SRWebSocket(urlRequest: URLRequest(url: URL(string: url)! as URL))
+        self.websocket?.delegate = self
+        self.websocket?.open()
     }
     
     open func disconnect() {
-        if (self.websocket != nil) {
-            self.websocket.close()
-        }
+        self.websocket?.close()
     }
     
     // MARK: WebSocketDelegate methods
-    open func webSocketDidOpen(_ webSocket: SRWebSocket!) {
+    open func webSocketDidOpen(_ webSocket: SRWebSocket) {
         self.connectionDelegate?.rtmConnectionDidOpen()
-        let intervalInNSec = pingInterval * Double(NSEC_PER_SEC)
-        let startTime = DispatchTime.now() + Double(intervalInNSec) / Double(NSEC_PER_SEC)
         
-        timerSource.scheduleRepeating(deadline: startTime, interval: pingInterval, leeway: .nanoseconds(Int(NSEC_PER_SEC / 10)))
-        timerSource.setEventHandler { [unowned self] in
-            if self.receivedLastPong == false {
+        timerSource.eventHandler = { [weak self] in
+            if self?.receivedLastPong == false {
                 // we did not receive the last pong
                 // abort the socket so that we can spin up a new connection
-                self.websocket.close()
-            } else if self.websocket.readyState == .CLOSED || self.websocket.readyState == .CLOSING {
-                self.websocket.close()
-            } else {
+                // self.websocket.close()
+                // self.timerSource.suspend()
+                // self.connectionDelegate?.rtmConnectionDidFailWithError(NSError())
+            } else if self?.websocket?.readyState == .CLOSED || self?.websocket?.readyState == .CLOSING {
+                self?.websocket?.close()
+                self?.timerSource.suspend()
+            } else if self?.websocket?.readyState == .OPEN {
+                
                 // we got a pong recently
                 // send another ping
-                self.receivedLastPong = false
-                try? self.websocket.sendPing(nil)
+                self?.receivedLastPong = false
+                _ = try? self?.websocket?.sendPing(Data())
             }
         }
         timerSource.resume()
     }
     
-    open func webSocket(_ webSocket: SRWebSocket!, didFailWithError error: NSError!) {
-        self.connectionDelegate?.rtmConnectionDidFailWithError(error)
+    open func webSocket(_ webSocket: SRWebSocket, didFailWithError error: Error) {
+        self.connectionDelegate?.rtmConnectionDidFailWithError(error as NSError)
     }
     
-    open func webSocket(_ webSocket: SRWebSocket, didCloseWithCode code: Int, reason: String, wasClean: Bool) {
-        self.connectionDelegate?.rtmConnectionDidClose(code, reason: reason as String)
+    public func webSocket(_ webSocket: SRWebSocket, didCloseWithCode code: Int, reason: String?, wasClean: Bool) {
+        self.connectionDelegate?.rtmConnectionDidClose(code, reason: reason)
     }
     
-    open func webSocket(_ webSocket: SRWebSocket!, didReceivePong pongPayload: Data!) {
+    open func webSocket(_ webSocket: SRWebSocket, didReceivePong pongPayload: Data?) {
         self.receivedLastPong = true
     }
-
-    open func webSocket(_ webSocket: SRWebSocket!, didReceiveMessage message: Any!) {
+    
+    open func webSocket(_ webSocket: SRWebSocket, didReceiveMessage message: Any) {
         let responseObject = self.convertStringToDictionary(message as! String)!
         if (responseObject["type"]! as!  String == "ready") {
             self.connectionDelegate?.self.rtmConnectionReady()
@@ -114,8 +163,11 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     }
     
     // MARK: sending message
-    open func sendMessageModel(_ message: String, options: AnyObject?) {
-        switch (self.websocket.readyState) {
+    open func sendMessage(_ message: String, parameters: [String: Any], options: [String: Any]?) {
+        guard let readyState = self.websocket?.readyState else {
+            return
+        }
+        switch (readyState) {
         case .CONNECTING:
             print("Socket is in CONNECTING state")
             break
@@ -128,21 +180,29 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             break
         case .OPEN:
             print("Socket is in OPEN state")
-            let parameters: NSMutableDictionary = NSMutableDictionary()
-            let messageObject = ["body":message, "attachments":[]] as [String : Any];
-            parameters.setObject(messageObject, forKey: "message" as NSCopying)
-            parameters.setObject("/bot.message", forKey: "resourceid" as NSCopying)
+            let dictionary: NSMutableDictionary = NSMutableDictionary()
+            let messageObject: NSMutableDictionary = NSMutableDictionary()
+            messageObject.addEntries(from: ["body": message, "attachments":[], "customData": parameters] as [String : Any])
+            if let object = options {
+                messageObject.addEntries(from: object)
+            }
+            
+            dictionary.setObject(messageObject, forKey: "message" as NSCopying)
+            dictionary.setObject("/bot.message", forKey: "resourceid" as NSCopying)
             if (self.botInfoParameters != nil) {
-                parameters.setObject(self.botInfoParameters, forKey: "botInfo" as NSCopying)
+                dictionary.setObject(self.botInfoParameters as Any, forKey: "botInfo" as NSCopying)
             }
             let uuid: String = Constants.getUUID()
-            parameters.setObject(uuid, forKey: "id" as NSCopying)
-            parameters.setObject(uuid, forKey: "clientMessageId" as NSCopying)
-            print("send: \(parameters)")
-
-            var error : NSError?
-            let jsonData = try! JSONSerialization.data(withJSONObject: parameters, options: JSONSerialization.WritingOptions.prettyPrinted)
-            self.websocket.send(jsonData)
+            dictionary.setObject(uuid, forKey: "id" as NSCopying)
+            dictionary.setObject(uuid, forKey: "clientMessageId" as NSCopying)
+            
+            let meta = ["timezone": TimeZone.current.identifier, "locale": Locale.current.identifier]
+            dictionary.setValue(meta, forKey: "meta")
+            
+            print("send: \(dictionary)")
+            
+            let jsonData = try! JSONSerialization.data(withJSONObject: dictionary, options: JSONSerialization.WritingOptions.prettyPrinted)
+            self.websocket?.send(jsonData)
             break
         }
     }
@@ -151,7 +211,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     func convertStringToDictionary(_ text: String) -> [String:AnyObject]? {
         if let data = text.data(using: String.Encoding.utf8) {
             do {
-                return try! JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
             } catch let error as NSError {
                 print(error)
             }
