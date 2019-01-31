@@ -36,3 +36,4 @@ Podfile.lock
 
 # Carthage
 Carthage/Build
+Examples/CarthageDemo/Carthage/
