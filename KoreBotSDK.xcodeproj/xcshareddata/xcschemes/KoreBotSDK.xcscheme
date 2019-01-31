@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D1200F141CC9F721009BBB1A"
+               BlueprintIdentifier = "D1C83A2622015CA2003F2448"
                BuildableName = "KoreBotSDK.framework"
                BlueprintName = "KoreBotSDK"
                ReferencedContainer = "container:KoreBotSDK.xcodeproj">
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D1200F1E1CC9F721009BBB1A"
+               BlueprintIdentifier = "D1C83A2F22015CA2003F2448"
                BuildableName = "KoreBotSDKTests.xctest"
                BlueprintName = "KoreBotSDKTests"
                ReferencedContainer = "container:KoreBotSDK.xcodeproj">
@@ -42,7 +42,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D1200F141CC9F721009BBB1A"
+            BlueprintIdentifier = "D1C83A2622015CA2003F2448"
             BuildableName = "KoreBotSDK.framework"
             BlueprintName = "KoreBotSDK"
             ReferencedContainer = "container:KoreBotSDK.xcodeproj">
@@ -64,7 +64,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D1200F141CC9F721009BBB1A"
+            BlueprintIdentifier = "D1C83A2622015CA2003F2448"
             BuildableName = "KoreBotSDK.framework"
             BlueprintName = "KoreBotSDK"
             ReferencedContainer = "container:KoreBotSDK.xcodeproj">
@@ -82,7 +82,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D1200F141CC9F721009BBB1A"
+            BlueprintIdentifier = "D1C83A2622015CA2003F2448"
             BuildableName = "KoreBotSDK.framework"
             BlueprintName = "KoreBotSDK"
             ReferencedContainer = "container:KoreBotSDK.xcodeproj">
