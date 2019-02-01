@@ -63,26 +63,27 @@ Anonymous user - if not anonymous, assign same identity (such as email or phone 
 static bool isAnonymous = false; 
  ```
 
-Google Speech API KEY
- ```
-static let API_KEY = "<speech_api_key>"
- ```
-
 JWT_SERVER URL - specify the server URL for JWT token generation. This token is used to authorize the SDK client. Refer to documentation on how to setup the JWT server for token generation - e.g. https://jwt-token-server.example.com/
  ```
 static let JWT_SERVER = "<jwt-token-server-url>";
 ```
 
 ## Running the Demo app
+#### a. Using Cocoa Pods
 	* Download or clone the repository.
-	* Run "pod install" in the KoreBotSDK project folder.
-	* Open KoreBotSDK.xworkspace in Xcode.
+	* Run "pod install" in the Examples/CocoapodsDemo project folder.
+	* Open Examples/CocoapodsDemo/KoreBotSDKDemo.xcworkspace in Xcode.
 	* Run the KoreBotSDKDemo.app in xcode
-	
-	Please refer to Build Fixes if you encounter errors running the app.
+
+#### b. Using Carthage
+    * Download or clone the repository.
+    * Run "carthage update --platform iOS" in the Examples/CarthageDemo project folder.
+    * Open Examples/CarthageDemo/KoreBotSDKDemo.xcodeproj in Xcode.
+    * Run the KoreBotSDKDemo.app in Xcode
 
 ## Integrating into your app
-#### 1. Initialize CocoaPods
+#### 1. Setup KoreBotSDK
+###### a. Using CocoaPods
 	Add the following to your Podfile:
 	pod 'KoreBotSDK'
 	
@@ -90,6 +91,11 @@ static let JWT_SERVER = "<jwt-token-server-url>";
 	pod 'KoreBotSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git’
 	
 	Run pod install in your project folder.
+###### b. Using Carthage
+	Add the following to your Cartfile:
+	github "Koredotcom/iOS-kore-sdk" "master"
+	
+	Run "carthage update --platform iOS" in your project folder.
     
 #### 2. Initializing the Bot client
 	import KoreBotSDK
@@ -168,29 +174,6 @@ NOTE: Please refer about JWT signing and verification at - https://developer.kor
     }, failure: { (error) in
         
     })
-
-## Build Fixes:
-	When running the app, may get few errors due to google api sdk. Please follow these steps:
-	* Make sure you are on latest cocoapods and xcode version.
-	* Replace any of the following failing import statements:
-	
-		#import "google/cloud/speech/v1beta1/CloudSpeech.pbobjc.h"
-		#import "google/api/Annotations.pbobjc.h"
-		#import "google/longrunning/Operations.pbobjc.h"
-		#import "google/rpc/Status.pbobjc.h"
-		#import "google/protobuf/Duration.pbobjc.h"
-
-	    with the corresponding imports:
-	
-		#import "CloudSpeech.pbobjc.h"
-		#import "Annotations.pbobjc.h"
-		#import "Operations.pbobjc.h"
-		#import "Status.pbobjc.h"
-		#import "Duration.pbobjc.h"
-		
-		
-	Please refer to following link for more information on errors due to google sdk:
-	https://github.com/GoogleCloudPlatform/ios-docs-samples/blob/master/speech/Swift/Speech-gRPC-Streaming/BUILDFIXES
 
 License
 ----
