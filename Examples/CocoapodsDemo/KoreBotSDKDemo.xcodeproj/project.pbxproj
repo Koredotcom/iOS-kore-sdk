@@ -10,7 +10,7 @@
 		050267521DEC65BF001256D3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 050267511DEC65BF001256D3 /* AVFoundation.framework */; };
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
-		95CE25CA331457CAF4AE5D1A /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC18170B231A3D82C5988CBA /* Pods_KoreBotSDKDemo.framework */; };
+		1D9FA1702AE04EE1A8F6AF2C /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */; };
 		D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */ = {isa = PBXBuildFile; fileRef = D15041081DE2C4BC00F2F92E /* Messages.plist */; };
 		D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = D15045D41DE422CB008DE46E /* BotConfiguration.plist */; };
 		D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */; };
@@ -89,9 +89,9 @@
 		0590F8411DED7A1B00107721 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		0590F8421DED7A1B00107721 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
-		247B1D9A84772CBE5C23850B /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		6E57A1E80438E0E975999C17 /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
-		AC18170B231A3D82C5988CBA /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
+		72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD18E3E19876E3486C39D351 /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		D15041081DE2C4BC00F2F92E /* Messages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Messages.plist; sourceTree = "<group>"; };
 		D15045D41DE422CB008DE46E /* BotConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BotConfiguration.plist; sourceTree = "<group>"; };
 		D175AD4A1CEF0CD500BB9442 /* KoreBotSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KoreBotSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -185,18 +185,18 @@
 				0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */,
 				0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */,
 				050267521DEC65BF001256D3 /* AVFoundation.framework in Frameworks */,
-				95CE25CA331457CAF4AE5D1A /* Pods_KoreBotSDKDemo.framework in Frameworks */,
+				1D9FA1702AE04EE1A8F6AF2C /* Pods_KoreBotSDKDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		56EA0930552D6A6B9FD681F6 /* Pods */ = {
+		4A892AF249E871774B0F03D0 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				247B1D9A84772CBE5C23850B /* Pods-KoreBotSDKDemo.debug.xcconfig */,
-				6E57A1E80438E0E975999C17 /* Pods-KoreBotSDKDemo.release.xcconfig */,
+				CD18E3E19876E3486C39D351 /* Pods-KoreBotSDKDemo.debug.xcconfig */,
+				5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -209,7 +209,7 @@
 				0590F8421DED7A1B00107721 /* CoreAudio.framework */,
 				0590F8431DED7A1B00107721 /* CoreAudioKit.framework */,
 				050267511DEC65BF001256D3 /* AVFoundation.framework */,
-				AC18170B231A3D82C5988CBA /* Pods_KoreBotSDKDemo.framework */,
+				72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -230,7 +230,7 @@
 				D175AD4C1CEF0CD500BB9442 /* KoreBotSDKDemo */,
 				D175AD4B1CEF0CD500BB9442 /* Products */,
 				A851461715333BEDEFC8310F /* Frameworks */,
-				56EA0930552D6A6B9FD681F6 /* Pods */,
+				4A892AF249E871774B0F03D0 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -581,11 +581,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D175AD5C1CEF0CD500BB9442 /* Build configuration list for PBXNativeTarget "KoreBotSDKDemo" */;
 			buildPhases = (
-				2BF78C9039E48E72A49AED31 /* [CP] Check Pods Manifest.lock */,
+				3111A85B3A27934C81DC0506 /* [CP] Check Pods Manifest.lock */,
 				D175AD461CEF0CD500BB9442 /* Sources */,
 				D175AD471CEF0CD500BB9442 /* Frameworks */,
 				D175AD481CEF0CD500BB9442 /* Resources */,
-				EAF697B90C08F4B4911B51B5 /* [CP] Embed Pods Frameworks */,
+				53BC65E7822D9067BC7DCA58 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -654,7 +654,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2BF78C9039E48E72A49AED31 /* [CP] Check Pods Manifest.lock */ = {
+		3111A85B3A27934C81DC0506 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -676,7 +676,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EAF697B90C08F4B4911B51B5 /* [CP] Embed Pods Frameworks */ = {
+		53BC65E7822D9067BC7DCA58 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -906,7 +906,7 @@
 		};
 		D175AD5D1CEF0CD500BB9442 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 247B1D9A84772CBE5C23850B /* Pods-KoreBotSDKDemo.debug.xcconfig */;
+			baseConfigurationReference = CD18E3E19876E3486C39D351 /* Pods-KoreBotSDKDemo.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -929,7 +929,7 @@
 		};
 		D175AD5E1CEF0CD500BB9442 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6E57A1E80438E0E975999C17 /* Pods-KoreBotSDKDemo.release.xcconfig */;
+			baseConfigurationReference = 5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
