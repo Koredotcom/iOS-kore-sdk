@@ -29,10 +29,10 @@ class ImageComponentView : UIImageView {
     func setupImageView(_ completion:(() -> Void)?) {
         self.contentMode = .scaleAspectFill
         
-        self.image = UIImage(named: self.component.payload as String)
-        if (completion != nil) {
-            completion!()
+        if let payload = component.payload {
+            self.image = UIImage(named: payload)
         }
+        completion?()
     }
 }
 

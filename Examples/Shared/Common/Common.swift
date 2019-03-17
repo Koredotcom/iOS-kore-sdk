@@ -38,11 +38,11 @@ open class Common : NSObject {
 
 open class Utilities: NSObject {
     // MARK:-
-    public static func stringFromJSONObject(object: Any) -> NSString {
-        var jsonString: NSString!
+    public static func stringFromJSONObject(object: Any) -> String? {
+        var jsonString: String? = nil
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: object, options: .prettyPrinted)
-            jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)
+            jsonString = String(data: jsonData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
         } catch {
             print(error.localizedDescription)
         }

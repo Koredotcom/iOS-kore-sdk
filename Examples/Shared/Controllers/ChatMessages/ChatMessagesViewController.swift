@@ -10,11 +10,22 @@ import UIKit
 import AVFoundation
 import SafariServices
 import KoreBotSDK
+import CoreData
+import Mantle
 
 class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate {
     
     // MARK: properties
-    var thread: KREThread!
+    var messagesRequestInProgress: Bool = false
+    var historyRequestInProgress: Bool = false
+    fileprivate var isConnected: Bool = false {
+        didSet {
+            if isConnected {
+                getRecentHistory()
+            }
+        }
+    }
+    var thread: KREThread?
     var botClient: BotClient!
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
     
@@ -41,7 +52,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var speechSynthesizer: AVSpeechSynthesizer!
     
     // MARK: init
-    init(thread: KREThread!) {
+    init(thread: KREThread?) {
         super.init(nibName: "ChatMessagesViewController", bundle: nil)
         self.thread = thread
     }
@@ -254,6 +265,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             }
             
             botClient.connectionDidOpen = { [weak self] () in
+                self?.isConnected = true
                 self?.updateNavBarPrompt()
                 self?.botClient?.sendMessage("Welpro", options: nil)
             }
@@ -264,17 +276,20 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             
             botClient.connectionDidClose = { [weak self] (code, reason) in
                 NSLog("botClient: connectionDidClose")
+                self?.isConnected = false
                 self?.updateNavBarPrompt()
                 
             }
             
             botClient.connectionDidFailWithError = { [weak self] (error) in
                 NSLog("botClient: connectionDidFailWithError")
+                self?.isConnected = false
                 self?.updateNavBarPrompt()
             }
             
             botClient.onMessage = { [weak self] (object) in
-                self?.onReceiveMessage(object: object)
+                let message = self?.onReceiveMessage(object: object)
+                self?.addMessages(message?.0, message?.1)
             }
             
             botClient.onMessageAck = { (ack) in
@@ -322,12 +337,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         return .text
     }
     
-    func onReceiveMessage(object: BotMessageModel?) {
+    func onReceiveMessage(object: BotMessageModel?) -> (Message?, String?) {
+        var ttsBody: String?
         var textMessage: Message! = nil
         let message: Message = Message()
         message.messageType = .reply
-        message.sentDate = Date()
-        
+        message.sentDate = object?.createdOn
+        message.messageId = object?.messageId
+
         if (object?.iconUrl != nil) {
             message.iconUrl = object?.iconUrl
         }
@@ -341,16 +358,12 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if (messageObject?.component == nil) {
             
         } else {
-            let componentModel: ComponentModel = messageObject!.component!
-            var ttsBody: String? = nil
-            
+            let componentModel: ComponentModel = messageObject!.component!            
             if (componentModel.type == "text") {
-                self.showTypingStatusForBotsAction()
-                
                 let payload: NSDictionary = componentModel.payload! as! NSDictionary
                 let text: NSString = payload["text"] as! NSString
                 let textComponent: Component = Component()
-                textComponent.payload = text
+                textComponent.payload = text as String
                 ttsBody = text as String
                 
                 if(text.contains("use a web form")){
@@ -365,16 +378,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     ttsBody = "Ok, Please fill in the details and submit"
                 }
                 message.addComponent(textComponent)
-                
+                return (message, ttsBody)
             } else if (componentModel.type == "template") {
-                
                 let payload: NSDictionary = componentModel.payload! as! NSDictionary
                 let text: String = payload["text"] != nil ? payload["text"] as! String : ""
                 let type: String = payload["type"] != nil ? payload["type"] as! String : ""
                 ttsBody = payload["speech_hint"] != nil ? payload["speech_hint"] as? String : nil
                 
-                if(type == "template"){
-                    
+                if (type == "template") {
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
                     let templateType: String = dictionary["template_type"] as! String
                     var tabledesign: String
@@ -383,7 +394,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     let componentType = self.getComponentType(templateType,tabledesign)
                     
                     if componentType != .quickReply {
-                        self.showTypingStatusForBotsAction()
+
                     }
                     
                     let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
@@ -392,12 +403,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     if tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable) {
                         textMessage = Message()
                         textMessage?.messageType = .reply
-                        textMessage?.sentDate = Date()
+                        textMessage?.sentDate = message.sentDate
+                        textMessage?.messageId = message.messageId
                         if (object?.iconUrl != nil) {
                             textMessage?.iconUrl = object?.iconUrl
                         }
                         let textComponent: Component = Component()
-                        textComponent.payload = tText as NSString!
+                        textComponent.payload = tText
                         textMessage?.addComponent(textComponent)
                     }
                     
@@ -405,37 +417,34 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                     message.sentDate = Date()
                     message.addComponent(optionsComponent)
-                    
-                }else if(type == "error"){
-                    self.showTypingStatusForBotsAction()
-                    
+                } else if (type == "error") {
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
                     let errorComponent: Component = Component(.error)
                     errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                     message.addComponent(errorComponent)
-                    
-                }else if text != "" {
-                    self.showTypingStatusForBotsAction()
-                    
+                } else if text.count > 0 {
                     let textComponent: Component = Component()
-                    textComponent.payload = text as NSString!
+                    textComponent.payload = text
                     message.addComponent(textComponent)
-                    
                 }
+                return (message, ttsBody)
             }
-            
-            if (textMessage != nil && textMessage!.components.count > 0) {
-                let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
-                dataStoreManager.createNewMessageIn(thread: self.thread, message: textMessage!, completionBlock: { (success) in
+        }
+        return (nil, ttsBody)
+    }
+    
+    func addMessages(_ message: Message?, _ ttsBody: String?) {
+        if let m = message, m.components.count > 0 {
+            showTypingStatusForBotsAction()
+            let delayInMilliSeconds = 500
+            DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(delayInMilliSeconds)) {
+                let dataStoreManager = DataStoreManager.sharedManager
+                dataStoreManager.createNewMessageIn(thread: self.thread, message: m, completion: { (success) in
+                    
                 })
-            }
-            
-            if (message.components.count > 0) {
-                let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
-                dataStoreManager.createNewMessageIn(thread: self.thread, message: message, completionBlock: { (success) in
-                })
-                if ttsBody != nil {
-                    NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: ttsBody)
+                
+                if let tts = ttsBody {
+                    NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: tts)
                 }
             }
         }
@@ -623,10 +632,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let composedMessage: Message = message
         if (composedMessage.components.count > 0) {
             let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
-            dataStoreManager.createNewMessageIn(thread: self.thread, message: composedMessage, completionBlock: { (success) in
-                let textComponent: Component = composedMessage.components[0] as! Component
-                let text: String = textComponent.payload as String
-                if(self.botClient != nil){
+            dataStoreManager.createNewMessageIn(thread: self.thread, message: composedMessage, completion: { (success) in
+                let textComponent = composedMessage.components[0] as? Component
+                if let _ = self.botClient, let text = textComponent?.payload {
                     self.botClient.sendMessage(text, options: options)
                 }
                 self.textMessageSent()
@@ -638,8 +646,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let message: Message = Message()
         message.messageType = .default
         message.sentDate = Date()
+        message.messageId = UUID().uuidString
         let textComponent: Component = Component()
-        textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) as NSString!
+        textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         message.addComponent(textComponent)
         self.sendMessage(message, options: options)
     }
@@ -830,5 +839,131 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     @objc func reloadTable(notification:Notification){
         botMessagesView.tableView.reloadData()
+    }
+}
+
+// MARK: -
+extension ChatMessagesViewController {
+    // MARK: - get history
+    public func getMessages(offset: Int) {
+        guard historyRequestInProgress == false else {
+            return
+        }
+        
+        botClient.getHistory(offset: offset, success: { [weak self] (responseObj) in
+            if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
+                self?.insertOrUpdateHistoryMessages(messages)
+            }
+            self?.historyRequestInProgress = false
+            }, failure: { [weak self] (error) in
+                self?.historyRequestInProgress = false
+                print("Unable to fetch messges \(error?.localizedDescription ?? "")")
+        })
+    }
+    
+    public func getRecentHistory() {
+        guard messagesRequestInProgress == false else {
+            return
+        }
+
+        let dataStoreManager = DataStoreManager.sharedManager
+        let context = dataStoreManager.coreDataManager.workerContext
+        messagesRequestInProgress = true
+        let request: NSFetchRequest<KREMessage> = KREMessage.fetchRequest()
+        let isSenderPredicate = NSPredicate(format: "isSender == \(false)")
+        request.predicate = isSenderPredicate
+        let sortDates = NSSortDescriptor(key: "sentOn", ascending: false)
+        request.sortDescriptors = [sortDates]
+        request.fetchLimit = 1
+        
+        context.perform { [weak self] in
+            guard let array = try? context.fetch(request), array.count > 0 else {
+                self?.messagesRequestInProgress = false
+                return
+            }
+
+            guard let messageId = array.first?.messageId else {
+                self?.messagesRequestInProgress = false
+                return
+            }
+            
+            self?.botClient.getMessages(after: messageId, success: { (responseObj) in
+                if let responseObject = responseObj as? [String: Any]{
+                    if let messages = responseObject["messages"] as? Array<[String: Any]> {
+                        self?.insertOrUpdateHistoryMessages(messages)
+                    }
+                }
+                self?.messagesRequestInProgress = false
+            }, failure: { (error) in
+                self?.messagesRequestInProgress = false
+                print("Unable to fetch history \(error?.localizedDescription ?? "")")
+            })
+        }
+    }
+    
+    // MARK: - insert or update messages
+    func insertOrUpdateHistoryMessages(_ messages: Array<[String: Any]>) {
+        guard let models = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages], let botMessages = models, botMessages.count > 0 else {
+            return
+        }
+        
+        var allMessages: [Message] = [Message]()
+        for message in botMessages {
+            if message.type == "outgoing" || message.type == "incoming" {
+                guard let components = message.components, let data = components.first?.data else {
+                    continue
+                }
+                
+                guard let jsonString = data["text"] as? String else {
+                    continue
+                }
+                
+                let botMessage: BotMessageModel = BotMessageModel()
+                botMessage.createdOn = message.createdOn
+                botMessage.messageId = message.messageId
+                botMessage.type = message.type
+                
+                let messageModel: MessageModel = MessageModel()
+                let componentModel: ComponentModel = ComponentModel()
+                if jsonString.contains("payload"), let jsonObject: [String: Any] = Utilities.jsonObjectFromString(jsonString: jsonString) as? [String : Any] {
+                    componentModel.type = jsonObject["type"] as? String
+                    
+                    var payloadObj: [String: Any] = [String: Any]()
+                    payloadObj["payload"] = jsonObject["payload"] as! [String : Any]
+                    payloadObj["type"] = jsonObject["type"]
+                    componentModel.payload = payloadObj
+                } else {
+                    var payloadObj: [String: Any] = [String: Any]()
+                    payloadObj["text"] = jsonString
+                    payloadObj["type"] = "text"
+                    componentModel.type = "text"
+                    componentModel.payload = payloadObj
+                }
+                
+                messageModel.type = "text"
+                messageModel.component = componentModel
+                botMessage.messages = [messageModel]
+                let messageTuple = onReceiveMessage(object: botMessage)
+                if let object = messageTuple.0 {
+                    allMessages.append(object)
+                }
+            }
+        }
+        
+        // insert all messages
+        if allMessages.count > 0 {
+            let dataStoreManager = DataStoreManager.sharedManager
+            dataStoreManager.insertMessages(allMessages, in: thread, completion: nil)
+        }
+    }
+    
+    // MARK: - fetch messages
+    func fetchMessages() {
+        let dataStoreManager = DataStoreManager.sharedManager
+        dataStoreManager.getMessagesCount(completion: { [weak self] (count) in
+            if count == 0 {
+                self?.getMessages(offset: 0)
+            }
+        })
     }
 }

@@ -15,11 +15,14 @@ enum ComponentType : Int {
 
 class Component : NSObject {
     var componentType: ComponentType = .text
-    var message: Message!
-    var payload: NSString!
+    var message: Message?
+    var payload: String?
+    var text: String?
+
     override init() {
         super.init()
     }
+    
     convenience init(_ type: ComponentType) {
         self.init()
         componentType = type

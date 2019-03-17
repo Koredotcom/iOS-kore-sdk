@@ -112,7 +112,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController!.fetchedObjects!.count
+        return fetchedResultsController?.fetchedObjects?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -282,10 +282,10 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         var date = Date()
-        if fetchedResultsController!.fetchedObjects!.count > 0 {
-            let message: KREMessage = fetchedResultsController!.object(at: IndexPath(row: 0, section: 0)) as! KREMessage
-            if message.sentOn != nil {
-                date = message.sentOn! as Date
+        if fetchedResultsController?.fetchedObjects?.count ?? 0 > 0 {
+            let message = fetchedResultsController?.object(at: IndexPath(row: 0, section: 0)) as? KREMessage
+            if let sentOn = message?.sentOn as Date? {
+                date = sentOn
             }
         }
         

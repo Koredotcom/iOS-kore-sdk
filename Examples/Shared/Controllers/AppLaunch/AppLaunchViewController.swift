@@ -82,15 +82,14 @@ class AppLaunchViewController: UIViewController {
             self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: isAnonymous, success: { [weak self] (jwToken) in
                 
                 let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
-                let context: NSManagedObjectContext = dataStoreManager.coreDataManager.workerContext
+                let context = dataStoreManager.coreDataManager.workerContext
                 context.perform {
                     let resources: Dictionary<String, AnyObject> = ["threadId": botId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
                     dataStoreManager.deleteThreadIfRequired(with: botId, completionBlock: { (success) in
-                        
-                    let thread: KREThread = dataStoreManager.insertOrUpdateThread(dictionary: resources, withContext: context)
+                    
+                    let thread = dataStoreManager.insertOrUpdateThread(dictionary: resources, withContext: context)
                     try? context.save()
                     dataStoreManager.coreDataManager.saveChanges()
-                    print(thread.threadId!)
                     
                     self?.botClient.initialize(with: botInfo)
                     if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {

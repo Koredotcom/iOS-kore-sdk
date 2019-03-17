@@ -87,6 +87,7 @@ class DataStoreManager: NSObject {
         newMessage.clientId = dictionary["clientId"] as! String?
         newMessage.messageId = dictionary["id"] as! String?
         newMessage.isSender = dictionary["isSender"] as! Bool
+        
         if ((dictionary["author"]) != nil) {
             let author: KREContact = insertOrUpdateContact(dictionary: dictionary["author"] as! Dictionary<String, AnyObject>, withContext: context)
             newMessage.author = author
@@ -125,7 +126,7 @@ class DataStoreManager: NSObject {
         request.predicate = NSPredicate(format: "threadId == %@", dictionary["threadId"] as! String)
         let array: Array<KREThread> = try! context.fetch(request)
         if (array.count == 0) {
-            thread = NSEntityDescription.insertNewObject(forEntityName: "KREThread", into: context) as! KREThread
+            thread = NSEntityDescription.insertNewObject(forEntityName: "KREThread", into: context) as? KREThread
             thread.threadId = dictionary["threadId"] as! String?
             thread.subject = dictionary["subject"] as! String?
             if ((dictionary["messages"]) != nil) {
@@ -176,11 +177,15 @@ class DataStoreManager: NSObject {
     }
     
     // data management
-    func insertMessages(messages: Array<Dictionary<String, AnyObject>>) {
-        let context: NSManagedObjectContext = coreDataManager.workerContext
-        context.perform {
-            
-            try! context.save()
+    public func insertMessages(_ messages: [Message], in thread: KREThread!, completion block: (() -> Void)?) {
+        let context = coreDataManager.workerContext
+        context.perform { [weak self] in
+            for message in messages {
+                self?.createNewMessageIn(thread: thread, message: message, context: context)
+            }
+            try? context.save()
+            self?.coreDataManager.saveChanges()
+            block?()
         }
     }
     
@@ -188,48 +193,72 @@ class DataStoreManager: NSObject {
         let context: NSManagedObjectContext = coreDataManager.workerContext
         context.perform {
             for object in threads {
-                let thread: KREThread = self.insertOrUpdateThread(dictionary: object, withContext: context)
-                print(thread)
+                _ = self.insertOrUpdateThread(dictionary: object, withContext: context)
             }
             try! context.save()
         }
     }
     
-    func createNewMessageIn(thread: KREThread!, message:Message, completionBlock: ((_ staus: Bool) -> Void)?) {
+    public func createNewMessageIn(thread: KREThread, message: Message, context: NSManagedObjectContext) {
+        let request: NSFetchRequest<KREMessage> = KREMessage.fetchRequest()
+        request.predicate = NSPredicate(format: "messageId == %@", message.messageId ?? "")
+        
+        var nMessage: KREMessage?
+        if let messages = try? context.fetch(request), messages.count > 0 {
+            nMessage = messages.first
+        } else {
+            nMessage = NSEntityDescription.insertNewObject(forEntityName: "KREMessage", into: context) as? KREMessage
+        }
+        nMessage?.sentOn = message.sentDate as NSDate?
+        nMessage?.isSender = true
+        nMessage?.messageId = message.messageId
+        
+        if (message.messageType == .reply) {
+            nMessage?.isSender = false
+        }
+        
+        if (message.iconUrl != nil) {
+            nMessage?.iconUrl = message.iconUrl
+        }
+        
+        if message.components.count > 0, let nMessage = nMessage {
+            let components: NSArray = message.components
+            for component in components as! [Component] {
+                let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
+                nComponent.componentId = ""
+                nComponent.componentDesc = component.payload as String?
+                nMessage.addComponentsObject(_value: nComponent)
+                nComponent.message = nMessage
+                nMessage.templateType = component.componentType.rawValue as NSNumber?
+                nMessage.thread = thread
+                thread.addToMessages(_value: nMessage)
+            }
+        }
+    }
+
+    func createNewMessageIn(thread: KREThread!, message: Message, completion block: ((_ staus: Bool) -> Void)?) {
         let context: NSManagedObjectContext = coreDataManager.workerContext
         context.perform { [weak self] in
-            let nMessage = NSEntityDescription.insertNewObject(forEntityName: "KREMessage", into: context) as! KREMessage
-            nMessage.sentOn = message.sentDate as NSDate?
-            nMessage.isSender = true
-            if (message.messageType == .reply) {
-                nMessage.isSender = false
-            }
+            self?.createNewMessageIn(thread: thread, message: message, context: context)
+            try? context.save()
+            self?.coreDataManager.saveChanges()
             
-            if (message.iconUrl != nil) {
-                nMessage.iconUrl = message.iconUrl
-            }
-            
-            if (message.components.count > 0) {
-                let components: NSArray = message.components
-                for component in components as! [Component] {
-                    let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
-                    nComponent.componentId = ""
-                    nComponent.componentDesc = component.payload as String?
-                    nMessage.addComponentsObject(_value: nComponent)
-                    nComponent.message = nMessage
-                    nMessage.templateType = component.componentType.rawValue as NSNumber?
-                    nMessage.thread = thread
-                    thread.addToMessages(_value: nMessage)
-                }
-            }
-
-            try! context.save()
-            self!.coreDataManager.saveChanges()
-            
-            if (completionBlock != nil) {
-                completionBlock!(true)
-            }
+            block?(true)
         }
     }
     
+    // MARK: get messages count
+    func getMessagesCount(completion block: ((_ count: Int) -> Void)?) {
+        let context = coreDataManager.workerContext
+        context.perform {
+            let request: NSFetchRequest<KREMessage> = KREMessage.fetchRequest()
+            var messagesCount = 0
+            if let count = try? context.count(for: request) {
+                messagesCount = count
+            }
+            DispatchQueue.main.async {
+                block?(messagesCount)
+            }
+        }
+    }
 }
