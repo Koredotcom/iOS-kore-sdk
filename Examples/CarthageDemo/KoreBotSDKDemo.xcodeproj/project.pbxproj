@@ -81,10 +81,7 @@
 		D1F339012201D99A005BE5F1 /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338C12201D99A005BE5F1 /* AppLaunchViewController.swift */; };
 		D1F339022201D99A005BE5F1 /* AppLaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338C22201D99A005BE5F1 /* AppLaunchViewController.xib */; };
 		D1F339082201E1F6005BE5F1 /* KoreBotSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F339032201E1F6005BE5F1 /* KoreBotSDK.framework */; };
-		D1F339092201E1F6005BE5F1 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F339042201E1F6005BE5F1 /* AFNetworking.framework */; };
 		D1F3390A2201E1F6005BE5F1 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F339052201E1F6005BE5F1 /* Charts.framework */; };
-		D1F3390B2201E1F6005BE5F1 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F339062201E1F6005BE5F1 /* Mantle.framework */; };
-		D1F3390C2201E1F6005BE5F1 /* SocketRocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F339072201E1F6005BE5F1 /* SocketRocket.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -189,10 +186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1F339082201E1F6005BE5F1 /* KoreBotSDK.framework in Frameworks */,
-				D1F339092201E1F6005BE5F1 /* AFNetworking.framework in Frameworks */,
 				D1F3390A2201E1F6005BE5F1 /* Charts.framework in Frameworks */,
-				D1F3390B2201E1F6005BE5F1 /* Mantle.framework in Frameworks */,
-				D1F3390C2201E1F6005BE5F1 /* SocketRocket.framework in Frameworks */,
 				0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */,
 				0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */,
 				050267521DEC65BF001256D3 /* AVFoundation.framework in Frameworks */,
