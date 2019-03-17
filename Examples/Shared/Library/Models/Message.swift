@@ -19,7 +19,8 @@ class Message : NSObject {
     var sentDate: Date!
     var components: NSMutableArray!
     var thread: Thread!
-        
+    var messageId: String?
+
     override init() {
         super.init()
         self.components = NSMutableArray()

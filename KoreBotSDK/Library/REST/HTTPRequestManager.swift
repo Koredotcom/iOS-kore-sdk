@@ -86,6 +86,49 @@ open class HTTPRequestManager : NSObject {
         }
     }
     
+    // MARK: history from lastMessage
+    open func getHistory(offset: Int, _ authInfo: AuthInfoModel, botInfo: [String: Any], success:((_ responseObject: [String: Any]?) -> Void)?, failure:((_ error: Error?) -> Void)?) {
+        let urlString: String = Constants.URL.historyUrl
+        if let tokenType = authInfo.tokenType, let accessToken = authInfo.accessToken {
+            let token = String(format: "%@ %@", tokenType, accessToken)
+            sessionManager?.requestSerializer.setValue(token, forHTTPHeaderField: "Authorization")
+        }
+        
+        let parameters = ["botId": botInfo["taskBotId"], "forward": "false", "limit": "20"]
+        sessionManager?.get(urlString, parameters: parameters, progress: { (progress) in
+            
+        }, success: { (dataTask, responseObject) in
+            if (responseObject is [String: Any]) {
+                success?(responseObject as? [String : Any])
+            } else {
+                failure?(NSError(domain: "", code: 0, userInfo: [:]))
+            }
+        }) { (dataTask, error) in
+            failure?(error)
+        }
+    }
+    
+    open func getMessages(after messageId: String, _ authInfo: AuthInfoModel, botInfo: [String: Any], success:((_ responseObject: [String: Any]?) -> Void)?, failure:((_ error: Error?) -> Void)?) {
+        let urlString: String = Constants.URL.historyUrl
+        if let tokenType = authInfo.tokenType, let accessToken = authInfo.accessToken {
+            let token = String(format: "%@ %@", tokenType, accessToken)
+            sessionManager?.requestSerializer.setValue(token, forHTTPHeaderField: "Authorization")
+        }
+        
+        let parameters = ["botId": botInfo["taskBotId"], "msgId": messageId, "forward": "true", "limit": "100"]
+        sessionManager?.get(urlString, parameters: parameters, progress: { (progress) in
+            
+        }, success: { (dataTask, responseObject) in
+            if (responseObject is [String: Any]) {
+                success?(responseObject as? [String : Any])
+            } else {
+                failure?(NSError(domain: "", code: 0, userInfo: [:]))
+            }
+        }) { (dataTask, error) in
+            failure?(error)
+        }
+    }
+    
     // MARK: subscribe/ unsubscribte for
     open func subscribeToNotifications(_ deviceToken: Data!, userInfo: UserModel!, authInfo: AuthInfoModel!, success:((_ staus: Bool) -> Void)?, failure:((_ error: Error) -> Void)?) {
         let urlString: String = Constants.URL.subscribeUrl(userInfo.userId)
