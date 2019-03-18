@@ -342,6 +342,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         var textMessage: Message! = nil
         let message: Message = Message()
         message.messageType = .reply
+        if let type = object?.type, type == "incoming" {
+            message.messageType = .default
+        }
         message.sentDate = object?.createdOn
         message.messageId = object?.messageId
 
@@ -415,7 +418,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     
                     let optionsComponent: Component = Component(componentType)
                     optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                    message.sentDate = Date()
+                    message.sentDate = object?.createdOn
                     message.addComponent(optionsComponent)
                 } else if (type == "error") {
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
