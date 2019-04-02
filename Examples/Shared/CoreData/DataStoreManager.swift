@@ -15,6 +15,7 @@ class DataStoreManager: NSObject {
     // MARK:- datastore manager shared instance
     var coreDataManager: CoreDataManager! = nil
     static var instance: DataStoreManager!
+   
 
     // MARK:- datastore manager shared instance
     public static let sharedManager : DataStoreManager = {
@@ -142,6 +143,38 @@ class DataStoreManager: NSObject {
         }
         return thread
     }
+    public func insertOrUpdateThread(dictionary: [String: Any]?, with block:((_ th: KREThread?) -> Void)?) {
+        var thread: KREThread! = nil
+        let request: NSFetchRequest<KREThread> = KREThread.fetchRequest()
+        let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
+        let context: NSManagedObjectContext = dataStoreManager.coreDataManager.workerContext
+        if let threadId = dictionary?["threadId"] as? String {
+            request.predicate = NSPredicate(format: "threadId == %@", threadId)
+        }
+        
+        if let array = try? context.fetch(request), array.count > 0 {
+            thread = array.first
+            block?(thread)
+        } else {
+           
+            thread = NSEntityDescription.insertNewObject(forEntityName: "KREThread", into: context) as? KREThread
+            if let threadId = dictionary?["threadId"] {
+                thread?.threadId = threadId as? String
+            }
+            if let subject = dictionary?["subject"] {
+                thread?.subject = subject as? String
+            }
+
+            if let array = dictionary?["messages"] {
+                let messages: Array<Dictionary<String, AnyObject>> = array as! Array
+                for object in messages {
+                    _ = self.insertOrUpdateMessage(dictionary: object, withContext: context)
+                }
+            }
+            block?(thread)
+        }
+    }
+    
     
     func getThread(id: NSManagedObjectID, withContext context: NSManagedObjectContext) -> KREThread? {
         return context.object(with: id) as? KREThread
@@ -199,7 +232,7 @@ class DataStoreManager: NSObject {
         }
     }
     
-    public func createNewMessageIn(thread: KREThread, message: Message, context: NSManagedObjectContext) {
+    public func createNewMessageIn(thread: KREThread!, message: Message, context: NSManagedObjectContext) {
         let request: NSFetchRequest<KREMessage> = KREMessage.fetchRequest()
         request.predicate = NSPredicate(format: "messageId == %@", message.messageId ?? "")
         
@@ -231,7 +264,7 @@ class DataStoreManager: NSObject {
                 nComponent.message = nMessage
                 nMessage.templateType = component.componentType.rawValue as NSNumber?
                 nMessage.thread = thread
-                thread.addToMessages(_value: nMessage)
+//                thread.addToMessages(_value: nMessage)
             }
         }
     }

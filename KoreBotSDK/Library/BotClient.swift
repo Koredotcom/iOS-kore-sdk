@@ -102,9 +102,11 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                 break
             case .CLOSED:
                 self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: nil))
+                connectionDidFailWithError?(NSError(domain: "RTM", code: 0, userInfo: nil))
                 break
             case .CLOSING:
                 self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: nil))
+                connectionDidFailWithError?(NSError(domain: "RTM", code: 0, userInfo: nil))
                 break
             case .CONNECTING:
                 self.connectionWillOpen?()

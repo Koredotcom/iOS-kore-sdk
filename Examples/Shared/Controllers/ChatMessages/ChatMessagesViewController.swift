@@ -18,13 +18,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: properties
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
-    fileprivate var isConnected: Bool = false {
-        didSet {
-            if isConnected {
-                getRecentHistory()
-            }
-        }
-    }
+//    fileprivate var isConnected: Bool = false {
+//        didSet {
+//            if isConnected {
+////                getRecentHistory()
+//            }
+//        }
+//    }
     var thread: KREThread?
     var botClient: BotClient!
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
@@ -70,7 +70,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.configureAudioComposer()
         self.configureQuickReplyView()
         self.configureTypingStatusView()
-        self.configureBotClient()
+//        self.configureBotClient()
         self.configureSTTClient()
         
         isSpeakingEnabled = true
@@ -257,46 +257,46 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[typingStatusView(40)][composeBarContainerView]", options:[], metrics:nil, views: views))
     }
     
-    func configureBotClient() {
-        if(botClient != nil){
-            // events
-            botClient.connectionWillOpen =  { [weak self] () in
-                self?.updateNavBarPrompt()
-            }
-            
-            botClient.connectionDidOpen = { [weak self] () in
-                self?.isConnected = true
-                self?.updateNavBarPrompt()
-                self?.botClient?.sendMessage("Welpro", options: nil)
-            }
-            
-            botClient.connectionReady = { () in
-                
-            }
-            
-            botClient.connectionDidClose = { [weak self] (code, reason) in
-                NSLog("botClient: connectionDidClose")
-                self?.isConnected = false
-                self?.updateNavBarPrompt()
-                
-            }
-            
-            botClient.connectionDidFailWithError = { [weak self] (error) in
-                NSLog("botClient: connectionDidFailWithError")
-                self?.isConnected = false
-                self?.updateNavBarPrompt()
-            }
-            
-            botClient.onMessage = { [weak self] (object) in
-                let message = self?.onReceiveMessage(object: object)
-                self?.addMessages(message?.0, message?.1)
-            }
-            
-            botClient.onMessageAck = { (ack) in
-                
-            }
-        }
-    }
+//    func configureBotClient() {
+//        if(botClient != nil){
+//            // events
+//            botClient.connectionWillOpen =  { [weak self] () in
+//                self?.updateNavBarPrompt()
+//            }
+//            
+//            botClient.connectionDidOpen = { [weak self] () in
+//                self?.isConnected = true
+//                self?.updateNavBarPrompt()
+//                self?.botClient?.sendMessage("Welpro", options: nil)
+//            }
+//            
+//            botClient.connectionReady = { () in
+//                
+//            }
+//            
+//            botClient.connectionDidClose = { [weak self] (code, reason) in
+//                NSLog("botClient: connectionDidClose")
+//                self?.isConnected = false
+//                self?.updateNavBarPrompt()
+//                
+//            }
+//            
+//            botClient.connectionDidFailWithError = { [weak self] (error) in
+//                NSLog("botClient: connectionDidFailWithError")
+//                self?.isConnected = false
+//                self?.updateNavBarPrompt()
+//            }
+//            
+//            botClient.onMessage = { [weak self] (object) in
+//                let message = self?.onReceiveMessage(object: object)
+//                self?.addMessages(message?.0, message?.1)
+//            }
+//            
+//            botClient.onMessageAck = { (ack) in
+//                
+//            }
+//        }
+//    }
     
     func deConfigureBotClient() {
         if(botClient != nil){
@@ -968,5 +968,16 @@ extension ChatMessagesViewController {
                 self?.getMessages(offset: 0)
             }
         })
+    }
+}
+extension ChatMessagesViewController: KABotClientDelegate {
+    func showTypingStatusForBot() {
+        self.typingStatusView?.addTypingStatus(forContact: [:], forTimeInterval: 0.5)
+    }
+    
+    // MARK: - KABotlientDelegate methods
+    open func botConnection(with connectionState: BotClientConnectionState) {
+        updateNavBarPrompt()
+        
     }
 }

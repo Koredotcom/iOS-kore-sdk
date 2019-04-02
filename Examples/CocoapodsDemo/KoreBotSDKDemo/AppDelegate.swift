@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window.rootViewController = navigationController
             window.makeKeyAndVisible()
         }
+        startMonitoringForReachability()
         return true
     }
     
@@ -33,15 +34,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        
+        stopMonitoringForReachability()
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
-        
+//        startMonitoringForReachability()
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        
+        startMonitoringForReachability()
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
@@ -50,6 +51,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         
+    }
+    @objc func startMonitoringForReachability() {
+        let networkReachabilityManager = AFNetworkReachabilityManager.shared()
+        networkReachabilityManager.setReachabilityStatusChange({ (status) in
+            print("Network reachability: \(AFNetworkReachabilityManager.shared().localizedNetworkReachabilityStatusString())")
+            switch status {
+            case AFNetworkReachabilityStatus.reachableViaWWAN, AFNetworkReachabilityStatus.reachableViaWiFi:
+                self.establishBotConnection()
+                break
+            case AFNetworkReachabilityStatus.notReachable:
+                fallthrough
+            default:
+                break
+            }
+            
+            KABotClient.shared.setReachabilityStatusChange(status)
+        })
+        networkReachabilityManager.startMonitoring()
+    }
+    @objc func stopMonitoringForReachability() {
+        AFNetworkReachabilityManager.shared().stopMonitoring()
+    }
+    
+    // MARK: - establish BotSDK connection
+    func establishBotConnection() {
+        KABotClient.shared.tryConnect()
     }
 }
 

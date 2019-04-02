@@ -86,7 +86,7 @@ open class HTTPRequestManager : NSObject {
         }
     }
     
-    // MARK: history from lastMessage
+    // MARK: history from lastMessage after reconnection, offset reperesents the limit value. here it is 20
     open func getHistory(offset: Int, _ authInfo: AuthInfoModel, botInfo: [String: Any], success:((_ responseObject: [String: Any]?) -> Void)?, failure:((_ error: Error?) -> Void)?) {
         let urlString: String = Constants.URL.historyUrl
         if let tokenType = authInfo.tokenType, let accessToken = authInfo.accessToken {

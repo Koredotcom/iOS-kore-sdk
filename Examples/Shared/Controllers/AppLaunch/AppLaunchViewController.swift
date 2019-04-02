@@ -19,6 +19,7 @@ class AppLaunchViewController: UIViewController {
     @IBOutlet weak var chatButton: UIButton!
     
     var sessionManager: AFHTTPSessionManager?
+    var kaBotClient = KABotClient()
     let botClient = BotClient()
 
     // MARK: life-cycle events
@@ -76,52 +77,27 @@ class AppLaunchViewController: UIViewController {
             activityIndicatorView.center = chatButton.center
             view.addSubview(activityIndicatorView)
             activityIndicatorView.startAnimating()
-            
-            let botInfo: [String: Any] = ["chatBot": chatBotName, "taskBotId": botId]
-            
-            self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: isAnonymous, success: { [weak self] (jwToken) in
-                
-                let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
-                let context = dataStoreManager.coreDataManager.workerContext
-                context.perform {
-                    let resources: Dictionary<String, AnyObject> = ["threadId": botId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
-                    dataStoreManager.deleteThreadIfRequired(with: botId, completionBlock: { (success) in
-                    
-                    let thread = dataStoreManager.insertOrUpdateThread(dictionary: resources, withContext: context)
-                    try? context.save()
-                    dataStoreManager.coreDataManager.saveChanges()
-                    
-                    self?.botClient.initialize(with: botInfo)
-                    if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
-                        self?.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
-                    }
-                    self?.botClient.connectWithJwToken(jwToken, success: { [weak self] (client) in
-                        activityIndicatorView.stopAnimating()
-                        self?.chatButton.isUserInteractionEnabled = true
-                        
-                        let botViewController = ChatMessagesViewController(thread: thread)
-                        botViewController.botClient = client
-                        botViewController.title = SDKConfiguration.botConfig.chatBotName
-                        
-                        //Addition fade in animation
-                        let transition = CATransition()
-                        transition.duration = 0.5
-                        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
-                        transition.type = CATransitionType.fade
-                        self?.navigationController?.view.layer.add(transition, forKey: nil)
-                    
-                        self?.navigationController?.pushViewController(botViewController, animated: false)
-                    }, failure: { (error) in
-                        activityIndicatorView.stopAnimating()
-                        self?.chatButton.isUserInteractionEnabled = true
-                    })
-                })
-                }
-            }, failure: { (error) in
-                print(error)
+//             kaBotClient.tryConnect()
+            kaBotClient.connect(block: {(client, thread) in
                 activityIndicatorView.stopAnimating()
                 self.chatButton.isUserInteractionEnabled = true
-            })
+
+                let botViewController = ChatMessagesViewController(thread: thread)
+                botViewController.botClient = client
+                botViewController.title = SDKConfiguration.botConfig.chatBotName
+
+                //Addition fade in animation
+                let transition = CATransition()
+                transition.duration = 0.5
+                transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+                transition.type = CATransitionType.fade
+                self.navigationController?.view.layer.add(transition, forKey: nil)
+
+                self.navigationController?.pushViewController(botViewController, animated: false)
+            }) { (error) in
+                activityIndicatorView.stopAnimating()
+                self.chatButton.isUserInteractionEnabled = true
+            }
         } else {
             self.showAlert(title: "Bot SDK Demo", message: "YOU MUST SET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
             self.chatButton.isUserInteractionEnabled = true
@@ -138,8 +114,8 @@ class AppLaunchViewController: UIViewController {
         
         //Manager
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-        
-        // NOTE: You must set your URL to generate JWT. 
+
+        // NOTE: You must set your URL to generate JWT.
         let urlString: String = SDKConfiguration.serverConfig.koreJwtUrl()
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
@@ -171,7 +147,7 @@ class AppLaunchViewController: UIViewController {
         }
     
     }
-    
+//
     func showAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
