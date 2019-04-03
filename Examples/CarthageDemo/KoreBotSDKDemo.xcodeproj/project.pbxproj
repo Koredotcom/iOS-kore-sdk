@@ -10,6 +10,7 @@
 		050267521DEC65BF001256D3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 050267511DEC65BF001256D3 /* AVFoundation.framework */; };
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
+		CF9B80B12254B3B80047FF74 /* KABotClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9B80B02254B3B80047FF74 /* KABotClient.swift */; };
 		D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */ = {isa = PBXBuildFile; fileRef = D15041081DE2C4BC00F2F92E /* Messages.plist */; };
 		D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = D15045D41DE422CB008DE46E /* BotConfiguration.plist */; };
 		D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */; };
@@ -90,6 +91,7 @@
 		0590F8411DED7A1B00107721 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		0590F8421DED7A1B00107721 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
+		CF9B80B02254B3B80047FF74 /* KABotClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KABotClient.swift; sourceTree = "<group>"; };
 		D15041081DE2C4BC00F2F92E /* Messages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Messages.plist; sourceTree = "<group>"; };
 		D15045D41DE422CB008DE46E /* BotConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BotConfiguration.plist; sourceTree = "<group>"; };
 		D175AD4A1CEF0CD500BB9442 /* KoreBotSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KoreBotSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -243,6 +245,7 @@
 		D175AD4C1CEF0CD500BB9442 /* KoreBotSDKDemo */ = {
 			isa = PBXGroup;
 			children = (
+				CF9B80B02254B3B80047FF74 /* KABotClient.swift */,
 				D1F3385F2201D99A005BE5F1 /* Common */,
 				D1F338AC2201D99A005BE5F1 /* Controllers */,
 				D1F3385C2201D99A005BE5F1 /* CoreData */,
@@ -680,6 +683,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF9B80B12254B3B80047FF74 /* KABotClient.swift in Sources */,
 				D1F338C82201D99A005BE5F1 /* DataModel.xcdatamodeld in Sources */,
 				D1F338C52201D99A005BE5F1 /* Common.swift in Sources */,
 				D1F338DC2201D99A005BE5F1 /* KRELayoutManager.m in Sources */,

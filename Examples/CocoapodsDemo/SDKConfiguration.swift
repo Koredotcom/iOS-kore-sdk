@@ -16,21 +16,21 @@ class SDKConfiguration: NSObject {
     }
     
     struct botConfig {
-        static let clientId = "cs-94d9e8cf-3429-5b20-ab45-bdc5eef71209" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
+        static let clientId = "<client-id>" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
         
-        static let clientSecret = "HfBJ4Um7pz/ku1OC1y6Lz1BVl/3P/4o3XC/NH/2CZNU=" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
+        static let clientSecret = "<client-secret>" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
         
-        static let botId =  "st-df7159de-c5e4-5d6d-a6bf-ba1d62d0af2b" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
+        static let botId =  "<bot-id>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
 
-        static let chatBotName = "RCCL Test Bot" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
+        static let chatBotName = "<bot-name>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
         
-        static let identity = "maruthi.meenakshi@kore.com"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
+        static let identity = "<identity-email> or <random-id>"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
         
         static let isAnonymous = false // This should be either true (in case of known-user) or false (in-case of anonymous user).
     }
     
     struct serverConfig {
-        static let JWT_SERVER = String(format: "https://demo.kore.net/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
+        static let JWT_SERVER = String(format: "http://<jwt-server-host>/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
         
         static func koreJwtUrl() -> String {
             return String(format: "%@users/sts", JWT_SERVER)
