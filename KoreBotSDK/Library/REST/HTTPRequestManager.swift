@@ -86,7 +86,7 @@ open class HTTPRequestManager : NSObject {
         }
     }
     
-    // MARK: history from lastMessage after reconnection, offset reperesents the limit value. here it is 20
+    // MARK: history from lastMessage after reconnection, 
     open func getHistory(offset: Int, _ authInfo: AuthInfoModel, botInfo: [String: Any], success:((_ responseObject: [String: Any]?) -> Void)?, failure:((_ error: Error?) -> Void)?) {
         let urlString: String = Constants.URL.historyUrl
         if let tokenType = authInfo.tokenType, let accessToken = authInfo.accessToken {
@@ -94,7 +94,7 @@ open class HTTPRequestManager : NSObject {
             sessionManager?.requestSerializer.setValue(token, forHTTPHeaderField: "Authorization")
         }
         
-        let parameters = ["botId": botInfo["taskBotId"], "forward": "false", "limit": "20"]
+        let parameters = ["botId": botInfo["taskBotId"], "forward": "false", "limit": "20", "offset": "\(offset)"]
         sessionManager?.get(urlString, parameters: parameters, progress: { (progress) in
             
         }, success: { (dataTask, responseObject) in
