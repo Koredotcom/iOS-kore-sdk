@@ -174,6 +174,12 @@ NOTE: Please refer about JWT signing and verification at - https://developer.kor
     }, failure: { (error) in
         
     })
+#### 10. getHistory - fetches all the history that the bot has previously based on last messageId whenever the bot is reconnected.
+    self.botClient.getHistory(offset: 0, success: { (responseObj) in
+        // do something
+    }, failure: { (error) in
+    })
+    
 
 License
 ----
