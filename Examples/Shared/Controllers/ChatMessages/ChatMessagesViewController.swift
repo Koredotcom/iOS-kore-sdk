@@ -550,6 +550,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardDidShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.didBecomeActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.didEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.startSpeaking), name: NSNotification.Name(rawValue: startSpeakingNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.stopSpeaking), name: NSNotification.Name(rawValue: stopSpeakingNotification), object: nil)
@@ -606,6 +608,38 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }, completion: { (Bool) in
             
         })
+    }
+     @objc func didBecomeActive(_ notification: Notification) {
+        startMonitoringForReachability()
+    }
+    @objc func didEnterBackground(_ notification: Notification) {
+        stopMonitoringForReachability()
+    }
+    @objc func startMonitoringForReachability() {
+        let networkReachabilityManager = AFNetworkReachabilityManager.shared()
+        networkReachabilityManager.setReachabilityStatusChange({ (status) in
+            print("Network reachability: \(AFNetworkReachabilityManager.shared().localizedNetworkReachabilityStatusString())")
+            switch status {
+            case AFNetworkReachabilityStatus.reachableViaWWAN, AFNetworkReachabilityStatus.reachableViaWiFi:
+                self.establishBotConnection()
+                break
+            case AFNetworkReachabilityStatus.notReachable:
+                fallthrough
+            default:
+                break
+            }
+            
+            KABotClient.shared.setReachabilityStatusChange(status)
+        })
+        networkReachabilityManager.startMonitoring()
+    }
+    @objc func stopMonitoringForReachability() {
+        AFNetworkReachabilityManager.shared().stopMonitoring()
+    }
+    
+    // MARK: - establish BotSDK connection
+    func establishBotConnection() {
+        KABotClient.shared.tryConnect()
     }
     
     @objc func keyboardDidShow(_ notification: Notification) {
