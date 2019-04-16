@@ -27,8 +27,8 @@ Pod::Spec.new do |s|
 
     s.subspec 'UIKit' do |ss|
         ss.ios.deployment_target = '8.0'
-        ss.source_files = 'Widgets/**/*.{h,m,txt,swift,xib}'
-        ss.resources = {
+        ss.source_files = 'Widgets/**/*.{h,m,txt,swift}'
+        ss.resource_bundles = {
             'Widgets' => ['Widgets/**/*.xib']
         }
 
