@@ -294,7 +294,6 @@
 				D1200F111CC9F721009BBB1A /* Frameworks */,
 				D1200F121CC9F721009BBB1A /* Headers */,
 				D1200F131CC9F721009BBB1A /* Resources */,
-				D1F3385B2201D66F005BE5F1 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -349,6 +348,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = D1200F0B1CC9F721009BBB1A;
@@ -382,29 +382,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		D1F3385B2201D66F005BE5F1 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/AFNetworking.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Mantle.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SocketRocket.framework",
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D1200F101CC9F721009BBB1A /* Sources */ = {
