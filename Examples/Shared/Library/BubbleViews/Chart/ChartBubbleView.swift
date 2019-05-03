@@ -42,9 +42,9 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
     }
     
     func stringForValue(_ value: Double, entry: ChartDataEntry, dataSetIndex: Int, viewPortHandler: ViewPortHandler?) -> String {
-        if let keys = entry.data?.allKeys as? [String] {
+        if let dictionary = entry.data as? NSDictionary, let keys = dictionary.allKeys as? [String] {
             for i in 0..<keys.count {
-                if keys[i] == "displayValue", let value = entry.data?["displayValue"] as? String {
+                if keys[i] == "displayValue", let value = dictionary["displayValue"] as? String {
                     return value
                 }
             }
@@ -280,14 +280,14 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             
             rightOffset = CGFloat.maximum(rightOffset, (title as NSString).size(withAttributes: [NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Medium", size: 12.0)!]).width)
         }
-        let pieChartDataSet = PieChartDataSet(values: values, label: "")
+        let pieChartDataSet = PieChartDataSet(entries: values, label: "")
         pieChartDataSet.colors = colorsPalet()
         pieChartDataSet.sliceSpace = 2.0
         
         if(pietype == "regular"){
             let pieChartData = PieChartData(dataSet: pieChartDataSet)
             pieChartData.setValueFormatter(self)
-            pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 12.0))
+            pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 12.0) ?? UIFont.systemFont(ofSize: 12.0, weight: .medium))
 //            pieChartData.setValueTextColor(UIColor.white)
             pieChartDataSet.yValuePosition = .outsideSlice
             pieChartDataSet.valueLinePart1OffsetPercentage = 0.8
@@ -295,7 +295,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             pieChartDataSet.valueLinePart2Length = 0.4
             pieChartDataSet.valueLineColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
             pieChartData.setValueFormatter(self)
-            pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 12.0))
+            pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 12.0) ?? UIFont.systemFont(ofSize: 12.0, weight: .medium))
             pieChartData.setValueTextColor(UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1))
             pieChartData.setDrawValues(true)
             self.pcView.extraRightOffset = rightOffset
@@ -312,7 +312,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             pieChartDataSet.valueLineColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
             let pieChartData = PieChartData(dataSet: pieChartDataSet)
             pieChartData.setValueFormatter(self)
-            pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 12.0))
+            pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 12.0) ?? UIFont.systemFont(ofSize: 12.0, weight: .medium))
             pieChartData.setValueTextColor(UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1))
             pieChartData.setDrawValues(true)
             self.pcView.extraRightOffset = rightOffset
@@ -378,7 +378,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
 
         var dataSets: Array<LineChartDataSet> = Array<LineChartDataSet>()
         for i in 0..<titles.count {
-            let dataSet = LineChartDataSet(values: dataValues[i], label: titles[i])
+            let dataSet = LineChartDataSet(entries: dataValues[i], label: titles[i])
             dataSet.mode = .cubicBezier
             dataSet.lineWidth = 2.0
             dataSet.setColor(colors[i])
@@ -423,14 +423,14 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         
         var dataSets: Array<BarChartDataSet> = Array<BarChartDataSet>()
         for i in 0..<titles.count {
-            let dataSet = BarChartDataSet(values: dataValues[i], label: titles[i])
+            let dataSet = BarChartDataSet(entries: dataValues[i], label: titles[i])
             dataSet.setColor(colors[i])
             dataSets.append(dataSet)
         }
         
         let barChartData = BarChartData(dataSets: dataSets)
         barChartData.setValueTextColor(UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1))
-        barChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 8.0))
+        barChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 8.0) ?? UIFont.systemFont(ofSize: 8.0, weight: .medium))
         barChartData.setDrawValues(false)
         barChartData.setValueFormatter(self)
         
@@ -485,7 +485,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
 
         var dataSets: Array<BarChartDataSet> = Array<BarChartDataSet>()
         for _ in 0..<1 {
-            let dataSet = BarChartDataSet(values: subDataValues, label:"")
+            let dataSet = BarChartDataSet(entries: subDataValues, label:"")
             dataSet.stackLabels = titles
             let n = titles.count
             let colorsArr:[NSUIColor] = Array(colors.prefix(n))
@@ -495,7 +495,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
 
         let barChartData = BarChartData(dataSets: dataSets)
         barChartData.setValueTextColor(UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1))
-        barChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 8.0))
+        barChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 8.0) ?? UIFont.systemFont(ofSize: 8.0, weight: .medium))
         barChartData.setDrawValues(false)
         barChartData.setValueFormatter(self)
         // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
