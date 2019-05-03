@@ -517,7 +517,7 @@ open class KABotClient: NSObject {
     
     // MARK: - insert or update messages
     func insertOrUpdateHistoryMessages(_ messages: Array<[String: Any]>) {
-        guard let models = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages], let botMessages = models, botMessages.count > 0 else {
+        guard let botMessages = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages], botMessages.count > 0 else {
             return
         }
         

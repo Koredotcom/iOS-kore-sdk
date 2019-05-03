@@ -124,7 +124,7 @@ class MessageBubbleCell : UITableViewCell {
             bubbleView.tailPosition = .left
         }
     
-        bubbleView.components = components as NSArray!
+        bubbleView.components = components as NSArray?
         bubbleView.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -163,7 +163,7 @@ class MessageBubbleCell : UITableViewCell {
     
     func getEstimatedHeightForComponents(_ components: Array<KREComponent>, bubbleType:ComponentType) -> CGFloat {
         let bubbleView = BubbleView.bubbleWithType(bubbleType)
-        bubbleView.components = components as NSArray!
+        bubbleView.components = components as NSArray?
         let height = bubbleView.intrinsicContentSize.height
         
         return height + 12.0
