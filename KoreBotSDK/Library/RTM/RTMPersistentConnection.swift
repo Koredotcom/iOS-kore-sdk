@@ -74,7 +74,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     var websocket: SRWebSocket?
     var connectionDelegate: RTMPersistentConnectionDelegate?
     
-    fileprivate var timerSource = RTMTimer()
+    fileprivate var timerSource: RTMTimer?
     //    fileprivate let pingInterval: TimeInterval
     fileprivate var receivedLastPong = true
     open var tryReconnect = false
@@ -129,7 +129,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     open func webSocketDidOpen(_ webSocket: SRWebSocket) {
         self.connectionDelegate?.rtmConnectionDidOpen()
         
-        timerSource.eventHandler = { [weak self] in
+        timerSource?.eventHandler = { [weak self] in
             if self?.receivedLastPong == false {
                 // we did not receive the last pong
                 // abort the socket so that we can spin up a new connection
@@ -138,7 +138,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
                 // self.connectionDelegate?.rtmConnectionDidFailWithError(NSError())
             } else if self?.websocket?.readyState == .CLOSED || self?.websocket?.readyState == .CLOSING {
                 self?.websocket?.close()
-                self?.timerSource.suspend()
+                self?.timerSource?.suspend()
             } else if self?.websocket?.readyState == .OPEN {
                 
                 // we got a pong recently
@@ -147,7 +147,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
                 _ = try? self?.websocket?.sendPing(Data())
             }
         }
-        timerSource.resume()
+        timerSource?.resume()
     }
     
     open func webSocket(_ webSocket: SRWebSocket, didFailWithError error: Error) {
@@ -238,5 +238,12 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             }
         }
         return nil
+    }
+    
+    // MARK: -
+    deinit {
+        timerSource?.eventHandler = nil
+        timerSource?.suspend()
+        timerSource = nil
     }
 }
