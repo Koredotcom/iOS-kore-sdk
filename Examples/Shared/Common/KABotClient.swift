@@ -370,7 +370,7 @@ open class KABotClient: NSObject {
                     try? context.save()
                     dataStoreManager.coreDataManager.saveChanges()
                     
-                    self?.botClient.initialize(with: botInfo)
+                    self?.botClient.initialize(botInfoParameters: botInfo)
                     if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
                         self?.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
                     }
