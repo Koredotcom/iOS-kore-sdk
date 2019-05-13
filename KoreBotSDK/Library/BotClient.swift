@@ -26,6 +26,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     fileprivate var jwToken: String?
     fileprivate var clientId: String?
     fileprivate var botInfoParameters: [String: Any]?
+    public var reWriteOptions: [String: Any]?
     public var authInfoModel: AuthInfoModel?
     public var userInfoModel: UserModel?
     public private(set) var isNetworkAvailable = false
@@ -81,8 +82,9 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     }
     
     // MARK: -
-    public func initialize(with botInfoParameters: [String: Any]?) {
+    public func initialize(botInfoParameters: [String: Any]?, reWriteOptions: [String: Any]? = nil) {
         self.botInfoParameters = botInfoParameters
+        self.reWriteOptions = reWriteOptions
     }
     
     // MARK: - start network monitoring
@@ -220,7 +222,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             if connection == nil {
                 connection = RTMPersistentConnection()
             }
-            connection?.connect(botInfo: botInfo, botInfoParameters: botInfoParameters, tryReconnect: isReconnect)
+            connection?.connect(botInfo: botInfo, botInfoParameters: botInfoParameters, reWriteOptions: reWriteOptions, tryReconnect: isReconnect)
             connection?.connectionDelegate = self
             return connection
         }

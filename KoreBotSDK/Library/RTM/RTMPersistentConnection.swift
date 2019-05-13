@@ -69,6 +69,8 @@ open class RTMTimer: NSObject {
 open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     var botInfo: BotInfoModel!
     fileprivate var botInfoParameters: [String: Any]?
+    fileprivate var reWriteOptions: [String: Any]?
+    
     var websocket: SRWebSocket?
     var connectionDelegate: RTMPersistentConnectionDelegate?
     
@@ -80,24 +82,43 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     // MARK: init
     override public init() {
         super.init()
+        timerSource = RTMTimer()
     }
     
-    public func connect(botInfo: BotInfoModel, botInfoParameters: [String: Any]?, tryReconnect: Bool) {
+    public func connect(botInfo: BotInfoModel, botInfoParameters: [String: Any]?, reWriteOptions: [String: Any]? = nil, tryReconnect: Bool) {
         self.botInfo = botInfo
         self.botInfoParameters = botInfoParameters
+        self.reWriteOptions = reWriteOptions
         self.tryReconnect = tryReconnect
         start()
     }
     
     open func start() {
-        var url: String = self.botInfo.botUrl!
-        if (self.tryReconnect == true) {
-            url.append("&isReconnect=true")
+        guard var urlString = botInfo.botUrl else {
+            print("botUrl is nil")
+            return
         }
-        self.receivedLastPong = true
-        self.websocket = SRWebSocket(urlRequest: URLRequest(url: URL(string: url)! as URL))
-        self.websocket?.delegate = self
-        self.websocket?.open()
+        if tryReconnect == true {
+            urlString.append("&isReconnect=true")
+        }
+        
+        var urlComponents = URLComponents(string: urlString)
+        if let scheme = reWriteOptions?["scheme"] as? String {
+            urlComponents?.scheme = scheme
+        }
+        if let host = reWriteOptions?["host"] as? String {
+            urlComponents?.host = host
+        }
+        if let port = reWriteOptions?["port"] as? Int {
+            urlComponents?.port = port
+        }
+        
+        if let url = urlComponents?.url {
+            receivedLastPong = true
+            websocket = SRWebSocket(urlRequest: URLRequest(url: url))
+            websocket?.delegate = self
+            websocket?.open()
+        }
     }
     
     open func disconnect() {
