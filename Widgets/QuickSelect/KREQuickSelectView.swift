@@ -36,7 +36,7 @@ public class KREQuickSelectView: UIView, UICollectionViewDelegate, UICollectionV
     var collectionView: KRECollectionView! = nil
     var flowLayout:UICollectionViewFlowLayout! = nil
     var prototypeCell: KRETokenCollectionViewCell! = nil
-    public var sendQuickReplyAction: ((_ text: String?) -> Void)!
+    public var sendQuickReplyAction: ((_ text: String?, _ payload: String?) -> Void)?
 
     let cellHeight: CGFloat = 40
     // MARK:- init
@@ -110,22 +110,23 @@ public class KREQuickSelectView: UIView, UICollectionViewDelegate, UICollectionV
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "KRETokenCollectionViewCell", for: indexPath) as! KRETokenCollectionViewCell
-        let word = wordList[(indexPath as NSIndexPath).row]
-        cell.labelText = word.title
-        cell.imageURL = word.imageURL
-        cell.krefocused = false
-        cell.layoutIfNeeded()
-        return cell
+        let tableViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "KRETokenCollectionViewCell", for: indexPath)
+        if let cell = tableViewCell as? KRETokenCollectionViewCell {
+            let word = wordList[indexPath.row]
+            cell.labelText = word.title
+            cell.imageURL = word.imageURL
+            cell.krefocused = false
+            cell.layoutIfNeeded()
+        }
+        return tableViewCell
     }
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell: KRETokenCollectionViewCell = collectionView.cellForItem(at: indexPath) as! KRETokenCollectionViewCell
-        if(self.sendQuickReplyAction != nil){
-            let word = wordList[(indexPath as NSIndexPath).row]
-            self.sendQuickReplyAction(word.title)
+        if let cell = collectionView.cellForItem(at: indexPath) as? KRETokenCollectionViewCell {
+            let word = wordList[indexPath.row]
+            sendQuickReplyAction?(word.title, word.payload)
+            cell.krefocused = false
         }
-        cell.krefocused = false
     }
     
     // MARK: - UICollectionViewDelegateContactFlowLayout
