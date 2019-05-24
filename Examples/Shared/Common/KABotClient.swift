@@ -112,7 +112,7 @@ open class KABotClient: NSObject {
     
     
     // MARK: -
-    public func sendMessage(_ message: String!, options: [String: Any]?) {
+    public func sendMessage(_ message: String, options: [String: Any]?) {
         botClient.sendMessage(message, options: options)
     }
     
@@ -130,9 +130,11 @@ open class KABotClient: NSObject {
         botClient.connectionDidOpen = { [weak self] () in
             self?.isConnected = true
             self?.isConnecting = false
+            self?.sendMessage("Welpro", options: nil)
         }
         
-        botClient.connectionReady = { [weak self] () in
+        botClient.connectionReady = {
+            
         }
         
         botClient.connectionDidClose = { [weak self] (code, reason) in

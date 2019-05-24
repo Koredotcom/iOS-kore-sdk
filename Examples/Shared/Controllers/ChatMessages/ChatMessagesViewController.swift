@@ -239,9 +239,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[quickReplyView]|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
         
-        self.quickReplyView.sendQuickReplyAction = { [weak self] (text) in
-            if let text = text {
-                self?.sendTextMessage(text, options: nil)
+        self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
+            if let text = text, let payload = payload {
+                self?.sendTextMessage(text, options: ["body": payload])
             }
         }
     }
@@ -256,47 +256,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[typingStatusView]|", options:[], metrics:nil, views: views))
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[typingStatusView(40)][composeBarContainerView]", options:[], metrics:nil, views: views))
     }
-    
-//    func configureBotClient() {
-//        if(botClient != nil){
-//            // events
-//            botClient.connectionWillOpen =  { [weak self] () in
-//                self?.updateNavBarPrompt()
-//            }
-//            
-//            botClient.connectionDidOpen = { [weak self] () in
-//                self?.isConnected = true
-//                self?.updateNavBarPrompt()
-//                self?.botClient?.sendMessage("Welpro", options: nil)
-//            }
-//            
-//            botClient.connectionReady = { () in
-//                
-//            }
-//            
-//            botClient.connectionDidClose = { [weak self] (code, reason) in
-//                NSLog("botClient: connectionDidClose")
-//                self?.isConnected = false
-//                self?.updateNavBarPrompt()
-//                
-//            }
-//            
-//            botClient.connectionDidFailWithError = { [weak self] (error) in
-//                NSLog("botClient: connectionDidFailWithError")
-//                self?.isConnected = false
-//                self?.updateNavBarPrompt()
-//            }
-//            
-//            botClient.onMessage = { [weak self] (object) in
-//                let message = self?.onReceiveMessage(object: object)
-//                self?.addMessages(message?.0, message?.1)
-//            }
-//            
-//            botClient.onMessageAck = { (ack) in
-//                
-//            }
-//        }
-//    }
     
     func deConfigureBotClient() {
         if(botClient != nil){
