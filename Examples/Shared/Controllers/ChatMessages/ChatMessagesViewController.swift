@@ -217,7 +217,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         self.audioComposeView.voiceRecordingStarted = { [weak self] (composeBar) in
             self?.stopTTS()
-            self?.composeView.isHidden = true
+            //self?.composeView.isHidden = true
         }
         self.audioComposeView.voiceRecordingStopped = { [weak self] (composeBar) in
             self?.sttClient.stopRecording()
