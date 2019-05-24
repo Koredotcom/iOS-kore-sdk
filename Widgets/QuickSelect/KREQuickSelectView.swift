@@ -123,7 +123,7 @@ public class KREQuickSelectView: UIView, UICollectionViewDelegate, UICollectionV
         let cell: KRETokenCollectionViewCell = collectionView.cellForItem(at: indexPath) as! KRETokenCollectionViewCell
         if(self.sendQuickReplyAction != nil){
             let word = wordList[(indexPath as NSIndexPath).row]
-            self.sendQuickReplyAction(word.payload)
+            self.sendQuickReplyAction(word.title)
         }
         cell.krefocused = false
     }
