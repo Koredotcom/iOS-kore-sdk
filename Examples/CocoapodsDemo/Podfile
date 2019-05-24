@@ -14,6 +14,6 @@ target 'KoreBotSDKDemo' do
 
     use_frameworks!
     import_pods
-    pod 'KoreBotSDK', :path => './../..'
+    pod 'KoreBotSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git'
     project 'KoreBotSDKDemo.xcodeproj'
 end
