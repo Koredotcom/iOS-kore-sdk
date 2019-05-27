@@ -156,6 +156,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             connection.connectionDelegate = nil
         }
         connection = nil
+        reconnects = false
     }
     
     // MARK:connect

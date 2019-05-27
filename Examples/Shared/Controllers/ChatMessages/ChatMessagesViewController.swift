@@ -79,7 +79,12 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.addNotifications()
+        addNotifications()
+        
+        let image = UIImage(named: "cancel")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancel(_:)))
+
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     override open func viewDidAppear(_ animated: Bool) {
@@ -93,18 +98,16 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func viewWillLayoutSubviews() {
-        NSLog("viewWillLayoutSubviews")
         super.viewWillLayoutSubviews()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    
+
     //MARK:- deinit
     deinit {
         NSLog("ChatMessagesViewController dealloc")
@@ -124,7 +127,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if(self.botClient != nil){
             self.botClient.disconnect()
         }
-        self.deConfigureBotClient()
+        
+        KABotClient.shared.deConfigureBotClient()
         self.deConfigureSTTClient()
         self.stopTTS()
         self.composeView.growingTextView.viewDelegate = nil
@@ -136,17 +140,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     // MARK: cancel
-    func cancel(_ sender: AnyObject) {
-        self.prepareForDeinit()
-        
-        //Addition fade in animation
-        let transition = CATransition()
-        transition.duration = 0.5
-        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
-        transition.type = CATransitionType.fade
-        self.navigationController?.view.layer.add(transition, forKey: nil)
-        
-        self.navigationController?.popViewController(animated: true)
+    @objc func cancel(_ sender: Any) {
+        prepareForDeinit()
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.popViewController(animated: true)
     }
     
     //MARK: Menu Button Action
@@ -255,19 +252,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let views: [String: Any] = ["typingStatusView" : self.typingStatusView, "composeBarContainerView" : self.composeBarContainerView]
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[typingStatusView]|", options:[], metrics:nil, views: views))
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[typingStatusView(40)][composeBarContainerView]", options:[], metrics:nil, views: views))
-    }
-    
-    func deConfigureBotClient() {
-        if(botClient != nil){
-            // events
-            botClient.connectionWillOpen = nil
-            botClient.connectionDidOpen = nil
-            botClient.connectionReady = nil
-            botClient.connectionDidClose = nil
-            botClient.connectionDidFailWithError = nil
-            botClient.onMessage = nil
-            botClient.onMessageAck = nil
-        }
     }
     
     func getComponentType(_ templateType: String,_ tabledesign:String) -> ComponentType {
