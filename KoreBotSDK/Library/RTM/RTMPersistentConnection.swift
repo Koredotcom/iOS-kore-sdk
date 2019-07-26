@@ -25,27 +25,35 @@ open class RTMTimer: NSObject {
         case resumed
     }
     public let pingInterval: TimeInterval = 10.0
-    open lazy var timer: DispatchSourceTimer = {
-        let intervalInNSec = pingInterval * Double(NSEC_PER_SEC)
-        let startTime = DispatchTime.now() + Double(intervalInNSec) / Double(NSEC_PER_SEC)
-        
-        let t = DispatchSource.makeTimerSource(flags: [], queue: .main)
-        t.schedule(deadline: startTime, repeating: pingInterval)
-        t.setEventHandler(handler: { [weak self] in
-            self?.eventHandler?()
-        })
-        return t
-    }()
+    open var timer: DispatchSourceTimer?
     
     open var eventHandler: (() -> Void)?
     open var state: RTMTimerState = .suspended
     
+    // MARK: - init
+    public override init() {
+        super.init()
+        initializeTimer()
+    }
+    
+    func initializeTimer() {
+        let intervalInNSec = pingInterval * Double(NSEC_PER_SEC)
+        let startTime = DispatchTime.now() + Double(intervalInNSec) / Double(NSEC_PER_SEC)
+        
+        timer = DispatchSource.makeTimerSource(flags: [], queue: .main)
+        timer?.schedule(deadline: startTime, repeating: pingInterval)
+        timer?.setEventHandler(handler: { [weak self] in
+            self?.eventHandler?()
+        })
+    }
+    
+    // MARK: -
     open func resume() {
         if state == .resumed {
             return
         }
         state = .resumed
-        timer.resume()
+        timer?.resume()
     }
     
     open func suspend() {
@@ -53,13 +61,13 @@ open class RTMTimer: NSObject {
             return
         }
         state = .suspended
-        timer.suspend()
+        timer?.suspend()
     }
     
     // MARK: -
     deinit {
-        timer.setEventHandler {}
-        timer.cancel()
+        timer?.setEventHandler {}
+        timer?.cancel()
         
         resume()
         eventHandler = nil
