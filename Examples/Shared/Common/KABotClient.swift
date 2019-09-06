@@ -367,19 +367,21 @@ open class KABotClient: NSObject {
             context.perform {
                 let resources: Dictionary<String, AnyObject> = ["threadId": botId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
                 
-                dataStoreManager.insertOrUpdateThread(dictionary: resources, with: {(thread1) in
-                    self?.thread = thread1
-                    try? context.save()
-                    dataStoreManager.coreDataManager.saveChanges()
-                    
-                    self?.botClient.initialize(botInfoParameters: botInfo)
-                    if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
-                        self?.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
-                    }
-                    self?.botClient.connectWithJwToken(jwToken, success: { [weak self] (client) in
-                        block?(client, self?.thread)
-                        }, failure: { (error) in
-                            failure?(error!)
+                dataStoreManager.deleteThreadIfRequired(with: botId, completionBlock: { (success) in
+                    dataStoreManager.insertOrUpdateThread(dictionary: resources, with: {(thread1) in
+                        self?.thread = thread1
+                        try? context.save()
+                        dataStoreManager.coreDataManager.saveChanges()
+                        
+                        self?.botClient.initialize(botInfoParameters: botInfo)
+                        if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
+                            self?.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
+                        }
+                        self?.botClient.connectWithJwToken(jwToken, success: { [weak self] (client) in
+                            block?(client, self?.thread)
+                            }, failure: { (error) in
+                                failure?(error!)
+                        })
                     })
                 })
             }
