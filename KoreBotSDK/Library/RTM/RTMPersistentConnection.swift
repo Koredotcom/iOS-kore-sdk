@@ -171,19 +171,28 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     }
     
     open func webSocket(_ webSocket: SRWebSocket, didReceiveMessage message: Any) {
-        let responseObject = self.convertStringToDictionary(message as! String)!
-        if (responseObject["type"]! as!  String == "ready") {
-            self.connectionDelegate?.self.rtmConnectionReady()
-        } else if (responseObject["ok"] != nil) {
-            let ack: Ack = try! (MTLJSONAdapter.model(of: Ack.self, fromJSONDictionary: responseObject ) as! Ack)
-            self.connectionDelegate?.didReceiveMessageAck!(ack)
-        } else if (responseObject["type"]! as! String == "bot_response") {
-            print("received: \(responseObject)")
-            let array: NSArray = responseObject["message"] as! NSArray
-            if (array.count > 0) {
-                let botMessageModel: BotMessageModel = try! (MTLJSONAdapter.model(of: BotMessageModel.self, fromJSONDictionary: responseObject ) as! BotMessageModel)
-                self.connectionDelegate?.didReceiveMessage!(botMessageModel)
+        guard let message = message as? String,
+            let responseObject = convertStringToDictionary(message),
+            let type = responseObject["type"] as? String else {
+                return
+        }
+        switch type {
+        case "ready":
+            connectionDelegate?.rtmConnectionReady()
+        case "ok":
+            if let model = try? MTLJSONAdapter.model(of: Ack.self, fromJSONDictionary: responseObject), let ack = model as? Ack {
+                connectionDelegate?.didReceiveMessageAck?(ack)
             }
+        case "bot_response":
+            print("received: \(responseObject)")
+            guard let array = responseObject["message"] as? Array<[String: Any]>, array.count > 0 else {
+                return
+            }
+            if let model = try? MTLJSONAdapter.model(of: BotMessageModel.self, fromJSONDictionary: responseObject), let botMessageModel = model as? BotMessageModel {
+                connectionDelegate?.didReceiveMessage?(botMessageModel)
+            }
+        default:
+            break
         }
     }
     
