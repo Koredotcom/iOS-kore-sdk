@@ -280,7 +280,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             
             rightOffset = CGFloat.maximum(rightOffset, (title as NSString).size(withAttributes: [NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Medium", size: 12.0)!]).width)
         }
-        let pieChartDataSet = PieChartDataSet(entries: values, label: "")
+        let pieChartDataSet = PieChartDataSet(values: values, label: "")
         pieChartDataSet.colors = colorsPalet()
         pieChartDataSet.sliceSpace = 2.0
         
@@ -378,7 +378,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
 
         var dataSets: Array<LineChartDataSet> = Array<LineChartDataSet>()
         for i in 0..<titles.count {
-            let dataSet = LineChartDataSet(entries: dataValues[i], label: titles[i])
+            let dataSet = LineChartDataSet(values: dataValues[i], label: titles[i])
             dataSet.mode = .cubicBezier
             dataSet.lineWidth = 2.0
             dataSet.setColor(colors[i])
@@ -423,7 +423,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         
         var dataSets: Array<BarChartDataSet> = Array<BarChartDataSet>()
         for i in 0..<titles.count {
-            let dataSet = BarChartDataSet(entries: dataValues[i], label: titles[i])
+            let dataSet = BarChartDataSet(values: dataValues[i], label: titles[i])
             dataSet.setColor(colors[i])
             dataSets.append(dataSet)
         }
@@ -485,7 +485,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
 
         var dataSets: Array<BarChartDataSet> = Array<BarChartDataSet>()
         for _ in 0..<1 {
-            let dataSet = BarChartDataSet(entries: subDataValues, label:"")
+            let dataSet = BarChartDataSet(values: subDataValues, label:"")
             dataSet.stackLabels = titles
             let n = titles.count
             let colorsArr:[NSUIColor] = Array(colors.prefix(n))

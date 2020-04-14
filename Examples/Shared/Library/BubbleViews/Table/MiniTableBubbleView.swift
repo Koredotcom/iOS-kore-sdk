@@ -66,12 +66,18 @@ class MiniTableData {
 
 class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSource {
     var tableView: UITableView!
+    var titleLbl: UILabel!
     var cardView: UIView!
     let customCellIdentifier = "CustomCellIdentifier"
     var data: MiniTableData = MiniTableData()
     let rowsDataLimit = 6
     var align0:NSTextAlignment = .left
     var align1:NSTextAlignment = .left
+    
+    let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
+    let kMinTextWidth: CGFloat = 20.0
+    
+    var tileBgv: UIView!
     
     override func applyBubbleMask() {
         //nothing to put here
@@ -97,11 +103,24 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+        
     }
     
     override func initialize() {
         super.initialize()
         intializeCardLayout()
+        
+        
+        self.tileBgv = UIView(frame:.zero)
+        self.tileBgv.translatesAutoresizingMaskIntoConstraints = false
+        self.cardView.addSubview(self.tileBgv)
+        self.tileBgv.layer.rasterizationScale =  UIScreen.main.scale
+        self.tileBgv.layer.shouldRasterize = true
+        self.tileBgv.layer.cornerRadius = 6.0
+        self.tileBgv.clipsToBounds = true
+        self.tileBgv.backgroundColor =  Common.UIColorRGB(0xEDEFF2)
+        
+        
         self.tableView = UITableView(frame: CGRect.zero,style:.grouped)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.dataSource = self
@@ -112,14 +131,34 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         self.tableView.bounces = false
         self.tableView.separatorStyle = .none
         self.cardView.addSubview(self.tableView)
+        self.tableView.isScrollEnabled = false
         tableView.register(MiniTableViewCell.self, forCellReuseIdentifier: customCellIdentifier)
         
-        let views: [String: UIView] = ["tableView": tableView]
-        
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tableView]-15-|", options: [], metrics: nil, views: views))
+        let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView]
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-[tableView]-20-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-25-[tileBgv]-25-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[tableView]-15-|", options: [], metrics: nil, views: views))
+        
+        self.titleLbl = UILabel(frame: CGRect.zero)
+        self.titleLbl.textColor = Common.UIColorRGB(0x484848)
+        self.titleLbl.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
+        self.titleLbl.numberOfLines = 0
+        self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
+        self.titleLbl.isUserInteractionEnabled = true
+        self.titleLbl.contentMode = UIView.ContentMode.topLeft
+        self.titleLbl.translatesAutoresizingMaskIntoConstraints = false
+        self.tileBgv.addSubview(self.titleLbl)
+        self.titleLbl.adjustsFontSizeToFitWidth = true
+        self.titleLbl.backgroundColor = .clear
+        self.titleLbl.layer.cornerRadius = 6.0
+        self.titleLbl.clipsToBounds = true
+        self.titleLbl.sizeToFit()
+        
+        let subView: [String: UIView] = ["titleLbl": titleLbl]
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
     }
- 
+    
     override func populateComponents() {
         if (components.count > 0) {
             let component: KREComponent = components.firstObject as! KREComponent
@@ -140,52 +179,56 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
                     if  self.data.rows[self.data.rows.count-1][0] != "---" {
                         self.data.rows.append(["---"])
                     }
+                    self.titleLbl.text = "\(data["text"] ?? "")"
                     self.tableView.reloadData()
-                    
                 }
+                
             }
         }
     }
-         func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            
-            return UITableView.automaticDimension
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return data.rows[section].count/2
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        
+        return data.elements.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell : MiniTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: customCellIdentifier) as! MiniTableViewCell
+        let rows = data.rows[indexPath.section]
+        if (rows.count > (indexPath.row * 2)){
+            cell.headerLabel.text = rows[indexPath.row*2]
+            cell.headerLabel.font = UIFont(name: "Lato-Regular", size: 15.0)
+            cell.headerLabel.font = cell.headerLabel.font.withSize(15.0)
+            cell.headerLabel.textColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
         }
-        
-         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (rows.count > (indexPath.row * 2+1)){
+            cell.secondLbl.text = rows[indexPath.row*2+1]
+            cell.secondLbl.font = UIFont(name: "Lato-Regular", size: 15.0)
+            cell.secondLbl.font = cell.headerLabel.font.withSize(15.0)
             
-            return data.rows[section].count/2
+            cell.secondLbl.textColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
         }
+        cell.backgroundColor = UIColor.white
+        return cell
         
-         func numberOfSections(in tableView: UITableView) -> Int {
-            
-            return data.elements.count
-        }
-        
-        
-        
-         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell : MiniTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: customCellIdentifier) as! MiniTableViewCell
-            let rows = data.rows[indexPath.section]
-            if (rows.count > (indexPath.row * 2)){
-                cell.headerLabel.text = rows[indexPath.row*2]
-                cell.headerLabel.font = UIFont(name: "Lato-Regular", size: 15.0)
-                cell.headerLabel.font = cell.headerLabel.font.withSize(15.0)
-                cell.headerLabel.textColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
-            }
-            if (rows.count > (indexPath.row * 2+1)){
-                cell.secondLbl.text = rows[indexPath.row*2+1]
-                cell.secondLbl.font = UIFont(name: "Lato-Regular", size: 15.0)
-                cell.secondLbl.font = cell.headerLabel.font.withSize(15.0)
-
-                cell.secondLbl.textColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
-            }
-            cell.backgroundColor = UIColor.white
-            
-            
-            return cell
-           
-        }
-
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
         
@@ -194,7 +237,7 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         headerLabel.textAlignment = .left
         headerLabel.font = UIFont(name: "Lato-Bold", size: 15.0)
         headerLabel.font = headerLabel.font.withSize(15.0)
-
+        
         headerLabel.textColor = UIColor(red: 38/255, green: 52/255, blue: 74/255, alpha: 1)
         headerLabel.text =  data.headers[section*2].title
         view.addSubview(headerLabel)
@@ -224,22 +267,34 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         view.layer.shadowOpacity = 1.0
         return view
     }
-
-       override var intrinsicContentSize : CGSize {
+    
+    override var intrinsicContentSize : CGSize {
+        
+        let limitingSize: CGSize  = CGSize(width: kMaxTextWidth, height: CGFloat.greatestFiniteMagnitude)
+        var textSize: CGSize = self.titleLbl.sizeThatFits(limitingSize)
+        if textSize.height < self.titleLbl.font.pointSize {
+            textSize.height = self.titleLbl.font.pointSize
+        }
+        
+        var cellHeight : CGFloat = 0.0
         let rows = self.data.rows
-        var height: CGFloat = 38.0
+        var finalHeight: CGFloat = 0.0
         for i in 0..<rows.count {
             let row = rows[i]
+            var j: Int = 0
             for text in row {
                 if text == "---" {
-                    height += 1.0
+                    finalHeight += 1.0
                 } else {
-                    height += 36.0
+                    let row = tableView.dequeueReusableCell(withIdentifier: customCellIdentifier, for: IndexPath(row: j, section: i))as! MiniTableViewCell
+                    cellHeight = row.bounds.height
+                    finalHeight += cellHeight
+                    j += 1
                 }
             }
         }
         
-        return CGSize(width: 0.0, height: height )
+        return CGSize(width: 0.0, height: finalHeight + textSize.height)
     }
     
 }
