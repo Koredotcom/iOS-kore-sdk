@@ -397,7 +397,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         self.xAxisValues = headers
         self.lcView.data = lineChartData
         self.lcView.xAxis.labelCount = headers.count
-        lcView.animate(xAxisDuration: 2.5, easingOption: ChartEasingOption.easeInOutBack)
+        lcView.animate(xAxisDuration: 1.0, easingOption: ChartEasingOption.easeInOutElastic)
     }
     func setDataForBarChart(_ jsonObject: NSDictionary){
         let stacked = jsonObject["stacked"] != nil ? jsonObject["stacked"] as! Bool : false
