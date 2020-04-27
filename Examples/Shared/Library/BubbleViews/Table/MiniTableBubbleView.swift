@@ -81,6 +81,12 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
     
     override func applyBubbleMask() {
         //nothing to put here
+        if(self.maskLayer == nil){
+            self.maskLayer = CAShapeLayer()
+            self.tileBgv.layer.mask = self.maskLayer
+        }
+        self.maskLayer.path = self.createBezierPath().cgPath
+        self.maskLayer.position = CGPoint(x:0, y:0)
     }
     
     override var tailPosition: BubbleMaskTailPosition! {
@@ -116,7 +122,7 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         self.cardView.addSubview(self.tileBgv)
         self.tileBgv.layer.rasterizationScale =  UIScreen.main.scale
         self.tileBgv.layer.shouldRasterize = true
-        self.tileBgv.layer.cornerRadius = 6.0
+        self.tileBgv.layer.cornerRadius = 2.0
         self.tileBgv.clipsToBounds = true
         self.tileBgv.backgroundColor =  Common.UIColorRGB(0xEDEFF2)
         
