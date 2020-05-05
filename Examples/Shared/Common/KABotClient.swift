@@ -365,9 +365,8 @@ open class KABotClient: NSObject {
             let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
             let context = dataStoreManager.coreDataManager.workerContext
             context.perform {
-                let resources: Dictionary<String, AnyObject> = ["threadId": botId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
-                
-                //dataStoreManager.deleteThreadIfRequired(with: botId, completionBlock: { (success) in
+                let resources: Dictionary<String, AnyObject> = ["threadId": botId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]  
+
                     dataStoreManager.insertOrUpdateThread(dictionary: resources, with: {(thread1) in
                         self?.thread = thread1
                         try? context.save()
