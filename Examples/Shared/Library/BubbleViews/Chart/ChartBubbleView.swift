@@ -255,12 +255,6 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
     
     func colorsPalet() -> [NSUIColor]{
         var colors: Array<UIColor> = Array<UIColor>()
-        //        colors.append(Common.UIColorRGB(0x5F6BF7))
-        //        colors.append(Common.UIColorRGB(0xF78083))
-        //        colors.append(Common.UIColorRGB(0x41C5D3))
-        //        colors.append(Common.UIColorRGB(0xC4AFF0))
-        //        colors.append(Common.UIColorRGB(0x2ecc71))
-        //        colors.append(Common.UIColorRGB(0x1abc9c))
         colors.append( UIColor(red: 95/255, green: 107/255, blue: 247/255, alpha: 1))
         colors.append( UIColor(red: 153/255, green: 237/255, blue: 158/255, alpha: 1))
         colors.append( UIColor(red: 247/255, green: 128/255, blue: 131/255, alpha: 1))
@@ -586,7 +580,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
     }
     
     override var intrinsicContentSize : CGSize {
-        return CGSize(width: 0.0, height: cellHeight) //280
+        return CGSize(width: 0.0, height: cellHeight)
     }
     
     override func prepareForReuse() {
