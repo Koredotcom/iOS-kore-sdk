@@ -32,6 +32,7 @@ class SDKConfiguration: NSObject {
     struct serverConfig {
         static let JWT_SERVER = String(format: "http://<jwt-server-host>/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
         
+        
         static func koreJwtUrl() -> String {
             return String(format: "%@users/sts", JWT_SERVER)
         }
