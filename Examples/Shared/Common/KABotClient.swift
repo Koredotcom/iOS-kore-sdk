@@ -367,7 +367,7 @@ open class KABotClient: NSObject {
             context.perform {
                 let resources: Dictionary<String, AnyObject> = ["threadId": botId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
                 
-                dataStoreManager.deleteThreadIfRequired(with: botId, completionBlock: { (success) in
+                //dataStoreManager.deleteThreadIfRequired(with: botId, completionBlock: { (success) in
                     dataStoreManager.insertOrUpdateThread(dictionary: resources, with: {(thread1) in
                         self?.thread = thread1
                         try? context.save()
@@ -383,7 +383,7 @@ open class KABotClient: NSObject {
                                 failure?(error!)
                         })
                     })
-                })
+                //})
             }
             }, failure: { (error) in
                 print(error)
