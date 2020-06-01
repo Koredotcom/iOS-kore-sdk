@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 enum ComponentType : Int {
-    case text = 1, image = 2, options = 3, quickReply = 4, list = 5, carousel = 6, error = 7, chart = 8, table = 9, minitable = 10, responsiveTable = 11, menu = 12
+    case text = 1, image = 2, options = 3, quickReply = 4, list = 5, carousel = 6, error = 7, chart = 8, table = 9, minitable = 10, responsiveTable = 11, menu = 12, inlineForm = 13
 }
 
 class Component : NSObject {
@@ -18,6 +18,7 @@ class Component : NSObject {
     var message: Message?
     var payload: String?
     var text: String?
+    var secureText: String?
 
     override init() {
         super.init()

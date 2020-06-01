@@ -82,6 +82,7 @@
 		D1F339002201D99A005BE5F1 /* MessageBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338BF2201D99A005BE5F1 /* MessageBubbleCell.swift */; };
 		D1F339012201D99A005BE5F1 /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338C12201D99A005BE5F1 /* AppLaunchViewController.swift */; };
 		D1F339022201D99A005BE5F1 /* AppLaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338C22201D99A005BE5F1 /* AppLaunchViewController.xib */; };
+		ED70AD8E2484D6A500CFA6DB /* InLineFormBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED70AD8D2484D6A500CFA6DB /* InLineFormBubbleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -177,6 +178,7 @@
 		D1F338BF2201D99A005BE5F1 /* MessageBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleCell.swift; sourceTree = "<group>"; };
 		D1F338C12201D99A005BE5F1 /* AppLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchViewController.swift; sourceTree = "<group>"; };
 		D1F338C22201D99A005BE5F1 /* AppLaunchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppLaunchViewController.xib; sourceTree = "<group>"; };
+		ED70AD8D2484D6A500CFA6DB /* InLineFormBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InLineFormBubbleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -422,6 +424,7 @@
 		D1F3388D2201D99A005BE5F1 /* BubbleViews */ = {
 			isa = PBXGroup;
 			children = (
+				ED70AD8C2484D68800CFA6DB /* InLineForm */,
 				D1F3388E2201D99A005BE5F1 /* Options */,
 				D1F338902201D99A005BE5F1 /* Chart */,
 				D1F338932201D99A005BE5F1 /* Carousel */,
@@ -575,6 +578,14 @@
 				D1F338C22201D99A005BE5F1 /* AppLaunchViewController.xib */,
 			);
 			path = AppLaunch;
+			sourceTree = "<group>";
+		};
+		ED70AD8C2484D68800CFA6DB /* InLineForm */ = {
+			isa = PBXGroup;
+			children = (
+				ED70AD8D2484D6A500CFA6DB /* InLineFormBubbleView.swift */,
+			);
+			path = InLineForm;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -751,6 +762,7 @@
 				D1F338DA2201D99A005BE5F1 /* AudioComposeView.swift in Sources */,
 				D1F338F52201D99A005BE5F1 /* ChatMessagesViewController.swift in Sources */,
 				D1F338FE2201D99A005BE5F1 /* BotMessagesView.swift in Sources */,
+				ED70AD8E2484D6A500CFA6DB /* InLineFormBubbleView.swift in Sources */,
 				D1F338F32201D99A005BE5F1 /* ListBubbleView.swift in Sources */,
 				D1F338E52201D99A005BE5F1 /* ImageComponentCollectionViewCell.swift in Sources */,
 				D1F338E02201D99A005BE5F1 /* ChartBubbleView.swift in Sources */,

@@ -241,6 +241,9 @@ open class KABotClient: NSObject {
         else if (templateType == "menu") {
             return .menu
         }
+        else if (templateType == "form_template") {
+            return .inlineForm
+        }
         return .text
     }
     

@@ -238,7 +238,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
             if let text = text, let payload = payload {
-                self?.sendTextMessage(text, options: ["body": payload])
+                //self?.sendTextMessage(text, options: ["body": payload])
+                self?.sendTextMessage(text, "", options: ["body": payload])
             }
         }
     }
@@ -276,6 +277,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
         else if (templateType == "menu") {
             return .menu
+        }
+        else if (templateType == "form_template") {
+            return .inlineForm
         }
         return .text
     }
@@ -439,7 +443,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 strongSelf.composeView.setText(transcript)
                 if !strongSelf.composeView.isKeyboardEnabled {
                     strongSelf.audioComposeView.stopRecording()
-                    strongSelf.sendTextMessage(transcript, options: nil)
+                    //strongSelf.sendTextMessage(transcript, options: nil)
+                    strongSelf.sendTextMessage(transcript, "", options: nil)
                     strongSelf.composeView.setText("")
                     strongSelf.composeViewBottomConstraint.isActive = false
                     strongSelf.composeBarContainerHeightConstraint.isActive = true
@@ -614,21 +619,33 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
             dataStoreManager.createNewMessageIn(thread: self.thread, message: composedMessage, completion: { (success) in
                 let textComponent = composedMessage.components[0] as? Component
-                if let _ = self.botClient, let text = textComponent?.payload {
-                    self.botClient.sendMessage(text, options: options)
+                if let secureText = textComponent?.secureText, secureText.isEmpty{
+                    if let _ = self.botClient, let text = textComponent?.payload {
+                        self.botClient.sendMessage(text, options: options)
+                    }
+                }else{
+                    if let _ = self.botClient, let text = textComponent?.secureText {
+                        self.botClient.sendMessage(text, options: options)
+                    }
                 }
                 self.textMessageSent()
             })
         }
     }
     
-    func sendTextMessage(_ text: String, options: [String: Any]?) {
+    func sendTextMessage(_ text: String,_ secureText: String, options: [String: Any]?) {
         let message: Message = Message()
         message.messageType = .default
         message.sentDate = Date()
         message.messageId = UUID().uuidString
         let textComponent: Component = Component()
-        textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        if secureText.isEmpty {
+            textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            textComponent.secureText = secureText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        }else{
+            textComponent.payload = secureText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            textComponent.secureText = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        }
         message.addComponent(textComponent)
         self.sendMessage(message, options: options)
     }
@@ -669,9 +686,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     // MARK: BotMessagesDelegate methods
     func optionsButtonTapAction(text: String) {
-        self.sendTextMessage(text, options: nil)
+        //self.sendTextMessage(text, options: nil)
+        self.sendTextMessage(text, "", options: nil)
     }
-    
+    func inlineFormButtonTapAction(text: String) {
+        
+        composeView.growingTextView.becomeFirstResponder()
+        let secureTxt = text.regEx()
+        print(secureTxt)
+        //self.sendTextMessage(text, options: nil)
+        self.sendTextMessage(text, secureTxt, options: nil)
+    }
     func linkButtonTapAction(urlString: String) {
         if (urlString.count > 0) {
             let url: URL = URL(string: urlString)!
@@ -739,7 +764,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: ComposeBarViewDelegate methods
     
     func composeBarView(_: ComposeBarView, sendButtonAction text: String) {
-        self.sendTextMessage(text, options: nil)
+        //self.sendTextMessage(text, options: nil)
+        self.sendTextMessage(text, "", options: nil)
     }
     
     func composeBarViewSpeechToTextButtonAction(_: ComposeBarView) {
@@ -956,5 +982,10 @@ extension ChatMessagesViewController: KABotClientDelegate {
     open func botConnection(with connectionState: BotClientConnectionState) {
         updateNavBarPrompt()
         
+    }
+}
+extension String {
+    func regEx() -> String {
+        return self.replacingOccurrences(of: "[A-Za-z0-9 !\"#$%&'()*+,-./:;<=>?@\\[\\\\\\]^_`{|}~]", with: "•", options: .regularExpression, range: nil)
     }
 }

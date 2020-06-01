@@ -14,6 +14,7 @@ protocol BotMessagesViewDelegate {
     func linkButtonTapAction(urlString:String)
     func populateQuickReplyCards(with message: KREMessage?)
     func closeQuickReplyCards()
+    func inlineFormButtonTapAction(text:String)
 }
 
 class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFetchedResultsControllerDelegate {
@@ -74,6 +75,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(MiniTableBubbleCell.self, forCellReuseIdentifier:"MiniTableBubbleCell")
         self.tableView.register(ResponsiveTableBubbleCell.self, forCellReuseIdentifier:"ResponsiveTableBubbleCell")
         self.tableView.register(MenuBubbleCell.self, forCellReuseIdentifier:"MenuBubbleCell")
+        self.tableView.register(InLineFormCell.self, forCellReuseIdentifier:"InLineFormCell")
 
 
     }
@@ -158,7 +160,11 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .menu:
                 cellIdentifier = "MenuBubbleCell"
                 break
+            case .inlineForm:
+                cellIdentifier = "InLineFormCell"
+                break
             }
+            
             
         }
         
@@ -249,6 +255,13 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
             }
             
+            cell.bubbleView.drawBorder = true
+            break
+        case .inlineForm:
+            let bubbleView: InLineFormBubbleView = cell.bubbleView as! InLineFormBubbleView
+            bubbleView.inlineTextField.tag = indexPath.row
+            bubbleView.inlineButton.addTarget(self, action: #selector(tapsOnInlineFormBtn), for: .touchUpInside)
+            bubbleView.inlineButton.tag = indexPath.row
             cell.bubbleView.drawBorder = true
             break
             
@@ -361,6 +374,18 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         NotificationCenter.default.post(name: Notification.Name(updateUserImageNotification), object: nil)
     }
     
+    @objc func tapsOnInlineFormBtn(_ sender:UIButton) {
+        let indexPath = IndexPath(row: sender.tag, section: 0)
+        let cell = self.tableView.cellForRow(at: indexPath) as! MessageBubbleCell
+        let bubbleView: InLineFormBubbleView = cell.bubbleView as! InLineFormBubbleView
+        
+        if !bubbleView.inlineTextField.text!.isEmpty{
+            self.viewDelegate?.inlineFormButtonTapAction(text: bubbleView.inlineTextField.text!)
+            bubbleView.inlineTextField.resignFirstResponder()
+            bubbleView.inlineTextField.text = ""
+            NotificationCenter.default.post(name: Notification.Name(updateUserImageNotification), object: nil)
+        }
+    }
     
     // MARK:- deinit
     deinit {
