@@ -93,6 +93,9 @@ class BubbleView: UIView {
         case .inlineForm:
             bubbleView = InLineFormBubbleView()
             break
+        case .newList:
+            bubbleView = NewListBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         

@@ -244,6 +244,9 @@ open class KABotClient: NSObject {
         else if (templateType == "form_template") {
             return .inlineForm
         }
+        else if (templateType == "listView") {
+            return .newList
+        }
         return .text
     }
     

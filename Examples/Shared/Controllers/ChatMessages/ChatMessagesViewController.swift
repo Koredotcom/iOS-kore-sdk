@@ -13,7 +13,7 @@ import KoreBotSDK
 import CoreData
 import Mantle
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate {
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate {
     
     // MARK: properties
     var messagesRequestInProgress: Bool = false
@@ -281,6 +281,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         else if (templateType == "form_template") {
             return .inlineForm
         }
+        else if (templateType == "listView") {
+            return .newList
+        }
         return .text
     }
     
@@ -506,6 +509,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.showTableTemplateView), name: NSNotification.Name(rawValue: showTableTemplateNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.reloadTable(notification:)), name: NSNotification.Name(rawValue: reloadTableNotification), object: nil)
+         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.showListViewTemplateView), name: NSNotification.Name(rawValue: showListViewTemplateNotification), object: nil)
         
     }
     
@@ -520,6 +524,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showTableTemplateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: reloadTableNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showListViewTemplateNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -842,6 +847,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let dataString: String = notification.object as! String
         let tableTemplateViewController = TableTemplateViewController(dataString: dataString)
         self.navigationController?.present(tableTemplateViewController, animated: true, completion: nil)
+    }
+    // MARK: show NewListViewDetailsTemplateView
+    @objc func showListViewTemplateView(notification:Notification) {
+        let dataString: String = notification.object as! String
+        let listViewDetailsViewController = ListViewDetailsViewController(dataString: dataString)
+        listViewDetailsViewController.viewDelegate = self
+        listViewDetailsViewController.modalPresentationStyle = .overFullScreen
+        self.navigationController?.present(listViewDetailsViewController, animated: true, completion: nil)
     }
     @objc func reloadTable(notification:Notification){
         botMessagesView.tableView.reloadData()

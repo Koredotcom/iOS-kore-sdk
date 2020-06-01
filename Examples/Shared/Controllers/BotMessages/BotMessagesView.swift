@@ -76,6 +76,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(ResponsiveTableBubbleCell.self, forCellReuseIdentifier:"ResponsiveTableBubbleCell")
         self.tableView.register(MenuBubbleCell.self, forCellReuseIdentifier:"MenuBubbleCell")
         self.tableView.register(InLineFormCell.self, forCellReuseIdentifier:"InLineFormCell")
+        self.tableView.register(NewListBubbleCell.self, forCellReuseIdentifier:"NewListBubbleCell")
 
 
     }
@@ -162,6 +163,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 break
             case .inlineForm:
                 cellIdentifier = "InLineFormCell"
+                break
+            case .newList:
+                cellIdentifier = "NewListBubbleCell"
                 break
             }
             
@@ -262,6 +266,17 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             bubbleView.inlineTextField.tag = indexPath.row
             bubbleView.inlineButton.addTarget(self, action: #selector(tapsOnInlineFormBtn), for: .touchUpInside)
             bubbleView.inlineButton.tag = indexPath.row
+            cell.bubbleView.drawBorder = true
+            break
+        case .newList:
+            let bubbleView: NewListBubbleView = cell.bubbleView as! NewListBubbleView
+            bubbleView.optionsAction = {[weak self] (text) in
+                self?.viewDelegate?.optionsButtonTapAction(text: text!)
+            }
+            bubbleView.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
+            
             cell.bubbleView.drawBorder = true
             break
             
