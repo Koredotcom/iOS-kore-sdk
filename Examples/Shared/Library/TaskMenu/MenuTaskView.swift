@@ -29,7 +29,6 @@ class MenuTaskView: UIView, UITableViewDelegate, UITableViewDataSource {
         super.init(coder: aDecoder)
         self.setupViews()
     }
-    
     fileprivate func setupViews() {
         self.backgroundColor = .white
         self.layer.borderWidth = 0.5
