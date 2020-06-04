@@ -82,6 +82,11 @@
 		D1F339002201D99A005BE5F1 /* MessageBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338BF2201D99A005BE5F1 /* MessageBubbleCell.swift */; };
 		D1F339012201D99A005BE5F1 /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338C12201D99A005BE5F1 /* AppLaunchViewController.swift */; };
 		D1F339022201D99A005BE5F1 /* AppLaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338C22201D99A005BE5F1 /* AppLaunchViewController.xib */; };
+		ED6E6DC02488C3E60011A95F /* MenuTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6E6DBF2488C3E60011A95F /* MenuTaskView.swift */; };
+		ED6E6DC52488C3F80011A95F /* TaskMenuTablViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED6E6DC12488C3F70011A95F /* TaskMenuTablViewCell.xib */; };
+		ED6E6DC62488C3F80011A95F /* TaskMenuData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6E6DC22488C3F70011A95F /* TaskMenuData.swift */; };
+		ED6E6DC72488C3F80011A95F /* TaskMenuTablViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6E6DC32488C3F70011A95F /* TaskMenuTablViewCell.swift */; };
+		ED6E6DC82488C3F80011A95F /* TaskMenu.json in Resources */ = {isa = PBXBuildFile; fileRef = ED6E6DC42488C3F80011A95F /* TaskMenu.json */; };
 		ED70AD8E2484D6A500CFA6DB /* InLineFormBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED70AD8D2484D6A500CFA6DB /* InLineFormBubbleView.swift */; };
 		ED70AD942484E24500CFA6DB /* ListViewDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED70AD902484E24400CFA6DB /* ListViewDetailsViewController.swift */; };
 		ED70AD952484E24500CFA6DB /* ListViewDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED70AD912484E24500CFA6DB /* ListViewDetailsViewController.xib */; };
@@ -184,6 +189,11 @@
 		D1F338BF2201D99A005BE5F1 /* MessageBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleCell.swift; sourceTree = "<group>"; };
 		D1F338C12201D99A005BE5F1 /* AppLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchViewController.swift; sourceTree = "<group>"; };
 		D1F338C22201D99A005BE5F1 /* AppLaunchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppLaunchViewController.xib; sourceTree = "<group>"; };
+		ED6E6DBF2488C3E60011A95F /* MenuTaskView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTaskView.swift; sourceTree = "<group>"; };
+		ED6E6DC12488C3F70011A95F /* TaskMenuTablViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskMenuTablViewCell.xib; sourceTree = "<group>"; };
+		ED6E6DC22488C3F70011A95F /* TaskMenuData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskMenuData.swift; sourceTree = "<group>"; };
+		ED6E6DC32488C3F70011A95F /* TaskMenuTablViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskMenuTablViewCell.swift; sourceTree = "<group>"; };
+		ED6E6DC42488C3F80011A95F /* TaskMenu.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TaskMenu.json; sourceTree = "<group>"; };
 		ED70AD8D2484D6A500CFA6DB /* InLineFormBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InLineFormBubbleView.swift; sourceTree = "<group>"; };
 		ED70AD902484E24400CFA6DB /* ListViewDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewDetailsViewController.swift; sourceTree = "<group>"; };
 		ED70AD912484E24500CFA6DB /* ListViewDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListViewDetailsViewController.xib; sourceTree = "<group>"; };
@@ -332,6 +342,7 @@
 		D1F3386C2201D99A005BE5F1 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				ED6E6DBE2488C3BA0011A95F /* TaskMenu */,
 				D1F3386D2201D99A005BE5F1 /* Vendors */,
 				D1F338732201D99A005BE5F1 /* SpeechRecognition */,
 				D1F338762201D99A005BE5F1 /* Animation */,
@@ -593,6 +604,18 @@
 			path = AppLaunch;
 			sourceTree = "<group>";
 		};
+		ED6E6DBE2488C3BA0011A95F /* TaskMenu */ = {
+			isa = PBXGroup;
+			children = (
+				ED6E6DBF2488C3E60011A95F /* MenuTaskView.swift */,
+				ED6E6DC22488C3F70011A95F /* TaskMenuData.swift */,
+				ED6E6DC32488C3F70011A95F /* TaskMenuTablViewCell.swift */,
+				ED6E6DC12488C3F70011A95F /* TaskMenuTablViewCell.xib */,
+				ED6E6DC42488C3F80011A95F /* TaskMenu.json */,
+			);
+			path = TaskMenu;
+			sourceTree = "<group>";
+		};
 		ED70AD8C2484D68800CFA6DB /* InLineForm */ = {
 			isa = PBXGroup;
 			children = (
@@ -687,6 +710,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1F339022201D99A005BE5F1 /* AppLaunchViewController.xib in Resources */,
+				ED6E6DC52488C3F80011A95F /* TaskMenuTablViewCell.xib in Resources */,
 				D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */,
 				D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */,
 				D1F338E62201D99A005BE5F1 /* MultiImageBubbleView.xib in Resources */,
@@ -696,6 +720,7 @@
 				D1F338FB2201D99A005BE5F1 /* KRETypingCollectionViewCell.xib in Resources */,
 				D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */,
 				ED70AD9B2484E27400CFA6DB /* NewListTableViewCell.xib in Resources */,
+				ED6E6DC82488C3F80011A95F /* TaskMenu.json in Resources */,
 				D1F338F62201D99A005BE5F1 /* ChatMessagesViewController.xib in Resources */,
 				ED70AD952484E24500CFA6DB /* ListViewDetailsViewController.xib in Resources */,
 				D1F338EC2201D99A005BE5F1 /* CustomCollectionViewCell.xib in Resources */,
@@ -767,13 +792,16 @@
 				D1F338E12201D99A005BE5F1 /* BalloonMarker.swift in Sources */,
 				D1F338C32201D99A005BE5F1 /* CoreDataManager.swift in Sources */,
 				D1F338CF2201D99A005BE5F1 /* TSBaseParser.m in Sources */,
+				ED6E6DC62488C3F80011A95F /* TaskMenuData.swift in Sources */,
 				D1F338DF2201D99A005BE5F1 /* OptionsBubbleView.swift in Sources */,
 				D1F338CB2201D99A005BE5F1 /* KREContact+CoreDataProperties.swift in Sources */,
 				D1F338E92201D99A005BE5F1 /* MiniTableBubbleView.swift in Sources */,
+				ED6E6DC72488C3F80011A95F /* TaskMenuTablViewCell.swift in Sources */,
 				D1F338E72201D99A005BE5F1 /* BubbleView.swift in Sources */,
 				D1F338EA2201D99A005BE5F1 /* CustomCollectionViewLayout.swift in Sources */,
 				D1F338FA2201D99A005BE5F1 /* KRETypingActivityIndicator.m in Sources */,
 				D1F338DD2201D99A005BE5F1 /* KREAttributedLabel.m in Sources */,
+				ED6E6DC02488C3E60011A95F /* MenuTaskView.swift in Sources */,
 				D1F338C92201D99A005BE5F1 /* KREThread+CoreDataProperties.swift in Sources */,
 				D1F338D92201D99A005BE5F1 /* ComposeBarView.swift in Sources */,
 				D1F338CD2201D99A005BE5F1 /* KREComponent+CoreDataClass.swift in Sources */,

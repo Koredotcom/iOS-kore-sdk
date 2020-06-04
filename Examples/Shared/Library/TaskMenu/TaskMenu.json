@@ -1,0 +1,33 @@
+﻿{
+  "heading": "Choose Task",
+  "tasks": [
+    {
+      "title": "Get balance",
+      "postback": {
+        "title": "Get my leave balance",
+        "value": "leaveintent"
+      }
+    },
+    {
+      "title": "Change Password",
+      "postback": {
+        "title": "change my password",
+        "value": "leaveintent"
+      }
+    },
+    {
+      "title": "Pay Bill",
+      "postback": {
+        "title": "Pay the bill",
+        "value": "leaveintent"
+      }
+    },
+    {
+      "title": "Setup Balance Alert",
+      "postback": {
+        "title": "Give alert message for balance",
+        "value": "leaveintent"
+      }
+    }
+  ]
+}

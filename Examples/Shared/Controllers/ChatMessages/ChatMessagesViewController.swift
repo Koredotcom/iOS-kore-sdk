@@ -13,7 +13,7 @@ import KoreBotSDK
 import CoreData
 import Mantle
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate {
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuDelegate {
     
     // MARK: properties
     var messagesRequestInProgress: Bool = false
@@ -47,9 +47,15 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var quickReplyView: KREQuickSelectView!
     var typingStatusView: KRETypingStatusView!
     var webViewController: SFSafariViewController!
+    var menuTaskView = MenuTaskView()
 
     let sttClient = KoraASRService.shared
     var speechSynthesizer: AVSpeechSynthesizer!
+    
+    @IBOutlet weak var taskMenuContainerView: UIView!
+    @IBOutlet weak var taskMenuContainerHeightConstant: NSLayoutConstraint!
+    var taskMenuHeight = 0
+    var taskMenuKeyBoard = true
     
     // MARK: init
     init(thread: KREThread?) {
@@ -72,6 +78,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.configureTypingStatusView()
 //        self.configureBotClient()
         self.configureSTTClient()
+        self.configureTaskMenu()
         
         isSpeakingEnabled = true
         self.speechSynthesizer = AVSpeechSynthesizer()
@@ -198,6 +205,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         self.composeBarContainerHeightConstraint = NSLayoutConstraint.init(item: self.composeBarContainerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.0)
         self.view.addConstraint(self.composeBarContainerHeightConstraint)
+    }
+    
+    func configureTaskMenu(){
+        
+        self.menuTaskView = MenuTaskView()
+        self.menuTaskView.translatesAutoresizingMaskIntoConstraints = false
+        self.menuTaskView.viewDelegate = self
+        self.taskMenuContainerView.addSubview(self.menuTaskView)
+        
+        self.taskMenuContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[menuTaskView]|", options:[], metrics:nil, views:["menuTaskView" : self.menuTaskView]))
+        self.taskMenuContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[menuTaskView(320)]", options:[], metrics:nil, views:["menuTaskView" : self.menuTaskView]))
     }
     
     func configureAudioComposer()  {
@@ -542,6 +560,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             // Fallback on earlier versions
         };
         self.bottomConstraint.constant = keyboardHeight
+         taskMenuHeight = Int(keyboardHeight)
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
             self.view.layoutIfNeeded()
         }, completion: { (Bool) in
@@ -555,7 +574,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let duration = durationValue.doubleValue
         let options = UIView.AnimationOptions(rawValue: UInt((keyboardUserInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
         
-        self.bottomConstraint.constant = 0
+        if taskMenuKeyBoard{
+            self.bottomConstraint.constant = 0
+            self.taskMenuContainerHeightConstant.constant = 0
+        }
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
             self.view.layoutIfNeeded()
         }, completion: { (Bool) in
@@ -597,12 +619,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     @objc func keyboardDidShow(_ notification: Notification) {
         if (self.tapToDismissGestureRecognizer == nil) {
+            self.taskMenuContainerHeightConstant.constant = 0
             self.tapToDismissGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(ChatMessagesViewController.dismissKeyboard(_:)))
             self.botMessagesView.addGestureRecognizer(tapToDismissGestureRecognizer)
         }
     }
     
     @objc func keyboardDidHide(_ notification: Notification) {
+        if taskMenuKeyBoard{
+            self.taskMenuContainerHeightConstant.constant = 0
+            self.bottomConstraint.constant = 0
+        }
         if (self.tapToDismissGestureRecognizer != nil) {
             self.botMessagesView.removeGestureRecognizer(tapToDismissGestureRecognizer)
             self.tapToDismissGestureRecognizer = nil
@@ -610,6 +637,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @objc func dismissKeyboard(_ gesture: UITapGestureRecognizer) {
+        self.bottomConstraint.constant = 0
+        self.taskMenuContainerHeightConstant.constant = 0
         if (self.composeView.isFirstResponder) {
             _ = self.composeView.resignFirstResponder()
         }
@@ -771,6 +800,23 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func composeBarView(_: ComposeBarView, sendButtonAction text: String) {
         //self.sendTextMessage(text, options: nil)
         self.sendTextMessage(text, "", options: nil)
+    }
+    
+    func composeBarTaskMenuButtonAction(_: ComposeBarView) {
+        if taskMenuKeyBoard{
+            taskMenuKeyBoard = false
+            if (self.composeView.isFirstResponder) {
+                _ = self.composeView.resignFirstResponder()
+            }
+            self.bottomConstraint.constant = CGFloat(taskMenuHeight)
+            self.taskMenuContainerHeightConstant.constant = CGFloat(taskMenuHeight)
+            
+        }else{
+            taskMenuKeyBoard = true
+            self.composeView.becomeFirstResponder()
+            self.bottomConstraint.constant = CGFloat(taskMenuHeight)
+            self.taskMenuContainerHeightConstant.constant = 0
+        }
     }
     
     func composeBarViewSpeechToTextButtonAction(_: ComposeBarView) {
