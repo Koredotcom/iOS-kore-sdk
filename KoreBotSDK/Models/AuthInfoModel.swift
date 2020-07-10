@@ -7,35 +7,49 @@
 //
 
 import UIKit
-import Mantle
 
-open class AuthInfoModel : MTLModel, MTLJSONSerializing {
+public class AuthInfoModel: NSObject, Decodable {
     // MARK: properties
-    @objc open var identity: String?
-    @objc open var resourceOwnerID: String?
-    @objc open var orgID: String?
-    @objc open var clientID: String?
-    @objc open var sesId: String?
-    @objc open var accountId: String?
-    @objc open var managedBy: String?
-    @objc open var accessToken: String?
-    @objc open var refreshToken: String?
-    @objc open var tokenType: String?
-    @objc open var expiresDate: Date?
-    @objc open var refreshExpiresDate: Date?
-    @objc open var issuedDate: Date?
+    public var identity: String?
+    public var resourceOwnerID: String?
+    public var orgID: String?
+    public var clientID: String?
+    public var sesId: String?
+    public var accountId: String?
+    public var managedBy: String?
+    public var accessToken: String?
+    public var refreshToken: String?
+    public var tokenType: String?
+    public var expiresDate: Date?
+    public var refreshExpiresDate: Date?
+    public var issuedDate: Date?
     
-    // MARK: MTLJSONSerializing methods
-    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
-        return ["identity":"identity",
-                "resourceOwnerID":"resourceOwnerID",
-                "orgID":"orgID",
-                "clientID":"clientID",
-                "sesId":"sesId",
-                "accountId":"accountId",
-                "managedBy":"managedBy",
-                "accessToken":"accessToken",
-                "refreshToken":"refreshToken",
-                "tokenType":"token_type"]
+    // MARK:
+    enum CodingKeys: String, CodingKey {
+        case identity = "identity"
+        case resourceOwnerID = "resourceOwnerID"
+        case orgID = "orgID"
+        case clientID = "clientID"
+        case sesId = "sesId"
+        case accountId = "accountId"
+        case managedBy = "managedBy"
+        case accessToken = "accessToken"
+        case refreshToken = "refreshToken"
+        case tokenType = "token_type"
+    }
+    
+    // MARK: - init
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        identity = try? container.decode(String.self, forKey: .identity)
+        resourceOwnerID = try? container.decode(String.self, forKey: .resourceOwnerID)
+        orgID = try? container.decode(String.self, forKey: .orgID)
+        clientID = try? container.decode(String.self, forKey: .clientID)
+        sesId = try? container.decode(String.self, forKey: .sesId)
+        accountId = try? container.decode(String.self, forKey: .accountId)
+        managedBy = try? container.decode(String.self, forKey: .managedBy)
+        accessToken = try? container.decode(String.self, forKey: .accessToken)
+        refreshToken = try? container.decode(String.self, forKey: .refreshToken)
+        tokenType = try? container.decode(String.self, forKey: .tokenType)
     }
 }

@@ -294,4 +294,22 @@ class DataStoreManager: NSObject {
             }
         }
     }
+    
+    func getLastMessage(completion block: ((KREMessage?) -> Void)?) {
+        let context = coreDataManager.workerContext
+        context.perform {
+            var lastMessage: KREMessage?
+            let request: NSFetchRequest<KREMessage> = KREMessage.fetchRequest()
+            request.fetchLimit = 1
+            request.predicate = NSPredicate(format: "messageType == \(Int64(MessageType.reply.rawValue))")
+            request.sortDescriptors = [NSSortDescriptor(key: "sentOn", ascending: false)]
+            if let messages = try? context.fetch(request) {
+                lastMessage = messages.first
+            }
+            
+            DispatchQueue.main.async {
+                block?(lastMessage)
+            }
+        }
+    }
 }

@@ -9,23 +9,32 @@
 import UIKit
 import Mantle
 
-open class UserModel: MTLModel, MTLJSONSerializing {
+public class UserModel: NSObject, Decodable {
+    // MARK: - properties
+    public var userId: String?
+    public var resourceOwnerID: String?
+    public var enrollType: String?
+    public var orgID: String?
+    public var emailId: String?
+    public var identity: String?
     
-    // MARK: properties
-    @objc open var userId: String?
-    @objc open var resourceOwnerID: String?
-    @objc open var enrollType: String?
-    @objc open var orgID: String?
-    @objc open var emailId: String?
-    @objc open var identity: String?
-
-    // MARK: MTLJSONSerializing methods
-    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
-        return ["userId":"id",
-                "resourceOwnerID":"resourceOwnerID",
-                "enrollType":"enrollType",
-                "orgID":"orgID",
-                "emailId":"emailId",
-                "identity":"identity"]
+    enum CodingKeys: String, CodingKey {
+        case userId = "userId"
+        case resourceOwnerID = "resourceOwnerID"
+        case enrollType = "enrollType"
+        case orgID = "orgId"
+        case emailId = "emailId"
+        case identity = "identity"
+    }
+    
+    // MARK: - init
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        userId = try? container.decode(String.self, forKey: .userId)
+        resourceOwnerID = try? container.decode(String.self, forKey: .resourceOwnerID)
+        enrollType = try? container.decode(String.self, forKey: .enrollType)
+        orgID = try? container.decode(String.self, forKey: .orgID)
+        emailId = try? container.decode(String.self, forKey: .emailId)
+        identity = try? container.decode(String.self, forKey: .identity)
     }
 }

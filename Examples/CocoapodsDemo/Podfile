@@ -1,19 +1,12 @@
-workspace 'KoreBotSDK'
+workspace 'KoreBotSDKDemo'
 project 'KoreBotSDKDemo/KoreBotSDKDemo.xcodeproj'
 
 inhibit_all_warnings!
 
-def import_pods
-    pod 'Mantle', '2.0.2'
-    pod 'AFNetworking', '3.2.0'
-end
-
 target 'KoreBotSDKDemo' do
-    platform :ios, '8.0'
-    pod 'Charts','3.2.0'
+    platform :ios, '10.0'
 
     use_frameworks!
-    import_pods
-    pod 'KoreBotSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git'
+    pod 'KoreBotSDK', :path => '../../'
     project 'KoreBotSDKDemo.xcodeproj'
 end
