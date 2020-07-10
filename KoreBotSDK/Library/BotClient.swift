@@ -23,16 +23,17 @@ public enum BotClientConnectionState : Int {
 open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     // MARK: properties
     fileprivate var connection: RTMPersistentConnection?
-    fileprivate var jwToken: String?
+    public var jwToken: String?
     fileprivate var clientId: String?
     fileprivate var botInfoParameters: [String: Any]?
+    fileprivate var customData: [String: Any]?
     public var reWriteOptions: [String: Any]?
     public var authInfoModel: AuthInfoModel?
     public var userInfoModel: UserModel?
-    public private(set) var isNetworkAvailable = false
+    public var isNetworkAvailable: Bool?
     public var connectionState: BotClientConnectionState {
         get {
-            if isNetworkAvailable == false {
+            if let isNetworkAvailable = isNetworkAvailable, isNetworkAvailable == false {
                 return .NO_NETWORK
             }
             guard let readyState = connection?.websocket?.readyState else {
@@ -59,7 +60,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     open var connectionDidFailWithError: ((NSError?) -> Void)?
     open var onMessage: ((BotMessageModel?) -> Void)?
     open var onMessageAck: ((Ack?) -> Void)?
-    
+    open var onUserMessageReceived:(([String:Any])-> Void)?
     open var botsUrl: String {
         get {
             return Constants.KORE_BOT_SERVER
@@ -71,7 +72,8 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     
     fileprivate var successClosure: ((BotClient?) -> Void)?
     fileprivate var failureClosure: ((NSError) -> Void)?
-    
+    fileprivate var intermediaryClosure: ((BotClient?) -> Void)?
+
     // MARK: - init
     public override init() {
         super.init()
@@ -82,8 +84,9 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     }
     
     // MARK: -
-    public func initialize(botInfoParameters: [String: Any]?, reWriteOptions: [String: Any]? = nil) {
+    public func initialize(botInfoParameters: [String: Any]?, customData: [String: Any]?, reWriteOptions: [String: Any]? = nil) {
         self.botInfoParameters = botInfoParameters
+        self.customData = customData
         self.reWriteOptions = reWriteOptions
     }
     
@@ -104,11 +107,9 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                 break
             case .CLOSED:
                 self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: nil))
-                connectionDidFailWithError?(NSError(domain: "RTM", code: 0, userInfo: nil))
                 break
             case .CLOSING:
                 self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: nil))
-                connectionDidFailWithError?(NSError(domain: "RTM", code: 0, userInfo: nil))
                 break
             case .CONNECTING:
                 self.connectionWillOpen?()
@@ -127,7 +128,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     }
     
     // MARK: make connection
-    open func connectWithJwToken(_ jwtToken: String?, success:((BotClient?) -> Void)?, failure:((Error?) -> Void)?)  {
+    open func connectWithJwToken(_ jwtToken: String?, intermediary:((BotClient?) -> Void)?,  success:((BotClient?) -> Void)?, failure:((Error?) -> Void)?)  {
         guard let jwtToken = jwtToken else {
             failure?(nil)
             return
@@ -135,13 +136,14 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         self.jwToken = jwtToken
         successClosure = success
         failureClosure = failure
+        intermediaryClosure = intermediary
         
         if let botInfoParameters = botInfoParameters {
             let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
             requestManager.signInWithToken(jwtToken, botInfo: botInfoParameters, success: { [weak self] (user, authInfo) in
                 self?.authInfoModel = authInfo
                 self?.userInfoModel = user
-                self?.connect()
+                self?.intermediaryClosure?(self)
             }) { (error) in
                 failure?(error)
             }
@@ -156,13 +158,15 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             connection.connectionDelegate = nil
         }
         connection = nil
-        reconnects = false
     }
     
     // MARK:connect
-    @objc fileprivate func connect() {
+    @objc public func connect(isReconnect: Bool) {
+        reconnects = isReconnect
         if authInfoModel == nil {
-            self.connectWithJwToken(jwToken, success: { (client) in
+            self.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
+                self?.intermediaryClosure?(client)
+            }, success: { (client) in
                 self.successClosure?(client)
             }, failure: { (error) in
                 self.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error?._userInfo as? [String : Any]))
@@ -184,7 +188,6 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     
     // MARK: WebSocketDelegate methods
     open func rtmConnectionDidOpen() {
-        reconnects = true
         connectionDidOpen?()
     }
     
@@ -206,7 +209,9 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     open func rtmConnectionDidFailWithError(_ error: NSError) {
         connectionDidFailWithError?(error)
     }
-    
+    open func didReceivedUserMessage(_ usrMessage:[String:Any]) {
+        onUserMessageReceived?(usrMessage)
+    }
     open func didReceiveMessage(_ message: BotMessageModel) {
         onMessage?(message)
     }
@@ -230,7 +235,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         return nil
     }
     
-    open func sendMessage(_ message: String, options: [String: Any]?) {
+    open func sendMessage(_ message: String, dictionary: [String: Any]? = nil, options: [String: Any]?) {
         guard let connection = connection else {
             NSLog("WebSocket connection not available")
             return
@@ -239,18 +244,14 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             NSLog("WebSocket connection not available")
             return
         }
+        
         switch readyState {
         case .OPEN:
-            var parameters: [String: Any] = [:]
-            if let kmToken = botInfoParameters?["kmToken"] {
-                parameters["kmToken"] = kmToken
-            }
-            if let kmUId = botInfoParameters?["kmUId"] {
-                parameters["kmUId"] = kmUId
-            }
+            var parameters = customData ?? [:]
             if let botToken = authInfoModel?.accessToken {
                 parameters["botToken"] = botToken
             }
+            dictionary?.forEach { (key, value) in parameters[key] = value }
             connection.sendMessage(message, parameters: parameters, options: options)
             break
         case .CLOSED:
@@ -272,7 +273,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
         requestManager.unsubscribeToNotifications(deviceToken as Data?, userInfo: userInfoModel, authInfo: authInfoModel, success: success, failure: failure as! ((Error) -> Void)?)
     }
-
+    
     open func getHistory(offset: Int, success:((_ responseObject: Any?) -> Void)?, failure:((_ error: Error?) -> Void)?) {
         let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
         if let botInfo = botInfoParameters, let authInfo = authInfoModel {
@@ -282,15 +283,15 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         }
     }
     
-    open func getMessages(after messageId: String, success:((_ responseObject: Any?) -> Void)?, failure:((_ error: Error?) -> Void)?) {
+    open func getMessages(after messageId: String, direction: Int, success:((_ responseObject: Any?) -> Void)?, failure:((_ error: Error?) -> Void)?) {
         let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
         if let botInfo = botInfoParameters, let authInfo = authInfoModel {
-            requestManager.getMessages(after: messageId, authInfo, botInfo: botInfo, success: success, failure: failure)
+            requestManager.getMessages(after: messageId, direction: direction, authInfo, botInfo: botInfo, success: success, failure: failure)
         } else {
             failure?(nil)
         }
     }
-    
+
     // MARK: - deinit
     deinit {
         print("BotClient dealloc")

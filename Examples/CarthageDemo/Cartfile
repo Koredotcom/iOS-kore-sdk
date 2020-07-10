@@ -1,2 +1,2 @@
-github "Koredotcom/iOS-kore-sdk" ~> 0.1.9
+github "Koredotcom/iOS-kore-sdk" "master"
 github "danielgindi/Charts" ~> 3.2.1

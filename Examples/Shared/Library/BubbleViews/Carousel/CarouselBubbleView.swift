@@ -37,7 +37,7 @@ class CarouselBubbleView: BubbleView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[carouselView]|", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[carouselView]|", options: [], metrics: nil, views: views))
         
-        self.carouselView.optionsAction = {[weak self] (text) in
+        self.carouselView.optionsAction = { [weak self] (text, payload) in
             if((self?.optionsAction) != nil){
                 self?.optionsAction(text)
             }

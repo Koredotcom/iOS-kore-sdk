@@ -25,7 +25,11 @@ class KREListTableViewCell: UITableViewCell {
         
         actionButton.layer.cornerRadius = 5
         actionButton.layer.borderWidth = 1.0
-        actionButton.layer.borderColor = Common.UIColorRGB(0x0076ff).cgColor
+        actionButton.layer.borderColor = UIColor(hex: 0x0076ff).cgColor
+        actionButton.titleLabel?.font = UIFont.textFont(ofSize: 15.0, weight: .medium)
+
+        titleLabel.font = UIFont.textFont(ofSize: 14.0, weight: .medium)
+        subTitleLabel.font = UIFont.textFont(ofSize: 15.0, weight: .medium)
     }
     
     @IBAction func btnAction(_ sender: Any) {

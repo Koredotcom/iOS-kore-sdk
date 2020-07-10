@@ -9,12 +9,18 @@
 import UIKit
 import Mantle
 
-open class BotInfoModel: MTLModel, MTLJSONSerializing {
-    @objc open var botUrl: String?
+public class BotInfoModel: NSObject, Decodable {
+    // MARK: - properties
+    public var botUrl: String?
+        
+    enum CodingKeys: String, CodingKey {
+        case botUrl = "url"
+    }
     
-    // MARK: MTLJSONSerializing methods
-    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
-        return ["botUrl":"url"]
+    // MARK: - init
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        botUrl = try? container.decode(String.self, forKey: .botUrl)
     }
 }
 

@@ -10,19 +10,63 @@ import UIKit
 import AFNetworking
 
 public enum KREActionType : Int {
-    case none = 0, webURL = 1, postback = 2
+    case none = 0, webURL = 1, postback = 2, user_intent = 3, postback_disp_payload = 4
 }
 
-public class KREAction: NSObject {
-    var type: KREActionType?
-    var title: String?
-    var payload:String?
-    
-    public init(type: KREActionType, title: String, payload: String) {
+public class KREAction: NSObject, Decodable, Encodable {
+    public var actionType: KREActionType?
+    public var type: String?
+    public var title: String?
+    public var payload: String?
+    public var customData: [String: Any]?
+    public var action: String?
+    public var utterance: String?
+    public var url: String?
+    public var dial: String?
+    public var iconId: String?
+    public var elementId = ""
+    public var activityInfo: KREActivityInfo?
+
+    // MARK: - init
+    public override init() {
         super.init()
-        self.type = type
+    }
+    
+    public init(actionType: KREActionType, title: String, payload: String) {
+        super.init()
+        self.actionType = actionType
         self.title = title
         self.payload = payload
+    }
+    
+    public init(actionType: KREActionType, title: String, customData: [String: Any]) {
+        super.init()
+        self.actionType = actionType
+        self.title = title
+        self.customData = customData
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case payload, title, type, utterance, url, iconId, activityInfo, dial
+    }
+
+    required public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        title = try? values.decode(String.self, forKey: .title)
+        payload = try? values.decode(String.self, forKey: .payload)
+        type = try? values.decode(String.self, forKey: .type)
+        utterance = try? values.decode(String.self, forKey: .utterance)
+        url = try? values.decode(String.self, forKey: .url)
+        iconId = try? values.decode(String.self, forKey: .iconId)
+        activityInfo = try? values.decode(KREActivityInfo.self, forKey: .activityInfo)
+        dial = try? values.decode(String.self, forKey: .dial)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(title, forKey: .title)
+        try container.encode(payload, forKey: .payload)
+        try container.encode(type, forKey: .type)
     }
 }
 
@@ -30,7 +74,7 @@ public enum KREOptionType : Int {
     case button = 1, list = 2, menu = 3
 }
 
-public class KREOption: NSObject {
+open class KREOption: NSObject {
     static let titleCharLimit: Int = 80
     static let subtitleCharLimit: Int = 100
     
@@ -66,23 +110,23 @@ public class KREOption: NSObject {
     
     func truncateString(_ string: String, count: Int) -> String{
         var tmpString = string
-        if tmpString.count > count {
+        if(tmpString.characters.count > count){
             tmpString = tmpString.substring(to: tmpString.index(tmpString.startIndex, offsetBy: count))
         }
         return tmpString
     }
 }
 
-public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
-    
+open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
+    let bundle = Bundle(for: KREOptionsView.self)
     fileprivate let optionCellIdentifier = "KREOptionsTableViewCell"
     fileprivate let listCellIdentifier = "KREListTableViewCell"
-    fileprivate let menuCellIdentifier = "KREMenuTableViewCell"
     
     let kMaxRowHeight: CGFloat = 44
   
-    public var optionsButtonAction: ((_ text: String?) -> Void)!
+    public var optionsButtonAction: ((_ title: String?, _ payload: String?) -> Void)!
     public var detailLinkAction: ((_ text: String?) -> Void)!
+    public var userIntentAction: ((_ title: String?, _ customData: [String: Any]?) -> Void)!
 
     // MARK:- properites
     public var options: Array<KREOption> = Array<KREOption>() {
@@ -98,7 +142,7 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
     }
     
     convenience init () {
-        self.init(frame: CGRect.zero)
+        self.init(frame:CGRect.zero)
     }
     
     required public init(coder aDecoder: NSCoder) {
@@ -114,6 +158,9 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
         optionsView.isScrollEnabled = false
         optionsView.estimatedRowHeight = UITableView.automaticDimension
         optionsView.rowHeight = UITableView.automaticDimension
+        optionsView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
+        optionsView.separatorInset = .zero
+        optionsView.separatorColor = UIColor.paleLilacFour
         optionsView.setNeedsLayout()
         optionsView.layoutIfNeeded()
 
@@ -121,15 +168,9 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
     }()
     
     // MARK:- setup collectionView
-    func setup() {
-        let bundle = Bundle(for: KREOptionsView.self)
-        let optionsCellNib = UINib(nibName: optionCellIdentifier, bundle: bundle)
-        let listCellNib = UINib(nibName: listCellIdentifier, bundle: bundle)
-        let menuCellNib = UINib(nibName: menuCellIdentifier, bundle: bundle)
-        
-        optionsTableView.register(optionsCellNib, forCellReuseIdentifier: optionCellIdentifier)
-        optionsTableView.register(listCellNib, forCellReuseIdentifier: listCellIdentifier)
-        optionsTableView.register(menuCellNib, forCellReuseIdentifier: menuCellIdentifier)
+    public func setup() {
+        optionsTableView.register(UINib(nibName: "KREListTableViewCell", bundle: bundle), forCellReuseIdentifier: "KREListTableViewCell")
+        optionsTableView.register(UINib(nibName: "KREOptionsTableViewCell", bundle: bundle), forCellReuseIdentifier: "KREOptionsTableViewCell")
         addSubview(optionsTableView)
         
         let views = ["tableView": optionsTableView]
@@ -154,121 +195,96 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let option: KREOption = options[indexPath.row]
         
-        if option.optionType == KREOptionType.button {
-            let tableViewCell = tableView.dequeueReusableCell(withIdentifier: optionCellIdentifier, for: indexPath)
-            tableViewCell.selectionStyle = UITableViewCell.SelectionStyle.none
+        if(option.optionType == KREOptionType.button){
+            let cell:KREOptionsTableViewCell = tableView.dequeueReusableCell(withIdentifier: optionCellIdentifier, for: indexPath) as! KREOptionsTableViewCell
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             
-            if let cell = tableViewCell as? KREOptionsTableViewCell {
-                cell.textLabel?.text = option.title
+            cell.textLabel?.text = option.title
+            cell.textLabel?.textAlignment = .center
+            cell.textLabel?.textColor = UIColor.lightRoyalBlue
+            if #available(iOS 8.2, *) {
+                cell.textLabel?.font = UIFont.textFont(ofSize: 15.0, weight: .medium)
+            } else {
+                // Fallback on earlier versions
             }
-            return tableViewCell
-        } else if option.optionType == KREOptionType.list {
-            let tableViewCell = tableView.dequeueReusableCell(withIdentifier: listCellIdentifier, for: indexPath)
-            tableViewCell.selectionStyle = UITableViewCell.SelectionStyle.none
             
-            if let cell = tableViewCell as? KREListTableViewCell {
-                cell.titleLabel.text = option.title
-                cell.subTitleLabel.text = option.subTitle
-                
-                if let urlString = option.imageURL, let url = URL(string: urlString) {
-                    cell.imgView.setImageWith(url, placeholderImage: UIImage(named: "placeholder_image"))
-                    cell.imgViewWidthConstraint.constant = 60.0
-                } else {
-                    cell.imageView?.image = nil
-                    cell.imgViewWidthConstraint.constant = 0.0
-                }
-                
-                if (option.buttonAction != nil) {
-                    let buttonAction = option.buttonAction
-                    cell.actionButtonHeightConstraint.constant = 30.0
-                    cell.actionButton.setTitle(buttonAction?.title, for: .normal)
-                    cell.buttonAction = {[weak self] (text) in
-                        if (buttonAction?.type == .webURL) {
-                            if ((self?.detailLinkAction) != nil) {
-                                self?.detailLinkAction(buttonAction?.payload)
-                            }
-                        } else if (buttonAction?.type == .postback) {
-                            if (self?.optionsButtonAction != nil) {
-                                self?.optionsButtonAction(buttonAction?.payload)
-                            }
+            return cell
+        }else if(option.optionType == KREOptionType.list){
+            let cell:KREListTableViewCell = tableView.dequeueReusableCell(withIdentifier: listCellIdentifier, for: indexPath) as! KREListTableViewCell
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            
+            cell.titleLabel.text = option.title
+            cell.subTitleLabel.text = option.subTitle
+            
+            if option.imageURL != "" {
+                cell.imgView.setImageWith(NSURL(string: option.imageURL!) as URL!,placeholderImage: UIImage.init(named: "placeholder_image"))
+                cell.imgViewWidthConstraint.constant = 60.0
+            } else {
+                cell.imageView?.image = nil
+                cell.imgViewWidthConstraint.constant = 0.0
+            }
+            
+            if(option.buttonAction != nil){
+                let buttonAction = option.buttonAction
+                cell.actionButtonHeightConstraint.constant = 30.0
+                cell.actionButton.setTitle(buttonAction?.title, for: .normal)
+                cell.buttonAction = {[weak self] (text) in
+                    if (buttonAction?.actionType == .webURL) {
+                        if ((self?.detailLinkAction) != nil) {
+                            self?.detailLinkAction(buttonAction?.payload)
+                        }
+                    } else if (buttonAction?.actionType == .postback || buttonAction?.actionType == .postback_disp_payload) {
+                        if (self?.optionsButtonAction != nil) {
+                            self?.optionsButtonAction(buttonAction?.title, buttonAction?.payload)
                         }
                     }
-                } else {
-                    cell.actionButtonHeightConstraint.constant = 0.0
-                    cell.actionButton.setTitle(nil, for: .normal)
                 }
+            }else{
+                cell.actionButtonHeightConstraint.constant = 0.0
+                cell.actionButton.setTitle(nil, for: .normal)
             }
             
-            return tableViewCell
-        } else if option.optionType == KREOptionType.menu {
-            let tableViewCell = tableView.dequeueReusableCell(withIdentifier: menuCellIdentifier, for: indexPath)
-            tableViewCell.selectionStyle = UITableViewCell.SelectionStyle.none
-            
-            if let cell = tableViewCell as? KREMenuTableViewCell {
-                cell.titleLabel.text = option.title
-                if let urlString = option.imageURL, let url = URL(string: urlString) {
-                    cell.imgView.setImageWith(url, placeholderImage: UIImage(named: "placeholder_image"))
-                    cell.imgViewWidthConstraint.constant = 30.0
-                } else {
-                    cell.imageView?.image = nil
-                    cell.imgViewWidthConstraint.constant = 0.0
-                }
-            
-//            if(option.buttonAction != nil){
-//                let buttonAction = option.buttonAction
-////                cell.actionButtonHeightConstraint.constant = 30.0
-////                cell.actionButton.setTitle(buttonAction?.title, for: .normal)
-////                cell.buttonAction = {[weak self] (text) in
-////                    if (buttonAction?.type == .webURL) {
-////                        if ((self?.detailLinkAction) != nil) {
-////                            self?.detailLinkAction(buttonAction?.payload)
-////                        }
-////                    } else if (buttonAction?.type == .postback) {
-////                        if (self?.optionsButtonAction != nil) {
-////                            self?.optionsButtonAction(buttonAction?.payload)
-////                        }
-////                    }
-////                }
-//            }else{
-////                cell.actionButtonHeightConstraint.constant = 0.0
-////                cell.actionButton.setTitle(nil, for: .normal)
-//            }
-            }
-            return tableViewCell
+            return cell
         }
-        return UITableViewCell()
+        return UITableViewCell.init()
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let option: KREOption = options[indexPath.row]
+        if option.title?.lowercased() == "learn more"{
+            let defaultAction = option.defaultAction
+            if ((self.detailLinkAction) != nil) {
+                self.detailLinkAction(defaultAction?.payload)
+                return
+            }
+        } else if option.title?.lowercased() == "request for upgrade" || option.title?.lowercased() == "upgrade"{
+            self.userIntentAction(option.title, [:])
+            return
+        }
+        
         if(option.defaultAction != nil){
             let defaultAction = option.defaultAction
-            if (defaultAction?.type == .webURL) {
+            if (defaultAction?.actionType == .webURL) {
                 if ((self.detailLinkAction) != nil) {
                     self.detailLinkAction(defaultAction?.payload)
                 }
-            } else if (defaultAction?.type == .postback) {
+            } else if (defaultAction?.actionType == .postback || defaultAction?.actionType == .postback_disp_payload) {
                 if (self.optionsButtonAction != nil) {
-                    self.optionsButtonAction(defaultAction?.payload)
+                    self.optionsButtonAction(defaultAction?.title, defaultAction?.payload)
+                }
+            }else if(defaultAction?.actionType == .user_intent ){
+                if (self.userIntentAction != nil) {
+                    self.userIntentAction(defaultAction?.action, defaultAction?.customData)
                 }
             }
         }
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-      let option: KREOption = options[indexPath.row]
-        if(option.optionType == KREOptionType.menu){
-            return 36
-        }
-        
         return UITableView.automaticDimension
     }
     
     public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        let option: KREOption = options[indexPath.row]
-        if(option.optionType == KREOptionType.menu){
-            return 36
-        }
         return UITableView.automaticDimension
     }
     
@@ -283,9 +299,6 @@ public class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate 
                 fittingSize.width = width
                 let size = cell.systemLayoutSizeFitting(fittingSize, withHorizontalFittingPriority: UILayoutPriority(rawValue: 1000), verticalFittingPriority: UILayoutPriority(rawValue: 250))
                 height += size.height
-            }
-            else if(option.optionType == KREOptionType.menu){
-                height += 36
             }
         }
         return height
@@ -320,11 +333,64 @@ public class KREOptionsViewCell: UITableViewCell {
     }
 }
 
-open class Common : NSObject {
-    public static func UIColorRGB(_ rgb: Int) -> UIColor {
-        let blue = CGFloat(rgb & 0xFF)
-        let green = CGFloat((rgb >> 8) & 0xFF)
-        let red = CGFloat((rgb >> 16) & 0xFF)
-        return UIColor(red: red / 255.0, green: green / 255.0, blue: blue / 255.0, alpha: 1)
+extension UIColor {
+    convenience init(withFileType fileType: String) {
+        switch fileType.uppercased() {
+        case "GIF", "ICO":
+            self.init(hex: 0x00C9FD)
+        case "DOCX", "DOC", "PAGES", "GDOC", "RTF", "WPD", "JPEG", "MPEG", "PNG":
+            self.init(hex: 0x2F7BF1)
+        case "XLSX", "XLS", "GSHEET", "NUMBERS":
+            self.init(hex: 0x39A341)
+        case "PPT", "PPTX", "GSLIDE", "SLIDES":
+            self.init(hex: 0xD14219)
+        case "PDF":
+            self.init(hex: 0xEC0400)
+        case "MP3", "WAV", "AIF", "MOV", "MP4", "AVI":
+            self.init(hex: 0x9E68BC)
+        case "TXT", "HTML", "JS", "DAT", "JAVA", "SQL":
+            self.init(hex: 0x8B93A0)
+        case "SKETCH":
+            self.init(hex: 0x880010)
+        default:
+            self.init(hex: 0x333D4D)
+        }
     }
+}
+
+extension UIFont {
+    class func font(withFileType fileType: String?) -> UIFont {
+        if let count = fileType?.count, count > 0 {
+            switch count {
+            case 3:
+                return systemFont(ofSize: 12.0, weight: .bold)
+            case 4:
+                return systemFont(ofSize: 10.0, weight: .bold)
+            default:
+                return systemFont(ofSize: 7.0, weight: .bold)
+            }
+        } else {
+            return systemFont(ofSize: 12.0, weight: .bold)
+        }
+    }
+}
+
+extension DateFormatter {
+    static let yyyyMMddTHHmmssZ: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
+    
+    static let yyyyMMdd: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
 }

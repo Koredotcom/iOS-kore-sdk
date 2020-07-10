@@ -15,11 +15,11 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
     var krefocused: Bool = false {
         didSet {
             if (krefocused) {
-                self.label.textColor = UIColor.white
-                self.label.backgroundColor = tintColor
+                self.label.textColor = UIColor(hex: 0x485260)
+                self.label.backgroundColor = UIColor(hex: 0x485260)
             } else {
-                self.label.textColor = self.tintColor
-                self.label.backgroundColor = UIColor.clear
+                self.label.textColor = UIColor(hex: 0x485260)
+                self.label.backgroundColor = UIColor(hex: 0xEDEDEF)
             }
         }
     }
@@ -65,9 +65,9 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
         
         label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor.blue
+        label.textColor = UIColor(red: 97/255, green: 104/255, blue: 231/255, alpha: 1)
         label.textAlignment = NSTextAlignment.center
-        label.font = UIFont(name: "HelveticaNeue-Medium", size: 17.0)
+        label.font = UIFont.textFont(ofSize: 14.0, weight: .regular)
         label.clipsToBounds = true
         contentView.addSubview(label)
         
@@ -76,9 +76,10 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
         
         let layer:CALayer = self.layer
         layer.masksToBounds = true
-        layer.cornerRadius = 19
-        layer.borderColor  = Common.UIColorRGB(0x0578FE).cgColor
+        layer.cornerRadius = 4
+        layer.borderColor  = UIColor(hex: 0xEDEDEF).cgColor
         layer.borderWidth = 1
+        self.backgroundColor = UIColor(hex: 0xEDEDEF)
         
         let views = ["label":label!, "image":imageView!] as [String : Any]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-4-[image]-(8)-[label]-(12)-|", options:[], metrics:nil, views:views))
@@ -100,7 +101,7 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: -
-    func widthForCell(string: String, withImage: Bool, height: CGFloat) -> CGFloat {
+    func widthForCell(string: String?, withImage: Bool, height: CGFloat) -> CGFloat {
         self.label.text = string
         let width = self.label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: height)).width
         return width + 24.0 + (withImage ? 32.0 : 0.0)

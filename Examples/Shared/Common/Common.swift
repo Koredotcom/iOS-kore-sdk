@@ -67,11 +67,12 @@ open class Utilities: NSObject {
         let title: String = actionInfo["title"] != nil ? actionInfo["title"] as! String : ""
         if (actionType == "web_url") {
             let url: String = actionInfo["url"] != nil ? actionInfo["url"] as! String : ""
-            return KREAction(type: .webURL, title: title, payload: url)
+            return KREAction(actionType: .webURL, title: title, payload: url)
         } else if (actionType == "postback") {
             let payload: String = actionInfo["payload"] != nil ? actionInfo["payload"] as! String : ""
-            return KREAction(type: .postback, title: title, payload: payload)
+            return KREAction(actionType: .postback, title: title, payload: payload)
         }
         return nil
     }
 }
+
