@@ -14,6 +14,7 @@ protocol BotMessagesViewDelegate {
     func linkButtonTapAction(urlString:String)
     func populateQuickReplyCards(with message: KREMessage?)
     func closeQuickReplyCards()
+    func optionsButtonTapNewAction(text:String, payload:String)
 }
 
 class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFetchedResultsControllerDelegate {
@@ -74,7 +75,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(MiniTableBubbleCell.self, forCellReuseIdentifier:"MiniTableBubbleCell")
         self.tableView.register(ResponsiveTableBubbleCell.self, forCellReuseIdentifier:"ResponsiveTableBubbleCell")
         self.tableView.register(MenuBubbleCell.self, forCellReuseIdentifier:"MenuBubbleCell")
-
+        self.tableView.register(NewListBubbleCell.self, forCellReuseIdentifier:"NewListBubbleCell")
 
     }
     
@@ -157,6 +158,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 break
             case .menu:
                 cellIdentifier = "MenuBubbleCell"
+                break
+            case .newList:
+                cellIdentifier = "NewListBubbleCell"
                 break
             }
             
@@ -244,6 +248,17 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             let bubbleView: MenuBubbleView = cell.bubbleView as! MenuBubbleView
             bubbleView.optionsAction = {[weak self] (text) in
                 self?.viewDelegate?.optionsButtonTapAction(text: text!)
+            }
+            bubbleView.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
+            
+            cell.bubbleView.drawBorder = true
+            break
+        case .newList:
+            let bubbleView: NewListBubbleView = cell.bubbleView as! NewListBubbleView
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
             }
             bubbleView.linkAction = {[weak self] (text) in
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)

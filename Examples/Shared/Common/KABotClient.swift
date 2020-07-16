@@ -241,6 +241,9 @@ open class KABotClient: NSObject {
         else if (templateType == "menu") {
             return .menu
         }
+        else if (templateType == "listView") {
+            return .newList
+        }
         return .text
     }
     
