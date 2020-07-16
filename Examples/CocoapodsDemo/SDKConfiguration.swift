@@ -53,7 +53,7 @@ class SDKConfiguration: NSObject {
         
         static let isAnonymous = true // This should be either true (in case of known-user) or false (in-case of anonymous user).
         
-        static let isPAnelView = true // This should be either true (in case of Show Panel) or false (in-case of Hide Panel).
+        static let isPanelView = true // This should be either true (in case of Show Panel) or false (in-case of Hide Panel).
     }
     
     // googleapi speech API_KEY
