@@ -82,12 +82,14 @@ public class ComponentItemAction: NSObject, Decodable {
     public var title: String?
     public var type: String?
     public var fallback_url: String?
+    public var url: String?
 
     enum ActionKeys: String, CodingKey {
         case payload = "payload"
         case title = "title"
         case type = "type"
         case fallback_url = "fallback_url"
+        case url = "url"
         
     }
     
@@ -102,6 +104,7 @@ public class ComponentItemAction: NSObject, Decodable {
         title = try? container.decode(String.self, forKey: .title)
         type = try? container.decode(String.self, forKey: .type)
         fallback_url = try? container.decode(String.self, forKey: .fallback_url)
+        url = try? container.decode(String.self, forKey: .url)
     }
 }
 // MARK: - MoreData

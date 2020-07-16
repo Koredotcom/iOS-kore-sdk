@@ -94,12 +94,14 @@ public class TableListElementRows: NSObject, Decodable {
     public var title: TableListElementRowTitle?
     public var value: TableListElementRowValue?
     public var action: ComponentItemAction?
+    public var bgcolor: String?
     
     
     enum ColorCodeKeys: String, CodingKey {
         case title = "title"
         case value = "value"
         case action = "default_action"
+        case bgcolor = "bgcolor"
         
     }
     
@@ -113,6 +115,7 @@ public class TableListElementRows: NSObject, Decodable {
         title = try? container.decode(TableListElementRowTitle.self, forKey: .title)
         value = try? container.decode(TableListElementRowValue.self, forKey: .value)
         action = try? container.decode(ComponentItemAction.self, forKey: .action)
+        bgcolor = try? container.decode(String.self, forKey: .bgcolor)
         
     }
 }
@@ -122,6 +125,7 @@ public class TableListElementRowTitle: NSObject, Decodable {
     public var type: String?
     public var text: TableListElementRowTitleText?
     public var rowColor: String?
+    public var url: TableListElementRowTitleUrl?
     
     
     enum ColorCodeKeys: String, CodingKey {
@@ -129,6 +133,7 @@ public class TableListElementRowTitle: NSObject, Decodable {
         case type = "type"
         case text = "text"
         case rowColor = "rowColor"
+        case url = "url"
         
     }
     
@@ -143,7 +148,7 @@ public class TableListElementRowTitle: NSObject, Decodable {
         type = try? container.decode(String.self, forKey: .type)
         text = try? container.decode(TableListElementRowTitleText.self, forKey: .text)
         rowColor = try? container.decode(String.self, forKey: .rowColor)
-        
+        url = try? container.decode(TableListElementRowTitleUrl.self, forKey: .url)
     }
 }
 
@@ -151,7 +156,7 @@ public class TableListElementRowTitle: NSObject, Decodable {
 public class TableListElementRowTitleImage: NSObject, Decodable {
     public var image_type: String?
     public var image_src: String?
-    public var radius: Int?
+    public var radius: Double?
     public var size: String?
     
     
@@ -172,7 +177,7 @@ public class TableListElementRowTitleImage: NSObject, Decodable {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
         image_type = try? container.decode(String.self, forKey: .image_type)
         image_src = try? container.decode(String.self, forKey: .image_src)
-        radius = try? container.decode(Int.self, forKey: .radius)
+        radius = try? container.decode(Double.self, forKey: .radius)
         size = try? container.decode(String.self, forKey: .size)
         
     }
@@ -182,10 +187,12 @@ public class TableListElementRowTitleImage: NSObject, Decodable {
 public class TableListElementRowTitleText: NSObject, Decodable {
     public var title: String?
     public var subtitle: String?
+    public var payload: String?
     
     enum ColorCodeKeys: String, CodingKey {
         case title = "title"
         case subtitle = "subtitle"
+        case payload = "payload"
     }
     
     // MARK: - init
@@ -197,6 +204,37 @@ public class TableListElementRowTitleText: NSObject, Decodable {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
         title = try? container.decode(String.self, forKey: .title)
         subtitle = try? container.decode(String.self, forKey: .subtitle)
+        payload = try? container.decode(String.self, forKey: .payload)
+    }
+}
+
+// MARK: - Elements Row Title Url
+public class TableListElementRowTitleUrl: NSObject, Decodable {
+    public var title: String?
+    public var subtitle: String?
+    public var link: String?
+    public var textDecoration: String?
+    
+    
+    
+    enum ColorCodeKeys: String, CodingKey {
+        case title = "title"
+        case subtitle = "subtitle"
+        case link = "link"
+        case textDecoration = "text-decoration"
+    }
+    
+    // MARK: - init
+    public override init() {
+        super.init()
+    }
+    
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: ColorCodeKeys.self)
+        title = try? container.decode(String.self, forKey: .title)
+        subtitle = try? container.decode(String.self, forKey: .subtitle)
+        link = try? container.decode(String.self, forKey: .link)
+        textDecoration = try? container.decode(String.self, forKey: .textDecoration)
     }
 }
 
@@ -204,14 +242,14 @@ public class TableListElementRowTitleText: NSObject, Decodable {
 public class TableListElementRowValue: NSObject, Decodable {
     public var type: String?
     public var url: TableListElementRowValueUrl?
-    public var layout: ComponentItemAction?
+    public var layout: TableListElementRowValueLayOut?
     public var text: String?
     
     
     enum ColorCodeKeys: String, CodingKey {
-        case type = "title"
+        case type = "type"
         case url = "url"
-        case layout = "default_action"
+        case layout = "layout"
         case text = "text"
         
     }
@@ -225,7 +263,7 @@ public class TableListElementRowValue: NSObject, Decodable {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
         type = try? container.decode(String.self, forKey: .type)
         url = try? container.decode(TableListElementRowValueUrl.self, forKey: .url)
-        layout = try? container.decode(ComponentItemAction.self, forKey: .layout)
+        layout = try? container.decode(TableListElementRowValueLayOut.self, forKey: .layout)
         text =  try? container.decode(String.self, forKey: .text)
     }
 }
@@ -251,3 +289,29 @@ public class TableListElementRowValueUrl: NSObject, Decodable {
         title = try? container.decode(String.self, forKey: .title)
     }
 }
+
+// MARK: - Elements Row Value Url
+public class TableListElementRowValueLayOut: NSObject, Decodable {
+    public var align: String?
+    public var color: String?
+    public var colSize: String?
+
+    enum ColorCodeKeys: String, CodingKey {
+        case align = "align"
+        case color = "color"
+        case colSize = "colSize"
+    }
+    
+    // MARK: - init
+    public override init() {
+        super.init()
+    }
+    
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: ColorCodeKeys.self)
+        align = try? container.decode(String.self, forKey: .align)
+        color = try? container.decode(String.self, forKey: .color)
+        colSize = try? container.decode(String.self, forKey: .colSize)
+    }
+}
+
