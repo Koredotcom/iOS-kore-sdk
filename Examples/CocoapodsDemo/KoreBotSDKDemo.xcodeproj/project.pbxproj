@@ -17,6 +17,11 @@
 		CDB869FE24C0093A00D1CCC7 /* ListViewDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB869F924C0093A00D1CCC7 /* ListViewDetailsViewController.swift */; };
 		CDB869FF24C0093A00D1CCC7 /* NewListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB869FA24C0093A00D1CCC7 /* NewListTableViewCell.swift */; };
 		CDB86A0124C0099300D1CCC7 /* ListViewDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDB86A0024C0099300D1CCC7 /* ListViewDetailsViewController.xib */; };
+		CDB86A0824C00CD000D1CCC7 /* TaskMenuTablViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDB86A0324C00CCF00D1CCC7 /* TaskMenuTablViewCell.xib */; };
+		CDB86A0924C00CD000D1CCC7 /* MenuTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB86A0424C00CD000D1CCC7 /* MenuTaskView.swift */; };
+		CDB86A0A24C00CD000D1CCC7 /* TaskMenu.json in Resources */ = {isa = PBXBuildFile; fileRef = CDB86A0524C00CD000D1CCC7 /* TaskMenu.json */; };
+		CDB86A0B24C00CD000D1CCC7 /* TaskMenuData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB86A0624C00CD000D1CCC7 /* TaskMenuData.swift */; };
+		CDB86A0C24C00CD000D1CCC7 /* TaskMenuTablViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB86A0724C00CD000D1CCC7 /* TaskMenuTablViewCell.swift */; };
 		D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */ = {isa = PBXBuildFile; fileRef = D15041081DE2C4BC00F2F92E /* Messages.plist */; };
 		D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = D15045D41DE422CB008DE46E /* BotConfiguration.plist */; };
 		D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */; };
@@ -105,6 +110,11 @@
 		CDB869F924C0093A00D1CCC7 /* ListViewDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewDetailsViewController.swift; sourceTree = "<group>"; };
 		CDB869FA24C0093A00D1CCC7 /* NewListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewListTableViewCell.swift; sourceTree = "<group>"; };
 		CDB86A0024C0099300D1CCC7 /* ListViewDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListViewDetailsViewController.xib; sourceTree = "<group>"; };
+		CDB86A0324C00CCF00D1CCC7 /* TaskMenuTablViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskMenuTablViewCell.xib; sourceTree = "<group>"; };
+		CDB86A0424C00CD000D1CCC7 /* MenuTaskView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTaskView.swift; sourceTree = "<group>"; };
+		CDB86A0524C00CD000D1CCC7 /* TaskMenu.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TaskMenu.json; sourceTree = "<group>"; };
+		CDB86A0624C00CD000D1CCC7 /* TaskMenuData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskMenuData.swift; sourceTree = "<group>"; };
+		CDB86A0724C00CD000D1CCC7 /* TaskMenuTablViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskMenuTablViewCell.swift; sourceTree = "<group>"; };
 		D15041081DE2C4BC00F2F92E /* Messages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Messages.plist; sourceTree = "<group>"; };
 		D15045D41DE422CB008DE46E /* BotConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BotConfiguration.plist; sourceTree = "<group>"; };
 		D175AD4A1CEF0CD500BB9442 /* KoreBotSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KoreBotSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -249,6 +259,18 @@
 			path = NewListCell;
 			sourceTree = "<group>";
 		};
+		CDB86A0224C00C9800D1CCC7 /* TaskMenu */ = {
+			isa = PBXGroup;
+			children = (
+				CDB86A0424C00CD000D1CCC7 /* MenuTaskView.swift */,
+				CDB86A0624C00CD000D1CCC7 /* TaskMenuData.swift */,
+				CDB86A0724C00CD000D1CCC7 /* TaskMenuTablViewCell.swift */,
+				CDB86A0324C00CCF00D1CCC7 /* TaskMenuTablViewCell.xib */,
+				CDB86A0524C00CD000D1CCC7 /* TaskMenu.json */,
+			);
+			path = TaskMenu;
+			sourceTree = "<group>";
+		};
 		D15041071DE2C48A00F2F92E /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -351,6 +373,7 @@
 		D1F3386C2201D99A005BE5F1 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				CDB86A0224C00C9800D1CCC7 /* TaskMenu */,
 				D1F3386D2201D99A005BE5F1 /* Vendors */,
 				D1F338732201D99A005BE5F1 /* SpeechRecognition */,
 				D1F338762201D99A005BE5F1 /* Animation */,
@@ -676,6 +699,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1F339022201D99A005BE5F1 /* AppLaunchViewController.xib in Resources */,
+				CDB86A0824C00CD000D1CCC7 /* TaskMenuTablViewCell.xib in Resources */,
 				D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */,
 				D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */,
 				D1F338E62201D99A005BE5F1 /* MultiImageBubbleView.xib in Resources */,
@@ -685,6 +709,7 @@
 				D1F338FB2201D99A005BE5F1 /* KRETypingCollectionViewCell.xib in Resources */,
 				D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */,
 				D1F338F62201D99A005BE5F1 /* ChatMessagesViewController.xib in Resources */,
+				CDB86A0A24C00CD000D1CCC7 /* TaskMenu.json in Resources */,
 				CDB86A0124C0099300D1CCC7 /* ListViewDetailsViewController.xib in Resources */,
 				CDB869FC24C0093A00D1CCC7 /* NewListTableViewCell.xib in Resources */,
 				D1F338EC2201D99A005BE5F1 /* CustomCollectionViewCell.xib in Resources */,
@@ -795,12 +820,15 @@
 				D1F338ED2201D99A005BE5F1 /* TableBubbleView.swift in Sources */,
 				D1F338CE2201D99A005BE5F1 /* KREComponent+CoreDataProperties.swift in Sources */,
 				CDB869FE24C0093A00D1CCC7 /* ListViewDetailsViewController.swift in Sources */,
+				CDB86A0924C00CD000D1CCC7 /* MenuTaskView.swift in Sources */,
 				D1F338F12201D99A005BE5F1 /* MiniTableViewCell.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
 				D1F338E82201D99A005BE5F1 /* ResponsiveTableBubbleView.swift in Sources */,
+				CDB86A0C24C00CD000D1CCC7 /* TaskMenuTablViewCell.swift in Sources */,
 				D1F338D02201D99A005BE5F1 /* TSMarkdownParser.m in Sources */,
 				D1F338F22201D99A005BE5F1 /* MenuBubbleView.swift in Sources */,
 				D1F338DB2201D99A005BE5F1 /* NSMutableAttributedString+KREUtils.m in Sources */,
+				CDB86A0B24C00CD000D1CCC7 /* TaskMenuData.swift in Sources */,
 				D1F338F72201D99A005BE5F1 /* TableTemplateViewController.swift in Sources */,
 				D1F338D52201D99A005BE5F1 /* Message.swift in Sources */,
 				D1F338EF2201D99A005BE5F1 /* ExpandedTableViewCell.swift in Sources */,
