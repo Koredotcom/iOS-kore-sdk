@@ -356,3 +356,15 @@ class NewListBubbleCell : MessageBubbleCell {
         }
     }
 }
+class TableListBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .tableList
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}

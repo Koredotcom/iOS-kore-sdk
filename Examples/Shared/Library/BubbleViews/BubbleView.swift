@@ -93,6 +93,9 @@ class BubbleView: UIView {
         case .newList:
             bubbleView = NewListBubbleView()
             break
+        case .tableList:
+                bubbleView = TableListBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         

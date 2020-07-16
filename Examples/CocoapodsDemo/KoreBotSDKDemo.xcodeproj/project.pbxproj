@@ -22,6 +22,8 @@
 		CDB86A0A24C00CD000D1CCC7 /* TaskMenu.json in Resources */ = {isa = PBXBuildFile; fileRef = CDB86A0524C00CD000D1CCC7 /* TaskMenu.json */; };
 		CDB86A0B24C00CD000D1CCC7 /* TaskMenuData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB86A0624C00CD000D1CCC7 /* TaskMenuData.swift */; };
 		CDB86A0C24C00CD000D1CCC7 /* TaskMenuTablViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB86A0724C00CD000D1CCC7 /* TaskMenuTablViewCell.swift */; };
+		CDB86A0F24C0127C00D1CCC7 /* TableListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB86A0E24C0127C00D1CCC7 /* TableListData.swift */; };
+		CDB86A1124C0128F00D1CCC7 /* TableListBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB86A1024C0128F00D1CCC7 /* TableListBubbleView.swift */; };
 		D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */ = {isa = PBXBuildFile; fileRef = D15041081DE2C4BC00F2F92E /* Messages.plist */; };
 		D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = D15045D41DE422CB008DE46E /* BotConfiguration.plist */; };
 		D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */; };
@@ -115,6 +117,8 @@
 		CDB86A0524C00CD000D1CCC7 /* TaskMenu.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TaskMenu.json; sourceTree = "<group>"; };
 		CDB86A0624C00CD000D1CCC7 /* TaskMenuData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskMenuData.swift; sourceTree = "<group>"; };
 		CDB86A0724C00CD000D1CCC7 /* TaskMenuTablViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskMenuTablViewCell.swift; sourceTree = "<group>"; };
+		CDB86A0E24C0127C00D1CCC7 /* TableListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableListData.swift; sourceTree = "<group>"; };
+		CDB86A1024C0128F00D1CCC7 /* TableListBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableListBubbleView.swift; sourceTree = "<group>"; };
 		D15041081DE2C4BC00F2F92E /* Messages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Messages.plist; sourceTree = "<group>"; };
 		D15045D41DE422CB008DE46E /* BotConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BotConfiguration.plist; sourceTree = "<group>"; };
 		D175AD4A1CEF0CD500BB9442 /* KoreBotSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KoreBotSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -269,6 +273,15 @@
 				CDB86A0524C00CD000D1CCC7 /* TaskMenu.json */,
 			);
 			path = TaskMenu;
+			sourceTree = "<group>";
+		};
+		CDB86A0D24C0126000D1CCC7 /* TableList */ = {
+			isa = PBXGroup;
+			children = (
+				CDB86A1024C0128F00D1CCC7 /* TableListBubbleView.swift */,
+				CDB86A0E24C0127C00D1CCC7 /* TableListData.swift */,
+			);
+			path = TableList;
 			sourceTree = "<group>";
 		};
 		D15041071DE2C48A00F2F92E /* Data */ = {
@@ -486,6 +499,7 @@
 				D1F3389B2201D99A005BE5F1 /* Table */,
 				D1F338A72201D99A005BE5F1 /* Menu */,
 				D1F338A92201D99A005BE5F1 /* ListBubbleView.swift */,
+				CDB86A0D24C0126000D1CCC7 /* TableList */,
 				CDB869F424C0093A00D1CCC7 /* NewList */,
 				D1F338AA2201D99A005BE5F1 /* Text */,
 			);
@@ -794,6 +808,7 @@
 				D1F338CD2201D99A005BE5F1 /* KREComponent+CoreDataClass.swift in Sources */,
 				D1F338D12201D99A005BE5F1 /* AudioController.swift in Sources */,
 				D1F338DE2201D99A005BE5F1 /* KREUtilities.m in Sources */,
+				CDB86A0F24C0127C00D1CCC7 /* TableListData.swift in Sources */,
 				D1F338D62201D99A005BE5F1 /* Thread.swift in Sources */,
 				D1F338F92201D99A005BE5F1 /* InputTOWebViewController.swift in Sources */,
 				D1F338C42201D99A005BE5F1 /* DataStoreManager.swift in Sources */,
@@ -809,6 +824,7 @@
 				D1F338CA2201D99A005BE5F1 /* KREMessage+CoreDataClass.swift in Sources */,
 				D1F338FC2201D99A005BE5F1 /* KRETypingStatusView.m in Sources */,
 				D1F338D72201D99A005BE5F1 /* Component.swift in Sources */,
+				CDB86A1124C0128F00D1CCC7 /* TableListBubbleView.swift in Sources */,
 				D1F338E22201D99A005BE5F1 /* CarouselBubbleView.swift in Sources */,
 				D1F338F02201D99A005BE5F1 /* ResponsiveCustonCell.swift in Sources */,
 				D1F338DA2201D99A005BE5F1 /* AudioComposeView.swift in Sources */,

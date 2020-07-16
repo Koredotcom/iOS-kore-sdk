@@ -287,6 +287,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         else if (templateType == "listView") {
             return .newList
         }
+        else if (templateType == "tableList") {
+            return .tableList
+        }
         return .text
     }
     
