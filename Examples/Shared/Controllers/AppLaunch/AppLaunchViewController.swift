@@ -99,7 +99,7 @@ class AppLaunchViewController: UIViewController {
 //             kaBotClient.tryConnect()
             kaBotClient.connect(block: { [weak self] (client, thread) in
               
-                if !SDKConfiguration.widgetConfig.isPAnelView {
+                if !SDKConfiguration.widgetConfig.isPanelView {
                     self?.navigateToChatViewController(client: client, thread: thread)
                 }else{
                     if !clientIdForWidget.hasPrefix("<") && !clientSecretForWidget.hasPrefix("<") && !chatBotNameForWidget.hasPrefix("<") && !botIdForWidget.hasPrefix("<") && !identityForWidget.hasPrefix("<") {
