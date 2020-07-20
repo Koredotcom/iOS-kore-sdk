@@ -20,7 +20,8 @@ public class Componentss: NSObject, Decodable {
       public var endDate: String?
       public var text_message: String?
       public var title: String?
-      
+      public var quickReplies: [QuickRepliesWelcomeData]?
+    
     enum ColorCodeKeys: String, CodingKey {
             case template_type = "template_type"
             case text = "text"
@@ -33,6 +34,7 @@ public class Componentss: NSObject, Decodable {
             case endDate = "endDate"
             case text_message = "text_message"
             case title = "title"
+            case quickReplies = "quick_replies"
        }
        
        // MARK: - init
@@ -53,6 +55,7 @@ public class Componentss: NSObject, Decodable {
            endDate = try? container.decode(String.self, forKey: .endDate)
            text_message = try? container.decode(String.self, forKey: .text_message)
            title = try? container.decode(String.self, forKey: .title)
+           quickReplies = try? container.decode([QuickRepliesWelcomeData].self, forKey: .quickReplies)
        }
 }
 // MARK: - Elements

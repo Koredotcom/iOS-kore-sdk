@@ -14,6 +14,9 @@
 		CD89236724C55BAC006F71DE /* CalenderBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD89236424C55BAB006F71DE /* CalenderBubbleView.swift */; };
 		CD89236824C55BAC006F71DE /* CalenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD89236524C55BAB006F71DE /* CalenderViewController.swift */; };
 		CD89236924C55BAC006F71DE /* CalenderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD89236624C55BAB006F71DE /* CalenderViewController.xib */; };
+		CD89236D24C5614E006F71DE /* QuickRepliesData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD89236B24C5614D006F71DE /* QuickRepliesData.swift */; };
+		CD89236E24C5614E006F71DE /* QuickReplyWelcomeBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD89236C24C5614E006F71DE /* QuickReplyWelcomeBubbleView.swift */; };
+		CD89237024C562A2006F71DE /* QuickReplyCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD89236F24C562A2006F71DE /* QuickReplyCollectionViewFlowLayout.swift */; };
 		CDB869FB24C0093A00D1CCC7 /* NewListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB869F524C0093A00D1CCC7 /* NewListData.swift */; };
 		CDB869FC24C0093A00D1CCC7 /* NewListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDB869F724C0093A00D1CCC7 /* NewListTableViewCell.xib */; };
 		CDB869FD24C0093A00D1CCC7 /* NewListBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB869F824C0093A00D1CCC7 /* NewListBubbleView.swift */; };
@@ -112,6 +115,9 @@
 		CD89236424C55BAB006F71DE /* CalenderBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalenderBubbleView.swift; sourceTree = "<group>"; };
 		CD89236524C55BAB006F71DE /* CalenderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalenderViewController.swift; sourceTree = "<group>"; };
 		CD89236624C55BAB006F71DE /* CalenderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalenderViewController.xib; sourceTree = "<group>"; };
+		CD89236B24C5614D006F71DE /* QuickRepliesData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickRepliesData.swift; sourceTree = "<group>"; };
+		CD89236C24C5614E006F71DE /* QuickReplyWelcomeBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickReplyWelcomeBubbleView.swift; sourceTree = "<group>"; };
+		CD89236F24C562A2006F71DE /* QuickReplyCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickReplyCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		CDB869F524C0093A00D1CCC7 /* NewListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewListData.swift; sourceTree = "<group>"; };
 		CDB869F724C0093A00D1CCC7 /* NewListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewListTableViewCell.xib; sourceTree = "<group>"; };
 		CDB869F824C0093A00D1CCC7 /* NewListBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewListBubbleView.swift; sourceTree = "<group>"; };
@@ -256,6 +262,16 @@
 				CD89236624C55BAB006F71DE /* CalenderViewController.xib */,
 			);
 			path = CalenderView;
+			sourceTree = "<group>";
+		};
+		CD89236A24C56124006F71DE /* Quick Reply Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				CD89236C24C5614E006F71DE /* QuickReplyWelcomeBubbleView.swift */,
+				CD89236B24C5614D006F71DE /* QuickRepliesData.swift */,
+				CD89236F24C562A2006F71DE /* QuickReplyCollectionViewFlowLayout.swift */,
+			);
+			path = "Quick Reply Welcome";
 			sourceTree = "<group>";
 		};
 		CDB869F424C0093A00D1CCC7 /* NewList */ = {
@@ -515,6 +531,7 @@
 				D1F3389B2201D99A005BE5F1 /* Table */,
 				D1F338A72201D99A005BE5F1 /* Menu */,
 				D1F338A92201D99A005BE5F1 /* ListBubbleView.swift */,
+				CD89236A24C56124006F71DE /* Quick Reply Welcome */,
 				CD89236324C55B7E006F71DE /* CalenderView */,
 				CDB86A0D24C0126000D1CCC7 /* TableList */,
 				CDB869F424C0093A00D1CCC7 /* NewList */,
@@ -810,6 +827,7 @@
 				D1F338C82201D99A005BE5F1 /* DataModel.xcdatamodeld in Sources */,
 				D1F338C52201D99A005BE5F1 /* Common.swift in Sources */,
 				CDB869FB24C0093A00D1CCC7 /* NewListData.swift in Sources */,
+				CD89236E24C5614E006F71DE /* QuickReplyWelcomeBubbleView.swift in Sources */,
 				D1F338DC2201D99A005BE5F1 /* KRELayoutManager.m in Sources */,
 				D1F338E12201D99A005BE5F1 /* BalloonMarker.swift in Sources */,
 				D1F338C32201D99A005BE5F1 /* CoreDataManager.swift in Sources */,
@@ -818,6 +836,7 @@
 				D1F338CB2201D99A005BE5F1 /* KREContact+CoreDataProperties.swift in Sources */,
 				D1F338E92201D99A005BE5F1 /* MiniTableBubbleView.swift in Sources */,
 				D1F338E72201D99A005BE5F1 /* BubbleView.swift in Sources */,
+				CD89236D24C5614E006F71DE /* QuickRepliesData.swift in Sources */,
 				D1F338EA2201D99A005BE5F1 /* CustomCollectionViewLayout.swift in Sources */,
 				D1F338FA2201D99A005BE5F1 /* KRETypingActivityIndicator.m in Sources */,
 				D1F338DD2201D99A005BE5F1 /* KREAttributedLabel.m in Sources */,
@@ -865,6 +884,7 @@
 				CDB86A0B24C00CD000D1CCC7 /* TaskMenuData.swift in Sources */,
 				D1F338F72201D99A005BE5F1 /* TableTemplateViewController.swift in Sources */,
 				CD89236724C55BAC006F71DE /* CalenderBubbleView.swift in Sources */,
+				CD89237024C562A2006F71DE /* QuickReplyCollectionViewFlowLayout.swift in Sources */,
 				D1F338D52201D99A005BE5F1 /* Message.swift in Sources */,
 				D1F338EF2201D99A005BE5F1 /* ExpandedTableViewCell.swift in Sources */,
 				D1F338D42201D99A005BE5F1 /* Identity.swift in Sources */,

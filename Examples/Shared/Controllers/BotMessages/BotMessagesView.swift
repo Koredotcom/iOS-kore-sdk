@@ -78,7 +78,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(MenuBubbleCell.self, forCellReuseIdentifier:"MenuBubbleCell")
         self.tableView.register(NewListBubbleCell.self, forCellReuseIdentifier:"NewListBubbleCell")
         self.tableView.register(TableListBubbleCell.self, forCellReuseIdentifier:"TableListBubbleCell")
-         self.tableView.register(CalendarBubbleCell.self, forCellReuseIdentifier:"CalendarBubbleCell")
+        self.tableView.register(CalendarBubbleCell.self, forCellReuseIdentifier:"CalendarBubbleCell")
+        self.tableView.register(QuickRepliesWelcomeCell.self, forCellReuseIdentifier:"QuickRepliesWelcomeCell")
 
     }
     
@@ -170,6 +171,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 break
             case .calendarView:
                 cellIdentifier = "CalendarBubbleCell"
+                break
+            case .quick_replies_welcome:
+                cellIdentifier = "QuickRepliesWelcomeCell"
                 break
             }
             
@@ -290,6 +294,13 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         case .calendarView:
             //let bubbleView: CalenderBubbleView = cell.bubbleView as! CalenderBubbleView
             isCalenderView = true
+            cell.bubbleView.drawBorder = true
+            break
+        case .quick_replies_welcome:
+            let bubbleView: QuickReplyWelcomeBubbleView = cell.bubbleView as! QuickReplyWelcomeBubbleView
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+            }
             cell.bubbleView.drawBorder = true
             break
         }

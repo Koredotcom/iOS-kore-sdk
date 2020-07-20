@@ -250,6 +250,9 @@ open class KABotClient: NSObject {
         else if (templateType == "daterange" || templateType == "dateTemplate") {
             return .calendarView
         }
+        else if (templateType == "quick_replies_welcome"){
+            return .quick_replies_welcome
+        }
         return .text
     }
     

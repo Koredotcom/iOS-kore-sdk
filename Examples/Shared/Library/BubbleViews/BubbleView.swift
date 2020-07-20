@@ -99,6 +99,9 @@ class BubbleView: UIView {
         case .calendarView:
                 bubbleView = CalenderBubbleView()
             break
+        case .quick_replies_welcome:
+                bubbleView = QuickReplyWelcomeBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         
