@@ -11,6 +11,9 @@
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		1D9FA1702AE04EE1A8F6AF2C /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */; };
+		CD89236724C55BAC006F71DE /* CalenderBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD89236424C55BAB006F71DE /* CalenderBubbleView.swift */; };
+		CD89236824C55BAC006F71DE /* CalenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD89236524C55BAB006F71DE /* CalenderViewController.swift */; };
+		CD89236924C55BAC006F71DE /* CalenderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD89236624C55BAB006F71DE /* CalenderViewController.xib */; };
 		CDB869FB24C0093A00D1CCC7 /* NewListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB869F524C0093A00D1CCC7 /* NewListData.swift */; };
 		CDB869FC24C0093A00D1CCC7 /* NewListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDB869F724C0093A00D1CCC7 /* NewListTableViewCell.xib */; };
 		CDB869FD24C0093A00D1CCC7 /* NewListBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB869F824C0093A00D1CCC7 /* NewListBubbleView.swift */; };
@@ -106,6 +109,9 @@
 		5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD18E3E19876E3486C39D351 /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		CD89236424C55BAB006F71DE /* CalenderBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalenderBubbleView.swift; sourceTree = "<group>"; };
+		CD89236524C55BAB006F71DE /* CalenderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalenderViewController.swift; sourceTree = "<group>"; };
+		CD89236624C55BAB006F71DE /* CalenderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalenderViewController.xib; sourceTree = "<group>"; };
 		CDB869F524C0093A00D1CCC7 /* NewListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewListData.swift; sourceTree = "<group>"; };
 		CDB869F724C0093A00D1CCC7 /* NewListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewListTableViewCell.xib; sourceTree = "<group>"; };
 		CDB869F824C0093A00D1CCC7 /* NewListBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewListBubbleView.swift; sourceTree = "<group>"; };
@@ -240,6 +246,16 @@
 				72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CD89236324C55B7E006F71DE /* CalenderView */ = {
+			isa = PBXGroup;
+			children = (
+				CD89236424C55BAB006F71DE /* CalenderBubbleView.swift */,
+				CD89236524C55BAB006F71DE /* CalenderViewController.swift */,
+				CD89236624C55BAB006F71DE /* CalenderViewController.xib */,
+			);
+			path = CalenderView;
 			sourceTree = "<group>";
 		};
 		CDB869F424C0093A00D1CCC7 /* NewList */ = {
@@ -499,6 +515,7 @@
 				D1F3389B2201D99A005BE5F1 /* Table */,
 				D1F338A72201D99A005BE5F1 /* Menu */,
 				D1F338A92201D99A005BE5F1 /* ListBubbleView.swift */,
+				CD89236324C55B7E006F71DE /* CalenderView */,
 				CDB86A0D24C0126000D1CCC7 /* TableList */,
 				CDB869F424C0093A00D1CCC7 /* NewList */,
 				D1F338AA2201D99A005BE5F1 /* Text */,
@@ -720,6 +737,7 @@
 				D1F338F82201D99A005BE5F1 /* TableTemplateViewController.xib in Resources */,
 				D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */,
 				D1F338E42201D99A005BE5F1 /* ImageComponentCollectionViewCell.xib in Resources */,
+				CD89236924C55BAC006F71DE /* CalenderViewController.xib in Resources */,
 				D1F338FB2201D99A005BE5F1 /* KRETypingCollectionViewCell.xib in Resources */,
 				D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */,
 				D1F338F62201D99A005BE5F1 /* ChatMessagesViewController.xib in Resources */,
@@ -846,6 +864,7 @@
 				D1F338DB2201D99A005BE5F1 /* NSMutableAttributedString+KREUtils.m in Sources */,
 				CDB86A0B24C00CD000D1CCC7 /* TaskMenuData.swift in Sources */,
 				D1F338F72201D99A005BE5F1 /* TableTemplateViewController.swift in Sources */,
+				CD89236724C55BAC006F71DE /* CalenderBubbleView.swift in Sources */,
 				D1F338D52201D99A005BE5F1 /* Message.swift in Sources */,
 				D1F338EF2201D99A005BE5F1 /* ExpandedTableViewCell.swift in Sources */,
 				D1F338D42201D99A005BE5F1 /* Identity.swift in Sources */,
@@ -856,6 +875,7 @@
 				D1F338EB2201D99A005BE5F1 /* CustomCollectionViewCell.swift in Sources */,
 				D1F338F42201D99A005BE5F1 /* TextBubbleView.swift in Sources */,
 				CDB869FF24C0093A00D1CCC7 /* NewListTableViewCell.swift in Sources */,
+				CD89236824C55BAC006F71DE /* CalenderViewController.swift in Sources */,
 				D1F339012201D99A005BE5F1 /* AppLaunchViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

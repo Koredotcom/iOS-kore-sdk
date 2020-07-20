@@ -15,6 +15,7 @@ protocol BotMessagesViewDelegate {
     func populateQuickReplyCards(with message: KREMessage?)
     func closeQuickReplyCards()
     func optionsButtonTapNewAction(text:String, payload:String)
+    func populateCalenderView(with message: KREMessage?)
 }
 
 class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFetchedResultsControllerDelegate {
@@ -77,6 +78,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(MenuBubbleCell.self, forCellReuseIdentifier:"MenuBubbleCell")
         self.tableView.register(NewListBubbleCell.self, forCellReuseIdentifier:"NewListBubbleCell")
         self.tableView.register(TableListBubbleCell.self, forCellReuseIdentifier:"TableListBubbleCell")
+         self.tableView.register(CalendarBubbleCell.self, forCellReuseIdentifier:"CalendarBubbleCell")
 
     }
     
@@ -166,6 +168,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .tableList:
                 cellIdentifier = "TableListBubbleCell"
                 break
+            case .calendarView:
+                cellIdentifier = "CalendarBubbleCell"
+                break
             }
             
         }
@@ -177,6 +182,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         }
         
         var isQuickReply = false
+        var isCalenderView = false
         
         switch (cell.bubbleView.bubbleType!) {
         case .text:
@@ -281,6 +287,11 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             
             cell.bubbleView.drawBorder = true
             break
+        case .calendarView:
+            //let bubbleView: CalenderBubbleView = cell.bubbleView as! CalenderBubbleView
+            isCalenderView = true
+            cell.bubbleView.drawBorder = true
+            break
         }
         let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
         if firstIndexPath.isEqual(indexPath) {
@@ -288,6 +299,10 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 self.viewDelegate?.populateQuickReplyCards(with: message)
             }else{
                 self.viewDelegate?.closeQuickReplyCards()
+            }
+            
+            if isCalenderView{
+                self.viewDelegate?.populateCalenderView(with: message)
             }
         }
         

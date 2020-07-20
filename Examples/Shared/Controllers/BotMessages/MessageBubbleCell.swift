@@ -368,3 +368,15 @@ class TableListBubbleCell : MessageBubbleCell {
         }
     }
 }
+class CalendarBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .calendarView
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}

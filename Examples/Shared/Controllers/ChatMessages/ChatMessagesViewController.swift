@@ -13,7 +13,7 @@ import KoreBotSDK
 import CoreData
 import Mantle
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuDelegate{
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuDelegate, calenderSelectDelegate{
     
     // MARK: properties
     var messagesRequestInProgress: Bool = false
@@ -289,6 +289,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
         else if (templateType == "tableList") {
             return .tableList
+        }
+        else if (templateType == "daterange" || templateType == "dateTemplate") {
+            return .calendarView
         }
         return .text
     }
@@ -776,6 +779,27 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             self.view.layoutIfNeeded()
         }) { (Bool) in
             
+        }
+    }
+    
+    func populateCalenderView(with message: KREMessage?) {
+        var messageId = ""
+        if message?.templateType == (ComponentType.calendarView.rawValue as NSNumber) {
+            let component: KREComponent = message!.components![0] as! KREComponent
+            print(component)
+            if (!component.isKind(of: KREComponent.self)) {
+                return;
+            }
+            if (component.message != nil) {
+                messageId = component.message!.messageId!
+            }
+            if ((component.componentDesc) != nil) {
+                let jsonString = component.componentDesc
+                let calenderViewController = CalenderViewController(dataString: jsonString!, chatId: messageId, kreMessage: message!)
+                calenderViewController.viewDelegate = self
+                calenderViewController.modalPresentationStyle = .overFullScreen
+                self.navigationController?.present(calenderViewController, animated: true, completion: nil)
+            }
         }
     }
     

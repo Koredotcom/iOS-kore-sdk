@@ -15,7 +15,12 @@ public class Componentss: NSObject, Decodable {
       public var buttons: [ComponentItemAction]?
       public var moreData: ComponentMoreData?
       public var heading: String?
-    
+      public var format: String?
+      public var startDate: String?
+      public var endDate: String?
+      public var text_message: String?
+      public var title: String?
+      
     enum ColorCodeKeys: String, CodingKey {
             case template_type = "template_type"
             case text = "text"
@@ -23,6 +28,11 @@ public class Componentss: NSObject, Decodable {
             case buttons = "buttons"
             case moreData = "moreData"
             case heading = "heading"
+            case format = "format"
+            case startDate = "startDate"
+            case endDate = "endDate"
+            case text_message = "text_message"
+            case title = "title"
        }
        
        // MARK: - init
@@ -38,6 +48,11 @@ public class Componentss: NSObject, Decodable {
            buttons = try? container.decode([ComponentItemAction].self, forKey: .buttons)
            moreData = try? container.decode(ComponentMoreData.self, forKey: .moreData)
            heading = try? container.decode(String.self, forKey: .heading)
+           format = try? container.decode(String.self, forKey: .format)
+           startDate = try? container.decode(String.self, forKey: .startDate)
+           endDate = try? container.decode(String.self, forKey: .endDate)
+           text_message = try? container.decode(String.self, forKey: .text_message)
+           title = try? container.decode(String.self, forKey: .title)
        }
 }
 // MARK: - Elements
