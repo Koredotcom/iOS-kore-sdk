@@ -8,7 +8,7 @@
 
 import UIKit
 import KoreBotSDK
-/*
+
 class SDKConfiguration: NSObject {
     
     struct dataStoreConfig {
@@ -38,89 +38,6 @@ class SDKConfiguration: NSObject {
         
         static let BOT_SERVER = String(format: "https://bots.kore.ai/")
     }
-    
-    // googleapi speech API_KEY
-    struct speechConfig {
-        static let API_KEY = "<speech_api_key>"
-    }
-}*/
-class SDKConfiguration: NSObject {
-    
-    struct dataStoreConfig {
-        static let resetDataStoreOnConnect = true // This should be either true or false. Conversation with the bot will be persisted, if it is false.
-    }
-    
-    struct botConfig {
-        static let clientId = "cs-9316258a-4194-5315-8200-d71dd345bd84"
-
-        static let clientSecret = "hVWNra707jgy2kyQaw3DpkDQOn4i+4YrAR4gjbWG7/g="
-        static let botId = "st-5dc1c13a-a4e8-5ab1-a611-2faf4ceed2d0"
-
-        static let chatBotName = "New Templates"
-
-        static let identity = "varsha.poshala@kore.com"
-
-        static let isAnonymous = true
-    }
-
-    struct serverConfig {
-        static let JWT_SERVER = String(format: "https://demo.kore.net/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
-
-        static func koreJwtUrl() -> String {
-            return String(format: "%@users/sts", JWT_SERVER)
-        }
-
-        static let BOT_SERVER = String(format: "https://bots.kore.ai/")
-    }
-    
-    
-    
-//    struct botConfig {
-//            static let clientId = "cs-a677c7bd-75af-5c14-8f20-a7fccc8753bd"
-//
-//            static let clientSecret = "5lqiTkUCEykR2omAwp54Ps//7hmQX9WtcuaO2+tIiRQ="
-//            static let botId = "st-ebb0ec51-28b9-5846-900f-baa98d069684"
-//
-//            static let chatBotName = "Banking Solution 2.0"
-//
-//            static let identity = "sainath.bhima@kore.com"
-//
-//            static let isAnonymous = true
-//    }
-//
-//        struct serverConfig {
-//            static let JWT_SERVER = String(format: "https://demo.kore.net/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
-//              static func koreJwtUrl() -> String {
-//
-//              return String(format: "%@users/sts", JWT_SERVER)
-//
-//              }
-//        static let BOT_SERVER = String(format: "https://bots.kore.ai/") //"https://qa1-bots.kore.ai/"
-//
-//    }
-    
-//            struct botConfig {
-//                static let clientId = "cs-a677c7bd-75af-5c14-8f20-a7fccc8753bd"
-//
-//                static let clientSecret = "5lqiTkUCEykR2omAwp54Ps//7hmQX9WtcuaO2+tIiRQ="
-//                static let botId = "st-4c43bf14-ac30-51e2-80e9-0f69f246b4a9"
-//
-//                static let chatBotName = "Banking Solution 2.0"
-//
-//                static let identity = "sainath.bhima@kore.com"
-//
-//                static let isAnonymous = true
-//            }
-//
-//            struct serverConfig {
-//                static let JWT_SERVER = String(format: "https://demo.kore.net/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
-//
-//                static func koreJwtUrl() -> String {
-//                    return String(format: "%@users/sts", JWT_SERVER)
-//                }
-//
-//                static let BOT_SERVER = String(format: "https://bots.kore.ai/")
-//            }
     
     // googleapi speech API_KEY
     struct speechConfig {
