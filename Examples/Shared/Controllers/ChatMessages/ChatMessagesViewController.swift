@@ -296,6 +296,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         else if (templateType == "quick_replies_welcome"){
             return .quick_replies_welcome
         }
+        else if (templateType == "Notification") {
+            return .notification
+        }
         return .text
     }
     

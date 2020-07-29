@@ -21,6 +21,12 @@ public class Componentss: NSObject, Decodable {
       public var text_message: String?
       public var title: String?
       public var quickReplies: [QuickRepliesWelcomeData]?
+      public var moreCount: Int?
+      public var seeMore: Bool?
+      public var image_url: String?
+      public var subtitle: String?
+    
+    
     
     enum ColorCodeKeys: String, CodingKey {
             case template_type = "template_type"
@@ -35,6 +41,11 @@ public class Componentss: NSObject, Decodable {
             case text_message = "text_message"
             case title = "title"
             case quickReplies = "quick_replies"
+            case moreCount = "moreCount"
+            case seeMore = "seeMore"
+            case image_url = "image_url"
+            case subtitle = "subtitle"
+        
        }
        
        // MARK: - init
@@ -56,6 +67,10 @@ public class Componentss: NSObject, Decodable {
            text_message = try? container.decode(String.self, forKey: .text_message)
            title = try? container.decode(String.self, forKey: .title)
            quickReplies = try? container.decode([QuickRepliesWelcomeData].self, forKey: .quickReplies)
+           moreCount = try? container.decode(Int.self, forKey: .moreCount)
+           seeMore = try? container.decode(Bool.self, forKey: .seeMore)
+           image_url = try? container.decode(String.self, forKey: .image_url)
+           subtitle = try? container.decode(String.self, forKey: .subtitle)
        }
 }
 // MARK: - Elements
@@ -101,6 +116,9 @@ public class ComponentItemAction: NSObject, Decodable {
     public var type: String?
     public var fallback_url: String?
     public var url: String?
+    public var name: String?
+    public var postback: PostbackAction?
+    
 
     enum ActionKeys: String, CodingKey {
         case payload = "payload"
@@ -108,6 +126,8 @@ public class ComponentItemAction: NSObject, Decodable {
         case type = "type"
         case fallback_url = "fallback_url"
         case url = "url"
+        case name = "name"
+        case postback = "postback"
         
     }
     
@@ -123,6 +143,8 @@ public class ComponentItemAction: NSObject, Decodable {
         type = try? container.decode(String.self, forKey: .type)
         fallback_url = try? container.decode(String.self, forKey: .fallback_url)
         url = try? container.decode(String.self, forKey: .url)
+        name = try? container.decode(String.self, forKey: .name)
+        postback  = try? container.decode(PostbackAction.self, forKey: .postback)
     }
 }
 // MARK: - MoreData
@@ -176,5 +198,26 @@ public class Tabs: NSObject, Decodable {
         image_url = try? container.decode(String.self, forKey: .image_url)
         value = try? container.decode(String.self, forKey: .value)
         action = try? container.decode(ComponentItemAction.self, forKey: .action)
+    }
+}
+
+
+// MARK: - Postback
+public class PostbackAction: NSObject, Decodable {
+    public var value: String?
+    
+    enum ColorCodeKeys: String, CodingKey {
+        case value = "value"
+    }
+    
+    // MARK: - init
+    public override init() {
+        super.init()
+    }
+    
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: ColorCodeKeys.self)
+        value = try? container.decode(String.self, forKey: .value)
+       
     }
 }

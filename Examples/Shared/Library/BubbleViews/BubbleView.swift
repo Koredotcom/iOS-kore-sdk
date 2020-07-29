@@ -102,6 +102,9 @@ class BubbleView: UIView {
         case .quick_replies_welcome:
                 bubbleView = QuickReplyWelcomeBubbleView()
             break
+        case .notification:
+                bubbleView = NotificationBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         

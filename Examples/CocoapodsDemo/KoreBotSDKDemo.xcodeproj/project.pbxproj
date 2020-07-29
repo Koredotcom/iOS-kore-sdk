@@ -11,6 +11,9 @@
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		1D9FA1702AE04EE1A8F6AF2C /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */; };
+		CD4BFFF924D16091008E08CE /* NotificationBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BFFF824D16091008E08CE /* NotificationBubbleView.swift */; };
+		CD4BFFFC24D160CA008E08CE /* NotificationCustomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD4BFFFA24D160CA008E08CE /* NotificationCustomView.xib */; };
+		CD4BFFFD24D160CA008E08CE /* NotificationCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BFFFB24D160CA008E08CE /* NotificationCustomView.swift */; };
 		CD89236724C55BAC006F71DE /* CalenderBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD89236424C55BAB006F71DE /* CalenderBubbleView.swift */; };
 		CD89236824C55BAC006F71DE /* CalenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD89236524C55BAB006F71DE /* CalenderViewController.swift */; };
 		CD89236924C55BAC006F71DE /* CalenderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD89236624C55BAB006F71DE /* CalenderViewController.xib */; };
@@ -112,6 +115,9 @@
 		5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD18E3E19876E3486C39D351 /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		CD4BFFF824D16091008E08CE /* NotificationBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationBubbleView.swift; sourceTree = "<group>"; };
+		CD4BFFFA24D160CA008E08CE /* NotificationCustomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCustomView.xib; sourceTree = "<group>"; };
+		CD4BFFFB24D160CA008E08CE /* NotificationCustomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCustomView.swift; sourceTree = "<group>"; };
 		CD89236424C55BAB006F71DE /* CalenderBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalenderBubbleView.swift; sourceTree = "<group>"; };
 		CD89236524C55BAB006F71DE /* CalenderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalenderViewController.swift; sourceTree = "<group>"; };
 		CD89236624C55BAB006F71DE /* CalenderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalenderViewController.xib; sourceTree = "<group>"; };
@@ -252,6 +258,24 @@
 				72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CD4BFFF724D16073008E08CE /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				CD4BFFF824D16091008E08CE /* NotificationBubbleView.swift */,
+				CD4BFFFE24D160D5008E08CE /* CustomView */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		CD4BFFFE24D160D5008E08CE /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+				CD4BFFFB24D160CA008E08CE /* NotificationCustomView.swift */,
+				CD4BFFFA24D160CA008E08CE /* NotificationCustomView.xib */,
+			);
+			path = CustomView;
 			sourceTree = "<group>";
 		};
 		CD89236324C55B7E006F71DE /* CalenderView */ = {
@@ -531,6 +555,7 @@
 				D1F3389B2201D99A005BE5F1 /* Table */,
 				D1F338A72201D99A005BE5F1 /* Menu */,
 				D1F338A92201D99A005BE5F1 /* ListBubbleView.swift */,
+				CD4BFFF724D16073008E08CE /* Notification */,
 				CD89236A24C56124006F71DE /* Quick Reply Welcome */,
 				CD89236324C55B7E006F71DE /* CalenderView */,
 				CDB86A0D24C0126000D1CCC7 /* TableList */,
@@ -749,6 +774,7 @@
 				D1F339022201D99A005BE5F1 /* AppLaunchViewController.xib in Resources */,
 				CDB86A0824C00CD000D1CCC7 /* TaskMenuTablViewCell.xib in Resources */,
 				D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */,
+				CD4BFFFC24D160CA008E08CE /* NotificationCustomView.xib in Resources */,
 				D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */,
 				D1F338E62201D99A005BE5F1 /* MultiImageBubbleView.xib in Resources */,
 				D1F338F82201D99A005BE5F1 /* TableTemplateViewController.xib in Resources */,
@@ -857,6 +883,7 @@
 				D1F338C72201D99A005BE5F1 /* KREThread+CoreDataClass.swift in Sources */,
 				D1F338CC2201D99A005BE5F1 /* KREContact+CoreDataClass.swift in Sources */,
 				D1F339002201D99A005BE5F1 /* MessageBubbleCell.swift in Sources */,
+				CD4BFFF924D16091008E08CE /* NotificationBubbleView.swift in Sources */,
 				D1F338FD2201D99A005BE5F1 /* KRETypingCollectionViewCell.m in Sources */,
 				D1F338CA2201D99A005BE5F1 /* KREMessage+CoreDataClass.swift in Sources */,
 				D1F338FC2201D99A005BE5F1 /* KRETypingStatusView.m in Sources */,
@@ -867,6 +894,7 @@
 				D1F338DA2201D99A005BE5F1 /* AudioComposeView.swift in Sources */,
 				D1F338F52201D99A005BE5F1 /* ChatMessagesViewController.swift in Sources */,
 				D1F338FE2201D99A005BE5F1 /* BotMessagesView.swift in Sources */,
+				CD4BFFFD24D160CA008E08CE /* NotificationCustomView.swift in Sources */,
 				D1F338F32201D99A005BE5F1 /* ListBubbleView.swift in Sources */,
 				D1F338E52201D99A005BE5F1 /* ImageComponentCollectionViewCell.swift in Sources */,
 				D1F338E02201D99A005BE5F1 /* ChartBubbleView.swift in Sources */,

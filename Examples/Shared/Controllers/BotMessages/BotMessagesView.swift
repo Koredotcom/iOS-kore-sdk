@@ -80,6 +80,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(TableListBubbleCell.self, forCellReuseIdentifier:"TableListBubbleCell")
         self.tableView.register(CalendarBubbleCell.self, forCellReuseIdentifier:"CalendarBubbleCell")
         self.tableView.register(QuickRepliesWelcomeCell.self, forCellReuseIdentifier:"QuickRepliesWelcomeCell")
+        self.tableView.register(NotificationBubbleCell.self, forCellReuseIdentifier:"NotificationBubbleCell")
 
     }
     
@@ -174,6 +175,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 break
             case .quick_replies_welcome:
                 cellIdentifier = "QuickRepliesWelcomeCell"
+                break
+            case .notification:
+                cellIdentifier = "NotificationBubbleCell"
                 break
             }
             
@@ -302,6 +306,12 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
             }
             cell.bubbleView.drawBorder = true
+            break
+        case .notification:
+            let bubbleView: NotificationBubbleView = cell.bubbleView as! NotificationBubbleView
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+            }
             break
         }
         let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)

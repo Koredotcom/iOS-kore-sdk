@@ -253,6 +253,9 @@ open class KABotClient: NSObject {
         else if (templateType == "quick_replies_welcome"){
             return .quick_replies_welcome
         }
+        else if (templateType == "Notification") {
+            return .notification
+        }
         return .text
     }
     

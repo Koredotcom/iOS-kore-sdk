@@ -394,3 +394,22 @@ class QuickRepliesWelcomeCell : MessageBubbleCell {
         }
     }
 }
+
+class NotificationBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .notification
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleLeadingConstraint.constant = 0
+            self.bubbleTrailingConstraint.constant = 0
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+    
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        self.senderImageView.isHidden = true
+    }
+}
