@@ -78,6 +78,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
 //        self.configureBotClient()
         self.configureSTTClient()
         
+        self.configureViewForKeyboard(true)
         
         isSpeakingEnabled = true
         self.speechSynthesizer = AVSpeechSynthesizer()

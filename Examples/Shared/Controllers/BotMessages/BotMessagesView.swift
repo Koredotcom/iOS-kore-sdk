@@ -215,8 +215,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         case .options:
             let bubbleView: OptionsBubbleView = cell.bubbleView as! OptionsBubbleView
             self.textLinkDetection(textLabel: bubbleView.textLabel);
-            bubbleView.optionsAction = {[weak self] (text) in
-                self?.viewDelegate?.optionsButtonTapAction(text: text!)
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
             }
             bubbleView.linkAction = {[weak self] (text) in
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
@@ -234,6 +234,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             }
             
             cell.bubbleView.drawBorder = true
+            
             break
         case .quickReply:
             isQuickReply = true
@@ -246,6 +247,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             bubbleView.linkAction = {[weak self] (text) in
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
             }
+            
             break
         case .error:
             let bubbleView: ErrorBubbleView = cell.bubbleView as! ErrorBubbleView

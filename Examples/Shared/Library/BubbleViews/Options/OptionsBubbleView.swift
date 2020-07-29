@@ -16,7 +16,7 @@ class OptionsBubbleView: BubbleView {
     var textLabel: KREAttributedLabel!
     var optionsView: KREOptionsView!
     
-    public var optionsAction: ((_ text: String?) -> Void)!
+    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
     
     override func initialize() {
@@ -49,9 +49,9 @@ class OptionsBubbleView: BubbleView {
         
         self.textLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.vertical)
         
-        self.optionsView.optionsButtonAction = {[weak self] (text) in
+        self.optionsView.optionsButtonAction = {[weak self] (text, payload) in
             if((self?.optionsAction) != nil){
-                self?.optionsAction(text)
+                self?.optionsAction(text, payload)
             }
         }
         self.optionsView.detailLinkAction = {[weak self] (text) in
@@ -69,7 +69,7 @@ class OptionsBubbleView: BubbleView {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
                 let buttons: Array<Dictionary<String, Any>> = jsonObject["buttons"] != nil ? jsonObject["buttons"] as! Array<Dictionary<String, Any>> : []
-                let buttonsCount: Int = min(buttons.count, OptionsBubbleView.buttonsLimit)
+                let buttonsCount: Int = buttons.count //min(buttons.count, OptionsBubbleView.buttonsLimit)
                 var options: Array<KREOption> = Array<KREOption>()
                 
                 for i in 0..<buttonsCount {
