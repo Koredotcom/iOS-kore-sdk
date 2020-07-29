@@ -176,25 +176,13 @@ class ComposeBarView: UIView {
     }
     @objc fileprivate func taskMenuButtonAction(_ sender: UIButton!) {
         self.delegate?.composeBarTaskMenuButtonAction(self)
-        if sender.isSelected {
-            menuButton.isSelected = false
-            self.menuButton.setImage(UIImage.init(named: "Menu"), for: .normal)
-            self.growingTextView.isUserInteractionEnabled = true
-            self.sendButton.isUserInteractionEnabled = true
-            self.speechToTextButton.isUserInteractionEnabled = true
-        }else{
-            menuButton.isSelected = true
-            self.menuButton.setImage(UIImage.init(named: "cancel"), for: .normal)
-            self.growingTextView.isUserInteractionEnabled = false
-            self.sendButton.isUserInteractionEnabled = false
-            self.speechToTextButton.isUserInteractionEnabled = false
-        }
+        self.menuButton.setImage(UIImage.init(named: "Menu"), for: .normal)
+        self.growingTextView.isUserInteractionEnabled = true
+        self.sendButton.isUserInteractionEnabled = true
+        self.speechToTextButton.isUserInteractionEnabled = true
     }
     
     @objc fileprivate func speechToTextButtonAction(_ sender: AnyObject) {
-//        menuButton.isSelected = false
-//        self.menuButton.setImage(UIImage.init(named: "Menu"), for: .normal)
-//        self.growingTextView.isUserInteractionEnabled = true
         self.delegate?.composeBarViewSpeechToTextButtonAction(self)
     }
     

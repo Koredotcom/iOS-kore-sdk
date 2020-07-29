@@ -13,7 +13,7 @@ import KoreBotSDK
 import CoreData
 import Mantle
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuDelegate, calenderSelectDelegate{
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate{
     
     // MARK: properties
     var messagesRequestInProgress: Bool = false
@@ -47,7 +47,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var quickReplyView: KREQuickSelectView!
     var typingStatusView: KRETypingStatusView!
     var webViewController: SFSafariViewController!
-    var menuTaskView = MenuTaskView()
     
     var taskMenuKeyBoard = true
     @IBOutlet weak var taskMenuContainerView: UIView!
@@ -78,7 +77,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.configureTypingStatusView()
 //        self.configureBotClient()
         self.configureSTTClient()
-        self.configureTaskMenu()
+        
         
         isSpeakingEnabled = true
         self.speechSynthesizer = AVSpeechSynthesizer()
@@ -704,18 +703,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.composeBarContainerView.isHidden = !prepare
         self.audioComposeContainerView.isHidden = prepare
     }
-    
-    func configureTaskMenu(){
-        
-        self.menuTaskView = MenuTaskView()
-        self.menuTaskView.translatesAutoresizingMaskIntoConstraints = false
-        self.menuTaskView.viewDelegate = self
-        self.taskMenuContainerView.addSubview(self.menuTaskView)
-    
-        self.taskMenuContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[menuTaskView]|", options:[], metrics:nil, views:["menuTaskView" : self.menuTaskView]))
-        self.taskMenuContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[menuTaskView]|", options:[], metrics:nil, views:["menuTaskView" : self.menuTaskView]))
-    }
-    
+   
     // MARK: BotMessagesDelegate methods
     func optionsButtonTapAction(text: String) {
         self.sendTextMessage(text, options: nil)
@@ -826,21 +814,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     func composeBarTaskMenuButtonAction(_: ComposeBarView) {
         
-        if taskMenuKeyBoard{
-            taskMenuKeyBoard = false
-            if (self.composeView.isFirstResponder) {
-                _ = self.composeView.resignFirstResponder()
-            }
-            self.bottomConstraint.constant = CGFloat(taskMenuHeight)
-            self.taskMenuContainerHeightConstant.constant = CGFloat(taskMenuHeight)
-
-        }else{
-
-            taskMenuKeyBoard = true
-            self.composeView.becomeFirstResponder()
-            self.bottomConstraint.constant = CGFloat(taskMenuHeight)
-            self.taskMenuContainerHeightConstant.constant = 0
+        self.bottomConstraint.constant = 0
+        self.taskMenuContainerHeightConstant.constant = 0
+        if (self.composeView.isFirstResponder) {
+            _ = self.composeView.resignFirstResponder()
         }
+        
+        let taskMenuViewController = TaskMenuViewController()
+        taskMenuViewController.modalPresentationStyle = .overFullScreen
+        taskMenuViewController.viewDelegate = self
+        //taskMenuViewController.view.backgroundColor = .clear
+        self.navigationController?.present(taskMenuViewController, animated: false, completion: nil)
     }
     
     // MARK: KREGrowingTextViewDelegate methods
