@@ -26,13 +26,16 @@ class CalenderViewController: UIViewController {
     @IBOutlet weak var fromDateView: UIView!
     @IBOutlet weak var fromYearLabel: UILabel!
     @IBOutlet weak var fromDateLabel: UILabel!
-    @IBOutlet weak var fromDateButton: UIButton!
-    @IBOutlet weak var dateViewHorzontalConstrain: NSLayoutConstraint!
     
-    @IBOutlet weak var toDateView: UIView!
-    @IBOutlet weak var toYearLabel: UILabel!
-    @IBOutlet weak var toDateLabel: UILabel!
+    
+    @IBOutlet weak var dateRangeView: UIView!
+    @IBOutlet weak var dateRangeSubView: UIView!
+    @IBOutlet weak var fromDateButton: UIButton!
     @IBOutlet weak var toDateButton: UIButton!
+    
+    @IBOutlet weak var fromDateRangeLabel: UILabel!
+    @IBOutlet weak var toDateRangeLabel: UILabel!
+    
     var templateType : String?
     var startdateString : String?
     var endDateString : String?
@@ -54,6 +57,10 @@ class CalenderViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         datePicker.addTarget(self, action: #selector(CalenderViewController.datePickerChanged(datePicker:)), for: UIControl.Event.valueChanged)
+        dateRangeSubView.layer.cornerRadius = 5.0
+        dateRangeSubView.clipsToBounds = true
+        dateRangeSubView.layer.borderWidth = 1.0
+        dateRangeSubView.layer.borderColor = UIColor.lightGray.cgColor
         getData()
     }
 
@@ -71,7 +78,7 @@ class CalenderViewController: UIViewController {
         dateFormatter.dateFormat = "MM-dd-yyyy"
         let todayDate = dateFormatter.string(from: Date())
         
-        headingLabel.text = allItems.text ?? "Please Choose"
+        headingLabel.text = allItems.title ?? "Please Choose"
         endDateString = allItems.endDate ?? todayDate
         templateType = allItems.template_type ?? ""
         startdateString = allItems.startDate ?? todayDate
@@ -83,10 +90,11 @@ class CalenderViewController: UIViewController {
         
         if templateType == "daterange" {
             datePickerOfMinimumMaximum(minimumdate: endDate ?? Date(), maximumDate: endDate ?? Date())
-            clickOnFromDateButton(fromDateButton as Any)
+            clickOnFromDateRangeViewButton(fromDateButton as Any)
+            dateRangeView.isHidden = false
         }else{
             datePickerOfMinimumMaximum(minimumdate: startDate ?? Date(), maximumDate: startDate ?? Date())
-            toDateView.isHidden = true
+            dateRangeView.isHidden = true
             fromDateButton.isUserInteractionEnabled = false
             fromYearLabel.textAlignment = .left
             fromDateLabel.textAlignment = .left
@@ -104,24 +112,18 @@ class CalenderViewController: UIViewController {
         let monthName = datePicker.date.monthName()! as String
         
         if templateType == "daterange" {
-            dateViewHorzontalConstrain.constant = -80
             if fromDateButton.isSelected {
-                fromYearLabel.text = year
-                fromDateLabel.text = "\(dayOfweek), \(monthName) \(day)"
+                fromDateRangeLabel.text = "Start: \(monthName) \(day), \(year)"
                 selectedFromDate = datePicker.date.currentDate()! as Any as? String
             }else{
-                toYearLabel.text = year
-                toDateLabel.text = "\(dayOfweek), \(monthName) \(day)"
+                toDateRangeLabel.text = "End: \(monthName) \(day), \(year)"
                 selectedToDate = datePicker.date.currentDate()! as Any as? String
             }
-            
         }else{
             fromYearLabel.text = year
             fromDateLabel.text = "\(dayOfweek), \(monthName) \(day)"
             selectedFromDate = datePicker.date.currentDate()! as Any as? String
-            dateViewHorzontalConstrain.constant = 0
         }
-        
     }
     
     /*
@@ -133,11 +135,13 @@ class CalenderViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-    @IBAction func clickOnFromDateButton(_ sender: Any) {
+    @IBAction func clickOnFromDateRangeViewButton(_ sender: Any) {
         fromDateButton.isSelected = true
         toDateButton.isSelected = false
-        fromDateButton.backgroundColor = UIColor.init(red: 171/255.0, green: 171/255.0, blue: 171/255.0, alpha: 0.5)
+        fromDateButton.backgroundColor = UIColor.systemBlue
         toDateButton.backgroundColor = .clear
+        fromDateRangeLabel.textColor = .white
+        toDateRangeLabel.textColor = .black
     
         dateFormatter.dateFormat = "MM-dd-yyyy"
         let startDate = dateFormatter.date(from: (endDateString!))
@@ -145,11 +149,13 @@ class CalenderViewController: UIViewController {
         datePickerOfMinimumMaximum(minimumdate: startDate ?? Date(), maximumDate: startDate ?? Date())
     }
     
-    @IBAction func clickOnToDateButton(_ sender: Any) {
+    @IBAction func clickOnToDateRangeViewButton(_ sender: Any) {
         fromDateButton.isSelected = false
         toDateButton.isSelected = true
-        toDateButton.backgroundColor = UIColor.init(red: 171/255.0, green: 171/255.0, blue: 171/255.0, alpha: 0.5)
+        toDateButton.backgroundColor = UIColor.systemBlue
         fromDateButton.backgroundColor = .clear
+        fromDateRangeLabel.textColor = .black
+        toDateRangeLabel.textColor = .white
         
         dateFormatter.dateFormat = "MM-dd-yyyy"
         let startDate = dateFormatter.date(from: selectedFromDate!)

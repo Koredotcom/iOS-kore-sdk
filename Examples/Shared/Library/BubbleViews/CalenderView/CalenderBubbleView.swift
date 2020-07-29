@@ -13,10 +13,17 @@ class CalenderBubbleView: BubbleView {
     
     var tileBgv: UIView!
     var titleLbl: UILabel!
+    var tableView: UITableView!
     var cardView: UIView!
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
     let kMinTextWidth: CGFloat = 20.0
    
+    
+    
+    var arraySelectedHeader = NSMutableArray() //for header checkbox
+    var checkboxIndexPath = [IndexPath]() //for Rows checkbox
+    var arrayOfSeletedValues = [String]()
+    
     let yourAttributes : [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Bold", size: 15.0) as Any,
         NSAttributedString.Key.foregroundColor : UIColor.blue,
@@ -54,11 +61,29 @@ class CalenderBubbleView: BubbleView {
         self.tileBgv.clipsToBounds = true
         self.cardView.addSubview(self.tileBgv)
         self.tileBgv.backgroundColor =  Common.UIColorRGB(0xEDEFF2)
-                
+        
+//        self.tableView = UITableView(frame: CGRect.zero,style:.grouped)
+//        self.tableView.translatesAutoresizingMaskIntoConstraints = false
+//        self.tableView.dataSource = self
+//        self.tableView.delegate = self
+//        self.tableView.backgroundColor = .clear
+//        self.tableView.showsHorizontalScrollIndicator = false
+//        self.tableView.showsVerticalScrollIndicator = true
+//        self.tableView.bounces = false
+//        self.tableView.separatorStyle = .none
+//        self.cardView.addSubview(self.tableView)
+//        self.tableView.isScrollEnabled = true
+//        self.tableView.register(UINib(nibName: multiSelectCellIdentifier, bundle: nil), forCellReuseIdentifier: multiSelectCellIdentifier)
+        
+//        let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView]
+//        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
+//        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
+//        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
+        
         let views: [String: UIView] = ["tileBgv": tileBgv]
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-5-|", options: [], metrics: nil, views: views))
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
-             
+               self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-5-|", options: [], metrics: nil, views: views))
+               self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
+              // self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
         
         self.titleLbl = UILabel(frame: CGRect.zero)
         self.titleLbl.textColor = Common.UIColorRGB(0x484848)
@@ -84,7 +109,14 @@ class CalenderBubbleView: BubbleView {
         self.cardView = UIView(frame:.zero)
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
+//        cardView.layer.rasterizationScale =  UIScreen.main.scale
+//        cardView.layer.shadowColor = UIColor(red: 232/255, green: 232/255, blue: 230/255, alpha: 1).cgColor
+//        cardView.layer.shadowOpacity = 1
+//        cardView.layer.shadowOffset =  CGSize(width: 0.0, height: -3.0)
+//        cardView.layer.shadowRadius = 6.0
+//        cardView.layer.shouldRasterize = true
         cardView.backgroundColor =  UIColor.clear
+//        cardView.backgroundColor =  UIColor.white
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
@@ -103,7 +135,7 @@ class CalenderBubbleView: BubbleView {
                     let allItems = try? jsonDecoder.decode(Componentss.self, from: jsonData) else {
                                                 return
                     }
-                self.titleLbl.text = allItems.text ?? ""
+                self.titleLbl.text = allItems.text_message ?? ""
             }
         }
     }
