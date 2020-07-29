@@ -20,9 +20,8 @@ class ListViewDetailsViewController: UIViewController {
     @IBOutlet weak var tableview: UITableView!
     fileprivate let listCellIdentifier = "NewListTableViewCell"
     var dataString: String!
-    var arrayOfTabs = [Tabs]()
+    var arrayOfElements = [ComponentElements]()
     var jsonData : Componentss?
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
     var viewDelegate: NewListViewDelegate?
     
     // MARK: init
@@ -50,8 +49,8 @@ class ListViewDetailsViewController: UIViewController {
                         return
                 }
                 jsonData = allItems
-                arrayOfTabs = jsonData?.moreData?.tab1 ?? []
-                headingLebel.text = jsonData?.heading ?? ""
+            arrayOfElements = jsonData?.elements ?? []
+            headingLebel.text = jsonData?.text ?? ""
     }
     /*
     // MARK: - Navigation
@@ -66,14 +65,7 @@ class ListViewDetailsViewController: UIViewController {
     @IBAction func tapsOnCloseBtnAct(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
-    @IBAction func tapsOnSegmentedControlAction(_ sender: Any) {
-        if segmentedControl.selectedSegmentIndex == 0{
-            self.arrayOfTabs = jsonData?.moreData?.tab1 ?? []
-        }else{
-            self.arrayOfTabs = jsonData?.moreData?.tab2 ?? []
-        }
-        tableview.reloadData()
-    }
+   
 }
 extension ListViewDetailsViewController: UITableViewDelegate,UITableViewDataSource{
     
@@ -88,7 +80,7 @@ extension ListViewDetailsViewController: UITableViewDelegate,UITableViewDataSour
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return arrayOfTabs.count
+        return arrayOfElements.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -96,9 +88,14 @@ extension ListViewDetailsViewController: UITableViewDelegate,UITableViewDataSour
         cell.backgroundColor = UIColor.clear
         cell.selectionStyle = .none
         
-        let elements = arrayOfTabs[indexPath.row] as Tabs
-        let url = URL(string: (elements.image_url ?? ""))
-        cell.imgView.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+        let elements = arrayOfElements[indexPath.row] as ComponentElements
+       if elements.imageURL == nil{
+            cell.imageViewWidthConstraint.constant = 0.0
+        }else{
+            cell.imageViewWidthConstraint.constant = 50.0
+            let url = URL(string: elements.imageURL!)
+            cell.imgView.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+        }
         cell.titleLabel.text = elements.title
         cell.subTitleLabel.text = elements.subtitle
         cell.priceLbl.text = elements.value
@@ -106,13 +103,15 @@ extension ListViewDetailsViewController: UITableViewDelegate,UITableViewDataSour
        return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let elements = arrayOfTabs[indexPath.row] as Tabs
-        if elements.action != nil {
-            if elements.action?.fallback_url != nil {
-                self.movetoWebViewController(urlString: (elements.action?.fallback_url)!)
-            }else{
+        let elements = arrayOfElements[indexPath.row]
+        if elements.action?.type != nil {
+            if elements.action?.type == "postback"{
                 self.dismiss(animated: true, completion: nil)
                 self.viewDelegate?.optionsButtonTapNewAction(text: (elements.action?.title) ?? "", payload: (elements.action?.payload) ?? (elements.action?.title) ?? "")
+            }else{
+                if elements.action?.fallback_url != nil {
+                   self.movetoWebViewController(urlString: (elements.action?.fallback_url)!)
+                }
             }
         }
     }

@@ -262,15 +262,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		CD4B000324D164D4008E08CE /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				CDB86A0724C00CD000D1CCC7 /* TaskMenuTablViewCell.swift */,
-				CDB86A0324C00CCF00D1CCC7 /* TaskMenuTablViewCell.xib */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
 		CD4BFFF724D16073008E08CE /* Notification */ = {
 			isa = PBXGroup;
 			children = (
@@ -335,7 +326,8 @@
 			children = (
 				CD4BFFFF24D164CB008E08CE /* TaskMenuViewController.swift */,
 				CD4B000024D164CB008E08CE /* TaskMenuViewController.xib */,
-				CD4B000324D164D4008E08CE /* Cells */,
+				CDB86A0724C00CD000D1CCC7 /* TaskMenuTablViewCell.swift */,
+				CDB86A0324C00CCF00D1CCC7 /* TaskMenuTablViewCell.xib */,
 				CDB86A0624C00CD000D1CCC7 /* TaskMenuData.swift */,
 				CDB86A0524C00CD000D1CCC7 /* TaskMenu.json */,
 			);

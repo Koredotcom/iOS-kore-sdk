@@ -18,7 +18,8 @@ class NewListBubbleView: BubbleView {
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
     let kMinTextWidth: CGFloat = 20.0
     fileprivate let listCellIdentifier = "NewListTableViewCell"
-    let rowsDataLimit = 4
+    var rowsDataLimit = 4
+    var isShowMore = false
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Bold", size: 15.0) as Any,
@@ -124,6 +125,8 @@ class NewListBubbleView: BubbleView {
                 arrayOfComponents = allItems.elements ?? []
                 arrayOfButtons = allItems.buttons ?? []
                 self.titleLbl.text = allItems.text ?? ""
+                self.rowsDataLimit = (allItems.moreCount != nil ? allItems.moreCount : arrayOfComponents.count)!
+                isShowMore = (allItems.seeMore != nil ? allItems.seeMore : false)!
                 self.tableView.reloadData()
             }
         }
@@ -148,7 +151,7 @@ class NewListBubbleView: BubbleView {
                     finalHeight += cellHeight
             }
         
-        if arrayOfComponents.count > rowsDataLimit{
+        if isShowMore{
             moreButtonHeight = 30.0
         }else{
              moreButtonHeight = 0.0
@@ -157,7 +160,7 @@ class NewListBubbleView: BubbleView {
     }
     
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
-        if (arrayOfButtons.count>0) {
+        if (isShowMore) {
             let component: KREComponent = components.firstObject as! KREComponent
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
@@ -195,6 +198,7 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
             let url = URL(string: elements.imageURL!)
             cell.imgView.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
         }
+        cell.titleLabel.numberOfLines = 1
         cell.titleLabel.text = elements.title
         cell.subTitleLabel.text = elements.subtitle
         cell.priceLbl.text = elements.value
@@ -229,12 +233,17 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
             view.addSubview(showMoreButton)
             showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.right
             showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
-            if arrayOfButtons.count>0{
-                let btnTitle: String = arrayOfButtons[0].title!
-                let attributeString = NSMutableAttributedString(string: btnTitle,
-                                                                attributes: yourAttributes)
-                showMoreButton.setAttributedTitle(attributeString, for: .normal)
+             var btnTitle: String?
+            if self.isShowMore{
+                if arrayOfButtons.count>0{
+                  btnTitle = arrayOfButtons[0].title!
+                }else{
+                     btnTitle = "Show More"
+                }
             }
+           let attributeString = NSMutableAttributedString(string: btnTitle ?? "See More",
+                                                            attributes: yourAttributes)
+            showMoreButton.setAttributedTitle(attributeString, for: .normal)
             let views: [String: UIView] = ["showMoreButton": showMoreButton]
             view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[showMoreButton(30)]-0-|", options:[], metrics:nil, views:views))
             view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[showMoreButton]-0-|", options:[], metrics:nil, views:views))
@@ -242,7 +251,7 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
         return view
     }
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return arrayOfComponents.count > rowsDataLimit ? 30 : 0
+        return self.isShowMore ? 30 : 0
     }
     
 }
