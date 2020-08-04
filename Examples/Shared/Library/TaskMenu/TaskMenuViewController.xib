@@ -27,7 +27,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lCx-pM-Y2r">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <rect key="frame" x="0.0" y="50" width="375" height="617"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="frE-69-b0f">
                             <rect key="frame" x="15" y="17" width="307" height="21"/>
@@ -50,7 +50,7 @@
                             </connections>
                         </button>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="lEl-2D-t7t">
-                            <rect key="frame" x="10" y="59" width="355" height="606"/>
+                            <rect key="frame" x="10" y="59" width="355" height="556"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="q8N-Pm-ZKh"/>
@@ -77,7 +77,7 @@
                 <constraint firstItem="lCx-pM-Y2r" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="7Er-Se-vP7"/>
                 <constraint firstItem="lCx-pM-Y2r" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Z3y-QC-Nxh"/>
                 <constraint firstAttribute="bottom" secondItem="lCx-pM-Y2r" secondAttribute="bottom" id="gKc-OL-k9s"/>
-                <constraint firstItem="lCx-pM-Y2r" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="tSb-aR-Mz8"/>
+                <constraint firstItem="lCx-pM-Y2r" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="50" id="tSb-aR-Mz8"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="138" y="124"/>

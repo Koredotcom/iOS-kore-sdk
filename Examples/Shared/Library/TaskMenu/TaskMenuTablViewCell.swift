@@ -17,11 +17,15 @@ class TaskMenuTablViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         bgView.layer.cornerRadius = 10
-        bgView.layer.borderWidth = 1
         bgView.layer.borderColor = UIColor.lightGray.cgColor
         
-        imgView.layer.cornerRadius = imgView.frame.size.height/2
         imgView.clipsToBounds = true
+        
+        bgView.layer.shadowColor = UIColor.darkGray.cgColor
+        bgView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        bgView.layer.shadowOpacity = 0.5
+        bgView.layer.shadowRadius = 2
+        bgView.clipsToBounds = false
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

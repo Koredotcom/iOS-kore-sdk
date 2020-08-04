@@ -824,7 +824,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let taskMenuViewController = TaskMenuViewController()
         taskMenuViewController.modalPresentationStyle = .overFullScreen
         taskMenuViewController.viewDelegate = self
-        //taskMenuViewController.view.backgroundColor = .clear
+        taskMenuViewController.view.backgroundColor = .white
         self.navigationController?.present(taskMenuViewController, animated: false, completion: nil)
     }
     
