@@ -16,13 +16,13 @@ public class KAPanelWindowManager {
     var panelFrame: CGRect {
         set {
             let rootViewController = panelContainerWindow?.rootViewController
-            guard let sheetController = rootViewController as? BottomSheetController else {
+            guard let sheetController = rootViewController as? KABottomSheetController else {
                 return
             }
         }
         get {
             let rootViewController = panelContainerWindow?.rootViewController
-            guard let sheetController = rootViewController as? BottomSheetController else {
+            guard let sheetController = rootViewController as? KABottomSheetController else {
                 return .zero
             }
             
