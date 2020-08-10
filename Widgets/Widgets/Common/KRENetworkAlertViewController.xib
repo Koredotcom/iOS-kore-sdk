@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KRENetworkAlertViewController" customModule="KoreAppModule" customModuleProvider="target">
+            <connections>
+                <outlet property="button" destination="JFT-EK-GnC" id="ESc-bQ-J9S"/>
+                <outlet property="informationLabel" destination="Cas-DL-slO" id="atc-hI-MGX"/>
+                <outlet property="titleLabel" destination="Fiz-7N-LmI" id="bvh-gy-iNV"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JFT-EK-GnC">
+                    <rect key="frame" x="32" y="556" width="311" height="57"/>
+                    <color key="backgroundColor" red="0.3803921569" green="0.40784313729999999" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="57" id="TRO-Gf-wod"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
+                    <state key="normal" title="TRY AGAIN">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <real key="value" value="28.5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="buttonAction:" destination="-1" eventType="touchUpInside" id="D9f-6Z-Knl"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fiz-7N-LmI">
+                    <rect key="frame" x="0.0" y="396" width="375" height="51"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="42"/>
+                    <color key="textColor" red="0.28235294119999998" green="0.32156862749999998" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Internet Connection Found. Please Check Your Connection And Try Again." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cas-DL-slO">
+                    <rect key="frame" x="20" y="486" width="335" height="41"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <color key="textColor" red="0.62352941176470589" green="0.65490196078431373" blue="0.73333333333333328" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" image="noNetwork" translatesAutoresizingMaskIntoConstraints="NO" id="CVa-QX-SmU">
+                    <rect key="frame" x="20" y="81" width="335" height="280"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="382" id="Xa9-Vt-HKG"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Fiz-7N-LmI" firstAttribute="top" relation="lessThanOrEqual" secondItem="CVa-QX-SmU" secondAttribute="bottom" constant="56" id="A3S-a3-NCr"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="CVa-QX-SmU" secondAttribute="trailing" constant="20" id="DBX-CD-cUh"/>
+                <constraint firstItem="Cas-DL-slO" firstAttribute="top" secondItem="Fiz-7N-LmI" secondAttribute="bottom" constant="39" id="ELW-to-Nf0"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Cas-DL-slO" secondAttribute="trailing" constant="20" id="KhZ-2m-Duy"/>
+                <constraint firstItem="CVa-QX-SmU" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="61" id="SCW-tb-DzI"/>
+                <constraint firstItem="Cas-DL-slO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="dZe-2z-gwt"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="JFT-EK-GnC" secondAttribute="bottom" constant="54" id="iZ0-wv-3No"/>
+                <constraint firstItem="JFT-EK-GnC" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="j9i-q6-yLK"/>
+                <constraint firstItem="Fiz-7N-LmI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="mEB-Ve-QqD"/>
+                <constraint firstItem="Fiz-7N-LmI" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="mfu-rG-BFz"/>
+                <constraint firstItem="JFT-EK-GnC" firstAttribute="top" secondItem="Cas-DL-slO" secondAttribute="bottom" constant="29" id="sxM-UM-TAV"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="JFT-EK-GnC" secondAttribute="trailing" constant="32" id="w5B-Dz-6eB"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="noNetwork" width="335" height="280"/>
+    </resources>
+</document>

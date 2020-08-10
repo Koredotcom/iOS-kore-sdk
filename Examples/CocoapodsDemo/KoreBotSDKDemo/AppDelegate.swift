@@ -33,13 +33,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
+        
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
-//        startMonitoringForReachability()
+        
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
+        
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
@@ -49,6 +51,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         
     }
-   
 }
 

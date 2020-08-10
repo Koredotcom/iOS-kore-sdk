@@ -17,6 +17,7 @@ import Mantle
     func rtmConnectionDidFailWithError(_ error: NSError)
     @objc optional func didReceiveMessage(_ message: BotMessageModel)
     @objc optional func didReceiveMessageAck(_ ack: Ack)
+    func didReceivedUserMessage(_ userMessageDict:[String:Any])
 }
 
 open class RTMTimer: NSObject {
@@ -24,19 +25,19 @@ open class RTMTimer: NSObject {
         case suspended
         case resumed
     }
-    public let pingInterval: TimeInterval = 10.0
+    public var pingInterval: TimeInterval = 10.0
     open var timer: DispatchSourceTimer?
-    
     open var eventHandler: (() -> Void)?
     open var state: RTMTimerState = .suspended
     
     // MARK: - init
-    public override init() {
+    public init(timeInterval: TimeInterval = 10.0) {
         super.init()
-        initializeTimer()
+        pingInterval = timeInterval
+        initalizeTimer()
     }
     
-    func initializeTimer() {
+    func initalizeTimer() {
         let intervalInNSec = pingInterval * Double(NSEC_PER_SEC)
         let startTime = DispatchTime.now() + Double(intervalInNSec) / Double(NSEC_PER_SEC)
         
@@ -78,11 +79,11 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     var botInfo: BotInfoModel!
     fileprivate var botInfoParameters: [String: Any]?
     fileprivate var reWriteOptions: [String: Any]?
-    
+
     var websocket: SRWebSocket?
     var connectionDelegate: RTMPersistentConnectionDelegate?
     
-    fileprivate var timerSource: RTMTimer?
+    fileprivate var timerSource = RTMTimer()
     //    fileprivate let pingInterval: TimeInterval
     fileprivate var receivedLastPong = true
     open var tryReconnect = false
@@ -90,7 +91,6 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     // MARK: init
     override public init() {
         super.init()
-        timerSource = RTMTimer()
     }
     
     public func connect(botInfo: BotInfoModel, botInfoParameters: [String: Any]?, reWriteOptions: [String: Any]? = nil, tryReconnect: Bool) {
@@ -137,7 +137,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     open func webSocketDidOpen(_ webSocket: SRWebSocket) {
         self.connectionDelegate?.rtmConnectionDidOpen()
         
-        timerSource?.eventHandler = { [weak self] in
+        timerSource.eventHandler = { [weak self] in
             if self?.receivedLastPong == false {
                 // we did not receive the last pong
                 // abort the socket so that we can spin up a new connection
@@ -146,7 +146,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
                 // self.connectionDelegate?.rtmConnectionDidFailWithError(NSError())
             } else if self?.websocket?.readyState == .CLOSED || self?.websocket?.readyState == .CLOSING {
                 self?.websocket?.close()
-                self?.timerSource?.suspend()
+                self?.timerSource.suspend()
             } else if self?.websocket?.readyState == .OPEN {
                 
                 // we got a pong recently
@@ -155,7 +155,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
                 _ = try? self?.websocket?.sendPing(Data())
             }
         }
-        timerSource?.resume()
+        timerSource.resume()
     }
     
     open func webSocket(_ webSocket: SRWebSocket, didFailWithError error: Error) {
@@ -171,6 +171,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     }
     
     open func webSocket(_ webSocket: SRWebSocket, didReceiveMessage message: Any) {
+        print(message)
         guard let message = message as? String,
             let responseObject = convertStringToDictionary(message),
             let type = responseObject["type"] as? String else {
@@ -191,6 +192,9 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             if let model = try? MTLJSONAdapter.model(of: BotMessageModel.self, fromJSONDictionary: responseObject), let botMessageModel = model as? BotMessageModel {
                 connectionDelegate?.didReceiveMessage?(botMessageModel)
             }
+        case "user_message":
+            connectionDelegate?.didReceivedUserMessage(responseObject)
+//            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "User_Message_Received"), object: responseObject)
         default:
             break
         }
@@ -233,11 +237,12 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             let uuid: String = Constants.getUUID()
             dictionary.setObject(uuid, forKey: "id" as NSCopying)
             dictionary.setObject(uuid, forKey: "clientMessageId" as NSCopying)
-            
+            dictionary.setObject("iOS", forKey: "client" as NSCopying)
+
             let meta = ["timezone": TimeZone.current.identifier, "locale": Locale.current.identifier]
             dictionary.setValue(meta, forKey: "meta")
             
-            print("send: \(dictionary)")
+            debugPrint("send: \(dictionary)")
             
             let jsonData = try! JSONSerialization.data(withJSONObject: dictionary, options: JSONSerialization.WritingOptions.prettyPrinted)
             self.websocket?.send(jsonData)
@@ -255,12 +260,5 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             }
         }
         return nil
-    }
-    
-    // MARK: -
-    deinit {
-        timerSource?.eventHandler = nil
-        timerSource?.suspend()
-        timerSource = nil
     }
 }

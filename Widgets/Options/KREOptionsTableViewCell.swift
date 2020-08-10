@@ -10,7 +10,9 @@ import UIKit
 
 class KREOptionsTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var viweMoreLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
+        viweMoreLabel.font = UIFont.textFont(ofSize: 15.0, weight: .bold)
     }
 }

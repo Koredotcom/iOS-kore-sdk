@@ -9,7 +9,7 @@
 
 import UIKit
 
-public protocol KREGrowingTextViewDelegate {
+public protocol KREGrowingTextViewDelegate: class {
     func growingTextView(_: KREGrowingTextView, willChangeHeight height: CGFloat)
     func growingTextView(_: KREGrowingTextView, changingHeight height: CGFloat, animate: Bool)
     func growingTextView(_: KREGrowingTextView, didChangeHeight height: CGFloat)
@@ -26,7 +26,7 @@ open class KREGrowingTextView: UIScrollView {
     private var _minHeight: CGFloat = 0
     private var _previousFrame: CGRect = CGRect.zero
     
-    open var viewDelegate: KREGrowingTextViewDelegate?
+    open weak var viewDelegate: KREGrowingTextViewDelegate?
     
     open var textView: UITextView {
         return _textView
@@ -163,7 +163,11 @@ open class KREGrowingTextView: UIScrollView {
         addSubview(_placeholderLabel)
         addSubview(_textView)
         _minHeight = simulateHeight(1)
-        maxNumberOfLines = 3
+        maxNumberOfLines = 20
+        
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.heightAnchor.constraint(equalTo: _textView.heightAnchor).isActive = true
+        
         _textView.textDidChange = { [weak self] in
             self?._placeholderLabel.isHidden = self?._textView.text.count != 0
             self?.fitToScrollView()
@@ -176,7 +180,12 @@ open class KREGrowingTextView: UIScrollView {
     }
     
     private func measureTextViewSize() -> CGSize {
-        return _textView.sizeThatFits(CGSize(width: self.bounds.width, height: CGFloat.infinity))
+        var rect = self.bounds
+        let size = _textView.sizeThatFits(CGSize(width: rect.size.width, height: CGFloat.greatestFiniteMagnitude))
+        if size.height < _minHeight {
+            _minHeight = size.height
+        }
+        return size
     }
     
     private func measureFrame(_ contentSize: CGSize) -> CGRect {
@@ -203,7 +212,11 @@ open class KREGrowingTextView: UIScrollView {
         var _frame = bounds
         _frame.origin = CGPoint.zero
         _frame.size.height = actualTextViewSize.height
-        _textView.frame = _frame
+        if !(_textView.frame.equalTo(_frame))
+        {
+            _textView.frame = _frame
+        }
+
         contentSize = _frame.size
         
         let oldScrollViewFrame = frame
@@ -212,17 +225,8 @@ open class KREGrowingTextView: UIScrollView {
         if newScrollViewFrame.equalTo(oldScrollViewFrame) {
             return
         }
-        let heightDiff = newScrollViewFrame.height - oldScrollViewFrame.height
-        self.viewDelegate?.growingTextView(self, willChangeHeight: newScrollViewFrame.height)
-        UIView.animate(withDuration: animateHeightChange ? 0.25 : 0.0, animations: {
-            self.frame = newScrollViewFrame
-            self.invalidateIntrinsicContentSize()
-            self.viewDelegate?.growingTextView(self, changingHeight: heightDiff, animate: self.animateHeightChange)
-        }, completion: { (complete) in
-            self.viewDelegate?.growingTextView(self, didChangeHeight: self.frame.height)
-        })
+        self.viewDelegate?.growingTextView(self, didChangeHeight: self.frame.height)
     }
-    
     private func updateMinimumAndMaximumHeight() {
         _minHeight = simulateHeight(1)
         _maxHeight = simulateHeight(maxNumberOfLines)

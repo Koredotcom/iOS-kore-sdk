@@ -7,13 +7,25 @@
 //
 
 import UIKit
-import Mantle
 
-open class JwtModel: MTLModel, MTLJSONSerializing {
-    @objc open var jwtToken: String?
+public class JwtModel: NSObject, Decodable {
+    // MARK: - properties
+    public var jwtToken: String?
+    public var streamId: String?
+    public var botName: String?
+
+    enum CodingKeys: String, CodingKey {
+        case jwtToken = "jwt"
+        case streamId = "streamId"
+        case botName = "botName"
+    }
     
-    // MARK: MTLJSONSerializing methods
-    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
-        return ["jwtToken":"jwt"]
+    // MARK: - init
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        jwtToken = try? container.decode(String.self, forKey: .jwtToken)
+        streamId = try? container.decode(String.self, forKey: .streamId)
+        botName = try? container.decode(String.self, forKey: .botName)
     }
 }
+

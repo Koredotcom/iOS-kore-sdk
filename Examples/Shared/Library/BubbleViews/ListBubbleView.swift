@@ -30,7 +30,7 @@ class ListBubbleView: BubbleView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[optionsView]|", options: [], metrics: nil, views: views))
         
         // property blocks
-        self.optionsView.optionsButtonAction = {[weak self] (text, payload) in
+        self.optionsView.optionsButtonAction = { [weak self] (text, payload) in
             if((self?.optionsAction) != nil){
                 self?.optionsAction(text)
             }

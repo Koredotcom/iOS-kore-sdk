@@ -45,7 +45,8 @@ open class KABotClient: NSObject {
     }()
     
     var thread: KREThread?
-    
+    let defaultTimeDifference = 15
+
     // properties
     public static var suggestions: NSMutableOrderedSet = NSMutableOrderedSet()
     private var botClient: BotClient = BotClient()
@@ -73,13 +74,54 @@ open class KABotClient: NSObject {
     }
     
     // MARK: - fetch messages
-    func fetchMessages() {
+    func fetchMessages(completion block: ((Bool) -> Void)? = nil) {
         let dataStoreManager = DataStoreManager.sharedManager
         dataStoreManager.getMessagesCount(completion: { [weak self] (count) in
-            if count == 0 {
-                self?.getMessages(offset: 0)
+            guard count == 0 else {
+                self?.reconnectStatus(completion: block)
+                return
             }
+            
+            self?.getMessages(offset: 0, completion:{ (success) in
+                if success {
+                    self?.reconnectStatus(completion: block)
+                } else {
+                    block?(false)
+                }
+            })
         })
+    }
+    
+    func reconnectStatus(completion block: ((Bool) -> Void)?) {
+        let dataStoreManager = DataStoreManager.sharedManager
+        dataStoreManager.getLastMessage(completion: { [weak self] (message) in
+            var status = false
+            guard let weakSelf = self else {
+                block?(status)
+                return
+            }
+            
+            status = weakSelf.canReconnect(using: message)
+            block?(status)
+        })
+    }
+    
+    func canReconnect(using message: KREMessage?) -> Bool {
+        var status = false
+        guard let sentOn = message?.sentOn as Date? else {
+            return status
+        }
+        
+        let date = Date()
+        let distanceBetweenDates = date.timeIntervalSince(sentOn)
+        let secondsInMinute: Double = 60
+        let minutesBetweenDates = Int((distanceBetweenDates / secondsInMinute))
+        
+        if minutesBetweenDates < defaultTimeDifference {
+            status = true
+        }
+        
+        return status
     }
     
     // MARK: - connect/reconnect - tries to reconnect the bot when isConnected is false
@@ -295,7 +337,7 @@ open class KABotClient: NSObject {
                     let range: NSRange = text.range(of: "use a web form - ")
                     let urlString: String? = text.substring(with: NSMakeRange(range.location+range.length, 44))
                     if (urlString != nil) {
-                        let url: URL = URL(string: urlString!)!
+                        //let url: URL = URL(string: urlString!)!
                         //                        webViewController = SFSafariViewController(url: url)
                         //                        webViewController.modalPresentationStyle = .custom
                         //                        present(webViewController, animated: true, completion:nil)
@@ -380,24 +422,28 @@ open class KABotClient: NSObject {
             let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
             let context = dataStoreManager.coreDataManager.workerContext
             context.perform {
-                let resources: Dictionary<String, AnyObject> = ["threadId": botId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]  
-
-                    dataStoreManager.insertOrUpdateThread(dictionary: resources, with: {(thread1) in
-                        self?.thread = thread1
-                        try? context.save()
-                        dataStoreManager.coreDataManager.saveChanges()
-                        
-                        self?.botClient.initialize(botInfoParameters: botInfo)
-                        if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
-                            self?.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
-                        }
-                        self?.botClient.connectWithJwToken(jwToken, success: { [weak self] (client) in
-                            block?(client, self?.thread)
-                            }, failure: { (error) in
-                                failure?(error!)
+                let resources: Dictionary<String, AnyObject> = ["threadId": botId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
+                
+                dataStoreManager.insertOrUpdateThread(dictionary: resources, with: {( thread1) in
+                    self?.thread = thread1
+                    try? context.save()
+                    dataStoreManager.coreDataManager.saveChanges()
+                    
+                    self?.botClient.initialize(botInfoParameters: botInfo, customData: [:])
+                    if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
+                        self?.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
+                    }
+                    self?.botClient.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
+                        self?.fetchMessages(completion: { (reconnects) in
+                            self?.botClient.connect(isReconnect: reconnects)
                         })
+                        }, success: { (client) in
+                            self?.botClient = client!
+                            block?(self?.botClient, self?.thread)
+                    }, failure: { (error) in
+                        failure?(error!)
                     })
-                //})
+                })
             }
             }, failure: { (error) in
                 print(error)
@@ -445,7 +491,7 @@ open class KABotClient: NSObject {
         
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
         sessionManager?.requestSerializer = requestSerializer
-        sessionManager?.post(urlString, parameters: parameters, progress: nil, success: { (sessionDataTask, responseObject) in
+        sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
             if (responseObject is NSDictionary) {
                 let dictionary: NSDictionary = responseObject as! NSDictionary
                 let jwToken: String = dictionary["jwt"] as! String
@@ -482,7 +528,7 @@ open class KABotClient: NSObject {
     }
     
     // MARK: - get history
-    public func getMessages(offset: Int) {
+    public func getMessages(offset: Int, completion block:((Bool) -> Void)?) {
         guard historyRequestInProgress == false else {
             return
         }
@@ -492,19 +538,22 @@ open class KABotClient: NSObject {
                 self?.insertOrUpdateHistoryMessages(messages)
             }
             self?.historyRequestInProgress = false
+            block?(true)
             }, failure: { [weak self] (error) in
                 self?.historyRequestInProgress = false
                 print("Unable to fetch messges \(error?.localizedDescription ?? "")")
+                block?(false)
         })
     }
     
     //MARK: getRecentHistory - fetch all the history that the bot has previously based on last messageId
     public func getRecentHistory() {
-        
-        guard messagesRequestInProgress == false,  let dataStoreManager = DataStoreManager.sharedManager as? DataStoreManager, let context = dataStoreManager.coreDataManager.workerContext as? NSManagedObjectContext else {
+        guard messagesRequestInProgress == false else {
             return
         }
         
+        let dataStoreManager = DataStoreManager.sharedManager
+        let context = dataStoreManager.coreDataManager.workerContext
         messagesRequestInProgress = true
         let request: NSFetchRequest<KREMessage> = KREMessage.fetchRequest()
         let isSenderPredicate = NSPredicate(format: "isSender == \(false)")
@@ -519,7 +568,7 @@ open class KABotClient: NSObject {
                 return
             }
             
-            self?.botClient.getMessages(after: messageId, success: { (responseObj) in
+            self?.botClient.getMessages(after: messageId, direction: 1, success: { (responseObj) in
                 if let responseObject = responseObj as? [String: Any]{
                     if let messages = responseObject["messages"] as? Array<[String: Any]> {
                         self?.insertOrUpdateHistoryMessages(messages)
@@ -535,9 +584,14 @@ open class KABotClient: NSObject {
     
     // MARK: - insert or update messages
     func insertOrUpdateHistoryMessages(_ messages: Array<[String: Any]>) {
-        guard let botMessages = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages], botMessages.count > 0 else {
+//        guard let models = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages], let botMessages = models, botMessages.count > 0 else {
+//            return
+//        }
+        let models = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages]
+        guard  let botMessages = models, botMessages.count > 0 else{
             return
         }
+        
         
         var allMessages: [Message] = [Message]()
         for message in botMessages {

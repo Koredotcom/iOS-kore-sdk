@@ -15,13 +15,15 @@ import Mantle
 
 class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate{
     
+    
+    
     // MARK: properties
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
 //    fileprivate var isConnected: Bool = false {
 //        didSet {
 //            if isConnected {
-////                getRecentHistory()
+//                getRecentHistory()
 //            }
 //        }
 //    }
@@ -33,6 +35,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     @IBOutlet weak var quickSelectContainerView: UIView!
     @IBOutlet weak var composeBarContainerView: UIView!
     @IBOutlet weak var audioComposeContainerView: UIView!
+    @IBOutlet weak var panelCollectionViewContainerView: UIView!
     @IBOutlet weak var menuButton: UIButton!
     
     @IBOutlet weak var quickSelectContainerHeightConstraint: NSLayoutConstraint!
@@ -53,8 +56,44 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     @IBOutlet weak var taskMenuContainerHeightConstant: NSLayoutConstraint!
     var taskMenuHeight = 0
 
+    var panelCollectionView: KAPanelCollectionView!
+    var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    
     let sttClient = KoraASRService.shared
     var speechSynthesizer: AVSpeechSynthesizer!
+    
+    public var authInfoModel: AuthInfoModel?
+    public var userInfoModel: UserModel?
+    public var user: KREUser?
+    public var sheetController: BottomSheetController?
+    var isShowAudioComposeView = true
+    var insets : UIEdgeInsets = .zero
+    @IBOutlet weak var panelCollectionViewContainerHeightConstraint: NSLayoutConstraint!
+    
+    public var maxPanelHeight: CGFloat {
+        var maxHeight = UIScreen.main.bounds.height
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        let delta: CGFloat = 15.0
+        maxHeight -= statusBarHeight
+        maxHeight -= delta
+//        if #available(iOS 11.0, *) {
+//            maxHeight -= view.safeAreaInsets.top
+//        } else {
+//            maxHeight -= topLayoutGuide.length
+//        }
+        return maxHeight
+    }
+    public var panelHeight: CGFloat {
+        var maxHeight = maxPanelHeight
+//        if #available(iOS 11.0, *) {
+//            maxHeight += view.safeAreaInsets.top
+//        } else {
+//            maxHeight += topLayoutGuide.length
+//        }
+        maxHeight -= self.isShowAudioComposeView == true ? self.audioComposeView.bounds.height : self.composeView.bounds.height
+        return maxHeight-panelCollectionViewContainerView.bounds.height - insets.bottom
+    }
+    
     
     // MARK: init
     init(thread: KREThread?) {
@@ -68,18 +107,21 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+       
         //Initialize elements
         self.configureThreadView()
         self.configureComposeBar()
         self.configureAudioComposer()
         self.configureQuickReplyView()
         self.configureTypingStatusView()
-//        self.configureBotClient()
         self.configureSTTClient()
         
-        self.configureViewForKeyboard(true)
-        
+        if SDKConfiguration.widgetConfig.isPAnelView {
+            self.configurePanelCollectionView()
+        } else {
+            panelCollectionViewContainerHeightConstraint.constant = 0
+        }
+                
         isSpeakingEnabled = true
         self.speechSynthesizer = AVSpeechSynthesizer()
     }
@@ -90,8 +132,12 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         let image = UIImage(named: "cancel")
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancel(_:)))
-
         navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        if SDKConfiguration.widgetConfig.isPAnelView {
+            populatePanelItems()
+        }
+        
     }
     
     override open func viewDidAppear(_ animated: Bool) {
@@ -114,7 +160,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-
+    
     //MARK:- deinit
     deinit {
         NSLog("ChatMessagesViewController dealloc")
@@ -230,6 +276,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             return 0.0
         }
         self.audioComposeView.onKeyboardButtonAction = { [weak self] () in
+             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ClosePanel"), object: nil)
+             self?.isShowAudioComposeView = false
             _ = self?.composeView.becomeFirstResponder()
             self?.configureViewForKeyboard(true)
         }
@@ -243,12 +291,102 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[quickReplyView]|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
         
-        self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
-            if let text = text, let payload = payload {
-                self?.sendTextMessage(text, options: ["body": payload])
-            }
-        }
+//        self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
+//            if let text = text, let payload = payload {
+//                self?.sendTextMessage(text, options: ["body": payload])
+//            }
+//        }
     }
+    
+     func configurePanelCollectionView() {
+            
+            self.panelCollectionView = KAPanelCollectionView()
+            self.panelCollectionView?.translatesAutoresizingMaskIntoConstraints = false
+            self.panelCollectionViewContainerView.addSubview(self.panelCollectionView!)
+            
+            self.panelCollectionViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[panelCollectionView]|", options:[], metrics:nil, views:["panelCollectionView" : self.panelCollectionView!]))
+            self.panelCollectionViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[panelCollectionView]|", options:[], metrics:nil, views:["panelCollectionView" : self.panelCollectionView!]))
+       
+           self.panelCollectionView.onPanelItemClickAction = { (item) in
+    //                   guard let weakSelf = self, let inputItem = inputItem else { //, inputItem
+    //                       return
+    //                   }
+    //                   weakSelf.dismissDone = false
+    //                   let previousFocusedItem = weakSelf.inputBarPresenter.focusedItem
+    //                   weakSelf.inputBarPresenter.onDidReceiveFocusOnItem(inputItem)
+    //
+    //                   if let inputTextView = previousFocusedItem as? InputTextView {
+    //                       inputTextView.tintColor = UIColor.clear
+    //                   }
+    //                   weakSelf.validateSkillChange()
+                   }
+                   
+                   self.panelCollectionView.retryAction = { [weak self] in
+                       self?.populatePanelItems()
+                   }
+                   
+                   self.panelCollectionView.panelItemHandler = { [weak self] (item, block) in
+                       guard let weakSelf = self else {
+                           return
+                       }
+                       
+                       switch item?.type {
+                       case "action":
+                           weakSelf.processActionPanelItem(item)
+                       default:
+                          // weakSelf.setAutoCompletionView(false)
+                          // weakSelf.setUtteranceSuggestionsView(false)
+                           NotificationCenter.default.post(name: NSNotification.Name(rawValue: "BringComposeBarToBottom"), object: nil)
+                           //weakSelf.dismissDone = false
+                           if #available(iOS 11.0, *) {
+                            self?.insets = UIApplication.shared.delegate?.window??.safeAreaInsets ?? .zero
+                           } else {
+                               // Fallback on earlier versions
+                           }
+                           var inputViewHeight = self?.isShowAudioComposeView == true ? self!.audioComposeContainerView.bounds.height : self!.composeBarContainerView.bounds.height
+                           inputViewHeight = inputViewHeight + (self?.insets.bottom ?? 0.0) + (self?.panelCollectionViewContainerView.bounds.height)!
+                           let sizes: [SheetSize] = [.fixed(0.0), .fixed(weakSelf.panelHeight)]
+                           if weakSelf.sheetController == nil {
+                               let panelItemViewController = KAPanelItemViewController()
+                               panelItemViewController.panelId = item?.id
+                               panelItemViewController.dismissAction = { [weak self] in
+                                   self?.sheetController = nil
+                               }
+                               if ((self?.composeView.isFirstResponder)!) {
+                                   _ = self!.composeView.resignFirstResponder()
+                               }
+                            
+                               let bottomSheetController = BottomSheetController(controller: panelItemViewController, sizes: sizes)
+                               bottomSheetController.inputViewHeight = CGFloat(inputViewHeight)
+                               bottomSheetController.willSheetSizeChange = { [weak self] (controller, newSize) in
+                                   switch newSize {
+                                   case .fixed(weakSelf.panelHeight):
+                                       controller.overlayColor = .clear
+                                       panelItemViewController.showPanelHeader(true)
+                                   default:
+                                       controller.overlayColor = .clear
+                                       panelItemViewController.showPanelHeader(false)
+                                       bottomSheetController.closeSheet(true)
+                                       
+                                       self?.sheetController = nil
+                                   }
+                               }
+                               bottomSheetController.modalPresentationStyle = .overCurrentContext
+                               weakSelf.present(bottomSheetController, animated: true, completion: block)
+                               weakSelf.sheetController = bottomSheetController
+                           } else if let bottomSheetController = weakSelf.sheetController,
+                               let panelItemViewController = bottomSheetController.childViewController as? KAPanelItemViewController {
+                               panelItemViewController.panelId = item?.id
+
+                               if bottomSheetController.presentingViewController == nil {
+                                   weakSelf.present(bottomSheetController, animated: true, completion: block)
+                               } else {
+                                   block?()
+                               }
+                           }
+                       }
+                   }
+        }
     
     func configureTypingStatusView() {
         self.typingStatusView = KRETypingStatusView()
@@ -326,7 +464,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if (messageObject?.component == nil) {
             
         } else {
-            let componentModel: ComponentModel = messageObject!.component!            
+            let componentModel: ComponentModel = messageObject!.component!
             if (componentModel.type == "text") {
                 let payload: NSDictionary = componentModel.payload! as! NSDictionary
                 let text: NSString = payload["text"] as! NSString
@@ -524,8 +662,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.showTableTemplateView), name: NSNotification.Name(rawValue: showTableTemplateNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.reloadTable(notification:)), name: NSNotification.Name(rawValue: reloadTableNotification), object: nil)
         
-         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.showListViewTemplateView), name: NSNotification.Name(rawValue: showListViewTemplateNotification), object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.showListViewTemplateView), name: NSNotification.Name(rawValue: showListViewTemplateNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(processDynamicUpdates(_:)), name: KoraNotification.Widget.update.notification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(processPanelEvents(_:)), name: KoraNotification.Panel.event.notification, object: nil)        
     }
     
     func removeNotifications() {
@@ -740,13 +879,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     let word: Word = Word(title: title, payload: payload, imageURL: imageURL)
                     words.append(word)
                 }
-                self.quickReplyView.setWordsList(words: words)
+                self.quickReplyView.words = words
                 
                 self.updateQuickSelectViewConstraints()
             }
         } else if(message != nil) {
             let words: Array<Word> = Array<Word>()
-            self.quickReplyView.setWordsList(words: words)
+            self.quickReplyView.words = words
             self.closeQuickSelectViewConstraints()
         }
     }
@@ -806,12 +945,15 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func composeBarViewSpeechToTextButtonAction(_: ComposeBarView) {
         KoraASRService.shared.checkAudioRecordPermission({ [weak self] in
+            self?.isShowAudioComposeView = true
             self?.speechToTextButtonAction()
         })
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ClosePanel"), object: nil)
     }
     
     func composeBarViewDidBecomeFirstResponder(_: ComposeBarView) {
         self.audioComposeView.stopRecording()
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ClosePanel"), object: nil)
     }
     func composeBarTaskMenuButtonAction(_: ComposeBarView) {
         
@@ -951,7 +1093,7 @@ extension ChatMessagesViewController {
                 return
             }
             
-            self?.botClient.getMessages(after: messageId, success: { (responseObj) in
+            self?.botClient.getMessages(after: messageId, direction: 1, success: { (responseObj) in
                 if let responseObject = responseObj as? [String: Any]{
                     if let messages = responseObject["messages"] as? Array<[String: Any]> {
                         self?.insertOrUpdateHistoryMessages(messages)
@@ -967,7 +1109,7 @@ extension ChatMessagesViewController {
     
     // MARK: - insert or update messages
     func insertOrUpdateHistoryMessages(_ messages: Array<[String: Any]>) {
-        guard let botMessages = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages], botMessages.count > 0 else {
+        guard let models = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages], let botMessages = models, botMessages.count > 0 else {
             return
         }
         
@@ -1042,3 +1184,117 @@ extension ChatMessagesViewController: KABotClientDelegate {
         
     }
 }
+// MARK: - requests
+extension ChatMessagesViewController {
+    func populatePanelItems() {
+        let widgetManager = KREWidgetManager.shared
+        panelCollectionView.startAnimating()
+        widgetManager.getPanelItems { [weak self] (success, items, error) in
+            DispatchQueue.main.async {
+                self!.panelCollectionView.stopAnimating(error)
+                guard let panelItems = items as? [KREPanelItem] else {
+                    return
+                }
+                
+                self?.showHomePanel(completion: {
+                    
+                })
+                //KoraApplication.sharedInstance.account?.validateTimeZone()
+                self!.panelCollectionView.items = panelItems
+                widgetManager.getPriorityWidgets(from: panelItems, block: nil)
+                NotificationCenter.default.post(name: KoraNotification.Panel.update.notification, object: nil)
+                
+                if let _ = error  {
+                
+                }
+            }
+        }
+    }
+    
+    @objc func processDynamicUpdates(_ notification: Notification?) {
+        guard let dictionary = notification?.object as? [String: Any],
+            let type = dictionary["t"] as? String, let _ = dictionary["uid"] as? String else {
+                return
+        }
+        
+        switch type {
+        case "kaa":
+            let panelItems = self.panelCollectionView.items
+            guard let panelItem = panelItems?.filter({ $0.iconId == "announcement" }).first else {
+                return
+            }
+            
+            let widgetManager = KREWidgetManager.shared
+            widgetManager.getWidgets(in: panelItem, forceReload: true, update: { [weak self] (success, widget) in
+                DispatchQueue.main.async {
+                    self?.updatePanel(with: panelItem)
+                }
+            }, completion: nil)
+        default:
+            break
+        }
+    }
+    
+    @objc func processPanelEvents(_ notification: Notification?) {
+        guard let dictionary = notification?.object as? [String: Any],
+            let type = dictionary["entity"] as? String else {
+                return
+        }
+        
+        switch type {
+        case "panels":
+            populatePanelItems()
+            if let data = dictionary["data"] as? [String: Any] {
+                KREWidgetManager.shared.pinOrUnpinWidget(data)
+            }
+        default:
+            break
+        }
+    }
+    
+    public func showHomePanel(_ isOnboardingInProgress: Bool = false, completion block:(()->Void)? = nil) {
+        let panelItems = KREWidgetManager.shared.panelItems
+        guard launchOptions == nil else {
+            return
+        }
+        
+        let panelBar = panelCollectionView
+        switch panelBar!.panelState {
+        case .loaded:
+            guard let panelItem = panelItems?.filter({ $0.name == "Bar Chart" }).first else { //iconId == "new list" == "home"
+                return
+            }
+
+            panelCollectionView.panelItemHandler?(panelItem) { [weak self] in
+                if !isOnboardingInProgress {
+                    self?.startTryOut()
+                }
+                block?()
+            }
+            
+        default:
+            break
+        }
+    }
+    
+    func updatePanel(with panelItem: KREPanelItem) {
+        guard let panelItemViewController = sheetController?.childViewController as? KAPanelItemViewController else {
+            return
+        }
+
+        panelItemViewController.updatePanel(with: panelItem)
+    }
+    // MARK: - tryout
+    open func startTryOut() {
+        
+    }
+    // MARK: -
+    func processActionPanelItem(_ item: KREPanelItem?) {
+        if let uriString = item?.action?.uri, let url = URL(string: uriString + "?teamId=59196d5a0dd8e3a07ff6362b") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+    
+   
+}
+
