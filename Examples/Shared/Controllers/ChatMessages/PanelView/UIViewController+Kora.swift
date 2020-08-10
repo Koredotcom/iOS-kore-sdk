@@ -10,10 +10,10 @@ import UIKit
 
 extension UIViewController {
     /// The sheet view controller presenting the current view controller heiarchy (if any)
-    public var sheetViewController: BottomSheetController? {
+    public var sheetViewController: KABottomSheetController? {
         var parent = self.parent
         while let currentParent = parent {
-            if let sheetViewController = currentParent as? BottomSheetController {
+            if let sheetViewController = currentParent as? KABottomSheetController {
                 return sheetViewController
             } else {
                 parent = currentParent.parent
@@ -24,7 +24,7 @@ extension UIViewController {
 }
 
 
-protocol LayoutItem { // `UIView`, `UILayoutGuide`
+protocol LayoutItem { 
     var superview: UIView? { get }
 }
 
