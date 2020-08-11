@@ -615,22 +615,23 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     // MARK: notifications
     func addNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardDidShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.didBecomeActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.didEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.startSpeaking), name: NSNotification.Name(rawValue: startSpeakingNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.stopSpeaking), name: NSNotification.Name(rawValue: stopSpeakingNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(startSpeaking), name: NSNotification.Name(rawValue: startSpeakingNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(stopSpeaking), name: NSNotification.Name(rawValue: stopSpeakingNotification), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.showTableTemplateView), name: NSNotification.Name(rawValue: showTableTemplateNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.reloadTable(notification:)), name: NSNotification.Name(rawValue: reloadTableNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showTableTemplateView), name: NSNotification.Name(rawValue: showTableTemplateNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTable(notification:)), name: NSNotification.Name(rawValue: reloadTableNotification), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.showListViewTemplateView), name: NSNotification.Name(rawValue: showListViewTemplateNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showListViewTemplateView), name: NSNotification.Name(rawValue: showListViewTemplateNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(processDynamicUpdates(_:)), name: KoraNotification.Widget.update.notification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(processPanelEvents(_:)), name: KoraNotification.Panel.event.notification, object: nil)        
+        NotificationCenter.default.addObserver(self, selector: #selector(processPanelEvents(_:)), name: KoraNotification.Panel.event.notification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(navigateToComposeBar(_:)), name: KREMessageAction.navigateToComposeBar.notification, object: nil)
     }
     
     func removeNotifications() {
@@ -646,6 +647,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: reloadTableNotification), object: nil)
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showListViewTemplateNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: KREMessageAction.navigateToComposeBar.notification, object: nil)
     }
     
     // MARK: notification handlers
@@ -720,6 +722,20 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         AFNetworkReachabilityManager.shared().stopMonitoring()
     }
     
+    @objc func navigateToComposeBar(_ notification: Notification) {
+        DispatchQueue.main.async {
+            self.minimizePanelWindow(false)
+        }
+        
+        guard let params = notification.object as? [String: Any] else {
+            return
+        }
+        
+        if let utterance = params["utterance"] as? String, let options = params["options"] as? [String: Any] {
+            sendTextMessage(utterance, dictionary: options, options: options)
+        }
+    }
+    
     // MARK: - establish BotSDK connection
     func establishBotConnection() {
         KABotClient.shared.tryConnect()
@@ -753,8 +769,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     // MARK: Helper functions
-    
-    func sendMessage(_ message: Message, options: [String: Any]?) {
+    func sendMessage(_ message: Message, dictionary: [String: Any]? = nil, options: [String: Any]?) {
         NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
         let composedMessage: Message = message
         if (composedMessage.components.count > 0) {
@@ -769,7 +784,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
     }
     
-    func sendTextMessage(_ text: String, options: [String: Any]?) {
+    func sendTextMessage(_ text: String, dictionary: [String: Any]? = nil, options: [String: Any]?) {
         let message: Message = Message()
         message.messageType = .default
         message.sentDate = Date()
@@ -777,7 +792,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let textComponent: Component = Component()
         textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         message.addComponent(textComponent)
-        self.sendMessage(message, options: options)
+        sendMessage(message, options: options)
     }
     
     func textMessageSent() {
@@ -818,9 +833,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func optionsButtonTapAction(text: String) {
         self.sendTextMessage(text, options: nil)
     }
+    
     func optionsButtonTapNewAction(text:String, payload:String){
-           self.sendTextMessage(text, options: ["body": payload])
-       }
+        self.sendTextMessage(text, options: ["body": payload])
+    }
     
     func linkButtonTapAction(urlString: String) {
         if (urlString.count > 0) {
@@ -1003,9 +1019,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let tableTemplateViewController = TableTemplateViewController(dataString: dataString)
         self.navigationController?.present(tableTemplateViewController, animated: true, completion: nil)
     }
+    
     @objc func reloadTable(notification:Notification){
         botMessagesView.tableView.reloadData()
     }
+    
     // MARK: show NewListViewDetailsTemplateView
     @objc func showListViewTemplateView(notification:Notification) {
         let dataString: String = notification.object as! String
@@ -1013,6 +1031,19 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         listViewDetailsViewController.viewDelegate = self
         listViewDetailsViewController.modalPresentationStyle = .overFullScreen
         self.navigationController?.present(listViewDetailsViewController, animated: true, completion: nil)
+    }
+    
+    // MARK: -
+    public func maximizePanelWindow() {
+
+    }
+    
+    public func minimizePanelWindow(_ canValidateSession: Bool = true) {
+        sheetController?.dismissAllPresentedViewControllers { [weak self] in
+            self?.sheetController?.closeSheet(completion: {
+                self?.sheetController = nil
+            })
+        }
     }
 }
 

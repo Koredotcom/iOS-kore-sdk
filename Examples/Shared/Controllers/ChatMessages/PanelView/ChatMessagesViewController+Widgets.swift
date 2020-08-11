@@ -205,12 +205,34 @@ class KREWidgetViewControllerDelegate: NSObject, KREGenericWidgetViewDelegate {
             params["utterance"] = "find the articles with " + "#\(hashTag)"
             params["options"] = ["refresh": true]
             NotificationCenter.default.post(name: KREMessageAction.navigateToComposeBar.notification, object: params)
-            //            self.dismiss(animated: true, completion: nil)
         }
     }
     
     func utteranceAction(for element: KREAction, in widget: KREWidget?, panelItem: KREPanelItem?) {
-        
+        if let actionTag = element.utterance {
+            var params: [String: Any] =  [String: Any]()
+            if let trigger = widget?.trigger {
+                params["utterance"] = trigger + " " + actionTag
+            } else if let trigger = panelItem?.trigger {
+                params["utterance"] = trigger + " " + actionTag
+            } else {
+                params["utterance"] = actionTag
+            }
+            params["utterance"] = actionTag
+            params["options"] = ["refresh": true]
+            NotificationCenter.default.post(name: KREMessageAction.navigateToComposeBar.notification, object: params)
+        } else if let payload = element.payload {
+            var params: [String: Any] =  [String: Any]()
+            if let trigger = widget?.trigger {
+                params["utterance"] = trigger + " " + payload
+            } else if let trigger = panelItem?.trigger {
+                params["utterance"] = trigger + " " + payload
+            } else {
+                params["utterance"] = payload
+            }
+            params["options"] = ["refresh": true]
+            NotificationCenter.default.post(name: KREMessageAction.navigateToComposeBar.notification, object: params)
+        }
     }
     
     func utteranceButtonAction(for element: KREButtonTemplate, in widget: KREWidget?, panelItem: KREPanelItem?) {
