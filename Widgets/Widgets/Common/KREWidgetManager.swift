@@ -44,6 +44,7 @@ public class KREWidgetManager: NSObject {
         }
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+        requestSerializer.setValue("en", forHTTPHeaderField: "bot-language")
         if let tokenType = user?.tokenType, let accessToken = user?.accessToken {
             requestSerializer.setValue("\(tokenType) \(accessToken)", forHTTPHeaderField: "Authorization")
         }

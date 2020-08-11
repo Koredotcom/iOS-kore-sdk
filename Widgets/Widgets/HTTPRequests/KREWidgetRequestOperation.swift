@@ -129,19 +129,14 @@ class KREWidgetRequestOperation: KREOperation {
         }
         
         let userId = user?.userId ?? ""
-        httpMethod = "Post"
-        let dictionary: NSMutableDictionary = NSMutableDictionary()
+        httpMethod = "POST"
         let widgetId = widget?._id ?? ""
-        let email = user?.userEmail ?? ""
-        let jwtAccessToken = user?.accessToken ?? ""
-        dictionary.setObject(email as String, forKey: "from" as NSCopying)
-        dictionary.setObject("{}", forKey: "inputs" as NSCopying)
-        body = dictionary as! [String : Any]
-        //print(body)
-        //print(dictionary)
+        if let email = user?.userEmail, email.count > 0 {
+            body?["from"] = email
+        }
+        body?["inputs"] = "{}"
+        
         urlString = widgetsUrl(with: userId, server: urlString, widgetId: widgetId)
-        let accessToken: String = String(format: "bearer %@", jwtAccessToken)
-        sessionManager?.requestSerializer.setValue(accessToken, forHTTPHeaderField:"Authorization")
 
         let requestSerializer = widgetManager.requestSerializer()
         sessionManager?.requestSerializer = requestSerializer
@@ -164,14 +159,17 @@ class KREWidgetRequestOperation: KREOperation {
                 block?(success)
                 return
             }
+            print("============================================");
+            print(response);
+            print(responseObject)
+            print("============================================");
             success = true
             let manager = KREWidgetManager.shared
             let array = dictionary["data"] as! NSArray
             let botWidgetDictionary = array.count>0 ? array[0] : dictionary
-            //print(botWidgetDictionary)
             if let _ = botWidgetDictionary as? Dictionary<AnyHashable, Any>{
                 manager.insertOrUpdateWidgetComponent(for: widgetFilter, in: self?.widget, with: botWidgetDictionary as! [String : Any])
-            }else{
+            } else {
                 manager.insertOrUpdateWidgetComponent(for: widgetFilter, in: self?.widget, with: dictionary)
             }
             block?(success)
@@ -201,9 +199,10 @@ class KREWidgetRequestOperation: KREOperation {
         }
         return inputFields
     }
+    
     func widgetsUrl(with userId: String, server: String, widgetId: String) -> String {
-            return String(format: "\(server)widgetsdk/\(userId)/widgets/\(widgetId)?")
-        }
+        return String(format: "\(server)widgetsdk/\(userId)/widgets/\(widgetId)?")
+    }
 }
 
 
