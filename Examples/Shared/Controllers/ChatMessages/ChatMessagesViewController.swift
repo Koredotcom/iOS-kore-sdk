@@ -365,7 +365,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[typingStatusView(40)][composeBarContainerView]", options:[], metrics:nil, views: views))
     }
     
-    func getComponentType(_ templateType: String,_ tabledesign:String) -> ComponentType {
+    func getComponentType(_ templateType: String,_ tabledesign: String) -> ComponentType {
         if (templateType == "quick_replies") {
             return .quickReply
         } else if (templateType == "button") {

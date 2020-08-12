@@ -72,9 +72,9 @@ class CarouselBubbleView: BubbleView {
                     let imageUrl: String = dictionary["image_url"] != nil ? dictionary["image_url"] as! String : ""
                     
                     let cardInfo: KRECardInfo = KRECardInfo(title: title, subTitle: subtitle, imageURL: imageUrl)
-                    if (dictionary["default_action"] != nil) {
-                        let defaultAction = dictionary["default_action"] as! Dictionary<String, Any>
-                        cardInfo.setDefaultAction(action: Utilities.getKREActionFromDictionary(dictionary: defaultAction)!)
+                    if let defaultAction = dictionary["default_action"] as? [String: Any],
+                        let action = Utilities.getKREActionFromDictionary(dictionary: defaultAction) {
+                        cardInfo.setDefaultAction(action: action)
                     }
                     
                     let buttons: Array<Dictionary<String, Any>> = dictionary["buttons"] != nil ? dictionary["buttons"] as! Array<Dictionary<String, Any>> : []
@@ -86,7 +86,9 @@ class CarouselBubbleView: BubbleView {
                         let title: String = buttonElement["title"] != nil ? buttonElement["title"] as! String: ""
                         
                         let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button)
-                        option.setDefaultAction(action: Utilities.getKREActionFromDictionary(dictionary: buttonElement)!)
+                        if let action = Utilities.getKREActionFromDictionary(dictionary: buttonElement) {
+                            option.setDefaultAction(action: action)
+                        }
                         options.append(option)
                     }
                     cardInfo.setOptions(options: options)

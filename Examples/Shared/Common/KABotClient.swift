@@ -312,89 +312,88 @@ open class KABotClient: NSObject {
         message.sentDate = object?.createdOn
         message.messageId = object?.messageId
         
-        if (object?.iconUrl != nil) {
-            message.iconUrl = object?.iconUrl
+        if let iconUrl = object?.iconUrl {
+            message.iconUrl = iconUrl
         }
         
-        //        if (webViewController != nil) {
-        //            webViewController.dismiss(animated: true, completion: nil)
-        //            webViewController = nil
-        //        }
-        //
-        let messageObject = ((object?.messages.count)! > 0) ? (object?.messages[0]) : nil
+        guard let messages = object?.messages, messages.count > 0 else {
+            return (nil, ttsBody)
+        }
+        
+        let messageObject = messages.first
         if (messageObject?.component == nil) {
             
-        } else {
-            let componentModel: ComponentModel = messageObject!.component!
-            if (componentModel.type == "text") {
-                let payload: NSDictionary = componentModel.payload! as! NSDictionary
-                let text: NSString = payload["text"] as! NSString
-                let textComponent: Component = Component()
-                textComponent.payload = text as String
-                ttsBody = text as String
-                
-                if(text.contains("use a web form")){
-                    let range: NSRange = text.range(of: "use a web form - ")
-                    let urlString: String? = text.substring(with: NSMakeRange(range.location+range.length, 44))
-                    if (urlString != nil) {
-                        //let url: URL = URL(string: urlString!)!
-                        //                        webViewController = SFSafariViewController(url: url)
-                        //                        webViewController.modalPresentationStyle = .custom
-                        //                        present(webViewController, animated: true, completion:nil)
-                    }
-                    ttsBody = "Ok, Please fill in the details and submit"
-                }
-                message.addComponent(textComponent)
-                return (message, ttsBody)
-            } else if (componentModel.type == "template") {
-                let payload: NSDictionary = componentModel.payload! as! NSDictionary
-                let text: String = payload["text"] != nil ? payload["text"] as! String : ""
-                let type: String = payload["type"] != nil ? payload["type"] as! String : ""
-                ttsBody = payload["speech_hint"] != nil ? payload["speech_hint"] as? String : nil
-                
-                if (type == "template") {
-                    let dictionary: NSDictionary = payload["payload"] as! NSDictionary
-                    let templateType: String = dictionary["template_type"] as! String
-                    var tabledesign: String
-                    
-                    tabledesign  = (dictionary["table_design"] != nil ? dictionary["table_design"] as? String : "responsive")!
-                    let componentType = self.getComponentType(templateType,tabledesign)
-                    
-                    if componentType != .quickReply {
-                        
-                    }
-                    
-                    let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
-                    ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
-                    
-                    if tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable) {
-                        textMessage = Message()
-                        textMessage?.messageType = .reply
-                        textMessage?.sentDate = message.sentDate
-                        textMessage?.messageId = message.messageId
-                        if (object?.iconUrl != nil) {
-                            textMessage?.iconUrl = object?.iconUrl
-                        }
-                        let textComponent: Component = Component()
-                        textComponent.payload = tText
-                        textMessage?.addComponent(textComponent)
-                    }
-                    
-                    let optionsComponent: Component = Component(componentType)
-                    optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                    message.sentDate = object?.createdOn
-                    message.addComponent(optionsComponent)
-                } else if (type == "error") {
-                    let dictionary: NSDictionary = payload["payload"] as! NSDictionary
-                    let errorComponent: Component = Component(.error)
-                    errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                    message.addComponent(errorComponent)
-                } else if text.count > 0 {
-                    let textComponent: Component = Component()
+        } else if let componentModel = messageObject?.component, let componentType = componentModel.type {
+            switch componentType {
+            case "text":
+                if let payload = componentModel.payload as? [String: Any],
+                    let text = payload["text"] as? String {
+                    let textComponent = Component()
                     textComponent.payload = text
+                    ttsBody = text
+                    
+                    if text.contains("use a web form")  {
+
+                    }
                     message.addComponent(textComponent)
+                    return (message, ttsBody)
+                }
+            case "template":
+                if let payload = componentModel.payload as? [String: Any] {
+                    let type = payload["type"] as? String ?? ""
+                    let text = payload["text"] as? String
+                    ttsBody = payload["speech_hint"] as? String
+                    
+                    switch type {
+                    case "template":
+                        if let dictionary = payload["payload"] as? [String: Any] {
+                            let templateType = dictionary["template_type"] as? String ?? ""
+                            var tabledesign = "responsive"
+                            if let value = dictionary["table_design"] as? String {
+                                tabledesign = value
+                            }
+
+                            let componentType = getComponentType(templateType, tabledesign)
+                            if componentType != .quickReply {
+                                
+                            }
+                            
+                            ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
+                            if let tText = dictionary["text"] as? String, tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable) {
+                                textMessage = Message()
+                                textMessage?.messageType = .reply
+                                textMessage?.sentDate = message.sentDate
+                                textMessage?.messageId = message.messageId
+                                if let iconUrl = object?.iconUrl {
+                                    textMessage?.iconUrl = iconUrl
+                                }
+                                let textComponent: Component = Component()
+                                textComponent.payload = tText
+                                textMessage?.addComponent(textComponent)
+                            }
+                            
+                            let optionsComponent: Component = Component(componentType)
+                            optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                            message.sentDate = object?.createdOn
+                            message.addComponent(optionsComponent)
+                        }
+                    case "error":
+                        if let dictionary = payload["payload"] as? [String: Any] {
+                            let errorComponent: Component = Component(.error)
+                            errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                            message.addComponent(errorComponent)
+                        }
+                    default:
+                        if let text = text, text.count > 0 {
+                            let textComponent: Component = Component()
+                            textComponent.payload = text
+                            message.addComponent(textComponent)
+                        }
+                    }
                 }
                 return (message, ttsBody)
+            default:
+                return (nil, ttsBody)
             }
         }
         return (nil, ttsBody)
@@ -492,9 +491,8 @@ open class KABotClient: NSObject {
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
         sessionManager?.requestSerializer = requestSerializer
         sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-            if (responseObject is NSDictionary) {
-                let dictionary: NSDictionary = responseObject as! NSDictionary
-                let jwToken: String = dictionary["jwt"] as! String
+            if let dictionary = responseObject as? [String: Any],
+                let jwToken: String = dictionary["jwt"] as? String {
                 success?(jwToken)
             } else {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])

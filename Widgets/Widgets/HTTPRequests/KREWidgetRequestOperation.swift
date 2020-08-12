@@ -159,10 +159,6 @@ class KREWidgetRequestOperation: KREOperation {
                 block?(success)
                 return
             }
-            print("============================================");
-            print(response);
-            print(responseObject)
-            print("============================================");
             success = true
             let manager = KREWidgetManager.shared
             let array = dictionary["data"] as! NSArray

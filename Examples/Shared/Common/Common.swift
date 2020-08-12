@@ -66,13 +66,18 @@ open class Utilities: NSObject {
         let actionInfo:Dictionary<String,Any> = dictionary
         let actionType: String = actionInfo["type"] != nil ? actionInfo["type"] as! String : ""
         let title: String = actionInfo["title"] != nil ? actionInfo["title"] as! String : ""
-        if (actionType == "web_url") {
+        switch (actionType.lowercased()) {
+        case "web_url", "iframe_web_url", "url":
             let url: String = actionInfo["url"] != nil ? actionInfo["url"] as! String : ""
             return KREAction(actionType: .webURL, title: title, payload: url)
-        } else if (actionType == "postback") {
-
-            let payload: String = (actionInfo["payload"] != nil ? actionInfo["payload"] as? String : "") ?? String(actionInfo["payload"] as! Int)
+        case "postback":
+            let payload: String = actionInfo["payload"] != nil ? actionInfo["payload"] as! String : ""
             return KREAction(actionType: .postback, title: title, payload: payload)
+        case "postback_disp_payload":
+            let payload: String = actionInfo["payload"] != nil ? actionInfo["payload"] as! String : ""
+            return KREAction(actionType: .postback_disp_payload, title: payload, payload: payload)
+        default:
+            break
         }
         return nil
     }
