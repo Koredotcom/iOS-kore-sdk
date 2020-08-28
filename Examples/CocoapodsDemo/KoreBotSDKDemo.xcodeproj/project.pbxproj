@@ -16,6 +16,9 @@
 		CD4BFFF924D16091008E08CE /* NotificationBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BFFF824D16091008E08CE /* NotificationBubbleView.swift */; };
 		CD4BFFFC24D160CA008E08CE /* NotificationCustomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD4BFFFA24D160CA008E08CE /* NotificationCustomView.xib */; };
 		CD4BFFFD24D160CA008E08CE /* NotificationCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BFFFB24D160CA008E08CE /* NotificationCustomView.swift */; };
+		CD63DA4824EAB98B00DCCCCE /* MultiSelectNewBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD63DA4724EAB98B00DCCCCE /* MultiSelectNewBubbleView.swift */; };
+		CD63DA4B24EAB9A700DCCCCE /* MultiSelectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD63DA4924EAB9A700DCCCCE /* MultiSelectCell.swift */; };
+		CD63DA4C24EAB9A700DCCCCE /* MultiSelectCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD63DA4A24EAB9A700DCCCCE /* MultiSelectCell.xib */; };
 		CD89236724C55BAC006F71DE /* CalenderBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD89236424C55BAB006F71DE /* CalenderBubbleView.swift */; };
 		CD89236824C55BAC006F71DE /* CalenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD89236524C55BAB006F71DE /* CalenderViewController.swift */; };
 		CD89236924C55BAC006F71DE /* CalenderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD89236624C55BAB006F71DE /* CalenderViewController.xib */; };
@@ -131,6 +134,9 @@
 		CD4BFFFA24D160CA008E08CE /* NotificationCustomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCustomView.xib; sourceTree = "<group>"; };
 		CD4BFFFB24D160CA008E08CE /* NotificationCustomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCustomView.swift; sourceTree = "<group>"; };
 		CD4BFFFF24D164CB008E08CE /* TaskMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskMenuViewController.swift; sourceTree = "<group>"; };
+		CD63DA4724EAB98B00DCCCCE /* MultiSelectNewBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiSelectNewBubbleView.swift; sourceTree = "<group>"; };
+		CD63DA4924EAB9A700DCCCCE /* MultiSelectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiSelectCell.swift; sourceTree = "<group>"; };
+		CD63DA4A24EAB9A700DCCCCE /* MultiSelectCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultiSelectCell.xib; sourceTree = "<group>"; };
 		CD89236424C55BAB006F71DE /* CalenderBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalenderBubbleView.swift; sourceTree = "<group>"; };
 		CD89236524C55BAB006F71DE /* CalenderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalenderViewController.swift; sourceTree = "<group>"; };
 		CD89236624C55BAB006F71DE /* CalenderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalenderViewController.xib; sourceTree = "<group>"; };
@@ -163,7 +169,7 @@
 		D101F91D24E163F700D47DB8 /* ChatMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatMessagesViewController.xib; sourceTree = "<group>"; };
 		D15041081DE2C4BC00F2F92E /* Messages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Messages.plist; sourceTree = "<group>"; };
 		D15045D41DE422CB008DE46E /* BotConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BotConfiguration.plist; sourceTree = "<group>"; };
-		D175AD4A1CEF0CD500BB9442 /* KoreBotSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KoreBotSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D175AD4A1CEF0CD500BB9442 /* BankAssist.ai.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BankAssist.ai.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D175AD571CEF0CD500BB9442 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D175AD591CEF0CD500BB9442 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -300,6 +306,16 @@
 			path = CustomView;
 			sourceTree = "<group>";
 		};
+		CD63DA4624EAB96600DCCCCE /* Multi Select */ = {
+			isa = PBXGroup;
+			children = (
+				CD63DA4724EAB98B00DCCCCE /* MultiSelectNewBubbleView.swift */,
+				CD63DA4924EAB9A700DCCCCE /* MultiSelectCell.swift */,
+				CD63DA4A24EAB9A700DCCCCE /* MultiSelectCell.xib */,
+			);
+			path = "Multi Select";
+			sourceTree = "<group>";
+		};
 		CD89236324C55B7E006F71DE /* CalenderView */ = {
 			isa = PBXGroup;
 			children = (
@@ -413,7 +429,7 @@
 		D175AD4B1CEF0CD500BB9442 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D175AD4A1CEF0CD500BB9442 /* KoreBotSDKDemo.app */,
+				D175AD4A1CEF0CD500BB9442 /* BankAssist.ai.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -605,6 +621,7 @@
 				D1F3389B2201D99A005BE5F1 /* Table */,
 				D1F338A72201D99A005BE5F1 /* Menu */,
 				D1F338A92201D99A005BE5F1 /* ListBubbleView.swift */,
+				CD63DA4624EAB96600DCCCCE /* Multi Select */,
 				CD4BFFF724D16073008E08CE /* Notification */,
 				CD89236A24C56124006F71DE /* Quick Reply Welcome */,
 				CD89236324C55B7E006F71DE /* CalenderView */,
@@ -767,7 +784,7 @@
 			);
 			name = KoreBotSDKDemo;
 			productName = KoreBotSDKDemo;
-			productReference = D175AD4A1CEF0CD500BB9442 /* KoreBotSDKDemo.app */;
+			productReference = D175AD4A1CEF0CD500BB9442 /* BankAssist.ai.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -826,6 +843,7 @@
 				D1F338FB2201D99A005BE5F1 /* KRETypingCollectionViewCell.xib in Resources */,
 				D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */,
 				CDB86A0A24C00CD000D1CCC7 /* TaskMenu.json in Resources */,
+				CD63DA4C24EAB9A700DCCCCE /* MultiSelectCell.xib in Resources */,
 				CD4B000224D164CB008E08CE /* TaskMenuViewController.xib in Resources */,
 				CDB86A0124C0099300D1CCC7 /* ListViewDetailsViewController.xib in Resources */,
 				CDB869FC24C0093A00D1CCC7 /* NewListTableViewCell.xib in Resources */,
@@ -866,7 +884,6 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
-				"${BUILT_PRODUCTS_DIR}/BottomSheetController/BottomSheetController.framework",
 				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/GhostTypewriter/GhostTypewriter.framework",
 				"${BUILT_PRODUCTS_DIR}/KoreBotSDK/KoreBotSDK.framework",
@@ -877,7 +894,6 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BottomSheetController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GhostTypewriter.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KoreBotSDK.framework",
@@ -916,6 +932,7 @@
 				D1F338EA2201D99A005BE5F1 /* CustomCollectionViewLayout.swift in Sources */,
 				D1F338FA2201D99A005BE5F1 /* KRETypingActivityIndicator.m in Sources */,
 				D101F92924E163F800D47DB8 /* KAPanelHeaderView.swift in Sources */,
+				CD63DA4B24EAB9A700DCCCCE /* MultiSelectCell.swift in Sources */,
 				D101F92124E163F700D47DB8 /* KoraAssistant.swift in Sources */,
 				D101F92024E163F700D47DB8 /* KoraNotification.swift in Sources */,
 				D1F338DD2201D99A005BE5F1 /* KREAttributedLabel.m in Sources */,
@@ -955,6 +972,7 @@
 				CD4BFFFD24D160CA008E08CE /* NotificationCustomView.swift in Sources */,
 				D1F338F32201D99A005BE5F1 /* ListBubbleView.swift in Sources */,
 				D1F338E52201D99A005BE5F1 /* ImageComponentCollectionViewCell.swift in Sources */,
+				CD63DA4824EAB98B00DCCCCE /* MultiSelectNewBubbleView.swift in Sources */,
 				D1F338E02201D99A005BE5F1 /* ChartBubbleView.swift in Sources */,
 				D1F338ED2201D99A005BE5F1 /* TableBubbleView.swift in Sources */,
 				D1F338CE2201D99A005BE5F1 /* KREComponent+CoreDataProperties.swift in Sources */,
@@ -1131,7 +1149,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = BankAssist.ai;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "Kore sdk";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/KoreBotSDKDemo/Resources/KoreBotSDKDemo-Bridging-Header.h";
@@ -1156,7 +1174,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = BankAssist.ai;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "Kore sdk";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/KoreBotSDKDemo/Resources/KoreBotSDKDemo-Bridging-Header.h";

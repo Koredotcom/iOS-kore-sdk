@@ -93,7 +93,7 @@ class CalenderViewController: UIViewController {
             clickOnFromDateRangeViewButton(fromDateButton as Any)
             dateRangeView.isHidden = false
         }else{
-            datePickerOfMinimumMaximum(minimumdate: startDate ?? Date(), maximumDate: startDate ?? Date())
+            datePickerTemplateOfMinimumMaximum(minimumdate: startDate ?? Date(), maximumDate: startDate ?? Date())
             dateRangeView.isHidden = true
             fromDateButton.isUserInteractionEnabled = false
             fromYearLabel.textAlignment = .left
@@ -178,6 +178,13 @@ class CalenderViewController: UIViewController {
     func datePickerOfMinimumMaximum(minimumdate: Date, maximumDate: Date){
         datePicker.minimumDate = Calendar.current.date(byAdding: .year, value: -10, to: minimumdate)
         datePicker.maximumDate = Calendar.current.date(byAdding: .year, value: 0, to: maximumDate)
+        datePicker.setDate(Date(), animated: true)
+        selectDate(datePicker: datePicker)
+    }
+    
+    func datePickerTemplateOfMinimumMaximum(minimumdate: Date, maximumDate: Date){
+        datePicker.minimumDate = Calendar.current.date(byAdding: .year, value: 0, to: minimumdate)
+        datePicker.maximumDate = Calendar.current.date(byAdding: .year, value: 10, to: maximumDate)
         datePicker.setDate(Date(), animated: true)
         selectDate(datePicker: datePicker)
     }

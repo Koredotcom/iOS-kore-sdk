@@ -172,7 +172,7 @@ open class KABotClient: NSObject {
         botClient.connectionDidOpen = { [weak self] () in
             self?.isConnected = true
             self?.isConnecting = false
-            self?.sendMessage("Welpro", options: nil)
+           // self?.sendMessage("Welpro", options: nil) //kk
         }
         
         botClient.connectionReady = {
@@ -298,6 +298,9 @@ open class KABotClient: NSObject {
         else if (templateType == "Notification") {
             return .notification
         }
+        else if (templateType == "multi_select") {
+            return .multiSelect
+        }
         return .text
     }
     
@@ -411,7 +414,7 @@ open class KABotClient: NSObject {
         if (isAnonymous) {
             identity = self.getUUID()
         } else {
-            identity = SDKConfiguration.botConfig.identity
+            identity = UserDefaults.standard.value(forKey: "User Identity") as? String //SDKConfiguration.botConfig.identity //kk
         }
         
         let botInfo: [String: Any] = ["chatBot": chatBotName, "taskBotId": botId]

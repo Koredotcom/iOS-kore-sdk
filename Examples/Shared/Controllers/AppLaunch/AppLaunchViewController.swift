@@ -17,6 +17,8 @@ class AppLaunchViewController: UIViewController {
     @IBOutlet weak var imgView: UIImageView!
     // MARK: properties
     @IBOutlet weak var chatButton: UIButton!
+    @IBOutlet weak var identityTF: UITextField!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     var sessionManager: AFHTTPSessionManager?
     var kaBotClient = KABotClient()
@@ -28,11 +30,50 @@ class AppLaunchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       // let chatBotName: String = SDKConfiguration.botConfig.chatBotName
-       // self.chatButton.setTitle(String(format: "%@", chatBotName), for: .normal)
+        //let chatBotName: String = SDKConfiguration.botConfig.chatBotName
+        //self.chatButton.setTitle(String(format: "%@", chatBotName), for: .normal)
         setInitialState()
         self.automaticallyAdjustsScrollViewInsets = false
         imgView.contentMode = .scaleAspectFit
+        
+        identityTF.text = SDKConfiguration.botConfig.identity
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        let keyboardUserInfo: NSDictionary = NSDictionary(dictionary: (notification as NSNotification).userInfo!)
+        let keyboardFrameEnd: CGRect = ((keyboardUserInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue?)!.cgRectValue)
+        let options = UIView.AnimationOptions(rawValue: UInt((keyboardUserInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
+        let durationValue = keyboardUserInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber
+        let duration = durationValue.doubleValue
+        
+        var keyboardHeight = keyboardFrameEnd.size.height;
+        if #available(iOS 11.0, *) {
+            keyboardHeight -= self.view.safeAreaInsets.bottom
+        } else {
+            // Fallback on earlier versions
+        };
+        self.bottomConstraint.constant = keyboardHeight + 35
+        UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: { (Bool) in
+            
+        })
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        let keyboardUserInfo: NSDictionary = NSDictionary(dictionary: (notification as NSNotification).userInfo!)
+        let durationValue = keyboardUserInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber
+        let duration = durationValue.doubleValue
+        let options = UIView.AnimationOptions(rawValue: UInt((keyboardUserInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
+            self.bottomConstraint.constant = 20
+        UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: { (Bool) in
+            
+        })
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -47,6 +88,8 @@ class AppLaunchViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -71,8 +114,10 @@ class AppLaunchViewController: UIViewController {
         if (isAnonymous) {
             identity = self.getUUID()
         } else {
-            identity = SDKConfiguration.botConfig.identity
+            identity = identityTF.text! //SDKConfiguration.botConfig.identity //kk
+            UserDefaults.standard.set(identityTF.text ?? "", forKey: "User Identity")
         }
+        identityTF.resignFirstResponder()
         
         let clientIdForWidget: String = SDKConfiguration.widgetConfig.clientId
         let clientSecretForWidget: String = SDKConfiguration.widgetConfig.clientSecret
@@ -83,7 +128,7 @@ class AppLaunchViewController: UIViewController {
         if (isAnonymousForWidget) {
             identityForWidget = self.getUUID()
         } else {
-            identityForWidget = SDKConfiguration.widgetConfig.identity
+            identityForWidget = identityTF.text! //SDKConfiguration.widgetConfig.identity //kk
         }
         
         let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
@@ -91,7 +136,7 @@ class AppLaunchViewController: UIViewController {
             print("Delete Sucess")
         })
         
-        if !clientId.hasPrefix("<") && !clientSecret.hasPrefix("<") && !chatBotName.hasPrefix("<") && !botId.hasPrefix("<") && !identity.hasPrefix("<") {
+        if !clientId.hasPrefix("<") && !clientSecret.hasPrefix("<") && !chatBotName.hasPrefix("<") && !botId.hasPrefix("<") && !identity.hasPrefix("<") && identityTF.text != "" {
             //let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(style: .white)
             activityIndicatorView.center = chatButton.center
             view.addSubview(activityIndicatorView)
@@ -271,7 +316,7 @@ extension AppLaunchViewController{
      user.accessToken = widgetJWTToken
      user.server = SDKConfiguration.serverConfig.KORE_SERVER
      user.tokenType = "bearer"
-     user.userEmail = SDKConfiguration.widgetConfig.identity
+     user.userEmail = identityTF.text! //SDKConfiguration.widgetConfig.identity //kk
      user.headers = ["X-KORA-Client": KoraAssistant.shared.applicationHeader]
      widgetManager.initialize(with: user)
      self.user = user
@@ -281,5 +326,18 @@ extension AppLaunchViewController{
             // NotificationCenter.default.post(name: NSNotification.Name(rawValue: KoraNotification.EnforcementNotification), object: ["type": KoraNotification.EnforcementType.userSessionDidBecomeInvalid])
          }
        }
+    }
+}
+
+extension AppLaunchViewController : UITextFieldDelegate{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if (string == " ") {
+            return false
+        }
+        return true
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

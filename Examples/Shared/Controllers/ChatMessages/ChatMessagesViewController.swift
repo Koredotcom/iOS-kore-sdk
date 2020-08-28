@@ -56,7 +56,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     public var userInfoModel: UserModel?
     public var user: KREUser?
     public var sheetController: KABottomSheetController?
-    var isShowAudioComposeView = true
+    var isShowAudioComposeView = false
     var insets: UIEdgeInsets = .zero
     @IBOutlet weak var panelCollectionViewContainerHeightConstraint: NSLayoutConstraint!
     
@@ -119,7 +119,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if SDKConfiguration.widgetConfig.isPanelView {
             populatePanelItems()
         }
-        
+        self.title = "BankAssist.ai"
     }
     
     override open func viewDidAppear(_ animated: Bool) {
@@ -273,11 +273,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[quickReplyView]|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
         
-        //        self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
-        //            if let text = text, let payload = payload {
-        //                self?.sendTextMessage(text, options: ["body": payload])
-        //            }
-        //        }
+                self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
+                    if let text = text, let payload = payload {
+                        self?.sendTextMessage(text, options: ["body": payload])
+                    }
+                }
     }
     
     func configurePanelCollectionView() {
@@ -402,6 +402,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
         else if (templateType == "Notification") {
             return .notification
+        }
+        else if (templateType == "multi_select") {
+            return .multiSelect
         }
         return .text
     }
@@ -1260,7 +1263,7 @@ extension ChatMessagesViewController {
         let panelBar = panelCollectionView
         switch panelBar!.panelState {
         case .loaded:
-            guard let panelItem = panelItems?.filter({ $0.name == "Bar Chart" }).first else { //iconId == "new list" == "home"
+            guard let panelItem = panelItems?.filter({ $0.name == "Quick Summar" }).first else {
                 return
             }
             

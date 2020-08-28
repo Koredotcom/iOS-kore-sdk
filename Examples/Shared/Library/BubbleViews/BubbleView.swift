@@ -105,6 +105,9 @@ class BubbleView: UIView {
         case .notification:
                 bubbleView = NotificationBubbleView()
             break
+        case .multiSelect:
+                bubbleView = MultiSelectNewBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         

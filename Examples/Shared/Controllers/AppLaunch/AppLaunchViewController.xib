@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -9,7 +9,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AppLaunchViewController">
             <connections>
+                <outlet property="bottomConstraint" destination="EZF-i9-8Bj" id="t6E-es-AU6"/>
                 <outlet property="chatButton" destination="17E-ZR-uVC" id="xnX-bS-0rW"/>
+                <outlet property="identityTF" destination="YsG-dv-o8t" id="1re-V9-Oo6"/>
                 <outlet property="imgView" destination="6hj-Om-n0n" id="HDy-IB-Ldv"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -25,7 +27,8 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="EP5-2O-snM"/>
                     </constraints>
-                    <state key="normal" backgroundImage="buttonWithText">
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
+                    <state key="normal" title="CONNECT">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <userDefinedRuntimeAttributes>
@@ -44,20 +47,33 @@
                         <constraint firstAttribute="height" constant="234" id="Yyp-aY-oop"/>
                     </constraints>
                 </imageView>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please Enter Identity" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YsG-dv-o8t">
+                    <rect key="frame" x="20" y="617" width="374" height="34"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="34" id="rzd-2H-zJ8"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="UTZ-JD-dQd"/>
+                    </connections>
+                </textField>
             </subviews>
             <color key="backgroundColor" red="0.14117647058823529" green="0.20392156862745098" blue="0.27450980392156865" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="YsG-dv-o8t" secondAttribute="trailing" constant="20" id="6q0-Fw-3ub"/>
                 <constraint firstItem="6hj-Om-n0n" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="8kf-PP-VB9"/>
                 <constraint firstAttribute="trailing" secondItem="17E-ZR-uVC" secondAttribute="trailing" constant="20" id="9fj-d6-sTa"/>
                 <constraint firstAttribute="bottom" secondItem="17E-ZR-uVC" secondAttribute="bottom" constant="20" id="EZF-i9-8Bj"/>
                 <constraint firstItem="6hj-Om-n0n" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="HlX-35-ydR"/>
+                <constraint firstItem="YsG-dv-o8t" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="a3W-BH-RVl"/>
+                <constraint firstItem="17E-ZR-uVC" firstAttribute="top" secondItem="YsG-dv-o8t" secondAttribute="bottom" constant="15" id="chd-aw-9G7"/>
                 <constraint firstItem="17E-ZR-uVC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="srz-88-hcr"/>
             </constraints>
             <point key="canvasLocation" x="-160" y="307"/>
         </view>
     </objects>
     <resources>
-        <image name="buttonWithText" width="335" height="50"/>
         <image name="kore_logo_mask" width="116" height="116"/>
     </resources>
 </document>

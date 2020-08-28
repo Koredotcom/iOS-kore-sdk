@@ -413,3 +413,16 @@ class NotificationBubbleCell : MessageBubbleCell {
         self.senderImageView.isHidden = true
     }
 }
+
+class MultiSelectBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .multiSelect
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
