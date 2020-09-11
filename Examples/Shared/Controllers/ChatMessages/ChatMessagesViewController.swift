@@ -60,6 +60,15 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var insets: UIEdgeInsets = .zero
     @IBOutlet weak var panelCollectionViewContainerHeightConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var backgroungImageView: UIImageView!
+    @IBOutlet weak var dropDownBtn: UIButton!
+       let colorDropDown = DropDown()
+       lazy var dropDowns: [DropDown] = {
+           return [
+               self.colorDropDown
+           ]
+       }()
+    
     public var maxPanelHeight: CGFloat {
         var maxHeight = UIScreen.main.bounds.height
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
@@ -106,8 +115,66 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
 
         isSpeakingEnabled = true
         self.speechSynthesizer = AVSpeechSynthesizer()
+        ConfigureDropDownView()
     }
-    
+    func ConfigureDropDownView(){
+        //DropDown
+        dropDowns.forEach { $0.dismissMode = .onTap }
+        dropDowns.forEach { $0.direction = .any }
+        
+        colorDropDown.backgroundColor = UIColor(white: 1, alpha: 1)
+        colorDropDown.selectionBackgroundColor = UIColor(red: 0.6494, green: 0.8155, blue: 1.0, alpha: 0.2)
+        colorDropDown.separatorColor = UIColor(white: 0.7, alpha: 0.8)
+        colorDropDown.cornerRadius = 10
+        colorDropDown.shadowColor = UIColor(white: 0.6, alpha: 1)
+        colorDropDown.shadowOpacity = 0.9
+        colorDropDown.shadowRadius = 25
+        colorDropDown.animationduration = 0.25
+        colorDropDown.textColor = .darkGray
+        
+        let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let url = URL(string: urlString!)
+        if url != nil{
+            backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
+            backgroungImageView.contentMode = .scaleAspectFit
+        }
+        setupColorDropDown()
+    }
+    func setupColorDropDown() {
+              colorDropDown.anchorView = dropDownBtn
+              
+              colorDropDown.bottomOffset = CGPoint(x: 0, y: dropDownBtn.bounds.height)
+              colorDropDown.dataSource = [
+                  "Theme Logo",
+                  "Theme Shopping"
+              ]
+               colorDropDown.selectRow(0)
+              // Action triggered on selection
+              colorDropDown.selectionAction = { [weak self] (index, item) in
+                  //self?.amountButton.setTitle(item, for: .normal)
+               if item == "Theme Logo" {
+                   selectedTheme = "Theme 1"
+               }else{
+                   selectedTheme = "Theme 2"
+               }
+               
+               if selectedTheme == "Theme 1"{
+                   let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                   let url = URL(string: urlString!)
+                   if url != nil{
+                       self!.backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
+                   }else{
+                       self!.backgroungImageView.image = UIImage.init(named: "")
+                   }
+                   self!.backgroungImageView.contentMode = .scaleAspectFit
+               }else{
+                   self!.backgroungImageView.image = UIImage.init(named: "Shoppingbackground")
+                   self!.backgroungImageView.contentMode = .scaleAspectFill
+               }
+               NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+              }
+             
+          }
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addNotifications()
@@ -120,6 +187,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             populatePanelItems()
         }
         self.title = "BankAssist.ai"
+        
+        let rightImage = UIImage(named: "more")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(more(_:)))
+               
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     override open func viewDidAppear(_ animated: Bool) {
@@ -179,6 +251,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         prepareForDeinit()
         navigationController?.setNavigationBarHidden(true, animated: false)
         navigationController?.popViewController(animated: true)
+    }
+    
+    // MARK: More
+    @objc func more(_ sender: Any) {
+        colorDropDown.show()
     }
     
     //MARK: Menu Button Action

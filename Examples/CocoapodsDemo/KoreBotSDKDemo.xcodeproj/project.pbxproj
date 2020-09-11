@@ -27,6 +27,13 @@
 		CD445153250B855F00879219 /* ratingselect_2.gif in Resources */ = {isa = PBXBuildFile; fileRef = CD44514E250B855F00879219 /* ratingselect_2.gif */; };
 		CD445154250B855F00879219 /* ratingselect_3.gif in Resources */ = {isa = PBXBuildFile; fileRef = CD44514F250B855F00879219 /* ratingselect_3.gif */; };
 		CD445157250B8A2F00879219 /* InLineFormBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445156250B8A2F00879219 /* InLineFormBubbleView.swift */; };
+		CD445164250B9B3E00879219 /* DropDownCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD44515B250B9B3E00879219 /* DropDownCell.xib */; };
+		CD445165250B9B3E00879219 /* DPDKeyboardListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44515D250B9B3E00879219 /* DPDKeyboardListener.swift */; };
+		CD445166250B9B3E00879219 /* DPDConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44515E250B9B3E00879219 /* DPDConstants.swift */; };
+		CD445167250B9B3E00879219 /* DPDUIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44515F250B9B3E00879219 /* DPDUIView+Extension.swift */; };
+		CD445168250B9B3E00879219 /* DropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445161250B9B3E00879219 /* DropDown.swift */; };
+		CD445169250B9B3E00879219 /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445162250B9B3E00879219 /* DropDownCell.swift */; };
+		CD44516A250B9B3E00879219 /* DropDown+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445163250B9B3E00879219 /* DropDown+Appearance.swift */; };
 		CD4B000124D164CB008E08CE /* TaskMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BFFFF24D164CB008E08CE /* TaskMenuViewController.swift */; };
 		CD4B000224D164CB008E08CE /* TaskMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD4B000024D164CB008E08CE /* TaskMenuViewController.xib */; };
 		CD4BFFF924D16091008E08CE /* NotificationBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BFFF824D16091008E08CE /* NotificationBubbleView.swift */; };
@@ -161,6 +168,14 @@
 		CD44514E250B855F00879219 /* ratingselect_2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_2.gif; sourceTree = "<group>"; };
 		CD44514F250B855F00879219 /* ratingselect_3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_3.gif; sourceTree = "<group>"; };
 		CD445156250B8A2F00879219 /* InLineFormBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InLineFormBubbleView.swift; sourceTree = "<group>"; };
+		CD445159250B9B3E00879219 /* DropDown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDown.h; sourceTree = "<group>"; };
+		CD44515B250B9B3E00879219 /* DropDownCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DropDownCell.xib; sourceTree = "<group>"; };
+		CD44515D250B9B3E00879219 /* DPDKeyboardListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPDKeyboardListener.swift; sourceTree = "<group>"; };
+		CD44515E250B9B3E00879219 /* DPDConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPDConstants.swift; sourceTree = "<group>"; };
+		CD44515F250B9B3E00879219 /* DPDUIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DPDUIView+Extension.swift"; sourceTree = "<group>"; };
+		CD445161250B9B3E00879219 /* DropDown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDown.swift; sourceTree = "<group>"; };
+		CD445162250B9B3E00879219 /* DropDownCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownCell.swift; sourceTree = "<group>"; };
+		CD445163250B9B3E00879219 /* DropDown+Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DropDown+Appearance.swift"; sourceTree = "<group>"; };
 		CD4B000024D164CB008E08CE /* TaskMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskMenuViewController.xib; sourceTree = "<group>"; };
 		CD4BFFF824D16091008E08CE /* NotificationBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationBubbleView.swift; sourceTree = "<group>"; };
 		CD4BFFFA24D160CA008E08CE /* NotificationCustomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCustomView.xib; sourceTree = "<group>"; };
@@ -373,6 +388,45 @@
 			path = "InLine Form";
 			sourceTree = "<group>";
 		};
+		CD445158250B9B3E00879219 /* DropDown */ = {
+			isa = PBXGroup;
+			children = (
+				CD445159250B9B3E00879219 /* DropDown.h */,
+				CD44515A250B9B3E00879219 /* resources */,
+				CD44515C250B9B3E00879219 /* helpers */,
+				CD445160250B9B3E00879219 /* src */,
+			);
+			path = DropDown;
+			sourceTree = "<group>";
+		};
+		CD44515A250B9B3E00879219 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				CD44515B250B9B3E00879219 /* DropDownCell.xib */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
+		CD44515C250B9B3E00879219 /* helpers */ = {
+			isa = PBXGroup;
+			children = (
+				CD44515D250B9B3E00879219 /* DPDKeyboardListener.swift */,
+				CD44515E250B9B3E00879219 /* DPDConstants.swift */,
+				CD44515F250B9B3E00879219 /* DPDUIView+Extension.swift */,
+			);
+			path = helpers;
+			sourceTree = "<group>";
+		};
+		CD445160250B9B3E00879219 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				CD445161250B9B3E00879219 /* DropDown.swift */,
+				CD445162250B9B3E00879219 /* DropDownCell.swift */,
+				CD445163250B9B3E00879219 /* DropDown+Appearance.swift */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		CD4BFFF724D16073008E08CE /* Notification */ = {
 			isa = PBXGroup;
 			children = (
@@ -469,6 +523,7 @@
 			children = (
 				D101F91024E163F700D47DB8 /* ChatMessagesViewController.swift */,
 				D101F91D24E163F700D47DB8 /* ChatMessagesViewController.xib */,
+				CD445158250B9B3E00879219 /* DropDown */,
 				D101F91124E163F700D47DB8 /* PanelView */,
 			);
 			path = ChatMessages;
@@ -927,6 +982,7 @@
 				CD445139250B7C5400879219 /* ListWidgetDetailsViewController.xib in Resources */,
 				D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */,
 				D1F338E62201D99A005BE5F1 /* MultiImageBubbleView.xib in Resources */,
+				CD445164250B9B3E00879219 /* DropDownCell.xib in Resources */,
 				D1F338F82201D99A005BE5F1 /* TableTemplateViewController.xib in Resources */,
 				D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */,
 				D1F338E42201D99A005BE5F1 /* ImageComponentCollectionViewCell.xib in Resources */,
@@ -1021,6 +1077,7 @@
 				CD445146250B852100879219 /* FeedbackBubbleView.swift in Sources */,
 				D1F338CF2201D99A005BE5F1 /* TSBaseParser.m in Sources */,
 				D101F92524E163F800D47DB8 /* UIViewController+Kora.swift in Sources */,
+				CD445169250B9B3E00879219 /* DropDownCell.swift in Sources */,
 				D1F338DF2201D99A005BE5F1 /* OptionsBubbleView.swift in Sources */,
 				D1F338CB2201D99A005BE5F1 /* KREContact+CoreDataProperties.swift in Sources */,
 				D1F338E92201D99A005BE5F1 /* MiniTableBubbleView.swift in Sources */,
@@ -1034,11 +1091,13 @@
 				D101F92024E163F700D47DB8 /* KoraNotification.swift in Sources */,
 				D1F338DD2201D99A005BE5F1 /* KREAttributedLabel.m in Sources */,
 				D1F338C92201D99A005BE5F1 /* KREThread+CoreDataProperties.swift in Sources */,
+				CD44516A250B9B3E00879219 /* DropDown+Appearance.swift in Sources */,
 				D1F338D92201D99A005BE5F1 /* ComposeBarView.swift in Sources */,
 				D1F338CD2201D99A005BE5F1 /* KREComponent+CoreDataClass.swift in Sources */,
 				D1F338D12201D99A005BE5F1 /* AudioController.swift in Sources */,
 				D1F338DE2201D99A005BE5F1 /* KREUtilities.m in Sources */,
 				CDB86A0F24C0127C00D1CCC7 /* TableListData.swift in Sources */,
+				CD445168250B9B3E00879219 /* DropDown.swift in Sources */,
 				D1F338D62201D99A005BE5F1 /* Thread.swift in Sources */,
 				D1F338F92201D99A005BE5F1 /* InputTOWebViewController.swift in Sources */,
 				D1F338C42201D99A005BE5F1 /* DataStoreManager.swift in Sources */,
@@ -1077,6 +1136,7 @@
 				D1F338CE2201D99A005BE5F1 /* KREComponent+CoreDataProperties.swift in Sources */,
 				CDB869FE24C0093A00D1CCC7 /* ListViewDetailsViewController.swift in Sources */,
 				CD4B000124D164CB008E08CE /* TaskMenuViewController.swift in Sources */,
+				CD445166250B9B3E00879219 /* DPDConstants.swift in Sources */,
 				D1F338F12201D99A005BE5F1 /* MiniTableViewCell.swift in Sources */,
 				CD445143250B852100879219 /* FeedbackSliderViewController.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
@@ -1089,6 +1149,7 @@
 				D1F338DB2201D99A005BE5F1 /* NSMutableAttributedString+KREUtils.m in Sources */,
 				CDB86A0B24C00CD000D1CCC7 /* TaskMenuData.swift in Sources */,
 				CD445157250B8A2F00879219 /* InLineFormBubbleView.swift in Sources */,
+				CD445167250B9B3E00879219 /* DPDUIView+Extension.swift in Sources */,
 				D1F338F72201D99A005BE5F1 /* TableTemplateViewController.swift in Sources */,
 				CD89236724C55BAC006F71DE /* CalenderBubbleView.swift in Sources */,
 				CD89237024C562A2006F71DE /* QuickReplyCollectionViewFlowLayout.swift in Sources */,
@@ -1102,6 +1163,7 @@
 				D1F338EB2201D99A005BE5F1 /* CustomCollectionViewCell.swift in Sources */,
 				D1F338F42201D99A005BE5F1 /* TextBubbleView.swift in Sources */,
 				CDB869FF24C0093A00D1CCC7 /* NewListTableViewCell.swift in Sources */,
+				CD445165250B9B3E00879219 /* DPDKeyboardListener.swift in Sources */,
 				CD89236824C55BAC006F71DE /* CalenderViewController.swift in Sources */,
 				D1F339012201D99A005BE5F1 /* AppLaunchViewController.swift in Sources */,
 				CD445135250B7C4700879219 /* ListWidgetBubbleView.swift in Sources */,

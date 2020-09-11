@@ -178,9 +178,14 @@ class BubbleView: UIView {
             }
             self.borderLayer.path = self.maskLayer.path // Reuse the Bezier path
             self.borderLayer.fillColor = UIColor.clear.cgColor
-            self.borderLayer.strokeColor = Common.UIColorRGB(0xebebeb).cgColor
+           // self.borderLayer.strokeColor = Common.UIColorRGB(0xebebeb).cgColor
             self.borderLayer.lineWidth = 1.5
             self.borderLayer.frame = self.bounds
+            if selectedTheme == "Theme 1"{
+               self.borderLayer.strokeColor = Common.UIColorRGB(0xebebeb).cgColor
+            }else{
+                self.borderLayer.strokeColor = UIColor.lightGray.cgColor
+            }
         } else {
             if (self.borderLayer != nil) {
                 self.borderLayer.removeFromSuperlayer()
