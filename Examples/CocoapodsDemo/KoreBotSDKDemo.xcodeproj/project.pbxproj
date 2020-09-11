@@ -11,6 +11,9 @@
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		1D9FA1702AE04EE1A8F6AF2C /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */; };
+		CD445135250B7C4700879219 /* ListWidgetBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445134250B7C4700879219 /* ListWidgetBubbleView.swift */; };
+		CD445138250B7C5400879219 /* ListWidgetDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445136250B7C5300879219 /* ListWidgetDetailsViewController.swift */; };
+		CD445139250B7C5400879219 /* ListWidgetDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD445137250B7C5300879219 /* ListWidgetDetailsViewController.xib */; };
 		CD4B000124D164CB008E08CE /* TaskMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BFFFF24D164CB008E08CE /* TaskMenuViewController.swift */; };
 		CD4B000224D164CB008E08CE /* TaskMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD4B000024D164CB008E08CE /* TaskMenuViewController.xib */; };
 		CD4BFFF924D16091008E08CE /* NotificationBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BFFF824D16091008E08CE /* NotificationBubbleView.swift */; };
@@ -129,6 +132,9 @@
 		5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD18E3E19876E3486C39D351 /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		CD445134250B7C4700879219 /* ListWidgetBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListWidgetBubbleView.swift; sourceTree = "<group>"; };
+		CD445136250B7C5300879219 /* ListWidgetDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListWidgetDetailsViewController.swift; sourceTree = "<group>"; };
+		CD445137250B7C5300879219 /* ListWidgetDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListWidgetDetailsViewController.xib; sourceTree = "<group>"; };
 		CD4B000024D164CB008E08CE /* TaskMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskMenuViewController.xib; sourceTree = "<group>"; };
 		CD4BFFF824D16091008E08CE /* NotificationBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationBubbleView.swift; sourceTree = "<group>"; };
 		CD4BFFFA24D160CA008E08CE /* NotificationCustomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCustomView.xib; sourceTree = "<group>"; };
@@ -286,6 +292,16 @@
 				72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CD445133250B7C2800879219 /* List Widget */ = {
+			isa = PBXGroup;
+			children = (
+				CD445134250B7C4700879219 /* ListWidgetBubbleView.swift */,
+				CD445136250B7C5300879219 /* ListWidgetDetailsViewController.swift */,
+				CD445137250B7C5300879219 /* ListWidgetDetailsViewController.xib */,
+			);
+			path = "List Widget";
 			sourceTree = "<group>";
 		};
 		CD4BFFF724D16073008E08CE /* Notification */ = {
@@ -621,6 +637,7 @@
 				D1F3389B2201D99A005BE5F1 /* Table */,
 				D1F338A72201D99A005BE5F1 /* Menu */,
 				D1F338A92201D99A005BE5F1 /* ListBubbleView.swift */,
+				CD445133250B7C2800879219 /* List Widget */,
 				CD63DA4624EAB96600DCCCCE /* Multi Select */,
 				CD4BFFF724D16073008E08CE /* Notification */,
 				CD89236A24C56124006F71DE /* Quick Reply Welcome */,
@@ -834,6 +851,7 @@
 				D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */,
 				CD4BFFFC24D160CA008E08CE /* NotificationCustomView.xib in Resources */,
 				D101F92A24E163F800D47DB8 /* ChatMessagesViewController.xib in Resources */,
+				CD445139250B7C5400879219 /* ListWidgetDetailsViewController.xib in Resources */,
 				D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */,
 				D1F338E62201D99A005BE5F1 /* MultiImageBubbleView.xib in Resources */,
 				D1F338F82201D99A005BE5F1 /* TableTemplateViewController.xib in Resources */,
@@ -980,6 +998,7 @@
 				CD4B000124D164CB008E08CE /* TaskMenuViewController.swift in Sources */,
 				D1F338F12201D99A005BE5F1 /* MiniTableViewCell.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
+				CD445138250B7C5400879219 /* ListWidgetDetailsViewController.swift in Sources */,
 				D1F338E82201D99A005BE5F1 /* ResponsiveTableBubbleView.swift in Sources */,
 				CDB86A0C24C00CD000D1CCC7 /* TaskMenuTablViewCell.swift in Sources */,
 				D1F338D02201D99A005BE5F1 /* TSMarkdownParser.m in Sources */,
@@ -1001,6 +1020,7 @@
 				CDB869FF24C0093A00D1CCC7 /* NewListTableViewCell.swift in Sources */,
 				CD89236824C55BAC006F71DE /* CalenderViewController.swift in Sources */,
 				D1F339012201D99A005BE5F1 /* AppLaunchViewController.swift in Sources */,
+				CD445135250B7C4700879219 /* ListWidgetBubbleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

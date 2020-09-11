@@ -426,3 +426,16 @@ class MultiSelectBubbleCell : MessageBubbleCell {
         }
     }
 }
+
+class ListWidgetBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .list_widget
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}

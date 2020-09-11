@@ -16,6 +16,8 @@ var showTableTemplateNotification = "ShowTableTemplateNotificationName"
 var reloadTableNotification = "reloadTableNotification"
 var updateUserImageNotification = "updateUserImageNotification"
 var showListViewTemplateNotification = "ListViewTemplateNotificationName"
+var showListWidgetViewTemplateNotification = "ListWidgetViewTemplateNotificationName"
+
 var isSpeakingEnabled = false
 
 let userColor: UIColor = UIColor(red: 38 / 255.0, green: 52 / 255.0, blue: 74 / 255.0, alpha: 1)

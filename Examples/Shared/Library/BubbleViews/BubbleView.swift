@@ -108,6 +108,9 @@ class BubbleView: UIView {
         case .multiSelect:
                 bubbleView = MultiSelectNewBubbleView()
             break
+        case .list_widget:
+                bubbleView = ListWidgetBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         

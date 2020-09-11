@@ -11,7 +11,7 @@ import UIKit
 public class KREListItemViewCell: UITableViewCell {
     // MARK: - properties
     let bundle = Bundle(for: KREListItemViewCell.self)
-    lazy var templateView: KREListItemView = {
+   public lazy var templateView: KREListItemView = {
         let templateView = KREListItemView(frame: .zero)
         templateView.backgroundColor =  UIColor.white
         templateView.translatesAutoresizingMaskIntoConstraints = false

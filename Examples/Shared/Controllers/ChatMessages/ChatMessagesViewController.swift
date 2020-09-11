@@ -13,7 +13,7 @@ import KoreBotSDK
 import CoreData
 import Mantle
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate {
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate {
     // MARK: properties
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
@@ -406,6 +406,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         else if (templateType == "multi_select") {
             return .multiSelect
         }
+        else if (templateType == "List_widget") {
+            return .list_widget
+        }
         return .text
     }
     
@@ -635,6 +638,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.addObserver(self, selector: #selector(processDynamicUpdates(_:)), name: KoraNotification.Widget.update.notification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(processPanelEvents(_:)), name: KoraNotification.Panel.event.notification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(navigateToComposeBar(_:)), name: KREMessageAction.navigateToComposeBar.notification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(showListWidgetViewTemplateView), name: NSNotification.Name(rawValue: showListWidgetViewTemplateNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -650,6 +655,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: reloadTableNotification), object: nil)
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showListViewTemplateNotification), object: nil)
+         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showListWidgetViewTemplateNotification), object: nil)
+        
         NotificationCenter.default.removeObserver(self, name: KREMessageAction.navigateToComposeBar.notification, object: nil)
     }
     
@@ -1033,6 +1040,15 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let listViewDetailsViewController = ListViewDetailsViewController(dataString: dataString)
         listViewDetailsViewController.viewDelegate = self
         listViewDetailsViewController.modalPresentationStyle = .overFullScreen
+        self.navigationController?.present(listViewDetailsViewController, animated: true, completion: nil)
+    }
+    
+    @objc func showListWidgetViewTemplateView(notification:Notification){
+        let dataString: String = notification.object as! String
+        let listViewDetailsViewController = ListWidgetDetailsViewController(dataString: dataString)
+        listViewDetailsViewController.viewDelegate = self
+        listViewDetailsViewController.modalPresentationStyle = .overFullScreen
+        listViewDetailsViewController.view.backgroundColor = .white
         self.navigationController?.present(listViewDetailsViewController, animated: true, completion: nil)
     }
     

@@ -82,6 +82,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(QuickRepliesWelcomeCell.self, forCellReuseIdentifier:"QuickRepliesWelcomeCell")
         self.tableView.register(NotificationBubbleCell.self, forCellReuseIdentifier:"NotificationBubbleCell")
         self.tableView.register(MultiSelectBubbleCell.self, forCellReuseIdentifier:"MultiSelectBubbleCell")
+        self.tableView.register(ListWidgetBubbleCell.self, forCellReuseIdentifier:"ListWidgetBubbleCell")
 
 
     }
@@ -183,6 +184,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 break
             case .multiSelect:
                 cellIdentifier = "MultiSelectBubbleCell"
+                break
+            case .list_widget:
+                cellIdentifier = "ListWidgetBubbleCell"
                 break
             }
             
@@ -326,6 +330,17 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
             }
             cell.bubbleView.drawBorder = true
+            break
+        case .list_widget:
+            let bubbleView: ListWidgetBubbleView = cell.bubbleView as! ListWidgetBubbleView
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+            }
+            bubbleView.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
+            cell.bubbleView.drawBorder = true
+            break
         }
         let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
         if firstIndexPath.isEqual(indexPath) {

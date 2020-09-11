@@ -172,7 +172,7 @@ open class KABotClient: NSObject {
         botClient.connectionDidOpen = { [weak self] () in
             self?.isConnected = true
             self?.isConnecting = false
-           // self?.sendMessage("Welpro", options: nil) //kk
+            self?.sendMessage("Welpro", options: nil) //kk
         }
         
         botClient.connectionReady = {
@@ -300,6 +300,9 @@ open class KABotClient: NSObject {
         }
         else if (templateType == "multi_select") {
             return .multiSelect
+        }
+        else if (templateType == "List_widget") {
+            return .list_widget
         }
         return .text
     }
