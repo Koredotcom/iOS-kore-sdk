@@ -37,7 +37,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         //nothing to put here
         if(self.maskLayer == nil){
             self.maskLayer = CAShapeLayer()
-            self.tileBgv.layer.mask = self.maskLayer
+           // self.tileBgv.layer.mask = self.maskLayer
         }
         self.maskLayer.path = self.createBezierPath().cgPath
         self.maskLayer.position = CGPoint(x:0, y:0)
@@ -58,10 +58,18 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         self.tileBgv.translatesAutoresizingMaskIntoConstraints = false
         self.tileBgv.layer.rasterizationScale =  UIScreen.main.scale
         self.tileBgv.layer.shouldRasterize = true
-        self.tileBgv.layer.cornerRadius = 2.0
+        self.tileBgv.layer.cornerRadius = 10.0
+        self.tileBgv.layer.borderColor = UIColor.lightGray.cgColor
         self.tileBgv.clipsToBounds = true
+        self.tileBgv.layer.borderWidth = 1.0
         self.cardView.addSubview(self.tileBgv)
-        self.tileBgv.backgroundColor =  Common.UIColorRGB(0xEDEFF2)
+        self.tileBgv.backgroundColor = .white //Common.UIColorRGB(0xEDEFF2)
+        if #available(iOS 11.0, *) {
+            self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
+        } else {
+            // Fallback on earlier versions
+        }
+
         
         let layout = TagFlowLayout()
         layout.scrollDirection = .vertical
@@ -119,10 +127,20 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
         
+        NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+        
     }
+    
     
     // MARK: populate components
     override func populateComponents() {
+        
+        if selectedTheme == "Theme 1"{
+            self.tileBgv.layer.borderWidth = 0.0
+        }else{
+            self.tileBgv.layer.borderWidth = 1.5
+        }
+        
         if (components.count > 0) {
              let component: KREComponent = components.firstObject as! KREComponent
             if (component.componentDesc != nil) {
@@ -148,8 +166,9 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         if textSize.height < self.titleLbl.font.pointSize {
             textSize.height = self.titleLbl.font.pointSize
         }
-        //let collectionViewheight = collectionView.collectionViewLayout.collectionViewContentSize.height
+        //self.collectionView.contentSize.height
         return CGSize(width: 0.0, height: textSize.height+40+225)
+        
     }
     
 }
@@ -169,27 +188,30 @@ class QuickReplyWelcomeBubbleView: BubbleView {
             cell.backgroundColor = .clear
             let elements = arrayOfElements[indexPath.row]
             cell.textLabel.text = elements.title
-            cell.textLabel.font = UIFont(name: "HelveticaNeue", size: 15.0)!
+            cell.textLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)!
             cell.textLabel.textAlignment = .center
-            cell.layer.borderColor = UIColor.black.cgColor
-            cell.layer.borderWidth = 1.0
-            cell.layer.cornerRadius = 5.0
+            cell.textLabel.textColor = themeColor
+            cell.layer.borderColor = themeColor.cgColor//UIColor.black.cgColor
+            cell.layer.borderWidth = 2.0
+            cell.layer.cornerRadius = 15.0
             return cell
         }
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            print("self.collectionView.contentSize.height...\(self.collectionView.contentSize.height)")
+            
             let elements = arrayOfElements[indexPath.row]
             self.optionsAction(elements.title, elements.payload)
         }
         func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath){
             let  cell  = collectionView.cellForItem(at: indexPath) as! CustomCollectionViewCell
             cell.backgroundColor = userColor
-            cell.textLabel.textColor = .white
+            //cell.textLabel.textColor = .white
         }
 
         func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath){
             let  cell  = collectionView.cellForItem(at: indexPath) as! CustomCollectionViewCell
             cell.backgroundColor = .clear
-            cell.textLabel.textColor = .black
+           // cell.textLabel.textColor = .black
         }
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
             let elements = arrayOfElements[indexPath.row]
@@ -197,7 +219,11 @@ class QuickReplyWelcomeBubbleView: BubbleView {
              let indexPath = IndexPath(row: indexPath.item, section: indexPath.section)
              let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! CustomCollectionViewCell
             cell.textLabel.text = text
-             return CGSize(width: cell.textLabel.intrinsicContentSize.width + 20, height: 40)
+            cell.layer.cornerRadius = 5.0
+            cell.textLabel.textColor = themeColor
+            cell.layer.borderColor = themeColor.cgColor
+            cell.layer.borderWidth = 1.5
+             return CGSize(width: cell.textLabel.intrinsicContentSize.width + 25, height: 40)
         }
         
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -213,3 +239,15 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         }
         
     }
+
+
+extension UIView {
+    @available(iOS 11.0, *)
+    func roundCorners(_ corners: CACornerMask, radius: CGFloat, borderColor: UIColor, borderWidth: CGFloat) {
+      self.layer.maskedCorners = corners
+      self.layer.cornerRadius = radius
+      self.layer.borderWidth = borderWidth
+      self.layer.borderColor = borderColor.cgColor
+    }
+
+}

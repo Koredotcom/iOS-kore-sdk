@@ -40,6 +40,7 @@ class AppLaunchViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        getThemeColorApi()
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -326,6 +327,25 @@ extension AppLaunchViewController{
             // NotificationCenter.default.post(name: NSNotification.Name(rawValue: KoraNotification.EnforcementNotification), object: ["type": KoraNotification.EnforcementType.userSessionDidBecomeInvalid])
          }
        }
+    }
+    
+    func getThemeColorApi(){
+        let url = URL(string: "https://demo.kore.ai/bankingsolution-config/ws.php")!
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard let unwrappedData = data else { return }
+            do {
+                let str = try (JSONSerialization.jsonObject(with: unwrappedData, options: []) as? [String: AnyObject])!
+                print(str)
+                themeColor = UIColor.init(hexString: str["header_color"] as? String ?? "#149C3F")
+                UserDefaults.standard.set(str["header_color"] ?? "#149C3F", forKey: themeColorUserDefaults)
+                headerTitle = str["header_title"] as? String ?? SDKConfiguration.widgetConfig.chatBotName
+                backgroudImage = str["back_img"] as? String ?? ""
+                leftImage = str["top_left_icon"] as? String ?? ""
+            } catch {
+                print("json error: \(error)")
+            }
+        }
+        task.resume()
     }
 }
 

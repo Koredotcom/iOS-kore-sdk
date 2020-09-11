@@ -12,9 +12,9 @@ enum BubbleMaskTailPosition : Int {
     case none = 1, left = 2, right = 3
 }
 
-let BubbleViewRightTint: UIColor = userColor
+let BubbleViewRightTint: UIColor = themeColor
 let BubbleViewRightContrastTint: UIColor = Common.UIColorRGB(0xFFFFFF)
-let BubbleViewLeftTint: UIColor = botColor
+let BubbleViewLeftTint: UIColor = .white
 let BubbleViewLeftContrastTint: UIColor = Common.UIColorRGB(0xBCBCBC)
 
 let BubbleViewCurveRadius: CGFloat = 20.0

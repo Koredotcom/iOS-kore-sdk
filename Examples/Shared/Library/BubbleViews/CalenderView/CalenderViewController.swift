@@ -20,6 +20,7 @@ class CalenderViewController: UIViewController {
     var comp = NSDateComponents()
     var viewDelegate: calenderSelectDelegate?
     @IBOutlet weak var datePicker: UIDatePicker!
+    @IBOutlet weak var confirmButton: UIButton!
     
     @IBOutlet weak var headingLabel: UILabel!
     
@@ -56,6 +57,7 @@ class CalenderViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        confirmButton.backgroundColor = themeColor
         datePicker.addTarget(self, action: #selector(CalenderViewController.datePickerChanged(datePicker:)), for: UIControl.Event.valueChanged)
         dateRangeSubView.layer.cornerRadius = 5.0
         dateRangeSubView.clipsToBounds = true
@@ -138,7 +140,7 @@ class CalenderViewController: UIViewController {
     @IBAction func clickOnFromDateRangeViewButton(_ sender: Any) {
         fromDateButton.isSelected = true
         toDateButton.isSelected = false
-        fromDateButton.backgroundColor = UIColor.systemBlue
+        fromDateButton.backgroundColor = themeColor
         toDateButton.backgroundColor = .clear
         fromDateRangeLabel.textColor = .white
         toDateRangeLabel.textColor = .black
@@ -152,7 +154,7 @@ class CalenderViewController: UIViewController {
     @IBAction func clickOnToDateRangeViewButton(_ sender: Any) {
         fromDateButton.isSelected = false
         toDateButton.isSelected = true
-        toDateButton.backgroundColor = UIColor.systemBlue
+        toDateButton.backgroundColor = themeColor
         fromDateButton.backgroundColor = .clear
         fromDateRangeLabel.textColor = .black
         toDateRangeLabel.textColor = .white

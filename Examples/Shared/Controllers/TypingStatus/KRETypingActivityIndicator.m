@@ -39,7 +39,8 @@
     for (int i=0; i<MAXDOTS; i++) {
         CALayer *layer = [CALayer layer];
         layer.contentsScale = [UIScreen mainScreen].scale;
-        layer.backgroundColor =  UIColorRGB(0x009cde).CGColor;
+        NSString *colorStr =  [[NSUserDefaults standardUserDefaults] valueForKey:@"ThemeColor"];
+        layer.backgroundColor =  [KREUtilities colorWithHexString:[NSString stringWithFormat:@"%@",colorStr]].CGColor;
         [self.layer addSublayer:layer];
     }
     self.clipsToBounds = YES;

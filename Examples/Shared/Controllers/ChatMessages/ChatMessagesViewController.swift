@@ -117,81 +117,53 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.speechSynthesizer = AVSpeechSynthesizer()
         ConfigureDropDownView()
     }
-    func ConfigureDropDownView(){
-        //DropDown
-        dropDowns.forEach { $0.dismissMode = .onTap }
-        dropDowns.forEach { $0.direction = .any }
-        
-        colorDropDown.backgroundColor = UIColor(white: 1, alpha: 1)
-        colorDropDown.selectionBackgroundColor = UIColor(red: 0.6494, green: 0.8155, blue: 1.0, alpha: 0.2)
-        colorDropDown.separatorColor = UIColor(white: 0.7, alpha: 0.8)
-        colorDropDown.cornerRadius = 10
-        colorDropDown.shadowColor = UIColor(white: 0.6, alpha: 1)
-        colorDropDown.shadowOpacity = 0.9
-        colorDropDown.shadowRadius = 25
-        colorDropDown.animationduration = 0.25
-        colorDropDown.textColor = .darkGray
-        
-        let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        let url = URL(string: urlString!)
-        if url != nil{
-            backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
-            backgroungImageView.contentMode = .scaleAspectFit
-        }
-        setupColorDropDown()
-    }
-    func setupColorDropDown() {
-              colorDropDown.anchorView = dropDownBtn
-              
-              colorDropDown.bottomOffset = CGPoint(x: 0, y: dropDownBtn.bounds.height)
-              colorDropDown.dataSource = [
-                  "Theme Logo",
-                  "Theme Shopping"
-              ]
-               colorDropDown.selectRow(0)
-              // Action triggered on selection
-              colorDropDown.selectionAction = { [weak self] (index, item) in
-                  //self?.amountButton.setTitle(item, for: .normal)
-               if item == "Theme Logo" {
-                   selectedTheme = "Theme 1"
-               }else{
-                   selectedTheme = "Theme 2"
-               }
-               
-               if selectedTheme == "Theme 1"{
-                   let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-                   let url = URL(string: urlString!)
-                   if url != nil{
-                       self!.backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
-                   }else{
-                       self!.backgroungImageView.image = UIImage.init(named: "")
-                   }
-                   self!.backgroungImageView.contentMode = .scaleAspectFit
-               }else{
-                   self!.backgroungImageView.image = UIImage.init(named: "Shoppingbackground")
-                   self!.backgroungImageView.contentMode = .scaleAspectFill
-               }
-               NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
-              }
-             
-          }
+    
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addNotifications()
         
-        let image = UIImage(named: "cancel")
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancel(_:)))
+        let urlString = leftImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let url = URL(string: urlString!)
+        var data : Data?
+        if url != nil {
+            data = try? Data(contentsOf: url!)
+        }
+        var image = UIImage(named: "back")
+        if let imageData = data {
+             image = UIImage(data: imageData)
+        }
+        
+        let button = UIButton(type: .custom)
+        //set image for button
+        button.setBackgroundImage(image, for: .normal)
+        //add function for button
+        button.addTarget(self, action: #selector(cancel(_:)), for: .touchUpInside)
+        //set frame
+        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        let barButton = UIBarButtonItem(customView: button)
+        NSLayoutConstraint.activate([(barButton.customView!.widthAnchor.constraint(equalToConstant: 30)),(barButton.customView!.heightAnchor.constraint(equalToConstant: 30))])
+        self.navigationItem.leftBarButtonItem = barButton
+        
+        let rightImage = UIImage(named: "more")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(more(_:)))
         navigationController?.setNavigationBarHidden(false, animated: false)
         
         if SDKConfiguration.widgetConfig.isPanelView {
             populatePanelItems()
         }
-        self.title = "BankAssist.ai"
         
-        let rightImage = UIImage(named: "more")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(more(_:)))
-               
-        navigationController?.setNavigationBarHidden(false, animated: false)
+      let font:UIFont? = UIFont(name: "Helvetica-Bold", size:20)
+        let attString:NSMutableAttributedString = NSMutableAttributedString(string: headerTitle, attributes: [.font:font!])
+        let titleLabel = UILabel()
+        titleLabel.textColor = .white
+        titleLabel.attributedText = attString
+        self.navigationItem.titleView = titleLabel
+       
+        navigationController?.navigationBar.barTintColor = themeColor
+        navigationController?.navigationBar.tintColor = UIColor.white
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        self.view.backgroundColor = UIColor.init(hexString: "#f3f3f5")
+       
     }
     
     override open func viewDidAppear(_ animated: Bool) {
@@ -440,6 +412,67 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let views: [String: Any] = ["typingStatusView" : self.typingStatusView, "composeBarContainerView" : self.composeBarContainerView]
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[typingStatusView]|", options:[], metrics:nil, views: views))
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[typingStatusView(40)][composeBarContainerView]", options:[], metrics:nil, views: views))
+    }
+    
+    
+    func ConfigureDropDownView(){
+        //DropDown
+        dropDowns.forEach { $0.dismissMode = .onTap }
+        dropDowns.forEach { $0.direction = .any }
+        
+        colorDropDown.backgroundColor = UIColor(white: 1, alpha: 1)
+        colorDropDown.selectionBackgroundColor = UIColor(red: 0.6494, green: 0.8155, blue: 1.0, alpha: 0.2)
+        colorDropDown.separatorColor = UIColor(white: 0.7, alpha: 0.8)
+        colorDropDown.cornerRadius = 10
+        colorDropDown.shadowColor = UIColor(white: 0.6, alpha: 1)
+        colorDropDown.shadowOpacity = 0.9
+        colorDropDown.shadowRadius = 25
+        colorDropDown.animationduration = 0.25
+        colorDropDown.textColor = .darkGray
+        
+        let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let url = URL(string: urlString!)
+        if url != nil{
+            backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
+            backgroungImageView.contentMode = .scaleAspectFit
+        }
+        setupColorDropDown()
+    }
+    // MARK: Setup DropDown
+    func setupColorDropDown() {
+        colorDropDown.anchorView = dropDownBtn
+        
+        colorDropDown.bottomOffset = CGPoint(x: 0, y: dropDownBtn.bounds.height)
+        colorDropDown.dataSource = [
+            "Theme Logo",
+            "Theme Shopping"
+        ]
+        colorDropDown.selectRow(0)
+        // Action triggered on selection
+        colorDropDown.selectionAction = { [weak self] (index, item) in
+            //self?.amountButton.setTitle(item, for: .normal)
+            if item == "Theme Logo" {
+                selectedTheme = "Theme 1"
+            }else{
+                selectedTheme = "Theme 2"
+            }
+            
+            if selectedTheme == "Theme 1"{
+                let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                let url = URL(string: urlString!)
+                if url != nil{
+                    self!.backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
+                }else{
+                    self!.backgroungImageView.image = UIImage.init(named: "")
+                }
+                self!.backgroungImageView.contentMode = .scaleAspectFit
+            }else{
+                self!.backgroungImageView.image = UIImage.init(named: "Shoppingbackground")
+                self!.backgroungImageView.contentMode = .scaleAspectFill
+            }
+            NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+        }
+        
     }
     
     func getComponentType(_ templateType: String,_ tabledesign: String) -> ComponentType {
@@ -1314,13 +1347,14 @@ extension ChatMessagesViewController: KABotClientDelegate {
     }
     
     @objc func startTypingStatusForBot() {
-          self.typingStatusView?.isHidden = true
-          let botId:String = SDKConfiguration.botConfig.botId
-          let info:NSMutableDictionary = NSMutableDictionary.init()
-          info.setValue(botId, forKey: "botId");
-          info.setValue("kora", forKey: "imageName");
-          self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5)
-      }
+        self.typingStatusView?.isHidden = true
+        let botId:String = SDKConfiguration.botConfig.botId
+        let info:NSMutableDictionary = NSMutableDictionary.init()
+        info.setValue(botId, forKey: "botId");
+        let urlString = leftImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        info.setValue(urlString ?? "kora", forKey: "imageName");
+        self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5)
+    }
       
       @objc func stopTypingStatusForBot(){
           self.typingStatusView?.timerFired(toRemoveTypingStatus: nil)

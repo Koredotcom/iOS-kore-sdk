@@ -18,7 +18,8 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
                 self.label.textColor = UIColor(hex: 0x485260)
                 self.label.backgroundColor = UIColor(hex: 0x485260)
             } else {
-                self.label.textColor = UIColor(hex: 0x485260)
+                let bgColor =  UserDefaults.standard.value(forKey: "ThemeColor") as? String
+                self.label.textColor = UIColor.init(hexString: bgColor!) //UIColor(hex: 0x485260)
                 self.label.backgroundColor = UIColor(hex: 0xEDEDEF)
             }
         }

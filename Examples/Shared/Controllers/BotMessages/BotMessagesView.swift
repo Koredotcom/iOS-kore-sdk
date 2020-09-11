@@ -227,7 +227,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             bubbleView.onChange = { [weak self](reload) in
                 self?.tableView.reloadRows(at: [indexPath], with: .none)
             }
-            
+            cell.bubbleView.drawBorder = true
             break
         case .image:
             break
@@ -429,7 +429,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         label.transform = CGAffineTransform(scaleX: 1, y: -1)
         label.text = dateString
         label.textAlignment = .center
-        label.textColor = UIColor.white.withAlphaComponent(0.8)
+        label.textColor = UIColor.darkGray.withAlphaComponent(0.8)
         label.font = UIFont(name: "HelveticaNeue", size: 13)
         return label
     }

@@ -14,8 +14,9 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CalenderViewController" customModule="KoreBotSDKDemo" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CalenderViewController" customModule="BankAssist_ai" customModuleProvider="target">
             <connections>
+                <outlet property="confirmButton" destination="Fyj-zI-ltK" id="Ybq-Tj-Ahf"/>
                 <outlet property="datePicker" destination="RiV-iJ-wsd" id="TIu-1P-flM"/>
                 <outlet property="dateRangeSubView" destination="3C6-vg-PbV" id="uQ0-Ex-get"/>
                 <outlet property="dateRangeView" destination="gDW-LO-tKU" id="Msf-CE-mu4"/>

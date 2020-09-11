@@ -23,7 +23,7 @@ class NewListBubbleView: BubbleView {
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Bold", size: 15.0) as Any,
-        NSAttributedString.Key.foregroundColor : UIColor.blue,
+        NSAttributedString.Key.foregroundColor : themeColor,
         NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue]
  
     var arrayOfComponents = [ComponentElements]()
@@ -36,7 +36,7 @@ class NewListBubbleView: BubbleView {
         //nothing to put here
         if(self.maskLayer == nil){
             self.maskLayer = CAShapeLayer()
-            self.tileBgv.layer.mask = self.maskLayer
+            //self.tileBgv.layer.mask = self.maskLayer
         }
         self.maskLayer.path = self.createBezierPath().cgPath
         self.maskLayer.position = CGPoint(x:0, y:0)
@@ -56,10 +56,17 @@ class NewListBubbleView: BubbleView {
         self.tileBgv.translatesAutoresizingMaskIntoConstraints = false
         self.tileBgv.layer.rasterizationScale =  UIScreen.main.scale
         self.tileBgv.layer.shouldRasterize = true
-        self.tileBgv.layer.cornerRadius = 2.0
+        self.tileBgv.layer.cornerRadius = 10.0
+        self.tileBgv.layer.borderColor = UIColor.lightGray.cgColor
         self.tileBgv.clipsToBounds = true
+        self.tileBgv.layer.borderWidth = 1.0
         self.cardView.addSubview(self.tileBgv)
-        self.tileBgv.backgroundColor =  Common.UIColorRGB(0xEDEFF2)
+        self.tileBgv.backgroundColor = .white //Common.UIColorRGB(0xEDEFF2)
+        if #available(iOS 11.0, *) {
+            self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
+        } else {
+            // Fallback on earlier versions
+        }
         
         self.tableView = UITableView(frame: CGRect.zero,style:.plain)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -112,6 +119,13 @@ class NewListBubbleView: BubbleView {
     
     // MARK: populate components
     override func populateComponents() {
+        
+        if selectedTheme == "Theme 1"{
+            self.tileBgv.layer.borderWidth = 0.0
+        }else{
+            self.tileBgv.layer.borderWidth = 1.0
+        }
+        
         if (components.count > 0) {
             let component: KREComponent = components.firstObject as! KREComponent
             if (component.componentDesc != nil) {
@@ -190,6 +204,7 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
         let cell : NewListTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: listCellIdentifier) as! NewListTableViewCell
         cell.backgroundColor = UIColor.clear
         cell.selectionStyle = .none
+        cell.bgView.backgroundColor = .white
         let elements = arrayOfComponents[indexPath.row]
         if elements.imageURL == nil{
             cell.imageViewWidthConstraint.constant = 0.0
@@ -202,6 +217,11 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.titleLabel.text = elements.title
         cell.subTitleLabel.text = elements.subtitle
         cell.priceLbl.text = elements.value
+        if selectedTheme == "Theme 1"{
+            cell.bgView.layer.borderWidth = 0.0
+        }else{
+             cell.bgView.layer.borderWidth = 1.5
+        }
         return cell
         
     }
