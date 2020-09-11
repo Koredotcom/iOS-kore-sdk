@@ -63,7 +63,7 @@
                                               selector:@selector(timerFiredToRemoveTypingStatus:)
                                               userInfo:@""
                                                repeats:NO];
-    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+    //[[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
 
     if(![self.dataSource containsObject:contactInfo]){
         [contactInfo setValue:timer forKey:@"timer"];

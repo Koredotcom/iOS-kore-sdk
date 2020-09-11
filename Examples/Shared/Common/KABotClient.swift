@@ -173,6 +173,7 @@ open class KABotClient: NSObject {
             self?.isConnected = true
             self?.isConnecting = false
             self?.sendMessage("Welpro", options: nil) //kk
+            NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
         }
         
         botClient.connectionReady = {
@@ -189,6 +190,7 @@ open class KABotClient: NSObject {
                 }
             }
             self?.tryConnect()
+            NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
         }
         
         botClient.connectionDidFailWithError = { [weak self] (error) in
@@ -201,6 +203,7 @@ open class KABotClient: NSObject {
                 }
             }
             self?.tryConnect()
+            NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
         }
         
         botClient.onMessage = { [weak self] (object) in
@@ -314,6 +317,7 @@ open class KABotClient: NSObject {
     }
     
     func onReceiveMessage(object: BotMessageModel?) -> (Message?, String?) {
+        NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil) 
         var ttsBody: String?
         var textMessage: Message! = nil
         let message: Message = Message()

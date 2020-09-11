@@ -11,5 +11,5 @@
 @interface KRETypingStatusView : UIView
 
 - (void)addTypingStatusForContact:(NSMutableDictionary *)contactInfo forTimeInterval:(NSTimeInterval)timeInterval;
-
+-(void)timerFiredToRemoveTypingStatus:(NSTimer*)timer;
 @end

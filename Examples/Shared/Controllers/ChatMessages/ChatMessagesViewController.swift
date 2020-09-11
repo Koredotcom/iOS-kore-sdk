@@ -646,6 +646,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.addObserver(self, selector: #selector(navigateToComposeBar(_:)), name: KREMessageAction.navigateToComposeBar.notification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(showListWidgetViewTemplateView), name: NSNotification.Name(rawValue: showListWidgetViewTemplateNotification), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(startTypingStatusForBot), name: NSNotification.Name(rawValue: "StartTyping"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(stopTypingStatusForBot), name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
     }
     
     func removeNotifications() {
@@ -664,6 +667,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
          NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showListWidgetViewTemplateNotification), object: nil)
         
         NotificationCenter.default.removeObserver(self, name: KREMessageAction.navigateToComposeBar.notification, object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StartTyping"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
     }
     
     // MARK: notification handlers
@@ -786,6 +792,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     // MARK: Helper functions
     func sendMessage(_ message: Message, dictionary: [String: Any]? = nil, options: [String: Any]?) {
+        NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
         NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
         let composedMessage: Message = message
         if (composedMessage.components.count > 0) {
@@ -1228,6 +1235,19 @@ extension ChatMessagesViewController: KABotClientDelegate {
         updateNavBarPrompt()
         
     }
+    
+    @objc func startTypingStatusForBot() {
+          self.typingStatusView?.isHidden = true
+          let botId:String = SDKConfiguration.botConfig.botId
+          let info:NSMutableDictionary = NSMutableDictionary.init()
+          info.setValue(botId, forKey: "botId");
+          info.setValue("kora", forKey: "imageName");
+          self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5)
+      }
+      
+      @objc func stopTypingStatusForBot(){
+          self.typingStatusView?.timerFired(toRemoveTypingStatus: nil)
+      }
 }
 // MARK: - requests
 extension ChatMessagesViewController {

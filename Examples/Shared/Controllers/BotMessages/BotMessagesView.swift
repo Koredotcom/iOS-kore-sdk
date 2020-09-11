@@ -365,8 +365,6 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             bubbleView.optionsAction = {[weak self] (text, payload) in
                 self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
             }
-           // bubbleView.inlineButton.addTarget(self, action: #selector(tapsOnInlineFormBtn), for: .touchUpInside)
-            //bubbleView.inlineButton.tag = indexPath.row
             cell.bubbleView.drawBorder = true
             break
         }
@@ -490,21 +488,6 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             }
         }
     }
-    
-    @objc func tapsOnInlineFormBtn(_ sender:UIButton) {
-           let indexPath = IndexPath(row: sender.tag, section: 0)
-           let cell = self.tableView.cellForRow(at: indexPath) as! MessageBubbleCell
-           let bubbleView: InLineFormBubbleView = cell.bubbleView as! InLineFormBubbleView
-           
-           if !bubbleView.inlineTextField.text!.isEmpty{
-                //self.viewDelegate?.inlineFormButtonTapAction(text: bubbleView.inlineTextField.text!)
-                let secureTxt = bubbleView.inlineTextField.text?.regEx()
-               self.viewDelegate?.optionsButtonTapNewAction(text: secureTxt!, payload: bubbleView.inlineTextField.text!)
-               bubbleView.inlineTextField.resignFirstResponder()
-               bubbleView.inlineTextField.text = ""
-               NotificationCenter.default.post(name: Notification.Name(updateUserImageNotification), object: nil)
-           }
-       }
     
     @objc fileprivate func updtaeUserImage() {
         NotificationCenter.default.post(name: Notification.Name(updateUserImageNotification), object: nil)
