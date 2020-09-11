@@ -14,6 +14,18 @@
 		CD445135250B7C4700879219 /* ListWidgetBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445134250B7C4700879219 /* ListWidgetBubbleView.swift */; };
 		CD445138250B7C5400879219 /* ListWidgetDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445136250B7C5300879219 /* ListWidgetDetailsViewController.swift */; };
 		CD445139250B7C5400879219 /* ListWidgetDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD445137250B7C5300879219 /* ListWidgetDetailsViewController.xib */; };
+		CD445141250B852100879219 /* FeedbackCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD44513B250B851F00879219 /* FeedbackCell.xib */; };
+		CD445142250B852100879219 /* FeedbackSliderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD44513C250B852000879219 /* FeedbackSliderViewController.xib */; };
+		CD445143250B852100879219 /* FeedbackSliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44513D250B852000879219 /* FeedbackSliderViewController.swift */; };
+		CD445144250B852100879219 /* iOSDevCenters+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44513E250B852000879219 /* iOSDevCenters+GIF.swift */; };
+		CD445145250B852100879219 /* FeedbackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44513F250B852000879219 /* FeedbackCell.swift */; };
+		CD445146250B852100879219 /* FeedbackBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445140250B852100879219 /* FeedbackBubbleView.swift */; };
+		CD445149250B855000879219 /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445148250B855000879219 /* FloatRatingView.swift */; };
+		CD445150250B855F00879219 /* ratingselect_4.gif in Resources */ = {isa = PBXBuildFile; fileRef = CD44514B250B855F00879219 /* ratingselect_4.gif */; };
+		CD445151250B855F00879219 /* ratingselect_5.gif in Resources */ = {isa = PBXBuildFile; fileRef = CD44514C250B855F00879219 /* ratingselect_5.gif */; };
+		CD445152250B855F00879219 /* ratingselect_1.gif in Resources */ = {isa = PBXBuildFile; fileRef = CD44514D250B855F00879219 /* ratingselect_1.gif */; };
+		CD445153250B855F00879219 /* ratingselect_2.gif in Resources */ = {isa = PBXBuildFile; fileRef = CD44514E250B855F00879219 /* ratingselect_2.gif */; };
+		CD445154250B855F00879219 /* ratingselect_3.gif in Resources */ = {isa = PBXBuildFile; fileRef = CD44514F250B855F00879219 /* ratingselect_3.gif */; };
 		CD4B000124D164CB008E08CE /* TaskMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BFFFF24D164CB008E08CE /* TaskMenuViewController.swift */; };
 		CD4B000224D164CB008E08CE /* TaskMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD4B000024D164CB008E08CE /* TaskMenuViewController.xib */; };
 		CD4BFFF924D16091008E08CE /* NotificationBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BFFF824D16091008E08CE /* NotificationBubbleView.swift */; };
@@ -135,6 +147,18 @@
 		CD445134250B7C4700879219 /* ListWidgetBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListWidgetBubbleView.swift; sourceTree = "<group>"; };
 		CD445136250B7C5300879219 /* ListWidgetDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListWidgetDetailsViewController.swift; sourceTree = "<group>"; };
 		CD445137250B7C5300879219 /* ListWidgetDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListWidgetDetailsViewController.xib; sourceTree = "<group>"; };
+		CD44513B250B851F00879219 /* FeedbackCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedbackCell.xib; sourceTree = "<group>"; };
+		CD44513C250B852000879219 /* FeedbackSliderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedbackSliderViewController.xib; sourceTree = "<group>"; };
+		CD44513D250B852000879219 /* FeedbackSliderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackSliderViewController.swift; sourceTree = "<group>"; };
+		CD44513E250B852000879219 /* iOSDevCenters+GIF.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "iOSDevCenters+GIF.swift"; sourceTree = "<group>"; };
+		CD44513F250B852000879219 /* FeedbackCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackCell.swift; sourceTree = "<group>"; };
+		CD445140250B852100879219 /* FeedbackBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackBubbleView.swift; sourceTree = "<group>"; };
+		CD445148250B855000879219 /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
+		CD44514B250B855F00879219 /* ratingselect_4.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_4.gif; sourceTree = "<group>"; };
+		CD44514C250B855F00879219 /* ratingselect_5.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_5.gif; sourceTree = "<group>"; };
+		CD44514D250B855F00879219 /* ratingselect_1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_1.gif; sourceTree = "<group>"; };
+		CD44514E250B855F00879219 /* ratingselect_2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_2.gif; sourceTree = "<group>"; };
+		CD44514F250B855F00879219 /* ratingselect_3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_3.gif; sourceTree = "<group>"; };
 		CD4B000024D164CB008E08CE /* TaskMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskMenuViewController.xib; sourceTree = "<group>"; };
 		CD4BFFF824D16091008E08CE /* NotificationBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationBubbleView.swift; sourceTree = "<group>"; };
 		CD4BFFFA24D160CA008E08CE /* NotificationCustomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCustomView.xib; sourceTree = "<group>"; };
@@ -302,6 +326,41 @@
 				CD445137250B7C5300879219 /* ListWidgetDetailsViewController.xib */,
 			);
 			path = "List Widget";
+			sourceTree = "<group>";
+		};
+		CD44513A250B84D900879219 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				CD445140250B852100879219 /* FeedbackBubbleView.swift */,
+				CD44513D250B852000879219 /* FeedbackSliderViewController.swift */,
+				CD44513C250B852000879219 /* FeedbackSliderViewController.xib */,
+				CD44513F250B852000879219 /* FeedbackCell.swift */,
+				CD44513B250B851F00879219 /* FeedbackCell.xib */,
+				CD44513E250B852000879219 /* iOSDevCenters+GIF.swift */,
+				CD44514A250B855F00879219 /* gifs */,
+				CD445147250B855000879219 /* RatingView */,
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
+		CD445147250B855000879219 /* RatingView */ = {
+			isa = PBXGroup;
+			children = (
+				CD445148250B855000879219 /* FloatRatingView.swift */,
+			);
+			path = RatingView;
+			sourceTree = "<group>";
+		};
+		CD44514A250B855F00879219 /* gifs */ = {
+			isa = PBXGroup;
+			children = (
+				CD44514B250B855F00879219 /* ratingselect_4.gif */,
+				CD44514C250B855F00879219 /* ratingselect_5.gif */,
+				CD44514D250B855F00879219 /* ratingselect_1.gif */,
+				CD44514E250B855F00879219 /* ratingselect_2.gif */,
+				CD44514F250B855F00879219 /* ratingselect_3.gif */,
+			);
+			path = gifs;
 			sourceTree = "<group>";
 		};
 		CD4BFFF724D16073008E08CE /* Notification */ = {
@@ -637,6 +696,7 @@
 				D1F3389B2201D99A005BE5F1 /* Table */,
 				D1F338A72201D99A005BE5F1 /* Menu */,
 				D1F338A92201D99A005BE5F1 /* ListBubbleView.swift */,
+				CD44513A250B84D900879219 /* Feedback */,
 				CD445133250B7C2800879219 /* List Widget */,
 				CD63DA4624EAB96600DCCCCE /* Multi Select */,
 				CD4BFFF724D16073008E08CE /* Notification */,
@@ -850,7 +910,9 @@
 				CDB86A0824C00CD000D1CCC7 /* TaskMenuTablViewCell.xib in Resources */,
 				D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */,
 				CD4BFFFC24D160CA008E08CE /* NotificationCustomView.xib in Resources */,
+				CD445153250B855F00879219 /* ratingselect_2.gif in Resources */,
 				D101F92A24E163F800D47DB8 /* ChatMessagesViewController.xib in Resources */,
+				CD445152250B855F00879219 /* ratingselect_1.gif in Resources */,
 				CD445139250B7C5400879219 /* ListWidgetDetailsViewController.xib in Resources */,
 				D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */,
 				D1F338E62201D99A005BE5F1 /* MultiImageBubbleView.xib in Resources */,
@@ -858,14 +920,19 @@
 				D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */,
 				D1F338E42201D99A005BE5F1 /* ImageComponentCollectionViewCell.xib in Resources */,
 				CD89236924C55BAC006F71DE /* CalenderViewController.xib in Resources */,
+				CD445141250B852100879219 /* FeedbackCell.xib in Resources */,
+				CD445150250B855F00879219 /* ratingselect_4.gif in Resources */,
 				D1F338FB2201D99A005BE5F1 /* KRETypingCollectionViewCell.xib in Resources */,
+				CD445151250B855F00879219 /* ratingselect_5.gif in Resources */,
 				D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */,
 				CDB86A0A24C00CD000D1CCC7 /* TaskMenu.json in Resources */,
 				CD63DA4C24EAB9A700DCCCCE /* MultiSelectCell.xib in Resources */,
 				CD4B000224D164CB008E08CE /* TaskMenuViewController.xib in Resources */,
 				CDB86A0124C0099300D1CCC7 /* ListViewDetailsViewController.xib in Resources */,
 				CDB869FC24C0093A00D1CCC7 /* NewListTableViewCell.xib in Resources */,
+				CD445142250B852100879219 /* FeedbackSliderViewController.xib in Resources */,
 				D1F338EC2201D99A005BE5F1 /* CustomCollectionViewCell.xib in Resources */,
+				CD445154250B855F00879219 /* ratingselect_3.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -940,6 +1007,7 @@
 				D1F338DC2201D99A005BE5F1 /* KRELayoutManager.m in Sources */,
 				D1F338E12201D99A005BE5F1 /* BalloonMarker.swift in Sources */,
 				D1F338C32201D99A005BE5F1 /* CoreDataManager.swift in Sources */,
+				CD445146250B852100879219 /* FeedbackBubbleView.swift in Sources */,
 				D1F338CF2201D99A005BE5F1 /* TSBaseParser.m in Sources */,
 				D101F92524E163F800D47DB8 /* UIViewController+Kora.swift in Sources */,
 				D1F338DF2201D99A005BE5F1 /* OptionsBubbleView.swift in Sources */,
@@ -986,7 +1054,9 @@
 				D1F338E22201D99A005BE5F1 /* CarouselBubbleView.swift in Sources */,
 				D1F338F02201D99A005BE5F1 /* ResponsiveCustonCell.swift in Sources */,
 				D1F338DA2201D99A005BE5F1 /* AudioComposeView.swift in Sources */,
+				CD445145250B852100879219 /* FeedbackCell.swift in Sources */,
 				D1F338FE2201D99A005BE5F1 /* BotMessagesView.swift in Sources */,
+				CD445149250B855000879219 /* FloatRatingView.swift in Sources */,
 				CD4BFFFD24D160CA008E08CE /* NotificationCustomView.swift in Sources */,
 				D1F338F32201D99A005BE5F1 /* ListBubbleView.swift in Sources */,
 				D1F338E52201D99A005BE5F1 /* ImageComponentCollectionViewCell.swift in Sources */,
@@ -997,8 +1067,10 @@
 				CDB869FE24C0093A00D1CCC7 /* ListViewDetailsViewController.swift in Sources */,
 				CD4B000124D164CB008E08CE /* TaskMenuViewController.swift in Sources */,
 				D1F338F12201D99A005BE5F1 /* MiniTableViewCell.swift in Sources */,
+				CD445143250B852100879219 /* FeedbackSliderViewController.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
 				CD445138250B7C5400879219 /* ListWidgetDetailsViewController.swift in Sources */,
+				CD445144250B852100879219 /* iOSDevCenters+GIF.swift in Sources */,
 				D1F338E82201D99A005BE5F1 /* ResponsiveTableBubbleView.swift in Sources */,
 				CDB86A0C24C00CD000D1CCC7 /* TaskMenuTablViewCell.swift in Sources */,
 				D1F338D02201D99A005BE5F1 /* TSMarkdownParser.m in Sources */,

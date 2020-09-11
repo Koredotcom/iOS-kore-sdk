@@ -16,6 +16,7 @@ protocol BotMessagesViewDelegate {
     func closeQuickReplyCards()
     func optionsButtonTapNewAction(text:String, payload:String)
     func populateCalenderView(with message: KREMessage?)
+    func populateFeedbackSliderView(with message: KREMessage?)
 }
 
 class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFetchedResultsControllerDelegate {
@@ -83,6 +84,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(NotificationBubbleCell.self, forCellReuseIdentifier:"NotificationBubbleCell")
         self.tableView.register(MultiSelectBubbleCell.self, forCellReuseIdentifier:"MultiSelectBubbleCell")
         self.tableView.register(ListWidgetBubbleCell.self, forCellReuseIdentifier:"ListWidgetBubbleCell")
+        self.tableView.register(FeedbackBubbleCell.self, forCellReuseIdentifier:"FeedbackBubbleCell")
 
 
     }
@@ -188,6 +190,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .list_widget:
                 cellIdentifier = "ListWidgetBubbleCell"
                 break
+            case .feedbackTemplate:
+                cellIdentifier = "FeedbackBubbleCell"
+                break
             }
             
         }
@@ -200,6 +205,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         
         var isQuickReply = false
         var isCalenderView = false
+        var isFeedbackView = false
         
         switch (cell.bubbleView.bubbleType!) {
         case .text:
@@ -341,6 +347,14 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             }
             cell.bubbleView.drawBorder = true
             break
+        case .feedbackTemplate:
+            let bubbleView: FeedbackBubbleView = cell.bubbleView as! FeedbackBubbleView
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+            }
+            isFeedbackView = true
+            cell.bubbleView.drawBorder = true
+            break
         }
         let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
         if firstIndexPath.isEqual(indexPath) {
@@ -352,6 +366,19 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             
             if isCalenderView{
                 self.viewDelegate?.populateCalenderView(with: message)
+            }
+            
+            if isFeedbackView{
+                if message.templateType == (ComponentType.feedbackTemplate.rawValue as NSNumber) {
+                    let component: KREComponent = message.components![0] as! KREComponent
+                    if ((component.componentDesc) != nil) {
+                        let jsonString = component.componentDesc
+                        let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
+                        if jsonObject["sliderView"] as! Bool{
+                            self.viewDelegate?.populateFeedbackSliderView(with: message)
+                        }
+                    }
+                }
             }
         }
         

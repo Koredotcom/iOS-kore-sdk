@@ -304,6 +304,9 @@ open class KABotClient: NSObject {
         else if (templateType == "List_widget") {
             return .list_widget
         }
+        else if (templateType == "feedbackTemplate") {
+            return .feedbackTemplate
+        }
         return .text
     }
     

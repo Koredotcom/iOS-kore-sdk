@@ -25,7 +25,10 @@ public class Componentss: NSObject, Decodable {
       public var seeMore: Bool?
       public var image_url: String?
       public var subtitle: String?
-    
+      public var smileyArrays: [SmileyArraysAction]?
+      public var messageTodisplay: String?
+      public var starArrays: [SmileyArraysAction]?
+      public var feedbackView: String?
     
     
     enum ColorCodeKeys: String, CodingKey {
@@ -45,6 +48,10 @@ public class Componentss: NSObject, Decodable {
             case seeMore = "seeMore"
             case image_url = "image_url"
             case subtitle = "subtitle"
+            case smileyArrays = "smileyArrays"
+            case messageTodisplay = "messageTodisplay"
+            case starArrays = "starArrays"
+            case feedbackView = "view"
         
        }
        
@@ -71,6 +78,10 @@ public class Componentss: NSObject, Decodable {
            seeMore = try? container.decode(Bool.self, forKey: .seeMore)
            image_url = try? container.decode(String.self, forKey: .image_url)
            subtitle = try? container.decode(String.self, forKey: .subtitle)
+           smileyArrays = try? container.decode([SmileyArraysAction].self, forKey: .smileyArrays)
+           messageTodisplay = try? container.decode(String.self, forKey: .messageTodisplay)
+           starArrays = try? container.decode([SmileyArraysAction].self, forKey: .starArrays)
+           feedbackView = try? container.decode(String.self, forKey: .feedbackView)
        }
 }
 // MARK: - Elements
@@ -219,5 +230,30 @@ public class PostbackAction: NSObject, Decodable {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
         value = try? container.decode(String.self, forKey: .value)
        
+    }
+}
+
+// MARK: - Smileys Array
+public class SmileyArraysAction: NSObject, Decodable {
+    public var value: Int?
+    public var smileyId: Int?
+    public var starId: Int?
+    
+    enum ColorCodeKeys: String, CodingKey {
+        case value = "value"
+        case smileyId = "smileyId"
+        case starId = "starId"
+    }
+    
+    // MARK: - init
+    public override init() {
+        super.init()
+    }
+    
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: ColorCodeKeys.self)
+        value = try? container.decode(Int.self, forKey: .value)
+        smileyId = try? container.decode(Int.self, forKey: .smileyId)
+        starId = try? container.decode(Int.self, forKey: .starId)
     }
 }

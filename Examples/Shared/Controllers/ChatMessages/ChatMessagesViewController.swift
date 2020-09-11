@@ -13,7 +13,7 @@ import KoreBotSDK
 import CoreData
 import Mantle
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate {
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate {
     // MARK: properties
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
@@ -408,6 +408,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
         else if (templateType == "List_widget") {
             return .list_widget
+        }
+        else if (templateType == "feedbackTemplate") {
+            return .feedbackTemplate
         }
         return .text
     }
@@ -928,6 +931,27 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 calenderViewController.viewDelegate = self
                 calenderViewController.modalPresentationStyle = .overFullScreen
                 self.navigationController?.present(calenderViewController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func populateFeedbackSliderView(with message: KREMessage?) {
+        var messageId = ""
+        if message?.templateType == (ComponentType.feedbackTemplate.rawValue as NSNumber) {
+            let component: KREComponent = message!.components![0] as! KREComponent
+            print(component)
+            if (!component.isKind(of: KREComponent.self)) {
+                return;
+            }
+            if (component.message != nil) {
+                messageId = component.message!.messageId!
+            }
+            if ((component.componentDesc) != nil) {
+                let jsonString = component.componentDesc
+                let feedbackViewController = FeedbackSliderViewController(dataString: jsonString!)
+                feedbackViewController.viewDelegate = self
+                feedbackViewController.modalPresentationStyle = .overFullScreen
+                self.navigationController?.present(feedbackViewController, animated: true, completion: nil)
             }
         }
     }

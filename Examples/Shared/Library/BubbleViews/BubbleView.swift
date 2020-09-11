@@ -111,6 +111,9 @@ class BubbleView: UIView {
         case .list_widget:
                 bubbleView = ListWidgetBubbleView()
             break
+        case .feedbackTemplate:
+                bubbleView = FeedbackBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         
