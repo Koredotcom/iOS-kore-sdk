@@ -26,6 +26,7 @@
 		CD445152250B855F00879219 /* ratingselect_1.gif in Resources */ = {isa = PBXBuildFile; fileRef = CD44514D250B855F00879219 /* ratingselect_1.gif */; };
 		CD445153250B855F00879219 /* ratingselect_2.gif in Resources */ = {isa = PBXBuildFile; fileRef = CD44514E250B855F00879219 /* ratingselect_2.gif */; };
 		CD445154250B855F00879219 /* ratingselect_3.gif in Resources */ = {isa = PBXBuildFile; fileRef = CD44514F250B855F00879219 /* ratingselect_3.gif */; };
+		CD445157250B8A2F00879219 /* InLineFormBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445156250B8A2F00879219 /* InLineFormBubbleView.swift */; };
 		CD4B000124D164CB008E08CE /* TaskMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BFFFF24D164CB008E08CE /* TaskMenuViewController.swift */; };
 		CD4B000224D164CB008E08CE /* TaskMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD4B000024D164CB008E08CE /* TaskMenuViewController.xib */; };
 		CD4BFFF924D16091008E08CE /* NotificationBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BFFF824D16091008E08CE /* NotificationBubbleView.swift */; };
@@ -159,6 +160,7 @@
 		CD44514D250B855F00879219 /* ratingselect_1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_1.gif; sourceTree = "<group>"; };
 		CD44514E250B855F00879219 /* ratingselect_2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_2.gif; sourceTree = "<group>"; };
 		CD44514F250B855F00879219 /* ratingselect_3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_3.gif; sourceTree = "<group>"; };
+		CD445156250B8A2F00879219 /* InLineFormBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InLineFormBubbleView.swift; sourceTree = "<group>"; };
 		CD4B000024D164CB008E08CE /* TaskMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskMenuViewController.xib; sourceTree = "<group>"; };
 		CD4BFFF824D16091008E08CE /* NotificationBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationBubbleView.swift; sourceTree = "<group>"; };
 		CD4BFFFA24D160CA008E08CE /* NotificationCustomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCustomView.xib; sourceTree = "<group>"; };
@@ -361,6 +363,14 @@
 				CD44514F250B855F00879219 /* ratingselect_3.gif */,
 			);
 			path = gifs;
+			sourceTree = "<group>";
+		};
+		CD445155250B8A2F00879219 /* InLine Form */ = {
+			isa = PBXGroup;
+			children = (
+				CD445156250B8A2F00879219 /* InLineFormBubbleView.swift */,
+			);
+			path = "InLine Form";
 			sourceTree = "<group>";
 		};
 		CD4BFFF724D16073008E08CE /* Notification */ = {
@@ -696,6 +706,7 @@
 				D1F3389B2201D99A005BE5F1 /* Table */,
 				D1F338A72201D99A005BE5F1 /* Menu */,
 				D1F338A92201D99A005BE5F1 /* ListBubbleView.swift */,
+				CD445155250B8A2F00879219 /* InLine Form */,
 				CD44513A250B84D900879219 /* Feedback */,
 				CD445133250B7C2800879219 /* List Widget */,
 				CD63DA4624EAB96600DCCCCE /* Multi Select */,
@@ -1077,6 +1088,7 @@
 				D1F338F22201D99A005BE5F1 /* MenuBubbleView.swift in Sources */,
 				D1F338DB2201D99A005BE5F1 /* NSMutableAttributedString+KREUtils.m in Sources */,
 				CDB86A0B24C00CD000D1CCC7 /* TaskMenuData.swift in Sources */,
+				CD445157250B8A2F00879219 /* InLineFormBubbleView.swift in Sources */,
 				D1F338F72201D99A005BE5F1 /* TableTemplateViewController.swift in Sources */,
 				CD89236724C55BAC006F71DE /* CalenderBubbleView.swift in Sources */,
 				CD89237024C562A2006F71DE /* QuickReplyCollectionViewFlowLayout.swift in Sources */,

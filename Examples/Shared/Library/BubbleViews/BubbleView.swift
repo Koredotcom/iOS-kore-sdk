@@ -114,6 +114,9 @@ class BubbleView: UIView {
         case .feedbackTemplate:
                 bubbleView = FeedbackBubbleView()
             break
+        case .inlineForm:
+            bubbleView = InLineFormBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         

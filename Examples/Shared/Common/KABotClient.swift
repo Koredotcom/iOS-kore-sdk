@@ -307,6 +307,9 @@ open class KABotClient: NSObject {
         else if (templateType == "feedbackTemplate") {
             return .feedbackTemplate
         }
+        else if (templateType == "form_template") {
+            return .inlineForm
+        }
         return .text
     }
     

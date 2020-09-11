@@ -412,6 +412,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         else if (templateType == "feedbackTemplate") {
             return .feedbackTemplate
         }
+        else if (templateType == "form_template") {
+            return .inlineForm
+        }
         return .text
     }
     

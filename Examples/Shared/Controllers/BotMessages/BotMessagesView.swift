@@ -85,6 +85,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(MultiSelectBubbleCell.self, forCellReuseIdentifier:"MultiSelectBubbleCell")
         self.tableView.register(ListWidgetBubbleCell.self, forCellReuseIdentifier:"ListWidgetBubbleCell")
         self.tableView.register(FeedbackBubbleCell.self, forCellReuseIdentifier:"FeedbackBubbleCell")
+        self.tableView.register(InLineFormCell.self, forCellReuseIdentifier:"InLineFormCell")
 
 
     }
@@ -192,6 +193,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 break
             case .feedbackTemplate:
                 cellIdentifier = "FeedbackBubbleCell"
+                break
+            case .inlineForm:
+                cellIdentifier = "InLineFormCell"
                 break
             }
             
@@ -355,6 +359,16 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             isFeedbackView = true
             cell.bubbleView.drawBorder = true
             break
+        case .inlineForm:
+            let bubbleView: InLineFormBubbleView = cell.bubbleView as! InLineFormBubbleView
+            bubbleView.inlineTextField.tag = indexPath.row
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+            }
+           // bubbleView.inlineButton.addTarget(self, action: #selector(tapsOnInlineFormBtn), for: .touchUpInside)
+            //bubbleView.inlineButton.tag = indexPath.row
+            cell.bubbleView.drawBorder = true
+            break
         }
         let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
         if firstIndexPath.isEqual(indexPath) {
@@ -477,6 +491,21 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         }
     }
     
+    @objc func tapsOnInlineFormBtn(_ sender:UIButton) {
+           let indexPath = IndexPath(row: sender.tag, section: 0)
+           let cell = self.tableView.cellForRow(at: indexPath) as! MessageBubbleCell
+           let bubbleView: InLineFormBubbleView = cell.bubbleView as! InLineFormBubbleView
+           
+           if !bubbleView.inlineTextField.text!.isEmpty{
+                //self.viewDelegate?.inlineFormButtonTapAction(text: bubbleView.inlineTextField.text!)
+                let secureTxt = bubbleView.inlineTextField.text?.regEx()
+               self.viewDelegate?.optionsButtonTapNewAction(text: secureTxt!, payload: bubbleView.inlineTextField.text!)
+               bubbleView.inlineTextField.resignFirstResponder()
+               bubbleView.inlineTextField.text = ""
+               NotificationCenter.default.post(name: Notification.Name(updateUserImageNotification), object: nil)
+           }
+       }
+    
     @objc fileprivate func updtaeUserImage() {
         NotificationCenter.default.post(name: Notification.Name(updateUserImageNotification), object: nil)
     }
@@ -486,5 +515,10 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     deinit {
         NSLog("BotMessagesView dealloc")
         self.fetchedResultsController = nil
+    }
+}
+extension String {
+    func regEx() -> String {
+        return self.replacingOccurrences(of: "[A-Za-z0-9 !\"#$%&'()*+,-./:;<=>?@\\[\\\\\\]^_`{|}~]", with: "•", options: .regularExpression, range: nil)
     }
 }

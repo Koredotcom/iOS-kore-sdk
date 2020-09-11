@@ -452,3 +452,16 @@ class FeedbackBubbleCell : MessageBubbleCell {
         }
     }
 }
+
+class InLineFormCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .inlineForm
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
