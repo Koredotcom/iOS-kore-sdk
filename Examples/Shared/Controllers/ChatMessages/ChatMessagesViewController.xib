@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChatMessagesViewController" customModule="KoreBotSDKDemo" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChatMessagesViewController" customModule="BankAssist_ai" customModuleProvider="target">
             <connections>
                 <outlet property="audioComposeContainerView" destination="h7Y-kP-4Xx" id="SEi-cL-oTX"/>
-                <outlet property="bottomConstraint" destination="447-2j-qnU" id="IXE-VI-IHH"/>
+                <outlet property="backgroungImageView" destination="ni7-ts-YyA" id="AfI-X9-IDG"/>
+                <outlet property="bottomConstraint" destination="l2o-ug-Hr8" id="NEt-NH-Siu"/>
                 <outlet property="composeBarContainerView" destination="8ru-91-Smj" id="E4u-Wx-GOf"/>
+                <outlet property="dropDownBtn" destination="owa-n2-Opo" id="vvw-gq-jcH"/>
                 <outlet property="panelCollectionViewContainerHeightConstraint" destination="bbD-GV-6RQ" id="dlM-Q3-kfv"/>
                 <outlet property="panelCollectionViewContainerView" destination="7Z6-mY-xVo" id="ima-u7-kX7"/>
                 <outlet property="quickSelectContainerHeightConstraint" destination="BeV-1h-Rw4" id="7Qw-Ne-Nm4"/>
                 <outlet property="quickSelectContainerView" destination="y23-6f-O9g" id="zPj-te-g6g"/>
+                <outlet property="taskMenuContainerHeightConstant" destination="3FM-F5-fhO" id="Z7v-zL-HPa"/>
+                <outlet property="taskMenuContainerView" destination="Usv-h4-tDT" id="M5a-2Y-wWo"/>
                 <outlet property="threadContainerView" destination="z3x-8O-A97" id="4up-O3-Uef"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -26,49 +30,75 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z3x-8O-A97">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ni7-ts-YyA">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="666"/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="owa-n2-Opo">
+                    <rect key="frame" x="170" y="-1" width="200" height="1"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="200" id="WVo-bh-63b"/>
+                        <constraint firstAttribute="height" constant="1" id="hhN-I5-pKw"/>
+                    </constraints>
+                </button>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z3x-8O-A97" userLabel="threadContainerView">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="522"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y23-6f-O9g">
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y23-6f-O9g" userLabel="QuickSelectView">
                     <rect key="frame" x="0.0" y="522" width="375" height="0.0"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" id="BeV-1h-Rw4"/>
                     </constraints>
                 </view>
-                <view clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="8ru-91-Smj">
+                <view clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="8ru-91-Smj" userLabel="composeBarContainerView">
                     <rect key="frame" x="0.0" y="522" width="375" height="0.0"/>
                 </view>
-                <view contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="90" translatesAutoresizingMaskIntoConstraints="NO" id="h7Y-kP-4Xx">
+                <view contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="90" translatesAutoresizingMaskIntoConstraints="NO" id="h7Y-kP-4Xx" userLabel="audioComposeContainerView">
                     <rect key="frame" x="0.0" y="522" width="375" height="90"/>
                 </view>
-                <view contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="90" translatesAutoresizingMaskIntoConstraints="NO" id="7Z6-mY-xVo">
+                <view contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="90" translatesAutoresizingMaskIntoConstraints="NO" id="7Z6-mY-xVo" userLabel="panelCollectionViewContainerView">
                     <rect key="frame" x="0.0" y="612" width="375" height="55"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="55" id="bbD-GV-6RQ"/>
                     </constraints>
                 </view>
+                <view clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="Usv-h4-tDT" userLabel="taskMenuContainerView">
+                    <rect key="frame" x="0.0" y="666" width="375" height="0.0"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" id="3FM-F5-fhO"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="0uF-el-Vxb" firstAttribute="bottom" secondItem="7Z6-mY-xVo" secondAttribute="bottom" id="447-2j-qnU"/>
+                <constraint firstItem="ni7-ts-YyA" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" id="330-6f-O0z"/>
                 <constraint firstItem="7Z6-mY-xVo" firstAttribute="leading" secondItem="0uF-el-Vxb" secondAttribute="leading" id="4NJ-6O-17G"/>
                 <constraint firstItem="8ru-91-Smj" firstAttribute="top" secondItem="y23-6f-O9g" secondAttribute="bottom" id="5hp-Sg-7Qe"/>
+                <constraint firstItem="owa-n2-Opo" firstAttribute="top" secondItem="0uF-el-Vxb" secondAttribute="top" constant="-1" id="6Nm-2a-Oe3"/>
                 <constraint firstItem="y23-6f-O9g" firstAttribute="top" secondItem="z3x-8O-A97" secondAttribute="bottom" id="8Kv-dg-OiJ"/>
+                <constraint firstItem="ni7-ts-YyA" firstAttribute="leading" secondItem="0uF-el-Vxb" secondAttribute="leading" id="AJJ-sB-XPe"/>
                 <constraint firstItem="y23-6f-O9g" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="E8u-iv-Arc"/>
                 <constraint firstAttribute="trailing" secondItem="z3x-8O-A97" secondAttribute="trailing" id="Hls-Eo-Deb"/>
                 <constraint firstItem="h7Y-kP-4Xx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="JWO-aq-HcR"/>
-                <constraint firstItem="7Z6-mY-xVo" firstAttribute="top" secondItem="h7Y-kP-4Xx" secondAttribute="bottom" id="KRM-Lm-5U5"/>
                 <constraint firstItem="z3x-8O-A97" firstAttribute="top" secondItem="0uF-el-Vxb" secondAttribute="top" id="MkF-qb-FT5"/>
                 <constraint firstItem="8ru-91-Smj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="T5H-X0-Phe"/>
+                <constraint firstAttribute="trailing" secondItem="Usv-h4-tDT" secondAttribute="trailing" id="TCv-Jw-LtC"/>
+                <constraint firstItem="7Z6-mY-xVo" firstAttribute="top" secondItem="h7Y-kP-4Xx" secondAttribute="bottom" id="Uuu-Vc-Kho"/>
                 <constraint firstItem="z3x-8O-A97" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Wld-We-VMY"/>
                 <constraint firstItem="h7Y-kP-4Xx" firstAttribute="top" secondItem="8ru-91-Smj" secondAttribute="bottom" id="Z1V-03-a8G"/>
+                <constraint firstItem="ni7-ts-YyA" firstAttribute="top" secondItem="owa-n2-Opo" secondAttribute="bottom" id="dd9-SZ-zC4"/>
+                <constraint firstItem="owa-n2-Opo" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" constant="-5" id="fdx-Y4-hzb"/>
+                <constraint firstItem="Usv-h4-tDT" firstAttribute="top" secondItem="ni7-ts-YyA" secondAttribute="bottom" id="g5Z-nH-9DT"/>
+                <constraint firstItem="0uF-el-Vxb" firstAttribute="bottom" secondItem="7Z6-mY-xVo" secondAttribute="bottom" id="l2o-ug-Hr8"/>
+                <constraint firstItem="0uF-el-Vxb" firstAttribute="bottom" secondItem="Usv-h4-tDT" secondAttribute="bottom" constant="1" id="shv-iF-pyx"/>
                 <constraint firstAttribute="trailing" secondItem="8ru-91-Smj" secondAttribute="trailing" id="v3q-WG-SDd"/>
                 <constraint firstItem="7Z6-mY-xVo" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" id="vSP-nQ-NDk"/>
                 <constraint firstAttribute="trailing" secondItem="y23-6f-O9g" secondAttribute="trailing" id="wvZ-jC-PT0"/>
                 <constraint firstAttribute="trailing" secondItem="h7Y-kP-4Xx" secondAttribute="trailing" id="xWX-Qb-rsK"/>
+                <constraint firstItem="Usv-h4-tDT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="znw-T5-Kch"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="0uF-el-Vxb"/>
             <point key="canvasLocation" x="-250.40000000000001" y="21.139430284857571"/>

@@ -15,10 +15,21 @@ var stopSpeakingNotification = "StopSpeakingNowNotificationName"
 var showTableTemplateNotification = "ShowTableTemplateNotificationName"
 var reloadTableNotification = "reloadTableNotification"
 var updateUserImageNotification = "updateUserImageNotification"
+var showListViewTemplateNotification = "ListViewTemplateNotificationName"
+var showListWidgetViewTemplateNotification = "ListWidgetViewTemplateNotificationName"
+
+
 var isSpeakingEnabled = false
+var selectedTheme = "Theme Logo"
+var themeColorUserDefaults = "ThemeColor"
 
 let userColor: UIColor = UIColor(red: 38 / 255.0, green: 52 / 255.0, blue: 74 / 255.0, alpha: 1)
 let botColor: UIColor = UIColor(red: 237 / 255.0, green: 238 / 255.0, blue: 241 / 255.0, alpha: 1)
+
+var themeColor: UIColor = UIColor.init(hexString: "#2881DF")
+var headerTitle = SDKConfiguration.botConfig.identity
+var backgroudImage = ""
+var leftImage = "cancel"
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
@@ -65,14 +76,19 @@ open class Utilities: NSObject {
         let actionInfo:Dictionary<String,Any> = dictionary
         let actionType: String = actionInfo["type"] != nil ? actionInfo["type"] as! String : ""
         let title: String = actionInfo["title"] != nil ? actionInfo["title"] as! String : ""
-        if (actionType == "web_url") {
+        switch (actionType.lowercased()) {
+        case "web_url", "iframe_web_url", "url":
             let url: String = actionInfo["url"] != nil ? actionInfo["url"] as! String : ""
             return KREAction(actionType: .webURL, title: title, payload: url)
-        } else if (actionType == "postback") {
-            let payload: String = actionInfo["payload"] != nil ? actionInfo["payload"] as! String : ""
+        case "postback":
+            let payload: String = (actionInfo["payload"] != nil ? actionInfo["payload"] as? String : "") ?? String(actionInfo["payload"] as! Int) 
             return KREAction(actionType: .postback, title: title, payload: payload)
+        case "postback_disp_payload":
+            let payload: String = actionInfo["payload"] != nil ? actionInfo["payload"] as! String : ""
+            return KREAction(actionType: .postback_disp_payload, title: payload, payload: payload)
+        default:
+            break
         }
         return nil
     }
 }
-

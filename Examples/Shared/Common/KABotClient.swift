@@ -11,9 +11,10 @@ import KoreBotSDK
 import CoreData
 import Mantle
 
-public protocol KABotClientDelegate: NSObjectProtocol {
+public protocol KABotClientDelegate: class {
     func botConnection(with connectionState: BotClientConnectionState)
     func showTypingStatusForBot()
+    func hideTypingStatusForBot()
 }
 
 open class KABotClient: NSObject {
@@ -157,7 +158,7 @@ open class KABotClient: NSObject {
     public func sendMessage(_ message: String, options: [String: Any]?) {
         botClient.sendMessage(message, options: options)
     }
-    
+    //NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
     // methods
     func configureBotClient() {
         // events
@@ -173,6 +174,7 @@ open class KABotClient: NSObject {
             self?.isConnected = true
             self?.isConnecting = false
             self?.sendMessage("Welpro", options: nil)
+            NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
         }
         
         botClient.connectionReady = {
@@ -189,6 +191,7 @@ open class KABotClient: NSObject {
                 }
             }
             self?.tryConnect()
+            NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
         }
         
         botClient.connectionDidFailWithError = { [weak self] (error) in
@@ -201,6 +204,7 @@ open class KABotClient: NSObject {
                 }
             }
             self?.tryConnect()
+            NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
         }
         
         botClient.onMessage = { [weak self] (object) in
@@ -213,6 +217,7 @@ open class KABotClient: NSObject {
         }
     }
     func addMessages(_ message: Message?, _ ttsBody: String?) {
+       // NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil) //showTypingStatusForBot()
         if let m = message, m.components.count > 0 {
             let delayInMilliSeconds = 500
             DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(delayInMilliSeconds)) {
@@ -283,10 +288,38 @@ open class KABotClient: NSObject {
         else if (templateType == "menu") {
             return .menu
         }
+        else if (templateType == "listView") {
+            return .newList
+        }
+        else if (templateType == "tableList") {
+            return .tableList
+        }
+        else if (templateType == "daterange" || templateType == "dateTemplate") {
+            return .calendarView
+        }
+        else if (templateType == "quick_replies_welcome"){
+            return .quick_replies_welcome
+        }
+        else if (templateType == "Notification") {
+            return .notification
+        }
+        else if (templateType == "multi_select") {
+            return .multiSelect
+        }
+        else if (templateType == "List_widget") {
+            return .list_widget
+        }
+        else if (templateType == "feedbackTemplate") {
+            return .feedbackTemplate
+        }
+        else if (templateType == "form_template") {
+            return .inlineForm
+        }
         return .text
     }
     
     func onReceiveMessage(object: BotMessageModel?) -> (Message?, String?) {
+        NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil) //hideTypingStatusForBot()
         var ttsBody: String?
         var textMessage: Message! = nil
         let message: Message = Message()
@@ -297,89 +330,89 @@ open class KABotClient: NSObject {
         message.sentDate = object?.createdOn
         message.messageId = object?.messageId
         
-        if (object?.iconUrl != nil) {
-            message.iconUrl = object?.iconUrl
+        if let iconUrl = object?.iconUrl {
+            message.iconUrl = iconUrl
         }
         
-        //        if (webViewController != nil) {
-        //            webViewController.dismiss(animated: true, completion: nil)
-        //            webViewController = nil
-        //        }
-        //
-        let messageObject = ((object?.messages.count)! > 0) ? (object?.messages[0]) : nil
+        guard let messages = object?.messages, messages.count > 0 else {
+            return (nil, ttsBody)
+        }
+        
+        let messageObject = messages.first
         if (messageObject?.component == nil) {
             
-        } else {
-            let componentModel: ComponentModel = messageObject!.component!
-            if (componentModel.type == "text") {
-                let payload: NSDictionary = componentModel.payload! as! NSDictionary
-                let text: NSString = payload["text"] as! NSString
-                let textComponent: Component = Component()
-                textComponent.payload = text as String
-                ttsBody = text as String
-                
-                if(text.contains("use a web form")){
-                    let range: NSRange = text.range(of: "use a web form - ")
-                    let urlString: String? = text.substring(with: NSMakeRange(range.location+range.length, 44))
-                    if (urlString != nil) {
-                        //let url: URL = URL(string: urlString!)!
-                        //                        webViewController = SFSafariViewController(url: url)
-                        //                        webViewController.modalPresentationStyle = .custom
-                        //                        present(webViewController, animated: true, completion:nil)
-                    }
-                    ttsBody = "Ok, Please fill in the details and submit"
-                }
-                message.addComponent(textComponent)
-                return (message, ttsBody)
-            } else if (componentModel.type == "template") {
-                let payload: NSDictionary = componentModel.payload! as! NSDictionary
-                let text: String = payload["text"] != nil ? payload["text"] as! String : ""
-                let type: String = payload["type"] != nil ? payload["type"] as! String : ""
-                ttsBody = payload["speech_hint"] != nil ? payload["speech_hint"] as? String : nil
-                
-                if (type == "template") {
-                    let dictionary: NSDictionary = payload["payload"] as! NSDictionary
-                    let templateType: String = dictionary["template_type"] as! String
-                    var tabledesign: String
-                    
-                    tabledesign  = (dictionary["table_design"] != nil ? dictionary["table_design"] as? String : "responsive")!
-                    let componentType = self.getComponentType(templateType,tabledesign)
-                    
-                    if componentType != .quickReply {
-                        
-                    }
-                    
-                    let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
-                    ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
-                    
-                    if tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable) {
-                        textMessage = Message()
-                        textMessage?.messageType = .reply
-                        textMessage?.sentDate = message.sentDate
-                        textMessage?.messageId = message.messageId
-                        if (object?.iconUrl != nil) {
-                            textMessage?.iconUrl = object?.iconUrl
-                        }
-                        let textComponent: Component = Component()
-                        textComponent.payload = tText
-                        textMessage?.addComponent(textComponent)
-                    }
-                    
-                    let optionsComponent: Component = Component(componentType)
-                    optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                    message.sentDate = object?.createdOn
-                    message.addComponent(optionsComponent)
-                } else if (type == "error") {
-                    let dictionary: NSDictionary = payload["payload"] as! NSDictionary
-                    let errorComponent: Component = Component(.error)
-                    errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                    message.addComponent(errorComponent)
-                } else if text.count > 0 {
-                    let textComponent: Component = Component()
+        } else if let componentModel = messageObject?.component, let componentType = componentModel.type {
+            switch componentType {
+            case "text":
+                if let payload = componentModel.payload as? [String: Any],
+                    let text = payload["text"] as? String {
+                    let textComponent = Component()
                     textComponent.payload = text
+                    ttsBody = text
+                    
+                    if text.contains("use a web form")  {
+
+                    }
                     message.addComponent(textComponent)
+                    return (message, ttsBody)
+                }
+            case "template":
+                if let payload = componentModel.payload as? [String: Any] {
+                    let type = payload["type"] as? String ?? ""
+                    let text = payload["text"] as? String
+                    ttsBody = payload["speech_hint"] as? String
+                    
+                    switch type {
+                    case "template":
+                        if let dictionary = payload["payload"] as? [String: Any] {
+                            let templateType = dictionary["template_type"] as? String ?? ""
+                            var tabledesign = "responsive"
+                            if let value = dictionary["table_design"] as? String {
+                                tabledesign = value
+                            }
+
+                            let componentType = getComponentType(templateType, tabledesign)
+                            if componentType != .quickReply {
+                                
+                            }
+                            
+                            ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
+                            if let tText = dictionary["text"] as? String, tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable) {
+                                textMessage = Message()
+                                textMessage?.messageType = .reply
+                                textMessage?.sentDate = message.sentDate
+                                textMessage?.messageId = message.messageId
+                                if let iconUrl = object?.iconUrl {
+                                    textMessage?.iconUrl = iconUrl
+                                }
+                                let textComponent: Component = Component()
+                                textComponent.payload = tText
+                                textMessage?.addComponent(textComponent)
+                            }
+                            
+                            let optionsComponent: Component = Component(componentType)
+                            optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                            message.sentDate = object?.createdOn
+                            message.addComponent(optionsComponent)
+                        }
+                    case "error":
+                        if let dictionary = payload["payload"] as? [String: Any] {
+                            let errorComponent: Component = Component(.error)
+                            errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                            message.addComponent(errorComponent)
+                            ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
+                        }
+                    default:
+                        if let text = text, text.count > 0 {
+                            let textComponent: Component = Component()
+                            textComponent.payload = text
+                            message.addComponent(textComponent)
+                        }
+                    }
                 }
                 return (message, ttsBody)
+            default:
+                return (nil, ttsBody)
             }
         }
         return (nil, ttsBody)
@@ -477,9 +510,8 @@ open class KABotClient: NSObject {
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
         sessionManager?.requestSerializer = requestSerializer
         sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-            if (responseObject is NSDictionary) {
-                let dictionary: NSDictionary = responseObject as! NSDictionary
-                let jwToken: String = dictionary["jwt"] as! String
+            if let dictionary = responseObject as? [String: Any],
+                let jwToken: String = dictionary["jwt"] as? String {
                 success?(jwToken)
             } else {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
@@ -494,7 +526,11 @@ open class KABotClient: NSObject {
     
     // MARK: -
     open func showTypingStatusForBot() {
-        delegate?.showTypingStatusForBot()
+        self.delegate?.showTypingStatusForBot()
+    }
+    
+    open func hideTypingStatusForBot() {
+        self.delegate?.hideTypingStatusForBot()
     }
     
     

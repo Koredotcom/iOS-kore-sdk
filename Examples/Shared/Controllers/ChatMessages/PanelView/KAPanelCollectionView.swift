@@ -149,7 +149,7 @@ public class KAPanelCollectionView: UIView {
         let views: [String: Any] = ["collectionView": collectionView]
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[collectionView]", options:[], metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(-2)-[collectionView]-5-|", options:[], metrics: nil, views: views))
-        collectionViewLeadingConstraint = NSLayoutConstraint(item: collectionView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: -10.0)
+        collectionViewLeadingConstraint = NSLayoutConstraint(item: collectionView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: -5.0)
         addConstraint(collectionViewLeadingConstraint)
         collectionViewLeadingConstraint.isActive = true
         
@@ -429,7 +429,7 @@ extension KAPanelCollectionView: UICollectionViewDelegate, UICollectionViewDataS
         
         panelScaleAnimationTriggered?(false)
         transform = CGAffineTransform.identity
-        collectionViewLeadingConstraint.constant = -10
+        collectionViewLeadingConstraint.constant = -5
         collectionViewTrailingConstraint.constant = 0
         scaleState = false
         scaleStateFlag = false
@@ -503,7 +503,7 @@ extension KAPanelCollectionView: UICollectionViewDelegate, UICollectionViewDataS
     func resetPanelAnimation() {
         panelScaleAnimationTriggered?(false)
         transform = CGAffineTransform.identity
-        collectionViewLeadingConstraint.constant = -10
+        collectionViewLeadingConstraint.constant = -5
         collectionViewTrailingConstraint.constant = 0
         scaleState = false
         scaleStateFlag = false

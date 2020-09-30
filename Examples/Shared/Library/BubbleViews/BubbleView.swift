@@ -12,9 +12,9 @@ enum BubbleMaskTailPosition : Int {
     case none = 1, left = 2, right = 3
 }
 
-let BubbleViewRightTint: UIColor = userColor
+let BubbleViewRightTint: UIColor = themeColor //userColor
 let BubbleViewRightContrastTint: UIColor = Common.UIColorRGB(0xFFFFFF)
-let BubbleViewLeftTint: UIColor = botColor
+let BubbleViewLeftTint: UIColor = .white//botColor
 let BubbleViewLeftContrastTint: UIColor = Common.UIColorRGB(0xBCBCBC)
 
 let BubbleViewCurveRadius: CGFloat = 20.0
@@ -90,6 +90,33 @@ class BubbleView: UIView {
         case .menu:
             bubbleView = MenuBubbleView()
             break
+        case .newList:
+            bubbleView = NewListBubbleView()
+            break
+        case .tableList:
+                bubbleView = TableListBubbleView()
+            break
+        case .calendarView:
+                bubbleView = CalenderBubbleView()
+            break
+        case .quick_replies_welcome:
+                bubbleView = QuickReplyWelcomeBubbleView()
+            break
+        case .notification:
+                bubbleView = NotificationBubbleView()
+            break
+        case .multiSelect:
+                bubbleView = MultiSelectNewBubbleView()
+            break
+        case .list_widget:
+                bubbleView = ListWidgetBubbleView()
+        break
+        case .feedbackTemplate:
+            bubbleView = FeedbackBubbleView()
+        break
+        case .inlineForm:
+            bubbleView = InLineFormBubbleView()
+        break
         }
         bubbleView.bubbleType = bubbleType
         
@@ -151,7 +178,11 @@ class BubbleView: UIView {
             }
             self.borderLayer.path = self.maskLayer.path // Reuse the Bezier path
             self.borderLayer.fillColor = UIColor.clear.cgColor
-            self.borderLayer.strokeColor = Common.UIColorRGB(0xebebeb).cgColor
+            if selectedTheme == "Theme Logo"{
+               self.borderLayer.strokeColor = Common.UIColorRGB(0xebebeb).cgColor
+            }else{
+                self.borderLayer.strokeColor = UIColor.lightGray.cgColor
+            }
             self.borderLayer.lineWidth = 1.5
             self.borderLayer.frame = self.bounds
         } else {

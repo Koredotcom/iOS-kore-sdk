@@ -16,7 +16,7 @@ class OptionsBubbleView: BubbleView {
     var textLabel: KREAttributedLabel!
     var optionsView: KREOptionsView!
     
-    public var optionsAction: ((_ text: String?) -> Void)?
+    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)?
     public var linkAction: ((_ text: String?) -> Void)?
     
     override func initialize() {
@@ -49,8 +49,8 @@ class OptionsBubbleView: BubbleView {
         
         self.textLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.vertical)
         
-        self.optionsView.optionsButtonAction = { [weak self] (text, payload) in
-            self?.optionsAction?(text)
+        self.optionsView.optionsButtonAction = {[weak self] (text, payload) in
+            self?.optionsAction?(text, payload)
         }
         self.optionsView.detailLinkAction = { [weak self] (text) in
             self?.linkAction?(text)
@@ -73,7 +73,9 @@ class OptionsBubbleView: BubbleView {
                     let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
                     
                     let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button)
-                    option.setDefaultAction(action: Utilities.getKREActionFromDictionary(dictionary: dictionary)!)
+                    if let action = Utilities.getKREActionFromDictionary(dictionary: dictionary) {
+                        option.setDefaultAction(action: action)
+                    }
                     options.append(option)
                 }
                 self.optionsView.options = options

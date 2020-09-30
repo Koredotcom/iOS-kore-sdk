@@ -12,19 +12,13 @@ open class Constants: NSObject {
     public static var KORE_BOT_SERVER = String(format: "https://pilot-bots.kore.com")
     struct URL {
         static let baseUrl = KORE_BOT_SERVER
-        
-//        static let jwtAuthorizationUrl = String(format: "%@api/1.1/oAuth/token/jwtgrant", KORE_BOT_SERVER)
-//        static let rtmUrl = String(format: "%@api/rtm/start", KORE_BOT_SERVER)
-//        static let historyUrl = String(format: "%@api/1.1/botmessages/rtm", KORE_BOT_SERVER)
         static let jwtAuthorizationUrl = String(format: "%@/api/1.1/oAuth/token/jwtgrant", KORE_BOT_SERVER)
         static let rtmUrl = String(format: "%@/api/rtm/start", KORE_BOT_SERVER)
         static let historyUrl = String(format: "%@/api/1.1/botmessages/rtm", KORE_BOT_SERVER)
         static func subscribeUrl(_ userId: String!) -> String {
-            //return  String(format: "%@api/users/%@/sdknotifications/subscribe", KORE_BOT_SERVER, userId)
             return  String(format: "%@/api/users/%@/sdknotifications/subscribe", KORE_BOT_SERVER, userId)
         }
         static func unSubscribeUrl(_ userId: String!) -> String {
-            //return  String(format: "%@api/users/%@/sdknotifications/unsubscribe", KORE_BOT_SERVER, userId)
             return  String(format: "%@/api/users/%@/sdknotifications/unsubscribe", KORE_BOT_SERVER, userId)
         }
     }
@@ -33,5 +27,40 @@ open class Constants: NSObject {
         let uuid = UUID().uuidString
         let date: Date = Date()
         return String(format: "%@-%.0f", uuid, date.timeIntervalSince1970)
+    }
+}
+
+public enum KREMessageAction: String {
+    case startSpeaking = "StartSpeakingNowNotificationName"
+    case stopSpeaking = "StopSpeakingNowNotificationName"
+    case utteranceHandler = "utteranceHandler"
+    case navigateToComposeBar = "navigateToComposeBar"
+    case validateAgainstSkill = "ValidateAgainstSkill"
+    case keyboardWillShow = "keyboardWillShow"
+    case keyboardWillHide = "keyboardWillHide"
+    case keyboardDidShow = "keyboardDidShow"
+    case keyboardDidHide = "keyboardDidHide"
+
+    public var notification: Notification.Name {
+        switch self {
+        case .startSpeaking:
+            return Notification.Name(rawValue: KREMessageAction.startSpeaking.rawValue)
+        case .stopSpeaking:
+            return Notification.Name(rawValue: KREMessageAction.stopSpeaking.rawValue)
+        case .utteranceHandler:
+            return Notification.Name(rawValue: KREMessageAction.utteranceHandler.rawValue)
+        case .navigateToComposeBar:
+            return Notification.Name(rawValue: KREMessageAction.navigateToComposeBar.rawValue)
+        case .validateAgainstSkill:
+            return Notification.Name(rawValue: KREMessageAction.validateAgainstSkill.rawValue)
+        case .keyboardWillShow:
+            return Notification.Name(rawValue: KREMessageAction.keyboardWillShow.rawValue)
+        case .keyboardWillHide:
+            return Notification.Name(rawValue: KREMessageAction.keyboardWillHide.rawValue)
+        case .keyboardDidShow:
+            return Notification.Name(rawValue: KREMessageAction.keyboardDidShow.rawValue)
+        case .keyboardDidHide:
+            return Notification.Name(rawValue: KREMessageAction.keyboardDidHide.rawValue)
+        }
     }
 }

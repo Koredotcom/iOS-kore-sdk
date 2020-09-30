@@ -61,27 +61,26 @@ class ListBubbleView: BubbleView {
                     let imageUrl: String = dictionary["image_url"] != nil ? dictionary["image_url"] as! String : ""
                     
                     let option: KREOption = KREOption(title: title, subTitle: subtitle, imageURL: imageUrl, optionType: .list)
-                    if (dictionary["default_action"] != nil) {
-                        let defaultAction = dictionary["default_action"] as! Dictionary<String, Any>
-                        option.setDefaultAction(action: Utilities.getKREActionFromDictionary(dictionary: defaultAction)!)
+                    if let defaultAction = dictionary["default_action"] as? [String: Any],
+                        let action = Utilities.getKREActionFromDictionary(dictionary: defaultAction) {
+                        option.setDefaultAction(action: action)
                     }
                     
-                    let buttons: Array<Dictionary<String, Any>> = dictionary["buttons"] != nil ? dictionary["buttons"] as! Array<Dictionary<String, Any>> : []
-                    if (buttons.count > 0) {
-                        let buttonElement: Dictionary<String, Any> = buttons.first! as Dictionary<String, Any>
-                        option.setButtonAction(action: Utilities.getKREActionFromDictionary(dictionary: buttonElement)!)
+                    if let buttons = dictionary["buttons"] as? Array<[String: Any]>, let buttonElement = buttons.first,
+                        let action = Utilities.getKREActionFromDictionary(dictionary: buttonElement) {
+                        option.setButtonAction(action: action)
                     }
                     
                     options.append(option)
                 }
                 
-                let buttons: Array<Dictionary<String, Any>> = jsonObject["buttons"] != nil ? jsonObject["buttons"] as! Array<Dictionary<String, Any>> : []
-                if (buttons.count > 0) {
-                    let buttonElement: Dictionary<String, Any> = buttons.first! as Dictionary<String, Any>
+                if let buttons = jsonObject["buttons"] as? Array<[String: Any]>, let buttonElement = buttons.first {
                     let title: String = buttonElement["title"] != nil ? buttonElement["title"] as! String : ""
                     
                     let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button)
-                    option.setDefaultAction(action: Utilities.getKREActionFromDictionary(dictionary: buttonElement)!)
+                    if let action = Utilities.getKREActionFromDictionary(dictionary: buttonElement) {
+                        option.setDefaultAction(action: action)
+                    }
                     options.append(option)
                 }
                 

@@ -10,6 +10,8 @@
 #import "KRETypingCollectionViewCell.h"
 #import "KRETypingActivityIndicator.h"
 #import <AFNetworking/AFNetworking.h>
+#import "UIImageView+AFNetworking.h"
+#import "KREUtilities.h"
 
 @interface KRETypingStatusView () <UICollectionViewDataSource>
 
@@ -63,7 +65,7 @@
                                               selector:@selector(timerFiredToRemoveTypingStatus:)
                                               userInfo:@""
                                                repeats:NO];
-    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+   // [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
 
     if(![self.dataSource containsObject:contactInfo]){
         [contactInfo setValue:timer forKey:@"timer"];
@@ -112,7 +114,7 @@
         width = self.frame.size.width-kDancingDotsWidth-kCollectionViewLeftPadding-kDancingDotsPadding;
     }
     self.collectionView.frame = CGRectMake(kCollectionViewLeftPadding, 0, width, self.frame.size.height);
-    self.dancingDots.frame = CGRectMake(self.collectionView.frame.size.width+kDancingDotsPadding,
+    self.dancingDots.frame = CGRectMake(0,
                                         (self.frame.size.height-10.0)/2,
                                         kDancingDotsWidth,
                                         10.0);
@@ -127,7 +129,8 @@
     KRETypingCollectionViewCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:@"TypingCell"
                                                                                        forIndexPath:indexPath];
     NSDictionary *dict = [self.dataSource objectAtIndex:indexPath.row];
-    [cell.customImageView setImage:[UIImage imageNamed:dict[@"imageName"]]];
+    NSString *url = dict[@"imageName"];
+    [cell.customImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@""]];
     return cell;
 }
 

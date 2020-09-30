@@ -13,13 +13,14 @@ import KoreBotSDK
 import CoreData
 import Mantle
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate {
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate {
     // MARK: properties
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
     var thread: KREThread?
     var botClient: BotClient!
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
+    var kaBotClient: KABotClient!
     
     @IBOutlet weak var threadContainerView: UIView!
     @IBOutlet weak var quickSelectContainerView: UIView!
@@ -40,6 +41,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var quickReplyView: KREQuickSelectView!
     var typingStatusView: KRETypingStatusView!
     var webViewController: SFSafariViewController!
+    @IBOutlet weak var backgroungImageView: UIImageView!
+    
+    var taskMenuKeyBoard = true
+    @IBOutlet weak var taskMenuContainerView: UIView!
+    @IBOutlet weak var taskMenuContainerHeightConstant: NSLayoutConstraint!
+    var taskMenuHeight = 0
+    
     var panelCollectionView: KAPanelCollectionView!
     var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     
@@ -50,9 +58,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     public var userInfoModel: UserModel?
     public var user: KREUser?
     public var sheetController: KABottomSheetController?
-    var isShowAudioComposeView = true
+    var isShowAudioComposeView = false
     var insets: UIEdgeInsets = .zero
     @IBOutlet weak var panelCollectionViewContainerHeightConstraint: NSLayoutConstraint!
+    
     
     public var maxPanelHeight: CGFloat {
         var maxHeight = UIScreen.main.bounds.height
@@ -62,12 +71,19 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         maxHeight -= delta
         return maxHeight
     }
-
+    
     public var panelHeight: CGFloat {
         var maxHeight = maxPanelHeight
         maxHeight -= self.isShowAudioComposeView == true ? self.audioComposeView.bounds.height : self.composeView.bounds.height
         return maxHeight-panelCollectionViewContainerView.bounds.height - insets.bottom
     }
+    @IBOutlet weak var dropDownBtn: UIButton!
+    let colorDropDown = DropDown()
+    lazy var dropDowns: [DropDown] = {
+        return [
+            self.colorDropDown
+        ]
+    }()
     
     // MARK: init
     init(thread: KREThread?) {
@@ -89,6 +105,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.configureQuickReplyView()
         self.configureTypingStatusView()
         self.configureSTTClient()
+        self.configureMoreOption()
+        
+        //self.configureViewForKeyboard(true)
         
         if SDKConfiguration.widgetConfig.isPanelView {
             self.configurePanelCollectionView()
@@ -104,9 +123,34 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         super.viewWillAppear(animated)
         addNotifications()
         
-        let image = UIImage(named: "cancel")
+        let urlString = leftImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let url = URL(string: urlString!)
+        var data : Data?
+        if url != nil {
+            data = try? Data(contentsOf: url!)
+        }
+        var image = UIImage(named: "cancel")
+        if let imageData = data {
+            image = UIImage(data: imageData)
+        }
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancel(_:)))
+        
+        let rightImage = UIImage(named: "more")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(more(_:)))
+        
         navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        let font:UIFont? = UIFont(name: "Helvetica-Bold", size:17)
+        let attString:NSMutableAttributedString = NSMutableAttributedString(string: headerTitle, attributes: [.font:font!])
+        let titleLabel = UILabel()
+        titleLabel.textColor = .white
+        titleLabel.attributedText = attString
+        self.navigationItem.titleView = titleLabel
+        
+        navigationController?.navigationBar.barTintColor = themeColor
+        navigationController?.navigationBar.tintColor = UIColor.white
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        self.view.backgroundColor = UIColor.init(hexString: "#f3f3f5")
         
         if SDKConfiguration.widgetConfig.isPanelView {
             populatePanelItems()
@@ -171,6 +215,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         prepareForDeinit()
         navigationController?.setNavigationBarHidden(true, animated: false)
         navigationController?.popViewController(animated: true)
+    }
+    
+    // MARK: More
+    @objc func more(_ sender: Any) {
+        colorDropDown.show()
     }
     
     //MARK: Menu Button Action
@@ -265,11 +314,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[quickReplyView]|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
         
-        //        self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
-        //            if let text = text, let payload = payload {
-        //                self?.sendTextMessage(text, options: ["body": payload])
-        //            }
-        //        }
+        self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
+            if let text = text, let payload = payload {
+                self?.sendTextMessage(text, options: ["body": payload])
+            }
+        }
     }
     
     func configurePanelCollectionView() {
@@ -325,7 +374,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                             controller.overlayColor = .clear
                             panelItemViewController.showPanelHeader(false)
                             bottomSheetController.closeSheet(true)
-
+                            
                             self?.sheetController = nil
                         }
                     }
@@ -347,17 +396,22 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func configureTypingStatusView() {
+        
+        kaBotClient = KABotClient()
+        kaBotClient.delegate = self
+        
         self.typingStatusView = KRETypingStatusView()
         self.typingStatusView?.isHidden = true
         self.typingStatusView?.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.typingStatusView!)
         
         let views: [String: Any] = ["typingStatusView" : self.typingStatusView, "composeBarContainerView" : self.composeBarContainerView]
-        self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[typingStatusView]|", options:[], metrics:nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(40)-[typingStatusView]", options:[], metrics:nil, views: views)) //-20
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[typingStatusView(40)][composeBarContainerView]", options:[], metrics:nil, views: views))
+        
     }
     
-    func getComponentType(_ templateType: String,_ tabledesign:String) -> ComponentType {
+    func getComponentType(_ templateType: String,_ tabledesign: String) -> ComponentType {
         if (templateType == "quick_replies") {
             return .quickReply
         } else if (templateType == "button") {
@@ -379,6 +433,33 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
         else if (templateType == "menu") {
             return .menu
+        }
+        else if (templateType == "listView") {
+            return .newList
+        }
+        else if (templateType == "tableList") {
+            return .tableList
+        }
+        else if (templateType == "daterange" || templateType == "dateTemplate") {
+            return .calendarView
+        }
+        else if (templateType == "quick_replies_welcome"){
+            return .quick_replies_welcome
+        }
+        else if (templateType == "Notification") {
+            return .notification
+        }
+        else if (templateType == "multi_select") {
+            return .multiSelect
+        }
+        else if (templateType == "List_widget") {
+            return .list_widget
+        }
+        else if (templateType == "feedbackTemplate") {
+            return .feedbackTemplate
+        }
+        else if (templateType == "form_template") {
+            return .inlineForm
         }
         return .text
     }
@@ -471,6 +552,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     let errorComponent: Component = Component(.error)
                     errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                     message.addComponent(errorComponent)
+                    ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
                 } else if text.count > 0 {
                     let textComponent: Component = Component()
                     textComponent.payload = text
@@ -484,7 +566,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func addMessages(_ message: Message?, _ ttsBody: String?) {
         if let m = message, m.components.count > 0 {
-            showTypingStatusForBotsAction()
             let delayInMilliSeconds = 500
             DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(delayInMilliSeconds)) {
                 let dataStoreManager = DataStoreManager.sharedManager
@@ -562,6 +643,66 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.sttClient.onResponse = nil
     }
     
+    func configureMoreOption(){
+        //DropDown
+        dropDowns.forEach { $0.dismissMode = .onTap }
+        dropDowns.forEach { $0.direction = .any }
+        
+        colorDropDown.backgroundColor = UIColor(white: 1, alpha: 1)
+        colorDropDown.selectionBackgroundColor = UIColor(red: 0.6494, green: 0.8155, blue: 1.0, alpha: 0.2)
+        colorDropDown.separatorColor = UIColor(white: 0.7, alpha: 0.8)
+        colorDropDown.cornerRadius = 10
+        colorDropDown.shadowColor = UIColor(white: 0.6, alpha: 1)
+        colorDropDown.shadowOpacity = 0.9
+        colorDropDown.shadowRadius = 25
+        colorDropDown.animationduration = 0.25
+        colorDropDown.textColor = .darkGray
+        
+        let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let url = URL(string: urlString!)
+        if url != nil{
+            backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
+            backgroungImageView.contentMode = .scaleAspectFit
+        }
+        setupColorDropDown()
+    }
+    
+    func setupColorDropDown() {
+        colorDropDown.anchorView = dropDownBtn
+        
+        colorDropDown.bottomOffset = CGPoint(x: 0, y: dropDownBtn.bounds.height)
+        colorDropDown.dataSource = [
+            "Theme Logo",
+            "Theme Shopping"
+        ]
+        colorDropDown.selectRow(0)
+        // Action triggered on selection
+        colorDropDown.selectionAction = { [weak self] (index, item) in
+            //self?.amountButton.setTitle(item, for: .normal)
+            if item == "Theme Logo" {
+                selectedTheme = "Theme Logo"
+            }else{
+                selectedTheme = "Theme 2"
+            }
+            
+            if selectedTheme == "Theme Logo"{
+                let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                let url = URL(string: urlString!)
+                if url != nil{
+                    self!.backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
+                }else{
+                    self!.backgroungImageView.image = UIImage.init(named: "")
+                }
+                self!.backgroungImageView.contentMode = .scaleAspectFit
+            }else{
+                self!.backgroungImageView.image = UIImage.init(named: "Chatbackground")
+                self!.backgroungImageView.contentMode = .scaleAspectFill
+            }
+            NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+        }
+        
+    }
+    
     func updateNavBarPrompt() {
         self.navigationItem.leftBarButtonItem?.isEnabled = true
         switch self.botClient.connectionState {
@@ -592,22 +733,28 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     // MARK: notifications
     func addNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardDidShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.didBecomeActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.didEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.startSpeaking), name: NSNotification.Name(rawValue: startSpeakingNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.stopSpeaking), name: NSNotification.Name(rawValue: stopSpeakingNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(startSpeaking), name: NSNotification.Name(rawValue: startSpeakingNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(stopSpeaking), name: NSNotification.Name(rawValue: stopSpeakingNotification), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.showTableTemplateView), name: NSNotification.Name(rawValue: showTableTemplateNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.reloadTable(notification:)), name: NSNotification.Name(rawValue: reloadTableNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showTableTemplateView), name: NSNotification.Name(rawValue: showTableTemplateNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTable(notification:)), name: NSNotification.Name(rawValue: reloadTableNotification), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(showListViewTemplateView), name: NSNotification.Name(rawValue: showListViewTemplateNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(processDynamicUpdates(_:)), name: KoraNotification.Widget.update.notification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(processPanelEvents(_:)), name: KoraNotification.Panel.event.notification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(navigateToComposeBar(_:)), name: KREMessageAction.navigateToComposeBar.notification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showListWidgetViewTemplateView), name: NSNotification.Name(rawValue: showListWidgetViewTemplateNotification), object: nil)
         
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(startTypingStatusForBot), name: NSNotification.Name(rawValue: "StartTyping"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(stopTypingStatusForBot), name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
     }
     
     func removeNotifications() {
@@ -621,6 +768,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showTableTemplateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: reloadTableNotification), object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showListViewTemplateNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showListWidgetViewTemplateNotification), object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: KREMessageAction.navigateToComposeBar.notification, object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StartTyping"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
     }
     
     // MARK: notification handlers
@@ -638,6 +793,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             // Fallback on earlier versions
         };
         self.bottomConstraint.constant = keyboardHeight
+        taskMenuHeight = Int(keyboardHeight)
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
             self.view.layoutIfNeeded()
         }, completion: { (Bool) in
@@ -651,19 +807,26 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let duration = durationValue.doubleValue
         let options = UIView.AnimationOptions(rawValue: UInt((keyboardUserInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
         
-        self.bottomConstraint.constant = 0
+        if taskMenuKeyBoard{
+            self.bottomConstraint.constant = 0
+            self.taskMenuContainerHeightConstant.constant = 0
+        }
+        
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
             self.view.layoutIfNeeded()
         }, completion: { (Bool) in
             
         })
     }
+    
     @objc func didBecomeActive(_ notification: Notification) {
         startMonitoringForReachability()
     }
+    
     @objc func didEnterBackground(_ notification: Notification) {
         stopMonitoringForReachability()
     }
+    
     @objc func startMonitoringForReachability() {
         let networkReachabilityManager = AFNetworkReachabilityManager.shared()
         networkReachabilityManager.setReachabilityStatusChange({ (status) in
@@ -682,8 +845,23 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         })
         networkReachabilityManager.startMonitoring()
     }
+    
     @objc func stopMonitoringForReachability() {
         AFNetworkReachabilityManager.shared().stopMonitoring()
+    }
+    
+    @objc func navigateToComposeBar(_ notification: Notification) {
+        DispatchQueue.main.async {
+            self.minimizePanelWindow(false)
+        }
+        
+        guard let params = notification.object as? [String: Any] else {
+            return
+        }
+        
+        if let utterance = params["utterance"] as? String, let options = params["options"] as? [String: Any] {
+            sendTextMessage(utterance, dictionary: options, options: options)
+        }
     }
     
     // MARK: - establish BotSDK connection
@@ -693,12 +871,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     @objc func keyboardDidShow(_ notification: Notification) {
         if (self.tapToDismissGestureRecognizer == nil) {
+            self.taskMenuContainerHeightConstant.constant = 0
             self.tapToDismissGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(ChatMessagesViewController.dismissKeyboard(_:)))
             self.botMessagesView.addGestureRecognizer(tapToDismissGestureRecognizer)
         }
     }
     
     @objc func keyboardDidHide(_ notification: Notification) {
+        if taskMenuKeyBoard{
+            self.taskMenuContainerHeightConstant.constant = 0
+            self.bottomConstraint.constant = 0
+        }
         if (self.tapToDismissGestureRecognizer != nil) {
             self.botMessagesView.removeGestureRecognizer(tapToDismissGestureRecognizer)
             self.tapToDismissGestureRecognizer = nil
@@ -706,14 +889,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @objc func dismissKeyboard(_ gesture: UITapGestureRecognizer) {
+        self.bottomConstraint.constant = 0
+        self.taskMenuContainerHeightConstant.constant = 0
         if (self.composeView.isFirstResponder) {
             _ = self.composeView.resignFirstResponder()
         }
     }
     
     // MARK: Helper functions
-    
-    func sendMessage(_ message: Message, options: [String: Any]?) {
+    func sendMessage(_ message: Message, dictionary: [String: Any]? = nil, options: [String: Any]?) {
+        
+        NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil) // self.showTypingStatusForBot()
         NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
         let composedMessage: Message = message
         if (composedMessage.components.count > 0) {
@@ -728,7 +914,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
     }
     
-    func sendTextMessage(_ text: String, options: [String: Any]?) {
+    func sendTextMessage(_ text: String, dictionary: [String: Any]? = nil, options: [String: Any]?) {
         let message: Message = Message()
         message.messageType = .default
         message.sentDate = Date()
@@ -736,7 +922,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let textComponent: Component = Component()
         textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         message.addComponent(textComponent)
-        self.sendMessage(message, options: options)
+        sendMessage(message, options: options)
     }
     
     func textMessageSent() {
@@ -776,6 +962,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: BotMessagesDelegate methods
     func optionsButtonTapAction(text: String) {
         self.sendTextMessage(text, options: nil)
+    }
+    
+    func optionsButtonTapNewAction(text:String, payload:String){
+        self.sendTextMessage(text, options: ["body": payload])
     }
     
     func linkButtonTapAction(urlString: String) {
@@ -833,12 +1023,53 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func closeQuickSelectViewConstraints() {
         if self.quickSelectContainerHeightConstraint.constant == 0.0 {return}
-        
         self.quickSelectContainerHeightConstraint.constant = 0.0
         UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: {
             self.view.layoutIfNeeded()
         }) { (Bool) in
             
+        }
+    }
+    
+    func populateCalenderView(with message: KREMessage?) {
+        var messageId = ""
+        if message?.templateType == (ComponentType.calendarView.rawValue as NSNumber) {
+            let component: KREComponent = message!.components![0] as! KREComponent
+            print(component)
+            if (!component.isKind(of: KREComponent.self)) {
+                return;
+            }
+            if (component.message != nil) {
+                messageId = component.message!.messageId!
+            }
+            if ((component.componentDesc) != nil) {
+                let jsonString = component.componentDesc
+                let calenderViewController = CalenderViewController(dataString: jsonString!, chatId: messageId, kreMessage: message!)
+                calenderViewController.viewDelegate = self
+                calenderViewController.modalPresentationStyle = .overFullScreen
+                self.navigationController?.present(calenderViewController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func populateFeedbackSliderView(with message: KREMessage?) {
+        var messageId = ""
+        if message?.templateType == (ComponentType.feedbackTemplate.rawValue as NSNumber) {
+            let component: KREComponent = message!.components![0] as! KREComponent
+            print(component)
+            if (!component.isKind(of: KREComponent.self)) {
+                return;
+            }
+            if (component.message != nil) {
+                messageId = component.message!.messageId!
+            }
+            if ((component.componentDesc) != nil) {
+                let jsonString = component.componentDesc
+                let feedbackViewController = FeedbackSliderViewController(dataString: jsonString!)
+                feedbackViewController.viewDelegate = self
+                feedbackViewController.modalPresentationStyle = .overFullScreen
+                self.navigationController?.present(feedbackViewController, animated: true, completion: nil)
+            }
         }
     }
     
@@ -861,8 +1092,21 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ClosePanel"), object: nil)
     }
     
-    // MARK: KREGrowingTextViewDelegate methods
+    func composeBarTaskMenuButtonAction(_: ComposeBarView) {
+        self.bottomConstraint.constant = 0
+        self.taskMenuContainerHeightConstant.constant = 0
+        if (self.composeView.isFirstResponder) {
+            _ = self.composeView.resignFirstResponder()
+        }
+        
+        let taskMenuViewController = TaskMenuViewController()
+        taskMenuViewController.modalPresentationStyle = .overFullScreen
+        taskMenuViewController.viewDelegate = self
+        taskMenuViewController.view.backgroundColor = .white
+        self.navigationController?.present(taskMenuViewController, animated: false, completion: nil)
+    }
     
+    // MARK: KREGrowingTextViewDelegate methods
     func growingTextView(_: KREGrowingTextView, changingHeight height: CGFloat, animate: Bool) {
         UIView.animate(withDuration: animate ? 0.25: 0.0) {
             self.view.layoutIfNeeded()
@@ -926,8 +1170,40 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let tableTemplateViewController = TableTemplateViewController(dataString: dataString)
         self.navigationController?.present(tableTemplateViewController, animated: true, completion: nil)
     }
+    
     @objc func reloadTable(notification:Notification){
         botMessagesView.tableView.reloadData()
+    }
+    
+    // MARK: show NewListViewDetailsTemplateView
+    @objc func showListViewTemplateView(notification:Notification) {
+        let dataString: String = notification.object as! String
+        let listViewDetailsViewController = ListViewDetailsViewController(dataString: dataString)
+        listViewDetailsViewController.viewDelegate = self
+        listViewDetailsViewController.modalPresentationStyle = .overFullScreen
+        self.navigationController?.present(listViewDetailsViewController, animated: true, completion: nil)
+    }
+    
+    @objc func showListWidgetViewTemplateView(notification:Notification){
+        let dataString: String = notification.object as! String
+        let listViewDetailsViewController = ListWidgetDetailsViewController(dataString: dataString)
+        listViewDetailsViewController.viewDelegate = self
+        listViewDetailsViewController.modalPresentationStyle = .overFullScreen
+        listViewDetailsViewController.view.backgroundColor = .white
+        self.navigationController?.present(listViewDetailsViewController, animated: true, completion: nil)
+    }
+    
+    // MARK: -
+    public func maximizePanelWindow() {
+        
+    }
+    
+    public func minimizePanelWindow(_ canValidateSession: Bool = true) {
+        sheetController?.dismissAllPresentedViewControllers { [weak self] in
+            self?.sheetController?.closeSheet(completion: {
+                self?.sheetController = nil
+            })
+        }
     }
 }
 
@@ -1058,7 +1334,12 @@ extension ChatMessagesViewController {
 }
 extension ChatMessagesViewController: KABotClientDelegate {
     func showTypingStatusForBot() {
+        self.typingStatusView?.isHidden = true
         self.typingStatusView?.addTypingStatus(forContact: [:], forTimeInterval: 0.5)
+    }
+    
+    func hideTypingStatusForBot(){
+        self.typingStatusView?.timerFired(toRemoveTypingStatus: nil)
     }
     
     // MARK: - KABotlientDelegate methods
@@ -1066,6 +1347,21 @@ extension ChatMessagesViewController: KABotClientDelegate {
         updateNavBarPrompt()
         
     }
+
+    @objc func startTypingStatusForBot() {
+        self.typingStatusView?.isHidden = true
+        let botId:String = SDKConfiguration.botConfig.botId
+        let info:NSMutableDictionary = NSMutableDictionary.init()
+        info.setValue(botId, forKey: "botId");
+        let urlString = leftImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        info.setValue(urlString ?? "kora", forKey: "imageName");
+        self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5)
+    }
+    
+    @objc func stopTypingStatusForBot(){
+        self.typingStatusView?.timerFired(toRemoveTypingStatus: nil)
+    }
+    
 }
 // MARK: - requests
 extension ChatMessagesViewController {
@@ -1144,7 +1440,7 @@ extension ChatMessagesViewController {
         let panelBar = panelCollectionView
         switch panelBar!.panelState {
         case .loaded:
-            guard let panelItem = panelItems?.filter({ $0.name == "Bar Chart" }).first else { //iconId == "new list" == "home"
+            guard let panelItem = panelItems?.filter({ $0.name == "Quick Summar" }).first else {
                 return
             }
             

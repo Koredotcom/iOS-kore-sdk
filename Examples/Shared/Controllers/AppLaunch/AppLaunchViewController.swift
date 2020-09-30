@@ -17,6 +17,7 @@ class AppLaunchViewController: UIViewController {
     @IBOutlet weak var imgView: UIImageView!
     // MARK: properties
     @IBOutlet weak var chatButton: UIButton!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     var sessionManager: AFHTTPSessionManager?
     var kaBotClient = KABotClient()
@@ -28,11 +29,17 @@ class AppLaunchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       // let chatBotName: String = SDKConfiguration.botConfig.chatBotName
-       // self.chatButton.setTitle(String(format: "%@", chatBotName), for: .normal)
+        //let chatBotName: String = SDKConfiguration.botConfig.chatBotName
+        //self.chatButton.setTitle(String(format: "%@", chatBotName), for: .normal)
         setInitialState()
         self.automaticallyAdjustsScrollViewInsets = false
         imgView.contentMode = .scaleAspectFit
+        
+        
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        getThemeColor()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -47,6 +54,8 @@ class AppLaunchViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -74,6 +83,7 @@ class AppLaunchViewController: UIViewController {
             identity = SDKConfiguration.botConfig.identity
         }
         
+        
         let clientIdForWidget: String = SDKConfiguration.widgetConfig.clientId
         let clientSecretForWidget: String = SDKConfiguration.widgetConfig.clientSecret
         let isAnonymousForWidget: Bool = SDKConfiguration.widgetConfig.isAnonymous
@@ -91,7 +101,7 @@ class AppLaunchViewController: UIViewController {
             print("Delete Sucess")
         })
         
-        if !clientId.hasPrefix("<") && !clientSecret.hasPrefix("<") && !chatBotName.hasPrefix("<") && !botId.hasPrefix("<") && !identity.hasPrefix("<") {
+        if !clientId.hasPrefix("<") && !clientSecret.hasPrefix("<") && !chatBotName.hasPrefix("<") && !botId.hasPrefix("<") {
             //let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(style: .white)
             activityIndicatorView.center = chatButton.center
             view.addSubview(activityIndicatorView)
@@ -282,4 +292,28 @@ extension AppLaunchViewController{
          }
        }
     }
+    
+    func getThemeColor(){
+        themeColor = UIColor.init(hexString: "#2881DF")
+        UserDefaults.standard.set("#2881DF", forKey: themeColorUserDefaults)
+        headerTitle = SDKConfiguration.botConfig.chatBotName
+        backgroudImage =  ""
+        leftImage =  ""
+    }
 }
+
+extension AppLaunchViewController : UITextFieldDelegate{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if (string == " ") {
+            return false
+        }
+        return true
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+
+

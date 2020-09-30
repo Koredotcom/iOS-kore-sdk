@@ -56,7 +56,7 @@ class AudioComposeView: UIView {
         self.audioActionView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.audioActionView)
         
-        self.audioImageView = UIImageView(image: UIImage(named: "audio_icon"))
+        self.audioImageView = UIImageView(image: UIImage(named: "audio_icon-1"))
         self.audioImageView.contentMode = .scaleAspectFit
         self.audioImageView.translatesAutoresizingMaskIntoConstraints = false
         self.animateBGView.addSubview(self.audioImageView)

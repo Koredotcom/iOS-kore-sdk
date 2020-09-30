@@ -343,3 +343,124 @@ class ResponsiveTableBubbleCell : MessageBubbleCell {
     }
     
 }
+
+class NewListBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .newList
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
+class TableListBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .tableList
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
+
+class CalendarBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .calendarView
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
+
+class QuickRepliesWelcomeCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .quick_replies_welcome
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
+
+class NotificationBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .notification
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleLeadingConstraint.constant = 0
+            self.bubbleTrailingConstraint.constant = 0
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+    
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        self.senderImageView.isHidden = true
+    }
+}
+
+class MultiSelectBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .multiSelect
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
+
+class ListWidgetBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .list_widget
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
+class FeedbackBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .feedbackTemplate
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
+
+class InLineFormCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .inlineForm
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
