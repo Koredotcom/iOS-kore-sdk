@@ -109,7 +109,8 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
-        
+        NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+
     }
     
     override func initialize() {
@@ -219,12 +220,14 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         let rows = data.rows[indexPath.section]
         if (rows.count > (indexPath.row * 2)){
             cell.headerLabel.text = rows[indexPath.row*2]
+            cell.headerLabel.numberOfLines = 0
             cell.headerLabel.font = UIFont(name: "Lato-Regular", size: 15.0)
             cell.headerLabel.font = cell.headerLabel.font.withSize(15.0)
             cell.headerLabel.textColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
         }
         if (rows.count > (indexPath.row * 2+1)){
             cell.secondLbl.text = rows[indexPath.row*2+1]
+            cell.secondLbl.textAlignment = .right
             cell.secondLbl.font = UIFont(name: "Lato-Regular", size: 15.0)
             cell.secondLbl.font = cell.headerLabel.font.withSize(15.0)
             

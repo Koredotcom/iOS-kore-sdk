@@ -200,10 +200,11 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             
             cell.textLabel?.text = option.title
+            cell.textLabel?.numberOfLines = 0
             cell.textLabel?.textAlignment = .center
             cell.textLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
             let bgColor =  UserDefaults.standard.value(forKey: "ThemeColor") as? String
-            cell.textLabel?.textColor = UIColor.init(hexString: bgColor!) //"#149C3F"
+            cell.textLabel?.textColor = UIColor.init(hexString: bgColor!)
             if #available(iOS 8.2, *) {
                 cell.textLabel?.font = UIFont.textFont(ofSize: 15.0, weight: .medium)
             } else {
@@ -294,7 +295,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
         var height: CGFloat = 0.0
         for option in options  {
             if(option.optionType == KREOptionType.button){
-                height += kMaxRowHeight
+                height = optionsTableView.contentSize.height
             }else if(option.optionType == KREOptionType.list){
                 let cell:KREListTableViewCell = self.tableView(optionsTableView, cellForRowAt: IndexPath(row: options.index(of: option)!, section: 0)) as! KREListTableViewCell
                 var fittingSize = UIView.layoutFittingCompressedSize

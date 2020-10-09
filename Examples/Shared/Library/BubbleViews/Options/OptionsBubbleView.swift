@@ -55,6 +55,7 @@ class OptionsBubbleView: BubbleView {
         self.optionsView.detailLinkAction = { [weak self] (text) in
             self?.linkAction?(text)
         }
+        NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
     }
     
     // MARK: populate components
