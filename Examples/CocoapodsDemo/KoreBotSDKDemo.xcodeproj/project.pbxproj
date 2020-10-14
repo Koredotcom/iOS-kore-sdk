@@ -11,6 +11,16 @@
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		1D9FA1702AE04EE1A8F6AF2C /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */; };
+		95FD1B7C2537046C00BC4BF1 /* LiveSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD1B7B2537046C00BC4BF1 /* LiveSearchView.swift */; };
+		95FD1B80253705C500BC4BF1 /* PopularLiveSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD1B7E253705C500BC4BF1 /* PopularLiveSearchCell.swift */; };
+		95FD1B81253705C500BC4BF1 /* PopularLiveSearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95FD1B7F253705C500BC4BF1 /* PopularLiveSearchCell.xib */; };
+		95FD1B83253726D500BC4BF1 /* LiveSearchItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD1B82253726D500BC4BF1 /* LiveSearchItems.swift */; };
+		95FD1B8625373DF100BC4BF1 /* LiveSearchFaqTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD1B8425373DF100BC4BF1 /* LiveSearchFaqTableViewCell.swift */; };
+		95FD1B8725373DF100BC4BF1 /* LiveSearchFaqTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95FD1B8525373DF100BC4BF1 /* LiveSearchFaqTableViewCell.xib */; };
+		95FD1B8A25373E0700BC4BF1 /* LiveSearchPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD1B8825373E0700BC4BF1 /* LiveSearchPageTableViewCell.swift */; };
+		95FD1B8B25373E0700BC4BF1 /* LiveSearchPageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95FD1B8925373E0700BC4BF1 /* LiveSearchPageTableViewCell.xib */; };
+		95FD1B8E25373E1B00BC4BF1 /* LiveSearchTaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD1B8C25373E1B00BC4BF1 /* LiveSearchTaskTableViewCell.swift */; };
+		95FD1B8F25373E1B00BC4BF1 /* LiveSearchTaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95FD1B8D25373E1B00BC4BF1 /* LiveSearchTaskTableViewCell.xib */; };
 		CD445135250B7C4700879219 /* ListWidgetBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445134250B7C4700879219 /* ListWidgetBubbleView.swift */; };
 		CD445138250B7C5400879219 /* ListWidgetDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445136250B7C5300879219 /* ListWidgetDetailsViewController.swift */; };
 		CD445139250B7C5400879219 /* ListWidgetDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD445137250B7C5300879219 /* ListWidgetDetailsViewController.xib */; };
@@ -151,6 +161,16 @@
 		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		95FD1B7B2537046C00BC4BF1 /* LiveSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchView.swift; sourceTree = "<group>"; };
+		95FD1B7E253705C500BC4BF1 /* PopularLiveSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularLiveSearchCell.swift; sourceTree = "<group>"; };
+		95FD1B7F253705C500BC4BF1 /* PopularLiveSearchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PopularLiveSearchCell.xib; sourceTree = "<group>"; };
+		95FD1B82253726D500BC4BF1 /* LiveSearchItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchItems.swift; sourceTree = "<group>"; };
+		95FD1B8425373DF100BC4BF1 /* LiveSearchFaqTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchFaqTableViewCell.swift; sourceTree = "<group>"; };
+		95FD1B8525373DF100BC4BF1 /* LiveSearchFaqTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LiveSearchFaqTableViewCell.xib; sourceTree = "<group>"; };
+		95FD1B8825373E0700BC4BF1 /* LiveSearchPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchPageTableViewCell.swift; sourceTree = "<group>"; };
+		95FD1B8925373E0700BC4BF1 /* LiveSearchPageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LiveSearchPageTableViewCell.xib; sourceTree = "<group>"; };
+		95FD1B8C25373E1B00BC4BF1 /* LiveSearchTaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchTaskTableViewCell.swift; sourceTree = "<group>"; };
+		95FD1B8D25373E1B00BC4BF1 /* LiveSearchTaskTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LiveSearchTaskTableViewCell.xib; sourceTree = "<group>"; };
 		CD18E3E19876E3486C39D351 /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		CD445134250B7C4700879219 /* ListWidgetBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListWidgetBubbleView.swift; sourceTree = "<group>"; };
 		CD445136250B7C5300879219 /* ListWidgetDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListWidgetDetailsViewController.swift; sourceTree = "<group>"; };
@@ -320,6 +340,31 @@
 				5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		95FD1B7A2537039400BC4BF1 /* Live Search */ = {
+			isa = PBXGroup;
+			children = (
+				95FD1B7B2537046C00BC4BF1 /* LiveSearchView.swift */,
+				95FD1B82253726D500BC4BF1 /* LiveSearchItems.swift */,
+				95FD1B7D2537059300BC4BF1 /* LiveSearchCells */,
+			);
+			path = "Live Search";
+			sourceTree = "<group>";
+		};
+		95FD1B7D2537059300BC4BF1 /* LiveSearchCells */ = {
+			isa = PBXGroup;
+			children = (
+				95FD1B7E253705C500BC4BF1 /* PopularLiveSearchCell.swift */,
+				95FD1B7F253705C500BC4BF1 /* PopularLiveSearchCell.xib */,
+				95FD1B8425373DF100BC4BF1 /* LiveSearchFaqTableViewCell.swift */,
+				95FD1B8525373DF100BC4BF1 /* LiveSearchFaqTableViewCell.xib */,
+				95FD1B8825373E0700BC4BF1 /* LiveSearchPageTableViewCell.swift */,
+				95FD1B8925373E0700BC4BF1 /* LiveSearchPageTableViewCell.xib */,
+				95FD1B8C25373E1B00BC4BF1 /* LiveSearchTaskTableViewCell.swift */,
+				95FD1B8D25373E1B00BC4BF1 /* LiveSearchTaskTableViewCell.xib */,
+			);
+			path = LiveSearchCells;
 			sourceTree = "<group>";
 		};
 		A851461715333BEDEFC8310F /* Frameworks */ = {
@@ -523,6 +568,7 @@
 			children = (
 				D101F91024E163F700D47DB8 /* ChatMessagesViewController.swift */,
 				D101F91D24E163F700D47DB8 /* ChatMessagesViewController.xib */,
+				95FD1B7A2537039400BC4BF1 /* Live Search */,
 				CD445158250B9B3E00879219 /* DropDown */,
 				D101F91124E163F700D47DB8 /* PanelView */,
 			);
@@ -975,6 +1021,7 @@
 				D1F339022201D99A005BE5F1 /* AppLaunchViewController.xib in Resources */,
 				CDB86A0824C00CD000D1CCC7 /* TaskMenuTablViewCell.xib in Resources */,
 				D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */,
+				95FD1B81253705C500BC4BF1 /* PopularLiveSearchCell.xib in Resources */,
 				CD4BFFFC24D160CA008E08CE /* NotificationCustomView.xib in Resources */,
 				CD445153250B855F00879219 /* ratingselect_2.gif in Resources */,
 				D101F92A24E163F800D47DB8 /* ChatMessagesViewController.xib in Resources */,
@@ -983,11 +1030,14 @@
 				D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */,
 				D1F338E62201D99A005BE5F1 /* MultiImageBubbleView.xib in Resources */,
 				CD445164250B9B3E00879219 /* DropDownCell.xib in Resources */,
+				95FD1B8F25373E1B00BC4BF1 /* LiveSearchTaskTableViewCell.xib in Resources */,
+				95FD1B8725373DF100BC4BF1 /* LiveSearchFaqTableViewCell.xib in Resources */,
 				D1F338F82201D99A005BE5F1 /* TableTemplateViewController.xib in Resources */,
 				D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */,
 				D1F338E42201D99A005BE5F1 /* ImageComponentCollectionViewCell.xib in Resources */,
 				CD89236924C55BAC006F71DE /* CalenderViewController.xib in Resources */,
 				CD445141250B852100879219 /* FeedbackCell.xib in Resources */,
+				95FD1B8B25373E0700BC4BF1 /* LiveSearchPageTableViewCell.xib in Resources */,
 				CD445150250B855F00879219 /* ratingselect_4.gif in Resources */,
 				D1F338FB2201D99A005BE5F1 /* KRETypingCollectionViewCell.xib in Resources */,
 				CD445151250B855F00879219 /* ratingselect_5.gif in Resources */,
@@ -1080,6 +1130,8 @@
 				CD445169250B9B3E00879219 /* DropDownCell.swift in Sources */,
 				D1F338DF2201D99A005BE5F1 /* OptionsBubbleView.swift in Sources */,
 				D1F338CB2201D99A005BE5F1 /* KREContact+CoreDataProperties.swift in Sources */,
+				95FD1B8A25373E0700BC4BF1 /* LiveSearchPageTableViewCell.swift in Sources */,
+				95FD1B8E25373E1B00BC4BF1 /* LiveSearchTaskTableViewCell.swift in Sources */,
 				D1F338E92201D99A005BE5F1 /* MiniTableBubbleView.swift in Sources */,
 				D1F338E72201D99A005BE5F1 /* BubbleView.swift in Sources */,
 				CD89236D24C5614E006F71DE /* QuickRepliesData.swift in Sources */,
@@ -1143,11 +1195,13 @@
 				CD445138250B7C5400879219 /* ListWidgetDetailsViewController.swift in Sources */,
 				CD445144250B852100879219 /* iOSDevCenters+GIF.swift in Sources */,
 				D1F338E82201D99A005BE5F1 /* ResponsiveTableBubbleView.swift in Sources */,
+				95FD1B7C2537046C00BC4BF1 /* LiveSearchView.swift in Sources */,
 				CDB86A0C24C00CD000D1CCC7 /* TaskMenuTablViewCell.swift in Sources */,
 				D1F338D02201D99A005BE5F1 /* TSMarkdownParser.m in Sources */,
 				D1F338F22201D99A005BE5F1 /* MenuBubbleView.swift in Sources */,
 				D1F338DB2201D99A005BE5F1 /* NSMutableAttributedString+KREUtils.m in Sources */,
 				CDB86A0B24C00CD000D1CCC7 /* TaskMenuData.swift in Sources */,
+				95FD1B8625373DF100BC4BF1 /* LiveSearchFaqTableViewCell.swift in Sources */,
 				CD445157250B8A2F00879219 /* InLineFormBubbleView.swift in Sources */,
 				CD445167250B9B3E00879219 /* DPDUIView+Extension.swift in Sources */,
 				D1F338F72201D99A005BE5F1 /* TableTemplateViewController.swift in Sources */,
@@ -1165,8 +1219,10 @@
 				CDB869FF24C0093A00D1CCC7 /* NewListTableViewCell.swift in Sources */,
 				CD445165250B9B3E00879219 /* DPDKeyboardListener.swift in Sources */,
 				CD89236824C55BAC006F71DE /* CalenderViewController.swift in Sources */,
+				95FD1B83253726D500BC4BF1 /* LiveSearchItems.swift in Sources */,
 				D1F339012201D99A005BE5F1 /* AppLaunchViewController.swift in Sources */,
 				CD445135250B7C4700879219 /* ListWidgetBubbleView.swift in Sources */,
+				95FD1B80253705C500BC4BF1 /* PopularLiveSearchCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

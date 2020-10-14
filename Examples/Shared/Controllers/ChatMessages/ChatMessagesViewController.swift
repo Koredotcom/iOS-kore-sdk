@@ -40,6 +40,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var quickReplyView: KREQuickSelectView!
     var typingStatusView: KRETypingStatusView!
     var webViewController: SFSafariViewController!
+    var liveSearchView:  LiveSearchView!
     
     var taskMenuKeyBoard = true
     @IBOutlet weak var taskMenuContainerView: UIView!
@@ -68,6 +69,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                self.colorDropDown
            ]
        }()
+    @IBOutlet weak var liveSearchContainerView: UIView!
     
     public var maxPanelHeight: CGFloat {
         var maxHeight = UIScreen.main.bounds.height
@@ -116,6 +118,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         isSpeakingEnabled = true
         self.speechSynthesizer = AVSpeechSynthesizer()
         ConfigureDropDownView()
+        liveSearchViewConfigure()
+    }
+    
+    func liveSearchViewConfigure(){
+        liveSearchView = LiveSearchView()
+        liveSearchView?.translatesAutoresizingMaskIntoConstraints = false
+        liveSearchContainerView.addSubview(self.liveSearchView!)
+        
+        let views: [String: Any] = ["liveSearchView" : self.liveSearchView]
+        liveSearchContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[liveSearchView]|", options:[], metrics:nil, views: views))
+        liveSearchContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-50-[liveSearchView]|", options:[], metrics:nil, views: views))
     }
     
     override open func viewWillAppear(_ animated: Bool) {
@@ -140,7 +153,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         navigationController?.setNavigationBarHidden(false, animated: false)
         
         let font:UIFont? = UIFont(name: "Helvetica-Bold", size:17)
-        let attString:NSMutableAttributedString = NSMutableAttributedString(string: headerTitle, attributes: [.font:font!])
+        let attString:NSMutableAttributedString = NSMutableAttributedString(string: "", attributes: [.font:font!]) //headerTitle
         let titleLabel = UILabel()
         titleLabel.textColor = .white
         titleLabel.attributedText = attString
@@ -750,6 +763,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         NotificationCenter.default.addObserver(self, selector: #selector(startTypingStatusForBot), name: NSNotification.Name(rawValue: "StartTyping"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(stopTypingStatusForBot), name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(callingLiveSearchView(notification:)), name: NSNotification.Name(rawValue: "textViewDidChange"), object: nil)
     }
     
     func removeNotifications() {
@@ -771,6 +786,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StartTyping"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "textViewDidChange"), object: nil)
     }
     
     // MARK: notification handlers
@@ -917,6 +933,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         message.addComponent(textComponent)
         sendMessage(message, options: options)
+        
+        let dic = NSMutableDictionary()
+        dic.setObject(text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), forKey: "_id" as NSCopying)
+        dic.setObject(1, forKey: "count" as NSCopying)
+        recentSearchArray.add(dic)
     }
     
     func textMessageSent() {
@@ -1350,6 +1371,11 @@ extension ChatMessagesViewController: KABotClientDelegate {
       @objc func stopTypingStatusForBot(){
           self.typingStatusView?.timerFired(toRemoveTypingStatus: nil)
       }
+    
+    @objc func callingLiveSearchView(notification:Notification) {
+      let dataString: String = notification.object as! String
+         print("chatView: \(dataString)")
+    }
 }
 // MARK: - requests
 extension ChatMessagesViewController {

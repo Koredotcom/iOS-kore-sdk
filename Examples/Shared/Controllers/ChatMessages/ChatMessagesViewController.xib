@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,6 +15,7 @@
                 <outlet property="bottomConstraint" destination="l2o-ug-Hr8" id="NEt-NH-Siu"/>
                 <outlet property="composeBarContainerView" destination="8ru-91-Smj" id="E4u-Wx-GOf"/>
                 <outlet property="dropDownBtn" destination="owa-n2-Opo" id="vvw-gq-jcH"/>
+                <outlet property="liveSearchContainerView" destination="015-T1-HUy" id="bnD-e1-X9a"/>
                 <outlet property="panelCollectionViewContainerHeightConstraint" destination="bbD-GV-6RQ" id="dlM-Q3-kfv"/>
                 <outlet property="panelCollectionViewContainerView" destination="7Z6-mY-xVo" id="ima-u7-kX7"/>
                 <outlet property="quickSelectContainerHeightConstraint" destination="BeV-1h-Rw4" id="7Qw-Ne-Nm4"/>
@@ -51,6 +52,10 @@
                         <constraint firstAttribute="height" id="BeV-1h-Rw4"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="015-T1-HUy">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="522"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="8ru-91-Smj" userLabel="composeBarContainerView">
                     <rect key="frame" x="0.0" y="522" width="375" height="0.0"/>
                 </view>
@@ -81,6 +86,7 @@
                 <constraint firstItem="y23-6f-O9g" firstAttribute="top" secondItem="z3x-8O-A97" secondAttribute="bottom" id="8Kv-dg-OiJ"/>
                 <constraint firstItem="ni7-ts-YyA" firstAttribute="leading" secondItem="0uF-el-Vxb" secondAttribute="leading" id="AJJ-sB-XPe"/>
                 <constraint firstItem="y23-6f-O9g" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="E8u-iv-Arc"/>
+                <constraint firstItem="015-T1-HUy" firstAttribute="leading" secondItem="0uF-el-Vxb" secondAttribute="leading" id="FY4-Ou-cdW"/>
                 <constraint firstAttribute="trailing" secondItem="z3x-8O-A97" secondAttribute="trailing" id="Hls-Eo-Deb"/>
                 <constraint firstItem="h7Y-kP-4Xx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="JWO-aq-HcR"/>
                 <constraint firstItem="z3x-8O-A97" firstAttribute="top" secondItem="0uF-el-Vxb" secondAttribute="top" id="MkF-qb-FT5"/>
@@ -88,11 +94,14 @@
                 <constraint firstAttribute="trailing" secondItem="Usv-h4-tDT" secondAttribute="trailing" id="TCv-Jw-LtC"/>
                 <constraint firstItem="7Z6-mY-xVo" firstAttribute="top" secondItem="h7Y-kP-4Xx" secondAttribute="bottom" id="Uuu-Vc-Kho"/>
                 <constraint firstItem="z3x-8O-A97" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Wld-We-VMY"/>
+                <constraint firstItem="015-T1-HUy" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" id="Xnu-VB-Uzp"/>
                 <constraint firstItem="h7Y-kP-4Xx" firstAttribute="top" secondItem="8ru-91-Smj" secondAttribute="bottom" id="Z1V-03-a8G"/>
                 <constraint firstItem="ni7-ts-YyA" firstAttribute="top" secondItem="owa-n2-Opo" secondAttribute="bottom" id="dd9-SZ-zC4"/>
                 <constraint firstItem="owa-n2-Opo" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" constant="-5" id="fdx-Y4-hzb"/>
                 <constraint firstItem="Usv-h4-tDT" firstAttribute="top" secondItem="ni7-ts-YyA" secondAttribute="bottom" id="g5Z-nH-9DT"/>
+                <constraint firstItem="8ru-91-Smj" firstAttribute="top" secondItem="015-T1-HUy" secondAttribute="bottom" id="hMU-gm-cI2"/>
                 <constraint firstItem="0uF-el-Vxb" firstAttribute="bottom" secondItem="7Z6-mY-xVo" secondAttribute="bottom" id="l2o-ug-Hr8"/>
+                <constraint firstItem="015-T1-HUy" firstAttribute="top" secondItem="owa-n2-Opo" secondAttribute="bottom" id="nTp-sS-S3T"/>
                 <constraint firstItem="0uF-el-Vxb" firstAttribute="bottom" secondItem="Usv-h4-tDT" secondAttribute="bottom" constant="1" id="shv-iF-pyx"/>
                 <constraint firstAttribute="trailing" secondItem="8ru-91-Smj" secondAttribute="trailing" id="v3q-WG-SDd"/>
                 <constraint firstItem="7Z6-mY-xVo" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" id="vSP-nQ-NDk"/>

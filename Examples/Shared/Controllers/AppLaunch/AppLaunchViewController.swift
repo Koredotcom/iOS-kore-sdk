@@ -330,27 +330,33 @@ extension AppLaunchViewController{
     }
     
     func getThemeColorApi(){
-        let url = URL(string: "https://demo.kore.ai/bankingsolution-config/ws.ph")!
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            guard let unwrappedData = data else { return }
-            do {
-                let str = try (JSONSerialization.jsonObject(with: unwrappedData, options: []) as? [String: AnyObject])!
-                print(str)
-                themeColor = UIColor.init(hexString: str["header_color"] as? String ?? "#149C3F")
-                UserDefaults.standard.set(str["header_color"] ?? "#149C3F", forKey: themeColorUserDefaults)
-                headerTitle = str["header_title"] as? String ?? SDKConfiguration.widgetConfig.chatBotName
-                backgroudImage = str["back_img"] as? String ?? ""
-                leftImage = str["top_left_icon"] as? String ?? ""
-            } catch {
-                print("json error: \(error)")
-                themeColor = UIColor.init(hexString: "#2881DF")
-                UserDefaults.standard.set("#2881DF", forKey: themeColorUserDefaults)
-                headerTitle = SDKConfiguration.botConfig.chatBotName
-                backgroudImage =  ""
-                leftImage =  ""
-            }
-        }
-        task.resume()
+//        let url = URL(string: "https://demo.kore.ai/bankingsolution-config/ws.ph")!
+//        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+//            guard let unwrappedData = data else { return }
+//            do {
+//                let str = try (JSONSerialization.jsonObject(with: unwrappedData, options: []) as? [String: AnyObject])!
+//                print(str)
+//                themeColor = UIColor.init(hexString: str["header_color"] as? String ?? "#149C3F")
+//                UserDefaults.standard.set(str["header_color"] ?? "#149C3F", forKey: themeColorUserDefaults)
+//                headerTitle = str["header_title"] as? String ?? SDKConfiguration.widgetConfig.chatBotName
+//                backgroudImage = str["back_img"] as? String ?? ""
+//                leftImage = str["top_left_icon"] as? String ?? ""
+//            } catch {
+//                print("json error: \(error)")
+//                themeColor = UIColor.init(hexString: "#2881DF")
+//                UserDefaults.standard.set("#2881DF", forKey: themeColorUserDefaults)
+//                headerTitle = SDKConfiguration.botConfig.chatBotName
+//                backgroudImage =  ""
+//                leftImage =  ""
+//            }
+//        }
+//        task.resume()
+        
+        themeColor = UIColor.init(hexString: "#2881DF")
+        UserDefaults.standard.set("#2881DF", forKey: themeColorUserDefaults)
+        headerTitle = SDKConfiguration.botConfig.chatBotName
+        backgroudImage =  ""
+        leftImage =  ""
     }
 }
 

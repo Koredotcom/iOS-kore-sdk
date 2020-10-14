@@ -196,6 +196,7 @@ class ComposeBarView: UIView {
             self.sendButton.isHidden = !hasText
             self.speechToTextButton.isHidden = hasText
             self.menuButton.isHidden = false
+            NotificationCenter.default.post(name: Notification.Name("textViewDidChange"), object: growingTextView.textView.text)
         }else{
             self.sendButton.isHidden = true
             self.speechToTextButton.isHidden = true
