@@ -167,8 +167,6 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         if textSize.height < self.titleLbl.font.pointSize {
             textSize.height = self.titleLbl.font.pointSize
         }
-        //self.collectionView.contentSize.height
-        //print(self.collectionView.contentSize.height)
         let collectionviewHeight = self.collectionView.contentSize.height == 0.0 ? 225 : self.collectionView.contentSize.height
         return CGSize(width: 0.0, height: textSize.height+45+collectionviewHeight)
         
