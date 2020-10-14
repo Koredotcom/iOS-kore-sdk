@@ -235,7 +235,8 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
         let elements = arrayOfComponents[indexPath.row]
         if elements.action?.type != nil {
             if elements.action?.type == "postback"{
-                self.optionsAction(elements.action?.title,elements.action?.payload ?? elements.action?.title)
+                let payload = elements.action?.payload == "" || elements.action?.payload == nil ? elements.action?.title : elements.action?.payload
+                self.optionsAction(elements.action?.title, payload)
             }else{
                 if elements.action?.fallback_url != nil {
                     self.linkAction(elements.action?.fallback_url)

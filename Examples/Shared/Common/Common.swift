@@ -25,7 +25,7 @@ var themeColorUserDefaults = "ThemeColor"
 let userColor: UIColor = UIColor(red: 38 / 255.0, green: 52 / 255.0, blue: 74 / 255.0, alpha: 1)
 let botColor: UIColor = UIColor(red: 237 / 255.0, green: 238 / 255.0, blue: 241 / 255.0, alpha: 1)
 
-var themeColor: UIColor = UIColor.init(hexString: "#149C3F") 
+var themeColor: UIColor = UIColor.init(hexString: "#2881DF")  // 149C3F
 var headerTitle = ""
 var backgroudImage = ""
 var leftImage = ""

@@ -172,7 +172,7 @@ open class KABotClient: NSObject {
         botClient.connectionDidOpen = { [weak self] () in
             self?.isConnected = true
             self?.isConnecting = false
-            self?.sendMessage("Welpro", options: nil) //kk
+            //self?.sendMessage("Welpro", options: nil) //kk
             NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
         }
         
