@@ -109,6 +109,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         let subView: [String: UIView] = ["titleLbl": titleLbl]
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
+        //NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
     }
     
     func intializeCardLayout(){
@@ -167,7 +168,9 @@ class QuickReplyWelcomeBubbleView: BubbleView {
             textSize.height = self.titleLbl.font.pointSize
         }
         //self.collectionView.contentSize.height
-        return CGSize(width: 0.0, height: textSize.height+40+225)
+        //print(self.collectionView.contentSize.height)
+        let collectionviewHeight = self.collectionView.contentSize.height == 0.0 ? 225 : self.collectionView.contentSize.height
+        return CGSize(width: 0.0, height: textSize.height+45+collectionviewHeight)
         
     }
     
@@ -231,11 +234,11 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         }
         
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-            return 20.0
+            return 10.0
         }
         
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-            return 20.0
+            return 10.0
         }
         
     }

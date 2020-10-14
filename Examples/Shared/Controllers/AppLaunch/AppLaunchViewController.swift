@@ -330,7 +330,7 @@ extension AppLaunchViewController{
     }
     
     func getThemeColorApi(){
-        let url = URL(string: "https://demo.kore.ai/bankingsolution-config/ws.php")!
+        let url = URL(string: "https://demo.kore.ai/bankingsolution-config/ws.ph")!
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard let unwrappedData = data else { return }
             do {
@@ -343,6 +343,11 @@ extension AppLaunchViewController{
                 leftImage = str["top_left_icon"] as? String ?? ""
             } catch {
                 print("json error: \(error)")
+                themeColor = UIColor.init(hexString: "#2881DF")
+                UserDefaults.standard.set("#2881DF", forKey: themeColorUserDefaults)
+                headerTitle = SDKConfiguration.botConfig.chatBotName
+                backgroudImage =  ""
+                leftImage =  ""
             }
         }
         task.resume()

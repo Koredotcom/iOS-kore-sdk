@@ -128,42 +128,33 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if url != nil {
             data = try? Data(contentsOf: url!)
         }
-        var image = UIImage(named: "back")
+        var image = UIImage(named: "cancel")
         if let imageData = data {
-             image = UIImage(data: imageData)
+            image = UIImage(data: imageData)
         }
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancel(_:)))
         
-        let button = UIButton(type: .custom)
-        //set image for button
-        button.setBackgroundImage(image, for: .normal)
-        //add function for button
-        button.addTarget(self, action: #selector(cancel(_:)), for: .touchUpInside)
-        //set frame
-        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        let barButton = UIBarButtonItem(customView: button)
-        NSLayoutConstraint.activate([(barButton.customView!.widthAnchor.constraint(equalToConstant: 30)),(barButton.customView!.heightAnchor.constraint(equalToConstant: 30))])
-        self.navigationItem.leftBarButtonItem = barButton
+//        let rightImage = UIImage(named: "more")
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(more(_:)))
         
-        let rightImage = UIImage(named: "more")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(more(_:)))
         navigationController?.setNavigationBarHidden(false, animated: false)
         
-        if SDKConfiguration.widgetConfig.isPanelView {
-            populatePanelItems()
-        }
-        
-      let font:UIFont? = UIFont(name: "Helvetica-Bold", size:20)
+        let font:UIFont? = UIFont(name: "Helvetica-Bold", size:17)
         let attString:NSMutableAttributedString = NSMutableAttributedString(string: headerTitle, attributes: [.font:font!])
         let titleLabel = UILabel()
         titleLabel.textColor = .white
         titleLabel.attributedText = attString
         self.navigationItem.titleView = titleLabel
-       
+        
         navigationController?.navigationBar.barTintColor = themeColor
         navigationController?.navigationBar.tintColor = UIColor.white
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         self.view.backgroundColor = UIColor.init(hexString: "#f3f3f5")
-       
+        
+        if SDKConfiguration.widgetConfig.isPanelView {
+            populatePanelItems()
+        }
+        
     }
     
     override open func viewDidAppear(_ animated: Bool) {

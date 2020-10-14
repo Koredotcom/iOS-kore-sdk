@@ -60,7 +60,7 @@ class CalenderBubbleView: BubbleView {
         self.tileBgv.layer.cornerRadius = 2.0
         self.tileBgv.clipsToBounds = true
         self.cardView.addSubview(self.tileBgv)
-        self.tileBgv.backgroundColor =  Common.UIColorRGB(0xEDEFF2)
+        self.tileBgv.backgroundColor =  .white//Common.UIColorRGB(0xEDEFF2)
         
 //        self.tableView = UITableView(frame: CGRect.zero,style:.grouped)
 //        self.tableView.translatesAutoresizingMaskIntoConstraints = false

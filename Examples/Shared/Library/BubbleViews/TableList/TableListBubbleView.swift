@@ -302,7 +302,7 @@ extension TableListBubbleView: UITableViewDelegate,UITableViewDataSource{
             showMoreButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
             showMoreButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
             view.addSubview(showMoreButton)
-            showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.right
+            showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
             showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
             if arrayOfButtons.count>0{
                 let btnTitle: String = arrayOfButtons[0].title!

@@ -18,6 +18,7 @@ class NewListTableViewCell: UITableViewCell {
     @IBOutlet weak var imageViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageViewHeightConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var valueLabelWidthConstraint: NSLayoutConstraint!
     override func awakeFromNib() {
         super.awakeFromNib()
         bgView.layer.cornerRadius = 10

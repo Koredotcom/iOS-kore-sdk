@@ -49,7 +49,7 @@ open class KREQuickSelectView: UIView {
         collectionView.dataSource = self
         collectionView.delegate = self
         addSubview(collectionView)
-        collectionView.semanticContentAttribute = .forceRightToLeft
+        collectionView.semanticContentAttribute = .forceLeftToRight
         return collectionView
     }()
     lazy var flowLayout: UICollectionViewFlowLayout = {

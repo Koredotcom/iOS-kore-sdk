@@ -214,6 +214,7 @@ class NotificationBubbleView: BubbleView {
                 self.arrayOfButtons = allItems.buttons ?? []
                 
                 if  self.arrayOfButtons.count>0 {
+                    self.headingLabel.text = allItems.heading ?? ""
                     self.underLineLbl.isHidden = true
                     self.collectionView.isHidden = false
                     self.notificationView.isHidden = true

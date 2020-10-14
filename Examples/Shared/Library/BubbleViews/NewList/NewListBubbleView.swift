@@ -222,6 +222,12 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
         }else{
              cell.bgView.layer.borderWidth = 1.5
         }
+        cell.valueLabelWidthConstraint.constant = 85
+        if elements.subtitle == nil{
+           cell.priceLbl.text = ""
+           cell.subTitleLabel.text = elements.value
+            cell.valueLabelWidthConstraint.constant = 0
+        }
         return cell
         
     }
@@ -251,7 +257,7 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
             showMoreButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
             showMoreButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
             view.addSubview(showMoreButton)
-            showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.right
+            showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
             showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
              var btnTitle: String?
             if self.isShowMore{
