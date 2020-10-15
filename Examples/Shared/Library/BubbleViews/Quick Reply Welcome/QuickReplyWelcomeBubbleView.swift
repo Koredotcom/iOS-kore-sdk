@@ -109,7 +109,6 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         let subView: [String: UIView] = ["titleLbl": titleLbl]
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
-        //NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
     }
     
     func intializeCardLayout(){

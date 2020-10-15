@@ -313,6 +313,9 @@ open class KABotClient: NSObject {
         else if (templateType == "form_template") {
             return .inlineForm
         }
+        else if (templateType == "search") {
+            return .search
+        }
         return .text
     }
     
@@ -584,6 +587,47 @@ open class KABotClient: NSObject {
                                         "userId": "8098c978-c372-4799-9a63-1368d12c4146",
                                         "streamId": "st-a4a4fabe-11d3-56cc-801d-894ddcd26c51",
                                         "lang": "en"]
+        
+        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
+            if let dictionary = responseObject as? [String: Any]{
+                success?(dictionary)
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                failure?(error)
+            }
+        }) { (sessionDataTask, error) in
+            failure?(error)
+        }
+        
+    }
+    //{"query":"pay bill","maxNumOfResults":16,"userId":"7030eb2f-3cfd-4bb3-8e32-7667f2eec9c6","streamId":"st-a4a4fabe-11d3-56cc-801d-894ddcd26c51","lang":"en","smallTalk":true}
+    
+    func getSearchResults(_ text: String!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+        
+        // Session Configuration
+        let configuration = URLSessionConfiguration.default
+        
+        //Manager
+        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
+        
+        // NOTE: You must set your URL to generate JWT.
+        let urlString: String = "\(FindlyUrl)searchAssistant/search/sidx-f3a43e5f-74b6-5632-a488-8af83c480b88"
+        let requestSerializer = AFJSONRequestSerializer()
+        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
+        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+        
+        let authorizationStr = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.wrUCyDpNEwAaf4aU5Jf2-0ajbiwmTU3Yf7ST8yFJdqM"
+        requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
+        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        
+        let parameters: NSDictionary = ["query": text as Any,
+                                        "maxNumOfResults": 16,
+                                        "userId": "8098c978-c372-4799-9a63-1368d12c4146",
+                                        "streamId": "st-a4a4fabe-11d3-56cc-801d-894ddcd26c51",
+                                        "lang": "en",
+                                        "smallTalk":true]
         
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
         sessionManager?.requestSerializer = requestSerializer

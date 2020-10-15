@@ -13,7 +13,7 @@ import KoreBotSDK
 import CoreData
 import Mantle
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, LiveSearchViewDelegate, LiveSearchDetailsViewDelegate {
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, LiveSearchViewDelegate, LiveSearchDetailsViewDelegate, UIGestureRecognizerDelegate {
     // MARK: properties
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
@@ -85,6 +85,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         maxHeight -= self.isShowAudioComposeView == true ? self.audioComposeView.bounds.height : self.composeView.bounds.height
         return maxHeight-panelCollectionViewContainerView.bounds.height - insets.bottom
     }
+    var kaBotClient = KABotClient()
     
     // MARK: init
     init(thread: KREThread?) {
@@ -115,7 +116,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             panelCollectionViewContainerHeightConstraint.constant = 0
         }
 
-        isSpeakingEnabled = true
+        isSpeakingEnabled = false //kk true
         self.speechSynthesizer = AVSpeechSynthesizer()
         ConfigureDropDownView()
         liveSearchViewConfigure()
@@ -130,7 +131,21 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let views: [String: Any] = ["liveSearchView" : self.liveSearchView]
         liveSearchContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[liveSearchView]|", options:[], metrics:nil, views: views))
         liveSearchContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-50-[liveSearchView]|", options:[], metrics:nil, views: views))
+        
+        self.tapToDismissGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(ChatMessagesViewController.dismissKeyboard(_:)))
+        self.tapToDismissGestureRecognizer.delegate = self
+        self.liveSearchContainerView.addGestureRecognizer(tapToDismissGestureRecognizer)
     }
+    func addTextToTextView(text: String) {
+        self.composeView.setText(text)
+    }
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view?.isDescendant(of: self.liveSearchView.tableView) == true {
+            return false
+        }
+        return true
+    }
+    
     
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -530,6 +545,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         else if (templateType == "form_template") {
             return .inlineForm
         }
+        else if (templateType == "search") {
+            return .search
+        }
         return .text
     }
     
@@ -797,6 +815,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     // MARK: notification handlers
     @objc func keyboardWillShow(_ notification: Notification) {
+        self.liveSearchContainerView.isHidden = false
         let keyboardUserInfo: NSDictionary = NSDictionary(dictionary: (notification as NSNotification).userInfo!)
         let keyboardFrameEnd: CGRect = ((keyboardUserInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue?)!.cgRectValue)
         let options = UIView.AnimationOptions(rawValue: UInt((keyboardUserInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
@@ -819,6 +838,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {
+        self.liveSearchContainerView.isHidden = true
         let keyboardUserInfo: NSDictionary = NSDictionary(dictionary: (notification as NSNotification).userInfo!)
         let durationValue = keyboardUserInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber
         let duration = durationValue.doubleValue
@@ -906,6 +926,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @objc func dismissKeyboard(_ gesture: UITapGestureRecognizer) {
+        self.liveSearchContainerView.isHidden = true
         self.bottomConstraint.constant = 0
         self.taskMenuContainerHeightConstant.constant = 0
         if (self.composeView.isFirstResponder) {
@@ -922,13 +943,42 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
             dataStoreManager.createNewMessageIn(thread: self.thread, message: composedMessage, completion: { (success) in
                 let textComponent = composedMessage.components[0] as? Component
+//                if let _ = self.botClient, let text = textComponent?.payload {
+//                    self.botClient.sendMessage(text, options: options)
+//                }
                 if let _ = self.botClient, let text = textComponent?.payload {
-                    self.botClient.sendMessage(text, options: options)
+                    self.liveSearchContainerView.isHidden = true
+                    self.kaBotClient.getSearchResults(text ,success: { [weak self] (dictionary) in
+                        print(dictionary)
+                        self?.receviceMessage(dictionary: dictionary)
+                    
+                    }, failure: { (error) in
+                            print(error)
+                    })
                 }
+                
                 self.textMessageSent()
             })
         }
     }
+    
+    func receviceMessage(dictionary:[String: Any]){
+        let message: Message = Message()
+        message.messageType = .reply
+        message.sentDate = Date()
+        message.messageId = UUID().uuidString
+        let textComponent: Component = Component()
+        let templateType = dictionary["templateType"] as? String ?? ""
+         let componentType = getComponentType(templateType, "responsive")
+        textComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+        message.addComponent(textComponent)
+       let optionsComponent: Component = Component(componentType)
+           optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+           message.addComponent(optionsComponent)
+        addMessages(message, "")
+        NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+    }
+    
     
     func sendTextMessage(_ text: String, dictionary: [String: Any]? = nil, options: [String: Any]?) {
         let message: Message = Message()
@@ -1390,6 +1440,11 @@ extension ChatMessagesViewController: KABotClientDelegate {
     @objc func callingLiveSearchView(notification:Notification) {
       let dataString: String = notification.object as! String
          print("chatView: \(dataString)")
+        if liveSearchContainerView.isHidden{
+            if dataString != ""{
+                liveSearchContainerView.isHidden = false
+            }
+        }
     }
 }
 // MARK: - requests

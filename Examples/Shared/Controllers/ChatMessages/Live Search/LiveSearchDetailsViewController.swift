@@ -64,8 +64,8 @@ class LiveSearchDetailsViewController: UIViewController {
         subView.layer.masksToBounds = false
         //subView?.layer.shadowColor = UIColor.lightGray.cgColor
         subView?.layer.shadowOffset =  CGSize.zero
-        subView?.layer.shadowOpacity = 0.5
-        subView?.layer.shadowRadius = 4
+        //subView?.layer.shadowOpacity = 0.5
+        subView?.layer.shadowRadius = 10
         
         // Do any additional setup after loading the view.
         tableview.register(UINib(nibName: liveSearchFaqCellIdentifier, bundle: nil), forCellReuseIdentifier: liveSearchFaqCellIdentifier)
@@ -81,38 +81,74 @@ class LiveSearchDetailsViewController: UIViewController {
     func getData(){
         let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: dataString!) as! NSDictionary
         let jsonDecoder = JSONDecoder()
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObject as Any , options: .prettyPrinted),
-            let allItems = try? jsonDecoder.decode(LiveSearchItems.self, from: jsonData) else {
-                return
-        }
-        self.arrayOfResults = allItems.template?.results ?? []
-        self.headerArray = []
-        self.expandArray = []
-        let faqs = self.arrayOfResults.filter({ $0.contentType == "faq" })
-        self.arrayOfFaqResults = faqs 
-        if self.arrayOfFaqResults.count > 0 {
-            self.headerArray.append("MATCHED FAQS")
-        }
-        for _ in 0..<self.arrayOfFaqResults.count{
-            self.expandArray.add("close")
-        }
         
-        let pages = self.arrayOfResults.filter({ $0.contentType == "page" })
-        self.arrayOfPageResults = pages 
-        if self.arrayOfPageResults.count > 0 {
-            self.headerArray.append("MATCHED PAGES")
+        if jsonObject["templateType"] as! String == "search"{
+            guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObject as Any , options: .prettyPrinted),
+                let allItems = try? jsonDecoder.decode(LiveSearchChatItems.self, from: jsonData) else {
+                    return
+            }
+            self.headerArray = []
+            self.expandArray = []
+            let faqs = allItems.template?.results?.faq
+            self.arrayOfFaqResults = faqs ?? []
+            if self.arrayOfFaqResults.count > 0 {
+                self.headerArray.append("MATCHED FAQS")
+            }
+            for _ in 0..<self.arrayOfFaqResults.count{
+                self.expandArray.add("close")
+            }
+            
+            let pages = allItems.template?.results?.page
+            self.arrayOfPageResults = pages ?? []
+            if self.arrayOfPageResults.count > 0 {
+                self.headerArray.append("MATCHED PAGES")
+            }
+            let task = allItems.template?.results?.task
+            self.arrayOfTaskResults = task ?? []
+            if self.arrayOfTaskResults.count > 0 {
+                self.headerArray.append("MATCHED TASKS")
+            }
+            
+            arrayOfCollectionViewCount = []
+            arrayOfCollectionViewCount.add(allItems.template?.facets?.all_results as Any)
+            arrayOfCollectionViewCount.add(allItems.template?.facets?.faq as Any)
+            arrayOfCollectionViewCount.add(allItems.template?.facets?.page as Any)
+            arrayOfCollectionViewCount.add(allItems.template?.facets?.task as Any)
+            
+        }else{
+            guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObject as Any , options: .prettyPrinted),
+                let allItems = try? jsonDecoder.decode(LiveSearchItems.self, from: jsonData) else {
+                    return
+            }
+            self.arrayOfResults = allItems.template?.results ?? []
+            self.headerArray = []
+            self.expandArray = []
+            let faqs = self.arrayOfResults.filter({ $0.contentType == "faq" })
+            self.arrayOfFaqResults = faqs
+            if self.arrayOfFaqResults.count > 0 {
+                self.headerArray.append("MATCHED FAQS")
+            }
+            for _ in 0..<self.arrayOfFaqResults.count{
+                self.expandArray.add("close")
+            }
+            
+            let pages = self.arrayOfResults.filter({ $0.contentType == "page" })
+            self.arrayOfPageResults = pages
+            if self.arrayOfPageResults.count > 0 {
+                self.headerArray.append("MATCHED PAGES")
+            }
+            let task = self.arrayOfResults.filter({ $0.contentType == "task" })
+            self.arrayOfTaskResults = task
+            if self.arrayOfTaskResults.count > 0 {
+                self.headerArray.append("MATCHED ACTIONS")
+            }
+            
+            arrayOfCollectionViewCount = []
+            arrayOfCollectionViewCount.add(allItems.template?.facets?.all_results as Any)
+            arrayOfCollectionViewCount.add(allItems.template?.facets?.faq as Any)
+            arrayOfCollectionViewCount.add(allItems.template?.facets?.page as Any)
+            arrayOfCollectionViewCount.add(allItems.template?.facets?.task as Any)
         }
-        let task = self.arrayOfResults.filter({ $0.contentType == "task" })
-        self.arrayOfTaskResults = task 
-        if self.arrayOfTaskResults.count > 0 {
-            self.headerArray.append("MATCHED ACTIONS")
-        }
-        
-        arrayOfCollectionViewCount = []
-        arrayOfCollectionViewCount.add(allItems.template?.facets?.all_results as Any)
-        arrayOfCollectionViewCount.add(allItems.template?.facets?.faq as Any)
-        arrayOfCollectionViewCount.add(allItems.template?.facets?.page as Any)
-        arrayOfCollectionViewCount.add(allItems.template?.facets?.task as Any)
         self.tableview.reloadData()
     }
     /*

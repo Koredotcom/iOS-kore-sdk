@@ -15,6 +15,8 @@
 		955286E22537FA5F00D235B5 /* LiveSearchDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 955286E02537FA5F00D235B5 /* LiveSearchDetailsViewController.xib */; };
 		955286E52538085900D235B5 /* LiveSearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955286E32538085900D235B5 /* LiveSearchCollectionViewCell.swift */; };
 		955286E62538085900D235B5 /* LiveSearchCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 955286E42538085900D235B5 /* LiveSearchCollectionViewCell.xib */; };
+		955286E82538589700D235B5 /* LiveSearchChatItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955286E72538589700D235B5 /* LiveSearchChatItems.swift */; };
+		955286EA25385E7F00D235B5 /* LiveSearchBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955286E925385E7F00D235B5 /* LiveSearchBubbleView.swift */; };
 		95FD1B7C2537046C00BC4BF1 /* LiveSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD1B7B2537046C00BC4BF1 /* LiveSearchView.swift */; };
 		95FD1B80253705C500BC4BF1 /* PopularLiveSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD1B7E253705C500BC4BF1 /* PopularLiveSearchCell.swift */; };
 		95FD1B81253705C500BC4BF1 /* PopularLiveSearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95FD1B7F253705C500BC4BF1 /* PopularLiveSearchCell.xib */; };
@@ -169,6 +171,8 @@
 		955286E02537FA5F00D235B5 /* LiveSearchDetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LiveSearchDetailsViewController.xib; sourceTree = "<group>"; };
 		955286E32538085900D235B5 /* LiveSearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchCollectionViewCell.swift; sourceTree = "<group>"; };
 		955286E42538085900D235B5 /* LiveSearchCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LiveSearchCollectionViewCell.xib; sourceTree = "<group>"; };
+		955286E72538589700D235B5 /* LiveSearchChatItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchChatItems.swift; sourceTree = "<group>"; };
+		955286E925385E7F00D235B5 /* LiveSearchBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchBubbleView.swift; sourceTree = "<group>"; };
 		95FD1B7B2537046C00BC4BF1 /* LiveSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchView.swift; sourceTree = "<group>"; };
 		95FD1B7E253705C500BC4BF1 /* PopularLiveSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularLiveSearchCell.swift; sourceTree = "<group>"; };
 		95FD1B7F253705C500BC4BF1 /* PopularLiveSearchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PopularLiveSearchCell.xib; sourceTree = "<group>"; };
@@ -357,7 +361,9 @@
 				955286DF2537FA5F00D235B5 /* LiveSearchDetailsViewController.swift */,
 				955286E02537FA5F00D235B5 /* LiveSearchDetailsViewController.xib */,
 				95FD1B82253726D500BC4BF1 /* LiveSearchItems.swift */,
+				955286E72538589700D235B5 /* LiveSearchChatItems.swift */,
 				95FD1B7D2537059300BC4BF1 /* LiveSearchCells */,
+				955286E925385E7F00D235B5 /* LiveSearchBubbleView.swift */,
 			);
 			path = "Live Search";
 			sourceTree = "<group>";
@@ -1134,6 +1140,7 @@
 				D1F338C82201D99A005BE5F1 /* DataModel.xcdatamodeld in Sources */,
 				D1F338C52201D99A005BE5F1 /* Common.swift in Sources */,
 				CDB869FB24C0093A00D1CCC7 /* NewListData.swift in Sources */,
+				955286E82538589700D235B5 /* LiveSearchChatItems.swift in Sources */,
 				CD89236E24C5614E006F71DE /* QuickReplyWelcomeBubbleView.swift in Sources */,
 				D1F338DC2201D99A005BE5F1 /* KRELayoutManager.m in Sources */,
 				D1F338E12201D99A005BE5F1 /* BalloonMarker.swift in Sources */,
@@ -1178,6 +1185,7 @@
 				D101F92424E163F800D47DB8 /* ApplicationManager.swift in Sources */,
 				D101F92624E163F800D47DB8 /* KAPanelItemViewController.swift in Sources */,
 				D1F339002201D99A005BE5F1 /* MessageBubbleCell.swift in Sources */,
+				955286EA25385E7F00D235B5 /* LiveSearchBubbleView.swift in Sources */,
 				CD4BFFF924D16091008E08CE /* NotificationBubbleView.swift in Sources */,
 				D1F338FD2201D99A005BE5F1 /* KRETypingCollectionViewCell.m in Sources */,
 				D1F338CA2201D99A005BE5F1 /* KREMessage+CoreDataClass.swift in Sources */,

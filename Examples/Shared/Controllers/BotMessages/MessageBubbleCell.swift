@@ -472,3 +472,17 @@ class InLineFormCell : MessageBubbleCell {
         }
     }
 }
+
+class SearchCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .search
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 20
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
+

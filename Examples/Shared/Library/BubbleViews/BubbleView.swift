@@ -117,6 +117,9 @@ class BubbleView: UIView {
         case .inlineForm:
             bubbleView = InLineFormBubbleView()
             break
+        case .search:
+            bubbleView = LiveSearchBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         

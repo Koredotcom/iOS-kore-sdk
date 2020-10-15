@@ -10,6 +10,7 @@ import UIKit
 protocol LiveSearchViewDelegate {
     func optionsButtonTapNewAction(text:String, payload:String)
     func linkButtonTapAction(urlString:String)
+    func addTextToTextView(text:String)
 }
 
 class LiveSearchView: UIView {
@@ -92,11 +93,13 @@ class LiveSearchView: UIView {
     
     func callingPopularSearchApi(){
         kaBotClient.getPopularSearchResults(success: { [weak self] (arrayOfResults) in
-            print(arrayOfResults)
             self?.popularSearchArray = arrayOfResults.mutableCopy() as! NSMutableArray
             self?.isPopularSearch = true
             self?.headerArray = ["POPULAR SEARCHS","RECENT SEARCHS"]
-            self!.tableView.reloadData()
+            DispatchQueue.main.async {
+                self!.tableView.reloadData()
+            }
+           
         }, failure: { (error) in
                 print(error)
         })
@@ -104,13 +107,10 @@ class LiveSearchView: UIView {
     
     func callingLiveSearchApi(searchText: String){
         kaBotClient.getLiveSearchResults(searchText ,success: { [weak self] (dictionary) in
-            print(dictionary)
-            
             if let theJSONData = try?  JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted
                 ),
                 let theJSONText = String(data: theJSONData, encoding: String.Encoding.ascii) {
                 self?.liveSearchJsonString = theJSONText
-                    print("JSON string = \n\(theJSONText)")
               }
             
             let jsonDecoder = JSONDecoder()
@@ -141,7 +141,9 @@ class LiveSearchView: UIView {
                 self!.headerArray.append("SUGGESTED TASKS")
             }
             self?.isPopularSearch = false
-            self!.tableView.reloadData()
+            DispatchQueue.main.async {
+                self!.tableView.reloadData()
+            }
         }, failure: { (error) in
                 print(error)
         })
@@ -289,8 +291,10 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
         
         let headerName = headerArray[indexPath.section]
         switch headerName {
+       case "POPULAR SEARCHS":
+        self.viewDelegate?.addTextToTextView(text: ((popularSearchArray.object(at: indexPath.row) as AnyObject).object(forKey: "_id") as! String))
         case "RECENT SEARCHS":
-            break
+            self.viewDelegate?.addTextToTextView(text: ((recentSearchArray.object(at: indexPath.row) as AnyObject).object(forKey: "_id") as! String))
         case "SUGGESTED FAQS":
             if expandArray[indexPath.row] as! String == "close" {
                 expandArray.replaceObject(at: indexPath.row, with: "open")

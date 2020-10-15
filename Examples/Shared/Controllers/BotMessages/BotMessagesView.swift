@@ -86,6 +86,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(ListWidgetBubbleCell.self, forCellReuseIdentifier:"ListWidgetBubbleCell")
         self.tableView.register(FeedbackBubbleCell.self, forCellReuseIdentifier:"FeedbackBubbleCell")
         self.tableView.register(InLineFormCell.self, forCellReuseIdentifier:"InLineFormCell")
+        self.tableView.register(SearchCell.self, forCellReuseIdentifier:"SearchCell")
 
 
     }
@@ -196,6 +197,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 break
             case .inlineForm:
                 cellIdentifier = "InLineFormCell"
+                break
+            case .search:
+                cellIdentifier = "SearchCell"
                 break
             }
             
@@ -364,6 +368,16 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             bubbleView.inlineTextField.tag = indexPath.row
             bubbleView.optionsAction = {[weak self] (text, payload) in
                 self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+            }
+            cell.bubbleView.drawBorder = true
+            break
+        case .search:
+            let bubbleView: LiveSearchBubbleView = cell.bubbleView as! LiveSearchBubbleView
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+            }
+            bubbleView.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
             }
             cell.bubbleView.drawBorder = true
             break
