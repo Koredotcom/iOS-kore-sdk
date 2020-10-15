@@ -35,7 +35,7 @@ class TemplateElements: NSObject, Decodable {
     public var originalQuery: String?
     public var cleanQuery: String?
     
-    public var facets: String?
+    public var facets: TemplateFacets?
     public var results: [TemplateResultElements]?
     
     
@@ -56,7 +56,7 @@ class TemplateElements: NSObject, Decodable {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
         originalQuery = try? container.decode(String.self, forKey: .originalQuery)
         cleanQuery = try? container.decode(String.self, forKey: .cleanQuery)
-        facets = try? container.decode(String.self, forKey: .facets)
+        facets = try? container.decode(TemplateFacets.self, forKey: .facets)
         results = try? container.decode([TemplateResultElements].self, forKey: .results)
     }
 }
@@ -122,5 +122,32 @@ class TemplatePastBackPayload: NSObject, Decodable {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
         type = try? container.decode(String.self, forKey: .type)
         payload = try? container.decode(String.self, forKey: .payload)
+    }
+}
+
+class TemplateFacets: NSObject, Decodable {
+    public var all_results: Int?
+    public var faq: Int?
+    public var page: Int?
+    public var task: Int?
+    
+    enum ColorCodeKeys: String, CodingKey {
+        case all_results = "all results"
+        case faq = "faq"
+        case page = "page"
+        case task = "task"
+    }
+    
+    // MARK: - init
+    public override init() {
+        super.init()
+    }
+    
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: ColorCodeKeys.self)
+        all_results = try? container.decode(Int.self, forKey: .all_results)
+        faq = try? container.decode(Int.self, forKey: .faq)
+        page = try? container.decode(Int.self, forKey: .page)
+        task = try? container.decode(Int.self, forKey: .task)
     }
 }

@@ -7,6 +7,10 @@
 //
 
 import UIKit
+protocol LiveSearchViewDelegate {
+    func optionsButtonTapNewAction(text:String, payload:String)
+    func linkButtonTapAction(urlString:String)
+}
 
 class LiveSearchView: UIView {
     
@@ -23,8 +27,14 @@ class LiveSearchView: UIView {
     var arrayOfFaqResults = [TemplateResultElements]()
     var arrayOfPageResults = [TemplateResultElements]()
     var arrayOfTaskResults = [TemplateResultElements]()
-    
+    var expandArray:NSMutableArray = []
+    var viewDelegate: LiveSearchViewDelegate?
     var isPopularSearch = true
+    var liveSearchJsonString:String?
+    
+    let yourAttributes : [NSAttributedString.Key: Any] = [
+    NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Bold", size: 15.0) as Any,
+    NSAttributedString.Key.foregroundColor : themeColor]
     
     convenience init() {
         self.init(frame: CGRect.zero)
@@ -95,6 +105,14 @@ class LiveSearchView: UIView {
     func callingLiveSearchApi(searchText: String){
         kaBotClient.getLiveSearchResults(searchText ,success: { [weak self] (dictionary) in
             print(dictionary)
+            
+            if let theJSONData = try?  JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted
+                ),
+                let theJSONText = String(data: theJSONData, encoding: String.Encoding.ascii) {
+                self?.liveSearchJsonString = theJSONText
+                    print("JSON string = \n\(theJSONText)")
+              }
+            
             let jsonDecoder = JSONDecoder()
             guard let jsonData = try? JSONSerialization.data(withJSONObject: dictionary as Any , options: .prettyPrinted),
                 let allItems = try? jsonDecoder.decode(LiveSearchItems.self, from: jsonData) else {
@@ -102,11 +120,16 @@ class LiveSearchView: UIView {
                 }
             self?.arrayOfResults = allItems.template?.results ?? []
             self?.headerArray = []
+            self?.expandArray = []
             let faqs = self?.arrayOfResults.filter({ $0.contentType == "faq" })
             self?.arrayOfFaqResults = faqs ?? []
             if self!.arrayOfFaqResults.count > 0 {
                 self!.headerArray.append("SUGGESTED FAQS")
             }
+            for _ in 0..<self!.arrayOfFaqResults.count{
+                self!.expandArray.add("close")
+            }
+            
             let pages = self?.arrayOfResults.filter({ $0.contentType == "page" })
             self?.arrayOfPageResults = pages ?? []
             if self!.arrayOfPageResults.count > 0 {
@@ -137,10 +160,38 @@ class LiveSearchView: UIView {
 extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        if isPopularSearch{
+            return UITableView.automaticDimension
+        }else {
+            let headerName = headerArray[indexPath.section]
+            switch headerName {
+            case "SUGGESTED FAQS":
+                if expandArray[indexPath.row] as! String == "close"{
+                    return 120
+                }
+                return UITableView.automaticDimension
+            default:
+                break
+            }
+            return UITableView.automaticDimension
+        }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        if isPopularSearch{
+            return UITableView.automaticDimension
+        }else {
+            let headerName = headerArray[indexPath.section]
+            switch headerName {
+            case "SUGGESTED FAQS":
+                if  expandArray[indexPath.row] as! String == "close"{
+                    return 120
+                }
+                return UITableView.automaticDimension
+            default:
+                break
+            }
+            return UITableView.automaticDimension
+        }
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return headerArray.count
@@ -197,6 +248,8 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 let results = arrayOfFaqResults[indexPath.row]
                 cell.titleLabel?.text = results.question
                 cell.descriptionLabel?.text = results.answer
+                let buttonsHeight = expandArray[indexPath.row] as! String == "close" ? 0.0: 30.0
+                cell.likeAndDislikeButtonHeightConstrain.constant = CGFloat(buttonsHeight)
                 return cell
             case "SUGGESTED PAGES":
                 let cell : LiveSearchPageTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchPageCellIdentifier) as! LiveSearchPageTableViewCell
@@ -233,8 +286,25 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
         return UITableViewCell()
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if headerArray[indexPath.section] == "RECENT SEARCHS"{
-           
+        
+        let headerName = headerArray[indexPath.section]
+        switch headerName {
+        case "RECENT SEARCHS":
+            break
+        case "SUGGESTED FAQS":
+            if expandArray[indexPath.row] as! String == "close" {
+                expandArray.replaceObject(at: indexPath.row, with: "open")
+            }else{
+                expandArray.replaceObject(at: indexPath.row, with: "close")
+            }
+            tableView.reloadData()
+            break
+        case "SUGGESTED PAGES":
+            break
+        case "SUGGESTED TASKS":
+            break
+        default:
+            break
         }
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -249,10 +319,33 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
            headerLabel.textColor = .gray
            headerLabel.text =  headerArray[section]
            view.addSubview(headerLabel)
+        
+           let showMoreButton = UIButton(frame: CGRect.zero)
+            showMoreButton.backgroundColor = .clear
+            showMoreButton.translatesAutoresizingMaskIntoConstraints = false
+            showMoreButton.clipsToBounds = true
+            showMoreButton.layer.cornerRadius = 5
+            showMoreButton.setTitleColor(.blue, for: .normal)
+            showMoreButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
+            showMoreButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
+            view.addSubview(showMoreButton)
+            showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
+            showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
+           let attributeString = NSMutableAttributedString(string: "Show More",
+                                                            attributes: yourAttributes)
+            showMoreButton.setAttributedTitle(attributeString, for: .normal)
+        
+            if isPopularSearch {
+                showMoreButton.isHidden = true
+            }else{
+                let boolValue = section == 0 ? false : true
+                showMoreButton.isHidden = boolValue
+            }
            
-           let views: [String: UIView] = ["headerLabel": headerLabel]
-           view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[headerLabel]-0-|", options:[], metrics:nil, views:views))
-           view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[headerLabel]-5-|", options:[], metrics:nil, views:views))
+           let views: [String: UIView] = ["headerLabel": headerLabel, "showMoreButton": showMoreButton]
+           view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[headerLabel]-5-[showMoreButton(100)]-10-|", options:[], metrics:nil, views:views))
+           view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[headerLabel]-5-|", options:[], metrics:nil, views:views))
+           view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[showMoreButton]-5-|", options:[], metrics:nil, views:views))
            
            return view
        }
@@ -265,7 +358,14 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
         tableView.reloadData()
     }
     @objc fileprivate func shareButtonAction(_ sender: AnyObject!) {
-        
+        let results = arrayOfPageResults[sender.tag]
+        if results.url != nil {
+            viewDelegate?.linkButtonTapAction(urlString: results.url!)
+        }
+    }
+    
+    @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
+         NotificationCenter.default.post(name: Notification.Name(showLiveSearchTemplateNotification), object: liveSearchJsonString)
     }
 }
 

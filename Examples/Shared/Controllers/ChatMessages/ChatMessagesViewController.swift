@@ -13,7 +13,7 @@ import KoreBotSDK
 import CoreData
 import Mantle
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate {
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, LiveSearchViewDelegate, LiveSearchDetailsViewDelegate {
     // MARK: properties
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
@@ -123,6 +123,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func liveSearchViewConfigure(){
         liveSearchView = LiveSearchView()
+        liveSearchView.viewDelegate = self
         liveSearchView?.translatesAutoresizingMaskIntoConstraints = false
         liveSearchContainerView.addSubview(self.liveSearchView!)
         
@@ -765,6 +766,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.addObserver(self, selector: #selector(stopTypingStatusForBot), name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(callingLiveSearchView(notification:)), name: NSNotification.Name(rawValue: "textViewDidChange"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(showLiveSearchViewTemplateView), name: NSNotification.Name(rawValue: showLiveSearchTemplateNotification), object: nil)
+        
+        
     }
     
     func removeNotifications() {
@@ -787,6 +792,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StartTyping"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "textViewDidChange"), object: nil)
+         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showLiveSearchTemplateNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -1206,6 +1212,15 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         listViewDetailsViewController.modalPresentationStyle = .overFullScreen
         listViewDetailsViewController.view.backgroundColor = .white
         self.navigationController?.present(listViewDetailsViewController, animated: true, completion: nil)
+    }
+    
+    @objc func showLiveSearchViewTemplateView(notification:Notification){
+        let dataString: String = notification.object as! String
+        let liveSearchDetailsViewController = LiveSearchDetailsViewController(dataString: dataString)
+        liveSearchDetailsViewController.viewDelegate = self
+        liveSearchDetailsViewController.modalPresentationStyle = .overFullScreen
+        liveSearchDetailsViewController.view.backgroundColor = .white
+        self.navigationController?.present(liveSearchDetailsViewController, animated: true, completion: nil)
     }
     
     // MARK: -

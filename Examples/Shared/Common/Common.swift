@@ -17,6 +17,8 @@ var reloadTableNotification = "reloadTableNotification"
 var updateUserImageNotification = "updateUserImageNotification"
 var showListViewTemplateNotification = "ListViewTemplateNotificationName"
 var showListWidgetViewTemplateNotification = "ListWidgetViewTemplateNotificationName"
+var showLiveSearchTemplateNotification = "LiveSearchViewTemplateNotificationName"
+
 
 var isSpeakingEnabled = false
 var selectedTheme = "Theme 1"

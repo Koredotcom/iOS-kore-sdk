@@ -15,6 +15,7 @@ class LiveSearchFaqTableViewCell: UITableViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var dislikeButton: UIButton!
+    @IBOutlet weak var likeAndDislikeButtonHeightConstrain: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()
