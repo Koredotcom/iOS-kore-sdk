@@ -36,6 +36,7 @@ class LiveSearchDetailsViewController: UIViewController {
     var arrayOfPageResults = [TemplateResultElements]()
     var arrayOfTaskResults = [TemplateResultElements]()
     var expandArray:NSMutableArray = []
+    var likeAndDislikeArray:NSMutableArray = []
     var arrayOfCollectionViewCount:NSMutableArray = []
     
     var dataString: String!
@@ -89,6 +90,7 @@ class LiveSearchDetailsViewController: UIViewController {
             }
             self.headerArray = []
             self.expandArray = []
+            self.likeAndDislikeArray = []
             let faqs = allItems.template?.results?.faq
             self.arrayOfFaqResults = faqs ?? []
             if self.arrayOfFaqResults.count > 0 {
@@ -96,6 +98,7 @@ class LiveSearchDetailsViewController: UIViewController {
             }
             for _ in 0..<self.arrayOfFaqResults.count{
                 self.expandArray.add("close")
+                self.likeAndDislikeArray.add("")
             }
             
             let pages = allItems.template?.results?.page
@@ -123,6 +126,7 @@ class LiveSearchDetailsViewController: UIViewController {
             self.arrayOfResults = allItems.template?.results ?? []
             self.headerArray = []
             self.expandArray = []
+            self.likeAndDislikeArray = []
             let faqs = self.arrayOfResults.filter({ $0.contentType == "faq" })
             self.arrayOfFaqResults = faqs
             if self.arrayOfFaqResults.count > 0 {
@@ -130,6 +134,7 @@ class LiveSearchDetailsViewController: UIViewController {
             }
             for _ in 0..<self.arrayOfFaqResults.count{
                 self.expandArray.add("close")
+                self.likeAndDislikeArray.add("")
             }
             
             let pages = self.arrayOfResults.filter({ $0.contentType == "page" })
@@ -225,6 +230,19 @@ extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSo
             cell.descriptionLabel?.text = results.answer
             let buttonsHeight = expandArray[indexPath.row] as! String == "close" ? 0.0: 30.0
             cell.likeAndDislikeButtonHeightConstrain.constant = CGFloat(buttonsHeight)
+            
+            cell.likeButton.addTarget(self, action: #selector(self.likeButtonAction(_:)), for: .touchUpInside)
+            cell.likeButton.tag = indexPath.row
+            cell.dislikeButton.addTarget(self, action: #selector(self.disLikeButtonAction(_:)), for: .touchUpInside)
+            cell.dislikeButton.tag = indexPath.row
+            if likeAndDislikeArray[indexPath.row] as! String == "Like"{
+               cell.likeButton.tintColor = .blue
+               cell.dislikeButton.tintColor = .darkGray
+            }else if likeAndDislikeArray[indexPath.row] as! String == "DisLike"{
+                cell.likeButton.tintColor = .darkGray
+                cell.dislikeButton.tintColor = .blue
+            }
+            
             return cell
         case "MATCHED PAGES":
             let cell : LiveSearchPageTableViewCell = self.tableview.dequeueReusableCell(withIdentifier: liveSearchPageCellIdentifier) as! LiveSearchPageTableViewCell
@@ -342,7 +360,7 @@ extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSo
                                                         attributes: yourAttributes)
         showMoreButton.setAttributedTitle(attributeString, for: .normal)
         let views: [String: UIView] = ["showMoreButton": showMoreButton]
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[showMoreButton(30)]-0-|", options:[], metrics:nil, views:views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[showMoreButton(35)]", options:[], metrics:nil, views:views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[showMoreButton]-0-|", options:[], metrics:nil, views:views))
         
         return view
@@ -485,4 +503,14 @@ extension LiveSearchDetailsViewController : UICollectionViewDelegate, UICollecti
         return UIEdgeInsets(top: 5.0, left: 10.0, bottom: 5.0, right: 10.0)
     }
     
+}
+extension LiveSearchDetailsViewController{
+    @objc fileprivate func likeButtonAction(_ sender: UIButton!) {
+        likeAndDislikeArray.replaceObject(at: sender.tag, with: "Like")
+        tableview.reloadData()
+    }
+    @objc fileprivate func disLikeButtonAction(_ sender: UIButton!) {
+        likeAndDislikeArray.replaceObject(at: sender.tag, with: "DisLike")
+        tableview.reloadData()
+    }
 }

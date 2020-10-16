@@ -17,6 +17,7 @@
 		955286E62538085900D235B5 /* LiveSearchCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 955286E42538085900D235B5 /* LiveSearchCollectionViewCell.xib */; };
 		955286E82538589700D235B5 /* LiveSearchChatItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955286E72538589700D235B5 /* LiveSearchChatItems.swift */; };
 		955286EA25385E7F00D235B5 /* LiveSearchBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955286E925385E7F00D235B5 /* LiveSearchBubbleView.swift */; };
+		95F6CE292539444E00010BAD /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6CE282539444E00010BAD /* WebView.swift */; };
 		95FD1B7C2537046C00BC4BF1 /* LiveSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD1B7B2537046C00BC4BF1 /* LiveSearchView.swift */; };
 		95FD1B80253705C500BC4BF1 /* PopularLiveSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD1B7E253705C500BC4BF1 /* PopularLiveSearchCell.swift */; };
 		95FD1B81253705C500BC4BF1 /* PopularLiveSearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95FD1B7F253705C500BC4BF1 /* PopularLiveSearchCell.xib */; };
@@ -173,6 +174,7 @@
 		955286E42538085900D235B5 /* LiveSearchCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LiveSearchCollectionViewCell.xib; sourceTree = "<group>"; };
 		955286E72538589700D235B5 /* LiveSearchChatItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchChatItems.swift; sourceTree = "<group>"; };
 		955286E925385E7F00D235B5 /* LiveSearchBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchBubbleView.swift; sourceTree = "<group>"; };
+		95F6CE282539444E00010BAD /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		95FD1B7B2537046C00BC4BF1 /* LiveSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchView.swift; sourceTree = "<group>"; };
 		95FD1B7E253705C500BC4BF1 /* PopularLiveSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularLiveSearchCell.swift; sourceTree = "<group>"; };
 		95FD1B7F253705C500BC4BF1 /* PopularLiveSearchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PopularLiveSearchCell.xib; sourceTree = "<group>"; };
@@ -352,6 +354,14 @@
 				5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		95F6CE272539442700010BAD /* Home WebView */ = {
+			isa = PBXGroup;
+			children = (
+				95F6CE282539444E00010BAD /* WebView.swift */,
+			);
+			path = "Home WebView";
 			sourceTree = "<group>";
 		};
 		95FD1B7A2537039400BC4BF1 /* Live Search */ = {
@@ -586,6 +596,7 @@
 			children = (
 				D101F91024E163F700D47DB8 /* ChatMessagesViewController.swift */,
 				D101F91D24E163F700D47DB8 /* ChatMessagesViewController.xib */,
+				95F6CE272539442700010BAD /* Home WebView */,
 				95FD1B7A2537039400BC4BF1 /* Live Search */,
 				CD445158250B9B3E00879219 /* DropDown */,
 				D101F91124E163F700D47DB8 /* PanelView */,
@@ -1153,6 +1164,7 @@
 				D1F338DF2201D99A005BE5F1 /* OptionsBubbleView.swift in Sources */,
 				D1F338CB2201D99A005BE5F1 /* KREContact+CoreDataProperties.swift in Sources */,
 				95FD1B8A25373E0700BC4BF1 /* LiveSearchPageTableViewCell.swift in Sources */,
+				95F6CE292539444E00010BAD /* WebView.swift in Sources */,
 				95FD1B8E25373E1B00BC4BF1 /* LiveSearchTaskTableViewCell.swift in Sources */,
 				D1F338E92201D99A005BE5F1 /* MiniTableBubbleView.swift in Sources */,
 				D1F338E72201D99A005BE5F1 /* BubbleView.swift in Sources */,

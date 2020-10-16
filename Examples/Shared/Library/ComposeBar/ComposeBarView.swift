@@ -74,9 +74,10 @@ class ComposeBarView: UIView {
         self.menuButton.layer.cornerRadius = 5
         self.menuButton.setTitleColor(Common.UIColorRGB(0xFFFFFF), for: .normal)
         self.menuButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-        self.menuButton.setImage(UIImage.init(named: "Menu"), for: .normal)
+        //self.menuButton.setImage(UIImage.init(named: "Menu"), for: .normal)
+        self.menuButton.setBackgroundImage(UIImage.init(named: "findly"), for: .normal)
         self.menuButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
-        self.menuButton.addTarget(self, action: #selector(self.taskMenuButtonAction(_:)), for: .touchUpInside)
+        //self.menuButton.addTarget(self, action: #selector(self.taskMenuButtonAction(_:)), for: .touchUpInside)
         self.menuButton.isHidden = false
         self.menuButton.contentEdgeInsets = UIEdgeInsets(top: 9.0, left: 3.0, bottom: 7.0, right: 3.0)
         self.menuButton.clipsToBounds = true

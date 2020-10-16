@@ -29,6 +29,8 @@ class LiveSearchView: UIView {
     var arrayOfPageResults = [TemplateResultElements]()
     var arrayOfTaskResults = [TemplateResultElements]()
     var expandArray:NSMutableArray = []
+    var likeAndDislikeArray:NSMutableArray = []
+    
     var viewDelegate: LiveSearchViewDelegate?
     var isPopularSearch = true
     var liveSearchJsonString:String?
@@ -121,6 +123,7 @@ class LiveSearchView: UIView {
             self?.arrayOfResults = allItems.template?.results ?? []
             self?.headerArray = []
             self?.expandArray = []
+            self?.likeAndDislikeArray = []
             let faqs = self?.arrayOfResults.filter({ $0.contentType == "faq" })
             self?.arrayOfFaqResults = faqs ?? []
             if self!.arrayOfFaqResults.count > 0 {
@@ -128,6 +131,7 @@ class LiveSearchView: UIView {
             }
             for _ in 0..<self!.arrayOfFaqResults.count{
                 self!.expandArray.add("close")
+                self?.likeAndDislikeArray.add("")
             }
             
             let pages = self?.arrayOfResults.filter({ $0.contentType == "page" })
@@ -252,6 +256,18 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 cell.descriptionLabel?.text = results.answer
                 let buttonsHeight = expandArray[indexPath.row] as! String == "close" ? 0.0: 30.0
                 cell.likeAndDislikeButtonHeightConstrain.constant = CGFloat(buttonsHeight)
+                
+                cell.likeButton.addTarget(self, action: #selector(self.likeButtonAction(_:)), for: .touchUpInside)
+                cell.likeButton.tag = indexPath.row
+                cell.dislikeButton.addTarget(self, action: #selector(self.disLikeButtonAction(_:)), for: .touchUpInside)
+                cell.dislikeButton.tag = indexPath.row
+                if likeAndDislikeArray[indexPath.row] as! String == "Like"{
+                   cell.likeButton.tintColor = .blue
+                   cell.dislikeButton.tintColor = .darkGray
+                }else if likeAndDislikeArray[indexPath.row] as! String == "DisLike"{
+                    cell.likeButton.tintColor = .darkGray
+                    cell.dislikeButton.tintColor = .blue
+                }
                 return cell
             case "SUGGESTED PAGES":
                 let cell : LiveSearchPageTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchPageCellIdentifier) as! LiveSearchPageTableViewCell
@@ -356,7 +372,9 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
        func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
            return 30
        }
-    
+}
+
+extension LiveSearchView{
     @objc fileprivate func closeButtonAction(_ sender: AnyObject!) {
         recentSearchArray.removeObject(at: sender.tag)
         tableView.reloadData()
@@ -367,9 +385,16 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
             viewDelegate?.linkButtonTapAction(urlString: results.url!)
         }
     }
+    @objc fileprivate func likeButtonAction(_ sender: UIButton!) {
+        likeAndDislikeArray.replaceObject(at: sender.tag, with: "Like")
+        tableView.reloadData()
+    }
+    @objc fileprivate func disLikeButtonAction(_ sender: UIButton!) {
+        likeAndDislikeArray.replaceObject(at: sender.tag, with: "DisLike")
+        tableView.reloadData()
+    }
     
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
          NotificationCenter.default.post(name: Notification.Name(showLiveSearchTemplateNotification), object: liveSearchJsonString)
     }
 }
-

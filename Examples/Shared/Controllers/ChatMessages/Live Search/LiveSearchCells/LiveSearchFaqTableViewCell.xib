@@ -49,6 +49,7 @@
                                     <constraint firstAttribute="height" constant="30" id="18b-hA-v0n"/>
                                     <constraint firstAttribute="width" constant="30" id="ckX-Jh-Aqz"/>
                                 </constraints>
+                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" image="hand.thumbsup" catalog="system"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UBP-pD-X4Q">
@@ -56,6 +57,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="MrR-td-dqY"/>
                                 </constraints>
+                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" image="hand.thumbsdown" catalog="system"/>
                             </button>
                         </subviews>

@@ -13,6 +13,7 @@ import KoreBotSDK
 import CoreData
 import Mantle
 
+
 class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, LiveSearchViewDelegate, LiveSearchDetailsViewDelegate, UIGestureRecognizerDelegate {
     // MARK: properties
     var messagesRequestInProgress: Bool = false
@@ -40,7 +41,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var quickReplyView: KREQuickSelectView!
     var typingStatusView: KRETypingStatusView!
     var webViewController: SFSafariViewController!
-    var liveSearchView:  LiveSearchView!
+    
     
     var taskMenuKeyBoard = true
     @IBOutlet weak var taskMenuContainerView: UIView!
@@ -69,7 +70,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                self.colorDropDown
            ]
        }()
+    
     @IBOutlet weak var liveSearchContainerView: UIView!
+    var liveSearchView:  LiveSearchView!
+    @IBOutlet weak var webViewContainerView: UIView!
+    var webView: WebView!
     
     public var maxPanelHeight: CGFloat {
         var maxHeight = UIScreen.main.bounds.height
@@ -120,6 +125,19 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.speechSynthesizer = AVSpeechSynthesizer()
         ConfigureDropDownView()
         liveSearchViewConfigure()
+        configureWebView()
+        welcomeMessage(messageString: "👋 Hello! How can I help you today?")
+    }
+    
+    func configureWebView(){
+        webViewContainerView.isHidden = true
+        webView = WebView()
+        webView?.translatesAutoresizingMaskIntoConstraints = false
+        webViewContainerView.addSubview(webView!)
+        
+        let views: [String: Any] = ["webView" : webView]
+        webViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[webView]|", options:[], metrics:nil, views: views))
+        webViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[webView]|", options:[], metrics:nil, views: views))
     }
     
     func liveSearchViewConfigure(){
@@ -163,20 +181,24 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancel(_:)))
         
-//        let rightImage = UIImage(named: "more")
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(more(_:)))
+        let moreImage = UIImage(named: "more")
+        let questionImage = UIImage(named: "question")
+        let moreButton   = UIBarButtonItem(image: moreImage,  style: .plain, target: self, action: #selector(more(_:)))
+        let questionButton = UIBarButtonItem(image: questionImage,  style: .plain, target: self, action: #selector(more(_:)))
+        navigationItem.rightBarButtonItems = [moreButton, questionButton]
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(more(_:)))
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         
         let font:UIFont? = UIFont(name: "Helvetica-Bold", size:17)
-        let attString:NSMutableAttributedString = NSMutableAttributedString(string: "", attributes: [.font:font!]) //headerTitle
+        let attString:NSMutableAttributedString = NSMutableAttributedString(string: "Findly.ai", attributes: [.font:font!]) //headerTitle
         let titleLabel = UILabel()
-        titleLabel.textColor = .white
+        titleLabel.textColor = .darkGray
         titleLabel.attributedText = attString
         self.navigationItem.titleView = titleLabel
         
-        navigationController?.navigationBar.barTintColor = themeColor
-        navigationController?.navigationBar.tintColor = UIColor.white
+        //navigationController?.navigationBar.barTintColor = themeColor
+        navigationController?.navigationBar.tintColor = UIColor.darkGray
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         self.view.backgroundColor = UIColor.init(hexString: "#f3f3f5")
         
@@ -240,14 +262,21 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     // MARK: cancel
     @objc func cancel(_ sender: Any) {
-        prepareForDeinit()
+//        prepareForDeinit()
+//        navigationController?.setNavigationBarHidden(true, animated: false)
+//        navigationController?.popViewController(animated: true)
+        
+        if ((self.composeView.isFirstResponder)) {
+            _ = self.composeView.resignFirstResponder()
+        }
+        webViewContainerView.isHidden = false
         navigationController?.setNavigationBarHidden(true, animated: false)
-        navigationController?.popViewController(animated: true)
+        
     }
     
     // MARK: More
     @objc func more(_ sender: Any) {
-        colorDropDown.show()
+       // colorDropDown.show()
     }
     
     //MARK: Menu Button Action
@@ -816,6 +845,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: notification handlers
     @objc func keyboardWillShow(_ notification: Notification) {
         self.liveSearchContainerView.isHidden = false
+        webViewContainerView.isHidden = true
+        navigationController?.setNavigationBarHidden(false, animated: false)
+        
         let keyboardUserInfo: NSDictionary = NSDictionary(dictionary: (notification as NSNotification).userInfo!)
         let keyboardFrameEnd: CGRect = ((keyboardUserInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue?)!.cgRectValue)
         let options = UIView.AnimationOptions(rawValue: UInt((keyboardUserInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
@@ -961,6 +993,21 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             })
         }
     }
+    func sendTextMessage(_ text: String, dictionary: [String: Any]? = nil, options: [String: Any]?) {
+        let message: Message = Message()
+        message.messageType = .default
+        message.sentDate = Date()
+        message.messageId = UUID().uuidString
+        let textComponent: Component = Component()
+        textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        message.addComponent(textComponent)
+        sendMessage(message, options: options)
+        
+        let dic = NSMutableDictionary()
+        dic.setObject(text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), forKey: "_id" as NSCopying)
+        dic.setObject(1, forKey: "count" as NSCopying)
+        recentSearchArray.add(dic)
+    }
     
     func receviceMessage(dictionary:[String: Any]){
         let message: Message = Message()
@@ -978,22 +1025,15 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         addMessages(message, "")
         NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
     }
-    
-    
-    func sendTextMessage(_ text: String, dictionary: [String: Any]? = nil, options: [String: Any]?) {
+    func welcomeMessage(messageString:String){
         let message: Message = Message()
-        message.messageType = .default
-        message.sentDate = Date()
-        message.messageId = UUID().uuidString
-        let textComponent: Component = Component()
-        textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        message.addComponent(textComponent)
-        sendMessage(message, options: options)
-        
-        let dic = NSMutableDictionary()
-        dic.setObject(text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), forKey: "_id" as NSCopying)
-        dic.setObject(1, forKey: "count" as NSCopying)
-        recentSearchArray.add(dic)
+            message.messageType = .reply
+            message.sentDate = Date()
+            message.messageId = UUID().uuidString
+            let textComponent: Component = Component()
+            textComponent.payload = messageString
+            message.addComponent(textComponent)
+            addMessages(message, "")
     }
     
     func textMessageSent() {
@@ -1438,6 +1478,7 @@ extension ChatMessagesViewController: KABotClientDelegate {
       }
     
     @objc func callingLiveSearchView(notification:Notification) {
+        navigationController?.setNavigationBarHidden(false, animated: false)
       let dataString: String = notification.object as! String
          print("chatView: \(dataString)")
         if liveSearchContainerView.isHidden{
