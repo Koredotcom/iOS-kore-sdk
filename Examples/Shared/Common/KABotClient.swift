@@ -576,17 +576,6 @@ open class KABotClient: NSObject {
         
     }
     
-    func request(with url: URL) -> URLRequest {
-        var request = URLRequest(url: url)
-
-        guard let cookies = HTTPCookieStorage.shared.cookies(for: url) else {
-            return request
-        }
-
-        request.allHTTPHeaderFields = HTTPCookie.requestHeaderFields(with: cookies)
-        return request
-    }
-    
     // MARK: -
     open func showTypingStatusForBot() {
         delegate?.showTypingStatusForBot()
