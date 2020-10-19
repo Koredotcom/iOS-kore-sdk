@@ -113,7 +113,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             panelCollectionViewContainerHeightConstraint.constant = 0
         }
 
-        isSpeakingEnabled = true
+        isSpeakingEnabled = false //kk true
         self.speechSynthesizer = AVSpeechSynthesizer()
         ConfigureDropDownView()
     }

@@ -30,6 +30,9 @@ var headerTitle = ""
 var backgroudImage = ""
 var leftImage = ""
 
+var tokenURL = "https://demodpd.kore.ai/finastraLoginDEMO/token"
+var KOREAPIURL: String?
+
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)
