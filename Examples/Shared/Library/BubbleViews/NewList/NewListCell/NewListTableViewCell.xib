@@ -32,7 +32,7 @@
                                     <constraint firstAttribute="height" constant="50" id="O79-FS-FCP"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="$ 0.0" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sU2-xP-5aY" userLabel="Title Label">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="$ 0.0" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="sU2-xP-5aY" userLabel="Title Label">
                                 <rect key="frame" x="225" y="22" width="85" height="17"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="85" id="GD6-bx-hit"/>

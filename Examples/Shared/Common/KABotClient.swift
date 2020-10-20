@@ -549,7 +549,7 @@ open class KABotClient: NSObject {
         //getHistory - fetch all the history that the bot has previously
         botClient.getHistory(offset: offset, success: { [weak self] (responseObj) in
             if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
-                self?.insertOrUpdateHistoryMessages(messages)
+               // self?.insertOrUpdateHistoryMessages(messages) //kk
             }
             self?.historyRequestInProgress = false
             block?(true)

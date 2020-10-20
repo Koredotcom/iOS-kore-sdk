@@ -104,6 +104,11 @@ class NewListBubbleView: BubbleView {
         let subView: [String: UIView] = ["titleLbl": titleLbl]
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (_) in
+              // TODO: - whatever you want
+            NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+           }
+         
     }
     
     func intializeCardLayout(){
@@ -214,6 +219,8 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
             cell.imgView.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
         }
         cell.titleLabel.numberOfLines = 1
+        cell.subTitleLabel.numberOfLines = 1
+        cell.priceLbl.numberOfLines = 1
         cell.titleLabel.text = elements.title
         cell.subTitleLabel.text = elements.subtitle
         cell.priceLbl.text = elements.value
@@ -233,16 +240,18 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let elements = arrayOfComponents[indexPath.row]
-        if elements.action?.type != nil {
+        //if elements.action?.type != nil {
             if elements.action?.type == "postback"{
                 let payload = elements.action?.payload == "" || elements.action?.payload == nil ? elements.action?.title : elements.action?.payload
                 self.optionsAction(elements.action?.title, payload)
             }else{
                 if elements.action?.fallback_url != nil {
                     self.linkAction(elements.action?.fallback_url)
+                } else if elements.action?.url != nil {
+                    self.linkAction(elements.action?.url)
                 }
             }
-        }
+       // }
        
     }
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
