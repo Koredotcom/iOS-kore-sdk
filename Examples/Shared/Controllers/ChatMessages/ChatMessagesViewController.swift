@@ -516,6 +516,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         else if (templateType == "form_template") {
             return .inlineForm
         }
+        else if (templateType == "dropdown_template") {
+            return .dropdown_template
+        }
         return .text
     }
     
@@ -750,6 +753,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         NotificationCenter.default.addObserver(self, selector: #selector(startTypingStatusForBot), name: NSNotification.Name(rawValue: "StartTyping"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(stopTypingStatusForBot), name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(dropDownTemplateActtion), name: NSNotification.Name(rawValue: dropDownTemplateNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -771,6 +776,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StartTyping"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
+        
+         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: dropDownTemplateNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -1185,6 +1192,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         listViewDetailsViewController.modalPresentationStyle = .overFullScreen
         listViewDetailsViewController.view.backgroundColor = .white
         self.navigationController?.present(listViewDetailsViewController, animated: true, completion: nil)
+    }
+    
+    @objc func dropDownTemplateActtion(notification:Notification){
+         let dataString: String = notification.object as! String
+        composeView.setText(dataString)
     }
     
     // MARK: -

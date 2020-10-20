@@ -117,6 +117,9 @@ class BubbleView: UIView {
         case .inlineForm:
             bubbleView = InLineFormBubbleView()
             break
+        case .dropdown_template:
+            bubbleView = DropDownBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         

@@ -464,3 +464,16 @@ class InLineFormCell : MessageBubbleCell {
         }
     }
 }
+
+class DropDownell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .dropdown_template
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}

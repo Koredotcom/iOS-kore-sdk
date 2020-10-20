@@ -11,6 +11,7 @@
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		1D9FA1702AE04EE1A8F6AF2C /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */; };
+		95E0D3DD253ECF7A00FE79B1 /* DropDownBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E0D3DC253ECF7A00FE79B1 /* DropDownBubbleView.swift */; };
 		CD445135250B7C4700879219 /* ListWidgetBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445134250B7C4700879219 /* ListWidgetBubbleView.swift */; };
 		CD445138250B7C5400879219 /* ListWidgetDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445136250B7C5300879219 /* ListWidgetDetailsViewController.swift */; };
 		CD445139250B7C5400879219 /* ListWidgetDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD445137250B7C5300879219 /* ListWidgetDetailsViewController.xib */; };
@@ -151,6 +152,7 @@
 		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		95E0D3DC253ECF7A00FE79B1 /* DropDownBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownBubbleView.swift; sourceTree = "<group>"; };
 		CD18E3E19876E3486C39D351 /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		CD445134250B7C4700879219 /* ListWidgetBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListWidgetBubbleView.swift; sourceTree = "<group>"; };
 		CD445136250B7C5300879219 /* ListWidgetDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListWidgetDetailsViewController.swift; sourceTree = "<group>"; };
@@ -320,6 +322,14 @@
 				5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		95E0D3DB253ECF5500FE79B1 /* Drop Down */ = {
+			isa = PBXGroup;
+			children = (
+				95E0D3DC253ECF7A00FE79B1 /* DropDownBubbleView.swift */,
+			);
+			path = "Drop Down";
 			sourceTree = "<group>";
 		};
 		A851461715333BEDEFC8310F /* Frameworks */ = {
@@ -761,6 +771,7 @@
 				D1F3389B2201D99A005BE5F1 /* Table */,
 				D1F338A72201D99A005BE5F1 /* Menu */,
 				D1F338A92201D99A005BE5F1 /* ListBubbleView.swift */,
+				95E0D3DB253ECF5500FE79B1 /* Drop Down */,
 				CD445155250B8A2F00879219 /* InLine Form */,
 				CD44513A250B84D900879219 /* Feedback */,
 				CD445133250B7C2800879219 /* List Widget */,
@@ -1154,6 +1165,7 @@
 				CD89236724C55BAC006F71DE /* CalenderBubbleView.swift in Sources */,
 				CD89237024C562A2006F71DE /* QuickReplyCollectionViewFlowLayout.swift in Sources */,
 				D1F338D52201D99A005BE5F1 /* Message.swift in Sources */,
+				95E0D3DD253ECF7A00FE79B1 /* DropDownBubbleView.swift in Sources */,
 				D1F338EF2201D99A005BE5F1 /* ExpandedTableViewCell.swift in Sources */,
 				D1F338D42201D99A005BE5F1 /* Identity.swift in Sources */,
 				D1F338D22201D99A005BE5F1 /* KoraASRService.swift in Sources */,

@@ -107,7 +107,7 @@ class MultiSelectNewBubbleView: BubbleView {
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
         checkboxIndexPath = []
-        
+        arrayOfSeletedValues = []
     }
     
     func intializeCardLayout(){
@@ -144,7 +144,7 @@ class MultiSelectNewBubbleView: BubbleView {
                 let allItems = try? jsonDecoder.decode(Componentss.self, from: jsonData) else {
                     return
                 }
-                arrayOfSeletedValues = []
+                
                 self.titleLbl.text = allItems.heading ?? ""
                 arrayOfElements = allItems.elements ?? []
                 arrayOfButtons = allItems.buttons ?? []
