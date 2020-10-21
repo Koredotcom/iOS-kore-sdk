@@ -889,13 +889,13 @@
 		D1F338B42201D99A005BE5F1 /* TypingStatus */ = {
 			isa = PBXGroup;
 			children = (
+				D1F338BB2201D99A005BE5F1 /* KRETypingActivityIndicator.h */,
 				D1F338B52201D99A005BE5F1 /* KRETypingActivityIndicator.m */,
-				D1F338B62201D99A005BE5F1 /* KRETypingCollectionViewCell.xib */,
 				D1F338B72201D99A005BE5F1 /* KRETypingCollectionViewCell.h */,
+				D1F338BA2201D99A005BE5F1 /* KRETypingCollectionViewCell.m */,
+				D1F338B62201D99A005BE5F1 /* KRETypingCollectionViewCell.xib */,
 				D1F338B82201D99A005BE5F1 /* KRETypingStatusView.h */,
 				D1F338B92201D99A005BE5F1 /* KRETypingStatusView.m */,
-				D1F338BA2201D99A005BE5F1 /* KRETypingCollectionViewCell.m */,
-				D1F338BB2201D99A005BE5F1 /* KRETypingActivityIndicator.h */,
 			);
 			path = TypingStatus;
 			sourceTree = "<group>";

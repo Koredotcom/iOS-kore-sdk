@@ -11,8 +11,8 @@ import UIKit
 class MultiSelectNewBubbleView: BubbleView {
     static let elementsLimit: Int = 4
     
-     var tileBgv: UIView!
-     var titleLbl: UILabel!
+    var tileBgv: UIView!
+    var titleLbl: UILabel!
     var tableView: UITableView!
     var cardView: UIView!
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
@@ -20,9 +20,13 @@ class MultiSelectNewBubbleView: BubbleView {
     fileprivate let multiSelectCellIdentifier = "MultiSelectCell"
     let rowsDataLimit = 4
     
-    var arraySelectedHeader = NSMutableArray() //for header checkbox
     var checkboxIndexPath = [IndexPath]() //for Rows checkbox
     var arrayOfSeletedValues = [String]()
+    
+    override func prepareForReuse() {
+        checkboxIndexPath = [IndexPath]()
+         arrayOfSeletedValues = [String]()
+    }
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Bold", size: 15.0) as Any,
@@ -34,6 +38,7 @@ class MultiSelectNewBubbleView: BubbleView {
     var showMore = false
     public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
+    
     override func applyBubbleMask() {
         //nothing to put here
         if(self.maskLayer == nil){
@@ -106,8 +111,6 @@ class MultiSelectNewBubbleView: BubbleView {
         let subView: [String: UIView] = ["titleLbl": titleLbl]
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
-        checkboxIndexPath = []
-        arrayOfSeletedValues = []
     }
     
     func intializeCardLayout(){

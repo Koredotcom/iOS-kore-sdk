@@ -28,6 +28,10 @@ class DropDownBubbleView: BubbleView {
     var arrayOfComponents = [ComponentElements]()
     var arrayOfElements = NSMutableArray()
     
+    override func prepareForReuse() {
+        inlineTextField.text = ""
+    }
+    
     override func initialize() {
         super.initialize()
         
@@ -76,7 +80,7 @@ class DropDownBubbleView: BubbleView {
         self.inlineButton = UIButton(frame: CGRect.zero)
         self.inlineButton.translatesAutoresizingMaskIntoConstraints = false
         self.inlineButton.clipsToBounds = true
-        self.inlineButton.setImage(UIImage.init(named: "arrowSelected"), for: .normal)
+        self.inlineButton.setImage(UIImage.init(named: "downarrow"), for: .normal)
         self.inlineButton.layer.cornerRadius = 5
         self.inlineButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
         self.textFBgV.addSubview(self.inlineButton)

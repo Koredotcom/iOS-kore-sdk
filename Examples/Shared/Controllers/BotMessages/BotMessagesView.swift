@@ -372,7 +372,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             cell.bubbleView.drawBorder = true
             break
         case .dropdown_template:
-            let bubbleView: DropDownBubbleView = cell.bubbleView as! DropDownBubbleView
+            //let bubbleView: DropDownBubbleView = cell.bubbleView as! DropDownBubbleView
             cell.bubbleView.drawBorder = true
             break
         }

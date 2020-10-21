@@ -333,6 +333,7 @@ open class KABotClient: NSObject {
         
         if let iconUrl = object?.iconUrl {
             message.iconUrl = iconUrl
+            reciverIcon = iconUrl
         }
         
         guard let messages = object?.messages, messages.count > 0 else {

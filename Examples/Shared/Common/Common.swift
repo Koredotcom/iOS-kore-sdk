@@ -31,6 +31,7 @@ var themeColor: UIColor = UIColor.init(hexString: "#2881DF")  // 149C3F
 var headerTitle = ""
 var backgroudImage = ""
 var leftImage = ""
+var reciverIcon:String?
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {

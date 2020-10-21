@@ -1354,7 +1354,7 @@ extension ChatMessagesViewController: KABotClientDelegate {
         let botId:String = SDKConfiguration.botConfig.botId
         let info:NSMutableDictionary = NSMutableDictionary.init()
         info.setValue(botId, forKey: "botId");
-        let urlString = leftImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let urlString = reciverIcon
         info.setValue(urlString ?? "kora", forKey: "imageName");
         self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5)
     }

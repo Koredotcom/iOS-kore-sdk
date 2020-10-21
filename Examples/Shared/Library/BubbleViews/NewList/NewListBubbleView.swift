@@ -106,7 +106,7 @@ class NewListBubbleView: BubbleView {
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
         Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (_) in
               // TODO: - whatever you want
-            NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+           // NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
            }
          
     }
