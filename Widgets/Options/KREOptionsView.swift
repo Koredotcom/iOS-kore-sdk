@@ -206,7 +206,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             let bgColor =  UserDefaults.standard.value(forKey: "ThemeColor") as? String
             cell.textLabel?.textColor = UIColor.init(hexString: bgColor!)
             if #available(iOS 8.2, *) {
-                cell.textLabel?.font = UIFont.textFont(ofSize: 15.0, weight: .medium)
+                cell.textLabel?.font = UIFont.textFont(ofSize: 14.0, weight: .medium)
             } else {
                 // Fallback on earlier versions
             }

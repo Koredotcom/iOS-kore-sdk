@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -17,7 +18,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CalenderViewController" customModule="BankAssist_ai" customModuleProvider="target">
             <connections>
                 <outlet property="confirmButton" destination="Fyj-zI-ltK" id="Ybq-Tj-Ahf"/>
-                <outlet property="datePicker" destination="RiV-iJ-wsd" id="TIu-1P-flM"/>
+                <outlet property="datePicker" destination="dbX-js-ngB" id="8NX-W9-CgJ"/>
                 <outlet property="dateRangeSubView" destination="3C6-vg-PbV" id="uQ0-Ex-get"/>
                 <outlet property="dateRangeView" destination="gDW-LO-tKU" id="Msf-CE-mu4"/>
                 <outlet property="fromDateButton" destination="7hm-gm-jFe" id="4Nj-tZ-r5u"/>
@@ -59,9 +60,9 @@
                                 <action selector="clickOnCloseButton:" destination="-1" eventType="touchUpInside" id="PAG-s5-68D"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fyj-zI-ltK">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fyj-zI-ltK">
                             <rect key="frame" x="0.0" y="340" width="375" height="40"/>
-                            <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" systemColor="systemBlueColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="gcO-cP-cbT"/>
                             </constraints>
@@ -124,15 +125,15 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3C6-vg-PbV">
                                     <rect key="frame" x="47.5" y="7.5" width="280" height="70"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7hm-gm-jFe">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7hm-gm-jFe">
                                             <rect key="frame" x="0.0" y="0.0" width="280" height="34"/>
-                                            <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" systemColor="systemBlueColor"/>
                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <connections>
                                                 <action selector="clickOnFromDateRangeViewButton:" destination="-1" eventType="touchUpInside" id="nSQ-xo-lkG"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="42a-XA-mJQ">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="42a-XA-mJQ">
                                             <rect key="frame" x="0.0" y="36" width="280" height="34"/>
                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <connections>
@@ -152,7 +153,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
                                         <constraint firstItem="bJt-bQ-AU7" firstAttribute="top" secondItem="3C6-vg-PbV" secondAttribute="top" id="1Et-1a-dJz"/>
                                         <constraint firstItem="7hm-gm-jFe" firstAttribute="leading" secondItem="3C6-vg-PbV" secondAttribute="leading" id="4m2-JD-hZS"/>
@@ -184,21 +185,23 @@
                                 <constraint firstItem="3C6-vg-PbV" firstAttribute="centerX" secondItem="gDW-LO-tKU" secondAttribute="centerX" id="ocZ-2w-Iuu"/>
                             </constraints>
                         </view>
-                        <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" id="RiV-iJ-wsd">
-                            <rect key="frame" x="0.0" y="118" width="375" height="216"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                        <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="dbX-js-ngB">
+                            <rect key="frame" x="0.0" y="127" width="375" height="207"/>
                         </datePicker>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="dbX-js-ngB" firstAttribute="top" secondItem="gDW-LO-tKU" secondAttribute="bottom" constant="1" id="0bv-Zz-UIZ"/>
                         <constraint firstItem="5vi-6K-swE" firstAttribute="leading" secondItem="Djm-YW-F5N" secondAttribute="leading" id="13U-I4-494"/>
+                        <constraint firstItem="Fyj-zI-ltK" firstAttribute="top" secondItem="dbX-js-ngB" secondAttribute="bottom" constant="6" id="39o-Sd-ad1"/>
                         <constraint firstItem="5vi-6K-swE" firstAttribute="top" secondItem="zCG-rQ-KY0" secondAttribute="bottom" constant="10" id="3bS-UC-rJ1"/>
-                        <constraint firstItem="Fyj-zI-ltK" firstAttribute="top" secondItem="RiV-iJ-wsd" secondAttribute="bottom" constant="6" id="5Nh-A4-SUg"/>
+                        <constraint firstAttribute="trailing" secondItem="dbX-js-ngB" secondAttribute="trailing" id="Dpe-Qk-zjd"/>
+                        <constraint firstItem="dbX-js-ngB" firstAttribute="top" secondItem="5vi-6K-swE" secondAttribute="bottom" constant="13" id="Fm7-OB-63K"/>
+                        <constraint firstItem="dbX-js-ngB" firstAttribute="leading" secondItem="Djm-YW-F5N" secondAttribute="leading" id="GYE-NG-ika"/>
                         <constraint firstAttribute="trailing" secondItem="5vi-6K-swE" secondAttribute="trailing" id="Gbj-rq-c6l"/>
                         <constraint firstAttribute="bottom" secondItem="Fyj-zI-ltK" secondAttribute="bottom" id="Ii9-72-boX"/>
                         <constraint firstItem="gDW-LO-tKU" firstAttribute="top" secondItem="zCG-rQ-KY0" secondAttribute="bottom" constant="10" id="Qvt-X6-77c"/>
                         <constraint firstAttribute="trailing" secondItem="Fyj-zI-ltK" secondAttribute="trailing" id="R50-GC-r5C"/>
-                        <constraint firstItem="RiV-iJ-wsd" firstAttribute="top" secondItem="5vi-6K-swE" secondAttribute="bottom" constant="4" id="VAN-Im-04V"/>
                         <constraint firstItem="zCG-rQ-KY0" firstAttribute="top" secondItem="Djm-YW-F5N" secondAttribute="top" constant="10" id="cyo-aJ-6YW"/>
                         <constraint firstAttribute="trailing" secondItem="gDW-LO-tKU" secondAttribute="trailing" id="dwW-CW-ZKB"/>
                         <constraint firstItem="HNX-qV-AsK" firstAttribute="leading" secondItem="zCG-rQ-KY0" secondAttribute="trailing" constant="8" id="kcS-9v-1vU"/>
@@ -211,17 +214,23 @@
                     </constraints>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" white="0.0" alpha="0.30328455110000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="Djm-YW-F5N" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Mbf-hQ-0G9"/>
                 <constraint firstItem="Djm-YW-F5N" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="NfN-OF-JoG"/>
                 <constraint firstItem="Djm-YW-F5N" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="OQW-Hi-deW"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="138.40000000000001" y="107.49625187406298"/>
         </view>
     </objects>
     <resources>
         <image name="XButtonGray20" width="20" height="20"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>
