@@ -25,7 +25,7 @@ class AppLaunchViewController: UIViewController {
     let botClient = BotClient()
     var user: KREUser?
     let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(style: .white)
-
+    
     // MARK: life-cycle events
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +36,8 @@ class AppLaunchViewController: UIViewController {
         self.automaticallyAdjustsScrollViewInsets = false
         imgView.contentMode = .scaleAspectFit
         
-        identityTF.text = SDKConfiguration.botConfig.identity
+        //identityTF.text = SDKConfiguration.botConfig.identity
+        identityTF.backgroundColor = .white
         
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -69,7 +70,7 @@ class AppLaunchViewController: UIViewController {
         let durationValue = keyboardUserInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber
         let duration = durationValue.doubleValue
         let options = UIView.AnimationOptions(rawValue: UInt((keyboardUserInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as! NSNumber).intValue << 16))
-            self.bottomConstraint.constant = 20
+        self.bottomConstraint.constant = 20
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
             self.view.layoutIfNeeded()
         }, completion: { (Bool) in
@@ -110,14 +111,14 @@ class AppLaunchViewController: UIViewController {
         let isAnonymous: Bool = SDKConfiguration.botConfig.isAnonymous
         let chatBotName: String = SDKConfiguration.botConfig.chatBotName
         let botId: String = SDKConfiguration.botConfig.botId
-
+        
         var identity: String! = nil
         if (isAnonymous) {
             identity = self.getUUID()
         } else {
             identity = identityTF.text! //SDKConfiguration.botConfig.identity //kk
-            UserDefaults.standard.set(identityTF.text ?? "", forKey: "User Identity")
         }
+        userIdentity = identityTF.text ?? ""
         identityTF.resignFirstResponder()
         
         let clientIdForWidget: String = SDKConfiguration.widgetConfig.clientId
@@ -138,41 +139,49 @@ class AppLaunchViewController: UIViewController {
         })
         
         if !clientId.hasPrefix("<") && !clientSecret.hasPrefix("<") && !chatBotName.hasPrefix("<") && !botId.hasPrefix("<") && !identity.hasPrefix("<") && identityTF.text != "" {
-            //let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(style: .white)
-            activityIndicatorView.center = chatButton.center
-            view.addSubview(activityIndicatorView)
-            activityIndicatorView.startAnimating()
-//             kaBotClient.tryConnect()
-            kaBotClient.connect(block: { [weak self] (client, thread) in
-              
-                if !SDKConfiguration.widgetConfig.isPanelView {
-                    self?.navigateToChatViewController(client: client, thread: thread)
-                }else{
-                    if !clientIdForWidget.hasPrefix("<") && !clientSecretForWidget.hasPrefix("<") && !chatBotNameForWidget.hasPrefix("<") && !botIdForWidget.hasPrefix("<") && !identityForWidget.hasPrefix("<") {
-                        
-                        self?.getWidgetJwTokenWithClientId(clientIdForWidget, clientSecret: clientSecretForWidget, identity: identityForWidget, isAnonymous: isAnonymousForWidget, success: { [weak self] (jwToken) in
-                            
-                           self?.navigateToChatViewController(client: client, thread: thread)
-                        
-                        }, failure: { (error) in
-                                print(error)
-                         self?.activityIndicatorView.stopAnimating()
-                         self?.chatButton.isUserInteractionEnabled = true
-                        })
-                        
-                    }else{
-                        self!.showAlert(title: "Bot SDK Demo", message: "YOU MUST SET WIDGET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
-                        self?.activityIndicatorView.stopAnimating()
-                        self?.chatButton.isUserInteractionEnabled = true
-                    }
-                }
+            
+            if identityTF.text!.isEmail(){
+                activityIndicatorView.center = chatButton.center
+                view.addSubview(activityIndicatorView)
+                activityIndicatorView.startAnimating()
                 
-            }) { (error) in
-                self.activityIndicatorView.stopAnimating()
+                kaBotClient.connect(block: { [weak self] (client, thread) in
+                    
+                    if !SDKConfiguration.widgetConfig.isPanelView {
+                        self?.navigateToChatViewController(client: client, thread: thread)
+                    }else{
+                        if !clientIdForWidget.hasPrefix("<") && !clientSecretForWidget.hasPrefix("<") && !chatBotNameForWidget.hasPrefix("<") && !botIdForWidget.hasPrefix("<") && !identityForWidget.hasPrefix("<") {
+                            
+                            self?.getWidgetJwTokenWithClientId(clientIdForWidget, clientSecret: clientSecretForWidget, identity: identityForWidget, isAnonymous: isAnonymousForWidget, success: { [weak self] (jwToken) in
+                                
+                                self?.navigateToChatViewController(client: client, thread: thread)
+                                
+                                }, failure: { (error) in
+                                    print(error)
+                                    self?.activityIndicatorView.stopAnimating()
+                                    self?.chatButton.isUserInteractionEnabled = true
+                            })
+                            
+                        }else{
+                            self!.showAlert(title: "IKEA Coworker", message: "YOU MUST SET WIDGET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
+                            self?.activityIndicatorView.stopAnimating()
+                            self?.chatButton.isUserInteractionEnabled = true
+                        }
+                    }
+                    
+                }) { (error) in
+                    self.activityIndicatorView.stopAnimating()
+                    self.chatButton.isUserInteractionEnabled = true
+                }
+            }
+            else{
+                self.showAlert(title: "IKEA Coworker", message: "Please enter valid email id")
                 self.chatButton.isUserInteractionEnabled = true
             }
+            
+            
         } else {
-            self.showAlert(title: "Bot SDK Demo", message: "YOU MUST SET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
+            self.showAlert(title: "IKEA Coworker", message: "Please enter email id")
             self.chatButton.isUserInteractionEnabled = true
         }
     }
@@ -180,18 +189,18 @@ class AppLaunchViewController: UIViewController {
     func navigateToChatViewController(client: BotClient?, thread: KREThread?){
         activityIndicatorView.stopAnimating()
         self.chatButton.isUserInteractionEnabled = true
-
+        
         let botViewController = ChatMessagesViewController(thread: thread)
         botViewController.botClient = client
         botViewController.title = SDKConfiguration.botConfig.chatBotName
-
+        
         //Addition fade in animation
         let transition = CATransition()
         transition.duration = 0.5
         transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         transition.type = CATransitionType.fade
         self.navigationController?.view.layer.add(transition, forKey: nil)
-
+        
         self.navigationController?.pushViewController(botViewController, animated: false)
     }
     
@@ -205,7 +214,7 @@ class AppLaunchViewController: UIViewController {
         
         //Manager
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-
+        
         // NOTE: You must set your URL to generate JWT.
         let urlString: String = SDKConfiguration.serverConfig.koreJwtUrl()
         let requestSerializer = AFJSONRequestSerializer()
@@ -236,7 +245,7 @@ class AppLaunchViewController: UIViewController {
         }) { (sessionDataTask, error) in
             failure?(error)
         }
-    
+        
     }
     
     func showAlert(title: String, message: String) {
@@ -266,67 +275,67 @@ class AppLaunchViewController: UIViewController {
 }
 extension AppLaunchViewController{
     func getWidgetJwTokenWithClientId(_ clientId: String!, clientSecret: String!, identity: String!, isAnonymous: Bool!, success:((_ jwToken: String?) -> Void)?, failure:((_ error: Error) -> Void)?) {
-           
-           // Session Configuration
-           let configuration = URLSessionConfiguration.default
-           
-           //Manager
-           sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-
-           // NOTE: You must set your URL to generate JWT.
-           let urlString: String = SDKConfiguration.serverConfig.koreJwtUrl()
-           let requestSerializer = AFJSONRequestSerializer()
-           requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-           requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-           
-           // Headers: {"alg": "RS256","typ": "JWT"}
-           requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
-           requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
-           
-           let parameters: NSDictionary = ["clientId": clientId,
-                                           "clientSecret": clientSecret,
-                                           "identity": identity,
-                                           "aud": "https://idproxy.kore.com/authorize",
-                                           "isAnonymous": isAnonymous]
-           
-           
-           sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
-           sessionManager?.requestSerializer = requestSerializer
-           sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-               if (responseObject is NSDictionary) {
-                   let dictionary: NSDictionary = responseObject as! NSDictionary
-                   let jwToken: String = dictionary["jwt"] as! String
-                   self.initializeWidgetManager(widgetJWTToken: jwToken)
-                   success?(jwToken)
-                   
-               } else {
-                   let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
-                   failure?(error)
-               }
-           }) { (sessionDataTask, error) in
-               failure?(error)
-           }
-       
-       }
+        
+        // Session Configuration
+        let configuration = URLSessionConfiguration.default
+        
+        //Manager
+        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
+        
+        // NOTE: You must set your URL to generate JWT.
+        let urlString: String = SDKConfiguration.serverConfig.koreJwtUrl()
+        let requestSerializer = AFJSONRequestSerializer()
+        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
+        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+        
+        // Headers: {"alg": "RS256","typ": "JWT"}
+        requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
+        requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
+        
+        let parameters: NSDictionary = ["clientId": clientId,
+                                        "clientSecret": clientSecret,
+                                        "identity": identity,
+                                        "aud": "https://idproxy.kore.com/authorize",
+                                        "isAnonymous": isAnonymous]
+        
+        
+        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
+            if (responseObject is NSDictionary) {
+                let dictionary: NSDictionary = responseObject as! NSDictionary
+                let jwToken: String = dictionary["jwt"] as! String
+                self.initializeWidgetManager(widgetJWTToken: jwToken)
+                success?(jwToken)
+                
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                failure?(error)
+            }
+        }) { (sessionDataTask, error) in
+            failure?(error)
+        }
+        
+    }
     
     func initializeWidgetManager(widgetJWTToken: String) {
-    
-     let widgetManager = KREWidgetManager.shared
-     let user = KREUser()
-     user.userId = SDKConfiguration.widgetConfig.botId //userId
-     user.accessToken = widgetJWTToken
-     user.server = SDKConfiguration.serverConfig.KORE_SERVER
-     user.tokenType = "bearer"
-     user.userEmail = identityTF.text! //SDKConfiguration.widgetConfig.identity //kk
-     user.headers = ["X-KORA-Client": KoraAssistant.shared.applicationHeader]
-     widgetManager.initialize(with: user)
-     self.user = user
-         
-     widgetManager.sessionExpiredAction = { (error) in
-         DispatchQueue.main.async {
-            // NotificationCenter.default.post(name: NSNotification.Name(rawValue: KoraNotification.EnforcementNotification), object: ["type": KoraNotification.EnforcementType.userSessionDidBecomeInvalid])
-         }
-       }
+        
+        let widgetManager = KREWidgetManager.shared
+        let user = KREUser()
+        user.userId = SDKConfiguration.widgetConfig.botId //userId
+        user.accessToken = widgetJWTToken
+        user.server = SDKConfiguration.serverConfig.KORE_SERVER
+        user.tokenType = "bearer"
+        user.userEmail = identityTF.text! //SDKConfiguration.widgetConfig.identity //kk
+        user.headers = ["X-KORA-Client": KoraAssistant.shared.applicationHeader]
+        widgetManager.initialize(with: user)
+        self.user = user
+        
+        widgetManager.sessionExpiredAction = { (error) in
+            DispatchQueue.main.async {
+                // NotificationCenter.default.post(name: NSNotification.Name(rawValue: KoraNotification.EnforcementNotification), object: ["type": KoraNotification.EnforcementType.userSessionDidBecomeInvalid])
+            }
+        }
     }
     
     func getThemeColorApi(){
@@ -364,5 +373,13 @@ extension AppLaunchViewController : UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    
+}
+extension String {
+    func isEmail()->Bool {
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}"
+        return  NSPredicate(format: "SELF MATCHES %@", emailRegex).evaluate(with: self)
     }
 }

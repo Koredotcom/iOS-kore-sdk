@@ -32,6 +32,7 @@ var headerTitle = ""
 var backgroudImage = ""
 var leftImage = ""
 var reciverIcon:String?
+var userIdentity:String?
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {

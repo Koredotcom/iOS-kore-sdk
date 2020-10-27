@@ -170,11 +170,12 @@ class NewListBubbleView: BubbleView {
                     finalHeight += cellHeight
             }
         
-        if isShowMore{
-            moreButtonHeight = 30.0
-        }else{
-             moreButtonHeight = 0.0
-        }
+//        if isShowMore{
+//            moreButtonHeight = 30.0
+//        }else{
+//             moreButtonHeight = 0.0
+//        }
+        moreButtonHeight =  arrayOfComponents.count > rowsDataLimit ? 30.0 : 0.0
         return CGSize(width: 0.0, height: textSize.height+40+finalHeight+moreButtonHeight)
     }
     
@@ -233,6 +234,8 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
         if elements.subtitle == nil{
            cell.priceLbl.text = ""
            cell.subTitleLabel.text = elements.value
+           cell.valueLabelWidthConstraint.constant = 0
+        }else if elements.value == nil{
             cell.valueLabelWidthConstraint.constant = 0
         }
         return cell
@@ -249,6 +252,9 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
                     self.linkAction(elements.action?.fallback_url)
                 } else if elements.action?.url != nil {
                     self.linkAction(elements.action?.url)
+                }else{
+                    let payload = elements.action?.payload == "" || elements.action?.payload == nil ? elements.action?.title : elements.action?.payload
+                    self.optionsAction(elements.action?.title, payload)
                 }
             }
        // }

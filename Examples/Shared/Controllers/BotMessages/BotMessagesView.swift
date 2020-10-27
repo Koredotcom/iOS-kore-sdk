@@ -264,8 +264,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             break
         case .carousel:
             let bubbleView: CarouselBubbleView = cell.bubbleView as! CarouselBubbleView
-            bubbleView.optionsAction = {[weak self] (text) in
-                self?.viewDelegate?.optionsButtonTapAction(text: text!)
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
             }
             bubbleView.linkAction = {[weak self] (text) in
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)

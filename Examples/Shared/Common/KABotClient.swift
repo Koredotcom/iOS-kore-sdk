@@ -431,7 +431,7 @@ open class KABotClient: NSObject {
         if (isAnonymous) {
             identity = self.getUUID()
         } else {
-            identity = UserDefaults.standard.value(forKey: "User Identity") as? String //SDKConfiguration.botConfig.identity //kk
+            identity = userIdentity //SDKConfiguration.botConfig.identity //kk
         }
         
         let botInfo: [String: Any] = ["chatBot": chatBotName, "taskBotId": botId]
