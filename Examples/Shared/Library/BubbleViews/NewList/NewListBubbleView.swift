@@ -18,7 +18,7 @@ class NewListBubbleView: BubbleView {
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
     let kMinTextWidth: CGFloat = 20.0
     fileprivate let listCellIdentifier = "NewListTableViewCell"
-    var rowsDataLimit = 4
+    var rowsDataLimit = 3
     var isShowMore = false
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
@@ -139,7 +139,7 @@ class NewListBubbleView: BubbleView {
                 arrayOfComponents = allItems.elements ?? []
                 arrayOfButtons = allItems.buttons ?? []
                 self.titleLbl.text = allItems.text ?? ""
-                self.rowsDataLimit = (allItems.moreCount != nil ? allItems.moreCount : arrayOfComponents.count)!
+                //self.rowsDataLimit = (allItems.moreCount != nil ? allItems.moreCount : arrayOfComponents.count)!
                 isShowMore = (allItems.seeMore != nil ? allItems.seeMore : false)!
                 self.tableView.reloadData()
             }
@@ -234,7 +234,7 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let elements = arrayOfComponents[indexPath.row]
         if elements.action?.type != nil {
-            if elements.action?.type == "postback"{
+            if elements.action?.type == "postback" || elements.action?.type == "payload"{
                 let payload = elements.action?.payload == "" || elements.action?.payload == nil ? elements.action?.title : elements.action?.payload
                 self.optionsAction(elements.action?.title, payload)
             }else{

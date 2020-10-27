@@ -623,11 +623,11 @@ open class KABotClient: NSObject {
         requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
         
         let parameters: NSDictionary = ["query": text as Any,
-                                        "maxNumOfResults": 16,
-                                        "userId": "8098c978-c372-4799-9a63-1368d12c4146",
+                                        "maxNumOfResults": 9,
+                                        "userId": "115bb16d-9248-4378-aff2-228584a42e21",
                                         "streamId": "st-a4a4fabe-11d3-56cc-801d-894ddcd26c51",
                                         "lang": "en",
-                                        "smallTalk":true]
+                                        "smallTalk":"true","isBotAction":"true"]
         
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
         sessionManager?.requestSerializer = requestSerializer
