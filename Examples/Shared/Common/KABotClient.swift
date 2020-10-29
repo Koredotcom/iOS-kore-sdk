@@ -208,7 +208,7 @@ open class KABotClient: NSObject {
         
         botClient.onMessage = { [weak self] (object) in
             let message = self?.onReceiveMessage(object: object)
-            self?.addMessages(message?.0, message?.1)
+           // self?.addMessages(message?.0, message?.1)  //kk
         }
         
         botClient.onMessageAck = { (ack) in
@@ -430,7 +430,7 @@ open class KABotClient: NSObject {
         if (isAnonymous) {
             identity = self.getUUID()
         } else {
-            identity = UserDefaults.standard.value(forKey: "User Identity") as? String //SDKConfiguration.botConfig.identity //kk
+            identity = dynamicIdentity //SDKConfiguration.botConfig.identity //kk
         }
         
         let botInfo: [String: Any] = ["chatBot": chatBotName, "taskBotId": botId]
@@ -584,7 +584,7 @@ open class KABotClient: NSObject {
         
         let parameters: NSDictionary = ["query": text as Any,
                                         "maxNumOfResults": 16,
-                                        "userId": "8098c978-c372-4799-9a63-1368d12c4146",
+                                        "userId": "50cf4fe8-00cc-4a36-aab8-dfd85be2dab2",
                                         "streamId": "st-a4a4fabe-11d3-56cc-801d-894ddcd26c51",
                                         "lang": "en"]
         
@@ -624,7 +624,7 @@ open class KABotClient: NSObject {
         
         let parameters: NSDictionary = ["query": text as Any,
                                         "maxNumOfResults": 9,
-                                        "userId": "115bb16d-9248-4378-aff2-228584a42e21",
+                                        "userId": "d10ef464-1aaa-4ea3-a27b-8cd80598f5cd",
                                         "streamId": "st-a4a4fabe-11d3-56cc-801d-894ddcd26c51",
                                         "lang": "en",
                                         "smallTalk":"true","isBotAction":"true"]

@@ -23,10 +23,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ByF-gL-GR4">
-                        <rect key="frame" x="10" y="0.0" width="300" height="100"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPl-pc-Vyh">
-                                <rect key="frame" x="10" y="10" width="280" height="21"/>
+                                <rect key="frame" x="10" y="10" width="300" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="T6r-0l-sqQ"/>
                                 </constraints>
@@ -35,7 +35,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JbI-Sj-dqx">
-                                <rect key="frame" x="10" y="39" width="280" height="21"/>
+                                <rect key="frame" x="10" y="39" width="300" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="FGA-oX-DLJ"/>
                                 </constraints>
@@ -81,9 +81,9 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="ByF-gL-GR4" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="3Ia-d8-8F4"/>
-                    <constraint firstItem="ByF-gL-GR4" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="AoQ-3G-N7w"/>
+                    <constraint firstItem="ByF-gL-GR4" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="AoQ-3G-N7w"/>
                     <constraint firstAttribute="bottom" secondItem="ByF-gL-GR4" secondAttribute="bottom" constant="11" id="At7-qz-hUb"/>
-                    <constraint firstAttribute="trailing" secondItem="ByF-gL-GR4" secondAttribute="trailing" constant="10" id="YN8-OI-H10"/>
+                    <constraint firstAttribute="trailing" secondItem="ByF-gL-GR4" secondAttribute="trailing" id="YN8-OI-H10"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

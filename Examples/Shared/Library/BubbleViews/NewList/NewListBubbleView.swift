@@ -18,7 +18,7 @@ class NewListBubbleView: BubbleView {
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
     let kMinTextWidth: CGFloat = 20.0
     fileprivate let listCellIdentifier = "NewListTableViewCell"
-    var rowsDataLimit = 3
+    var rowsDataLimit = 4
     var isShowMore = false
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
@@ -165,7 +165,7 @@ class NewListBubbleView: BubbleView {
                     finalHeight += cellHeight
             }
         
-        if isShowMore{
+        if arrayOfComponents.count > rowsDataLimit{
             moreButtonHeight = 30.0
         }else{
              moreButtonHeight = 0.0
@@ -174,7 +174,7 @@ class NewListBubbleView: BubbleView {
     }
     
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
-        if (isShowMore) {
+        if arrayOfComponents.count > rowsDataLimit {
             let component: KREComponent = components.firstObject as! KREComponent
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
@@ -205,6 +205,7 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.backgroundColor = UIColor.clear
         cell.selectionStyle = .none
         cell.bgView.backgroundColor = .white
+        cell.priceLbl.textColor = .blue
         let elements = arrayOfComponents[indexPath.row]
         if elements.imageURL == nil{
             cell.imageViewWidthConstraint.constant = 0.0

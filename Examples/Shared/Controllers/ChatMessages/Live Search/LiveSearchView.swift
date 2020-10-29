@@ -38,6 +38,7 @@ class LiveSearchView: UIView {
     let yourAttributes : [NSAttributedString.Key: Any] = [
     NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Bold", size: 15.0) as Any,
     NSAttributedString.Key.foregroundColor : themeColor]
+    let sectionAndRowsLimit = 2
     
     convenience init() {
         self.init(frame: CGRect.zero)
@@ -78,7 +79,7 @@ class LiveSearchView: UIView {
 
         let views: [String: UIView] = ["tableView": tableView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tableView]-0-|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[tableView]-10-|", options: [], metrics: nil, views: views))
         NotificationCenter.default.addObserver(self, selector: #selector(callingLiveSearchView(notification:)), name: NSNotification.Name(rawValue: "textViewDidChange"), object: nil)
         callingPopularSearchApi()
     }
@@ -200,7 +201,7 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
         }
     }
     func numberOfSections(in tableView: UITableView) -> Int {
-        return headerArray.count
+        return headerArray.count > sectionAndRowsLimit ? sectionAndRowsLimit : headerArray.count
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isPopularSearch{
@@ -212,11 +213,11 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
             let headerName = headerArray[section]
             switch headerName {
             case "SUGGESTED FAQS":
-                return arrayOfFaqResults.count
+                return arrayOfFaqResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfFaqResults.count
             case "SUGGESTED PAGES":
-                 return arrayOfPageResults.count
+                 return arrayOfPageResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfPageResults.count
             case "SUGGESTED TASKS":
-                 return arrayOfTaskResults.count
+                 return arrayOfTaskResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfTaskResults.count
             default:
                 break
             }

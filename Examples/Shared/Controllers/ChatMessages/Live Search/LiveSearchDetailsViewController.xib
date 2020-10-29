@@ -47,7 +47,7 @@
                             </connections>
                         </button>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cdB-sk-fxe">
-                            <rect key="frame" x="0.0" y="114" width="375" height="553"/>
+                            <rect key="frame" x="10" y="114" width="355" height="553"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="7Xs-QP-Rqv"/>
@@ -77,7 +77,7 @@
                         <constraint firstAttribute="trailing" secondItem="RlY-ef-2Rx" secondAttribute="trailing" constant="5" id="9Io-aa-3b7"/>
                         <constraint firstItem="lZu-QA-2Ul" firstAttribute="top" secondItem="tzG-3J-5ce" secondAttribute="top" constant="5" id="LeZ-Gs-IjE"/>
                         <constraint firstAttribute="bottom" secondItem="cdB-sk-fxe" secondAttribute="bottom" id="RXa-f4-VzW"/>
-                        <constraint firstItem="cdB-sk-fxe" firstAttribute="leading" secondItem="tzG-3J-5ce" secondAttribute="leading" id="SEG-bb-on7"/>
+                        <constraint firstItem="cdB-sk-fxe" firstAttribute="leading" secondItem="tzG-3J-5ce" secondAttribute="leading" constant="10" id="SEG-bb-on7"/>
                         <constraint firstItem="CA2-AF-tAK" firstAttribute="top" secondItem="tzG-3J-5ce" secondAttribute="top" constant="5" id="X5v-hJ-q9j"/>
                         <constraint firstAttribute="trailing" secondItem="lZu-QA-2Ul" secondAttribute="trailing" constant="1" id="br9-uG-ERl"/>
                         <constraint firstItem="RlY-ef-2Rx" firstAttribute="leading" secondItem="tzG-3J-5ce" secondAttribute="leading" constant="5" id="gAv-MC-QWE"/>
@@ -85,7 +85,7 @@
                         <constraint firstItem="lZu-QA-2Ul" firstAttribute="leading" secondItem="CA2-AF-tAK" secondAttribute="trailing" constant="3" id="iII-oX-Jlb"/>
                         <constraint firstItem="cdB-sk-fxe" firstAttribute="top" secondItem="RlY-ef-2Rx" secondAttribute="bottom" constant="10" id="iNv-UF-Nin"/>
                         <constraint firstItem="RlY-ef-2Rx" firstAttribute="top" secondItem="CA2-AF-tAK" secondAttribute="bottom" constant="5" id="ozm-FG-dJV"/>
-                        <constraint firstAttribute="trailing" secondItem="cdB-sk-fxe" secondAttribute="trailing" id="ruO-5B-hba"/>
+                        <constraint firstAttribute="trailing" secondItem="cdB-sk-fxe" secondAttribute="trailing" constant="10" id="ruO-5B-hba"/>
                     </constraints>
                 </view>
             </subviews>

@@ -116,7 +116,7 @@ class AppLaunchViewController: UIViewController {
             identity = self.getUUID()
         } else {
             identity = identityTF.text! //SDKConfiguration.botConfig.identity //kk
-            UserDefaults.standard.set(identityTF.text ?? "", forKey: "User Identity")
+            dynamicIdentity = identity
         }
         identityTF.resignFirstResponder()
         

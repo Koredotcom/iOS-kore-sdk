@@ -681,7 +681,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func addMessages(_ message: Message?, _ ttsBody: String?) {
         if let m = message, m.components.count > 0 {
-            showTypingStatusForBotsAction()
+            //showTypingStatusForBotsAction() //kk
             let delayInMilliSeconds = 500
             DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(delayInMilliSeconds)) {
                 let dataStoreManager = DataStoreManager.sharedManager
@@ -1017,18 +1017,28 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let textComponent: Component = Component()
         let templateType = dictionary["templateType"] as? String ?? ""
         if templateType ==  "botAction"{
+            var webhookPayloadisArray : Bool?
+            let webhookPalyload = (((dictionary["template"] as AnyObject).object(forKey: "webhookPayload") as AnyObject).object(forKey: "text") as AnyObject)
+            webhookPayloadisArray = verifyIsObjectOfAnArray(webhookPalyload) ? true : false
             
-            let jsonString = ((((dictionary["template"] as AnyObject).object(forKey: "webhookPayload") as AnyObject).object(forKey: "text") as AnyObject).object(at: 0))
-        
-            let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString as! String) as! NSDictionary
-            let templateTypenew  = ((jsonObject["payload"] as AnyObject).object(forKey: "template_type") as! String)
-            
-            let componentType = getComponentType(templateTypenew, "responsive")
-            textComponent.payload = Utilities.stringFromJSONObject(object: jsonObject["payload"] as Any)
-            message.addComponent(textComponent)
-            let optionsComponent: Component = Component(componentType)
-            optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject["payload"] as Any)
-            message.addComponent(optionsComponent)
+            if webhookPayloadisArray! {
+                let jsonString = (webhookPalyload.object(at: 0))
+                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString as! String) as? NSDictionary ?? [:]
+                if jsonObject.count > 0{
+                    let templateTypenew  = ((jsonObject["payload"] as AnyObject).object(forKey: "template_type") as! String)
+                               
+                    let componentType = getComponentType(templateTypenew, "responsive")
+                    let optionsComponent: Component = Component(componentType)
+                    optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject["payload"] as Any)
+                    message.addComponent(optionsComponent)
+                }else{
+                    textComponent.payload = jsonString as? String
+                    message.addComponent(textComponent)
+                }
+            }else{
+                textComponent.payload = (webhookPalyload as! String)
+                message.addComponent(textComponent)
+            }
         }else{
             let componentType = getComponentType(templateType, "responsive")
             textComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
@@ -1286,7 +1296,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let botId:String = "u-40d2bdc2-822a-51a2-bdcd-95bdf4po8331c9";
         let info:NSMutableDictionary = NSMutableDictionary.init()
         info.setValue(botId, forKey: "botId");
-        info.setValue("kora", forKey: "imageName");
+        info.setValue("findly", forKey: "imageName");
         
         self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 2.0)
     }
@@ -1485,7 +1495,7 @@ extension ChatMessagesViewController: KABotClientDelegate {
         let info:NSMutableDictionary = NSMutableDictionary.init()
         info.setValue(botId, forKey: "botId");
         let urlString = leftImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        info.setValue(urlString ?? "kora", forKey: "imageName");
+        info.setValue(urlString ?? "findly", forKey: "imageName");
         self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5)
     }
     
@@ -1615,6 +1625,12 @@ extension ChatMessagesViewController {
         }
     }
     
-    
+    func verifyIsObjectOfAnArray<T>(_ object: T) -> Bool {
+       if let _ = object as? [T] {
+          return true
+       }
+
+       return false
+    }
 }
 
