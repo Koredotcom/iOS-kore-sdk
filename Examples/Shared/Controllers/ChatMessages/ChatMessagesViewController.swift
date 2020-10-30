@@ -14,7 +14,7 @@ import CoreData
 import Mantle
 
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, LiveSearchViewDelegate, LiveSearchDetailsViewDelegate, UIGestureRecognizerDelegate {
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, LiveSearchViewDelegate, LiveSearchDetailsViewDelegate, UIGestureRecognizerDelegate, LoginViewDelegate {
     // MARK: properties
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
@@ -42,6 +42,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var typingStatusView: KRETypingStatusView!
     var webViewController: SFSafariViewController!
     
+    @IBOutlet weak var loginContainerView: UIView!
+    var loginView: LoginView!
     
     var taskMenuKeyBoard = true
     @IBOutlet weak var taskMenuContainerView: UIView!
@@ -126,7 +128,47 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         ConfigureDropDownView()
         liveSearchViewConfigure()
         configureWebView()
+        configureLoginView()
         welcomeMessage(messageString: "👋 Hello! How can I help you today?")
+        
+    }
+    
+    func configureLoginView(){
+        loginContainerView.isHidden = true
+        loginView = LoginView()
+        loginView.delegate = self
+        loginView?.translatesAutoresizingMaskIntoConstraints = false
+        loginContainerView.addSubview(self.loginView!)
+        
+        
+        let views: [String: Any] = ["loginView" : self.loginView]
+        loginContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[loginView]|", options:[], metrics:nil, views: views))
+        loginContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-50-[loginView]|", options:[], metrics:nil, views: views))
+        self.tapToDismissGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(ChatMessagesViewController.dismissKeyboard(_:)))
+        self.tapToDismissGestureRecognizer.delegate = self
+        self.loginContainerView.addGestureRecognizer(tapToDismissGestureRecognizer)
+    }
+    func LoginViewSucess(){
+        loginContainerView.isHidden = true
+        isLogin = true
+        
+       // isAutoSendMessage = true
+        isShowLoginView = true
+//        self.liveSearchContainerView.isHidden = true
+//        self.kaBotClient.getSearchResults(isAutoSendMessage ,success: { [weak self] (dictionary) in
+//           // isAutoSendMessage = false
+//            isShowLoginView = false
+//            print(dictionary)
+//            self?.receviceMessage(dictionary: dictionary)
+//
+//            }, failure: { (error) in
+//                print(error)
+//        })
+        self.callSearchApi(text: isAutoSendMessage!)
+        isShowLoginView = false
+    }
+    func ShowLoginView(){
+        loginContainerView.isHidden = false
     }
     
     func configureWebView(){
@@ -200,7 +242,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         //navigationController?.navigationBar.barTintColor = themeColor
         navigationController?.navigationBar.tintColor = UIColor.darkGray
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        self.view.backgroundColor = UIColor.init(hexString: "#eaeaea")  //f3f3f5
+        self.view.backgroundColor = UIColor.init(red: 232/255, green: 232/255, blue: 233/255, alpha: 1.0) //UIColor.init(hexString: "#eaeaea")  //f3f3f5
         
         if SDKConfiguration.widgetConfig.isPanelView {
             populatePanelItems()
@@ -269,6 +311,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if ((self.composeView.isFirstResponder)) {
             _ = self.composeView.resignFirstResponder()
         }
+        liveSearchContainerView.isHidden = true
+        loginContainerView.isHidden = true
+        
         webViewContainerView.isHidden = false
         navigationController?.setNavigationBarHidden(true, animated: false)
         
@@ -683,17 +728,40 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func addMessages(_ message: Message?, _ ttsBody: String?) {
-        if let m = message, m.components.count > 0 {
-            //showTypingStatusForBotsAction() //kk
-            let delayInMilliSeconds = 500
-            DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(delayInMilliSeconds)) {
-                let dataStoreManager = DataStoreManager.sharedManager
-                dataStoreManager.createNewMessageIn(thread: self.thread, message: m, completion: { (success) in
+        
+        if isShowLoginView{
+            isShowLoginView = false
+            if isLogin {
+                if let m = message, m.components.count > 0 {
+                    //showTypingStatusForBotsAction() //kk
+                    let delayInMilliSeconds = 500
+                    DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(delayInMilliSeconds)) {
+                        let dataStoreManager = DataStoreManager.sharedManager
+                        dataStoreManager.createNewMessageIn(thread: self.thread, message: m, completion: { (success) in
+                            
+                        })
+                        
+                        if let tts = ttsBody {
+                            NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: tts)
+                        }
+                    }
+                }
+            }else{
+                loginContainerView.isHidden = false
+            }
+        }else{
+            if let m = message, m.components.count > 0 {
+                //showTypingStatusForBotsAction() //kk
+                let delayInMilliSeconds = 500
+                DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(delayInMilliSeconds)) {
+                    let dataStoreManager = DataStoreManager.sharedManager
+                    dataStoreManager.createNewMessageIn(thread: self.thread, message: m, completion: { (success) in
+                        
+                    })
                     
-                })
-                
-                if let tts = ttsBody {
-                    NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: tts)
+                    if let tts = ttsBody {
+                        NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: tts)
+                    }
                 }
             }
         }
@@ -847,7 +915,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     // MARK: notification handlers
     @objc func keyboardWillShow(_ notification: Notification) {
-        self.liveSearchContainerView.isHidden = false
+        if isEndOfTask {
+            self.liveSearchContainerView.isHidden = false
+        }else{
+           self.liveSearchContainerView.isHidden = true
+        }
         webViewContainerView.isHidden = true
         navigationController?.setNavigationBarHidden(false, animated: false)
         
@@ -962,6 +1034,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     @objc func dismissKeyboard(_ gesture: UITapGestureRecognizer) {
         self.liveSearchContainerView.isHidden = true
+        self.loginContainerView.isHidden = true
         self.bottomConstraint.constant = 0
         self.taskMenuContainerHeightConstant.constant = 0
         if (self.composeView.isFirstResponder) {
@@ -982,14 +1055,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 //                    self.botClient.sendMessage(text, options: options)
                 //                }
                 if let _ = self.botClient, let text = textComponent?.payload {
-                    self.liveSearchContainerView.isHidden = true
-                    self.kaBotClient.getSearchResults(text ,success: { [weak self] (dictionary) in
-                        print(dictionary)
-                        self?.receviceMessage(dictionary: dictionary)
-                        
-                        }, failure: { (error) in
-                            print(error)
-                    })
+                    isAutoSendMessage = text
+                    self.callSearchApi(text: text)
                 }
                 
                 self.textMessageSent()
@@ -1012,6 +1079,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         recentSearchArray.add(dic)
     }
     
+    func callSearchApi(text:String){
+        self.liveSearchContainerView.isHidden = true
+                           self.kaBotClient.getSearchResults(text ,success: { [weak self] (dictionary) in
+                               print(dictionary)
+                               self?.receviceMessage(dictionary: dictionary)
+                               
+                               }, failure: { (error) in
+                                   print(error)
+                           })
+    }
+    
     func receviceMessage(dictionary:[String: Any]){
         let message: Message = Message()
         message.messageType = .reply
@@ -1025,7 +1103,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             
             if endOfTask != nil{
                 isEndOfTask = endOfTask!
-                
+            }else{
+                isEndOfTask = false
             }
             
             var webhookPayloadisArray : Bool?
@@ -1247,6 +1326,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func composeBarViewDidBecomeFirstResponder(_: ComposeBarView) {
+        loginContainerView.isHidden = true
+        loginView.userIdTextField.text = ""
+        loginView.passwordTextField.text = ""
         self.audioComposeView.stopRecording()
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ClosePanel"), object: nil)
     }
@@ -1529,12 +1611,14 @@ extension ChatMessagesViewController: KABotClientDelegate {
         navigationController?.setNavigationBarHidden(false, animated: false)
         let dataString: String = notification.object as! String
         print("chatView: \(dataString)")
-        if liveSearchContainerView.isHidden{
-            if dataString != ""{
-                if isEndOfTask {
+         if isEndOfTask {
+           if liveSearchContainerView.isHidden{
+                if dataString != ""{
                     liveSearchContainerView.isHidden = false
                 }
             }
+        }else{
+            liveSearchContainerView.isHidden = true
         }
     }
 }

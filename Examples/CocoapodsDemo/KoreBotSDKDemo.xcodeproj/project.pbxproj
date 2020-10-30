@@ -20,6 +20,7 @@
 		95C52EC4254BCA8E001AC8F4 /* CardTemplateBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C52EC3254BCA8E001AC8F4 /* CardTemplateBubbleView.swift */; };
 		95C52ECB254BDA64001AC8F4 /* CardTemplateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C52EC9254BDA64001AC8F4 /* CardTemplateTableViewCell.swift */; };
 		95C52ECC254BDA64001AC8F4 /* CardTemplateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95C52ECA254BDA64001AC8F4 /* CardTemplateTableViewCell.xib */; };
+		95C52ED0254C0977001AC8F4 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C52ECF254C0977001AC8F4 /* LoginView.swift */; };
 		95F6CE292539444E00010BAD /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6CE282539444E00010BAD /* WebView.swift */; };
 		95FD1B7C2537046C00BC4BF1 /* LiveSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD1B7B2537046C00BC4BF1 /* LiveSearchView.swift */; };
 		95FD1B80253705C500BC4BF1 /* PopularLiveSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD1B7E253705C500BC4BF1 /* PopularLiveSearchCell.swift */; };
@@ -180,6 +181,7 @@
 		95C52EC3254BCA8E001AC8F4 /* CardTemplateBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTemplateBubbleView.swift; sourceTree = "<group>"; };
 		95C52EC9254BDA64001AC8F4 /* CardTemplateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTemplateTableViewCell.swift; sourceTree = "<group>"; };
 		95C52ECA254BDA64001AC8F4 /* CardTemplateTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CardTemplateTableViewCell.xib; sourceTree = "<group>"; };
+		95C52ECF254C0977001AC8F4 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		95F6CE282539444E00010BAD /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		95FD1B7B2537046C00BC4BF1 /* LiveSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchView.swift; sourceTree = "<group>"; };
 		95FD1B7E253705C500BC4BF1 /* PopularLiveSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularLiveSearchCell.swift; sourceTree = "<group>"; };
@@ -362,6 +364,24 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		95C52ECD254C092F001AC8F4 /* Card Template */ = {
+			isa = PBXGroup;
+			children = (
+				95C52EC3254BCA8E001AC8F4 /* CardTemplateBubbleView.swift */,
+				95C52EC9254BDA64001AC8F4 /* CardTemplateTableViewCell.swift */,
+				95C52ECA254BDA64001AC8F4 /* CardTemplateTableViewCell.xib */,
+			);
+			path = "Card Template";
+			sourceTree = "<group>";
+		};
+		95C52ECE254C094C001AC8F4 /* LoginTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				95C52ECF254C0977001AC8F4 /* LoginView.swift */,
+			);
+			path = LoginTemplate;
+			sourceTree = "<group>";
+		};
 		95F6CE272539442700010BAD /* Home WebView */ = {
 			isa = PBXGroup;
 			children = (
@@ -380,9 +400,8 @@
 				955286E72538589700D235B5 /* LiveSearchChatItems.swift */,
 				95FD1B7D2537059300BC4BF1 /* LiveSearchCells */,
 				955286E925385E7F00D235B5 /* LiveSearchBubbleView.swift */,
-				95C52EC3254BCA8E001AC8F4 /* CardTemplateBubbleView.swift */,
-				95C52EC9254BDA64001AC8F4 /* CardTemplateTableViewCell.swift */,
-				95C52ECA254BDA64001AC8F4 /* CardTemplateTableViewCell.xib */,
+				95C52ECE254C094C001AC8F4 /* LoginTemplate */,
+				95C52ECD254C092F001AC8F4 /* Card Template */,
 			);
 			path = "Live Search";
 			sourceTree = "<group>";
@@ -1186,6 +1205,7 @@
 				D101F92124E163F700D47DB8 /* KoraAssistant.swift in Sources */,
 				D101F92024E163F700D47DB8 /* KoraNotification.swift in Sources */,
 				D1F338DD2201D99A005BE5F1 /* KREAttributedLabel.m in Sources */,
+				95C52ED0254C0977001AC8F4 /* LoginView.swift in Sources */,
 				D1F338C92201D99A005BE5F1 /* KREThread+CoreDataProperties.swift in Sources */,
 				CD44516A250B9B3E00879219 /* DropDown+Appearance.swift in Sources */,
 				D1F338D92201D99A005BE5F1 /* ComposeBarView.swift in Sources */,

@@ -587,7 +587,7 @@ open class KABotClient: NSObject {
         
         let parameters: NSDictionary = ["query": text as Any,
                                         "maxNumOfResults": 16,
-                                        "userId": "d10ef464-1aaa-4ea3-a27b-8cd80598f5cd",
+                                        "userId": "03B41D62-FB69-5B6D-A95E-473842F4DFE3",
                                         "streamId": "st-a4a4fabe-11d3-56cc-801d-894ddcd26c51",
                                         "lang": "en"]
         
@@ -625,20 +625,19 @@ open class KABotClient: NSObject {
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
         requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
         
-        let parameters: NSDictionary?
-        if isLogin{
+        var parameters: NSDictionary?
             parameters = ["query": text as Any,
             "maxNumOfResults": 9,
-            "userId": "d10ef464-1aaa-4ea3-a27b-8cd80598f5cd",
+            "userId": "03B41D62-FB69-5B6D-A95E-473842F4DFE3",
             "streamId": "st-a4a4fabe-11d3-56cc-801d-894ddcd26c51",
             "lang": "en",
             "smallTalk":"true"]
-        }else{
-            isLogin = true
-            isEndOfTask = false
+        if isShowLoginView{
+            //isLogin = true
+            //isEndOfTask = false
              parameters = ["query": text as Any,
             "maxNumOfResults": 9,
-            "userId": "d10ef464-1aaa-4ea3-a27b-8cd80598f5cd",
+            "userId": "03B41D62-FB69-5B6D-A95E-473842F4DFE3",
             "streamId": "st-a4a4fabe-11d3-56cc-801d-894ddcd26c51",
             "lang": "en",
             "smallTalk":"true","isBotAction":"true"]

@@ -26,6 +26,9 @@ var themeColorUserDefaults = "ThemeColor"
 let FindlyUrl = "https://app.findly.ai/"
 let recentSearchArray = NSMutableArray()
 
+//var isAutoSendMessage = false
+var isAutoSendMessage:String?
+var isShowLoginView = false
 var isLogin = false
 var isEndOfTask = true
 

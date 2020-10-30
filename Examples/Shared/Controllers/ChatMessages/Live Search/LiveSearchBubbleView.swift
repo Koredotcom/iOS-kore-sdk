@@ -275,10 +275,10 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             let results = arrayOfTaskResults[indexPath.row]
             cell.titleLabel?.text = results.taskName
             if results.imageUrl == nil || results.imageUrl == ""{
-                cell.profileImageView.image = UIImage(named: "placeholder_image")
+                cell.profileImageView.image = UIImage(named: "task")
             }else{
                 let url = URL(string: results.imageUrl!)
-                cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+                cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "task"))
             }
             return cell
         default:
@@ -332,7 +332,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
         view.addSubview(showMoreButton)
         showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
         showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
-        let attributeString = NSMutableAttributedString(string: "Show More",
+        let attributeString = NSMutableAttributedString(string: "See all results",
                                                         attributes: yourAttributes)
         showMoreButton.setAttributedTitle(attributeString, for: .normal)
         

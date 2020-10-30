@@ -144,6 +144,9 @@ class LiveSearchView: UIView {
             self?.arrayOfTaskResults = task ?? []
             if self!.arrayOfTaskResults.count > 0 {
                 self!.headerArray.append("SUGGESTED TASKS")
+                isShowLoginView = true
+            }else{
+                isShowLoginView = false
             }
             self?.isPopularSearch = false
             DispatchQueue.main.async {
@@ -296,10 +299,10 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 let results = arrayOfTaskResults[indexPath.row]
                 cell.titleLabel?.text = results.taskName
                if results.imageUrl == nil || results.imageUrl == ""{
-                cell.profileImageView.image = UIImage(named: "placeholder_image")
+                cell.profileImageView.image = UIImage(named: "task")
                }else{
                 let url = URL(string: results.imageUrl!)
-                cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+                cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "task"))
                 }
                 return cell
             default:

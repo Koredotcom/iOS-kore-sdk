@@ -266,10 +266,10 @@ extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSo
             let results = arrayOfTaskResults[indexPath.row]
             cell.titleLabel?.text = results.taskName
             if results.imageUrl == nil || results.imageUrl == ""{
-                cell.profileImageView.image = UIImage(named: "placeholder_image")
+                cell.profileImageView.image = UIImage(named: "task")
             }else{
                 let url = URL(string: results.imageUrl!)
-                cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+                cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "task"))
             }
             return cell
         default:
