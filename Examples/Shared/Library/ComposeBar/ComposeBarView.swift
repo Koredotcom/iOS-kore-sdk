@@ -26,6 +26,7 @@ class ComposeBarView: UIView {
     fileprivate var sendButton: UIButton!
     fileprivate var menuButton: UIButton!
     fileprivate var speechToTextButton: UIButton!
+    fileprivate var leftImage: UIImageView!
     
     fileprivate var textViewTrailingConstraint: NSLayoutConstraint!
     fileprivate(set) public var isKeyboardEnabled: Bool = false
@@ -45,7 +46,7 @@ class ComposeBarView: UIView {
     }
     
     fileprivate func setupViews() {
-        self.backgroundColor = UIColor.init(hexString: "#eaeaea")
+        self.backgroundColor = .white//UIColor.init(hexString: "#eaeaea")
         
         self.growingTextView = KREGrowingTextView(frame: CGRect.zero)
         self.growingTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -64,7 +65,7 @@ class ComposeBarView: UIView {
         self.growingTextView.isUserInteractionEnabled = false
         
         let attributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: UIFont(name: "HelveticaNeue", size: 14.0)!, NSAttributedString.Key.foregroundColor: Common.UIColorRGB(0xB5B9BA)]
-        self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Say Something...", attributes:attributes)
+        self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Ask anything", attributes:attributes)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidBeginEditingNotification(_ :)), name: UITextView.textDidBeginEditingNotification, object: self.growingTextView.textView)
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidChangeNotification(_ :)), name: UITextView.textDidChangeNotification, object: self.growingTextView.textView)
@@ -75,13 +76,20 @@ class ComposeBarView: UIView {
         self.menuButton.setTitleColor(Common.UIColorRGB(0xFFFFFF), for: .normal)
         self.menuButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
         //self.menuButton.setImage(UIImage.init(named: "Menu"), for: .normal)
-        self.menuButton.setBackgroundImage(UIImage.init(named: "findly"), for: .normal)
+        self.menuButton.setBackgroundImage(UIImage.init(named: ""), for: .normal)
         self.menuButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
         //self.menuButton.addTarget(self, action: #selector(self.taskMenuButtonAction(_:)), for: .touchUpInside)
-        self.menuButton.isHidden = false
+        self.menuButton.isHidden = true
         self.menuButton.contentEdgeInsets = UIEdgeInsets(top: 9.0, left: 3.0, bottom: 7.0, right: 3.0)
         self.menuButton.clipsToBounds = true
         self.addSubview(self.menuButton)
+        
+        self.leftImage = UIImageView.init(frame: CGRect.zero)
+        self.leftImage.translatesAutoresizingMaskIntoConstraints = false
+        self.leftImage.image = UIImage.init(named: "findly")
+        self.leftImage.isHidden = false
+        self.leftImage.contentMode = .scaleAspectFit
+        self.addSubview(self.leftImage)
         
         self.sendButton = UIButton.init(frame: CGRect.zero)
         self.sendButton.setTitle("Send", for: .normal)
@@ -120,7 +128,7 @@ class ComposeBarView: UIView {
         self.bottomLineView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.bottomLineView)
         
-        let views: [String : Any] = ["topLineView": self.topLineView, "bottomLineView": self.bottomLineView,"menuButton": self.menuButton, "growingTextView": self.growingTextView, "sendButton": self.sendButton, "speechToTextButton": self.speechToTextButton]
+        let views: [String : Any] = ["topLineView": self.topLineView, "bottomLineView": self.bottomLineView,"menuButton": self.menuButton, "leftImage": self.leftImage, "growingTextView": self.growingTextView, "sendButton": self.sendButton, "speechToTextButton": self.speechToTextButton]
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[topLineView]|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[topLineView(0.5)]", options:[], metrics:nil, views:views))
@@ -129,10 +137,13 @@ class ComposeBarView: UIView {
         
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[menuButton(32)]-5-[growingTextView]-5-[sendButton]-5-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[leftImage(30)]-5-[growingTextView]-5-[sendButton]-5-|", options:[], metrics:nil, views:views))
+        
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[growingTextView]-5-[speechToTextButton]-5-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-7-[growingTextView]-7-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[sendButton]-6-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[menuButton]-6-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[leftImage]-6-|", options:[], metrics:nil, views:views))
         self.addConstraint(NSLayoutConstraint.init(item: self.sendButton, attribute: .centerY, relatedBy: .equal, toItem: self.speechToTextButton, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         self.addConstraint(NSLayoutConstraint.init(item: self.sendButton, attribute: .height, relatedBy: .equal, toItem: self.speechToTextButton, attribute: .height, multiplier: 1.0, constant: 0.0))
         self.speechToTextButton.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .horizontal)
@@ -196,7 +207,7 @@ class ComposeBarView: UIView {
         if self.isKeyboardEnabled {
             self.sendButton.isHidden = !hasText
             self.speechToTextButton.isHidden = hasText
-            self.menuButton.isHidden = false
+            self.menuButton.isHidden = true
             NotificationCenter.default.post(name: Notification.Name("textViewDidChange"), object: growingTextView.textView.text)
         }else{
             self.sendButton.isHidden = true

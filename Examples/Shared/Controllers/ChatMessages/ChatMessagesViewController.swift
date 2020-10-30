@@ -200,7 +200,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         //navigationController?.navigationBar.barTintColor = themeColor
         navigationController?.navigationBar.tintColor = UIColor.darkGray
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        self.view.backgroundColor = UIColor.init(hexString: "#f3f3f5")
+        self.view.backgroundColor = UIColor.init(hexString: "#eaeaea")  //f3f3f5
         
         if SDKConfiguration.widgetConfig.isPanelView {
             populatePanelItems()
@@ -576,6 +576,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
         else if (templateType == "search") {
             return .search
+        }
+        else if (templateType == "cardTemplate") {
+            return .cardTemplate
         }
         return .text
     }
@@ -1017,6 +1020,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let textComponent: Component = Component()
         let templateType = dictionary["templateType"] as? String ?? ""
         if templateType ==  "botAction"{
+            
+            let endOfTask:Bool? = ((((dictionary["template"] as AnyObject).object(forKey: "webhookPayload") as AnyObject).object(forKey: "endOfTask") as AnyObject) as? Bool)
+            
+            if endOfTask != nil{
+                isEndOfTask = endOfTask!
+                
+            }
+            
             var webhookPayloadisArray : Bool?
             let webhookPalyload = (((dictionary["template"] as AnyObject).object(forKey: "webhookPayload") as AnyObject).object(forKey: "text") as AnyObject)
             webhookPayloadisArray = verifyIsObjectOfAnArray(webhookPalyload) ? true : false
@@ -1036,8 +1047,19 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     message.addComponent(textComponent)
                 }
             }else{
-                textComponent.payload = (webhookPalyload as! String)
-                message.addComponent(textComponent)
+                let jsonString = (webhookPalyload as! String)
+                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString ) as? NSDictionary ?? [:]
+                if jsonObject.count > 0{
+                    let templateTypenew  = ((jsonObject["payload"] as AnyObject).object(forKey: "template_type") as! String)
+                               
+                    let componentType = getComponentType(templateTypenew, "responsive")
+                    let optionsComponent: Component = Component(componentType)
+                    optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject["payload"] as Any)
+                    message.addComponent(optionsComponent)
+                }else{
+                    textComponent.payload = jsonString
+                    message.addComponent(textComponent)
+                }
             }
         }else{
             let componentType = getComponentType(templateType, "responsive")
@@ -1509,7 +1531,9 @@ extension ChatMessagesViewController: KABotClientDelegate {
         print("chatView: \(dataString)")
         if liveSearchContainerView.isHidden{
             if dataString != ""{
-                liveSearchContainerView.isHidden = false
+                if isEndOfTask {
+                    liveSearchContainerView.isHidden = false
+                }
             }
         }
     }

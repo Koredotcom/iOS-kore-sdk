@@ -486,3 +486,17 @@ class SearchCell : MessageBubbleCell {
     }
 }
 
+class CardTemplateCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .cardTemplate
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 20
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
+
+

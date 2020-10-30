@@ -252,6 +252,8 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 cell.selectionStyle = .none
                 cell.titleLabel.textColor = .black
                 cell.descriptionLabel.textColor = .dark
+                cell.titleLabel?.numberOfLines = 2
+                cell.descriptionLabel?.numberOfLines = 2
                 let results = arrayOfFaqResults[indexPath.row]
                 cell.titleLabel?.text = results.question
                 cell.descriptionLabel?.text = results.answer
@@ -279,6 +281,8 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 let results = arrayOfPageResults[indexPath.row]
                 cell.titleLabel?.text = results.title
                 cell.descriptionLabel?.text = results.searchResultPreview
+                cell.titleLabel?.numberOfLines = 2
+                cell.descriptionLabel?.numberOfLines = 2
                 let url = URL(string: results.imageUrl!)
                 cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
                 cell.ShareButton.addTarget(self, action: #selector(self.shareButtonAction(_:)), for: .touchUpInside)
@@ -352,7 +356,7 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
             view.addSubview(showMoreButton)
             showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
             showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
-           let attributeString = NSMutableAttributedString(string: "Show More",
+           let attributeString = NSMutableAttributedString(string: "See all results",
                                                             attributes: yourAttributes)
             showMoreButton.setAttributedTitle(attributeString, for: .normal)
         

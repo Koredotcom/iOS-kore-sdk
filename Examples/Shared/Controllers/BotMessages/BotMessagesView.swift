@@ -87,7 +87,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(FeedbackBubbleCell.self, forCellReuseIdentifier:"FeedbackBubbleCell")
         self.tableView.register(InLineFormCell.self, forCellReuseIdentifier:"InLineFormCell")
         self.tableView.register(SearchCell.self, forCellReuseIdentifier:"SearchCell")
-
+        self.tableView.register(CardTemplateCell.self, forCellReuseIdentifier:"CardTemplateCell")
 
     }
     
@@ -200,6 +200,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 break
             case .search:
                 cellIdentifier = "SearchCell"
+                break
+            case .cardTemplate:
+                cellIdentifier = "CardTemplateCell"
                 break
             }
             
@@ -378,6 +381,13 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             }
             bubbleView.linkAction = {[weak self] (text) in
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
+            cell.bubbleView.drawBorder = true
+            break
+        case .cardTemplate:
+            let bubbleView: CardTemplateBubbleView = cell.bubbleView as! CardTemplateBubbleView
+            bubbleView.optionsAction = {[weak self] (text) in
+                self?.viewDelegate?.optionsButtonTapAction(text: text!)
             }
             cell.bubbleView.drawBorder = true
             break

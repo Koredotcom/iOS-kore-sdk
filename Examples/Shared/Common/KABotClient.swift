@@ -316,6 +316,9 @@ open class KABotClient: NSObject {
         else if (templateType == "search") {
             return .search
         }
+        else if (templateType == "cardTemplate") {
+            return .cardTemplate
+        }
         return .text
     }
     
@@ -584,7 +587,7 @@ open class KABotClient: NSObject {
         
         let parameters: NSDictionary = ["query": text as Any,
                                         "maxNumOfResults": 16,
-                                        "userId": "50cf4fe8-00cc-4a36-aab8-dfd85be2dab2",
+                                        "userId": "d10ef464-1aaa-4ea3-a27b-8cd80598f5cd",
                                         "streamId": "st-a4a4fabe-11d3-56cc-801d-894ddcd26c51",
                                         "lang": "en"]
         
@@ -622,12 +625,25 @@ open class KABotClient: NSObject {
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
         requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
         
-        let parameters: NSDictionary = ["query": text as Any,
-                                        "maxNumOfResults": 9,
-                                        "userId": "d10ef464-1aaa-4ea3-a27b-8cd80598f5cd",
-                                        "streamId": "st-a4a4fabe-11d3-56cc-801d-894ddcd26c51",
-                                        "lang": "en",
-                                        "smallTalk":"true","isBotAction":"true"]
+        let parameters: NSDictionary?
+        if isLogin{
+            parameters = ["query": text as Any,
+            "maxNumOfResults": 9,
+            "userId": "d10ef464-1aaa-4ea3-a27b-8cd80598f5cd",
+            "streamId": "st-a4a4fabe-11d3-56cc-801d-894ddcd26c51",
+            "lang": "en",
+            "smallTalk":"true"]
+        }else{
+            isLogin = true
+            isEndOfTask = false
+             parameters = ["query": text as Any,
+            "maxNumOfResults": 9,
+            "userId": "d10ef464-1aaa-4ea3-a27b-8cd80598f5cd",
+            "streamId": "st-a4a4fabe-11d3-56cc-801d-894ddcd26c51",
+            "lang": "en",
+            "smallTalk":"true","isBotAction":"true"]
+        }
+        
         
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
         sessionManager?.requestSerializer = requestSerializer

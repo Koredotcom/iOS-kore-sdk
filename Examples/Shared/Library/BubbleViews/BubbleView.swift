@@ -120,6 +120,9 @@ class BubbleView: UIView {
         case .search:
             bubbleView = LiveSearchBubbleView()
             break
+        case .cardTemplate:
+            bubbleView = CardTemplateBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         

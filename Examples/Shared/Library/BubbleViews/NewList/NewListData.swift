@@ -92,6 +92,12 @@ public class ComponentElements: NSObject, Decodable {
     public var value: String?
     public var imageURL: String?
     public var action: ComponentItemAction?
+    public var bill_amount: String?
+    public var biller_name: String?
+    public var card_number: String?
+    public var card_type: String?
+    public var due_date: String?
+    public var postback_value: String?
     
     enum ColorCodeKeys: String, CodingKey {
         case color = "color"
@@ -100,6 +106,13 @@ public class ComponentElements: NSObject, Decodable {
         case value = "value"
         case imageURL = "imageURL"
         case action = "default_action"
+        
+        case bill_amount = "bill_amount"
+        case biller_name = "biller_name"
+        case card_number = "card_number"
+        case card_type = "card_type"
+        case due_date = "due_date"
+        case postback_value = "postback_value"
     }
     
     // MARK: - init
@@ -115,6 +128,13 @@ public class ComponentElements: NSObject, Decodable {
         value = try? container.decode(String.self, forKey: .value)
         imageURL = try? container.decode(String.self, forKey: .imageURL)
         action = try? container.decode(ComponentItemAction.self, forKey: .action)
+        
+        bill_amount = try? container.decode(String.self, forKey: .bill_amount)
+        biller_name = try? container.decode(String.self, forKey: .biller_name)
+        card_number = try? container.decode(String.self, forKey: .card_number)
+        card_type = try? container.decode(String.self, forKey: .card_type)
+        due_date = try? container.decode(String.self, forKey: .due_date)
+        postback_value = try? container.decode(String.self, forKey: .postback_value)
     }
 }
 

@@ -115,7 +115,7 @@ class LiveSearchBubbleView: BubbleView {
         self.cardView = UIView(frame:.zero)
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
-        cardView.backgroundColor =  UIColor.red
+        cardView.backgroundColor =  UIColor.clear
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
@@ -243,6 +243,8 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             cell.selectionStyle = .none
             cell.titleLabel.textColor = .black
             cell.descriptionLabel.textColor = .dark
+            cell.titleLabel?.numberOfLines = 2
+            cell.descriptionLabel?.numberOfLines = 2
             let results = arrayOfFaqResults[indexPath.row]
             cell.titleLabel?.text = results.question
             cell.descriptionLabel?.text = results.answer
@@ -255,6 +257,8 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             cell.selectionStyle = .none
             cell.titleLabel.textColor = .black
             cell.descriptionLabel.textColor = .dark
+            cell.titleLabel?.numberOfLines = 2
+            cell.descriptionLabel?.numberOfLines = 2
             let results = arrayOfPageResults[indexPath.row]
             cell.titleLabel?.text = results.title
             cell.descriptionLabel?.text = results.searchResultPreview
@@ -306,7 +310,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = UIColor.init(red: 240/255, green: 242/255, blue: 244/255, alpha: 1.0)
+        view.backgroundColor = .clear//UIColor.init(red: 240/255, green: 242/255, blue: 244/255, alpha: 1.0)
         let headerLabel = UILabel(frame: .zero)
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.textAlignment = .left
@@ -336,7 +340,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
         showMoreButton.isHidden = boolValue
         
         let views: [String: UIView] = ["headerLabel": headerLabel, "showMoreButton": showMoreButton]
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[headerLabel]-5-[showMoreButton(100)]-10-|", options:[], metrics:nil, views:views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[headerLabel]-5-[showMoreButton(100)]-0-|", options:[], metrics:nil, views:views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[headerLabel]-5-|", options:[], metrics:nil, views:views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[showMoreButton]-5-|", options:[], metrics:nil, views:views))
         

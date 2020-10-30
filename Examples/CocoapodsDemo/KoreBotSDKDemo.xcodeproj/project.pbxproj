@@ -17,6 +17,9 @@
 		955286E62538085900D235B5 /* LiveSearchCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 955286E42538085900D235B5 /* LiveSearchCollectionViewCell.xib */; };
 		955286E82538589700D235B5 /* LiveSearchChatItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955286E72538589700D235B5 /* LiveSearchChatItems.swift */; };
 		955286EA25385E7F00D235B5 /* LiveSearchBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955286E925385E7F00D235B5 /* LiveSearchBubbleView.swift */; };
+		95C52EC4254BCA8E001AC8F4 /* CardTemplateBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C52EC3254BCA8E001AC8F4 /* CardTemplateBubbleView.swift */; };
+		95C52ECB254BDA64001AC8F4 /* CardTemplateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C52EC9254BDA64001AC8F4 /* CardTemplateTableViewCell.swift */; };
+		95C52ECC254BDA64001AC8F4 /* CardTemplateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95C52ECA254BDA64001AC8F4 /* CardTemplateTableViewCell.xib */; };
 		95F6CE292539444E00010BAD /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6CE282539444E00010BAD /* WebView.swift */; };
 		95FD1B7C2537046C00BC4BF1 /* LiveSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD1B7B2537046C00BC4BF1 /* LiveSearchView.swift */; };
 		95FD1B80253705C500BC4BF1 /* PopularLiveSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD1B7E253705C500BC4BF1 /* PopularLiveSearchCell.swift */; };
@@ -174,6 +177,9 @@
 		955286E42538085900D235B5 /* LiveSearchCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LiveSearchCollectionViewCell.xib; sourceTree = "<group>"; };
 		955286E72538589700D235B5 /* LiveSearchChatItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchChatItems.swift; sourceTree = "<group>"; };
 		955286E925385E7F00D235B5 /* LiveSearchBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchBubbleView.swift; sourceTree = "<group>"; };
+		95C52EC3254BCA8E001AC8F4 /* CardTemplateBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTemplateBubbleView.swift; sourceTree = "<group>"; };
+		95C52EC9254BDA64001AC8F4 /* CardTemplateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTemplateTableViewCell.swift; sourceTree = "<group>"; };
+		95C52ECA254BDA64001AC8F4 /* CardTemplateTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CardTemplateTableViewCell.xib; sourceTree = "<group>"; };
 		95F6CE282539444E00010BAD /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		95FD1B7B2537046C00BC4BF1 /* LiveSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchView.swift; sourceTree = "<group>"; };
 		95FD1B7E253705C500BC4BF1 /* PopularLiveSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularLiveSearchCell.swift; sourceTree = "<group>"; };
@@ -374,6 +380,9 @@
 				955286E72538589700D235B5 /* LiveSearchChatItems.swift */,
 				95FD1B7D2537059300BC4BF1 /* LiveSearchCells */,
 				955286E925385E7F00D235B5 /* LiveSearchBubbleView.swift */,
+				95C52EC3254BCA8E001AC8F4 /* CardTemplateBubbleView.swift */,
+				95C52EC9254BDA64001AC8F4 /* CardTemplateTableViewCell.swift */,
+				95C52ECA254BDA64001AC8F4 /* CardTemplateTableViewCell.xib */,
 			);
 			path = "Live Search";
 			sourceTree = "<group>";
@@ -1077,6 +1086,7 @@
 				CD63DA4C24EAB9A700DCCCCE /* MultiSelectCell.xib in Resources */,
 				CD4B000224D164CB008E08CE /* TaskMenuViewController.xib in Resources */,
 				CDB86A0124C0099300D1CCC7 /* ListViewDetailsViewController.xib in Resources */,
+				95C52ECC254BDA64001AC8F4 /* CardTemplateTableViewCell.xib in Resources */,
 				CDB869FC24C0093A00D1CCC7 /* NewListTableViewCell.xib in Resources */,
 				CD445142250B852100879219 /* FeedbackSliderViewController.xib in Resources */,
 				D1F338EC2201D99A005BE5F1 /* CustomCollectionViewCell.xib in Resources */,
@@ -1179,6 +1189,7 @@
 				D1F338C92201D99A005BE5F1 /* KREThread+CoreDataProperties.swift in Sources */,
 				CD44516A250B9B3E00879219 /* DropDown+Appearance.swift in Sources */,
 				D1F338D92201D99A005BE5F1 /* ComposeBarView.swift in Sources */,
+				95C52ECB254BDA64001AC8F4 /* CardTemplateTableViewCell.swift in Sources */,
 				D1F338CD2201D99A005BE5F1 /* KREComponent+CoreDataClass.swift in Sources */,
 				D1F338D12201D99A005BE5F1 /* AudioController.swift in Sources */,
 				D1F338DE2201D99A005BE5F1 /* KREUtilities.m in Sources */,
@@ -1224,6 +1235,7 @@
 				CDB869FE24C0093A00D1CCC7 /* ListViewDetailsViewController.swift in Sources */,
 				CD4B000124D164CB008E08CE /* TaskMenuViewController.swift in Sources */,
 				CD445166250B9B3E00879219 /* DPDConstants.swift in Sources */,
+				95C52EC4254BCA8E001AC8F4 /* CardTemplateBubbleView.swift in Sources */,
 				D1F338F12201D99A005BE5F1 /* MiniTableViewCell.swift in Sources */,
 				CD445143250B852100879219 /* FeedbackSliderViewController.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
