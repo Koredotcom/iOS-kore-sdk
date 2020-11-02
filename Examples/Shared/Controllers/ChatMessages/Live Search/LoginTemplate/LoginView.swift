@@ -41,7 +41,7 @@ class LoginView: UIView {
        
        fileprivate func setupViews() {
         if #available(iOS 11.0, *) {
-               self.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 20.0, borderColor: UIColor.lightGray, borderWidth: 0)
+               self.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner,], radius: 20.0, borderColor: UIColor.lightGray, borderWidth: 0)
            } else {
                // Fallback on earlier versions
            }

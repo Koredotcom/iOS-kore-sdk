@@ -89,6 +89,9 @@
                 <outlet property="descriptionLabel" destination="7m4-Kb-q7a" id="UHy-8n-FHG"/>
                 <outlet property="profileImageView" destination="6qn-SX-28K" id="nEJ-hP-lkS"/>
                 <outlet property="subView" destination="KxC-fb-4xP" id="qrf-jV-ytt"/>
+                <outlet property="subViewLeadingConstraint" destination="cYq-m4-ssf" id="8YC-mG-vxc"/>
+                <outlet property="subViewTopConstaint" destination="XoO-9V-YbZ" id="tO0-Fx-SQ1"/>
+                <outlet property="subViewTrailingConstraint" destination="oxk-ed-Ifd" id="pEY-Sx-VCa"/>
                 <outlet property="titleLabel" destination="oKl-wF-gNi" id="641-FY-IHj"/>
             </connections>
             <point key="canvasLocation" x="128.98550724637681" y="76.674107142857139"/>

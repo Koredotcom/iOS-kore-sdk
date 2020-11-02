@@ -536,7 +536,7 @@ open class KABotClient: NSObject {
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
         
         // NOTE: You must set your URL to generate JWT.
-        let urlString: String = "\(FindlyUrl)api/1.1/searchAssist/sidx-f3a43e5f-74b6-5632-a488-8af83c480b88/popularSearches"//SDKConfiguration.serverConfig.koreJwtUrl()
+        let urlString: String = "\(FindlyUrl)api/1.1/searchAssist/sidx-392cd32b-6869-5e65-a99a-dc0ae0cfe5b3/popularSearches"//SDKConfiguration.serverConfig.koreJwtUrl() //sidx-f3a43e5f-74b6-5632-a488-8af83c480b88
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
@@ -576,7 +576,7 @@ open class KABotClient: NSObject {
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
         
         // NOTE: You must set your URL to generate JWT.
-        let urlString: String = "\(FindlyUrl)searchAssistant/liveSearch/sidx-f3a43e5f-74b6-5632-a488-8af83c480b88"
+        let urlString: String = "\(FindlyUrl)searchAssistant/liveSearch/sidx-392cd32b-6869-5e65-a99a-dc0ae0cfe5b3"
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
@@ -599,9 +599,11 @@ open class KABotClient: NSObject {
             } else {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
+                NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
             }
         }) { (sessionDataTask, error) in
             failure?(error)
+            NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
         }
         
     }
@@ -616,7 +618,7 @@ open class KABotClient: NSObject {
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
         
         // NOTE: You must set your URL to generate JWT.
-        let urlString: String = "\(FindlyUrl)searchAssistant/search/sidx-f3a43e5f-74b6-5632-a488-8af83c480b88"
+        let urlString: String = "\(FindlyUrl)searchAssistant/search/sidx-392cd32b-6869-5e65-a99a-dc0ae0cfe5b3"
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
@@ -652,9 +654,11 @@ open class KABotClient: NSObject {
             } else {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
+                NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
             }
         }) { (sessionDataTask, error) in
             failure?(error)
+            NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
         }
         
     }

@@ -12,6 +12,7 @@ class LiveSearchBubbleView: BubbleView {
     var tileBgv: UIView!
     var titleLbl: UILabel!
     var tableView: UITableView!
+    var iconImageView: UIImageView!
     var cardView: UIView!
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
     let kMinTextWidth: CGFloat = 20.0
@@ -63,7 +64,7 @@ class LiveSearchBubbleView: BubbleView {
         self.tileBgv.clipsToBounds = true
         self.tileBgv.layer.borderWidth = 1.0
         self.cardView.addSubview(self.tileBgv)
-        self.tileBgv.backgroundColor = .white //Common.UIColorRGB(0xEDEFF2)
+        self.tileBgv.backgroundColor = UIColor.init(red: 248/255, green: 249/255, blue: 250/255, alpha: 1.0)//.white //Common.UIColorRGB(0xEDEFF2)
         if #available(iOS 11.0, *) {
             self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
         } else {
@@ -90,6 +91,12 @@ class LiveSearchBubbleView: BubbleView {
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
         
+        iconImageView = UIImageView(frame: CGRect.zero)
+        iconImageView.contentMode = .scaleAspectFit
+        iconImageView.translatesAutoresizingMaskIntoConstraints = false
+        iconImageView.image = UIImage.init(named: "findly")
+        self.tileBgv.addSubview(iconImageView)
+        
         self.titleLbl = UILabel(frame: CGRect.zero)
         self.titleLbl.textColor = Common.UIColorRGB(0x484848)
         self.titleLbl.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
@@ -105,9 +112,10 @@ class LiveSearchBubbleView: BubbleView {
         self.titleLbl.clipsToBounds = true
         self.titleLbl.sizeToFit()
         
-        let subView: [String: UIView] = ["titleLbl": titleLbl]
+        let subView: [String: UIView] = ["titleLbl": titleLbl, "iconImageView": iconImageView]
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[iconImageView(20)]", options: [], metrics: nil, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[iconImageView(20)]-5-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
         NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
     }
     
@@ -126,7 +134,7 @@ class LiveSearchBubbleView: BubbleView {
     override func populateComponents() {
         
         if selectedTheme == "Theme 1"{
-            self.tileBgv.layer.borderWidth = 0.0
+            self.tileBgv.layer.borderWidth = 0.5
         }else{
             self.tileBgv.layer.borderWidth = 1.0
         }
@@ -250,6 +258,16 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             cell.descriptionLabel?.text = results.answer
             let buttonsHeight = expandArray[indexPath.row] as! String == "close" ? 0.0: 30.0
             cell.likeAndDislikeButtonHeightConstrain.constant = CGFloat(buttonsHeight)
+            
+            cell.subViewLeadingConstraint.constant = 5.0
+            cell.subViewTopConstaint.constant = 5.0
+            cell.subViewTrailingConstraint.constant = 5.0
+            
+            cell.subView.layer.shadowOpacity = 0.7
+            cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
+            cell.subView.layer.shadowRadius = 8.0
+            cell.subView.clipsToBounds = false
+            cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
             return cell
         case "SUGGESTED PAGES":
             let cell : LiveSearchPageTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchPageCellIdentifier) as! LiveSearchPageTableViewCell
@@ -266,6 +284,17 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
             cell.ShareButton.addTarget(self, action: #selector(self.shareButtonAction(_:)), for: .touchUpInside)
             cell.ShareButton.tag = indexPath.row
+            
+            cell.subViewLeadingConstraint.constant = 5.0
+            cell.subViewTopConstaint.constant = 5.0
+            cell.subViewTrailingConstraint.constant = 5.0
+            
+            cell.subView.layer.shadowOpacity = 0.7
+            cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
+            cell.subView.layer.shadowRadius = 8.0
+            cell.subView.clipsToBounds = false
+            cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
+            
             return cell
         case "SUGGESTED TASKS":
             let cell : LiveSearchTaskTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchTaskCellIdentifier) as! LiveSearchTaskTableViewCell
@@ -280,6 +309,17 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
                 let url = URL(string: results.imageUrl!)
                 cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "task"))
             }
+            
+            cell.subViewLeadingConstraint.constant = 5.0
+            cell.subViewTopConstaint.constant = 5.0
+            cell.subViewTrailingConstraint.constant = 5.0
+            
+            cell.subView.layer.shadowOpacity = 0.7
+            cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
+            cell.subView.layer.shadowRadius = 8.0
+            cell.subView.clipsToBounds = false
+            cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
+            
             return cell
         default:
             break
@@ -340,7 +380,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
         showMoreButton.isHidden = boolValue
         
         let views: [String: UIView] = ["headerLabel": headerLabel, "showMoreButton": showMoreButton]
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[headerLabel]-5-[showMoreButton(100)]-0-|", options:[], metrics:nil, views:views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[headerLabel]-5-[showMoreButton(100)]-0-|", options:[], metrics:nil, views:views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[headerLabel]-5-|", options:[], metrics:nil, views:views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[showMoreButton]-5-|", options:[], metrics:nil, views:views))
         

@@ -60,6 +60,9 @@
             <connections>
                 <outlet property="profileImageView" destination="T4x-9b-34g" id="nDW-wK-yGP"/>
                 <outlet property="subView" destination="lAk-Kz-0sy" id="XtR-y4-DRL"/>
+                <outlet property="subViewLeadingConstraint" destination="cjA-2T-fSy" id="Slt-rq-o2f"/>
+                <outlet property="subViewTopConstaint" destination="ris-H0-pQD" id="2Ou-YJ-OWw"/>
+                <outlet property="subViewTrailingConstraint" destination="Esp-P2-cyF" id="L4G-2t-Xzt"/>
                 <outlet property="titleLabel" destination="yME-xN-Bhh" id="z6J-hX-nSk"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="100.44642857142857"/>

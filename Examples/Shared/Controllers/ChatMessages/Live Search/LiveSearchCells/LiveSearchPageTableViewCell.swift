@@ -10,6 +10,9 @@ import UIKit
 
 class LiveSearchPageTableViewCell: UITableViewCell {
     @IBOutlet weak var subView: UIView!
+    @IBOutlet weak var subViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var subViewTopConstaint: NSLayoutConstraint!
+    @IBOutlet weak var subViewTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!

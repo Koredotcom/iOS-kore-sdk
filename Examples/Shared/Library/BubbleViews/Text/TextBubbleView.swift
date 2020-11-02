@@ -16,6 +16,8 @@ class TextBubbleView : BubbleView {
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
     let kMinTextWidth: CGFloat = 20.0
     var textLabel: KREAttributedLabel!
+    var iconImageView: UIImageView!
+    var iconImageViewWidthConstraint: NSLayoutConstraint!
     
     override func initialize() {
         super.initialize()
@@ -37,19 +39,34 @@ class TextBubbleView : BubbleView {
 
         self.addSubview(self.textLabel)
         
-        let views: [String: UIView] = ["textLabel": textLabel]
+        iconImageView = UIImageView(frame: CGRect.zero)
+        iconImageView.contentMode = .scaleAspectFit
+        iconImageView.translatesAutoresizingMaskIntoConstraints = false
+        iconImageView.image = UIImage.init(named: "findly")
+        self.addSubview(iconImageView)
+        
+        let views: [String: UIView] = ["textLabel": textLabel, "iconImageView":iconImageView]
         let metrics: [String: NSNumber] = ["textLabelMaxWidth": NSNumber(value: Float(kMaxTextWidth)), "textLabelMinWidth": NSNumber(value: Float(kMinTextWidth))]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[textLabel]-10-|", options: [], metrics: metrics, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[textLabel(>=textLabelMinWidth,<=textLabelMaxWidth)]-10-|", options: [], metrics: metrics, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[iconImageView(20)]", options: [], metrics: metrics, views: views))
+        
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[iconImageView(20)]-5-[textLabel(>=textLabelMinWidth,<=textLabelMaxWidth)]-10-|", options: [], metrics: metrics, views: views))
+        
+        iconImageViewWidthConstraint = NSLayoutConstraint(item: iconImageView, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 20)
+        addConstraint(iconImageViewWidthConstraint)
+        iconImageViewWidthConstraint.isActive = true
+        
     }
     
     func setTextColor() {
         if self.tailPosition == BubbleMaskTailPosition.left {
             self.textLabel.textColor = Common.UIColorRGB(0x484848)
             self.textLabel.linkTextColor = Common.UIColorRGB(0x0076FF)
+            iconImageViewWidthConstraint.constant = 20
         }else{
-            self.textLabel.textColor = Common.UIColorRGB(0xFFFFFF)
+            self.textLabel.textColor = Common.UIColorRGB(0x484848) //0xFFFFFF
             self.textLabel.linkTextColor = Common.UIColorRGB(0xFFFFFF)
+            iconImageViewWidthConstraint.constant = 0.0
         }
     }
     

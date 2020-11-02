@@ -12,9 +12,9 @@ enum BubbleMaskTailPosition : Int {
     case none = 1, left = 2, right = 3
 }
 
-let BubbleViewRightTint: UIColor = themeColor
+let BubbleViewRightTint: UIColor = UIColor.init(red: 232/255, green: 241/255, blue: 255/255, alpha: 1.0) //themeColor
 let BubbleViewRightContrastTint: UIColor = Common.UIColorRGB(0xFFFFFF)
-let BubbleViewLeftTint: UIColor = .white
+let BubbleViewLeftTint: UIColor = UIColor.init(red: 248/255, green: 249/255, blue: 250/255, alpha: 1.0) //.white
 let BubbleViewLeftContrastTint: UIColor = Common.UIColorRGB(0xBCBCBC)
 
 let BubbleViewCurveRadius: CGFloat = 20.0
@@ -185,10 +185,14 @@ class BubbleView: UIView {
             self.borderLayer.path = self.maskLayer.path // Reuse the Bezier path
             self.borderLayer.fillColor = UIColor.clear.cgColor
            // self.borderLayer.strokeColor = Common.UIColorRGB(0xebebeb).cgColor
-            self.borderLayer.lineWidth = 1.5
+            if(self.tailPosition == .left){
+                self.borderLayer.lineWidth = 1.0
+            }else{
+                self.borderLayer.lineWidth = 0.0
+            }
             self.borderLayer.frame = self.bounds
             if selectedTheme == "Theme 1"{
-               self.borderLayer.strokeColor = Common.UIColorRGB(0xebebeb).cgColor
+               self.borderLayer.strokeColor = UIColor.lightGray.cgColor//Common.UIColorRGB(0xebebeb).cgColor
             }else{
                 self.borderLayer.strokeColor = UIColor.lightGray.cgColor
             }

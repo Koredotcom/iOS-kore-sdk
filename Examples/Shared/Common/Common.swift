@@ -23,7 +23,7 @@ var showLiveSearchTemplateNotification = "LiveSearchViewTemplateNotificationName
 var isSpeakingEnabled = false
 var selectedTheme = "Theme 1"
 var themeColorUserDefaults = "ThemeColor"
-let FindlyUrl = "https://app.findly.ai/"
+let FindlyUrl = "https://pilot.findly.ai/" //"https://app.findly.ai/"
 let recentSearchArray = NSMutableArray()
 
 //var isAutoSendMessage = false

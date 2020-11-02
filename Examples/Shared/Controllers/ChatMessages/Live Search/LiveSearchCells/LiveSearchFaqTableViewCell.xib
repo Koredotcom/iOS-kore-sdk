@@ -94,6 +94,9 @@
                 <outlet property="likeAndDislikeButtonHeightConstrain" destination="18b-hA-v0n" id="dGH-sF-yaN"/>
                 <outlet property="likeButton" destination="09t-2N-MoA" id="qfh-Lj-Stz"/>
                 <outlet property="subView" destination="ByF-gL-GR4" id="0KH-7y-kBm"/>
+                <outlet property="subViewLeadingConstraint" destination="AoQ-3G-N7w" id="UvC-QY-PqB"/>
+                <outlet property="subViewTopConstaint" destination="3Ia-d8-8F4" id="50Y-Mm-XO8"/>
+                <outlet property="subViewTrailingConstraint" destination="YN8-OI-H10" id="u1Y-vn-iSt"/>
                 <outlet property="titleLabel" destination="dPl-pc-Vyh" id="KHb-af-88h"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="105.80357142857143"/>

@@ -242,7 +242,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         //navigationController?.navigationBar.barTintColor = themeColor
         navigationController?.navigationBar.tintColor = UIColor.darkGray
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        self.view.backgroundColor = UIColor.init(red: 232/255, green: 232/255, blue: 233/255, alpha: 1.0) //UIColor.init(hexString: "#eaeaea")  //f3f3f5
+        self.view.backgroundColor = UIColor.init(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0) //UIColor.init(hexString: "#eaeaea")  //f3f3f5
         
         if SDKConfiguration.widgetConfig.isPanelView {
             populatePanelItems()
@@ -361,6 +361,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func configureComposeBar() {
+        
+        self.composeBarContainerView.layer.shadowOpacity = 0.7
+        self.composeBarContainerView.layer.shadowOffset = CGSize(width: 3, height: 1)
+        self.composeBarContainerView.layer.shadowRadius = 5.0
+        self.composeBarContainerView.clipsToBounds = false
+        self.composeBarContainerView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
+        
         self.composeView = ComposeBarView()
         self.composeView.translatesAutoresizingMaskIntoConstraints = false
         self.composeView.growingTextView.viewDelegate = self
