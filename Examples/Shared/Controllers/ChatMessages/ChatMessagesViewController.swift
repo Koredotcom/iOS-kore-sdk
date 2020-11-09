@@ -12,6 +12,10 @@ import SafariServices
 import KoreBotSDK
 import CoreData
 import Mantle
+import AssetsPickerViewController
+import Photos
+import MobileCoreServices
+
 
 class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate {
     // MARK: properties
@@ -22,6 +26,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
     var kaBotClient: KABotClient!
     
+    
     @IBOutlet weak var threadContainerView: UIView!
     @IBOutlet weak var quickSelectContainerView: UIView!
     @IBOutlet weak var composeBarContainerView: UIView!
@@ -30,6 +35,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     @IBOutlet weak var menuButton: UIButton!
     
     @IBOutlet weak var quickSelectContainerHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var attachmentContainerView: UIView!
+    @IBOutlet weak var attachmentContainerHeightConstraint: NSLayoutConstraint!
+    var attachmentArray = NSMutableArray()
+    @IBOutlet weak var attachmentCollectionView: UICollectionView!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     var composeBarContainerHeightConstraint: NSLayoutConstraint!
@@ -85,6 +95,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         ]
     }()
     
+    
+    let bundleImage = Bundle(for: KREWidgetsViewController.self)
+    var phassetToUpload: PHAsset?
+    var componentSelectedToupload: Component?
+    public weak var account = KoraApplication.sharedInstance.account
     // MARK: init
     init(thread: KREThread?) {
         super.init(nibName: "ChatMessagesViewController", bundle: nil)
@@ -106,14 +121,15 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.configureTypingStatusView()
         self.configureSTTClient()
         self.configureMoreOption()
-        
-        //self.configureViewForKeyboard(true)
+        // self.configureViewForKeyboard(true)
+        configAttachmentCollectionView()
         
         if SDKConfiguration.widgetConfig.isPanelView {
             self.configurePanelCollectionView()
         } else {
             panelCollectionViewContainerHeightConstraint.constant = 0
         }
+        
         
         isSpeakingEnabled = true
         self.speechSynthesizer = AVSpeechSynthesizer()
@@ -382,7 +398,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     weakSelf.present(bottomSheetController, animated: true, completion: block)
                     weakSelf.sheetController = bottomSheetController
                 } else if let bottomSheetController = weakSelf.sheetController,
-                    let panelItemViewController = bottomSheetController.childViewController as? KAPanelItemViewController {
+                          let panelItemViewController = bottomSheetController.childViewController as? KAPanelItemViewController {
                     panelItemViewController.panelId = item?.id
                     
                     if bottomSheetController.presentingViewController == nil {
@@ -752,7 +768,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.addObserver(self, selector: #selector(navigateToComposeBar(_:)), name: KREMessageAction.navigateToComposeBar.notification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showListWidgetViewTemplateView), name: NSNotification.Name(rawValue: showListWidgetViewTemplateNotification), object: nil)
         
-        
         NotificationCenter.default.addObserver(self, selector: #selector(startTypingStatusForBot), name: NSNotification.Name(rawValue: "StartTyping"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(stopTypingStatusForBot), name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
     }
@@ -773,6 +788,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showListWidgetViewTemplateNotification), object: nil)
         
         NotificationCenter.default.removeObserver(self, name: KREMessageAction.navigateToComposeBar.notification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showAttachmentSendButtonNotification), object: nil)
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StartTyping"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
@@ -899,7 +915,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: Helper functions
     func sendMessage(_ message: Message, dictionary: [String: Any]? = nil, options: [String: Any]?) {
         
-        NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil) // self.showTypingStatusForBot()
+        //NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil) // self.showTypingStatusForBot()
         NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
         let composedMessage: Message = message
         if (composedMessage.components.count > 0) {
@@ -907,7 +923,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             dataStoreManager.createNewMessageIn(thread: self.thread, message: composedMessage, completion: { (success) in
                 let textComponent = composedMessage.components[0] as? Component
                 if let _ = self.botClient, let text = textComponent?.payload {
-                    self.botClient.sendMessage(text, options: options)
+                    self.botClient.sendMessage(text, dictionary: dictionary, options: options)
                 }
                 self.textMessageSent()
             })
@@ -915,14 +931,27 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func sendTextMessage(_ text: String, dictionary: [String: Any]? = nil, options: [String: Any]?) {
-        let message: Message = Message()
-        message.messageType = .default
-        message.sentDate = Date()
-        message.messageId = UUID().uuidString
-        let textComponent: Component = Component()
-        textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        message.addComponent(textComponent)
-        sendMessage(message, options: options)
+        if attachmentArray.count>0 {
+            closeAndOpenAttachment(imageAttached: nil, height: 0.0)
+            self.uploadAttachment(text: text)
+        }else{
+            //closeAndOpenAttachment(imageAttached: nil, height: 0.0)
+            let message: Message = Message()
+            message.messageType = .default
+            message.sentDate = Date()
+            message.messageId = UUID().uuidString
+            let textComponent: Component = Component()
+            textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            message.addComponent(textComponent)
+            
+            if dictionary?.count ?? 0 > 0{
+                sendMessage(message, dictionary: dictionary, options: options)
+            }else{
+                sendMessage(message, options: options)
+            }
+            
+        }
+        
     }
     
     func textMessageSent() {
@@ -1011,6 +1040,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func updateQuickSelectViewConstraints() {
+        self.closeAndOpenAttachment(imageAttached: nil, height: 0.0)
         if self.quickSelectContainerHeightConstraint.constant == 60.0 {return}
         
         self.quickSelectContainerHeightConstraint.constant = 60.0
@@ -1104,6 +1134,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         taskMenuViewController.viewDelegate = self
         taskMenuViewController.view.backgroundColor = .white
         self.navigationController?.present(taskMenuViewController, animated: false, completion: nil)
+    }
+    func composeBarAttachmentButtonAction(_: ComposeBarView) {
+        print("Attachment")
+        self.openAcionSheet()
     }
     
     // MARK: KREGrowingTextViewDelegate methods
@@ -1220,9 +1254,9 @@ extension ChatMessagesViewController {
                 self?.insertOrUpdateHistoryMessages(messages)
             }
             self?.historyRequestInProgress = false
-            }, failure: { [weak self] (error) in
-                self?.historyRequestInProgress = false
-                print("Unable to fetch messges \(error?.localizedDescription ?? "")")
+        }, failure: { [weak self] (error) in
+            self?.historyRequestInProgress = false
+            print("Unable to fetch messges \(error?.localizedDescription ?? "")")
         })
     }
     
@@ -1347,7 +1381,7 @@ extension ChatMessagesViewController: KABotClientDelegate {
         updateNavBarPrompt()
         
     }
-
+    
     @objc func startTypingStatusForBot() {
         self.typingStatusView?.isHidden = true
         let botId:String = SDKConfiguration.botConfig.botId
@@ -1392,8 +1426,8 @@ extension ChatMessagesViewController {
     
     @objc func processDynamicUpdates(_ notification: Notification?) {
         guard let dictionary = notification?.object as? [String: Any],
-            let type = dictionary["t"] as? String, let _ = dictionary["uid"] as? String else {
-                return
+              let type = dictionary["t"] as? String, let _ = dictionary["uid"] as? String else {
+            return
         }
         
         switch type {
@@ -1408,7 +1442,7 @@ extension ChatMessagesViewController {
                 DispatchQueue.main.async {
                     self?.updatePanel(with: panelItem)
                 }
-                }, completion: nil)
+            }, completion: nil)
         default:
             break
         }
@@ -1416,8 +1450,8 @@ extension ChatMessagesViewController {
     
     @objc func processPanelEvents(_ notification: Notification?) {
         guard let dictionary = notification?.object as? [String: Any],
-            let type = dictionary["entity"] as? String else {
-                return
+              let type = dictionary["entity"] as? String else {
+            return
         }
         
         switch type {
@@ -1477,3 +1511,566 @@ extension ChatMessagesViewController {
     
 }
 
+extension ChatMessagesViewController{
+    // MARK: - button actions
+    @objc func openAcionSheet() {
+        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let photoAction: UIAlertAction = UIAlertAction(title: "Take Photo", style: .default) { (action) in
+            self.photoAction()
+        }
+        let videoAction: UIAlertAction = UIAlertAction(title: "Capture Video", style: .default) { (action) in
+            self.videoAction()
+        }
+        let cameraRollAction: UIAlertAction = UIAlertAction(title: "Photo Library", style: .default) { (action) in
+            self.cameraRollAction()
+        }
+        let documentAction: UIAlertAction = UIAlertAction(title: "Attach Document", style: .default) { (action) in
+            self.documentAction()
+        }
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            
+        }
+        actionSheetController.addAction(photoAction)
+        actionSheetController.addAction(videoAction)
+        actionSheetController.addAction(cameraRollAction)
+        actionSheetController.addAction(documentAction)
+        actionSheetController.addAction(cancelAction)
+        present(actionSheetController, animated: true, completion: nil)
+    }
+    
+    // MARK: -
+    public func photoAction() {
+        showImagePicker(with: .image)
+    }
+    
+    public func videoAction() {
+        showImagePicker(with: .video)
+    }
+    
+    public func cameraRollAction() {
+        let picker = AssetsPickerViewController()
+        picker.pickerDelegate = self
+        picker.pickerConfig.assetsMaximumSelectionCount = 1
+        present(picker, animated: true, completion: nil)
+    }
+    
+    public func documentAction() {
+        let types = KAAssetManager.shared.supportedAssetTypes()
+        let documentPickerViewController = UIDocumentPickerViewController(documentTypes: types, in: .import)
+        documentPickerViewController.modalPresentationStyle = .fullScreen
+        documentPickerViewController.delegate = self
+        present(documentPickerViewController, animated: true, completion: nil)
+    }
+    
+    func showImagePicker(with mediaType: KAAsset) {
+        if(UIImagePickerController.isSourceTypeAvailable(.camera)){
+            let authStatus = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
+            if authStatus == AVAuthorizationStatus.denied {
+                let alert = UIAlertController(title: "Unable to access the Camera",
+                                              message: "To enable access, go to Settings > Privacy > Camera and turn on Camera access for this app.",
+                                              preferredStyle: UIAlertController.Style.alert)
+                
+                let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alert.addAction(okAction)
+                
+                let settingsAction = UIAlertAction(title: "Settings", style: .default, handler: { _ in
+                    guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else { return }
+                    if UIApplication.shared.canOpenURL(settingsUrl) {
+                        if #available(iOS 10.0, *) {
+                            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                                
+                            })
+                        } else {
+                            
+                        }
+                    }
+                })
+                alert.addAction(settingsAction)
+                present(alert, animated: true, completion: nil)
+            } else if (authStatus == AVAuthorizationStatus.notDetermined) {
+                AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { (granted) in
+                    if granted {
+                        DispatchQueue.main.async {
+                            self.showImagePicker(sourceType: UIImagePickerController.SourceType.camera, with: mediaType)
+                        }
+                    }
+                })
+            } else {
+                switch mediaType {
+                case .image:
+                    showImagePicker(sourceType: UIImagePickerController.SourceType.camera, with: mediaType)
+                case .video:
+                    showImagePicker(sourceType: UIImagePickerController.SourceType.camera, with: mediaType)
+                default:
+                    break
+                }
+            }
+        }
+        else{
+            let actionController: UIAlertController = UIAlertController(title: "Bot SDK Demo",message: "Camera is not available", preferredStyle: .alert)
+            let cancelAction: UIAlertAction = UIAlertAction(title: "OK", style: .cancel) { action -> Void  in
+                //Just dismiss the action sheet
+            }
+            actionController.addAction(cancelAction)
+            self.present(actionController, animated: true, completion: nil)
+        }
+        
+        
+    }
+    
+    fileprivate func showImagePicker(sourceType: UIImagePickerController.SourceType, with mediaType: KAAsset) {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.modalPresentationStyle = .currentContext
+        imagePickerController.sourceType = sourceType
+        imagePickerController.delegate = self
+        
+        switch mediaType {
+        case .image:
+            if sourceType == UIImagePickerController.SourceType.camera {
+                imagePickerController.showsCameraControls = true
+                imagePickerController.modalPresentationStyle = .fullScreen
+                imagePickerController.mediaTypes = [kUTTypeImage] as [String]
+                present(imagePickerController, animated: true, completion: nil)
+            }
+        case .video:
+            if sourceType == UIImagePickerController.SourceType.camera {
+                imagePickerController.showsCameraControls = true
+                imagePickerController.modalPresentationStyle = .fullScreen
+                imagePickerController.mediaTypes = [kUTTypeMovie] as [String]
+                imagePickerController.allowsEditing = true
+                imagePickerController.videoMaximumDuration = KAAsset.video.maxDuration
+                present(imagePickerController, animated: true, completion: nil)
+            }
+        default:
+            break
+        }
+    }
+}
+
+
+extension ChatMessagesViewController: AssetsPickerViewControllerDelegate {
+    
+    func closeAndOpenAttachment(imageAttached: UIImage?, height: CGFloat){
+        attachmentArray = []
+        attachmentKeybord = false
+        if imageAttached != nil{
+            attachmentArray.add(imageAttached!)
+            attachmentKeybord = true
+        }
+        NotificationCenter.default.post(name: Notification.Name(showAttachmentSendButtonNotification), object: nil)
+        self.attachmentContainerHeightConstraint.constant = height
+        DispatchQueue.main.async {
+            self.attachmentCollectionView.reloadData()
+        }
+    }
+    
+    internal func assetsPickerCannotAccessPhotoLibrary(controller: AssetsPickerViewController) {
+        
+    }
+    internal func assetsPickerDidCancel(controller: AssetsPickerViewController) {
+        
+    }
+    public func assetsPicker(controller: AssetsPickerViewController, selected assets: [PHAsset]) {
+        
+        // self.messageInputBar.presenter?.attachmentManager.invalidate()
+        let phAsset:PHAsset  = assets.first!
+        self.phassetToUpload = phAsset
+        let imageAttached = getAssetThumbnail(asset: assets.first!)
+        
+        let activityIndicator = displayActivityIndicator(onView: view)
+        KAAssetManager.shared.requestMediaAsset(for: phAsset, progress: { (value) in
+            debugPrint("Progress value : \(value)")
+        }) { [weak self] (success, asset) in
+            self?.removeActivityIndicator(spinner: activityIndicator)
+            if let mediaAsset = asset {
+                let component: Component = Component()
+                component.componentId = mediaAsset.fileName
+                component.fileMeta.fileName = mediaAsset.fileName
+                component.fileMeta.fileExtn = mediaAsset.fileExtn
+                component.templateType = mediaAsset.fileType
+                component.fileMeta.orientation = mediaAsset.imageOrientation
+                component.componentServer = SDKConfiguration.serverConfig.BOT_SERVER
+                component.fileMeta.fileContext = "workflows"
+                
+                var totalFileSize = 0
+                let size =
+                    KAFileUtilities.shared.sizeForItem(at: mediaAsset.filePath)
+                totalFileSize = totalFileSize + Int(size)
+                //                if !(self?.sizeLimitCheck(bytes: Int64(totalFileSize)) ?? false) {
+                //                    self?.addFreemium()
+                //                    self?.messageInputBar.presenter?.attachmentManager.invalidate()
+                //                } else {
+                self?.componentSelectedToupload = component
+                self?.closeAndOpenAttachment(imageAttached: imageAttached, height: 90.0)
+                //}
+            }
+        }
+    }
+    
+    /*
+     func sizeLimitCheck(bytes: Int64) -> Bool {
+     guard let usage = account?.usageLimit else {
+     return false
+     }
+     let limit = usage.filter {$0.type == "attachment"}
+     let kbSize = bytes / (1000 * 1000)
+     if kbSize > (limit.first)?.size ?? 0 {
+     return false
+     } else {
+     return true
+     }
+     }
+     
+     func addFreemium() {
+     guard let usage = account?.usageLimit,
+     let type = account?.userInfo?.accountType?.intValue else {
+     return
+     }
+     
+     let accountType = UserAccountType(rawValue: type)
+     let limit = usage.filter {$0.type == "attachment"}
+     let fremmium = KREFremimumAlertViewController()
+     switch accountType {
+     case .personal:
+     fremmium.feedbackContainerView.titleLabel.text = "File uploads are limited to \((limit.first)?.size ?? 0) MB under the free plan. Try using your Enterprise account with a paid version for enhanced limits."
+     fremmium.feedbackContainerView.bottomCollectionView.utterances = ["Continue", "Learn More"]
+     default:
+     fremmium.feedbackContainerView.titleLabel.text = "File uploads are limited to \((limit.first)?.size ?? 0) MB under the free plan"
+     if let roles = account?.userInfo?.roles, roles.count > 0 {
+     fremmium.feedbackContainerView.bottomCollectionView.utterances = ["Upgrade", "Learn More"]
+     } else {
+     fremmium.feedbackContainerView.bottomCollectionView.utterances = ["Request for upgrade", "Learn More"]
+     }
+     }
+     fremmium.feedbackContainerView.bottomCollectionView.actionHandler = { [weak self] (button) in
+     fremmium.dismissAction = nil
+     switch button {
+     case "Learn More":
+     let urlString = SDKConfiguration.serverConfig.learnMoreUrl
+     self?.openLimitAction(urlString: urlString)
+     case "Request for upgrade":
+     self?.openRequestToProgrssAction()
+     case "Upgrade":
+     fremmium.dismissAction = nil
+     self?.showAlertToAdmin()
+     case "Continue":
+     let urlString = SDKConfiguration.serverConfig.tryKoraUrl
+     self?.openLimitAction(urlString: urlString)
+     default:
+     break
+     }
+     }
+     if limit.first?.isEnterprise(usageLimits: usage) ?? false {
+     fremmium.feedbackContainerView.bottomCollectionView.isHidden = true
+     fremmium.feedbackContainerView.titleLabel.text = "File uploads are limited to \((limit.first)?.size ?? 0) MB under the Enterprise Plan"
+     }
+     fremmium.modalPresentationStyle = .overCurrentContext
+     self.present(fremmium, animated: true, completion: nil)
+     }
+     
+     */
+    
+    
+    func uploadAttachment(text: String) {
+        // do your job with selected assets
+        
+        guard let component = self.componentSelectedToupload else {
+            return
+        }
+        let activityIndicator = displayActivityIndicator(onView: view)
+        //        self.showLoaderView()
+        //self.account = KoraApplication.sharedInstance.account
+        self.account?.uploadComponent(component, progress: { (progress) in
+            DispatchQueue.main.async {
+                debugPrint("Progress: \(progress * 100)")
+            }
+        }, success: { (component) in
+            if let fileId = component.componentFileId {
+                DispatchQueue.main.async {
+                    var attachment = [String: Any]()
+                    var textTo = ""
+                    attachment["fileId"] = fileId
+                    attachment["fileName"] = component.fileMeta.fileName
+                    attachment["fileType"] = component.templateType
+                    if component.templateType == "image" || component.templateType == "video" {
+                        textTo = "\(text)\n \u{1F4F7} \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                    } else {
+                        textTo = "\(text)\n 📁 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                    }
+                    self.removeActivityIndicator(spinner: activityIndicator)
+                    
+                    self.sendTextMessage(textTo, dictionary: ["attachments": [attachment]], options: ["attachments": [attachment]])
+                    
+                }
+            }
+        }, failure: { (error) in
+            DispatchQueue.main.async {
+                
+                self.removeActivityIndicator(spinner: activityIndicator)
+            }
+            debugPrint("Failed to upload a \(component.templateType ?? "")")
+        })
+        
+    }
+    
+    func getAssetThumbnail(asset: PHAsset) -> UIImage {
+        let manager = PHImageManager.default()
+        let option = PHImageRequestOptions()
+        var thumbnail = UIImage()
+        option.isSynchronous = true
+        manager.requestImage(for: asset, targetSize: CGSize(width: 100.0, height: 100.0), contentMode: .aspectFit, options: option, resultHandler: {(result, info)->Void in
+            thumbnail = result!
+        })
+        return thumbnail
+    }
+    
+    internal func assetsPicker(controller: AssetsPickerViewController, shouldSelect asset: PHAsset, at indexPath: IndexPath) -> Bool {
+        return true
+    }
+    internal func assetsPicker(controller: AssetsPickerViewController, didSelect asset: PHAsset, at indexPath: IndexPath) {
+        
+    }
+    internal func assetsPicker(controller: AssetsPickerViewController, shouldDeselect asset: PHAsset, at indexPath: IndexPath) -> Bool {
+        
+        return true
+    }
+    internal func assetsPicker(controller: AssetsPickerViewController, didDeselect asset: PHAsset, at indexPath: IndexPath) {
+        
+    }
+}
+
+extension ChatMessagesViewController {
+    func uploadAttachment() {
+        
+    }
+}
+
+// MARK: - UIDocumentPickerDelegate, UIDocumentMenuDelegate
+extension ChatMessagesViewController: UIDocumentPickerDelegate, UIDocumentMenuDelegate {
+    public func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
+        documentPicker.delegate = self
+        present(documentPicker, animated: true) {() -> Void in }
+    }
+    
+    public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+        let activityIndicator = displayActivityIndicator(onView: view)
+        KAAssetManager.shared.exportAsset(with: url) { [weak self] (success, asset) in
+            if controller.documentPickerMode == .import {
+                DispatchQueue.main.async(execute: {
+                    self?.removeActivityIndicator(spinner: activityIndicator)
+                    
+                    //self?.messageInputBar.presenter?.attachmentManager.invalidate()
+                    
+                    if let mediaAsset = asset {
+                        let component: Component = Component()
+                        component.componentId = KAFileUtilities.shared.getUUID(for: KAAsset.attachment.fileType)
+                        component.fileMeta.fileName = mediaAsset.fileName
+                        component.fileMeta.fileExtn = mediaAsset.fileExtn
+                        component.templateType = mediaAsset.fileType
+                        component.fileMeta.orientation = mediaAsset.imageOrientation
+                        component.componentServer = SDKConfiguration.serverConfig.BOT_SERVER
+                        component.fileMeta.fileContext = "workflows"
+                        self?.componentSelectedToupload = component
+                        let filePath = KAFileUtilities.shared.path(for: mediaAsset.fileName, of: mediaAsset.fileType, with: mediaAsset.fileExtn)
+                        
+                        print(filePath)
+                        let imageAttached = self?.getFileImage(fileType: mediaAsset.fileExtn)
+                        self?.closeAndOpenAttachment(imageAttached: imageAttached, height: 90.0)
+                    }
+                })
+            }
+            
+        }
+    }
+    
+    public func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+    }
+    
+    func getFileImage(fileType: String) -> UIImage? {
+        switch fileType.uppercased() {
+        case "GIF", "ICO", "DDS", "HEIC", "JPG", "PNG", "PSD", "PSPIMAGE","TGA","THM","TIF","TIFF","BMP","YUV":// Raster Image Files
+            return UIImage(named: "raster_image", in: bundleImage, compatibleWith: nil)
+        case "PAGES", "LOG", "MSG", "ODT", "RTF", "TEX", "TXT", "WPD", "WPS", "GDOCS", "GDOC"://Text Files
+            return UIImage(named: "documents", in: bundleImage, compatibleWith: nil)
+        case "DOCX", "DOC":
+            return UIImage(named: "word", in: bundleImage, compatibleWith: nil)
+        case "XLR", "CSV", "ODS","GSHEET"://SpreadSheeet Files
+            return UIImage(named: "sheet", in: bundleImage, compatibleWith: nil)
+        case "XLSX", "XLS"://SpreadSheeet Files
+            return UIImage(named: "excel", in: bundleImage, compatibleWith: nil)
+        case "PPS", "KEY", "GED", "ODP", "GSLIDE"://Presentation Files
+            return UIImage(named: "slides", in: bundleImage, compatibleWith: nil)
+        case "PPT", "PPTX":
+            return UIImage(named: "powerPoint", in: bundleImage, compatibleWith: nil)
+        case "PDF":
+            return UIImage(named: "pdf", in: bundleImage, compatibleWith: nil)
+        case "MP3", "WAV", "AIF", "IFF", "M3U", "M4A", "MID", "WMA", "MPA":// Audio Files
+            return UIImage(named: "music", in: bundleImage, compatibleWith: nil)
+        case "3G2", "3GP", "ASF", "AVI", "FLV", "M4V", "MOV", "MP4", "MPG", "RM", "SRT", "SWF", "VOB", "WMV": //Video Files
+            return UIImage(named: "video", in: bundleImage, compatibleWith: nil)
+        case "3DM", "3DS", "MAX", "OBJ": //3d image files
+            return UIImage(named: "3dobject", in: bundleImage, compatibleWith: nil)
+        case "AI", "EPS", "PS", "SVG": //Vector image files
+            return UIImage(named: "file_general", in: bundleImage, compatibleWith: nil)
+        case "SKETCH":
+            return UIImage(named: "sketch", in: bundleImage, compatibleWith: nil)
+        case "ZIP":
+            return UIImage(named: "zip", in: bundleImage, compatibleWith: nil)
+        default:
+            return UIImage(named: "file_general", in: bundleImage, compatibleWith: nil)
+        }
+    }
+    
+}
+
+// MARK: - UIImagePickerControllerDelegate
+extension ChatMessagesViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        do {
+            try AVAudioSession.sharedInstance().setActive(false)
+        } catch {
+            
+        }
+        dismiss(animated: true, completion: {
+            //            _ = self.richTextEditor?.becomeFirstResponder()
+        })
+        
+        guard let mediaType = info[.mediaType] as? String else {
+            return
+        }
+        
+        if CFStringCompare(mediaType as CFString, kUTTypeImage, .compareCaseInsensitive) == .compareEqualTo {
+            guard let image = info[.originalImage] as? UIImage else {
+                return
+            }
+            let activityIndicator = displayActivityIndicator(onView: view)
+            KAAssetManager.shared.exportImage(image, progress: { (value) in
+                
+            }) { [weak self] (success, asset) in
+                self?.removeActivityIndicator(spinner: activityIndicator)
+                
+                if let mediaAsset = asset {
+                    let component: Component = Component()
+                    component.componentId = mediaAsset.fileName
+                    component.fileMeta.fileName = mediaAsset.fileName
+                    component.fileMeta.fileExtn = mediaAsset.fileExtn
+                    component.templateType = mediaAsset.fileType
+                    component.fileMeta.orientation = mediaAsset.imageOrientation
+                    component.componentServer = SDKConfiguration.serverConfig.BOT_SERVER
+                    component.fileMeta.fileContext = "workflows"
+                    self?.componentSelectedToupload = component
+                    let filePath = KAFileUtilities.shared.path(for: mediaAsset.fileName, of: mediaAsset.fileType, with: mediaAsset.fileExtn)
+                    print(filePath)
+                    self?.closeAndOpenAttachment(imageAttached: image, height: 90.0)
+                }
+            }
+        } else if CFStringCompare(mediaType as CFString, kUTTypeMovie, .compareCaseInsensitive) == .compareEqualTo {
+            guard let url = info[.mediaURL] as? URL else {
+                return
+            }
+            let activityIndicator = displayActivityIndicator(onView: view)
+            KAAssetManager.shared.exportVideo(url, progress: { (progress) in
+                
+            }, completion: { [weak self] (success, asset) in
+                self?.removeActivityIndicator(spinner: activityIndicator)
+                
+                if let mediaAsset = asset {
+                    let component: Component = Component()
+                    component.componentId = mediaAsset.fileName
+                    component.fileMeta.fileName = mediaAsset.fileName
+                    component.fileMeta.fileExtn = mediaAsset.fileExtn
+                    component.templateType = mediaAsset.fileType
+                    component.fileMeta.orientation = mediaAsset.imageOrientation
+                    component.componentServer = SDKConfiguration.serverConfig.BOT_SERVER
+                    component.fileMeta.fileContext = "workflows"
+                    self?.componentSelectedToupload = component
+                    let filePath = KAFileUtilities.shared.path(for: mediaAsset.fileName, of: mediaAsset.fileType, with: mediaAsset.fileExtn)
+                    print(filePath)
+                    let image = self?.videoSnapshot(filePathLocal: url)
+                    self?.closeAndOpenAttachment(imageAttached: image, height: 90.0)
+                }
+            })
+        }
+        
+    }
+    
+    func videoSnapshot(filePathLocal:URL) -> UIImage? {
+        do
+        {
+            let asset = AVURLAsset(url: filePathLocal)
+            let imgGenerator = AVAssetImageGenerator(asset: asset)
+            imgGenerator.appliesPreferredTrackTransform = true
+            let cgImage = try imgGenerator.copyCGImage(at:CMTimeMake(value: Int64(0), timescale: Int32(1)),actualTime: nil)
+            let thumbnail = UIImage(cgImage: cgImage)
+            return thumbnail
+        }
+        catch let error as NSError
+        {
+            print("Error generating thumbnail: \(error)")
+            return nil
+        }
+    }
+    
+    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        do {
+            try AVAudioSession.sharedInstance().setActive(false)
+        } catch {
+            
+        }
+        dismiss(animated: true, completion: {
+            
+        })
+    }
+}
+
+// activity indicator
+extension UIViewController {
+    func displayActivityIndicator(onView : UIView) -> UIView {
+        let spinnerView = UIView(frame: onView.bounds)
+        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let ai = UIActivityIndicatorView.init(style: .whiteLarge)
+        ai.startAnimating()
+        ai.center = spinnerView.center
+        
+        DispatchQueue.main.async {
+            spinnerView.addSubview(ai)
+            onView.addSubview(spinnerView)
+        }
+        
+        return spinnerView
+    }
+    
+    func removeActivityIndicator(spinner: UIView) {
+        DispatchQueue.main.async {
+            spinner.removeFromSuperview()
+        }
+    }
+}
+
+extension ChatMessagesViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    func configAttachmentCollectionView(){
+        attachmentContainerView.backgroundColor = .clear
+        attachmentCollectionView.backgroundColor = .clear
+        attachmentContainerHeightConstraint.constant = 0
+        self.attachmentCollectionView.register(UINib(nibName: "AttachmentCell", bundle: nil),
+                                               forCellWithReuseIdentifier: "AttachmentCell")
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return attachmentArray.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // swiftlint:disable force_cast
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AttachmentCell", for: indexPath) as! AttachmentCell
+        cell.backgroundColor = .clear
+        cell.imageView.image = attachmentArray[indexPath.item] as? UIImage
+        cell.closeButton.addTarget(self, action: #selector(self.deleteAttachmentButtonAction(_:)), for: .touchUpInside)
+        cell.closeButton.tag = indexPath.item
+        return cell
+    }
+    @objc fileprivate func deleteAttachmentButtonAction(_ sender: AnyObject!) {
+        self.closeAndOpenAttachment(imageAttached: nil, height: 0.0)
+    }
+    
+    
+}

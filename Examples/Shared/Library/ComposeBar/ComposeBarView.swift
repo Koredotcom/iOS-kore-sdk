@@ -14,6 +14,7 @@ protocol ComposeBarViewDelegate {
     func composeBarViewSpeechToTextButtonAction(_: ComposeBarView)
     func composeBarViewDidBecomeFirstResponder(_: ComposeBarView)
     func composeBarTaskMenuButtonAction(_: ComposeBarView)
+    func composeBarAttachmentButtonAction(_: ComposeBarView)
 }
 
 class ComposeBarView: UIView {
@@ -25,6 +26,7 @@ class ComposeBarView: UIView {
     public var growingTextView: KREGrowingTextView!
     fileprivate var sendButton: UIButton!
     fileprivate var menuButton: UIButton!
+    fileprivate var attachmentButton: UIButton!
     fileprivate var speechToTextButton: UIButton!
 
     fileprivate var textViewTrailingConstraint: NSLayoutConstraint!
@@ -68,6 +70,7 @@ class ComposeBarView: UIView {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidBeginEditingNotification(_ :)), name: UITextView.textDidBeginEditingNotification, object: self.growingTextView.textView)
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidChangeNotification(_ :)), name: UITextView.textDidChangeNotification, object: self.growingTextView.textView)
+        NotificationCenter.default.addObserver(self, selector: #selector(showAttachmentSendButton), name: NSNotification.Name(rawValue: showAttachmentSendButtonNotification), object: nil)
         
         self.menuButton = UIButton.init(frame: CGRect.zero)
         self.menuButton.translatesAutoresizingMaskIntoConstraints = false
@@ -109,6 +112,20 @@ class ComposeBarView: UIView {
         self.speechToTextButton.clipsToBounds = true
         self.addSubview(self.speechToTextButton)
         
+        self.attachmentButton = UIButton.init(frame: CGRect.zero)
+        self.attachmentButton.translatesAutoresizingMaskIntoConstraints = false
+        self.attachmentButton.layer.cornerRadius = 5
+        self.attachmentButton.setTitleColor(Common.UIColorRGB(0xFFFFFF), for: .normal)
+        self.attachmentButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
+        self.attachmentButton.setBackgroundImage(UIImage.init(named: "attach"), for: .normal)
+        self.attachmentButton.imageView?.contentMode = .scaleAspectFill
+        self.attachmentButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
+        self.attachmentButton.addTarget(self, action: #selector(self.composeBarAttachmentButtonAction(_:)), for: .touchUpInside)
+        self.menuButton.isHidden = false
+        self.attachmentButton.contentEdgeInsets = UIEdgeInsets(top: 9.0, left: 3.0, bottom: 7.0, right: 3.0)
+        self.attachmentButton.clipsToBounds = true
+        self.addSubview(self.attachmentButton)
+        
         self.topLineView = UIView.init(frame: CGRect.zero)
         self.topLineView.backgroundColor = .clear
         self.topLineView.translatesAutoresizingMaskIntoConstraints = false
@@ -119,7 +136,7 @@ class ComposeBarView: UIView {
         self.bottomLineView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.bottomLineView)
         
-        let views: [String : Any] = ["topLineView": self.topLineView, "bottomLineView": self.bottomLineView,"menuButton": self.menuButton, "growingTextView": self.growingTextView, "sendButton": self.sendButton, "speechToTextButton": self.speechToTextButton]
+        let views: [String : Any] = ["topLineView": self.topLineView, "bottomLineView": self.bottomLineView,"menuButton": self.menuButton, "growingTextView": self.growingTextView, "sendButton": self.sendButton, "speechToTextButton": self.speechToTextButton, "attachmentButton": attachmentButton]
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[topLineView]|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[topLineView(0.5)]", options:[], metrics:nil, views:views))
@@ -127,11 +144,12 @@ class ComposeBarView: UIView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[bottomLineView(0.5)]|", options:[], metrics:nil, views:views))
         
 //        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[growingTextView][sendButton]-5-|", options:[], metrics:nil, views:views))
-         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[menuButton(32)]-5-[growingTextView]-5-[sendButton]-5-|", options:[], metrics:nil, views:views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[growingTextView]-5-[speechToTextButton]-5-|", options:[], metrics:nil, views:views))
+         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[menuButton(32)]-5-[growingTextView]-5-[sendButton]-5-[attachmentButton(25)]-8-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[growingTextView]-5-[speechToTextButton]-5-[attachmentButton]-5-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-7-[growingTextView]-7-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[sendButton]-6-|", options:[], metrics:nil, views:views))
          self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[menuButton]-6-|", options:[], metrics:nil, views:views))
+         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=10-[attachmentButton(25)]", options:[], metrics:nil, views:views))
         self.addConstraint(NSLayoutConstraint.init(item: self.sendButton, attribute: .centerY, relatedBy: .equal, toItem: self.speechToTextButton, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         self.addConstraint(NSLayoutConstraint.init(item: self.sendButton, attribute: .height, relatedBy: .equal, toItem: self.speechToTextButton, attribute: .height, multiplier: 1.0, constant: 0.0))
         self.speechToTextButton.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .horizontal)
@@ -173,9 +191,14 @@ class ComposeBarView: UIView {
         text = text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         
         // is there any text?
-        if ((text?.count)! > 0) {
-            self.delegate?.composeBarView(self, sendButtonAction: text!)
+        if attachmentKeybord{
+            self.delegate?.composeBarView(self, sendButtonAction: text ?? "")
+        }else{
+            if ((text?.count)! > 0) {
+                self.delegate?.composeBarView(self, sendButtonAction: text!)
+            }
         }
+        
     }
     @objc fileprivate func taskMenuButtonAction(_ sender: UIButton!) {
         self.delegate?.composeBarTaskMenuButtonAction(self)
@@ -184,6 +207,10 @@ class ComposeBarView: UIView {
         self.sendButton.isUserInteractionEnabled = true
         self.speechToTextButton.isUserInteractionEnabled = true
     }
+    @objc fileprivate func composeBarAttachmentButtonAction(_ sender: UIButton!) {
+        self.delegate?.composeBarAttachmentButtonAction(self)
+    }
+    
     
     @objc fileprivate func speechToTextButtonAction(_ sender: AnyObject) {
         self.delegate?.composeBarViewSpeechToTextButtonAction(self)
@@ -193,8 +220,14 @@ class ComposeBarView: UIView {
         let hasText = self.growingTextView.textView.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).count > 0
         self.sendButton.isEnabled = hasText
         if self.isKeyboardEnabled {
-            self.sendButton.isHidden = !hasText
-            self.speechToTextButton.isHidden = hasText
+            if attachmentKeybord{
+                self.sendButton.isHidden = false
+                self.sendButton.isEnabled = true
+                self.speechToTextButton.isHidden = true
+            }else{
+                self.sendButton.isHidden = !hasText
+                self.speechToTextButton.isHidden = hasText
+            }
             self.menuButton.isHidden = false
         }else{
             self.sendButton.isHidden = true
@@ -224,6 +257,9 @@ class ComposeBarView: UIView {
     
     open override func resignFirstResponder() -> Bool {
         return self.growingTextView.resignFirstResponder()
+    }
+    @objc func showAttachmentSendButton(notification:Notification){
+        self.valueChanged()
     }
     
     // MARK:- deinit
