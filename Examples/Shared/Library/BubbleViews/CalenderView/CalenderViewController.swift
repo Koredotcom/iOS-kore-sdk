@@ -8,7 +8,7 @@
 
 import UIKit
 protocol calenderSelectDelegate {
-    func optionsButtonTapAction(text:String)
+    func optionsButtonTapNewAction(text:String, payload:String)
 }
 class CalenderViewController: UIViewController {
 
@@ -41,6 +41,7 @@ class CalenderViewController: UIViewController {
     var startdateString : String?
     var endDateString : String?
     let dateFormatter = DateFormatter()
+    var compareEndDate : String?
     
     // MARK: init
        init(dataString: String, chatId: String, kreMessage: KREMessage) {
@@ -58,6 +59,11 @@ class CalenderViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         confirmButton.backgroundColor = themeColor
+        if #available(iOS 14, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+            datePicker.backgroundColor = .white
+            datePicker.sizeToFit()
+        }
         datePicker.addTarget(self, action: #selector(CalenderViewController.datePickerChanged(datePicker:)), for: UIControl.Event.valueChanged)
         dateRangeSubView.layer.cornerRadius = 5.0
         dateRangeSubView.clipsToBounds = true
@@ -84,18 +90,28 @@ class CalenderViewController: UIViewController {
         endDateString = allItems.endDate ?? todayDate
         templateType = allItems.template_type ?? ""
         startdateString = allItems.startDate ?? todayDate
-        endDateString = allItems.endDate ?? todayDate
+        compareEndDate = allItems.endDate ?? ""
 
-        let startDate = dateFormatter.date(from: startdateString!)
-        let endDate = dateFormatter.date(from: endDateString!)
-        print(startDate as Any)
+//        let startDate = dateFormatter.date(from: startdateString!)
+//        let endDate = dateFormatter.date(from: endDateString!)
+//        print(startDate as Any)
+        
+        let dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = "MM-dd-yyyy"
+        let fromDate: NSDate? = dateFormatterGet.date(from: startdateString!) as NSDate?
+        let startDateNew = (dateFormatterGet.string(from: fromDate! as Date))
+        print(startDateNew)
+        let toDate: NSDate? = dateFormatterGet.date(from: endDateString!) as NSDate?
+        let toDateNew = (dateFormatterGet.string(from: toDate! as Date))
+         print(toDateNew)
+        
         
         if templateType == "daterange" {
-            datePickerOfMinimumMaximum(minimumdate: endDate ?? Date(), maximumDate: endDate ?? Date())
+            datePickerOfMinimumMaximum(minimumdate: toDate! as Date, maximumDate: toDate! as Date)
             clickOnFromDateRangeViewButton(fromDateButton as Any)
             dateRangeView.isHidden = false
         }else{
-            datePickerTemplateOfMinimumMaximum(minimumdate: startDate ?? Date(), maximumDate: startDate ?? Date())
+            datePickerTemplateOfMinimumMaximum(minimumdate: fromDate! as Date, maximumDate: toDate! as Date)
             dateRangeView.isHidden = true
             fromDateButton.isUserInteractionEnabled = false
             fromYearLabel.textAlignment = .left
@@ -172,9 +188,15 @@ class CalenderViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
         if templateType == "daterange" {
             let selectedDates = ("\(selectedFromDate!) to \(selectedToDate!)")
-            self.viewDelegate?.optionsButtonTapAction(text: selectedDates)
+            let changeFromDateformat = formattedDateFromString(dateString: selectedFromDate!, withFormat: "MMM dd, yyyy")
+            let changeToDateformat = formattedDateFromString(dateString: selectedToDate!, withFormat: "MMM dd, yyyy")
+            let selectedFromatDates = ("\(changeFromDateformat!) to \(changeToDateformat!)")
+            
+            self.viewDelegate?.optionsButtonTapNewAction(text:selectedFromatDates , payload:selectedDates)
         }else{
-            self.viewDelegate?.optionsButtonTapAction(text: selectedFromDate!)
+            let convertDateformat = formattedDateFromString(dateString: selectedFromDate!, withFormat: "MMM dd, yyyy")
+            print(convertDateformat as Any)
+            self.viewDelegate?.optionsButtonTapNewAction(text:convertDateformat! , payload:selectedFromDate!)
         }
     }
     func datePickerOfMinimumMaximum(minimumdate: Date, maximumDate: Date){
@@ -186,7 +208,11 @@ class CalenderViewController: UIViewController {
     
     func datePickerTemplateOfMinimumMaximum(minimumdate: Date, maximumDate: Date){
         datePicker.minimumDate = Calendar.current.date(byAdding: .year, value: 0, to: minimumdate)
-        datePicker.maximumDate = Calendar.current.date(byAdding: .year, value: 10, to: maximumDate)
+        if compareEndDate == ""{
+            datePicker.maximumDate = Calendar.current.date(byAdding: .year, value: 10, to: maximumDate)
+        }else{
+            datePicker.maximumDate = Calendar.current.date(byAdding: .year, value: 0, to: maximumDate)
+        }
         datePicker.setDate(Date(), animated: true)
         selectDate(datePicker: datePicker)
     }
@@ -218,3 +244,20 @@ extension Date {
         return dateFormatter.string(from: self).capitalized
     }
 }
+
+func formattedDateFromString(dateString: String, withFormat format: String) -> String? {
+
+    let inputFormatter = DateFormatter()
+    inputFormatter.dateFormat = "MM-dd-yyyy"
+
+    if let date = inputFormatter.date(from: dateString) {
+
+        let outputFormatter = DateFormatter()
+      outputFormatter.dateFormat = format
+
+        return outputFormatter.string(from: date)
+    }
+
+    return nil
+}
+
