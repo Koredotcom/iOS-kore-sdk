@@ -86,7 +86,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(ListWidgetBubbleCell.self, forCellReuseIdentifier:"ListWidgetBubbleCell")
         self.tableView.register(FeedbackBubbleCell.self, forCellReuseIdentifier:"FeedbackBubbleCell")
         self.tableView.register(InLineFormCell.self, forCellReuseIdentifier:"InLineFormCell")
-
+        self.tableView.register(DropDownell.self, forCellReuseIdentifier:"DropDownell")
 
     }
     
@@ -196,6 +196,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 break
             case .inlineForm:
                 cellIdentifier = "InLineFormCell"
+                break
+            case .dropdown_template:
+                cellIdentifier = "DropDownell"
                 break
             }
             
@@ -365,6 +368,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             bubbleView.optionsAction = {[weak self] (text, payload) in
                 self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
             }
+            cell.bubbleView.drawBorder = true
+            break
+        case .dropdown_template:
             cell.bubbleView.drawBorder = true
             break
         }

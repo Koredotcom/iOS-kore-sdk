@@ -315,6 +315,9 @@ open class KABotClient: NSObject {
         else if (templateType == "form_template") {
             return .inlineForm
         }
+        else if (templateType == "dropdown_template") {
+            return .dropdown_template
+        }
         return .text
     }
     
