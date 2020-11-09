@@ -24,6 +24,9 @@ var isSpeakingEnabled = false
 var selectedTheme = "Theme 1"
 var themeColorUserDefaults = "ThemeColor"
 let FindlyUrl = "https://pilot.findly.ai/" //"https://app.findly.ai/"
+let findlySidx = "sidx-392cd32b-6869-5e65-a99a-dc0ae0cfe5b3"
+let findlyUserId = "4bbe86a4-dfdc-429d-98de-253f5248a322"//"03B41D62-FB69-5B6D-A95E-473842F4DFE3"
+let findlyStreamId = "st-a4a4fabe-11d3-56cc-801d-894ddcd26c51"
 let recentSearchArray = NSMutableArray()
 
 //var isAutoSendMessage = false

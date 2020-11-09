@@ -536,7 +536,7 @@ open class KABotClient: NSObject {
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
         
         // NOTE: You must set your URL to generate JWT.
-        let urlString: String = "\(FindlyUrl)api/1.1/searchAssist/sidx-392cd32b-6869-5e65-a99a-dc0ae0cfe5b3/popularSearches"//SDKConfiguration.serverConfig.koreJwtUrl() //sidx-f3a43e5f-74b6-5632-a488-8af83c480b88
+        let urlString: String = "\(FindlyUrl)api/1.1/searchAssist/\(findlySidx)/popularSearches"//SDKConfiguration.serverConfig.koreJwtUrl() //sidx-f3a43e5f-74b6-5632-a488-8af83c480b88
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
@@ -576,7 +576,7 @@ open class KABotClient: NSObject {
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
         
         // NOTE: You must set your URL to generate JWT.
-        let urlString: String = "\(FindlyUrl)searchAssistant/liveSearch/sidx-392cd32b-6869-5e65-a99a-dc0ae0cfe5b3"
+        let urlString: String = "\(FindlyUrl)searchAssistant/liveSearch/\(findlySidx)"
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
@@ -587,8 +587,8 @@ open class KABotClient: NSObject {
         
         let parameters: NSDictionary = ["query": text as Any,
                                         "maxNumOfResults": 16,
-                                        "userId": "03B41D62-FB69-5B6D-A95E-473842F4DFE3",
-                                        "streamId": "st-a4a4fabe-11d3-56cc-801d-894ddcd26c51",
+                                        "userId": findlyUserId,
+                                        "streamId": findlyStreamId,
                                         "lang": "en"]
         
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
@@ -618,7 +618,7 @@ open class KABotClient: NSObject {
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
         
         // NOTE: You must set your URL to generate JWT.
-        let urlString: String = "\(FindlyUrl)searchAssistant/search/sidx-392cd32b-6869-5e65-a99a-dc0ae0cfe5b3"
+        let urlString: String = "\(FindlyUrl)searchAssistant/search/\(findlySidx)"
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
@@ -630,8 +630,8 @@ open class KABotClient: NSObject {
         var parameters: NSDictionary?
             parameters = ["query": text as Any,
             "maxNumOfResults": 9,
-            "userId": "03B41D62-FB69-5B6D-A95E-473842F4DFE3",
-            "streamId": "st-a4a4fabe-11d3-56cc-801d-894ddcd26c51",
+            "userId": findlyUserId,
+            "streamId": findlyStreamId,
             "lang": "en",
             "smallTalk":"true"]
         if isShowLoginView{
@@ -639,8 +639,8 @@ open class KABotClient: NSObject {
             //isEndOfTask = false
              parameters = ["query": text as Any,
             "maxNumOfResults": 9,
-            "userId": "03B41D62-FB69-5B6D-A95E-473842F4DFE3",
-            "streamId": "st-a4a4fabe-11d3-56cc-801d-894ddcd26c51",
+            "userId": findlyUserId,
+            "streamId": findlyStreamId,
             "lang": "en",
             "smallTalk":"true","isBotAction":"true"]
         }

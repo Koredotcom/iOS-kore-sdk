@@ -109,7 +109,7 @@ class LiveSearchDetailsViewController: UIViewController {
             let task = allItems.template?.results?.task
             self.arrayOfTaskResults = task ?? []
             if self.arrayOfTaskResults.count > 0 {
-                self.headerArray.append("MATCHED TASKS")
+                self.headerArray.append("MATCHED ACTIONS") 
             }
             
             arrayOfCollectionViewCount = []

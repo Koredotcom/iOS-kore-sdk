@@ -105,6 +105,10 @@ class LiveSearchView: UIView {
            
         }, failure: { (error) in
                 print(error)
+            self.isPopularSearch = true
+            self.headerArray = ["POPULAR SEARCHS","RECENT SEARCHS"]
+            self.tableView.reloadData()
+            
         })
     }
     
@@ -378,7 +382,7 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
            return view
        }
        func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-           return 30
+         return 30
        }
 }
 

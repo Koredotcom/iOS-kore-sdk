@@ -311,6 +311,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if ((self.composeView.isFirstResponder)) {
             _ = self.composeView.resignFirstResponder()
         }
+        self.composeView.setText("")
         liveSearchContainerView.isHidden = true
         loginContainerView.isHidden = true
         
