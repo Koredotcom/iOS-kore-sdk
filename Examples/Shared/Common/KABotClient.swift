@@ -38,6 +38,7 @@ open class KABotClient: NSObject {
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
     private static var instance: KABotClient!
+    var componentOperationQueue: OperationQueue = OperationQueue()
     static let shared: KABotClient = {
         if (instance == nil) {
             instance = KABotClient()
@@ -315,6 +316,9 @@ open class KABotClient: NSObject {
         else if (templateType == "form_template") {
             return .inlineForm
         }
+        else if (templateType == "dropdown_template") {
+            return .dropdown_template
+        }
         return .text
     }
     
@@ -454,9 +458,11 @@ open class KABotClient: NSObject {
                     self?.botClient.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
                         self?.fetchMessages(completion: { (reconnects) in
                             self?.botClient.connect(isReconnect: reconnects)
+                            
                         })
                         }, success: { (client) in
                             self?.botClient = client!
+                            AcccesssTokenn = client?.authInfoModel?.accessToken
                             block?(self?.botClient, self?.thread)
                     }, failure: { (error) in
                         failure?(error!)
@@ -512,6 +518,7 @@ open class KABotClient: NSObject {
         sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
             if let dictionary = responseObject as? [String: Any],
                 let jwToken: String = dictionary["jwt"] as? String {
+                
                 success?(jwToken)
             } else {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
@@ -669,6 +676,8 @@ open class KABotClient: NSObject {
     public func setReachabilityStatusChange(_ status: AFNetworkReachabilityStatus) {
         botClient.setReachabilityStatusChange(status)
     }
+    
+    
 }
 
 // MARK: - UserDefaults Sign-In status

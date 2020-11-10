@@ -86,7 +86,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(ListWidgetBubbleCell.self, forCellReuseIdentifier:"ListWidgetBubbleCell")
         self.tableView.register(FeedbackBubbleCell.self, forCellReuseIdentifier:"FeedbackBubbleCell")
         self.tableView.register(InLineFormCell.self, forCellReuseIdentifier:"InLineFormCell")
-
+        self.tableView.register(DropDownell.self, forCellReuseIdentifier:"DropDownell")
 
     }
     
@@ -197,6 +197,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .inlineForm:
                 cellIdentifier = "InLineFormCell"
                 break
+            case .dropdown_template:
+                cellIdentifier = "DropDownell"
+                break
             }
             
         }
@@ -260,13 +263,12 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             break
         case .carousel:
             let bubbleView: CarouselBubbleView = cell.bubbleView as! CarouselBubbleView
-            bubbleView.optionsAction = {[weak self] (text) in
-                self?.viewDelegate?.optionsButtonTapAction(text: text!)
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
             }
             bubbleView.linkAction = {[weak self] (text) in
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
             }
-            
             break
         case .error:
             let bubbleView: ErrorBubbleView = cell.bubbleView as! ErrorBubbleView
@@ -365,6 +367,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             bubbleView.optionsAction = {[weak self] (text, payload) in
                 self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
             }
+            cell.bubbleView.drawBorder = true
+            break
+        case .dropdown_template:
             cell.bubbleView.drawBorder = true
             break
         }

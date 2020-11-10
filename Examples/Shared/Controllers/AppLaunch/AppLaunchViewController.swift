@@ -40,6 +40,41 @@ class AppLaunchViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         getThemeColor()
+        
+        let koraApplication = KoraApplication.sharedInstance
+               if !koraApplication.isStackInitialised() {
+                  // appInitSuccess = koraApplication.initialiseCoreDataStack()
+               }
+               
+               //var accountInitSuccess = true
+               if koraApplication.account == nil {
+//                   if appInitSuccess {
+//                       initGroup.enter()
+//
+//                       // now load account, if exists
+//                       koraApplication.initialiseUserAccount { (success) in
+//                           accountInitSuccess = success
+//                           initGroup.leave()
+//                       }
+//                   }
+               }
+        
+        KoraApplication.sharedInstance.prepareNewAccount(userInfo: [:], auth: [:]) { (success, error) in
+//                   NotificationCenter.default.post(name: NSNotification.Name(rawValue: KoraNotification.LogInProgressEnded), object: nil)
+//                   if success {
+//                       let account = KoraApplication.sharedInstance.account
+//                       KREApplication.shared.launchKoraOnboarding(for: account)
+//                       KREPushNotificationManager.sharedInstance.registerAllAccountsForKoreNotifications()
+//                   } else if let allErrors = responseObject["errors"] as? Array<[String: Any]>, let errors = allErrors.first {
+//                       if let code = errors["code"] as? String, code == "UKNOWN_iDENTITY", let message = errors["msg"] as? String {
+//                           KREApplication.shared.showAlertView(title: nil, message: message)
+//                       }
+//                   } else {
+//                       KREApplication.shared.showAlertView(title: nil, message: KRELocalized("Unable to log in at this time. Please try again after some time."))
+//                   }
+//
+//                   KREApplication.shared.hideKoraPrepareViewController()
+               }
     }
     
     override func viewDidAppear(_ animated: Bool) {

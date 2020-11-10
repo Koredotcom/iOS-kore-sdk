@@ -9,8 +9,6 @@
 import UIKit
 
 class MultiSelectNewBubbleView: BubbleView {
-    static let elementsLimit: Int = 4
-    
     var titleLbl: UILabel!
     var tableView: UITableView!
     var cardView: UIView!
@@ -19,7 +17,6 @@ class MultiSelectNewBubbleView: BubbleView {
     fileprivate let multiSelectCellIdentifier = "MultiSelectCell"
     let rowsDataLimit = 4
     
-    var arraySelectedHeader = NSMutableArray() //for header checkbox
     var checkboxIndexPath = [IndexPath]() //for Rows checkbox
     var arrayOfSeletedValues = [String]()
     
@@ -46,6 +43,11 @@ class MultiSelectNewBubbleView: BubbleView {
         didSet {
             self.backgroundColor = .clear
         }
+    }
+    
+    override func prepareForReuse() {
+        checkboxIndexPath = [IndexPath]()
+         arrayOfSeletedValues = [String]()
     }
     
     override func initialize() {
