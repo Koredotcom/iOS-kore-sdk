@@ -8,5 +8,7 @@ target 'KoreBotSDKDemo' do
 
     use_frameworks!
     pod 'KoreBotSDK', :path => '../../'
+    pod 'AssetsPickerViewController'
+    pod 'SwiftUTI'
     project 'KoreBotSDKDemo.xcodeproj'
 end

@@ -8,11 +8,11 @@
 
 import Foundation
 
-enum MessageType : Int {
+public enum MessageType : Int {
     case `default` = 1, reply = 2
 }
 
-class Message : NSObject {
+public class Message : NSObject {
     var messageType: MessageType = .default
     var sender: String!
     var iconUrl: String!

@@ -17,6 +17,7 @@ var reloadTableNotification = "reloadTableNotification"
 var updateUserImageNotification = "updateUserImageNotification"
 var showListViewTemplateNotification = "ListViewTemplateNotificationName"
 var showListWidgetViewTemplateNotification = "ListWidgetViewTemplateNotificationName"
+var showAttachmentSendButtonNotification = "ShowAttachmentSendButton"
 var dropDownTemplateNotification = "DropDownTemplateNotificationName"
 
 var isSpeakingEnabled = false
@@ -30,6 +31,8 @@ var themeColor: UIColor = UIColor.init(hexString: "#2881DF")
 var headerTitle = SDKConfiguration.botConfig.identity
 var backgroudImage = ""
 var leftImage = "cancel"
+var AcccesssTokenn:String?
+var attachmentKeybord = false
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
