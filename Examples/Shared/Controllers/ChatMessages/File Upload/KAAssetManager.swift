@@ -355,20 +355,6 @@ class KAAssetManager: NSObject {
                     if iCloudFileLink == nil {
                         return
                     }
-//                    KREFileDownloadManager.shared().downloadFileFromiCloudLinkDirectly(iCloudFileLink, toFilePath: filePath, withCompletionBlock: {(_ filePath: String?, _ status: Bool) -> Void in
-//                        if status {
-//                            PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 300, height: 300), contentMode: .aspectFit, options: nil, resultHandler: {(_ result: UIImage?, _ info: [AnyHashable: Any]?) -> Void in
-//                                if thumbnailPath.length > 0 {
-//                                    KREMediaAsset.save(result, toFilePath: thumbnailPath, fileType: "jpeg", compressionQuality: 0.5)
-//                                }
-//                                if completion {
-//                                    completion(true, result, self.assetURL)
-//                                }
-//                            })
-//                        } else {
-//                            completion(false, nil, self.assetURL)
-//                        }
-//                    })
                 }
             default:
                 self.exportVideo(to: mediaAsset.filePath, with: exportSession!, completion: { (success) in

@@ -13,7 +13,7 @@ public enum KAHTTPRequestStatus: Int {
     case noError = 0, requestExists = 1, noNetwork = 2, requestError = 3
 }
 
-open class KAHTTPSessionManager: AFHTTPSessionManager {    
+open class KAHTTPSessionManager: AFHTTPSessionManager {
     // MARK: - init
     public init(baseURL: URL?) {
         super.init(baseURL: baseURL, sessionConfiguration: nil)

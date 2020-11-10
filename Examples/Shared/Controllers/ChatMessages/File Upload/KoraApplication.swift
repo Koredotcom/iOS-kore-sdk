@@ -142,58 +142,7 @@ open class KoraApplication: NSObject {
     }
     
     @objc public func prepareNewAccount(userInfo: [String : Any]?, auth authInfo: [String : Any]?, completion block: ((Bool, Error?) -> Void)?) {
-//           guard let mainContext = mainContext else {
-//               DispatchQueue.main.async {
-//                   block?(false, nil)
-//               }
-//               return
-//           }
-           
-           account = KAAccount()
-           
-//           // init KAUserInfo
-//           let user = insertUserInfo(userInfo)
-//           user?.sortDate = Date()
-//           account?.userInfo = user
-//
-//           // init KAAuthInfo
-//           let auth = insertAuthInfo(authInfo)
-//           auth?.userId = user?.userId
-//           account?.authInfo = auth
-           
-//           // init KASettings
-//           if let settings = NSEntityDescription.insertNewObject(forEntityName: "KASettings", into: mainContext) as? KASettings {
-//               settings.muteKora = false
-//               account?.userSettings = settings
-//           }
-//
-//           // init KAUserProfile
-//           if let profile = NSEntityDescription.insertNewObject(forEntityName: "KAUserProfile", into: mainContext) as? KAUserProfile {
-//               account?.profileInfo = profile
-//           }
-//
-//           // init KAUserProfile
-//           if let userStats = NSEntityDescription.insertNewObject(forEntityName: "KAUserStats", into: mainContext) as? KAUserStats {
-//               account?.userStats = userStats
-//           }
-                   
-//           do {
-//               try mainContext.save()
-//               account?.updateAccount(completion: { [weak self] (networkUpdateSuccess, error) in
-//                   self?.account?.initializeKoraBotClient()
-//                   DispatchQueue.main.async {
-//                       if let account = self?.account {
-//                           NotificationCenter.default.post(name: NSNotification.Name(rawValue: KoraNotification.ConnectPersistentConnection), object: account)
-//                       }
-//                       block?(networkUpdateSuccess, error)
-//                   }
-//               })
-//           } catch {
-//               debugPrint("Unable to get save context : %s %d", #function, #line)
-//               DispatchQueue.main.async {
-//                   block?(false, error)
-//               }
-//           }
+            account = KAAccount()
        }
 }
 

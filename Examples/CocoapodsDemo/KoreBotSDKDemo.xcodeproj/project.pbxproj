@@ -577,6 +577,7 @@
 			children = (
 				D101F91024E163F700D47DB8 /* ChatMessagesViewController.swift */,
 				D101F91D24E163F700D47DB8 /* ChatMessagesViewController.xib */,
+				958D272C2554214B0099674B /* File Upload */,
 				CD842D3824EFBD970053710B /* DropDown */,
 				953FA4C9255286A3006EA311 /* Attachment Cell */,
 				D101F91124E163F700D47DB8 /* PanelView */,
@@ -676,7 +677,6 @@
 		D1F3385F2201D99A005BE5F1 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				958D272C2554214B0099674B /* File Upload */,
 				D1EBD066227C5ECF0004C349 /* KABotClient.swift */,
 				D1F338602201D99A005BE5F1 /* Common.swift */,
 			);

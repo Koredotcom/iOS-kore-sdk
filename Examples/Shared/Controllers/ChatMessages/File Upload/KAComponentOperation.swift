@@ -137,7 +137,6 @@ class KAComponentOperation: KAOperation {
             return
         }
         var header: [String: String]?
-        //let authorization = "bearer \(account.botClient?.botClient.authInfoModel?.accessToken ?? "")"
         let authorization = "bearer \(AcccesssTokenn ?? "")"
          header = ["Authorization": authorization]
         if !checkBotUpload() {
@@ -170,8 +169,6 @@ class KAComponentOperation: KAOperation {
             block?(false)
             return
         }
-       
-       // let authorization = "bearer \(account.botClient?.botClient.authInfoModel?.accessToken ?? "")"
         let authorization = "bearer \(AcccesssTokenn ?? "")"
         _ = ["Authorization": authorization]
 
@@ -196,7 +193,7 @@ class KAComponentOperation: KAOperation {
         if checkBotUpload() {
             requestSerializer.setValue(authorization, forHTTPHeaderField: "Authorization")
         }
-        //let requestUrl = chunkUploadUrl(with: account.userId, fileMeta: component.fileMeta)
+        
         let requestUrl = fileUploadUrl()
     
         let request = requestSerializer.multipartFormRequest(withMethod: "POST", urlString: requestUrl, parameters: parameters, constructingBodyWith: { [unowned self] (formData) in
@@ -230,17 +227,6 @@ class KAComponentOperation: KAOperation {
     }
     
     func sizeLimitCheck(bytes: Int64) -> Bool {
-//        guard let usage = account?.usageLimit else {
-//            return false
-//        }
-//        let limit = usage.filter {$0.type == "attachment"}
-//        let kbSize = bytes / (1000 * 1000)
-//        if kbSize > (limit.first)?.size ?? 0 {
-//            return false
-//        } else {
-//            return true
-//        }
-        
         return true
     }
     
@@ -260,9 +246,7 @@ class KAComponentOperation: KAOperation {
 
         let requestSerializer: AFHTTPRequestSerializer = account.requestSerializer()
         if checkBotUpload() {
-            //let authorization = "bearer \(account.botClient?.botClient.authInfoModel?.accessToken ?? "")"
             let authorization = "bearer \(AcccesssTokenn ?? "")"
-            
             requestSerializer.setValue(authorization, forHTTPHeaderField: "Authorization")
         }
         
