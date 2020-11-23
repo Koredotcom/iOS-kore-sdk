@@ -17,21 +17,25 @@ var reloadTableNotification = "reloadTableNotification"
 var updateUserImageNotification = "updateUserImageNotification"
 var showListViewTemplateNotification = "ListViewTemplateNotificationName"
 var showListWidgetViewTemplateNotification = "ListWidgetViewTemplateNotificationName"
+var dropDownTemplateNotification = "DropDownTemplateNotificationName"
+
 
 var isSpeakingEnabled = false
 var selectedTheme = "Theme 1"
-var themeColorUserDefaults = "ThemeColor"
+
 
 let userColor: UIColor = UIColor(red: 38 / 255.0, green: 52 / 255.0, blue: 74 / 255.0, alpha: 1)
 let botColor: UIColor = UIColor(red: 237 / 255.0, green: 238 / 255.0, blue: 241 / 255.0, alpha: 1)
 
-var themeColor: UIColor = UIColor.init(hexString: "#2881DF")  // 149C3F
-var headerTitle = ""
-var backgroudImage = ""
-var leftImage = ""
+var themeColor: UIColor = UIColor.init(hexString: "#2881DF")
+var reciverIcon:String?
+var userIdentity:String?
 
-var tokenURL = "https://demodpd.kore.ai/finastraLoginDEMO/token"
-var KOREAPIURL: String?
+var tokenURL = ""
+var uniqueUserId: String?
+var userInfoUserId: String?
+var authInfoAccessToken: String?
+var tenantId = "5f9274c15b6a927ae14dce42" //"5fab18e0cb0fb2452f12bd04" 
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {

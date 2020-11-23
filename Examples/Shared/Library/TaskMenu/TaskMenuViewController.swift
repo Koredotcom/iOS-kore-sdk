@@ -22,31 +22,26 @@ class TaskMenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
        // Do any additional setup after loading the view.
+        subView.backgroundColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetBodyColor)!)
+        titleLabel.textColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetTextColor)!)
         subView.layer.masksToBounds = false
         subView?.layer.shadowColor = UIColor.lightGray.cgColor
         subView?.layer.shadowOffset =  CGSize.zero
-        subView?.layer.shadowOpacity = 0.5
-        subView?.layer.shadowRadius = 4
         getData()
         self.tableview.register(UINib(nibName: taskMenuCellIdentifier, bundle: nil), forCellReuseIdentifier: taskMenuCellIdentifier)
     }
 
     func getData(){
-        if let path = Bundle.main.path(forResource: "TaskMenu", ofType: "json") {
-            do {
-                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-                let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
-                if let jsonResult = jsonResult as? Dictionary<String, AnyObject> {
-                    // do stuff
-                    let jsonData = try DictionaryDecoder().decode(TaskMenu.self, from: jsonResult as [String : Any])
-                    self.arrayOftasks = jsonData.tasks
-                    titleLabel.text = jsonData.heading
-                    self.tableview.reloadData()
-                }
-            } catch {
-                // handle error
-            }
+    
+        let jsonDic = brandingShared.hamburgerOptions
+        if let jsonResult = jsonDic as Dictionary<String, AnyObject>? {
+            // do stuff
+            let jsonData = try? DictionaryDecoder().decode(TaskMenu.self, from: jsonResult as [String : Any])
+            self.arrayOftasks = jsonData!.tasks
+            titleLabel.text = jsonData!.heading 
+            self.tableview.reloadData()
         }
+        
     }
     @IBAction func tapsOnCloseBtnAct(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
@@ -85,6 +80,8 @@ extension TaskMenuViewController: UITableViewDelegate,UITableViewDataSource{
            cell.titleLabel.text = tasks.title
            let image = base64ToImage(base64String: tasks.icon)
            cell.imgView.image = image
+        cell.bgView.backgroundColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.buttonActiveBgColor)!)
+        cell.titleLabel.textColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.buttonActiveTextColor)!)
            return cell
        }
        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -36,7 +36,7 @@ class SDKConfiguration: NSObject {
             return String(format: "%@users/sts", JWT_SERVER)
         }
         
-        static let BOT_SERVER = String(format: "https://bots.kore.ai")
+        static var BOT_SERVER = String(format: "https://bots.kore.ai")
         public static let KORE_SERVER = String(format: "https://bots.kore.ai/")
     }
    

@@ -15,7 +15,8 @@ protocol NewListViewDelegate {
 
 class ListViewDetailsViewController: UIViewController {
 
-    @IBOutlet weak var headingLebel: UILabel!
+    @IBOutlet weak var subView: UIView!
+    @IBOutlet weak var headingLabel: UILabel!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var tableview: UITableView!
     fileprivate let listCellIdentifier = "NewListTableViewCell"
@@ -40,6 +41,8 @@ class ListViewDetailsViewController: UIViewController {
         getData()
         self.tableview.tableFooterView = UIView(frame:.zero)
         self.tableview.register(UINib(nibName: listCellIdentifier, bundle: nil), forCellReuseIdentifier: listCellIdentifier)
+        subView.backgroundColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetBodyColor)!)
+        headingLabel.textColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetTextColor)!)
     }
     func getData(){
        let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: dataString!) as! NSDictionary
@@ -50,7 +53,7 @@ class ListViewDetailsViewController: UIViewController {
                 }
                 jsonData = allItems
             arrayOfElements = jsonData?.elements ?? []
-            headingLebel.text = jsonData?.text ?? ""
+            headingLabel.text = jsonData?.text ?? ""
     }
     /*
     // MARK: - Navigation

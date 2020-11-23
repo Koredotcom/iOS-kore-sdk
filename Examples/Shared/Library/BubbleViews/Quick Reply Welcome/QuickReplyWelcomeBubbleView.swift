@@ -63,7 +63,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         self.tileBgv.clipsToBounds = true
         self.tileBgv.layer.borderWidth = 1.0
         self.cardView.addSubview(self.tileBgv)
-        self.tileBgv.backgroundColor = .white //Common.UIColorRGB(0xEDEFF2)
+        self.tileBgv.backgroundColor = BubbleViewLeftTint
         if #available(iOS 11.0, *) {
             self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
         } else {
@@ -92,7 +92,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[collectionView]-0-|", options: [], metrics: nil, views: views))
         
         self.titleLbl = UILabel(frame: CGRect.zero)
-        self.titleLbl.textColor = Common.UIColorRGB(0x484848)
+        self.titleLbl.textColor = BubbleViewBotChatTextColor
         self.titleLbl.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
         self.titleLbl.numberOfLines = 0
         self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -191,9 +191,10 @@ class QuickReplyWelcomeBubbleView: BubbleView {
             cell.textLabel.text = elements.title
             cell.textLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)!
             cell.textLabel.textAlignment = .center
-            cell.textLabel.textColor = themeColor
-            cell.layer.borderColor = themeColor.cgColor//UIColor.black.cgColor
-            cell.layer.borderWidth = 2.0
+            cell.textLabel.textColor = bubbleViewBotChatButtonTextColor
+            cell.layer.borderColor = bubbleViewBotChatButtonTextColor.cgColor
+            cell.backgroundColor = bubbleViewBotChatButtonBgColor
+            cell.layer.borderWidth = 1.0
             cell.layer.cornerRadius = 15.0
             return cell
         }
@@ -221,8 +222,6 @@ class QuickReplyWelcomeBubbleView: BubbleView {
              let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! CustomCollectionViewCell
             cell.textLabel.text = text
             cell.layer.cornerRadius = 5.0
-            cell.textLabel.textColor = themeColor
-            cell.layer.borderColor = themeColor.cgColor
             cell.layer.borderWidth = 1.5
              return CGSize(width: cell.textLabel.intrinsicContentSize.width + 25, height: 40)
         }

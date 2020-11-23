@@ -47,7 +47,7 @@
                         <constraint firstAttribute="height" constant="234" id="Yyp-aY-oop"/>
                     </constraints>
                 </imageView>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please Enter Identity" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YsG-dv-o8t">
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please Enter email id" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YsG-dv-o8t">
                     <rect key="frame" x="20" y="617" width="374" height="34"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="34" id="rzd-2H-zJ8"/>

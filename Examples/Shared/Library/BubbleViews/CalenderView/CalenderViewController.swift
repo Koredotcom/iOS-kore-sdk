@@ -58,7 +58,14 @@ class CalenderViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        headingLabel.textColor = .white
         confirmButton.backgroundColor = themeColor
+        confirmButton.setTitleColor(UIColor.init(hexString: (brandingShared.brandingInfoModel?.buttonActiveTextColor)!), for: .normal)
+        if #available(iOS 14, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+            datePicker.backgroundColor = .white
+            datePicker.sizeToFit()
+        }
         datePicker.addTarget(self, action: #selector(CalenderViewController.datePickerChanged(datePicker:)), for: UIControl.Event.valueChanged)
         dateRangeSubView.layer.cornerRadius = 5.0
         dateRangeSubView.clipsToBounds = true

@@ -17,6 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         if let window = window {
+            if #available(iOS 13.0, *) {
+                    // prefer a light interface style with this:
+                window.overrideUserInterfaceStyle = .light
+            }
             window.backgroundColor = UIColor.white
 
             let appLaunchViewController: AppLaunchViewController = AppLaunchViewController(nibName: "AppLaunchViewController", bundle: nil)

@@ -12,13 +12,20 @@ enum BubbleMaskTailPosition : Int {
     case none = 1, left = 2, right = 3
 }
 
-let BubbleViewRightTint: UIColor = themeColor
+let brandingShared = BrandingSingleton.shared
+
+let BubbleViewRightTint: UIColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.userchatBgColor)!)
 let BubbleViewRightContrastTint: UIColor = Common.UIColorRGB(0xFFFFFF)
-let BubbleViewLeftTint: UIColor = .white
+let BubbleViewLeftTint: UIColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.botchatBgColor)!)
 let BubbleViewLeftContrastTint: UIColor = Common.UIColorRGB(0xBCBCBC)
 
 let BubbleViewCurveRadius: CGFloat = 20.0
 let BubbleViewMaxWidth: CGFloat = (UIScreen.main.bounds.size.width - 90.0)
+
+let BubbleViewUserChatTextColor: UIColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.userchatTextColor)!)
+let BubbleViewBotChatTextColor: UIColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.botchatTextColor)!)
+let bubbleViewBotChatButtonTextColor: UIColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.buttonActiveTextColor)!)
+let bubbleViewBotChatButtonBgColor: UIColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.buttonActiveBgColor)!)
 
 class BubbleView: UIView {
     var tailPosition: BubbleMaskTailPosition! {
@@ -116,6 +123,9 @@ class BubbleView: UIView {
             break
         case .inlineForm:
             bubbleView = InLineFormBubbleView()
+            break
+        case .dropdown_template:
+            bubbleView = DropDownBubbleView()
             break
         }
         bubbleView.bubbleType = bubbleType

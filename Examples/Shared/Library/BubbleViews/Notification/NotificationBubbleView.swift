@@ -261,15 +261,18 @@ extension NotificationBubbleView : UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // swiftlint:disable force_cast
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! CustomCollectionViewCell
-        cell.backgroundColor = .clear
+        //cell.backgroundColor = .clear
         let elements = arrayOfButtons[indexPath.row]
         cell.textLabel.text = elements.name
         cell.textLabel.font = UIFont(name: "HelveticaNeue", size: 15.0)!
         cell.textLabel.textAlignment = .center
-        cell.layer.borderColor = UIColor.white.cgColor
-        cell.textLabel.textColor = .white
+        //cell.layer.borderColor = UIColor.white.cgColor
+        //cell.textLabel.textColor = .white
         cell.layer.borderWidth = 1.0
         cell.layer.cornerRadius = 5.0
+        cell.textLabel.textColor = bubbleViewBotChatButtonTextColor
+        cell.layer.borderColor = UIColor.black.cgColor
+        cell.backgroundColor = bubbleViewBotChatButtonBgColor
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

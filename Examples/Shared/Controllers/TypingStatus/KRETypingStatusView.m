@@ -130,9 +130,7 @@
                                                                                        forIndexPath:indexPath];
     NSDictionary *dict = [self.dataSource objectAtIndex:indexPath.row];
     NSString *url = dict[@"imageName"];
-    [cell.customImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@""]];
-    NSString *colorStr =  [[NSUserDefaults standardUserDefaults] valueForKey:@"ThemeColor"];
-    cell.backgroundColor =  [KREUtilities colorWithHexString:[NSString stringWithFormat:@"%@",colorStr]];
+    [cell.customImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"kora"]];
     cell.layer.cornerRadius = cell.frame.size.height/2;
     return cell;
 }

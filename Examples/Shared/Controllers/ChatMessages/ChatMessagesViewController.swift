@@ -60,6 +60,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var insets: UIEdgeInsets = .zero
     @IBOutlet weak var panelCollectionViewContainerHeightConstraint: NSLayoutConstraint!
     
+    let widgetTextColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetTextColor)!)
+    let widgetHeaderColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetHeaderColor)!)
+    let widgetFooterColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetFooterColor)!)
+    let widgetBodyColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetBodyColor)!)
+    let widgetDividerColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetDividerColor)!)
+    
+    
+    
     @IBOutlet weak var backgroungImageView: UIImageView!
     @IBOutlet weak var dropDownBtn: UIButton!
        let colorDropDown = DropDown()
@@ -113,7 +121,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             panelCollectionViewContainerHeightConstraint.constant = 0
         }
 
-        isSpeakingEnabled = false //kk true
+        isSpeakingEnabled = false
         self.speechSynthesizer = AVSpeechSynthesizer()
         ConfigureDropDownView()
     }
@@ -122,7 +130,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         super.viewWillAppear(animated)
         addNotifications()
         
-        let urlString = leftImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let urlString = brandingShared.brandingInfoModel?.bankLogo?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         let url = URL(string: urlString!)
         var data : Data?
         if url != nil {
@@ -130,26 +138,52 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
         var image = UIImage(named: "cancel")
         if let imageData = data {
-            image = UIImage(data: imageData)
+             image = UIImage(data: imageData)
         }
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancel(_:)))
+        //navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancel(_:)))
         
-//        let rightImage = UIImage(named: "more")
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(more(_:)))
+        let button = UIButton(type: .custom)
+        //set image for button
+        //button.setBackgroundImage(image, for: .normal)
+         button.setImage(image, for: .normal)
+        //add function for button
+        button.addTarget(self, action: #selector(cancel(_:)), for: .touchUpInside)
+        //set frame
+        button.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
+        let barButton = UIBarButtonItem(customView: button)
+        NSLayoutConstraint.activate([(barButton.customView!.widthAnchor.constraint(equalToConstant: 35)),(barButton.customView!.heightAnchor.constraint(equalToConstant: 35))])
+        self.navigationItem.leftBarButtonItem = barButton
+        
+        let rightImage = UIImage(named: "more")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(more(_:)))
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         
         let font:UIFont? = UIFont(name: "Helvetica-Bold", size:17)
-        let attString:NSMutableAttributedString = NSMutableAttributedString(string: headerTitle, attributes: [.font:font!])
+        let titleStr = brandingShared.brandingInfoModel?.botName != "" ? brandingShared.brandingInfoModel?.botName: SDKConfiguration.botConfig.chatBotName
+        let attString:NSMutableAttributedString = NSMutableAttributedString(string: titleStr!, attributes: [.font:font!])
         let titleLabel = UILabel()
-        titleLabel.textColor = .white
+        titleLabel.textColor = widgetTextColor
         titleLabel.attributedText = attString
         self.navigationItem.titleView = titleLabel
         
-        navigationController?.navigationBar.barTintColor = themeColor
-        navigationController?.navigationBar.tintColor = UIColor.white
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        self.view.backgroundColor = UIColor.init(hexString: "#f3f3f5")
+        navigationController?.navigationBar.barTintColor = widgetHeaderColor
+        navigationController?.navigationBar.tintColor = widgetTextColor
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: widgetTextColor]
+       
+        let bgUrlString = brandingShared.brandingInfoModel?.widgetBgImage!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let bgUrl = URL(string: bgUrlString!)
+        if bgUrl != nil{
+        backgroungImageView.setImageWith(bgUrl!, placeholderImage: UIImage(named: ""))
+        backgroungImageView.contentMode = .scaleAspectFit
+        }else{
+          self.view.backgroundColor = widgetBodyColor
+        }
+        composeView.backgroundColor = widgetFooterColor
+        botMessagesView.tableView.layer.borderColor = widgetDividerColor.cgColor
+        botMessagesView.tableView.layer.borderWidth = 1.0
+        UserDefaults.standard.set(brandingShared.brandingInfoModel?.buttonActiveTextColor, forKey: "ButtonTextColor")
+        UserDefaults.standard.set(brandingShared.brandingInfoModel?.buttonActiveBgColor, forKey: "ButtonBgColor")
         
         if SDKConfiguration.widgetConfig.isPanelView {
             populatePanelItems()
@@ -310,7 +344,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.quickReplyView.translatesAutoresizingMaskIntoConstraints = false
         self.quickSelectContainerView.addSubview(self.quickReplyView)
         
-        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[quickReplyView]|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[quickReplyView]|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
         
                 self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
@@ -420,13 +454,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         colorDropDown.shadowRadius = 25
         colorDropDown.animationduration = 0.25
         colorDropDown.textColor = .darkGray
-        
-        let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        let url = URL(string: urlString!)
-        if url != nil{
-            backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
-            backgroungImageView.contentMode = .scaleAspectFit
-        }
+
         setupColorDropDown()
     }
     // MARK: Setup DropDown
@@ -449,12 +477,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             }
             
             if selectedTheme == "Theme 1"{
-                let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                let urlString = brandingShared.brandingInfoModel?.widgetBgImage!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
                 let url = URL(string: urlString!)
                 if url != nil{
                     self!.backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
                 }else{
                     self!.backgroungImageView.image = UIImage.init(named: "")
+                    self!.view.backgroundColor = self?.widgetBodyColor
                 }
                 self!.backgroungImageView.contentMode = .scaleAspectFit
             }else{
@@ -515,6 +544,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
         else if (templateType == "form_template") {
             return .inlineForm
+        }
+        else if (templateType == "dropdown_template") {
+            return .dropdown_template
         }
         return .text
     }
@@ -750,6 +782,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         NotificationCenter.default.addObserver(self, selector: #selector(startTypingStatusForBot), name: NSNotification.Name(rawValue: "StartTyping"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(stopTypingStatusForBot), name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(dropDownTemplateActtion), name: NSNotification.Name(rawValue: dropDownTemplateNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -771,6 +805,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StartTyping"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
+        
+         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: dropDownTemplateNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -1187,6 +1223,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.navigationController?.present(listViewDetailsViewController, animated: true, completion: nil)
     }
     
+    @objc func dropDownTemplateActtion(notification:Notification){
+         let dataString: String = notification.object as! String
+        composeView.setText(dataString)
+    }
+    
     // MARK: -
     public func maximizePanelWindow() {
 
@@ -1342,7 +1383,7 @@ extension ChatMessagesViewController: KABotClientDelegate {
         let botId:String = SDKConfiguration.botConfig.botId
         let info:NSMutableDictionary = NSMutableDictionary.init()
         info.setValue(botId, forKey: "botId");
-        let urlString = leftImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let urlString = brandingShared.brandingInfoModel?.bankLogo
         info.setValue(urlString ?? "kora", forKey: "imageName");
         self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5)
     }

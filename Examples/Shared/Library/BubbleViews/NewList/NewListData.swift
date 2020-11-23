@@ -98,7 +98,7 @@ public class ComponentElements: NSObject, Decodable {
         case subtitle = "subtitle"
         case title = "title"
         case value = "value"
-        case imageURL = "imageURL"
+        case imageURL = "image_url"
         case action = "default_action"
     }
     

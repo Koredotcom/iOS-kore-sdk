@@ -60,25 +60,9 @@ class CalenderBubbleView: BubbleView {
         self.tileBgv.layer.cornerRadius = 2.0
         self.tileBgv.clipsToBounds = true
         self.cardView.addSubview(self.tileBgv)
-        self.tileBgv.backgroundColor =  .white//Common.UIColorRGB(0xEDEFF2)
+        self.tileBgv.backgroundColor =  BubbleViewLeftTint
         
-//        self.tableView = UITableView(frame: CGRect.zero,style:.grouped)
-//        self.tableView.translatesAutoresizingMaskIntoConstraints = false
-//        self.tableView.dataSource = self
-//        self.tableView.delegate = self
-//        self.tableView.backgroundColor = .clear
-//        self.tableView.showsHorizontalScrollIndicator = false
-//        self.tableView.showsVerticalScrollIndicator = true
-//        self.tableView.bounces = false
-//        self.tableView.separatorStyle = .none
-//        self.cardView.addSubview(self.tableView)
-//        self.tableView.isScrollEnabled = true
-//        self.tableView.register(UINib(nibName: multiSelectCellIdentifier, bundle: nil), forCellReuseIdentifier: multiSelectCellIdentifier)
-        
-//        let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView]
-//        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
-//        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
-//        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
+
         
         let views: [String: UIView] = ["tileBgv": tileBgv]
                self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-5-|", options: [], metrics: nil, views: views))

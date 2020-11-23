@@ -11,6 +11,7 @@ import UIKit
 class MultiSelectNewBubbleView: BubbleView {
     static let elementsLimit: Int = 4
     
+    var tileBgv: UIView!
     var titleLbl: UILabel!
     var tableView: UITableView!
     var cardView: UIView!
@@ -19,9 +20,13 @@ class MultiSelectNewBubbleView: BubbleView {
     fileprivate let multiSelectCellIdentifier = "MultiSelectCell"
     let rowsDataLimit = 4
     
-    var arraySelectedHeader = NSMutableArray() //for header checkbox
     var checkboxIndexPath = [IndexPath]() //for Rows checkbox
     var arrayOfSeletedValues = [String]()
+    
+    override func prepareForReuse() {
+        checkboxIndexPath = [IndexPath]()
+         arrayOfSeletedValues = [String]()
+    }
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Bold", size: 15.0) as Any,
@@ -33,6 +38,7 @@ class MultiSelectNewBubbleView: BubbleView {
     var showMore = false
     public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
+    
     override func applyBubbleMask() {
         //nothing to put here
         if(self.maskLayer == nil){
@@ -53,6 +59,22 @@ class MultiSelectNewBubbleView: BubbleView {
        // UserDefaults.standard.set(false, forKey: "SliderKey")
         intializeCardLayout()
         
+        self.tileBgv = UIView(frame:.zero)
+               self.tileBgv.translatesAutoresizingMaskIntoConstraints = false
+               self.tileBgv.layer.rasterizationScale =  UIScreen.main.scale
+               self.tileBgv.layer.shouldRasterize = true
+               self.tileBgv.layer.cornerRadius = 10.0
+               self.tileBgv.layer.borderColor = UIColor.lightGray.cgColor
+               self.tileBgv.clipsToBounds = true
+               self.tileBgv.layer.borderWidth = 1.0
+               self.cardView.addSubview(self.tileBgv)
+               self.tileBgv.backgroundColor = BubbleViewLeftTint
+               if #available(iOS 11.0, *) {
+                   self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
+               } else {
+                   // Fallback on earlier versions
+               }
+        
         self.tableView = UITableView(frame: CGRect.zero,style:.plain)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.dataSource = self
@@ -66,10 +88,29 @@ class MultiSelectNewBubbleView: BubbleView {
         self.tableView.isScrollEnabled = true
         self.tableView.register(UINib(nibName: multiSelectCellIdentifier, bundle: nil), forCellReuseIdentifier: multiSelectCellIdentifier)
         
-        let views: [String: UIView] = ["tableView": tableView]
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[tableView]-5-|", options: [], metrics: nil, views: views))
+        let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView]
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[tileBgv]-10-[tableView]-0-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
+
+        self.titleLbl = UILabel(frame: CGRect.zero)
+        self.titleLbl.textColor = BubbleViewBotChatTextColor
+        self.titleLbl.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
+        self.titleLbl.numberOfLines = 0
+        self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
+        self.titleLbl.isUserInteractionEnabled = true
+        self.titleLbl.contentMode = UIView.ContentMode.topLeft
+        self.titleLbl.translatesAutoresizingMaskIntoConstraints = false
+        self.tileBgv.addSubview(self.titleLbl)
+        self.titleLbl.adjustsFontSizeToFitWidth = true
+        self.titleLbl.backgroundColor = .clear
+        self.titleLbl.layer.cornerRadius = 6.0
+        self.titleLbl.clipsToBounds = true
+        self.titleLbl.sizeToFit()
         
+        let subView: [String: UIView] = ["titleLbl": titleLbl]
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
     }
     
     func intializeCardLayout(){
@@ -85,6 +126,12 @@ class MultiSelectNewBubbleView: BubbleView {
     
     // MARK: populate components
     override func populateComponents() {
+        if selectedTheme == "Theme 1"{
+            self.tileBgv.layer.borderWidth = 0.0
+        }else{
+            self.tileBgv.layer.borderWidth = 1.0
+        }
+        
         if (components.count > 0) {
             let component: KREComponent = components.firstObject as! KREComponent
             if (component.message != nil) {
@@ -100,8 +147,9 @@ class MultiSelectNewBubbleView: BubbleView {
                 let allItems = try? jsonDecoder.decode(Componentss.self, from: jsonData) else {
                     return
                 }
-                arrayOfSeletedValues = []
-               arrayOfElements = allItems.elements ?? []
+                
+                self.titleLbl.text = allItems.heading ?? ""
+                arrayOfElements = allItems.elements ?? []
                 arrayOfButtons = allItems.buttons ?? []
                 self.tableView.reloadData()
                 
@@ -111,6 +159,14 @@ class MultiSelectNewBubbleView: BubbleView {
     
     //MARK: View height calculation
     override var intrinsicContentSize : CGSize {
+        
+        
+        let limitingSize: CGSize  = CGSize(width: kMaxTextWidth, height: CGFloat.greatestFiniteMagnitude)
+        var textSize: CGSize = self.titleLbl.sizeThatFits(limitingSize)
+        if textSize.height < self.titleLbl.font.pointSize {
+            textSize.height = self.titleLbl.font.pointSize
+        }
+        
         var cellHeight : CGFloat = 0.0
         let rows = arrayOfElements.count //> rowsDataLimit ? rowsDataLimit : arrayOfElements.count
         var finalHeight: CGFloat = 0.0
@@ -119,7 +175,7 @@ class MultiSelectNewBubbleView: BubbleView {
             cellHeight = row.bounds.height
             finalHeight += cellHeight
         }
-        return CGSize(width: 0.0, height: 20+finalHeight+40)
+        return CGSize(width: 0.0, height: textSize.height+40+finalHeight+40)
     }
     
     @objc fileprivate func SelectAllButtonAction(_ sender: AnyObject!) {

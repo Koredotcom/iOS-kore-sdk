@@ -12,7 +12,7 @@ import KoreBotSDK
 class CarouselBubbleView: BubbleView {
     var carouselView: KRECarouselView!
     
-    public var optionsAction: ((_ text: String?) -> Void)!
+    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)?
     public var linkAction: ((_ text: String?) -> Void)!
     
     override func applyBubbleMask() {
@@ -39,7 +39,7 @@ class CarouselBubbleView: BubbleView {
         
         self.carouselView.optionsAction = { [weak self] (text, payload) in
             if((self?.optionsAction) != nil){
-                self?.optionsAction(text)
+                self?.optionsAction?(text, payload)
             }
         }
         self.carouselView.linkAction = {[weak self] (text) in

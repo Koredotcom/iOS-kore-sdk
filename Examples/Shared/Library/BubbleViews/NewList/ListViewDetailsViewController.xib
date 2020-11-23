@@ -11,7 +11,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ListViewDetailsViewController" customModule="BankAssist_ai" customModuleProvider="target">
             <connections>
                 <outlet property="closeButton" destination="Udq-kf-hbK" id="FEw-gO-gpd"/>
-                <outlet property="headingLebel" destination="0Ud-kt-XB7" id="8KD-vh-sRS"/>
+                <outlet property="headingLabel" destination="0Ud-kt-XB7" id="Abg-mD-Vs4"/>
+                <outlet property="subView" destination="HM7-li-H3t" id="7mH-gT-b3O"/>
                 <outlet property="tableview" destination="exn-Ys-HUC" id="eWN-ry-6F2"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -24,10 +25,10 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HM7-li-H3t">
                     <rect key="frame" x="0.0" y="40" width="375" height="627"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ud-kt-XB7">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ud-kt-XB7">
                             <rect key="frame" x="10" y="5" width="317" height="44"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="44" id="8QR-hZ-LBS"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="8QR-hZ-LBS"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                             <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

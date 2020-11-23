@@ -24,6 +24,12 @@ class NewListTableViewCell: UITableViewCell {
         bgView.layer.cornerRadius = 10
         bgView.layer.borderWidth = 1
         bgView.layer.borderColor = UIColor.lightGray.cgColor
+        
+        bgView.layer.shadowColor = UIColor.darkGray.cgColor
+        bgView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        bgView.layer.shadowOpacity = 0.5
+        bgView.layer.shadowRadius = 2
+        bgView.clipsToBounds = false
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

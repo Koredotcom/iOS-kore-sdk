@@ -11,6 +11,9 @@
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		1D9FA1702AE04EE1A8F6AF2C /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */; };
+		95C49EF3255E40DB008CD1FD /* BrandingSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C49EF1255E40D9008CD1FD /* BrandingSingleton.swift */; };
+		95C49EF4255E40DB008CD1FD /* BrandingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C49EF2255E40DB008CD1FD /* BrandingModel.swift */; };
+		95E0D3DD253ECF7A00FE79B1 /* DropDownBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E0D3DC253ECF7A00FE79B1 /* DropDownBubbleView.swift */; };
 		CD445135250B7C4700879219 /* ListWidgetBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445134250B7C4700879219 /* ListWidgetBubbleView.swift */; };
 		CD445138250B7C5400879219 /* ListWidgetDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD445136250B7C5300879219 /* ListWidgetDetailsViewController.swift */; };
 		CD445139250B7C5400879219 /* ListWidgetDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD445137250B7C5300879219 /* ListWidgetDetailsViewController.xib */; };
@@ -151,6 +154,9 @@
 		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		95C49EF1255E40D9008CD1FD /* BrandingSingleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrandingSingleton.swift; sourceTree = "<group>"; };
+		95C49EF2255E40DB008CD1FD /* BrandingModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BrandingModel.swift; path = "../New Group/BrandingModel.swift"; sourceTree = "<group>"; };
+		95E0D3DC253ECF7A00FE79B1 /* DropDownBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownBubbleView.swift; sourceTree = "<group>"; };
 		CD18E3E19876E3486C39D351 /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		CD445134250B7C4700879219 /* ListWidgetBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListWidgetBubbleView.swift; sourceTree = "<group>"; };
 		CD445136250B7C5300879219 /* ListWidgetDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListWidgetDetailsViewController.swift; sourceTree = "<group>"; };
@@ -320,6 +326,23 @@
 				5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		9502402A256B96E10068091A /* Branding */ = {
+			isa = PBXGroup;
+			children = (
+				95C49EF1255E40D9008CD1FD /* BrandingSingleton.swift */,
+				95C49EF2255E40DB008CD1FD /* BrandingModel.swift */,
+			);
+			path = Branding;
+			sourceTree = "<group>";
+		};
+		95E0D3DB253ECF5500FE79B1 /* Drop Down */ = {
+			isa = PBXGroup;
+			children = (
+				95E0D3DC253ECF7A00FE79B1 /* DropDownBubbleView.swift */,
+			);
+			path = "Drop Down";
 			sourceTree = "<group>";
 		};
 		A851461715333BEDEFC8310F /* Frameworks */ = {
@@ -761,6 +784,7 @@
 				D1F3389B2201D99A005BE5F1 /* Table */,
 				D1F338A72201D99A005BE5F1 /* Menu */,
 				D1F338A92201D99A005BE5F1 /* ListBubbleView.swift */,
+				95E0D3DB253ECF5500FE79B1 /* Drop Down */,
 				CD445155250B8A2F00879219 /* InLine Form */,
 				CD44513A250B84D900879219 /* Feedback */,
 				CD445133250B7C2800879219 /* List Widget */,
@@ -878,13 +902,13 @@
 		D1F338B42201D99A005BE5F1 /* TypingStatus */ = {
 			isa = PBXGroup;
 			children = (
+				D1F338BB2201D99A005BE5F1 /* KRETypingActivityIndicator.h */,
 				D1F338B52201D99A005BE5F1 /* KRETypingActivityIndicator.m */,
-				D1F338B62201D99A005BE5F1 /* KRETypingCollectionViewCell.xib */,
 				D1F338B72201D99A005BE5F1 /* KRETypingCollectionViewCell.h */,
+				D1F338BA2201D99A005BE5F1 /* KRETypingCollectionViewCell.m */,
+				D1F338B62201D99A005BE5F1 /* KRETypingCollectionViewCell.xib */,
 				D1F338B82201D99A005BE5F1 /* KRETypingStatusView.h */,
 				D1F338B92201D99A005BE5F1 /* KRETypingStatusView.m */,
-				D1F338BA2201D99A005BE5F1 /* KRETypingCollectionViewCell.m */,
-				D1F338BB2201D99A005BE5F1 /* KRETypingActivityIndicator.h */,
 			);
 			path = TypingStatus;
 			sourceTree = "<group>";
@@ -902,6 +926,7 @@
 		D1F338C02201D99A005BE5F1 /* AppLaunch */ = {
 			isa = PBXGroup;
 			children = (
+				9502402A256B96E10068091A /* Branding */,
 				D1F338C12201D99A005BE5F1 /* AppLaunchViewController.swift */,
 				D1F338C22201D99A005BE5F1 /* AppLaunchViewController.xib */,
 			);
@@ -1085,6 +1110,7 @@
 				CD89236D24C5614E006F71DE /* QuickRepliesData.swift in Sources */,
 				D1F338EA2201D99A005BE5F1 /* CustomCollectionViewLayout.swift in Sources */,
 				D1F338FA2201D99A005BE5F1 /* KRETypingActivityIndicator.m in Sources */,
+				95C49EF4255E40DB008CD1FD /* BrandingModel.swift in Sources */,
 				D101F92924E163F800D47DB8 /* KAPanelHeaderView.swift in Sources */,
 				CD63DA4B24EAB9A700DCCCCE /* MultiSelectCell.swift in Sources */,
 				D101F92124E163F700D47DB8 /* KoraAssistant.swift in Sources */,
@@ -1154,6 +1180,7 @@
 				CD89236724C55BAC006F71DE /* CalenderBubbleView.swift in Sources */,
 				CD89237024C562A2006F71DE /* QuickReplyCollectionViewFlowLayout.swift in Sources */,
 				D1F338D52201D99A005BE5F1 /* Message.swift in Sources */,
+				95E0D3DD253ECF7A00FE79B1 /* DropDownBubbleView.swift in Sources */,
 				D1F338EF2201D99A005BE5F1 /* ExpandedTableViewCell.swift in Sources */,
 				D1F338D42201D99A005BE5F1 /* Identity.swift in Sources */,
 				D1F338D22201D99A005BE5F1 /* KoraASRService.swift in Sources */,
@@ -1162,6 +1189,7 @@
 				D1F338FF2201D99A005BE5F1 /* KREFetchedResultsController.swift in Sources */,
 				D1F338EB2201D99A005BE5F1 /* CustomCollectionViewCell.swift in Sources */,
 				D1F338F42201D99A005BE5F1 /* TextBubbleView.swift in Sources */,
+				95C49EF3255E40DB008CD1FD /* BrandingSingleton.swift in Sources */,
 				CDB869FF24C0093A00D1CCC7 /* NewListTableViewCell.swift in Sources */,
 				CD445165250B9B3E00879219 /* DPDKeyboardListener.swift in Sources */,
 				CD89236824C55BAC006F71DE /* CalenderViewController.swift in Sources */,
@@ -1309,6 +1337,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 0.4;
 				DEVELOPMENT_TEAM = TUE6KHKZ4Z;
 				INFOPLIST_FILE = KoreBotSDKDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1334,6 +1363,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 0.4;
 				DEVELOPMENT_TEAM = TUE6KHKZ4Z;
 				INFOPLIST_FILE = KoreBotSDKDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
