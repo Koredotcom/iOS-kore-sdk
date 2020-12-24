@@ -128,8 +128,10 @@ extension ListWidgetDetailsViewController: UITableViewDelegate,UITableViewDataSo
             return
         }
         if let action = listItem.defaultAction {
-            self.viewDelegate?.optionsButtonTapNewAction(text: (action.title!) , payload:(action.payload!) )
-            self.dismiss(animated: true, completion: nil)
+            if action.payload != nil{
+                self.viewDelegate?.optionsButtonTapNewAction(text: action.title ?? action.payload! , payload:(action.payload!) )
+                self.dismiss(animated: true, completion: nil)
+            }
         }
     }
     

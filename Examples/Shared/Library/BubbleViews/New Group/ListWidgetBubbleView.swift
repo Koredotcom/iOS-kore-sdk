@@ -134,7 +134,7 @@ class ListWidgetBubbleView: BubbleView {
                  headerTitle = jsonObject["title"] as? String
                  headerDescription = jsonObject["description"] as? String
                  headertype = ((jsonObject["headerOptions"] as AnyObject) .object(forKey: "type") as? String)
-                 headerUrl = (((jsonObject["headerOptions"] as AnyObject) .object(forKey: "url") as AnyObject) .object(forKey: "link") as? String)
+                 headerUrl = ""
                 
                 arrayOfElements = allItems
                 self.tableView.reloadData()
@@ -148,7 +148,7 @@ class ListWidgetBubbleView: BubbleView {
         let rows =  arrayOfElements.count > rowsDataLimit ? rowsDataLimit : arrayOfElements.count
         var moreButtonHeight : CGFloat = 30
         var finalHeight: CGFloat = 0.0
-        let headerHeight: CGFloat = 50.0
+        let headerHeight: CGFloat = 25
         for i in 0..<rows {
             let row = tableView.dequeueReusableCell(withIdentifier: listItemViewCellIdentifier, for: IndexPath(row: i, section: 0))as! KREListItemViewCell
             cellHeight = row.bounds.height
@@ -182,7 +182,7 @@ extension ListWidgetBubbleView: UITableViewDataSource, UITableViewDelegate {
             let listView = cell.templateView
             listView.populateListItemView(listItem)
             listView.buttonActionHandler = { [weak self] (action) in
-                self?.optionsAction(action?.title, action?.payload)
+                self?.optionsAction(action?.title ?? action?.payload, action?.payload)
             }
 //            listView.menuActionHandler = { [weak self] (actions) in
 //               // self?.delegate?.populateActions(actions, in: self?.widget, in: self?.panelItem)
@@ -205,7 +205,7 @@ extension ListWidgetBubbleView: UITableViewDataSource, UITableViewDelegate {
         let view = UIView()
         
         let subView = UIView()
-        subView.backgroundColor = .clear
+        subView.backgroundColor = .white
         subView.translatesAutoresizingMaskIntoConstraints = false
         subView.layer.cornerRadius = 5.0
         subView.clipsToBounds = true
@@ -294,7 +294,9 @@ extension ListWidgetBubbleView: UITableViewDataSource, UITableViewDelegate {
         }
 
         if let action = listItem.defaultAction {
-             self.optionsAction(action.title, action.payload)
+            if action.payload != nil{
+                self.optionsAction(action.title ?? action.payload, action.payload)
+            }
         }
     }
     

@@ -61,35 +61,10 @@ public class KAAccount: NSObject {
     public var dispatchQueue: DispatchQueue = DispatchQueue(label: "com.kora.requestQueue")
     
     // MARK: -
-    public var identity: String {
-//        guard let identity = userInfo?.currentIdentity?.identity else {
-//            return ""
-//        }
-//        return identity
-        return "Ka"
-    }
-    
     public var userId: String {
-//        guard let koraUserId = userInfo?.userId else {
-//            return ""
-//        }
-//        return koraUserId
-        return "Ka"
+        return ""
     }
-    
-    public var orgId: String {
-//        guard let koraOrgId = userInfo?.orgId else {
-//            return ""
-//        }
-//        return koraOrgId
-        return "Ka"
-    }
-    
     public var accessToken: String {
-//        guard let authorizationToken = authInfo?.accessToken else {
-//            return ""
-//        }
-//        return authorizationToken
         return AcccesssTokenn ?? ""
     }
     

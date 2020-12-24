@@ -468,7 +468,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         else if (templateType == "multi_select") {
             return .multiSelect
         }
-        else if (templateType == "List_widget") {
+        else if (templateType == "listWidget") {
             return .list_widget
         }
         else if (templateType == "feedbackTemplate") {
