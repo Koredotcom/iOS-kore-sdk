@@ -208,7 +208,7 @@ open class KABotClient: NSObject {
         
         botClient.onMessage = { [weak self] (object) in
             let message = self?.onReceiveMessage(object: object)
-           // self?.addMessages(message?.0, message?.1)  //kk
+            self?.addMessages(message?.0, message?.1)
         }
         
         botClient.onMessageAck = { (ack) in
@@ -338,6 +338,10 @@ open class KABotClient: NSObject {
             message.iconUrl = iconUrl
         }
         
+        if let type = object?.type, type == "onTaskUpdate" { //kk
+            isEndOfTask = ((object?.endDialog) != nil)
+        }
+        
         guard let messages = object?.messages, messages.count > 0 else {
             return (nil, ttsBody)
         }
@@ -355,14 +359,14 @@ open class KABotClient: NSObject {
                     ttsBody = text
                     
                     if text.contains("use a web form")  {
-
+                        
                     }
                     message.addComponent(textComponent)
                     return (message, ttsBody)
                 }
             case "template":
                 if let payload = componentModel.payload as? [String: Any] {
-                    let type = payload["type"] as? String ?? ""
+                    let type = payload["type"] as? String ?? payload["templateType"] as? String ?? ""
                     let text = payload["text"] as? String
                     ttsBody = payload["speech_hint"] as? String
                     
@@ -374,7 +378,7 @@ open class KABotClient: NSObject {
                             if let value = dictionary["table_design"] as? String {
                                 tabledesign = value
                             }
-
+                            
                             let componentType = getComponentType(templateType, tabledesign)
                             if componentType != .quickReply {
                                 
@@ -398,6 +402,93 @@ open class KABotClient: NSObject {
                             optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                             message.sentDate = object?.createdOn
                             message.addComponent(optionsComponent)
+                        }
+                    case "search":
+                        if let dictionary = payload["payload"] as? [String: Any] {
+                            let templateType = dictionary["template_type"] as? String ?? ""
+                            var tabledesign = "responsive"
+                            if let value = dictionary["table_design"] as? String {
+                                tabledesign = value
+                            }
+                            
+                            let componentType = getComponentType(templateType, tabledesign)
+                            if componentType != .quickReply {
+                                
+                            }
+                            
+                            ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
+                            //                            if let tText = dictionary["text"] as? String, tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable) {
+                            //                                textMessage = Message()
+                            //                                textMessage?.messageType = .reply
+                            //                                textMessage?.sentDate = message.sentDate
+                            //                                textMessage?.messageId = message.messageId
+                            //                                if let iconUrl = object?.iconUrl {
+                            //                                    textMessage?.iconUrl = iconUrl
+                            //                                }
+                            //                                let textComponent: Component = Component()
+                            //                                textComponent.payload = tText
+                            //                                textMessage?.addComponent(textComponent)
+                            //                            }
+                            //
+                            //                            let optionsComponent: Component = Component(componentType)
+                            //                            optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                            //                            message.sentDate = object?.createdOn
+                            //                            message.addComponent(optionsComponent)
+                            
+                            
+                            let optionsComponent: Component = Component(componentType)
+                            message.sentDate = object?.createdOn
+                            if templateType ==  "botAction"{
+                                
+                                let endOfTask:Bool? = ((((dictionary["template"] as AnyObject).object(forKey: "webhookPayload") as AnyObject).object(forKey: "endOfTask") as AnyObject) as? Bool)
+                                
+                                if endOfTask != nil{
+                                    isEndOfTask = endOfTask!
+                                }else{
+                                    isEndOfTask = false
+                                }
+                                
+                                var webhookPayloadisArray : Bool?
+                                let webhookPalyload = (((dictionary["template"] as AnyObject).object(forKey: "webhookPayload") as AnyObject).object(forKey: "text") as AnyObject)
+                                webhookPayloadisArray = verifyIsObjectOfAnArray(webhookPalyload) ? true : false
+                                
+                                if webhookPayloadisArray! {
+                                    let jsonString = (webhookPalyload.object(at: 0))
+                                    let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString as! String) as? NSDictionary ?? [:]
+                                    if jsonObject.count > 0{
+                                        let templateTypenew  = ((jsonObject["payload"] as AnyObject).object(forKey: "template_type") as! String)
+                                        
+                                        let componentType = getComponentType(templateTypenew, "responsive")
+                                        let optionsComponent: Component = Component(componentType)
+                                        optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject["payload"] as Any)
+                                        message.addComponent(optionsComponent)
+                                    }else{
+                                        optionsComponent.payload = jsonString as? String
+                                        message.addComponent(optionsComponent)
+                                    }
+                                }else{
+                                    let jsonString = (webhookPalyload as! String)
+                                    let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString ) as? NSDictionary ?? [:]
+                                    if jsonObject.count > 0{
+                                        let templateTypenew  = ((jsonObject["payload"] as AnyObject).object(forKey: "template_type") as! String)
+                                        
+                                        let componentType = getComponentType(templateTypenew, "responsive")
+                                        let optionsComponent: Component = Component(componentType)
+                                        optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject["payload"] as Any)
+                                        message.addComponent(optionsComponent)
+                                    }else{
+                                        optionsComponent.payload = jsonString
+                                        message.addComponent(optionsComponent)
+                                    }
+                                }
+                            }else{
+                                // let componentType = getComponentType(templateType, "responsive")
+                                // optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                                //message.addComponent(optionsComponent)
+                                //let optionsComponent: Component = Component(componentType)
+                                optionsComponent.payload = Utilities.stringFromJSONObject(object: payload)
+                                message.addComponent(optionsComponent)
+                            }
                         }
                     case "error":
                         if let dictionary = payload["payload"] as? [String: Any] {
@@ -460,6 +551,8 @@ open class KABotClient: NSObject {
                         })
                         }, success: { (client) in
                             self?.botClient = client!
+                            userInfoUserId = client?.userInfoModel?.userId
+                            authInfoAccessToken = client?.authInfoModel?.accessToken
                             block?(self?.botClient, self?.thread)
                     }, failure: { (error) in
                         failure?(error!)
@@ -576,20 +669,23 @@ open class KABotClient: NSObject {
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
         
         // NOTE: You must set your URL to generate JWT.
-        let urlString: String = "\(FindlyUrl)searchAssistant/liveSearch/\(findlySidx)"
+       // let urlString: String = "\(FindlyUrl)searchAssistant/liveSearch/\(findlySidx)"
+        let urlString: String = "\(FindlyUrl)api/1.1/searchAssist/\(findlySidx)/liveSearch"
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-        
-        let authorizationStr = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.wrUCyDpNEwAaf4aU5Jf2-0ajbiwmTU3Yf7ST8yFJdqM"
+        requestSerializer.setValue("published", forHTTPHeaderField:"state")
+        let authorizationStr = "bearer \(authInfoAccessToken!)"
+       // let authorizationStr = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.wrUCyDpNEwAaf4aU5Jf2-0ajbiwmTU3Yf7ST8yFJdqM"
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
         requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
         
         let parameters: NSDictionary = ["query": text as Any,
                                         "maxNumOfResults": 16,
-                                        "userId": findlyUserId,
+                                        "userId": userInfoUserId as Any,
                                         "streamId": findlyStreamId,
-                                        "lang": "en"]
+                                        "lang": "en"
+                                        ]
         
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
         sessionManager?.requestSerializer = requestSerializer
@@ -609,7 +705,7 @@ open class KABotClient: NSObject {
     }
     //{"query":"pay bill","maxNumOfResults":16,"userId":"7030eb2f-3cfd-4bb3-8e32-7667f2eec9c6","streamId":"st-a4a4fabe-11d3-56cc-801d-894ddcd26c51","lang":"en","smallTalk":true}
     
-    func getSearchResults(_ text: String!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+    func getSearchResults(_ text: String!, _ filterArray: NSMutableArray!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
         // Session Configuration
         let configuration = URLSessionConfiguration.default
@@ -618,33 +714,56 @@ open class KABotClient: NSObject {
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
         
         // NOTE: You must set your URL to generate JWT.
-        let urlString: String = "\(FindlyUrl)searchAssistant/search/\(findlySidx)"
+        //let urlString: String = "\(FindlyUrl)searchAssistant/search/\(findlySidx)"
+        let urlString: String = "\(FindlyUrl)api/1.1/findly/\(findlySidx)/search"
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
         
-        let authorizationStr = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.wrUCyDpNEwAaf4aU5Jf2-0ajbiwmTU3Yf7ST8yFJdqM"
+        let authorizationStr = "bearer \(authInfoAccessToken!)"
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
         requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
         
-        var parameters: NSDictionary?
-            parameters = ["query": text as Any,
-            "maxNumOfResults": 9,
-            "userId": findlyUserId,
-            "streamId": findlyStreamId,
-            "lang": "en",
-            "smallTalk":"true"]
-        if isShowLoginView{
-            //isLogin = true
-            //isEndOfTask = false
-             parameters = ["query": text as Any,
-            "maxNumOfResults": 9,
-            "userId": findlyUserId,
-            "streamId": findlyStreamId,
-            "lang": "en",
-            "smallTalk":"true","isBotAction":"true"]
-        }
+        let message : [String: Any] = ["body": text!]
+        let meta : [String: Any] = ["timezone": "en-GB", "locale": "Asia/Calcutta"]
         
+        let chatBotName: String = SDKConfiguration.botConfig.chatBotName
+        let botId: String = SDKConfiguration.botConfig.botId
+        let botInfo: [String: Any] = ["chatBot": chatBotName, "taskBotId": botId,"customData": "{}"]
+        
+//        //filters
+//        let facetValue = NSMutableArray()
+//        facetValue.add("document")
+//        let facts: [String: Any] = ["facetType": "value", "fieldName": "contentType" ,"facetValue": facetValue]
+//        let factsArray = NSMutableArray()
+//        factsArray.add(facts)
+        
+        let timestamp = NSDate().timeIntervalSince1970
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy, HH:mm:s"
+        let todayDate = formatter.string(from: date)
+        
+        let messagePayload : [String: Any] = ["clientMessageId" : timestamp,"message":message,"resourceId": "/bot.message","timeDateDay": todayDate, "currentPage": "https://pilot.findly.ai/sdk/demo/#home", "botInfo": botInfo,"meta": meta, "client": "sdk"]
+          
+        var parameters: NSDictionary?
+        parameters = ["query": text as Any,
+        "maxNumOfResults": 16,
+        "userId": userInfoUserId as Any,
+        "streamId": findlyStreamId,
+        "lang": "en",
+        "isDev":"false",
+        "messagePayload": messagePayload] //"filters":factsArray
+        
+        if filterArray.count>0 {
+            parameters = ["query": text as Any,
+            "maxNumOfResults": 16,
+            "userId": userInfoUserId as Any,
+            "streamId": findlyStreamId,
+            "lang": "en",
+            "isDev":"false",
+            "messagePayload": messagePayload,"filters": filterArray!]
+        }
         
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
         sessionManager?.requestSerializer = requestSerializer
@@ -803,6 +922,14 @@ open class KABotClient: NSObject {
     // MARK: -
     public func setReachabilityStatusChange(_ status: AFNetworkReachabilityStatus) {
         botClient.setReachabilityStatusChange(status)
+    }
+    
+    func verifyIsObjectOfAnArray<T>(_ object: T) -> Bool {
+       if let _ = object as? [T] {
+          return true
+       }
+
+       return false
     }
 }
 

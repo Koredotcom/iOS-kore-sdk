@@ -19,6 +19,8 @@ class LiveSearchBubbleView: BubbleView {
     fileprivate let liveSearchFaqCellIdentifier = "LiveSearchFaqTableViewCell"
     fileprivate let liveSearchPageCellIdentifier = "LiveSearchPageTableViewCell"
     fileprivate let liveSearchTaskCellIdentifier = "LiveSearchTaskTableViewCell"
+    fileprivate let liveSearchNewTaskCellIdentifier = "LiveSearchNewTaskViewCell"
+    
     var rowsDataLimit = 2
     var isShowMore = false
     
@@ -32,6 +34,8 @@ class LiveSearchBubbleView: BubbleView {
     var arrayOfTaskResults = [TemplateResultElements]()
     var headerArray = ["POPULAR SEARCHS","RECENT SEARCHS"]
     var expandArray:NSMutableArray = []
+    var likeAndDislikeArray:NSMutableArray = []
+    var checkboxIndexPath = [IndexPath]()
     
     public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
@@ -85,6 +89,8 @@ class LiveSearchBubbleView: BubbleView {
         self.tableView.register(UINib(nibName: liveSearchFaqCellIdentifier, bundle: nil), forCellReuseIdentifier: liveSearchFaqCellIdentifier)
         self.tableView.register(UINib(nibName: liveSearchPageCellIdentifier, bundle: nil), forCellReuseIdentifier: liveSearchPageCellIdentifier)
         self.tableView.register(UINib(nibName: liveSearchTaskCellIdentifier, bundle: nil), forCellReuseIdentifier: liveSearchTaskCellIdentifier)
+        self.tableView.register(UINib(nibName: liveSearchNewTaskCellIdentifier, bundle: nil), forCellReuseIdentifier: liveSearchNewTaskCellIdentifier)
+        
         
         let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView]
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
@@ -152,6 +158,7 @@ class LiveSearchBubbleView: BubbleView {
                 
                 self.headerArray = []
                 self.expandArray = []
+                self.likeAndDislikeArray = []
                 let faqs = allItems.template?.results?.faq
                 self.arrayOfFaqResults = faqs ?? []
                 if self.arrayOfFaqResults.count > 0 {
@@ -159,6 +166,7 @@ class LiveSearchBubbleView: BubbleView {
                 }
                 for _ in 0..<self.arrayOfFaqResults.count{
                     self.expandArray.add("close")
+                     self.likeAndDislikeArray.add("")
                 }
                 
                 let pages = allItems.template?.results?.page
@@ -173,6 +181,7 @@ class LiveSearchBubbleView: BubbleView {
                 }
                 self.titleLbl.text = "Sure, please find the matched results below"
                 self.tableView.reloadData()
+                
             }
         }
     }
@@ -185,7 +194,7 @@ class LiveSearchBubbleView: BubbleView {
         if textSize.height < self.titleLbl.font.pointSize {
             textSize.height = self.titleLbl.font.pointSize
         }
-        return CGSize(width: 0.0, height: textSize.height+40+tableView.contentSize.height)
+        return CGSize(width: 0.0, height: textSize.height+60+tableView.contentSize.height)
     }
     
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
@@ -203,10 +212,10 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
         let headerName = headerArray[indexPath.section]
         switch headerName {
         case "SUGGESTED FAQS":
-            if  expandArray[indexPath.row] as! String == "close"{
-                return 120
+            if checkboxIndexPath.contains(indexPath) {
+                return UITableView.automaticDimension
             }
-            return UITableView.automaticDimension
+            return 120
         default:
             break
         }
@@ -216,10 +225,10 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
         let headerName = headerArray[indexPath.section]
         switch headerName {
         case "SUGGESTED FAQS":
-            if  expandArray[indexPath.row] as! String == "close"{
-                return 120
-            }
-            return UITableView.automaticDimension
+             if checkboxIndexPath.contains(indexPath) {
+                return UITableView.automaticDimension
+             }
+            return 120
         default:
             break
         }
@@ -256,8 +265,24 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             let results = arrayOfFaqResults[indexPath.row]
             cell.titleLabel?.text = results.question
             cell.descriptionLabel?.text = results.answer
-            let buttonsHeight = expandArray[indexPath.row] as! String == "close" ? 0.0: 30.0
-            cell.likeAndDislikeButtonHeightConstrain.constant = CGFloat(buttonsHeight)
+            
+            if checkboxIndexPath.contains(indexPath) {
+                cell.likeAndDislikeButtonHeightConstrain.constant = CGFloat(30.0)
+            }else{
+                cell.likeAndDislikeButtonHeightConstrain.constant = CGFloat(0.0)
+            }
+            
+            cell.likeButton.addTarget(self, action: #selector(self.likeButtonAction(_:)), for: .touchUpInside)
+            cell.likeButton.tag = indexPath.row
+            cell.dislikeButton.addTarget(self, action: #selector(self.disLikeButtonAction(_:)), for: .touchUpInside)
+            cell.dislikeButton.tag = indexPath.row
+            if likeAndDislikeArray[indexPath.row] as! String == "Like"{
+               cell.likeButton.tintColor = .blue
+               cell.dislikeButton.tintColor = .darkGray
+            }else if likeAndDislikeArray[indexPath.row] as! String == "DisLike"{
+                cell.likeButton.tintColor = .darkGray
+                cell.dislikeButton.tintColor = .blue
+            }
             
             cell.subViewLeadingConstraint.constant = 5.0
             cell.subViewTopConstaint.constant = 5.0
@@ -280,8 +305,12 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             let results = arrayOfPageResults[indexPath.row]
             cell.titleLabel?.text = results.title
             cell.descriptionLabel?.text = results.searchResultPreview
-            let url = URL(string: results.imageUrl!)
-            cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+            if results.imageUrl == nil || results.imageUrl == ""{
+                cell.profileImageView.image = UIImage(named: "placeholder_image")
+            }else{
+                let url = URL(string: results.imageUrl!)
+                cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+            }
             cell.ShareButton.addTarget(self, action: #selector(self.shareButtonAction(_:)), for: .touchUpInside)
             cell.ShareButton.tag = indexPath.row
             
@@ -297,12 +326,13 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             
             return cell
         case "SUGGESTED TASKS":
+            /*
             let cell : LiveSearchTaskTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchTaskCellIdentifier) as! LiveSearchTaskTableViewCell
             cell.backgroundColor = UIColor.clear
             cell.selectionStyle = .none
             cell.titleLabel.textColor = .black
             let results = arrayOfTaskResults[indexPath.row]
-            cell.titleLabel?.text = results.taskName
+            cell.titleLabel?.text = results.name
             if results.imageUrl == nil || results.imageUrl == ""{
                 cell.profileImageView.image = UIImage(named: "task")
             }else{
@@ -314,13 +344,25 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             cell.subViewTopConstaint.constant = 5.0
             cell.subViewTrailingConstraint.constant = 5.0
             
-            cell.subView.layer.shadowOpacity = 0.7
-            cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
-            cell.subView.layer.shadowRadius = 8.0
-            cell.subView.clipsToBounds = false
-            cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
+//            cell.subView.layer.shadowOpacity = 0.7
+//            cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
+//            cell.subView.layer.shadowRadius = 8.0
+//            cell.subView.clipsToBounds = false
+//            cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
             
             return cell
+ */
+            
+            let cell : LiveSearchNewTaskViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchNewTaskCellIdentifier) as! LiveSearchNewTaskViewCell
+            cell.backgroundColor = UIColor.clear
+            cell.selectionStyle = .none
+            cell.titleLabel.textColor = UIColor.init(red: 44/255, green: 128/255, blue: 248/255, alpha: 1.0)
+            let results = arrayOfTaskResults[indexPath.row]
+            cell.titleLabel?.text = "\(results.name!)     "
+            cell.titleLabel?.layer.cornerRadius = 5.0
+            cell.titleLabel?.layer.borderWidth = 1.0
+            cell.titleLabel?.layer.borderColor = UIColor.init(red: 44/255, green: 128/255, blue: 248/255, alpha: 1.0).cgColor
+             return cell
         default:
             break
         }
@@ -331,19 +373,24 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
         let headerName = headerArray[indexPath.section]
         switch headerName {
         case "SUGGESTED FAQS":
-            if expandArray[indexPath.row] as! String == "close" {
-                expandArray.replaceObject(at: indexPath.row, with: "open")
+            if checkboxIndexPath.contains(indexPath) {
+                
+                checkboxIndexPath.remove(at: checkboxIndexPath.firstIndex(of: indexPath)!)
             }else{
-                expandArray.replaceObject(at: indexPath.row, with: "close")
+                checkboxIndexPath.append(indexPath)
             }
             tableView.reloadData()
+            NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
         case "SUGGESTED PAGES":
             break
         case "SUGGESTED TASKS":
-            let results = arrayOfTaskResults[indexPath.row]
-            if results.postBackPayload?.payload != nil{
-                self.optionsAction(results.postBackPayload?.payload, results.postBackPayload?.payload)
+            if let payload = arrayOfTaskResults[indexPath.row].payload {
+                self.optionsAction(arrayOfTaskResults[indexPath.row].name, payload)
             }
+            isEndOfTask = false //kk
+            //if results.postBackPayload?.payload != nil{
+            //    self.optionsAction(results.postBackPayload?.payload, results.postBackPayload?.payload)
+            //}
         default:
             break
         }
@@ -401,4 +448,12 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
         }
     }
     
+    @objc fileprivate func likeButtonAction(_ sender: UIButton!) {
+           likeAndDislikeArray.replaceObject(at: sender.tag, with: "Like")
+           tableView.reloadData()
+       }
+       @objc fileprivate func disLikeButtonAction(_ sender: UIButton!) {
+           likeAndDislikeArray.replaceObject(at: sender.tag, with: "DisLike")
+           tableView.reloadData()
+       }
 }

@@ -21,6 +21,12 @@ class LiveSearchTaskTableViewCell: UITableViewCell {
         // Initialization code
         subView.layer.cornerRadius = 10
         subView.backgroundColor = UIColor.init(red: 245/255, green: 248/255, blue: 250/255, alpha: 1.0)
+        
+        subView.layer.shadowColor = UIColor.darkGray.cgColor
+        subView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        subView.layer.shadowOpacity = 0.5
+        subView.layer.shadowRadius = 2
+        subView.clipsToBounds = false
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

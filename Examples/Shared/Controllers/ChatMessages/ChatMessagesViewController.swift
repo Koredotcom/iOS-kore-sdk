@@ -131,6 +131,22 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         configureLoginView()
         welcomeMessage(messageString: "👋 Hello! How can I help you today?")
         
+        let dic = NSMutableDictionary()
+        dic.setObject("Payment" , forKey: "_id" as NSCopying)
+        dic.setObject(1, forKey: "count" as NSCopying)
+        recentSearchArray.add(dic)
+        let dic1 = NSMutableDictionary()
+        dic1.setObject("Pay bill" , forKey: "_id" as NSCopying)
+        dic1.setObject(1, forKey: "count" as NSCopying)
+         recentSearchArray.add(dic1)
+        let dic2 = NSMutableDictionary()
+        dic2.setObject("Show Balance" , forKey: "_id" as NSCopying)
+        dic2.setObject(1, forKey: "count" as NSCopying)
+        recentSearchArray.add(dic2)
+        let dic3 = NSMutableDictionary()
+        dic3.setObject("Pay now" , forKey: "_id" as NSCopying)
+        dic3.setObject(1, forKey: "count" as NSCopying)
+        recentSearchArray.add(dic3)
     }
     
     func configureLoginView(){
@@ -151,20 +167,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func LoginViewSucess(){
         loginContainerView.isHidden = true
         isLogin = true
-        
-       // isAutoSendMessage = true
         isShowLoginView = true
-//        self.liveSearchContainerView.isHidden = true
-//        self.kaBotClient.getSearchResults(isAutoSendMessage ,success: { [weak self] (dictionary) in
-//           // isAutoSendMessage = false
-//            isShowLoginView = false
-//            print(dictionary)
-//            self?.receviceMessage(dictionary: dictionary)
-//
-//            }, failure: { (error) in
-//                print(error)
-//        })
-        self.callSearchApi(text: isAutoSendMessage!)
+
+        //self.callSearchApi(text: isAutoSendMessage!)
+        if isAutoSendMessage == "Pay bill" || isAutoSendMessage == "Pay Bill"{
+            isEndOfTask = false //kkk
+        }
+        self.botClient.sendMessage(isAutoSendMessage!, options: [:])
         isShowLoginView = false
     }
     func ShowLoginView(){
@@ -203,6 +212,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if touch.view?.isDescendant(of: self.liveSearchView.tableView) == true {
             return false
         }
+        isShowLoginView = false //kk
         return true
     }
     
@@ -1059,13 +1069,37 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
             dataStoreManager.createNewMessageIn(thread: self.thread, message: composedMessage, completion: { (success) in
                 let textComponent = composedMessage.components[0] as? Component
-                //                if let _ = self.botClient, let text = textComponent?.payload {
-                //                    self.botClient.sendMessage(text, options: options)
-                //                }
                 if let _ = self.botClient, let text = textComponent?.payload {
-                    isAutoSendMessage = text
-                    self.callSearchApi(text: text)
-                }
+                     self.liveSearchContainerView.isHidden = true
+                    isAutoSendMessage = options != nil ? options!["body"] as? String : text
+                    
+//                    if text == "Yes" || text == "Discard all"{
+//                        isEndOfTask = true //kk
+//                    }
+                    
+                    if text == "Pay bill" || text == "Show Balance" || text == "Show balance"{
+                        if isShowLoginView{
+                            isShowLoginView = false
+                        }else{
+                            isShowLoginView = true
+                        }
+                    }
+                    if isShowLoginView {
+                        if isLogin {
+                            self.botClient.sendMessage(text, options: options)
+                        }else{
+                            NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+                            self.ShowLoginView()
+                        }
+                    }else{
+                        self.botClient.sendMessage(text, options: options)
+                    }
+                     
+                 }
+//                if let _ = self.botClient, let text = textComponent?.payload {
+//                    isAutoSendMessage = text
+//                    self.callSearchApi(text: text)
+//                }
                 
                 self.textMessageSent()
             })
@@ -1084,18 +1118,29 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let dic = NSMutableDictionary()
         dic.setObject(text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), forKey: "_id" as NSCopying)
         dic.setObject(1, forKey: "count" as NSCopying)
-        recentSearchArray.add(dic)
+        
+        var j = 0
+        for i in 0..<recentSearchArray.count{
+            if ((recentSearchArray.object(at: i) as AnyObject).object(forKey: "_id") as! String) == text {
+                j = 1
+            }
+        }
+        if j == 0{
+            if isEndOfTask{
+                recentSearchArray.add(dic)
+            }
+        }
     }
     
     func callSearchApi(text:String){
         self.liveSearchContainerView.isHidden = true
-                           self.kaBotClient.getSearchResults(text ,success: { [weak self] (dictionary) in
-                               print(dictionary)
-                               self?.receviceMessage(dictionary: dictionary)
-                               
-                               }, failure: { (error) in
-                                   print(error)
-                           })
+        self.kaBotClient.getSearchResults(text, [] ,success: { [weak self] (dictionary) in
+            print(dictionary)
+            self?.receviceMessage(dictionary: dictionary)
+            
+            }, failure: { (error) in
+                print(error)
+        })
     }
     
     func receviceMessage(dictionary:[String: Any]){

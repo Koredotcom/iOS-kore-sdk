@@ -11,6 +11,7 @@ protocol LiveSearchViewDelegate {
     func optionsButtonTapNewAction(text:String, payload:String)
     func linkButtonTapAction(urlString:String)
     func addTextToTextView(text:String)
+    //func showOrHideLiveSeachView(text:String)
 }
 
 class LiveSearchView: UIView {
@@ -290,8 +291,12 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 cell.descriptionLabel?.text = results.searchResultPreview
                 cell.titleLabel?.numberOfLines = 2
                 cell.descriptionLabel?.numberOfLines = 2
-                let url = URL(string: results.imageUrl!)
-                cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+                if results.imageUrl == nil || results.imageUrl == ""{
+                    cell.profileImageView.image = UIImage(named: "placeholder_image")
+                }else{
+                    let url = URL(string: results.imageUrl!)
+                    cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+                }
                 cell.ShareButton.addTarget(self, action: #selector(self.shareButtonAction(_:)), for: .touchUpInside)
                 cell.ShareButton.tag = indexPath.row
                 return cell
@@ -301,12 +306,12 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 cell.selectionStyle = .none
                 cell.titleLabel.textColor = .black
                 let results = arrayOfTaskResults[indexPath.row]
-                cell.titleLabel?.text = results.taskName
+                cell.titleLabel?.text = results.name
                if results.imageUrl == nil || results.imageUrl == ""{
-                cell.profileImageView.image = UIImage(named: "task")
+                    cell.profileImageView.image = UIImage(named: "task")
                }else{
-                let url = URL(string: results.imageUrl!)
-                cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "task"))
+                    let url = URL(string: results.imageUrl!)
+                    cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "task"))
                 }
                 return cell
             default:

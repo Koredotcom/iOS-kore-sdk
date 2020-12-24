@@ -13,6 +13,7 @@ class NewListBubbleView: BubbleView {
     
     var tileBgv: UIView!
     var titleLbl: UILabel!
+    var iconImageView: UIImageView!
     var tableView: UITableView!
     var cardView: UIView!
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
@@ -61,7 +62,7 @@ class NewListBubbleView: BubbleView {
         self.tileBgv.clipsToBounds = true
         self.tileBgv.layer.borderWidth = 1.0
         self.cardView.addSubview(self.tileBgv)
-        self.tileBgv.backgroundColor = .white //Common.UIColorRGB(0xEDEFF2)
+        self.tileBgv.backgroundColor = UIColor.init(red: 248/255, green: 249/255, blue: 250/255, alpha: 1.0)//.white //Common.UIColorRGB(0xEDEFF2)
         if #available(iOS 11.0, *) {
             self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
         } else {
@@ -85,6 +86,12 @@ class NewListBubbleView: BubbleView {
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
+        
+        iconImageView = UIImageView(frame: CGRect.zero)
+        iconImageView.contentMode = .scaleAspectFit
+        iconImageView.translatesAutoresizingMaskIntoConstraints = false
+        iconImageView.image = UIImage.init(named: "findly")
+        self.tileBgv.addSubview(iconImageView)
 
         self.titleLbl = UILabel(frame: CGRect.zero)
         self.titleLbl.textColor = Common.UIColorRGB(0x484848)
@@ -101,9 +108,10 @@ class NewListBubbleView: BubbleView {
         self.titleLbl.clipsToBounds = true
         self.titleLbl.sizeToFit()
         
-        let subView: [String: UIView] = ["titleLbl": titleLbl]
+        let subView: [String: UIView] = ["titleLbl": titleLbl, "iconImageView": iconImageView]
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[iconImageView(20)]", options: [], metrics: nil, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[iconImageView(20)]-5-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
     }
     
     func intializeCardLayout(){
@@ -121,7 +129,7 @@ class NewListBubbleView: BubbleView {
     override func populateComponents() {
         
         if selectedTheme == "Theme 1"{
-            self.tileBgv.layer.borderWidth = 0.0
+            self.tileBgv.layer.borderWidth = 0.5
         }else{
             self.tileBgv.layer.borderWidth = 1.0
         }
@@ -229,6 +237,13 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
            cell.subTitleLabel.text = elements.value
             cell.valueLabelWidthConstraint.constant = 0
         }
+        
+        cell.bgView.layer.shadowColor = UIColor.darkGray.cgColor
+        cell.bgView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        cell.bgView.layer.shadowOpacity = 0.5
+        cell.bgView.layer.shadowRadius = 2
+        cell.bgView.clipsToBounds = false
+        
         return cell
         
     }

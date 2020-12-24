@@ -102,7 +102,8 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     }
     
     open func start() {
-        guard var urlString = botInfo.botUrl else {
+        let replaced = botInfo.botUrl?.replacingOccurrences(of: ":80", with: "") //kk
+        guard var urlString = replaced else {
             print("botUrl is nil")
             return
         }
@@ -192,6 +193,11 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             if let model = try? MTLJSONAdapter.model(of: BotMessageModel.self, fromJSONDictionary: responseObject), let botMessageModel = model as? BotMessageModel {
                 connectionDelegate?.didReceiveMessage?(botMessageModel)
             }
+        case "onTaskUpdate":
+        print("received onTaskUpdate: \(responseObject)")
+        if let model = try? MTLJSONAdapter.model(of: BotMessageModel.self, fromJSONDictionary: responseObject), let botMessageModel = model as? BotMessageModel {
+            connectionDelegate?.didReceiveMessage?(botMessageModel)
+        }
         case "user_message":
             connectionDelegate?.didReceivedUserMessage(responseObject)
 //            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "User_Message_Received"), object: responseObject)

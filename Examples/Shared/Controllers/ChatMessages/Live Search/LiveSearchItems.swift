@@ -71,7 +71,9 @@ class TemplateResultElements: NSObject, Decodable {
     public var searchResultPreview: String?
     public var taskName: String?
     public var postBackPayload: TemplatePastBackPayload?
-    
+    public var name: String?
+    public var payload: String?
+    public var externalFileUrl : String?
     
     enum ColorCodeKeys: String, CodingKey {
         case contentType = "contentType"
@@ -83,6 +85,9 @@ class TemplateResultElements: NSObject, Decodable {
         case searchResultPreview = "searchResultPreview"
         case taskName = "taskName"
         case postBackPayload = "postBackPayload"
+        case name = "name"
+        case payload = "payload"
+        case externalFileUrl = "externalFileUrl"
     }
     
     // MARK: - init
@@ -101,6 +106,9 @@ class TemplateResultElements: NSObject, Decodable {
         searchResultPreview = try? container.decode(String.self, forKey: .searchResultPreview)
         taskName = try? container.decode(String.self, forKey: .taskName)
         postBackPayload = try? container.decode(TemplatePastBackPayload.self, forKey: .postBackPayload)
+        name = try? container.decode(String.self, forKey: .name)
+        payload = try? container.decode(String.self, forKey: .payload)
+        externalFileUrl = try? container.decode(String.self, forKey: .externalFileUrl)
     }
 }
 
@@ -130,12 +138,15 @@ class TemplateFacets: NSObject, Decodable {
     public var faq: Int?
     public var page: Int?
     public var task: Int?
+    public var document: Int?
+    
     
     enum ColorCodeKeys: String, CodingKey {
         case all_results = "all results"
         case faq = "faq"
         case page = "page"
         case task = "task"
+        case document = "document"
     }
     
     // MARK: - init
@@ -149,5 +160,6 @@ class TemplateFacets: NSObject, Decodable {
         faq = try? container.decode(Int.self, forKey: .faq)
         page = try? container.decode(Int.self, forKey: .page)
         task = try? container.decode(Int.self, forKey: .task)
+        document = try? container.decode(Int.self, forKey: .document)
     }
 }

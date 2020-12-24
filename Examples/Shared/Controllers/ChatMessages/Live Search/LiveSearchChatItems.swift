@@ -36,13 +36,14 @@ class TemplateChatElements: NSObject, Decodable {
     
     public var facets: TemplateFacets?
     public var results: TemplateChatResultElements?
-    
+    public var searchFacets : [TemplateSearchFacets]?
     
     enum ColorCodeKeys: String, CodingKey {
         case originalQuery = "originalQuery"
         case cleanQuery = "cleanQuery"
         case facets = "facets"
         case results = "results"
+        case searchFacets = "searchFacets"
     }
     
     // MARK: - init
@@ -56,6 +57,7 @@ class TemplateChatElements: NSObject, Decodable {
         cleanQuery = try? container.decode(String.self, forKey: .cleanQuery)
         facets = try? container.decode(TemplateFacets.self, forKey: .facets)
         results = try? container.decode(TemplateChatResultElements.self, forKey: .results)
+        searchFacets = try? container.decode([TemplateSearchFacets].self, forKey: .searchFacets)
     }
 }
 
@@ -63,13 +65,16 @@ class TemplateChatResultElements: NSObject, Decodable {
     public var faq: [TemplateResultElements]?
     public var page: [TemplateResultElements]?
     public var task: [TemplateResultElements]?
+    public var document: [TemplateResultElements]?
    
+
     
     
     enum ColorCodeKeys: String, CodingKey {
         case faq = "faq"
         case page = "page"
         case task = "task"
+        case document = "document"
     }
     
     // MARK: - init
@@ -82,6 +87,56 @@ class TemplateChatResultElements: NSObject, Decodable {
         faq = try? container.decode([TemplateResultElements].self, forKey: .faq)
         page = try? container.decode([TemplateResultElements].self, forKey: .page)
         task = try? container.decode([TemplateResultElements].self, forKey: .task)
+        document = try? container.decode([TemplateResultElements].self, forKey: .document)
     }
 }
 
+class TemplateSearchFacets: NSObject, Decodable {
+    public var fieldName: String?
+    public var facetName: String?
+    public var facetType: String?
+    public var buckets: [SearchFacetsBuckets]?
+    
+    
+    enum ColorCodeKeys: String, CodingKey {
+        case fieldName = "fieldName"
+        case facetName = "facetName"
+        case facetType = "facetType"
+        case buckets = "buckets"
+    }
+    
+    // MARK: - init
+    public override init() {
+        super.init()
+    }
+    
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: ColorCodeKeys.self)
+        fieldName = try? container.decode(String.self, forKey: .fieldName)
+        facetName = try? container.decode(String.self, forKey: .facetName)
+        facetType = try? container.decode(String.self, forKey: .facetType)
+        buckets = try? container.decode([SearchFacetsBuckets].self, forKey: .buckets)
+    }
+}
+
+class SearchFacetsBuckets: NSObject, Decodable {
+    public var key: String?
+    public var doc_count: Int?
+   
+    enum ColorCodeKeys: String, CodingKey {
+        case key = "key"
+        case doc_count = "doc_count"
+      
+    }
+    
+    // MARK: - init
+    public override init() {
+        super.init()
+    }
+    
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: ColorCodeKeys.self)
+        key = try? container.decode(String.self, forKey: .key)
+        doc_count = try? container.decode(Int.self, forKey: .doc_count)
+    }
+}

@@ -17,6 +17,8 @@ class AppLaunchViewController: UIViewController {
     @IBOutlet weak var imgView: UIImageView!
     // MARK: properties
     @IBOutlet weak var chatButton: UIButton!
+    @IBOutlet weak var careMarkButton: UIButton!
+    @IBOutlet weak var pfizerButton: UIButton!
     @IBOutlet weak var identityTF: UITextField!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
@@ -103,7 +105,36 @@ class AppLaunchViewController: UIViewController {
     
     // MARK: known user
     @IBAction func chatButtonAction(_ sender: UIButton!) {
-        self.chatButton.isUserInteractionEnabled = false
+        print("sender.tag....\(sender.tag)")
+        if sender.tag == 1{
+            self.chatButton.isUserInteractionEnabled = false
+            self.careMarkButton.isUserInteractionEnabled = true
+            self.pfizerButton.isUserInteractionEnabled = true
+            SDKConfiguration.botConfig.clientId = "<client-id>"
+            SDKConfiguration.botConfig.clientSecret = "<client-secret>"
+            SDKConfiguration.botConfig.botId =  "<bot-id>"
+            SDKConfiguration.botConfig.chatBotName = "bot-name"
+            findlySidx = ""
+        }else if sender.tag == 2{
+            self.chatButton.isUserInteractionEnabled = true
+            self.careMarkButton.isUserInteractionEnabled = false
+            self.pfizerButton.isUserInteractionEnabled = true
+            SDKConfiguration.botConfig.clientId = "<client-id>"
+            SDKConfiguration.botConfig.clientSecret = "<client-secret>"
+            SDKConfiguration.botConfig.botId =  "<bot-id>"
+            SDKConfiguration.botConfig.chatBotName = "bot-name"
+            findlySidx = ""
+        }else if sender.tag == 3{
+            self.chatButton.isUserInteractionEnabled = true
+            self.careMarkButton.isUserInteractionEnabled = true
+            self.pfizerButton.isUserInteractionEnabled = false
+            SDKConfiguration.botConfig.clientId = "<client-id>"
+            SDKConfiguration.botConfig.clientSecret = "<client-secret>"
+            SDKConfiguration.botConfig.botId =  "<bot-id>"
+            SDKConfiguration.botConfig.chatBotName = "bot-name"
+            findlySidx = ""
+        }
+        
         
         let clientId: String = SDKConfiguration.botConfig.clientId
         let clientSecret: String = SDKConfiguration.botConfig.clientSecret
@@ -139,7 +170,14 @@ class AppLaunchViewController: UIViewController {
         
         if !clientId.hasPrefix("<") && !clientSecret.hasPrefix("<") && !chatBotName.hasPrefix("<") && !botId.hasPrefix("<") && !identity.hasPrefix("<") && identityTF.text != "" {
             //let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(style: .white)
-            activityIndicatorView.center = chatButton.center
+            
+            if sender.tag == 1{
+                activityIndicatorView.center = chatButton.center
+            }else if sender.tag == 2{
+                activityIndicatorView.center = careMarkButton.center
+            }else if sender.tag == 3{
+                activityIndicatorView.center = pfizerButton.center
+            }
             view.addSubview(activityIndicatorView)
             activityIndicatorView.startAnimating()
 //             kaBotClient.tryConnect()
@@ -158,28 +196,38 @@ class AppLaunchViewController: UIViewController {
                                 print(error)
                          self?.activityIndicatorView.stopAnimating()
                          self?.chatButton.isUserInteractionEnabled = true
+                         self?.careMarkButton.isUserInteractionEnabled = true
+                         self?.pfizerButton.isUserInteractionEnabled = true
                         })
                         
                     }else{
                         self!.showAlert(title: "Bot SDK Demo", message: "YOU MUST SET WIDGET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
                         self?.activityIndicatorView.stopAnimating()
                         self?.chatButton.isUserInteractionEnabled = true
+                        self?.careMarkButton.isUserInteractionEnabled = true
+                        self?.pfizerButton.isUserInteractionEnabled = true
                     }
                 }
                 
             }) { (error) in
                 self.activityIndicatorView.stopAnimating()
                 self.chatButton.isUserInteractionEnabled = true
+                self.careMarkButton.isUserInteractionEnabled = true
+                self.pfizerButton.isUserInteractionEnabled = true
             }
         } else {
             self.showAlert(title: "Bot SDK Demo", message: "YOU MUST SET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
             self.chatButton.isUserInteractionEnabled = true
+            self.careMarkButton.isUserInteractionEnabled = true
+            self.pfizerButton.isUserInteractionEnabled = true
         }
     }
     
     func navigateToChatViewController(client: BotClient?, thread: KREThread?){
         activityIndicatorView.stopAnimating()
         self.chatButton.isUserInteractionEnabled = true
+        self.careMarkButton.isUserInteractionEnabled = true
+        self.pfizerButton.isUserInteractionEnabled = true
 
         let botViewController = ChatMessagesViewController(thread: thread)
         botViewController.botClient = client
@@ -249,6 +297,10 @@ class AppLaunchViewController: UIViewController {
     func setInitialState() {
         chatButton.alpha = 1.0
         chatButton.isEnabled = true
+        careMarkButton.alpha = 1.0
+        careMarkButton.isEnabled = true
+        pfizerButton.alpha = 1.0
+        pfizerButton.isEnabled = true
     }
     
     func getUUID() -> String {

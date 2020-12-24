@@ -26,7 +26,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="78"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oKl-wF-gNi">
-                                <rect key="frame" x="75" y="14" width="205" height="21"/>
+                                <rect key="frame" x="85" y="14" width="195" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="KMT-hh-wpD"/>
                                 </constraints>
@@ -35,7 +35,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7m4-Kb-q7a">
-                                <rect key="frame" x="75" y="43" width="237" height="21"/>
+                                <rect key="frame" x="85" y="43" width="227" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="4ru-Ch-p91"/>
                                 </constraints>
@@ -44,9 +44,9 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6qn-SX-28K">
-                                <rect key="frame" x="8" y="14" width="60" height="50"/>
+                                <rect key="frame" x="8" y="14" width="70" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="h4y-5K-DRE"/>
+                                    <constraint firstAttribute="width" constant="70" id="h4y-5K-DRE"/>
                                     <constraint firstAttribute="height" constant="50" id="o0a-nE-LPm"/>
                                 </constraints>
                             </imageView>
