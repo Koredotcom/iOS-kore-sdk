@@ -52,8 +52,9 @@ class ComposeBarView: UIView {
         self.addSubview(self.growingTextView)
         self.growingTextView.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .horizontal)
         
-        self.growingTextView.textView.tintColor = .black
-        self.growingTextView.textView.textColor = .black
+        let composeBarTextColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetTextColor)!)
+        self.growingTextView.textView.tintColor = composeBarTextColor
+        self.growingTextView.textView.textColor = composeBarTextColor
         self.growingTextView.textView.textAlignment = .right
         self.growingTextView.maxNumberOfLines = 10
         self.growingTextView.font = UIFont(name: "HelveticaNeue", size: 14.0)!
@@ -63,8 +64,14 @@ class ComposeBarView: UIView {
         self.growingTextView.layer.cornerRadius = 10.0
         self.growingTextView.isUserInteractionEnabled = false
         
+        growingTextView.layer.shadowOpacity = 0.7
+        growingTextView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        growingTextView.layer.shadowRadius = 5.0
+        growingTextView.clipsToBounds = false
+        growingTextView.layer.shadowColor = UIColor.darkGray.cgColor
+        
         let attributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: UIFont(name: "HelveticaNeue", size: 14.0)!, NSAttributedString.Key.foregroundColor: Common.UIColorRGB(0xB5B9BA)]
-        self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Say Something...", attributes:attributes)
+        self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Message...", attributes:attributes)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidBeginEditingNotification(_ :)), name: UITextView.textDidBeginEditingNotification, object: self.growingTextView.textView)
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidChangeNotification(_ :)), name: UITextView.textDidChangeNotification, object: self.growingTextView.textView)
@@ -82,10 +89,13 @@ class ComposeBarView: UIView {
         self.menuButton.clipsToBounds = true
         self.addSubview(self.menuButton)
         
+        let buttonBg = (brandingShared.brandingInfoModel?.widgetHeaderColor) ?? "#2881DF" == "#FFFFFF" ? "#2881DF" : (brandingShared.brandingInfoModel?.widgetHeaderColor) ?? "#2881DF"
+
+        let widgetHeaderColor = UIColor.init(hexString: buttonBg)
         self.sendButton = UIButton.init(frame: CGRect.zero)
         self.sendButton.setTitle("Send", for: .normal)
         self.sendButton.translatesAutoresizingMaskIntoConstraints = false
-        self.sendButton.backgroundColor = themeColor 
+        self.sendButton.backgroundColor = widgetHeaderColor//themeColor
         self.sendButton.layer.cornerRadius = 5
         self.sendButton.setTitleColor(Common.UIColorRGB(0xFFFFFF), for: .normal)
         self.sendButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
@@ -101,7 +111,7 @@ class ComposeBarView: UIView {
         self.speechToTextButton.translatesAutoresizingMaskIntoConstraints = false
         self.speechToTextButton.setImage(UIImage(named: "audio_icon"), for: .normal)
         self.speechToTextButton.layer.cornerRadius = 5.0
-        self.speechToTextButton.backgroundColor = themeColor
+        self.speechToTextButton.backgroundColor = widgetHeaderColor//themeColor
         self.speechToTextButton.imageView?.contentMode = .scaleAspectFit
         self.speechToTextButton.addTarget(self, action: #selector(self.speechToTextButtonAction(_:)), for: .touchUpInside)
         self.speechToTextButton.isHidden = true

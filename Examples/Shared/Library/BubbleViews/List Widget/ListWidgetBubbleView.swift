@@ -133,8 +133,8 @@ class ListWidgetBubbleView: BubbleView {
                 }
                  headerTitle = jsonObject["title"] as? String
                  headerDescription = jsonObject["description"] as? String
-                 headertype = ((jsonObject["headerOptions"] as AnyObject) .object(forKey: "type") as? String)
-                 headerUrl = (((jsonObject["headerOptions"] as AnyObject) .object(forKey: "url") as AnyObject) .object(forKey: "link") as? String)
+                 //headertype = ((jsonObject["headerOptions"] as AnyObject) .object(forKey: "type") as? String)
+                 //headerUrl = (((jsonObject["headerOptions"] as AnyObject) .object(forKey: "url") as AnyObject) .object(forKey: "link") as? String)
                 
                 arrayOfElements = allItems
                 self.tableView.reloadData()
@@ -294,7 +294,10 @@ extension ListWidgetBubbleView: UITableViewDataSource, UITableViewDelegate {
         }
 
         if let action = listItem.defaultAction {
-             self.optionsAction(action.title, action.payload)
+            if action.payload != nil{
+                self.optionsAction(action.title ?? action.payload, action.payload)
+            }
+             
         }
     }
     

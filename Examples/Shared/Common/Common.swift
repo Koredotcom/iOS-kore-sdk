@@ -27,15 +27,15 @@ var selectedTheme = "Theme 1"
 let userColor: UIColor = UIColor(red: 38 / 255.0, green: 52 / 255.0, blue: 74 / 255.0, alpha: 1)
 let botColor: UIColor = UIColor(red: 237 / 255.0, green: 238 / 255.0, blue: 241 / 255.0, alpha: 1)
 
-var themeColor: UIColor = UIColor.init(hexString: "#2881DF")
+var themeColor: UIColor = UIColor.init(hexString: "#3EA3AD")  // 149C3F 2881DF
 var reciverIcon:String?
 var userIdentity:String?
 
-var tokenURL = ""
+var tokenURL = "https://demodpd.kore.ai/finastraLoginDEMO"
 var uniqueUserId: String?
 var userInfoUserId: String?
 var authInfoAccessToken: String?
-var tenantId = "5f9274c15b6a927ae14dce42" //"5fab18e0cb0fb2452f12bd04" 
+//var tenantId = "5fdc983ad54ba96f481fd771"//"5f9274c15b6a927ae14dce42" //"5fab18e0cb0fb2452f12bd04"
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
@@ -81,7 +81,8 @@ open class Utilities: NSObject {
     public static func getKREActionFromDictionary(dictionary: Dictionary<String, Any>) -> KREAction? {
         let actionInfo:Dictionary<String,Any> = dictionary
         let actionType: String = actionInfo["type"] != nil ? actionInfo["type"] as! String : ""
-        let title: String = actionInfo["title"] != nil ? actionInfo["title"] as! String : ""
+        //let title: String = actionInfo["title"] != nil ? actionInfo["title"] as! String : ""
+        let title: String = (actionInfo["title"] != nil ? actionInfo["title"] as? String : "") ?? String(actionInfo["title"] as! Int)
         switch (actionType.lowercased()) {
         case "web_url", "iframe_web_url", "url":
             let url: String = actionInfo["url"] != nil ? actionInfo["url"] as! String : ""

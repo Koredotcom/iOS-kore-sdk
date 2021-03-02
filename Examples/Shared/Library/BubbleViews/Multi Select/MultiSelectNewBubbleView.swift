@@ -22,10 +22,12 @@ class MultiSelectNewBubbleView: BubbleView {
     
     var checkboxIndexPath = [IndexPath]() //for Rows checkbox
     var arrayOfSeletedValues = [String]()
+    var arrayOfSeletedTitles = [String]()
     
     override func prepareForReuse() {
         checkboxIndexPath = [IndexPath]()
          arrayOfSeletedValues = [String]()
+        arrayOfSeletedTitles = [String]()
     }
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
@@ -129,7 +131,7 @@ class MultiSelectNewBubbleView: BubbleView {
         if selectedTheme == "Theme 1"{
             self.tileBgv.layer.borderWidth = 0.0
         }else{
-            self.tileBgv.layer.borderWidth = 1.0
+            self.tileBgv.layer.borderWidth = 0.0
         }
         
         if (components.count > 0) {
@@ -216,18 +218,31 @@ extension MultiSelectNewBubbleView: UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let elements = arrayOfElements[indexPath.row]
         if checkboxIndexPath.contains(indexPath) {
-            removeSelectedValues(value: elements.title!)
+            removeSelectedTitles(title: elements.title!)
+            if elements.value != nil{
+                removeSelectedValues(value: elements.value!)
+            }
             checkboxIndexPath.remove(at: checkboxIndexPath.firstIndex(of: indexPath)!)
         }else{
             checkboxIndexPath.append(indexPath)
-            let value = "\(elements.title!)"
-            arrayOfSeletedValues.append(value)
+            let title = "\(elements.title!)"
+            arrayOfSeletedTitles.append(title)
+            
+            if elements.value != nil{
+                let valaue = "\(elements.value!)"
+                arrayOfSeletedValues.append(valaue)
+            }
+            
         }
         tableView.reloadRows(at: [indexPath], with: .none)
     }
     func removeSelectedValues(value:String){
         arrayOfSeletedValues = arrayOfSeletedValues.filter(){$0 != value}
         print(arrayOfSeletedValues)
+    }
+    func removeSelectedTitles(title:String){
+        arrayOfSeletedTitles = arrayOfSeletedTitles.filter(){$0 != title}
+        print(arrayOfSeletedTitles)
     }
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
            return 40
@@ -259,10 +274,20 @@ extension MultiSelectNewBubbleView: UITableViewDelegate,UITableViewDataSource{
         return view
     }
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
-        if arrayOfSeletedValues.count > 0{
-            let joined = arrayOfSeletedValues.joined(separator: ", ")
-            print(joined)
-            self.optionsAction(joined,joined)
+        if arrayOfSeletedTitles.count > 0{
+            let titles = arrayOfSeletedTitles.joined(separator: ", ")
+            print(titles)
+            
+            var enter = 0
+            if arrayOfSeletedValues.count > 0{
+                let payload = arrayOfSeletedValues.joined(separator: ", ")
+                print(payload)
+                enter = 1
+                self.optionsAction(titles,payload)
+            }
+            if enter == 0{
+                self.optionsAction(titles,titles)
+            }
         }
     }
    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

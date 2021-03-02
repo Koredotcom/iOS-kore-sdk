@@ -58,9 +58,11 @@ class CalenderViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        headingLabel.textColor = .white
+        
+        headingLabel.textColor =  UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetTextColor)!)
         confirmButton.backgroundColor = themeColor
-        confirmButton.setTitleColor(UIColor.init(hexString: (brandingShared.brandingInfoModel?.buttonActiveTextColor)!), for: .normal)
+        //confirmButton.setTitleColor(UIColor.init(hexString: (brandingShared.brandingInfoModel?.buttonActiveTextColor)!), for: .normal)
+        confirmButton.setTitleColor(UIColor.white, for: .normal)
         if #available(iOS 14, *) {
             datePicker.preferredDatePickerStyle = .wheels
             datePicker.backgroundColor = .white

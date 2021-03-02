@@ -46,10 +46,10 @@ class TextBubbleView : BubbleView {
     func setTextColor() {
         if self.tailPosition == BubbleMaskTailPosition.left {
             self.textLabel.textColor = BubbleViewBotChatTextColor
-            self.textLabel.linkTextColor = Common.UIColorRGB(0x0076FF)
+            self.textLabel.linkTextColor = Common.UIColorRGB(0x3EA3AD)
         }else{
             self.textLabel.textColor = BubbleViewUserChatTextColor
-            self.textLabel.linkTextColor = Common.UIColorRGB(0xFFFFFF)
+            self.textLabel.linkTextColor = BubbleViewUserChatTextColor
         }
     }
     

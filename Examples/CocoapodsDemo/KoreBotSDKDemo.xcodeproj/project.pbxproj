@@ -11,6 +11,7 @@
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		1D9FA1702AE04EE1A8F6AF2C /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */; };
+		950429CF25BE9ADA00B7ACFB /* brandingValues.json in Resources */ = {isa = PBXBuildFile; fileRef = 950429CE25BE9ADA00B7ACFB /* brandingValues.json */; };
 		95C49EF3255E40DB008CD1FD /* BrandingSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C49EF1255E40D9008CD1FD /* BrandingSingleton.swift */; };
 		95C49EF4255E40DB008CD1FD /* BrandingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C49EF2255E40DB008CD1FD /* BrandingModel.swift */; };
 		95E0D3DD253ECF7A00FE79B1 /* DropDownBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E0D3DC253ECF7A00FE79B1 /* DropDownBubbleView.swift */; };
@@ -154,6 +155,7 @@
 		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		950429CE25BE9ADA00B7ACFB /* brandingValues.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = brandingValues.json; sourceTree = "<group>"; };
 		95C49EF1255E40D9008CD1FD /* BrandingSingleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrandingSingleton.swift; sourceTree = "<group>"; };
 		95C49EF2255E40DB008CD1FD /* BrandingModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BrandingModel.swift; path = "../New Group/BrandingModel.swift"; sourceTree = "<group>"; };
 		95E0D3DC253ECF7A00FE79B1 /* DropDownBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownBubbleView.swift; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 		9502402A256B96E10068091A /* Branding */ = {
 			isa = PBXGroup;
 			children = (
+				950429CE25BE9ADA00B7ACFB /* brandingValues.json */,
 				95C49EF1255E40D9008CD1FD /* BrandingSingleton.swift */,
 				95C49EF2255E40DB008CD1FD /* BrandingModel.swift */,
 			);
@@ -1007,6 +1010,7 @@
 				CD445139250B7C5400879219 /* ListWidgetDetailsViewController.xib in Resources */,
 				D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */,
 				D1F338E62201D99A005BE5F1 /* MultiImageBubbleView.xib in Resources */,
+				950429CF25BE9ADA00B7ACFB /* brandingValues.json in Resources */,
 				CD445164250B9B3E00879219 /* DropDownCell.xib in Resources */,
 				D1F338F82201D99A005BE5F1 /* TableTemplateViewController.xib in Resources */,
 				D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */,

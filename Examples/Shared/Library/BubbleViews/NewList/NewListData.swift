@@ -112,7 +112,20 @@ public class ComponentElements: NSObject, Decodable {
         color = try? container.decode(String.self, forKey: .color)
         subtitle = try? container.decode(String.self, forKey: .subtitle)
         title = try? container.decode(String.self, forKey: .title)
-        value = try? container.decode(String.self, forKey: .value)
+        //value = try? container.decode(String.self, forKey: .value)
+        
+        if let valueInteger = try container.decodeIfPresent(Int.self, forKey: .value) {
+                   value = String(valueInteger)
+            } else if let valueString = try? container.decodeIfPresent(String.self, forKey: .value) {
+                   value = valueString
+            }
+        
+//        do {
+//            let val = try container.decode(Int.self, forKey: .value)
+//            value = String(val)
+//        } catch DecodingError.typeMismatch {
+//            value = try? container.decode(String.self, forKey: .value)
+//        }
         imageURL = try? container.decode(String.self, forKey: .imageURL)
         action = try? container.decode(ComponentItemAction.self, forKey: .action)
     }

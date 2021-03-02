@@ -128,7 +128,7 @@ class NewListBubbleView: BubbleView {
         if selectedTheme == "Theme 1"{
             self.tileBgv.layer.borderWidth = 0.0
         }else{
-            self.tileBgv.layer.borderWidth = 1.0
+            self.tileBgv.layer.borderWidth = 0.0
         }
         
         if (components.count > 0) {
@@ -211,9 +211,9 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.backgroundColor = UIColor.clear
         cell.selectionStyle = .none
         cell.bgView.backgroundColor = bubbleViewBotChatButtonBgColor
-        cell.titleLabel.textColor = bubbleViewBotChatButtonTextColor
-        cell.subTitleLabel.textColor = bubbleViewBotChatButtonTextColor
-        cell.priceLbl.textColor = bubbleViewBotChatButtonTextColor
+        cell.titleLabel.textColor = .black //bubbleViewBotChatButtonTextColor
+        cell.subTitleLabel.textColor = bubbleViewBotChatButtonInactiveTextColor
+        cell.priceLbl.textColor = .black //bubbleViewBotChatButtonTextColor
         
         let elements = arrayOfComponents[indexPath.row]
         if elements.imageURL == nil{

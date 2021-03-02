@@ -20,7 +20,7 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
             } else {
                 let textColor =  UserDefaults.standard.value(forKey: "ButtonTextColor") as? String
                 self.label.textColor = UIColor.init(hexString: textColor!)
-                self.label.backgroundColor = UIColor(hex: 0xEDEDEF)
+                //self.label.backgroundColor = UIColor(hex: 0xEDEDEF)
             }
         }
     }

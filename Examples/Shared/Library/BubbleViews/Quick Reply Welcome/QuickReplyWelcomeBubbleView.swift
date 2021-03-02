@@ -206,13 +206,13 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         }
         func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath){
             let  cell  = collectionView.cellForItem(at: indexPath) as! CustomCollectionViewCell
-            cell.backgroundColor = userColor
+            //cell.backgroundColor = userColor
             //cell.textLabel.textColor = .white
         }
 
         func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath){
             let  cell  = collectionView.cellForItem(at: indexPath) as! CustomCollectionViewCell
-            cell.backgroundColor = .clear
+            //cell.backgroundColor = .clear
            // cell.textLabel.textColor = .black
         }
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

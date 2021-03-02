@@ -62,8 +62,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     let widgetTextColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetTextColor)!)
     let widgetHeaderColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetHeaderColor)!)
-    let widgetFooterColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetFooterColor)!)
-    let widgetBodyColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetBodyColor)!)
+    let widgetFooterColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetFooterColor) ?? "#FFFFFF")
+    let widgetBodyColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetBodyColor) ?? "#FFFFFF")
     let widgetDividerColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetDividerColor)!)
     
     
@@ -105,6 +105,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         //Initialize elements
         self.configureThreadView()
         self.configureComposeBar()
@@ -124,71 +125,77 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         isSpeakingEnabled = false
         self.speechSynthesizer = AVSpeechSynthesizer()
         ConfigureDropDownView()
+        
+        self.setUpNavigationBar()
     }
     
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addNotifications()
         
-        let urlString = brandingShared.brandingInfoModel?.bankLogo?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        let url = URL(string: urlString!)
-        var data : Data?
-        if url != nil {
-            data = try? Data(contentsOf: url!)
-        }
-        var image = UIImage(named: "cancel")
-        if let imageData = data {
-             image = UIImage(data: imageData)
-        }
-        //navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancel(_:)))
-        
-        let button = UIButton(type: .custom)
-        //set image for button
-        //button.setBackgroundImage(image, for: .normal)
-         button.setImage(image, for: .normal)
-        //add function for button
-        button.addTarget(self, action: #selector(cancel(_:)), for: .touchUpInside)
-        //set frame
-        button.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
-        let barButton = UIBarButtonItem(customView: button)
-        NSLayoutConstraint.activate([(barButton.customView!.widthAnchor.constraint(equalToConstant: 35)),(barButton.customView!.heightAnchor.constraint(equalToConstant: 35))])
-        self.navigationItem.leftBarButtonItem = barButton
-        
-        let rightImage = UIImage(named: "more")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(more(_:)))
-        
-        navigationController?.setNavigationBarHidden(false, animated: false)
-        
-        let font:UIFont? = UIFont(name: "Helvetica-Bold", size:17)
-        let titleStr = brandingShared.brandingInfoModel?.botName != "" ? brandingShared.brandingInfoModel?.botName: SDKConfiguration.botConfig.chatBotName
-        let attString:NSMutableAttributedString = NSMutableAttributedString(string: titleStr!, attributes: [.font:font!])
-        let titleLabel = UILabel()
-        titleLabel.textColor = widgetTextColor
-        titleLabel.attributedText = attString
-        self.navigationItem.titleView = titleLabel
-        
-        navigationController?.navigationBar.barTintColor = widgetHeaderColor
-        navigationController?.navigationBar.tintColor = widgetTextColor
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: widgetTextColor]
-       
-        let bgUrlString = brandingShared.brandingInfoModel?.widgetBgImage!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        let bgUrl = URL(string: bgUrlString!)
-        if bgUrl != nil{
-        backgroungImageView.setImageWith(bgUrl!, placeholderImage: UIImage(named: ""))
-        backgroungImageView.contentMode = .scaleAspectFit
-        }else{
-          self.view.backgroundColor = widgetBodyColor
-        }
-        composeView.backgroundColor = widgetFooterColor
-        botMessagesView.tableView.layer.borderColor = widgetDividerColor.cgColor
-        botMessagesView.tableView.layer.borderWidth = 1.0
-        UserDefaults.standard.set(brandingShared.brandingInfoModel?.buttonActiveTextColor, forKey: "ButtonTextColor")
-        UserDefaults.standard.set(brandingShared.brandingInfoModel?.buttonActiveBgColor, forKey: "ButtonBgColor")
-        
         if SDKConfiguration.widgetConfig.isPanelView {
             populatePanelItems()
         }
         
+    }
+    
+    func setUpNavigationBar(){
+        let urlString = brandingShared.brandingInfoModel?.bankLogo?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+         let url = URL(string: urlString ?? "")
+         var data : Data?
+         if url != nil {
+             data = try? Data(contentsOf: url!)
+         }
+         var image = UIImage(named: "") //cancel
+         if let imageData = data {
+              image = UIImage(data: imageData)
+         }
+         //navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancel(_:)))
+         
+         let button = UIButton(type: .custom)
+         //set image for button
+         //button.setBackgroundImage(image, for: .normal)
+          button.setImage(image, for: .normal)
+         //add function for button
+         button.addTarget(self, action: #selector(cancel(_:)), for: .touchUpInside)
+         //set frame
+         button.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
+         let barButton = UIBarButtonItem(customView: button)
+         NSLayoutConstraint.activate([(barButton.customView!.widthAnchor.constraint(equalToConstant: 35)),(barButton.customView!.heightAnchor.constraint(equalToConstant: 35))])
+         self.navigationItem.leftBarButtonItem = barButton
+         
+         let rightImage = UIImage(named: "more")
+         navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(more(_:)))
+         
+         navigationController?.setNavigationBarHidden(false, animated: false)
+         
+         let font:UIFont? = UIFont(name: "Helvetica-Bold", size:17)
+         let titleStr = brandingShared.brandingInfoModel?.botName != "" ? brandingShared.brandingInfoModel?.botName: SDKConfiguration.botConfig.chatBotName
+         let attString:NSMutableAttributedString = NSMutableAttributedString(string: titleStr!, attributes: [.font:font!])
+         let titleLabel = UILabel()
+         titleLabel.textColor = widgetTextColor
+         titleLabel.attributedText = attString
+         self.navigationItem.titleView = titleLabel
+         
+         navigationController?.navigationBar.barTintColor = widgetHeaderColor
+         navigationController?.navigationBar.tintColor = .white//widgetTextColor
+         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: widgetTextColor]
+        
+         let bgUrlString = brandingShared.brandingInfoModel?.widgetBgImage!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+         let bgUrl = URL(string: bgUrlString!)
+         if bgUrl != nil{
+         backgroungImageView.setImageWith(bgUrl!, placeholderImage: UIImage(named: ""))
+         backgroungImageView.contentMode = .scaleAspectFill
+         }else{
+           self.view.backgroundColor = widgetBodyColor
+         }
+         composeView.backgroundColor = widgetFooterColor
+         botMessagesView.tableView.layer.borderColor = widgetDividerColor.cgColor
+         botMessagesView.tableView.layer.borderWidth = 1.0
+         UserDefaults.standard.set(brandingShared.brandingInfoModel?.buttonActiveTextColor, forKey: "ButtonTextColor")
+         UserDefaults.standard.set(brandingShared.brandingInfoModel?.buttonActiveBgColor, forKey: "ButtonBgColor")
+         UserDefaults.standard.set(brandingShared.brandingInfoModel?.widgetBorderColor, forKey: "widgetBorderColor")
+         
     }
     
     override open func viewDidAppear(_ animated: Bool) {
@@ -485,7 +492,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     self!.backgroungImageView.image = UIImage.init(named: "")
                     self!.view.backgroundColor = self?.widgetBodyColor
                 }
-                self!.backgroungImageView.contentMode = .scaleAspectFit
+                self!.backgroungImageView.contentMode = .scaleAspectFill
             }else{
                 self!.backgroungImageView.image = UIImage.init(named: "Shoppingbackground")
                 self!.backgroungImageView.contentMode = .scaleAspectFill
@@ -536,7 +543,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         else if (templateType == "multi_select") {
             return .multiSelect
         }
-        else if (templateType == "List_widget") {
+        else if (templateType == "List_widget" || templateType == "listWidget") {
             return .list_widget
         }
         else if (templateType == "feedbackTemplate") {

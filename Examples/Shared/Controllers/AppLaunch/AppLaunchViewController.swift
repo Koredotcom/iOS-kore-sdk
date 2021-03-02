@@ -116,7 +116,7 @@ class AppLaunchViewController: UIViewController {
         if (isAnonymous) {
             identity = self.getUUID()
         } else {
-            identity = identityTF.text!
+            identity = identityTF.text! //SDKConfiguration.botConfig.identity //kk
         }
         userIdentity = identityTF.text ?? ""
         identityTF.resignFirstResponder()
@@ -130,7 +130,7 @@ class AppLaunchViewController: UIViewController {
         if (isAnonymousForWidget) {
             identityForWidget = self.getUUID()
         } else {
-            identityForWidget = identityTF.text!
+            identityForWidget = identityTF.text! //SDKConfiguration.widgetConfig.identity //kk
         }
         
         let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
@@ -213,10 +213,42 @@ class AppLaunchViewController: UIViewController {
             }
             }, failure: { (error) in
                        print(error)
+                self.getOfflineBrandingData(client: client, thread: thread)
+                
+                
                 self.activityIndicatorView.stopAnimating()
                 self.chatButton.isUserInteractionEnabled = true
         })
     }
+    
+    func getOfflineBrandingData(client: BotClient?, thread: KREThread?){
+           if let path = Bundle.main.path(forResource: "brandingValues", ofType: "json") {
+               do {
+                   let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                   let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+                   if let brandingArray = jsonResult as? NSArray {
+                       // do stuff
+                      print(jsonResult)
+                    if brandingArray.count > 0{
+                        brandingShared.hamburgerOptions = (((brandingArray as AnyObject).object(at: 0) as AnyObject).object(forKey: "hamburgermenu") as Any) as? Dictionary<String, Any>
+                    }
+                    if brandingArray.count>1{
+                        let brandingDic = (((brandingArray as AnyObject).object(at: 1) as AnyObject).object(forKey: "brandingwidgetdesktop") as Any)
+                        let jsonDecoder = JSONDecoder()
+                        guard let jsonData = try? JSONSerialization.data(withJSONObject: brandingDic as Any , options: .prettyPrinted),
+                        let brandingValues = try? jsonDecoder.decode(BrandingModel.self, from: jsonData) else {
+                            return
+                        }
+                        let brandingShared = BrandingSingleton.shared
+                        brandingShared.brandingInfoModel = brandingValues
+                        self.navigateToChatViewController(client: client, thread: thread)}
+                    
+                   }
+               } catch {
+                   // handle error
+               }
+           }
+       }
     
     func navigateToChatViewController(client: BotClient?, thread: KREThread?){
         activityIndicatorView.stopAnimating()
@@ -371,8 +403,8 @@ extension AppLaunchViewController{
     }
     
     func getThemeColor(){
-        themeColor = UIColor.init(hexString: "#2881DF")
-        UserDefaults.standard.set("#2881DF", forKey: "ThemeColor")
+        themeColor = UIColor.init(hexString: "#3EA3AD")
+        UserDefaults.standard.set("#3EA3AD", forKey: "ThemeColor")
     }
 }
 

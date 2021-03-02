@@ -26,6 +26,7 @@ let BubbleViewUserChatTextColor: UIColor = UIColor.init(hexString: (brandingShar
 let BubbleViewBotChatTextColor: UIColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.botchatTextColor)!)
 let bubbleViewBotChatButtonTextColor: UIColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.buttonActiveTextColor)!)
 let bubbleViewBotChatButtonBgColor: UIColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.buttonActiveBgColor)!)
+let bubbleViewBotChatButtonInactiveTextColor: UIColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.buttonInactiveTextColor)!)
 
 class BubbleView: UIView {
     var tailPosition: BubbleMaskTailPosition! {
@@ -189,7 +190,7 @@ class BubbleView: UIView {
             self.borderLayer.path = self.maskLayer.path // Reuse the Bezier path
             self.borderLayer.fillColor = UIColor.clear.cgColor
            // self.borderLayer.strokeColor = Common.UIColorRGB(0xebebeb).cgColor
-            self.borderLayer.lineWidth = 1.5
+            self.borderLayer.lineWidth = 0
             self.borderLayer.frame = self.bounds
             if selectedTheme == "Theme 1"{
                self.borderLayer.strokeColor = Common.UIColorRGB(0xebebeb).cgColor

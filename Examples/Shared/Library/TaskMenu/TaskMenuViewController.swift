@@ -22,7 +22,7 @@ class TaskMenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
        // Do any additional setup after loading the view.
-        subView.backgroundColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetBodyColor)!)
+        subView.backgroundColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetBodyColor) ?? "#FFFFFF")
         titleLabel.textColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetTextColor)!)
         subView.layer.masksToBounds = false
         subView?.layer.shadowColor = UIColor.lightGray.cgColor
@@ -81,7 +81,7 @@ extension TaskMenuViewController: UITableViewDelegate,UITableViewDataSource{
            let image = base64ToImage(base64String: tasks.icon)
            cell.imgView.image = image
         cell.bgView.backgroundColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.buttonActiveBgColor)!)
-        cell.titleLabel.textColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.buttonActiveTextColor)!)
+        //cell.titleLabel.textColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.buttonActiveTextColor)!)
            return cell
        }
        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

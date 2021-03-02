@@ -53,7 +53,19 @@ public class KREAction: NSObject, Decodable, Encodable {
     required public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         title = try? values.decode(String.self, forKey: .title)
-        payload = try? values.decode(String.self, forKey: .payload)
+//        do {
+//            let val = try values.decode(Int.self, forKey: .payload)
+//            payload = String(val)
+//        } catch DecodingError.typeMismatch {
+//            payload = try? values.decode(String.self, forKey: .payload)
+//        }
+        
+        if let valueInteger = try values.decodeIfPresent(Int.self, forKey: .payload) {
+               payload = String(valueInteger)
+        } else if let valueString = try? values.decodeIfPresent(String.self, forKey: .payload) {
+               payload = valueString
+        }
+        
         type = try? values.decode(String.self, forKey: .type)
         utterance = try? values.decode(String.self, forKey: .utterance)
         url = try? values.decode(String.self, forKey: .url)

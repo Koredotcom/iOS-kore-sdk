@@ -41,7 +41,7 @@ class ListViewDetailsViewController: UIViewController {
         getData()
         self.tableview.tableFooterView = UIView(frame:.zero)
         self.tableview.register(UINib(nibName: listCellIdentifier, bundle: nil), forCellReuseIdentifier: listCellIdentifier)
-        subView.backgroundColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetBodyColor)!)
+        subView.backgroundColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetBodyColor) ?? "#FFFFFF")
         headingLabel.textColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetTextColor)!)
     }
     func getData(){

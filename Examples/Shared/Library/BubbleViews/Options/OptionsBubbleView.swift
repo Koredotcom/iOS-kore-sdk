@@ -70,7 +70,8 @@ class OptionsBubbleView: BubbleView {
                 
                 for i in 0..<buttonsCount {
                     let dictionary = buttons[i]
-                    let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
+                   // let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
+                     let title: String = (dictionary["title"] != nil ? dictionary["title"] as? String : "") ?? String(dictionary["title"] as! Int) //kk
                     
                     let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button)
                     if let action = Utilities.getKREActionFromDictionary(dictionary: dictionary) {

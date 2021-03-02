@@ -172,8 +172,8 @@ open class KABotClient: NSObject {
         botClient.connectionDidOpen = { [weak self] () in
             self?.isConnected = true
             self?.isConnecting = false
-            //self?.sendMessage("Welpro", options: nil) //kk
-            //NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
+            self?.sendMessage("BotNotifications", options: nil) //kk
+            NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
         }
         
         botClient.connectionReady = {
@@ -304,7 +304,7 @@ open class KABotClient: NSObject {
         else if (templateType == "multi_select") {
             return .multiSelect
         }
-        else if (templateType == "List_widget") {
+        else if (templateType == "List_widget" || templateType == "listWidget") {
             return .list_widget
         }
         else if (templateType == "feedbackTemplate") {
@@ -409,6 +409,14 @@ open class KABotClient: NSObject {
                             textComponent.payload = text
                             message.addComponent(textComponent)
                         }
+                    }
+                }else{ //kk
+                    if let payload = componentModel.payload as? String{
+                        print(payload as Any)
+                        let textComponent = Component()
+                        textComponent.payload = payload
+                        ttsBody = payload
+                        message.addComponent(textComponent)
                     }
                 }
                 return (message, ttsBody)
@@ -608,7 +616,7 @@ open class KABotClient: NSObject {
             sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
             
             // NOTE: You must set your URL to generate JWT.
-            let urlString: String =  "\(SDKConfiguration.serverConfig.BOT_SERVER)/api/1.1/wbservice/workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop"
+            let urlString: String =  "\(SDKConfiguration.serverConfig.BOT_SERVER)/workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop"
             
             let requestSerializer = AFJSONRequestSerializer()
             requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
@@ -616,8 +624,9 @@ open class KABotClient: NSObject {
             requestSerializer.setValue("en_US", forHTTPHeaderField:"Accept-Language")
             let authorizationStr = "bearer \(accessToken!)"
             requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
-            requestSerializer.setValue(tenantId, forHTTPHeaderField:"tenantId")
+            requestSerializer.setValue(SDKConfiguration.botConfig.tenantId, forHTTPHeaderField:"tenantId")
             requestSerializer.setValue("1", forHTTPHeaderField:"Accepts-version")
+            requestSerializer.setValue(SDKConfiguration.botConfig.botId, forHTTPHeaderField:"botid")
             requestSerializer.setValue("published", forHTTPHeaderField:"state")
             
             let parameters: NSDictionary = [:]

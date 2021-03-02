@@ -156,9 +156,11 @@ extension KREQuickSelectView: UICollectionViewDelegate, UICollectionViewDataSour
             let word = words?[indexPath.row] {
             cell.labelText = word.title
             cell.imageURL = word.imageURL
-            let bgColor =  UserDefaults.standard.value(forKey: "ButtonTextColor") as? String
-            cell.layer.borderColor = UIColor.init(hexString: bgColor!).cgColor
+            let borderColor =  UserDefaults.standard.value(forKey: "widgetBorderColor") as? String
+            cell.layer.borderColor = UIColor.init(hexString: borderColor!).cgColor
             cell.layer.borderWidth = 1.5
+            let bgColor =  UserDefaults.standard.value(forKey: "ButtonBgColor") as? String
+            cell.backgroundColor = UIColor.init(hexString: bgColor!) //.clear //kk
             cell.krefocused = false
         }
         collectionViewCell.layoutIfNeeded()
