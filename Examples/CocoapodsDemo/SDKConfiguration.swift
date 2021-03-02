@@ -15,27 +15,24 @@ class SDKConfiguration: NSObject {
         static let resetDataStoreOnConnect = true // This should be either true or false. Conversation with the bot will be persisted, if it is false.
     }
     
-    //MARK:- MashreqBank
-    struct botConfig {
     
-        static let clientId = "<client-id>" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
+    struct botConfig {
+        static let clientId = "cs-c0c92a93-ab8b-5974-8194-2e4872f9060a" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
         
-        static let clientSecret = "<client-secret>" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
+        static let clientSecret = "S6UeQAi1HuvawvIrkgGXO+rY63lXw9cgIFYSgdSgMZw=" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
         
-        static let botId =  "<bot-id>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
+        static let botId =  "st-af183a72-89d4-5dd4-ab11-da65fdcc01b9" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
         
-        static let chatBotName = "bot-name" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
+        static let chatBotName = "MashreqBank" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
+        static let tenantId = "57f8c66e67b0e7ed4371e251" // Account Id
         
-        static let tenantId = "<account-id>" //accountId
-        
-        static let identity = "<identity-email> or <random-id>"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
+        static let identity = "sainath.bhima@kore.com"//"sainath.bhima@kore.com"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
         
         static let isAnonymous = true // This should be either true (in case of known-user) or false (in-case of anonymous user).
-        
     }
     
     struct serverConfig {
-        static let JWT_SERVER = String(format: "http://<jwt-server-host>/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
+        static let JWT_SERVER = String(format: "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
         
         static func koreJwtUrl() -> String {
             return String(format: "%@users/sts", JWT_SERVER)
