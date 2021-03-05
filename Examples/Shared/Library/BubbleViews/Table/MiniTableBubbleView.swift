@@ -147,7 +147,7 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         
         self.titleLbl = UILabel(frame: CGRect.zero)
         self.titleLbl.textColor = Common.UIColorRGB(0x484848)
-        self.titleLbl.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
+        self.titleLbl.font = UIFont(name: "Gilroy-Medium", size: 16.0)
         self.titleLbl.numberOfLines = 0
         self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.titleLbl.isUserInteractionEnabled = true

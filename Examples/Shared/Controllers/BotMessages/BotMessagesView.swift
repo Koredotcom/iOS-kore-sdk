@@ -438,7 +438,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         label.text = dateString
         label.textAlignment = .center
         label.textColor = UIColor.darkGray.withAlphaComponent(0.8)
-        label.font = UIFont(name: "HelveticaNeue", size: 13)
+        label.font = UIFont(name: "Gilroy-Regular", size: 13)
         return label
     }
     

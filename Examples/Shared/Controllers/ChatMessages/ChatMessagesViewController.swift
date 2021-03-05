@@ -169,7 +169,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
          
          navigationController?.setNavigationBarHidden(false, animated: false)
          
-         let font:UIFont? = UIFont(name: "Helvetica-Bold", size:17)
+         let font:UIFont? = UIFont(name: "Gilroy-Bold", size:17)
          let titleStr = brandingShared.brandingInfoModel?.botName != "" ? brandingShared.brandingInfoModel?.botName: SDKConfiguration.botConfig.chatBotName
          let attString:NSMutableAttributedString = NSMutableAttributedString(string: titleStr!, attributes: [.font:font!])
          let titleLabel = UILabel()
@@ -185,7 +185,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
          let bgUrl = URL(string: bgUrlString!)
          if bgUrl != nil{
          backgroungImageView.setImageWith(bgUrl!, placeholderImage: UIImage(named: ""))
-         backgroungImageView.contentMode = .scaleAspectFill
+         backgroungImageView.contentMode = .scaleAspectFit
          }else{
            self.view.backgroundColor = widgetBodyColor
          }
@@ -492,10 +492,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     self!.backgroungImageView.image = UIImage.init(named: "")
                     self!.view.backgroundColor = self?.widgetBodyColor
                 }
-                self!.backgroungImageView.contentMode = .scaleAspectFill
+                self!.backgroungImageView.contentMode = .scaleAspectFit
             }else{
                 self!.backgroungImageView.image = UIImage.init(named: "Shoppingbackground")
-                self!.backgroungImageView.contentMode = .scaleAspectFill
+                self!.backgroungImageView.contentMode = .scaleAspectFit
             }
             NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
         }

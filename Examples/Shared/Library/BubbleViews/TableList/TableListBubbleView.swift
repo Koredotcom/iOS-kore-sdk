@@ -21,7 +21,7 @@ class TableListBubbleView: BubbleView {
     let rowsDataLimit = 4
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
-        NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Bold", size: 15.0) as Any,
+        NSAttributedString.Key.font : UIFont(name: "Gilroy-Bold", size: 15.0) as Any,
         NSAttributedString.Key.foregroundColor : UIColor.blue,
         NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue]
  
@@ -259,7 +259,7 @@ extension TableListBubbleView: UITableViewDelegate,UITableViewDataSource{
         let headerLabel = UILabel(frame: .zero)
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.textAlignment = .left
-        headerLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)
+        headerLabel.font = UIFont(name: "Gilroy-Bold", size: 15.0)
         headerLabel.font = headerLabel.font.withSize(15.0)
 
         headerLabel.textColor = .black
@@ -269,7 +269,7 @@ extension TableListBubbleView: UITableViewDelegate,UITableViewDataSource{
         let headerDescLabel = UILabel(frame: .zero)
         headerDescLabel.translatesAutoresizingMaskIntoConstraints = false
         headerDescLabel.textAlignment = .left
-        headerDescLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)
+        headerDescLabel.font = UIFont(name: "Gilroy-Bold", size: 15.0)
         headerDescLabel.font = headerDescLabel.font.withSize(15.0)
         headerDescLabel.textColor = .black
         headerDescLabel.text =  arrayOfComponents[section].sectionHeaderDesc ?? ""
@@ -300,7 +300,7 @@ extension TableListBubbleView: UITableViewDelegate,UITableViewDataSource{
             showMoreButton.layer.cornerRadius = 5
             showMoreButton.setTitleColor(.blue, for: .normal)
             showMoreButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-            showMoreButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
+            showMoreButton.titleLabel?.font = UIFont(name: "Gilroy-Bold", size: 14.0)!
             view.addSubview(showMoreButton)
             showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
             showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)

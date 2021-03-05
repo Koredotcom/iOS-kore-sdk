@@ -114,7 +114,7 @@ public class ComponentElements: NSObject, Decodable {
         title = try? container.decode(String.self, forKey: .title)
         //value = try? container.decode(String.self, forKey: .value)
         
-        if let valueInteger = try container.decodeIfPresent(Int.self, forKey: .value) {
+        if let valueInteger = try? container.decodeIfPresent(Int.self, forKey: .value) {
                    value = String(valueInteger)
             } else if let valueString = try? container.decodeIfPresent(String.self, forKey: .value) {
                    value = valueString

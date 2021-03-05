@@ -57,7 +57,7 @@ class ComposeBarView: UIView {
         self.growingTextView.textView.textColor = composeBarTextColor
         self.growingTextView.textView.textAlignment = .right
         self.growingTextView.maxNumberOfLines = 10
-        self.growingTextView.font = UIFont(name: "HelveticaNeue", size: 14.0)!
+        self.growingTextView.font = UIFont(name: "Gilroy-Regular", size: 14.0)!
         self.growingTextView.textContainerInset = UIEdgeInsets(top: 7, left: 0, bottom: 7, right: 0)
         self.growingTextView.animateHeightChange = true
         self.growingTextView.backgroundColor = .white
@@ -70,7 +70,7 @@ class ComposeBarView: UIView {
         growingTextView.clipsToBounds = false
         growingTextView.layer.shadowColor = UIColor.darkGray.cgColor
         
-        let attributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: UIFont(name: "HelveticaNeue", size: 14.0)!, NSAttributedString.Key.foregroundColor: Common.UIColorRGB(0xB5B9BA)]
+        let attributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: UIFont(name: "Gilroy-Regular", size: 14.0)!, NSAttributedString.Key.foregroundColor: Common.UIColorRGB(0xB5B9BA)]
         self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Message...", attributes:attributes)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidBeginEditingNotification(_ :)), name: UITextView.textDidBeginEditingNotification, object: self.growingTextView.textView)
@@ -82,7 +82,7 @@ class ComposeBarView: UIView {
         self.menuButton.setTitleColor(Common.UIColorRGB(0xFFFFFF), for: .normal)
         self.menuButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
         self.menuButton.setImage(UIImage.init(named: "Menu"), for: .normal)
-        self.menuButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
+        self.menuButton.titleLabel?.font = UIFont(name: "Gilroy-Bold", size: 14.0)!
         self.menuButton.addTarget(self, action: #selector(self.taskMenuButtonAction(_:)), for: .touchUpInside)
         self.menuButton.isHidden = false
         self.menuButton.contentEdgeInsets = UIEdgeInsets(top: 9.0, left: 3.0, bottom: 7.0, right: 3.0)
@@ -99,7 +99,7 @@ class ComposeBarView: UIView {
         self.sendButton.layer.cornerRadius = 5
         self.sendButton.setTitleColor(Common.UIColorRGB(0xFFFFFF), for: .normal)
         self.sendButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-        self.sendButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
+        self.sendButton.titleLabel?.font = UIFont(name: "Gilroy-Bold", size: 14.0)!
         self.sendButton.addTarget(self, action: #selector(self.sendButtonAction(_:)), for: .touchUpInside)
         self.sendButton.isHidden = true
         self.sendButton.contentEdgeInsets = UIEdgeInsets(top: 9.0, left: 3.0, bottom: 7.0, right: 3.0)

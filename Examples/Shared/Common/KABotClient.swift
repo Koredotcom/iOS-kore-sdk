@@ -347,17 +347,20 @@ open class KABotClient: NSObject {
             switch componentType {
             case "text":
                 if let payload = componentModel.payload as? [String: Any],
-                    let text = payload["text"] as? String {
-                    let textComponent = Component()
-                    textComponent.payload = text
-                    ttsBody = text
-                    
-                    if text.contains("use a web form")  {
+                    var text = payload["text"] as? String {
+                        if text == "Login Form is successfully submitted."{ //kk
+                            text = "Thank you!"
+                        }
+                        let textComponent = Component()
+                        textComponent.payload = text
+                        ttsBody = text
+                        
+                        if text.contains("use a web form")  {
 
+                        }
+                        message.addComponent(textComponent)
+                        return (message, ttsBody)
                     }
-                    message.addComponent(textComponent)
-                    return (message, ttsBody)
-                }
             case "template":
                 if let payload = componentModel.payload as? [String: Any] {
                     let type = payload["type"] as? String ?? ""
@@ -616,7 +619,9 @@ open class KABotClient: NSObject {
             sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
             
             // NOTE: You must set your URL to generate JWT.
-            let urlString: String =  "\(SDKConfiguration.serverConfig.BOT_SERVER)/workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop"
+            //let urlString: String =  "\(SDKConfiguration.serverConfig.BOT_SERVER)/workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop"
+            let urlString: String =  "http://wb.korebots.com/workbench/api/workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop"
+            
             
             let requestSerializer = AFJSONRequestSerializer()
             requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>

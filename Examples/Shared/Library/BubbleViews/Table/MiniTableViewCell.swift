@@ -39,7 +39,7 @@ class MiniTableViewCell: UITableViewCell {
         headerLabel = UILabel(frame: .zero)
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.textAlignment = .left
-        headerLabel.font = UIFont(name: "Lato-Regular", size: 15.0)
+        headerLabel.font = UIFont(name: "Gilroy-Regular", size: 15.0)
         headerLabel.font = headerLabel.font.withSize(15.0)
 
         headerLabel.textColor = UIColor.black
@@ -48,7 +48,7 @@ class MiniTableViewCell: UITableViewCell {
         secondLbl = UILabel(frame: .zero)
         secondLbl.translatesAutoresizingMaskIntoConstraints = false
         secondLbl.textAlignment = .left
-        secondLbl.font = UIFont(name: "Lato-Regular", size: 15.0)
+        secondLbl.font = UIFont(name: "Gilroy-Regular", size: 15.0)
         secondLbl.font = secondLbl.font.withSize(15.0)
 
         secondLbl.textColor = UIColor.black

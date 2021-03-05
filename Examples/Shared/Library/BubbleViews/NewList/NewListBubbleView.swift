@@ -22,7 +22,7 @@ class NewListBubbleView: BubbleView {
     var isShowMore = false
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
-        NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Bold", size: 15.0) as Any,
+        NSAttributedString.Key.font : UIFont(name: "Gilroy-Bold", size: 15.0) as Any,
         NSAttributedString.Key.foregroundColor : themeColor,
         NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue]
  
@@ -88,7 +88,7 @@ class NewListBubbleView: BubbleView {
 
         self.titleLbl = UILabel(frame: CGRect.zero)
         self.titleLbl.textColor = BubbleViewBotChatTextColor
-        self.titleLbl.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
+        self.titleLbl.font = UIFont(name: "Gilroy-Medium", size: 16.0)
         self.titleLbl.numberOfLines = 0
         self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.titleLbl.isUserInteractionEnabled = true
@@ -257,8 +257,11 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
                 } else if elements.action?.url != nil {
                     self.linkAction(elements.action?.url)
                 }else{
-                    let payload = elements.action?.payload == "" || elements.action?.payload == nil ? elements.action?.title : elements.action?.payload
-                    self.optionsAction(elements.action?.title, payload)
+                    if elements.action?.payload != nil{
+                        let payload = elements.action?.payload == "" || elements.action?.payload == nil ? elements.action?.title : elements.action?.payload
+                        self.optionsAction(elements.action?.title, payload)
+                    }
+                   
                 }
             }
        // }
@@ -275,7 +278,7 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
             showMoreButton.layer.cornerRadius = 5
             showMoreButton.setTitleColor(.blue, for: .normal)
             showMoreButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-            showMoreButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
+            showMoreButton.titleLabel?.font = UIFont(name: "Gilroy-Bold", size: 14.0)!
             view.addSubview(showMoreButton)
             showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
             showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)

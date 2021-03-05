@@ -31,7 +31,7 @@ class MultiSelectNewBubbleView: BubbleView {
     }
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
-        NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Bold", size: 15.0) as Any,
+        NSAttributedString.Key.font : UIFont(name: "Gilroy-Bold", size: 15.0) as Any,
         NSAttributedString.Key.foregroundColor : UIColor.blue,
         NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue]
     
@@ -97,7 +97,7 @@ class MultiSelectNewBubbleView: BubbleView {
 
         self.titleLbl = UILabel(frame: CGRect.zero)
         self.titleLbl.textColor = BubbleViewBotChatTextColor
-        self.titleLbl.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
+        self.titleLbl.font = UIFont(name: "Gilroy-Medium", size: 16.0)
         self.titleLbl.numberOfLines = 0
         self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.titleLbl.isUserInteractionEnabled = true
@@ -258,7 +258,7 @@ extension MultiSelectNewBubbleView: UITableViewDelegate,UITableViewDataSource{
             showMoreButton.layer.borderWidth = 1
             showMoreButton.setTitleColor(.blue, for: .normal)
             showMoreButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-            showMoreButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 16.0)!
+            showMoreButton.titleLabel?.font = UIFont(name: "Gilroy-Bold", size: 16.0)!
             view.addSubview(showMoreButton)
             showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
             showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)

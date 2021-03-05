@@ -25,7 +25,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
     var arrayOfSeletedValues = [String]()
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
-        NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Bold", size: 15.0) as Any,
+        NSAttributedString.Key.font : UIFont(name: "Gilroy-Bold", size: 15.0) as Any,
         NSAttributedString.Key.foregroundColor : UIColor.blue,
         NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue]
     
@@ -93,7 +93,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         
         self.titleLbl = UILabel(frame: CGRect.zero)
         self.titleLbl.textColor = BubbleViewBotChatTextColor
-        self.titleLbl.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
+        self.titleLbl.font = UIFont(name: "Gilroy-Medium", size: 16.0)
         self.titleLbl.numberOfLines = 0
         self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.titleLbl.isUserInteractionEnabled = true
@@ -189,7 +189,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
             cell.backgroundColor = .clear
             let elements = arrayOfElements[indexPath.row]
             cell.textLabel.text = elements.title
-            cell.textLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)!
+            cell.textLabel.font = UIFont(name: "Gilroy-Medium", size: 15.0)! 
             cell.textLabel.textAlignment = .center
             cell.textLabel.textColor = bubbleViewBotChatButtonTextColor
             cell.layer.borderColor = bubbleViewBotChatButtonTextColor.cgColor

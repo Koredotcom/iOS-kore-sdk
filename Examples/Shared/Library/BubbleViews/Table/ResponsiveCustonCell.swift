@@ -38,7 +38,7 @@ class ResponsiveCustonCell: UITableViewCell {
         headerLabel = UILabel(frame: .zero)
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.textAlignment = .left
-        headerLabel.font = UIFont(name: "Lato-Regular", size: 16.0)
+        headerLabel.font = UIFont(name: "Gilroy-Regular", size: 16.0)
         headerLabel.textColor = UIColor(red: 38/255, green: 52/255, blue: 74/255, alpha: 1)
 
         contentView.addSubview(headerLabel)
@@ -46,7 +46,7 @@ class ResponsiveCustonCell: UITableViewCell {
         secondLbl = UILabel(frame: .zero)
         secondLbl.translatesAutoresizingMaskIntoConstraints = false
         secondLbl.textAlignment = .left
-        secondLbl.font = UIFont(name: "Lato-Regular", size: 16.0)
+        secondLbl.font = UIFont(name: "Gilroy-Regular", size: 16.0)
         secondLbl.textColor = UIColor(red: 38/255, green: 52/255, blue: 74/255, alpha: 1)
         contentView.addSubview(secondLbl)
         

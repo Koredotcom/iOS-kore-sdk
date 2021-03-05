@@ -119,7 +119,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         self.showMoreButton.setTitle("Show More", for: .normal)
         self.showMoreButton.translatesAutoresizingMaskIntoConstraints = false
         self.showMoreButton.setTitleColor(UIColor(red: 95/255, green: 107/255, blue: 247/255, alpha: 1), for: .normal)
-        self.showMoreButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
+        self.showMoreButton.titleLabel?.font = UIFont(name: "Gilroy-Bold", size: 14.0)!
         self.showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
         self.showMoreButton.isHidden = true
         self.showMoreButton.clipsToBounds = true
@@ -161,7 +161,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         let header = headers[indexPath.row]
         if indexPath.section == 0 {
             cell.textLabel.text = header.title
-            cell.textLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
+            cell.textLabel.font = UIFont(name: "Gilroy-Bold", size: 14.0)!
             cell.textLabel.textAlignment = header.alignment
 
         } else if indexPath.section == 1 {
@@ -179,7 +179,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
                 cell.backgroundColor = .white
             } else {
                 cell.textLabel.text = row[indexPath.row]
-                cell.textLabel.font = UIFont(name: "HelveticaNeue", size: 14.0)!
+                cell.textLabel.font = UIFont(name: "Gilroy-Regular", size: 14.0)!
                 cell.textLabel.textAlignment = header.alignment
 
             }
@@ -200,7 +200,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
             itemWidth = floor((maxWidth*CGFloat(percentage)/100))
         }
         else{
-            let width : CGFloat = (header.title as NSString).size(withAttributes: [NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Bold", size: 14.0)!]).width*2.0
+            let width : CGFloat = (header.title as NSString).size(withAttributes: [NSAttributedString.Key.font : UIFont(name: "Gilroy-Bold", size: 14.0)!]).width*2.0
             itemWidth = width
         }
         

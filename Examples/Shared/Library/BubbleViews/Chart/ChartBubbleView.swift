@@ -100,7 +100,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             l.drawInside = false
             l.formSize = 12.0
             l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
-            l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
+            l.font = UIFont(name: "Gilroy-Medium", size: 12.0)!
             l.form = .circle
             
             self.pcView.chartDescription?.enabled = false
@@ -114,7 +114,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             l.drawInside = false
             l.formSize = 12.0
             l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
-            l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
+            l.font = UIFont(name: "Gilroy-Medium", size: 12.0)!
             
             self.pcView.chartDescription?.enabled = false
             self.pcView.drawHoleEnabled = true
@@ -128,7 +128,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             l.drawInside = false
             l.formSize = 12.0
             l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
-            l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
+            l.font = UIFont(name: "Gilroy-Medium", size: 12.0)!
             l.form = .circle
             
             self.pcView.chartDescription?.enabled = false
@@ -137,7 +137,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             self.pcView.extraRightOffset = 5.0
             self.pcView.rotationEnabled = false
             
-            let marker = BalloonMarker(color: UIColor.white.withAlphaComponent(0.9), font: UIFont(name: "HelveticaNeue-Bold", size: 12.0)!, textColor: .black, insets: UIEdgeInsets(top: 8.0, left: 8.0, bottom: 20.0, right: 8.0))
+            let marker = BalloonMarker(color: UIColor.white.withAlphaComponent(0.9), font: UIFont(name: "Gilroy-Bold", size: 12.0)!, textColor: .black, insets: UIEdgeInsets(top: 8.0, left: 8.0, bottom: 20.0, right: 8.0))
             self.pcView.marker = marker
         }
         
@@ -175,7 +175,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         self.lcView.dragEnabled = true
         self.lcView.pinchZoomEnabled = false
         
-        let marker = BalloonMarker(color: UIColor.white.withAlphaComponent(0.9), font: UIFont(name: "HelveticaNeue-Bold", size: 12.0)!, textColor: .black, insets: UIEdgeInsets(top: 8.0, left: 8.0, bottom: 20.0, right: 8.0))
+        let marker = BalloonMarker(color: UIColor.white.withAlphaComponent(0.9), font: UIFont(name: "Gilroy-Bold", size: 12.0)!, textColor: .black, insets: UIEdgeInsets(top: 8.0, left: 8.0, bottom: 20.0, right: 8.0))
         self.lcView.marker = marker
         
         let l: Legend = self.lcView.legend
@@ -185,7 +185,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         l.drawInside = true
         l.formSize = 12.0
         l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
-        l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
+        l.font = UIFont(name: "Gilroy-Medium", size: 12.0)!
         l.form = .circle
         cellHeight = 280.0
     }
@@ -242,9 +242,9 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         l.drawInside = true
         l.formSize = 12.0
         l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
-        l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
+        l.font = UIFont(name: "Gilroy-Medium", size: 12.0)!
         
-        let marker = BalloonMarker(color: UIColor.white.withAlphaComponent(0.9), font: UIFont(name: "HelveticaNeue-Bold", size: 12.0)!, textColor: .black, insets: UIEdgeInsets(top: 8.0, left: 8.0, bottom: 20.0, right: 8.0))
+        let marker = BalloonMarker(color: UIColor.white.withAlphaComponent(0.9), font: UIFont(name: "Gilroy-Bold", size: 12.0)!, textColor: .black, insets: UIEdgeInsets(top: 8.0, left: 8.0, bottom: 20.0, right: 8.0))
         self.bcView.marker = marker
         cellHeight = 280.0
     }
@@ -298,7 +298,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             values.append(pieChartDataEntry)
             
             if elementsCount <= lengendsLimit{
-                rightOffset = CGFloat.maximum(rightOffset, (title as NSString).size(withAttributes: [NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Medium", size: 12.0)!]).width)
+                rightOffset = CGFloat.maximum(rightOffset, (title as NSString).size(withAttributes: [NSAttributedString.Key.font : UIFont(name: "Gilroy-Medium", size: 12.0)!]).width)
             }
             
         }
@@ -309,14 +309,14 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         if(pietype == "regular"){
             let pieChartData = PieChartData(dataSet: pieChartDataSet)
             pieChartData.setValueFormatter(self)
-            pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 12.0) ?? UIFont.systemFont(ofSize: 12.0, weight: .medium))
+            pieChartData.setValueFont(UIFont(name: "Gilroy-Medium", size: 12.0) ?? UIFont.systemFont(ofSize: 12.0, weight: .medium))
             pieChartDataSet.yValuePosition = .outsideSlice
             pieChartDataSet.valueLinePart1OffsetPercentage = 0.8
             pieChartDataSet.valueLinePart1Length = 0.4
             pieChartDataSet.valueLinePart2Length = 0.4
             pieChartDataSet.valueLineColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
             pieChartData.setValueFormatter(self)
-            pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 12.0) ?? UIFont.systemFont(ofSize: 12.0, weight: .medium))
+            pieChartData.setValueFont(UIFont(name: "Gilroy-Medium", size: 12.0) ?? UIFont.systemFont(ofSize: 12.0, weight: .medium))
             pieChartData.setValueTextColor(UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1))
             pieChartData.setDrawValues(true)
             self.pcView.extraRightOffset = rightOffset
@@ -335,7 +335,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             pieChartDataSet.valueLineColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
             let pieChartData = PieChartData(dataSet: pieChartDataSet)
             pieChartData.setValueFormatter(self)
-            pieChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 12.0) ?? UIFont.systemFont(ofSize: 12.0, weight: .medium))
+            pieChartData.setValueFont(UIFont(name: "Gilroy-Medium", size: 12.0) ?? UIFont.systemFont(ofSize: 12.0, weight: .medium))
             pieChartData.setValueTextColor(UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1))
             pieChartData.setDrawValues(true)
             self.pcView.extraRightOffset = rightOffset
@@ -451,7 +451,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         
         let barChartData = BarChartData(dataSets: dataSets)
         barChartData.setValueTextColor(UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1))
-        barChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 8.0) ?? UIFont.systemFont(ofSize: 8.0, weight: .medium))
+        barChartData.setValueFont(UIFont(name: "Gilroy-Medium", size: 8.0) ?? UIFont.systemFont(ofSize: 8.0, weight: .medium))
         barChartData.setDrawValues(false)
         barChartData.setValueFormatter(self)
         
@@ -516,7 +516,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         
         let barChartData = BarChartData(dataSets: dataSets)
         barChartData.setValueTextColor(UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1))
-        barChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 8.0) ?? UIFont.systemFont(ofSize: 8.0, weight: .medium))
+        barChartData.setValueFont(UIFont(name: "Gilroy-Medium", size: 8.0) ?? UIFont.systemFont(ofSize: 8.0, weight: .medium))
         barChartData.setDrawValues(false)
         barChartData.setValueFormatter(self)
         // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"

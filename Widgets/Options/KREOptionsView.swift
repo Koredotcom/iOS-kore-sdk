@@ -60,11 +60,13 @@ public class KREAction: NSObject, Decodable, Encodable {
 //            payload = try? values.decode(String.self, forKey: .payload)
 //        }
         
-        if let valueInteger = try values.decodeIfPresent(Int.self, forKey: .payload) {
-               payload = String(valueInteger)
+        
+        if let valueInteger = try? values.decodeIfPresent(Int.self, forKey: .payload) {
+               payload = String(valueInteger!)
         } else if let valueString = try? values.decodeIfPresent(String.self, forKey: .payload) {
                payload = valueString
         }
+        
         
         type = try? values.decode(String.self, forKey: .type)
         utterance = try? values.decode(String.self, forKey: .utterance)
@@ -214,7 +216,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             cell.textLabel?.text = option.title
             cell.textLabel?.textAlignment = .center
             //cell.textLabel?.textColor = UIColor.lightRoyalBlue
-            cell.textLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
+            cell.textLabel?.font = UIFont(name: "Gilroy-Bold", size: 14.0)!
             let textColor =  UserDefaults.standard.value(forKey: "ButtonTextColor") as? String
             cell.textLabel?.textColor = UIColor.init(hexString: textColor!)
             let bgColor =  UserDefaults.standard.value(forKey: "ButtonBgColor") as? String

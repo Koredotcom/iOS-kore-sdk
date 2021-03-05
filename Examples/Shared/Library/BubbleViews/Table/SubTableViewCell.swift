@@ -92,7 +92,7 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
             let dict = headers[indexPath.row*2]
             cell.titleLbl?.text = dict.title
             cell.titleLbl.textAlignment = dict.alignment
-            cell.titleLbl.font = UIFont(name: "Lato-Semibold", size: 1.0)
+            cell.titleLbl.font = UIFont(name: "Gilroy-Semibold", size: 1.0)
             cell.titleLbl.font = cell.titleLbl.font.withSize(10.0)
         }
         
@@ -101,7 +101,7 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
             let dict = headers[indexPath.row*2+1]
             cell.titleLbl1?.text = dict.title
             cell.titleLbl1.textAlignment = .left
-            cell.titleLbl1.font = UIFont(name: "Lato-Semibold", size: 1.0)
+            cell.titleLbl1.font = UIFont(name: "Gilroy-Semibold", size: 1.0)
             cell.titleLbl1.font = cell.titleLbl.font.withSize(10.0)
         }
         let row = rows[sec]

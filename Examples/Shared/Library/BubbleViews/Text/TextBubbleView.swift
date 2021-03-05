@@ -25,7 +25,7 @@ class TextBubbleView : BubbleView {
         self.textLabel.mentionTextColor = Common.UIColorRGB(0x8ac85a)
         self.textLabel.hashtagTextColor = Common.UIColorRGB(0x8ac85a)
         self.textLabel.linkTextColor = Common.UIColorRGB(0x0076FF)
-        self.textLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
+        self.textLabel.font = UIFont(name: "Gilroy-Medium", size: 16.0)
         self.textLabel.numberOfLines = 0
         self.textLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.textLabel.isUserInteractionEnabled = true

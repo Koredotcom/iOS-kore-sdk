@@ -66,7 +66,7 @@ class NotificationBubbleView: BubbleView {
 
         self.headingLabel = UILabel(frame: CGRect.zero)
         self.headingLabel.textColor = .white
-        self.headingLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
+        self.headingLabel.font = UIFont(name: "Gilroy-Medium", size: 16.0)
         self.headingLabel.numberOfLines = 0
         self.headingLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.headingLabel.isUserInteractionEnabled = true
@@ -82,7 +82,7 @@ class NotificationBubbleView: BubbleView {
         
         self.underLineLbl = UILabel(frame: CGRect.zero)
         self.underLineLbl.textColor = .white
-        self.underLineLbl.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
+        self.underLineLbl.font = UIFont(name: "Gilroy-Medium", size: 16.0)
         self.underLineLbl.numberOfLines = 0
         self.underLineLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.underLineLbl.isUserInteractionEnabled = true
@@ -153,7 +153,7 @@ class NotificationBubbleView: BubbleView {
         
         self.titleLbl = UILabel(frame: CGRect.zero)
         self.titleLbl.textColor = .white
-        self.titleLbl.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)
+        self.titleLbl.font = UIFont(name: "Gilroy-Bold", size: 15.0)
         self.titleLbl.numberOfLines = 0
         self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.titleLbl.isUserInteractionEnabled = true
@@ -169,7 +169,7 @@ class NotificationBubbleView: BubbleView {
         
         self.subTitleLbl = UILabel(frame: CGRect.zero)
         self.subTitleLbl.textColor = .white
-        self.subTitleLbl.font = UIFont(name: "HelveticaNeue-Medium", size: 13.0)
+        self.subTitleLbl.font = UIFont(name: "Gilroy-Medium", size: 13.0)
         self.subTitleLbl.numberOfLines = 0
         self.subTitleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.subTitleLbl.isUserInteractionEnabled = true
@@ -264,7 +264,7 @@ extension NotificationBubbleView : UICollectionViewDelegate, UICollectionViewDat
         //cell.backgroundColor = .clear
         let elements = arrayOfButtons[indexPath.row]
         cell.textLabel.text = elements.name
-        cell.textLabel.font = UIFont(name: "HelveticaNeue", size: 15.0)!
+        cell.textLabel.font = UIFont(name: "Gilroy-Regular", size: 15.0)!
         cell.textLabel.textAlignment = .center
         //cell.layer.borderColor = UIColor.white.cgColor
         //cell.textLabel.textColor = .white

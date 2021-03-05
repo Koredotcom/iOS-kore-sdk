@@ -23,12 +23,12 @@ class OptionsBubbleView: BubbleView {
         super.initialize()
         
         self.textLabel = KREAttributedLabel(frame: CGRect.zero)
-        self.textLabel.textColor = Common.UIColorRGB(0x444444)
+        self.textLabel.textColor = BubbleViewBotChatTextColor
         self.textLabel.backgroundColor = UIColor.clear
         self.textLabel.mentionTextColor = Common.UIColorRGB(0x8ac85a)
         self.textLabel.hashtagTextColor = Common.UIColorRGB(0x8ac85a)
         self.textLabel.linkTextColor = Common.UIColorRGB(0x0076FF)
-        self.textLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
+        self.textLabel.font = UIFont(name: "Gilroy-Medium", size: 16.0)
         self.textLabel.numberOfLines = 0
         self.textLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.textLabel.isUserInteractionEnabled = true
