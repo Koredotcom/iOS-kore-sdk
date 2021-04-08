@@ -24,6 +24,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     // MARK: properties
     fileprivate var connection: RTMPersistentConnection?
     public var jwToken: String?
+    public var authorizationXAuthInfo: [String: Any]?
     fileprivate var clientId: String?
     fileprivate var botInfoParameters: [String: Any]?
     fileprivate var customData: [String: Any]?
@@ -127,8 +128,12 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         Constants.KORE_BOT_SERVER = url
     }
     
+    open func setWBKoreBotServerUrl(url: String) {
+        Constants.WB_BOT_SERVER = url
+    }
+    
     // MARK: make connection
-    open func connectWithJwToken(_ jwtToken: String?, intermediary:((BotClient?) -> Void)?,  success:((BotClient?) -> Void)?, failure:((Error?) -> Void)?)  {
+    open func connectWithJwToken(_ jwtToken: String?,_ authorizationXAuthInfo: [String : Any]? , intermediary:((BotClient?) -> Void)?,  success:((BotClient?) -> Void)?, failure:((Error?) -> Void)?)  {
         guard let jwtToken = jwtToken else {
             failure?(nil)
             return
@@ -138,7 +143,8 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         failureClosure = failure
         intermediaryClosure = intermediary
         
-        if let botInfoParameters = botInfoParameters {
+        if let botInfoParameters = authorizationXAuthInfo   { //botInfoParameters
+            self.authorizationXAuthInfo = authorizationXAuthInfo
             let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
             requestManager.signInWithToken(jwtToken, botInfo: botInfoParameters, success: { [weak self] (user, authInfo) in
                 self?.authInfoModel = authInfo
@@ -164,7 +170,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     @objc public func connect(isReconnect: Bool) {
         reconnects = isReconnect
         if authInfoModel == nil {
-            self.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
+            self.connectWithJwToken(jwToken, authorizationXAuthInfo, intermediary: { [weak self] (client) in
                 self?.intermediaryClosure?(client)
             }, success: { (client) in
                 self.successClosure?(client)

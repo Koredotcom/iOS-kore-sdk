@@ -41,7 +41,7 @@ class AppLaunchViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        getThemeColor()
+        
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -145,30 +145,59 @@ class AppLaunchViewController: UIViewController {
                 view.addSubview(activityIndicatorView)
                 activityIndicatorView.startAnimating()
                 
+//                kaBotClient.latestJWTGrantCall(block: { [weak self] (client, thread) in
+//
+//                    if !SDKConfiguration.widgetConfig.isPanelView {
+//                        self?.brandingApis(client: client, thread: thread)
+//                    }else{
+//                        if !clientIdForWidget.hasPrefix("<") && !clientSecretForWidget.hasPrefix("<") && !chatBotNameForWidget.hasPrefix("<") && !botIdForWidget.hasPrefix("<") && !identityForWidget.hasPrefix("<") {
+//
+//                            self?.getWidgetJwTokenWithClientId(clientIdForWidget, clientSecret: clientSecretForWidget, identity: identityForWidget, isAnonymous: isAnonymousForWidget, success: { [weak self] (jwToken) in
+//
+//                                self?.brandingApis(client: client, thread: thread)
+//
+//                                }, failure: { (error) in
+//                                    print(error)
+//                                    self?.activityIndicatorView.stopAnimating()
+//                                    self?.chatButton.isUserInteractionEnabled = true
+//                            })
+//
+//                        }else{
+//                            self!.showAlert(title: "Banking Assist Demo", message: "YOU MUST SET WIDGET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
+//                            self?.activityIndicatorView.stopAnimating()
+//                            self?.chatButton.isUserInteractionEnabled = true
+//                        }
+//                    }
+//
+//                }) { (error) in
+//                    self.activityIndicatorView.stopAnimating()
+//                    self.chatButton.isUserInteractionEnabled = true
+//                }
+                
                 kaBotClient.connect(block: { [weak self] (client, thread) in
-                    
+
                     if !SDKConfiguration.widgetConfig.isPanelView {
                         self?.brandingApis(client: client, thread: thread)
                     }else{
                         if !clientIdForWidget.hasPrefix("<") && !clientSecretForWidget.hasPrefix("<") && !chatBotNameForWidget.hasPrefix("<") && !botIdForWidget.hasPrefix("<") && !identityForWidget.hasPrefix("<") {
-                            
+
                             self?.getWidgetJwTokenWithClientId(clientIdForWidget, clientSecret: clientSecretForWidget, identity: identityForWidget, isAnonymous: isAnonymousForWidget, success: { [weak self] (jwToken) in
-                                
+
                                 self?.brandingApis(client: client, thread: thread)
-                                
+
                                 }, failure: { (error) in
                                     print(error)
                                     self?.activityIndicatorView.stopAnimating()
                                     self?.chatButton.isUserInteractionEnabled = true
                             })
-                            
+
                         }else{
                             self!.showAlert(title: "Banking Assist Demo", message: "YOU MUST SET WIDGET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
                             self?.activityIndicatorView.stopAnimating()
                             self?.chatButton.isUserInteractionEnabled = true
                         }
                     }
-                    
+
                 }) { (error) in
                     self.activityIndicatorView.stopAnimating()
                     self.chatButton.isUserInteractionEnabled = true
@@ -200,6 +229,8 @@ class AppLaunchViewController: UIViewController {
                 }
                 let brandingShared = BrandingSingleton.shared
                 brandingShared.brandingInfoModel = brandingValues
+                UserDefaults.standard.set("#fd591e", forKey: "ThemeColor")
+                themeColor = UIColor.init(hexString: "#fd591e")
                 self?.navigateToChatViewController(client: client, thread: thread)
                 
 //                self?.kaBotClient.uniqueUserRequest(userInfoUserId, uniqueUserId: uniqueUserId, success: { [weak self] (uniqueUserDic) in
@@ -241,6 +272,8 @@ class AppLaunchViewController: UIViewController {
                         }
                         let brandingShared = BrandingSingleton.shared
                         brandingShared.brandingInfoModel = brandingValues
+                        UserDefaults.standard.set("#3EA3AD", forKey: "ThemeColor")
+                        themeColor = UIColor.init(hexString: "#3EA3AD")
                         self.navigateToChatViewController(client: client, thread: thread)}
                     
                    }
@@ -402,10 +435,7 @@ extension AppLaunchViewController{
         }
     }
     
-    func getThemeColor(){
-        themeColor = UIColor.init(hexString: "#3EA3AD")
-        UserDefaults.standard.set("#3EA3AD", forKey: "ThemeColor")
-    }
+   
 }
 
 extension AppLaunchViewController : UITextFieldDelegate{

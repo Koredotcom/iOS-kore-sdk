@@ -11,7 +11,8 @@ import UIKit
 class TextBubbleView : BubbleView {
     var onChange: ((_ reload: Bool) -> ())!
     func kTextColor() -> UIColor {
-        return (self.tailPosition == BubbleMaskTailPosition.left ? Common.UIColorRGB(0x484848) : Common.UIColorRGB(0xFFFFFF))
+        //return (self.tailPosition == BubbleMaskTailPosition.left ? Common.UIColorRGB(0x484848) : Common.UIColorRGB(0xFFFFFF))
+        return (self.tailPosition == BubbleMaskTailPosition.left ? BubbleViewBotChatTextColor : BubbleViewUserChatTextColor)
     }
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
     let kMinTextWidth: CGFloat = 20.0

@@ -63,7 +63,7 @@ class NewListBubbleView: BubbleView {
         self.cardView.addSubview(self.tileBgv)
         self.tileBgv.backgroundColor = BubbleViewLeftTint
         if #available(iOS 11.0, *) {
-            self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
+            self.tileBgv.roundCorners([ .layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
         } else {
             // Fallback on earlier versions
         }
@@ -176,7 +176,7 @@ class NewListBubbleView: BubbleView {
 //             moreButtonHeight = 0.0
 //        }
         moreButtonHeight =  arrayOfComponents.count > rowsDataLimit ? 30.0 : 0.0
-        return CGSize(width: 0.0, height: textSize.height+40+finalHeight+moreButtonHeight)
+        return CGSize(width: 0.0, height: textSize.height+50+finalHeight+moreButtonHeight)
     }
     
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {

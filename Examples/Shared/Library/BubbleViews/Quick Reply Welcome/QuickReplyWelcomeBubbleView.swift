@@ -65,7 +65,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         self.cardView.addSubview(self.tileBgv)
         self.tileBgv.backgroundColor = BubbleViewLeftTint
         if #available(iOS 11.0, *) {
-            self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
+            self.tileBgv.roundCorners([ .layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
         } else {
             // Fallback on earlier versions
         }
@@ -107,7 +107,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         self.titleLbl.sizeToFit()
         
         let subView: [String: UIView] = ["titleLbl": titleLbl]
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLbl(>=31)]-10-|", options: [], metrics: nil, views: subView))
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
         //NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
     }
@@ -167,8 +167,8 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         if textSize.height < self.titleLbl.font.pointSize {
             textSize.height = self.titleLbl.font.pointSize
         }
-        let collectionviewHeight = self.collectionView.contentSize.height == 0.0 ? 225 : self.collectionView.contentSize.height
-        return CGSize(width: 0.0, height: textSize.height+45+collectionviewHeight)
+        let collectionviewHeight = self.collectionView.contentSize.height == 0.0 ? 60 : self.collectionView.contentSize.height
+        return CGSize(width: 0.0, height: textSize.height+45+collectionviewHeight) //225
         
     }
     
@@ -195,7 +195,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
             cell.layer.borderColor = bubbleViewBotChatButtonTextColor.cgColor
             cell.backgroundColor = bubbleViewBotChatButtonBgColor
             cell.layer.borderWidth = 1.0
-            cell.layer.cornerRadius = 15.0
+            cell.layer.cornerRadius = 10.0
             return cell
         }
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

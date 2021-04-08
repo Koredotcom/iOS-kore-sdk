@@ -146,7 +146,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
          if url != nil {
              data = try? Data(contentsOf: url!)
          }
-         var image = UIImage(named: "") //cancel
+         var image = UIImage(named: "mashraqLogo") //cancel
          if let imageData = data {
               image = UIImage(data: imageData)
          }
@@ -157,15 +157,15 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
          //button.setBackgroundImage(image, for: .normal)
           button.setImage(image, for: .normal)
          //add function for button
-         button.addTarget(self, action: #selector(cancel(_:)), for: .touchUpInside)
+         //button.addTarget(self, action: #selector(cancel(_:)), for: .touchUpInside)
          //set frame
-         button.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
+         button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
          let barButton = UIBarButtonItem(customView: button)
-         NSLayoutConstraint.activate([(barButton.customView!.widthAnchor.constraint(equalToConstant: 35)),(barButton.customView!.heightAnchor.constraint(equalToConstant: 35))])
+         NSLayoutConstraint.activate([(barButton.customView!.widthAnchor.constraint(equalToConstant: 50)),(barButton.customView!.heightAnchor.constraint(equalToConstant: 50))])
          self.navigationItem.leftBarButtonItem = barButton
          
-         let rightImage = UIImage(named: "more")
-         navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(more(_:)))
+         let rightImage = UIImage(named: "Group")
+         navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(cancel(_:)))
          
          navigationController?.setNavigationBarHidden(false, animated: false)
          
@@ -175,11 +175,15 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
          let titleLabel = UILabel()
          titleLabel.textColor = widgetTextColor
          titleLabel.attributedText = attString
-         self.navigationItem.titleView = titleLabel
+//        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
+//        titleLabel.text = "  Alex"
+//        titleLabel.textColor = widgetTextColor
+//        titleLabel.font = font
+//         self.navigationItem.titleView = titleLabel
          
          navigationController?.navigationBar.barTintColor = widgetHeaderColor
-         navigationController?.navigationBar.tintColor = .white//widgetTextColor
-         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: widgetTextColor]
+        navigationController?.navigationBar.tintColor = .orange//widgetTextColor //.white
+        // navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: widgetTextColor]
         
          let bgUrlString = brandingShared.brandingInfoModel?.widgetBgImage!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
          let bgUrl = URL(string: bgUrlString!)
@@ -253,13 +257,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: cancel
     @objc func cancel(_ sender: Any) {
         prepareForDeinit()
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.setNavigationBarHidden(false, animated: false) //kk
         navigationController?.popViewController(animated: true)
     }
     
     // MARK: More
     @objc func more(_ sender: Any) {
-        colorDropDown.show()
+        //colorDropDown.show()
     }
     
     //MARK: Menu Button Action

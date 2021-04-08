@@ -12,6 +12,8 @@
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		1D9FA1702AE04EE1A8F6AF2C /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */; };
 		950429CF25BE9ADA00B7ACFB /* brandingValues.json in Resources */ = {isa = PBXBuildFile; fileRef = 950429CE25BE9ADA00B7ACFB /* brandingValues.json */; };
+		9545C8EC261D6F3100E66780 /* InlineFormTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545C8EA261D6F2F00E66780 /* InlineFormTableViewCell.swift */; };
+		9545C8ED261D6F3100E66780 /* InlineFormTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9545C8EB261D6F3000E66780 /* InlineFormTableViewCell.xib */; };
 		9566C32025F221A2005A5F0B /* Gilroy-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9566C30C25F221A2005A5F0B /* Gilroy-Regular.otf */; };
 		9566C32125F221A2005A5F0B /* Gilroy-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9566C30D25F221A2005A5F0B /* Gilroy-Black.otf */; };
 		9566C32225F221A2005A5F0B /* Gilroy-UltraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9566C30E25F221A2005A5F0B /* Gilroy-UltraLight.otf */; };
@@ -176,6 +178,8 @@
 		5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		950429CE25BE9ADA00B7ACFB /* brandingValues.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = brandingValues.json; sourceTree = "<group>"; };
+		9545C8EA261D6F2F00E66780 /* InlineFormTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineFormTableViewCell.swift; sourceTree = "<group>"; };
+		9545C8EB261D6F3000E66780 /* InlineFormTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InlineFormTableViewCell.xib; sourceTree = "<group>"; };
 		9566C30C25F221A2005A5F0B /* Gilroy-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Regular.otf"; sourceTree = "<group>"; };
 		9566C30D25F221A2005A5F0B /* Gilroy-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Black.otf"; sourceTree = "<group>"; };
 		9566C30E25F221A2005A5F0B /* Gilroy-UltraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-UltraLight.otf"; sourceTree = "<group>"; };
@@ -478,6 +482,8 @@
 			isa = PBXGroup;
 			children = (
 				CD445156250B8A2F00879219 /* InLineFormBubbleView.swift */,
+				9545C8EA261D6F2F00E66780 /* InlineFormTableViewCell.swift */,
+				9545C8EB261D6F3000E66780 /* InlineFormTableViewCell.xib */,
 			);
 			path = "InLine Form";
 			sourceTree = "<group>";
@@ -1094,6 +1100,7 @@
 				D1F338E42201D99A005BE5F1 /* ImageComponentCollectionViewCell.xib in Resources */,
 				9566C32F25F221A2005A5F0B /* Gilroy-Light.otf in Resources */,
 				9566C32325F221A2005A5F0B /* Gilroy-BlackItalic.otf in Resources */,
+				9545C8ED261D6F3100E66780 /* InlineFormTableViewCell.xib in Resources */,
 				9566C33325F221A2005A5F0B /* Gilroy-Thin.otf in Resources */,
 				9566C33125F221A2005A5F0B /* Gilroy-MediumItalic.otf in Resources */,
 				CD89236924C55BAC006F71DE /* CalenderViewController.xib in Resources */,
@@ -1216,6 +1223,7 @@
 				D1F338DE2201D99A005BE5F1 /* KREUtilities.m in Sources */,
 				CDB86A0F24C0127C00D1CCC7 /* TableListData.swift in Sources */,
 				CD445168250B9B3E00879219 /* DropDown.swift in Sources */,
+				9545C8EC261D6F3100E66780 /* InlineFormTableViewCell.swift in Sources */,
 				D1F338D62201D99A005BE5F1 /* Thread.swift in Sources */,
 				D1F338F92201D99A005BE5F1 /* InputTOWebViewController.swift in Sources */,
 				D1F338C42201D99A005BE5F1 /* DataStoreManager.swift in Sources */,

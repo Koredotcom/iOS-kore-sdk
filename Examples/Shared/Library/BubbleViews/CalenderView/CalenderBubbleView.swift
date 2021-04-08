@@ -62,15 +62,19 @@ class CalenderBubbleView: BubbleView {
         self.cardView.addSubview(self.tileBgv)
         self.tileBgv.backgroundColor =  BubbleViewLeftTint
         
-
+        if #available(iOS 11.0, *) {
+            self.tileBgv.roundCorners([ .layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.clear, borderWidth: 1.5)
+        } else {
+            // Fallback on earlier versions
+        }
         
         let views: [String: UIView] = ["tileBgv": tileBgv]
                self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-5-|", options: [], metrics: nil, views: views))
                self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
-              // self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
+              
         
         self.titleLbl = UILabel(frame: CGRect.zero)
-        self.titleLbl.textColor = Common.UIColorRGB(0x484848)
+        self.titleLbl.textColor = BubbleViewBotChatTextColor
         self.titleLbl.font = UIFont(name: "Gilroy-Medium", size: 16.0)
         self.titleLbl.numberOfLines = 0
         self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping

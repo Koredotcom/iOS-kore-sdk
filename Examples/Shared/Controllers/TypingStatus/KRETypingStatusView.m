@@ -31,7 +31,7 @@
         
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        layout.itemSize = CGSizeMake(30.0, 30.0);
+        layout.itemSize = CGSizeMake(0.0, 0.0);
         layout.minimumInteritemSpacing = 5.0;
         self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
                                                  collectionViewLayout:layout];
@@ -114,10 +114,10 @@
         width = self.frame.size.width-kDancingDotsWidth-kCollectionViewLeftPadding-kDancingDotsPadding;
     }
     self.collectionView.frame = CGRectMake(kCollectionViewLeftPadding, 0, width, self.frame.size.height);
-    self.dancingDots.frame = CGRectMake(self.collectionView.frame.size.width+kDancingDotsPadding,
+    self.dancingDots.frame = CGRectMake(20,
                                         (self.frame.size.height-10.0)/2,
                                         kDancingDotsWidth,
-                                        10.0);
+                                        10.0); //self.collectionView.frame.size.width+kDancingDotsPadding
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {

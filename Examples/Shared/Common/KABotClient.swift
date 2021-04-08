@@ -46,7 +46,7 @@ open class KABotClient: NSObject {
     
     var thread: KREThread?
     let defaultTimeDifference = 15
-
+    
     // properties
     public static var suggestions: NSMutableOrderedSet = NSMutableOrderedSet()
     private var botClient: BotClient = BotClient()
@@ -172,8 +172,8 @@ open class KABotClient: NSObject {
         botClient.connectionDidOpen = { [weak self] () in
             self?.isConnected = true
             self?.isConnecting = false
-            self?.sendMessage("BotNotifications", options: nil) //kk
-            NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
+            //            self?.sendMessage("BotNotifications", options: nil) //kk
+            //            NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
         }
         
         botClient.connectionReady = {
@@ -320,7 +320,7 @@ open class KABotClient: NSObject {
     }
     
     func onReceiveMessage(object: BotMessageModel?) -> (Message?, String?) {
-        NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil) 
+        NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
         var ttsBody: String?
         var textMessage: Message! = nil
         let message: Message = Message()
@@ -348,19 +348,19 @@ open class KABotClient: NSObject {
             case "text":
                 if let payload = componentModel.payload as? [String: Any],
                     var text = payload["text"] as? String {
-                        if text == "Login Form is successfully submitted."{ //kk
-                            text = "Thank you!"
-                        }
-                        let textComponent = Component()
-                        textComponent.payload = text
-                        ttsBody = text
-                        
-                        if text.contains("use a web form")  {
-
-                        }
-                        message.addComponent(textComponent)
-                        return (message, ttsBody)
+                    if text == "Login Form is successfully submitted."{ //kk
+                        text = "Thank you!"
                     }
+                    let textComponent = Component()
+                    textComponent.payload = text
+                    ttsBody = text
+                    
+                    if text.contains("use a web form")  {
+                        
+                    }
+                    message.addComponent(textComponent)
+                    return (message, ttsBody)
+                }
             case "template":
                 if let payload = componentModel.payload as? [String: Any] {
                     let type = payload["type"] as? String ?? ""
@@ -375,7 +375,7 @@ open class KABotClient: NSObject {
                             if let value = dictionary["table_design"] as? String {
                                 tabledesign = value
                             }
-
+                            
                             let componentType = getComponentType(templateType, tabledesign)
                             if componentType != .quickReply {
                                 
@@ -431,64 +431,62 @@ open class KABotClient: NSObject {
     }
     
     // MARK: -
-    func connect(block:((BotClient?, KREThread?) -> ())?, failure:((_ error: Error) -> Void)?) {
-            let clientId: String = SDKConfiguration.botConfig.clientId
-            let clientSecret: String = SDKConfiguration.botConfig.clientSecret
-            let isAnonymous: Bool = SDKConfiguration.botConfig.isAnonymous
-            let chatBotName: String = SDKConfiguration.botConfig.chatBotName
-            let botId: String = SDKConfiguration.botConfig.botId
-            
-            var identity: String! = nil
-            if (isAnonymous) {
-                identity = self.getUUID()
-            } else {
-                identity = UserDefaults.standard.value(forKey: "User Identity") as? String //SDKConfiguration.botConfig.identity //kk
-            }
-            
-            let botInfo: [String: Any] = ["chatBot": chatBotName, "taskBotId": botId]
-            self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: isAnonymous, success: { [weak self] (jwToken) in
-                
-            //self.getNewJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: isAnonymous, success: { [weak self] (jwToken, dictionary) in
-                
-//                var botInfo: [String: Any] = [:]
-//                if dictionary["botInfo"] != nil{
-//                    let botinfo = dictionary["botInfo"] as! [String : Any]
-//                    botInfo = ["taskBotId": botinfo["_id"]!, "chatBot": botinfo["name"]!]
-//                }
-                
-                let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
-                let context = dataStoreManager.coreDataManager.workerContext
-                context.perform {
-                    let resources: Dictionary<String, AnyObject> = ["threadId": botId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
-                    
-                    dataStoreManager.insertOrUpdateThread(dictionary: resources, with: {( thread1) in
-                        self?.thread = thread1
-                        try? context.save()
-                        dataStoreManager.coreDataManager.saveChanges()
-                        self?.botClient.initialize(botInfoParameters: botInfo, customData: [:])
-                        if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
-                            self?.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
-                        }
-                        self?.botClient.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
-                            self?.fetchMessages(completion: { (reconnects) in
-                                self?.botClient.connect(isReconnect: reconnects)
-                            })
-                            }, success: { (client) in
-                                self?.botClient = client!
-                                userInfoUserId = client?.userInfoModel?.userId
-                                authInfoAccessToken = client?.authInfoModel?.accessToken
-                                block?(self?.botClient, self?.thread)
-                        }, failure: { (error) in
-                            failure?(error!)
-                        })
-                    })
-                }
-                }, failure: { (error) in
-                    print(error)
-                    failure?(error)
-            })
-            
+    func connect(block:((BotClient?, KREThread?) -> ())?, failure:((_ error: Error) -> Void)?){
+        
+        let clientId: String = SDKConfiguration.botConfig.clientId
+        let clientSecret: String = SDKConfiguration.botConfig.clientSecret
+        let isAnonymous: Bool = SDKConfiguration.botConfig.isAnonymous
+        let chatBotName: String = SDKConfiguration.botConfig.chatBotName
+        let botId: String = SDKConfiguration.botConfig.botId
+        
+        var identity: String! = nil
+        if (isAnonymous) {
+            identity = self.getUUID()
+        } else {
+            identity = UserDefaults.standard.value(forKey: "User Identity") as? String //SDKConfiguration.botConfig.identity //kk
         }
+        
+        let botInfo: [String: Any] = ["chatBot": chatBotName, "taskBotId": botId]
+        
+//        let accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJMb2FuMDAwMSIsInNjb3BlIjoiTU9MX1VTRVIiLCJTRVNTSU9OIjoiZWE5MTU2NjYtMzk4Mi00MzhjLTlkMzYtNTkyMGU0ZDcxNDJiIiwiaGFzaCI6IjhjMmEwMmRlN2U0Zjc0NzFiNDIzNGU5OTRlMWIwMDFmIiwidXNlcm5hbWUiOiJMb2FuMDAwMSIsImV4cCI6MTYxNzcxMzMzNn0.iexvRDKRwEzzFf-Dwfivcm_XY22up5St8fhH76kX4O5D_BnvyNvQ0iUT0cwGDpEfHjCMzpB2HYEfch7sQoh1EQ"
+//        let xAuth = "ea915666-3982-438c-9d36-5920e4d7142b"
+//
+//       let authorizationXAuthInfo: [String: Any] = ["Authorization":accessToken, "XAuth": xAuth]
+         let accessToken = ""
+        let authorizationXAuthInfo: [String: Any] = ["sessionId":"23134"]
+        let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
+        let context = dataStoreManager.coreDataManager.workerContext
+        context.perform {
+            let resources: Dictionary<String, AnyObject> = ["threadId": botId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
+            
+            dataStoreManager.insertOrUpdateThread(dictionary: resources, with: {( thread1) in
+                self.thread = thread1
+                try? context.save()
+                dataStoreManager.coreDataManager.saveChanges()
+                self.botClient.initialize(botInfoParameters: botInfo, customData: [:])
+                if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
+                    self.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
+                    self.botClient.setWBKoreBotServerUrl(url: SDKConfiguration.serverConfig.JWT_NewSERVER)
+                }
+                self.botClient.connectWithJwToken(accessToken, authorizationXAuthInfo, intermediary: { [weak self] (client) in
+                    self?.fetchMessages(completion: { (reconnects) in
+                        self?.botClient.connect(isReconnect: reconnects)
+                    })
+                    }, success: { (client) in
+                        
+                        self.botClient = client!
+                        userInfoUserId = client?.userInfoModel?.userId
+                        authInfoAccessToken = client?.authInfoModel?.accessToken
+                        block?(self.botClient, self.thread)
+                }, failure: { (error) in
+                    failure?(error!)
+                })
+            })
+        }
+        
+        
+    }
+    
     func getUUID() -> String {
         var id: String?
         let userDefaults = UserDefaults.standard
@@ -544,151 +542,151 @@ open class KABotClient: NSObject {
     }
     
     func request(with url: URL) -> URLRequest {
-            var request = URLRequest(url: url)
-
-            guard let cookies = HTTPCookieStorage.shared.cookies(for: url) else {
-                return request
-            }
-
-            request.allHTTPHeaderFields = HTTPCookie.requestHeaderFields(with: cookies)
+        var request = URLRequest(url: url)
+        
+        guard let cookies = HTTPCookieStorage.shared.cookies(for: url) else {
             return request
         }
-    
-    
         
-        // MARK: get JWT token request
-        func getNewJwTokenWithClientId(_ clientId: String!, clientSecret: String!, identity: String!, isAnonymous: Bool!, success:((_ jwToken: String?, _ dictionary: [String:Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
-            
-            // Session Configuration
-            let configuration = URLSessionConfiguration.default
-            
-            //Manager
-            sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-            
-            // NOTE: You must set your URL to generate JWT.
-            let urlString: String = "\(tokenURL)/token"
-            
-            
-    //        let cookies=HTTPCookieStorage.shared.cookies(for: URL(string: urlString)!)
-    //        let headers=HTTPCookie.requestHeaderFields(with: cookies!)
-    //        print(headers)
-            
-    //        let newCookies = request(with: URL(string: urlString)!)
-    //        print(newCookies)
-            
-            
-            let requestSerializer = AFJSONRequestSerializer()
-            requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-            requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-            
-            // Headers: {"alg": "RS256","typ": "JWT"}
-            requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
-            requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
-            requestSerializer.httpShouldHandleCookies = true
-            
-            let parameters: NSDictionary = ["tenantId":"mlz-b2c-sandbox","uniqueUserId":"ffdcuser2_mlz-b2c-sandbox"]
-            
-            sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
-            sessionManager?.requestSerializer = requestSerializer
-            sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-                if let dictionary = responseObject as? [String: Any],
-                    let jwToken: String = dictionary["jwt"] as? String {
-                    let urlStr:String? = dictionary["koreAPIUrl"] as? String
-                    //KOREAPIURL = urlStr?.replacingOccurrences(of: "/api/1.1/wbservice/", with: "")
-                    SDKConfiguration.serverConfig.BOT_SERVER = urlStr?.replacingOccurrences(of: "/api/1.1/", with: "") as! String
-                    uniqueUserId = dictionary["uniqueUserId"] as? String
-                    success?(jwToken, dictionary)
-                    
-                } else {
-                    let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
-                    failure?(error)
-                }
-            }) { (sessionDataTask, error) in
+        request.allHTTPHeaderFields = HTTPCookie.requestHeaderFields(with: cookies)
+        return request
+    }
+    
+    
+    
+    // MARK: get JWT token request
+    func getNewJwTokenWithClientId(_ clientId: String!, clientSecret: String!, identity: String!, isAnonymous: Bool!, success:((_ jwToken: String?, _ dictionary: [String:Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+        
+        // Session Configuration
+        let configuration = URLSessionConfiguration.default
+        
+        //Manager
+        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
+        
+        // NOTE: You must set your URL to generate JWT.
+        let urlString: String = "\(tokenURL)/token"
+        
+        
+        //        let cookies=HTTPCookieStorage.shared.cookies(for: URL(string: urlString)!)
+        //        let headers=HTTPCookie.requestHeaderFields(with: cookies!)
+        //        print(headers)
+        
+        //        let newCookies = request(with: URL(string: urlString)!)
+        //        print(newCookies)
+        
+        
+        let requestSerializer = AFJSONRequestSerializer()
+        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
+        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+        
+        // Headers: {"alg": "RS256","typ": "JWT"}
+        requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
+        requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
+        requestSerializer.httpShouldHandleCookies = true
+        
+        let parameters: NSDictionary = ["tenantId":"mlz-b2c-sandbox","uniqueUserId":"ffdcuser2_mlz-b2c-sandbox"]
+        
+        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
+            if let dictionary = responseObject as? [String: Any],
+                let jwToken: String = dictionary["jwt"] as? String {
+                let urlStr:String? = dictionary["koreAPIUrl"] as? String
+                //KOREAPIURL = urlStr?.replacingOccurrences(of: "/api/1.1/wbservice/", with: "")
+                SDKConfiguration.serverConfig.BOT_SERVER = urlStr?.replacingOccurrences(of: "/api/1.1/", with: "") as! String
+                uniqueUserId = dictionary["uniqueUserId"] as? String
+                success?(jwToken, dictionary)
+                
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
             }
-            
+        }) { (sessionDataTask, error) in
+            failure?(error)
         }
         
-        // MARK: get Branding Values request
-        func brandingApiRequest(_ accessToken: String!, success:((_ brandingArray: NSArray) -> Void)?, failure:((_ error: Error) -> Void)?) {
-            
-            // Session Configuration
-            let configuration = URLSessionConfiguration.default
-            
-            //Manager
-            sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-            
-            // NOTE: You must set your URL to generate JWT.
-            //let urlString: String =  "\(SDKConfiguration.serverConfig.BOT_SERVER)/workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop"
-            let urlString: String =  "http://wb.korebots.com/workbench/api/workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop"
-            
-            
-            let requestSerializer = AFJSONRequestSerializer()
-            requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-            requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-            requestSerializer.setValue("en_US", forHTTPHeaderField:"Accept-Language")
-            let authorizationStr = "bearer \(accessToken!)"
-            requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
-            requestSerializer.setValue(SDKConfiguration.botConfig.tenantId, forHTTPHeaderField:"tenantId")
-            requestSerializer.setValue("1", forHTTPHeaderField:"Accepts-version")
-            requestSerializer.setValue(SDKConfiguration.botConfig.botId, forHTTPHeaderField:"botid")
-            requestSerializer.setValue("published", forHTTPHeaderField:"state")
-            
-            let parameters: NSDictionary = [:]
-            sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
-            sessionManager?.requestSerializer = requestSerializer
-            sessionManager?.get(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-                if let array = responseObject as? NSArray,
+    }
+    
+    // MARK: get Branding Values request
+    func brandingApiRequest(_ accessToken: String!, success:((_ brandingArray: NSArray) -> Void)?, failure:((_ error: Error) -> Void)?) {
+        
+        // Session Configuration
+        let configuration = URLSessionConfiguration.default
+        
+        //Manager
+        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
+        
+        // NOTE: You must set your URL to generate JWT.
+        //let urlString: String =  "\(SDKConfiguration.serverConfig.BOT_SERVER)/workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop"
+        let urlString: String =  "https://wb.korebots.com/workbench/api/workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop"
+        
+        
+        let requestSerializer = AFJSONRequestSerializer()
+        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
+        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+        requestSerializer.setValue("en_US", forHTTPHeaderField:"Accept-Language")
+        let authorizationStr = "bearer \(accessToken!)"
+        requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
+        requestSerializer.setValue(SDKConfiguration.botConfig.tenantId, forHTTPHeaderField:"tenantId")
+        requestSerializer.setValue("1", forHTTPHeaderField:"Accepts-version")
+        requestSerializer.setValue(SDKConfiguration.botConfig.botId, forHTTPHeaderField:"botid")
+        requestSerializer.setValue("published", forHTTPHeaderField:"state")
+        
+        let parameters: NSDictionary = [:]
+        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.get(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
+            if let array = responseObject as? NSArray,
                 array.count > 0 {
-                    success?(array)
-                } else {
-                    let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
-                    failure?(error)
-                }
-            }) { (sessionDataTask, error) in
+                success?(array)
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
             }
-            
+        }) { (sessionDataTask, error) in
+            failure?(error)
         }
         
+    }
+    
+    
+    // MARK: uniqueUser request
+    func uniqueUserRequest(_ userId: String!, uniqueUserId: String!, success:((_ uniqueUserDic: [String:Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
-        // MARK: uniqueUser request
-           func uniqueUserRequest(_ userId: String!, uniqueUserId: String!, success:((_ uniqueUserDic: [String:Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
-               
-               // Session Configuration
-               let configuration = URLSessionConfiguration.default
-               
-               //Manager
-               sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-               
-               // NOTE: You must set your URL to generate JWT.
-               let urlString: String = "\(tokenURL)/uniqueUser"
-               
-               let requestSerializer = AFJSONRequestSerializer()
-               requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-               requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-               
-               // Headers: {"alg": "RS256","typ": "JWT"}
-               requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
-               requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
-               let parameters: NSDictionary = ["userId":userId!, "uniqueUserId":uniqueUserId!]
-              
-               sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
-               sessionManager?.requestSerializer = requestSerializer
-               sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-                   if let dictionary = responseObject as? [String: Any],
-                       let sucess: String = dictionary["message"] as? String {
-                       print(sucess)
-                       success?(dictionary)
-                   } else {
-                       let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
-                       failure?(error)
-                   }
-               }) { (sessionDataTask, error) in
-                   failure?(error)
-               }
-               
-           }
+        // Session Configuration
+        let configuration = URLSessionConfiguration.default
+        
+        //Manager
+        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
+        
+        // NOTE: You must set your URL to generate JWT.
+        let urlString: String = "\(tokenURL)/uniqueUser"
+        
+        let requestSerializer = AFJSONRequestSerializer()
+        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
+        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+        
+        // Headers: {"alg": "RS256","typ": "JWT"}
+        requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
+        requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
+        let parameters: NSDictionary = ["userId":userId!, "uniqueUserId":uniqueUserId!]
+        
+        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
+            if let dictionary = responseObject as? [String: Any],
+                let sucess: String = dictionary["message"] as? String {
+                print(sucess)
+                success?(dictionary)
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                failure?(error)
+            }
+        }) { (sessionDataTask, error) in
+            failure?(error)
+        }
+        
+    }
     
     
     // MARK: -
@@ -719,7 +717,7 @@ open class KABotClient: NSObject {
         //getHistory - fetch all the history that the bot has previously
         botClient.getHistory(offset: offset, success: { [weak self] (responseObj) in
             if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
-               // self?.insertOrUpdateHistoryMessages(messages) //kk
+                 self?.insertOrUpdateHistoryMessages(messages)
             }
             self?.historyRequestInProgress = false
             block?(true)
@@ -768,7 +766,7 @@ open class KABotClient: NSObject {
     
     // MARK: - insert or update messages
     func insertOrUpdateHistoryMessages(_ messages: Array<[String: Any]>) {
-
+        
         let models = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages]
         guard  let botMessages = models, botMessages.count > 0 else{
             return

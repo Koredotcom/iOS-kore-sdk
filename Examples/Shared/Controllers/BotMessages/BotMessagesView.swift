@@ -365,7 +365,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             break
         case .inlineForm:
             let bubbleView: InLineFormBubbleView = cell.bubbleView as! InLineFormBubbleView
-            bubbleView.inlineTextField.tag = indexPath.row
+            //bubbleView.inlineTextField.tag = indexPath.row
             bubbleView.optionsAction = {[weak self] (text, payload) in
                 self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
             }
@@ -421,25 +421,32 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     }
     
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        var date = Date()
-        if fetchedResultsController?.fetchedObjects?.count ?? 0 > 0 {
-            let message = fetchedResultsController?.object(at: IndexPath(row: 0, section: 0)) as? KREMessage
-            if let sentOn = message?.sentOn as Date? {
-                date = sentOn
-            }
-        }
-        
-        let dateFormatter: DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEE, d MMMM YYYY"
-        let dateString = dateFormatter.string(from: date)
-        
-        let label = UILabel()
-        label.transform = CGAffineTransform(scaleX: 1, y: -1)
-        label.text = dateString
-        label.textAlignment = .center
-        label.textColor = UIColor.darkGray.withAlphaComponent(0.8)
-        label.font = UIFont(name: "Gilroy-Regular", size: 13)
-        return label
+//        var date = Date()
+//        if fetchedResultsController?.fetchedObjects?.count ?? 0 > 0 {
+//            let message = fetchedResultsController?.object(at: IndexPath(row: 0, section: 0)) as? KREMessage
+//            if let sentOn = message?.sentOn as Date? {
+//                date = sentOn
+//            }
+//        }
+//
+//        let dateFormatter: DateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "EEE, d MMMM YYYY"
+//        let dateString = dateFormatter.string(from: date)
+//
+//        let label = UILabel()
+//        label.transform = CGAffineTransform(scaleX: 1, y: -1)
+//        label.text = dateString
+//        label.textAlignment = .center
+//        label.textColor = UIColor.darkGray.withAlphaComponent(0.8)
+//        label.font = UIFont(name: "Gilroy-Regular", size: 13)
+//        return label
+        let view = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 200))
+        let imageV = UIImageView()
+        imageV.frame = CGRect.init(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        imageV.image = UIImage.init(named: "Loan")
+        imageV.transform = CGAffineTransform(scaleX: 1, y: -1)
+        view.addSubview(imageV)
+        return view
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -447,7 +454,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     }
     
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 20.0
+        return 200.0
     }
     
     // MARK:- KREFetchedResultsControllerDelegate methods

@@ -72,7 +72,7 @@ class MultiSelectNewBubbleView: BubbleView {
                self.cardView.addSubview(self.tileBgv)
                self.tileBgv.backgroundColor = BubbleViewLeftTint
                if #available(iOS 11.0, *) {
-                   self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
+                   self.tileBgv.roundCorners([ .layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
                } else {
                    // Fallback on earlier versions
                }

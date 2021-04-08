@@ -45,7 +45,7 @@ class ComposeBarView: UIView {
     }
     
     fileprivate func setupViews() {
-        self.backgroundColor = UIColor.init(hexString: "#eaeaea")
+        self.backgroundColor = UIColor.init(hexString: "#f8f9fc")
         
         self.growingTextView = KREGrowingTextView(frame: CGRect.zero)
         self.growingTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -58,20 +58,20 @@ class ComposeBarView: UIView {
         self.growingTextView.textView.textAlignment = .right
         self.growingTextView.maxNumberOfLines = 10
         self.growingTextView.font = UIFont(name: "Gilroy-Regular", size: 14.0)!
-        self.growingTextView.textContainerInset = UIEdgeInsets(top: 7, left: 0, bottom: 7, right: 0)
+        //self.growingTextView.textContainerInset = UIEdgeInsets(top: 7, left: 0, bottom: 7, right: 0)
         self.growingTextView.animateHeightChange = true
-        self.growingTextView.backgroundColor = .white
+        self.growingTextView.backgroundColor = .clear
         self.growingTextView.layer.cornerRadius = 10.0
         self.growingTextView.isUserInteractionEnabled = false
         
-        growingTextView.layer.shadowOpacity = 0.7
-        growingTextView.layer.shadowOffset = CGSize(width: 0, height: 0)
-        growingTextView.layer.shadowRadius = 5.0
-        growingTextView.clipsToBounds = false
-        growingTextView.layer.shadowColor = UIColor.darkGray.cgColor
+//        growingTextView.layer.shadowOpacity = 0.7
+//        growingTextView.layer.shadowOffset = CGSize(width: 0, height: 0)
+//        growingTextView.layer.shadowRadius = 5.0
+//        growingTextView.clipsToBounds = false
+//        growingTextView.layer.shadowColor = UIColor.darkGray.cgColor
         
         let attributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: UIFont(name: "Gilroy-Regular", size: 14.0)!, NSAttributedString.Key.foregroundColor: Common.UIColorRGB(0xB5B9BA)]
-        self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Message...", attributes:attributes)
+        self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Type your message here...", attributes:attributes)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidBeginEditingNotification(_ :)), name: UITextView.textDidBeginEditingNotification, object: self.growingTextView.textView)
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidChangeNotification(_ :)), name: UITextView.textDidChangeNotification, object: self.growingTextView.textView)
@@ -93,9 +93,10 @@ class ComposeBarView: UIView {
 
         let widgetHeaderColor = UIColor.init(hexString: buttonBg)
         self.sendButton = UIButton.init(frame: CGRect.zero)
-        self.sendButton.setTitle("Send", for: .normal)
+        //self.sendButton.setTitle("Send", for: .normal)
         self.sendButton.translatesAutoresizingMaskIntoConstraints = false
-        self.sendButton.backgroundColor = widgetHeaderColor//themeColor
+        //self.sendButton.backgroundColor = widgetHeaderColor
+        self.sendButton.setImage(UIImage(named: "send"), for: .normal)
         self.sendButton.layer.cornerRadius = 5
         self.sendButton.setTitleColor(Common.UIColorRGB(0xFFFFFF), for: .normal)
         self.sendButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
@@ -111,7 +112,7 @@ class ComposeBarView: UIView {
         self.speechToTextButton.translatesAutoresizingMaskIntoConstraints = false
         self.speechToTextButton.setImage(UIImage(named: "audio_icon"), for: .normal)
         self.speechToTextButton.layer.cornerRadius = 5.0
-        self.speechToTextButton.backgroundColor = widgetHeaderColor//themeColor
+        self.speechToTextButton.backgroundColor = .clear
         self.speechToTextButton.imageView?.contentMode = .scaleAspectFit
         self.speechToTextButton.addTarget(self, action: #selector(self.speechToTextButtonAction(_:)), for: .touchUpInside)
         self.speechToTextButton.isHidden = true
@@ -120,7 +121,7 @@ class ComposeBarView: UIView {
         self.addSubview(self.speechToTextButton)
         
         self.topLineView = UIView.init(frame: CGRect.zero)
-        self.topLineView.backgroundColor = .clear
+        self.topLineView.backgroundColor = .lightGray
         self.topLineView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.topLineView)
         
@@ -137,7 +138,7 @@ class ComposeBarView: UIView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[bottomLineView(0.5)]|", options:[], metrics:nil, views:views))
         
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[menuButton(32)]-5-[growingTextView]-5-[sendButton]-5-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[menuButton(30)]-5-[growingTextView]-5-[sendButton]-5-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[growingTextView]-5-[speechToTextButton]-5-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-7-[growingTextView]-7-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[sendButton]-6-|", options:[], metrics:nil, views:views))
@@ -202,9 +203,15 @@ class ComposeBarView: UIView {
     fileprivate func valueChanged() {
         let hasText = self.growingTextView.textView.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).count > 0
         self.sendButton.isEnabled = hasText
+        if hasText{
+            topLineView.backgroundColor = .black
+        }else{
+            topLineView.backgroundColor = .lightGray
+        }
+        
         if self.isKeyboardEnabled {
             self.sendButton.isHidden = !hasText
-            self.speechToTextButton.isHidden = hasText
+            self.speechToTextButton.isHidden =  hasText
             self.menuButton.isHidden = false
         }else{
             self.sendButton.isHidden = true

@@ -45,8 +45,11 @@ open class HTTPRequestManager : NSObject {
     
     // MARK: requests
     open func signInWithToken(_ token: String, botInfo: [String: Any], success:((_ user: UserModel?, _ authInfo: AuthInfoModel?) -> Void)?, failure:((_ error: Error) -> Void)?)  {
-        let urlString: String = Constants.URL.jwtAuthorizationUrl
-        let parameters: NSDictionary = ["assertion": token, "botInfo": botInfo]
+        //let urlString: String = Constants.URL.jwtAuthorizationUrl //kkkk
+        //let parameters: NSDictionary = ["assertion": token, "botInfo": botInfo] //kkkk
+        
+        let urlString: String = Constants.WB_URL.jwtAuthorizationUrl
+        let parameters: NSDictionary = botInfo as NSDictionary
         
         sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: { (progress) in
             
@@ -126,7 +129,8 @@ open class HTTPRequestManager : NSObject {
             sessionManager?.requestSerializer.setValue(token, forHTTPHeaderField: "Authorization")
         }
 
-        let parameters = ["botId": botInfo["taskBotId"], "msgId": messageId, "direction": direction, "limit": "20"]
+        //let parameters = ["botId": botInfo["taskBotId"], "msgId": messageId, "direction": direction, "limit": "20"]
+        let parameters = ["botId": botInfo["taskBotId"], "limit": "20"]
         sessionManager?.get(urlString, parameters: parameters, headers: nil, progress: { (progress) in
             
         }, success: { (dataTask, responseObject) in
