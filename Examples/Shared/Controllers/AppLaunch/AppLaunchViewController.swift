@@ -24,7 +24,7 @@ class AppLaunchViewController: UIViewController {
     let botClient = BotClient()
     var user: KREUser?
     let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView(style: .white)
-
+    
     // MARK: life-cycle events
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,39 +42,17 @@ class AppLaunchViewController: UIViewController {
         getThemeColor()
         
         let koraApplication = KoraApplication.sharedInstance
-               if !koraApplication.isStackInitialised() {
-                  // appInitSuccess = koraApplication.initialiseCoreDataStack()
-               }
-               
-               //var accountInitSuccess = true
-               if koraApplication.account == nil {
-//                   if appInitSuccess {
-//                       initGroup.enter()
-//
-//                       // now load account, if exists
-//                       koraApplication.initialiseUserAccount { (success) in
-//                           accountInitSuccess = success
-//                           initGroup.leave()
-//                       }
-//                   }
-               }
+        if !koraApplication.isStackInitialised() {
+            
+        }
+        
+        if koraApplication.account == nil {
+            
+        }
         
         KoraApplication.sharedInstance.prepareNewAccount(userInfo: [:], auth: [:]) { (success, error) in
-//                   NotificationCenter.default.post(name: NSNotification.Name(rawValue: KoraNotification.LogInProgressEnded), object: nil)
-//                   if success {
-//                       let account = KoraApplication.sharedInstance.account
-//                       KREApplication.shared.launchKoraOnboarding(for: account)
-//                       KREPushNotificationManager.sharedInstance.registerAllAccountsForKoreNotifications()
-//                   } else if let allErrors = responseObject["errors"] as? Array<[String: Any]>, let errors = allErrors.first {
-//                       if let code = errors["code"] as? String, code == "UKNOWN_iDENTITY", let message = errors["msg"] as? String {
-//                           KREApplication.shared.showAlertView(title: nil, message: message)
-//                       }
-//                   } else {
-//                       KREApplication.shared.showAlertView(title: nil, message: KRELocalized("Unable to log in at this time. Please try again after some time."))
-//                   }
-//
-//                   KREApplication.shared.hideKoraPrepareViewController()
-               }
+            
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -110,7 +88,7 @@ class AppLaunchViewController: UIViewController {
         let isAnonymous: Bool = SDKConfiguration.botConfig.isAnonymous
         let chatBotName: String = SDKConfiguration.botConfig.chatBotName
         let botId: String = SDKConfiguration.botConfig.botId
-
+        
         var identity: String! = nil
         if (isAnonymous) {
             identity = self.getUUID()
@@ -141,9 +119,9 @@ class AppLaunchViewController: UIViewController {
             activityIndicatorView.center = chatButton.center
             view.addSubview(activityIndicatorView)
             activityIndicatorView.startAnimating()
-//             kaBotClient.tryConnect()
+            //             kaBotClient.tryConnect()
             kaBotClient.connect(block: { [weak self] (client, thread) in
-              
+                
                 if !SDKConfiguration.widgetConfig.isPanelView {
                     self?.navigateToChatViewController(client: client, thread: thread)
                 }else{
@@ -151,12 +129,12 @@ class AppLaunchViewController: UIViewController {
                         
                         self?.getWidgetJwTokenWithClientId(clientIdForWidget, clientSecret: clientSecretForWidget, identity: identityForWidget, isAnonymous: isAnonymousForWidget, success: { [weak self] (jwToken) in
                             
-                           self?.navigateToChatViewController(client: client, thread: thread)
-                        
+                            self?.navigateToChatViewController(client: client, thread: thread)
+                            
                         }, failure: { (error) in
-                                print(error)
-                         self?.activityIndicatorView.stopAnimating()
-                         self?.chatButton.isUserInteractionEnabled = true
+                            print(error)
+                            self?.activityIndicatorView.stopAnimating()
+                            self?.chatButton.isUserInteractionEnabled = true
                         })
                         
                     }else{
@@ -179,18 +157,18 @@ class AppLaunchViewController: UIViewController {
     func navigateToChatViewController(client: BotClient?, thread: KREThread?){
         activityIndicatorView.stopAnimating()
         self.chatButton.isUserInteractionEnabled = true
-
+        
         let botViewController = ChatMessagesViewController(thread: thread)
         botViewController.botClient = client
         botViewController.title = SDKConfiguration.botConfig.chatBotName
-
+        
         //Addition fade in animation
         let transition = CATransition()
         transition.duration = 0.5
         transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         transition.type = CATransitionType.fade
         self.navigationController?.view.layer.add(transition, forKey: nil)
-
+        
         self.navigationController?.pushViewController(botViewController, animated: false)
     }
     
@@ -204,7 +182,7 @@ class AppLaunchViewController: UIViewController {
         
         //Manager
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-
+        
         // NOTE: You must set your URL to generate JWT.
         let urlString: String = SDKConfiguration.serverConfig.koreJwtUrl()
         let requestSerializer = AFJSONRequestSerializer()
@@ -215,11 +193,11 @@ class AppLaunchViewController: UIViewController {
         requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
         requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
         
-        let parameters: NSDictionary = ["clientId": clientId,
-                                        "clientSecret": clientSecret,
-                                        "identity": identity,
+        let parameters: NSDictionary = ["clientId": clientId as String,
+                                        "clientSecret": clientSecret as String,
+                                        "identity": identity as String,
                                         "aud": "https://idproxy.kore.com/authorize",
-                                        "isAnonymous": isAnonymous]
+                                        "isAnonymous": isAnonymous as Bool]
         
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
         sessionManager?.requestSerializer = requestSerializer
@@ -235,7 +213,7 @@ class AppLaunchViewController: UIViewController {
         }) { (sessionDataTask, error) in
             failure?(error)
         }
-    
+        
     }
     
     func showAlert(title: String, message: String) {
@@ -265,67 +243,67 @@ class AppLaunchViewController: UIViewController {
 }
 extension AppLaunchViewController{
     func getWidgetJwTokenWithClientId(_ clientId: String!, clientSecret: String!, identity: String!, isAnonymous: Bool!, success:((_ jwToken: String?) -> Void)?, failure:((_ error: Error) -> Void)?) {
-           
-           // Session Configuration
-           let configuration = URLSessionConfiguration.default
-           
-           //Manager
-           sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-
-           // NOTE: You must set your URL to generate JWT.
-           let urlString: String = SDKConfiguration.serverConfig.koreJwtUrl()
-           let requestSerializer = AFJSONRequestSerializer()
-           requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-           requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-           
-           // Headers: {"alg": "RS256","typ": "JWT"}
-           requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
-           requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
-           
-           let parameters: NSDictionary = ["clientId": clientId,
-                                           "clientSecret": clientSecret,
-                                           "identity": identity,
-                                           "aud": "https://idproxy.kore.com/authorize",
-                                           "isAnonymous": isAnonymous]
-           
-           
-           sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
-           sessionManager?.requestSerializer = requestSerializer
-           sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-               if (responseObject is NSDictionary) {
-                   let dictionary: NSDictionary = responseObject as! NSDictionary
-                   let jwToken: String = dictionary["jwt"] as! String
-                   self.initializeWidgetManager(widgetJWTToken: jwToken)
-                   success?(jwToken)
-                   
-               } else {
-                   let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
-                   failure?(error)
-               }
-           }) { (sessionDataTask, error) in
-               failure?(error)
-           }
-       
-       }
+        
+        // Session Configuration
+        let configuration = URLSessionConfiguration.default
+        
+        //Manager
+        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
+        
+        // NOTE: You must set your URL to generate JWT.
+        let urlString: String = SDKConfiguration.serverConfig.koreJwtUrl()
+        let requestSerializer = AFJSONRequestSerializer()
+        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
+        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+        
+        // Headers: {"alg": "RS256","typ": "JWT"}
+        requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
+        requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
+        
+        let parameters: NSDictionary = ["clientId": clientId as String,
+                                        "clientSecret": clientSecret as String,
+                                        "identity": identity as String,
+                                        "aud": "https://idproxy.kore.com/authorize",
+                                        "isAnonymous": isAnonymous as Bool]
+        
+        
+        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
+            if (responseObject is NSDictionary) {
+                let dictionary: NSDictionary = responseObject as! NSDictionary
+                let jwToken: String = dictionary["jwt"] as! String
+                self.initializeWidgetManager(widgetJWTToken: jwToken)
+                success?(jwToken)
+                
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                failure?(error)
+            }
+        }) { (sessionDataTask, error) in
+            failure?(error)
+        }
+        
+    }
     
     func initializeWidgetManager(widgetJWTToken: String) {
-    
-     let widgetManager = KREWidgetManager.shared
-     let user = KREUser()
-     user.userId = SDKConfiguration.widgetConfig.botId //userId
-     user.accessToken = widgetJWTToken
-     user.server = SDKConfiguration.serverConfig.KORE_SERVER
-     user.tokenType = "bearer"
-     user.userEmail = SDKConfiguration.widgetConfig.identity
-     user.headers = ["X-KORA-Client": KoraAssistant.shared.applicationHeader]
-     widgetManager.initialize(with: user)
-     self.user = user
-         
-     widgetManager.sessionExpiredAction = { (error) in
-         DispatchQueue.main.async {
-            // NotificationCenter.default.post(name: NSNotification.Name(rawValue: KoraNotification.EnforcementNotification), object: ["type": KoraNotification.EnforcementType.userSessionDidBecomeInvalid])
-         }
-       }
+        
+        let widgetManager = KREWidgetManager.shared
+        let user = KREUser()
+        user.userId = SDKConfiguration.widgetConfig.botId //userId
+        user.accessToken = widgetJWTToken
+        user.server = SDKConfiguration.serverConfig.KORE_SERVER
+        user.tokenType = "bearer"
+        user.userEmail = SDKConfiguration.widgetConfig.identity
+        user.headers = ["X-KORA-Client": KoraAssistant.shared.applicationHeader]
+        widgetManager.initialize(with: user)
+        self.user = user
+        
+        widgetManager.sessionExpiredAction = { (error) in
+            DispatchQueue.main.async {
+                
+            }
+        }
     }
     
     func getThemeColor(){

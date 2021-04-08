@@ -12,6 +12,8 @@
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		1D9FA1702AE04EE1A8F6AF2C /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */; };
 		9518C069255A8D5900741731 /* DropDownBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9518C068255A8D5900741731 /* DropDownBubbleView.swift */; };
+		951EA67B261EDC1900EE565D /* InlineFormTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951EA679261EDC1800EE565D /* InlineFormTableViewCell.swift */; };
+		951EA67C261EDC1900EE565D /* InlineFormTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 951EA67A261EDC1900EE565D /* InlineFormTableViewCell.xib */; };
 		953FA4C625527790006EA311 /* KoraApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953FA4C52552778F006EA311 /* KoraApplication.swift */; };
 		953FA4CC255286C9006EA311 /* AttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953FA4CA255286C9006EA311 /* AttachmentCell.swift */; };
 		953FA4CD255286C9006EA311 /* AttachmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 953FA4CB255286C9006EA311 /* AttachmentCell.xib */; };
@@ -163,6 +165,8 @@
 		5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9518C068255A8D5900741731 /* DropDownBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownBubbleView.swift; sourceTree = "<group>"; };
+		951EA679261EDC1800EE565D /* InlineFormTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineFormTableViewCell.swift; sourceTree = "<group>"; };
+		951EA67A261EDC1900EE565D /* InlineFormTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InlineFormTableViewCell.xib; sourceTree = "<group>"; };
 		953FA4C52552778F006EA311 /* KoraApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraApplication.swift; sourceTree = "<group>"; };
 		953FA4CA255286C9006EA311 /* AttachmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentCell.swift; sourceTree = "<group>"; };
 		953FA4CB255286C9006EA311 /* AttachmentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentCell.xib; sourceTree = "<group>"; };
@@ -393,6 +397,8 @@
 			isa = PBXGroup;
 			children = (
 				CD0563EF25247F1800E75768 /* InLineFormBubbleView.swift */,
+				951EA679261EDC1800EE565D /* InlineFormTableViewCell.swift */,
+				951EA67A261EDC1900EE565D /* InlineFormTableViewCell.xib */,
 			);
 			path = "InLine Form";
 			sourceTree = "<group>";
@@ -1055,6 +1061,7 @@
 				CD4B000224D164CB008E08CE /* TaskMenuViewController.xib in Resources */,
 				CDB86A0124C0099300D1CCC7 /* ListViewDetailsViewController.xib in Resources */,
 				CDB869FC24C0093A00D1CCC7 /* NewListTableViewCell.xib in Resources */,
+				951EA67C261EDC1900EE565D /* InlineFormTableViewCell.xib in Resources */,
 				CD842D4524EFBD980053710B /* DropDownCell.xib in Resources */,
 				D1F338EC2201D99A005BE5F1 /* CustomCollectionViewCell.xib in Resources */,
 				CD05640825247F1900E75768 /* ratingselect_3.gif in Resources */,
@@ -1211,6 +1218,7 @@
 				CD4B000124D164CB008E08CE /* TaskMenuViewController.swift in Sources */,
 				CD842D4C24EFBD980053710B /* DropDown+Appearance.swift in Sources */,
 				958D27272553D0190099674B /* KAAccount.swift in Sources */,
+				951EA67B261EDC1900EE565D /* InlineFormTableViewCell.swift in Sources */,
 				D1F338F12201D99A005BE5F1 /* MiniTableViewCell.swift in Sources */,
 				CD05640025247F1900E75768 /* FloatRatingView.swift in Sources */,
 				CD8C5FD62509E4E800E5EB7D /* ListWidgetBubbleView.swift in Sources */,

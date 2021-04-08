@@ -507,11 +507,11 @@ open class KABotClient: NSObject {
         requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
         requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
         
-        let parameters: NSDictionary = ["clientId": clientId,
-                                        "clientSecret": clientSecret,
-                                        "identity": identity,
+        let parameters: NSDictionary = ["clientId": clientId as String,
+                                        "clientSecret": clientSecret as String,
+                                        "identity": identity as String,
                                         "aud": "https://idproxy.kore.com/authorize",
-                                        "isAnonymous": isAnonymous]
+                                        "isAnonymous": isAnonymous as Bool]
         
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
         sessionManager?.requestSerializer = requestSerializer
