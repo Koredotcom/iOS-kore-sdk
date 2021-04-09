@@ -5,6 +5,8 @@
 build/
 DerivedData
 
+node_modules
+
 ## Various settings
 *.pbxuser
 !default.pbxuser
