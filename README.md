@@ -1,13 +1,11 @@
 # Demo Integrate React Native
 
 ## Description
-Integrating react native with existing Android and iOS native projects.
+Integrating react native with existing  iOS native projects.
 
 ## How to run
 * Clone this repository.
 * At root directory run `npm install` to install the dependencies.
-##### Android
-* Open folder `android` by Android Studio and run the project as normal.
 ##### iOS
 * At root directory `cd ios/ && pod install`
 * Go to `ios` folder and double click `DemoIntegrateRN.xcworkspace` to run the project.
