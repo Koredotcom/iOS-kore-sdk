@@ -1,7 +1,7 @@
-# Demo Integrate React Native
+# Kore Bot SDK React Native
 
 ## Description
-Integrating react native with existing  iOS native projects.
+Integrating react native with existing iOS Kore Bot SDK native project.
 
 ## How to run
 * Clone this repository.
