@@ -38,7 +38,7 @@ const TestConnectNative = {
 
   goToNative: tag => {
     if (Platform.OS === 'ios') {
-      testConnectNative.goToSecondViewController(tag);
+      testConnectNative.goToKoreChatViewController(tag);
     } else {
       testConnectNative.goToSecondActivity();
     }

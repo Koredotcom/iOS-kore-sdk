@@ -21,7 +21,7 @@ class TestConnectNativeModule: NSObject {
     }
     // MARK: Show Kore SDK
     @objc
-    func goToSecondViewController (_ reactTag: NSNumber) {
+    func goToKoreChatViewController (_ reactTag: NSNumber) {
         DispatchQueue.main.async {
             if let _ = RNViewManager.sharedInstance.bridge?.uiManager.view(forReactTag: reactTag) {
                 self.show()
