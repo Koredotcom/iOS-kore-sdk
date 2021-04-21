@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		000F115B24306A34002F4E1C /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000F115A24306A34002F4E1C /* SecondViewController.swift */; };
 		00265C352420866A0047B6D4 /* TestConnectNative.m in Sources */ = {isa = PBXBuildFile; fileRef = 00265C342420866A0047B6D4 /* TestConnectNative.m */; };
 		00265C372420BF820047B6D4 /* TestConnectNative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00265C362420BF820047B6D4 /* TestConnectNative.swift */; };
 		00D083282429E31C00C54A10 /* RNViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D083272429E31C00C54A10 /* RNViewManager.swift */; };
@@ -470,7 +469,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		000F115A24306A34002F4E1C /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		00265C332420866A0047B6D4 /* DemoIntegrateRN-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DemoIntegrateRN-Bridging-Header.h"; sourceTree = "<group>"; };
 		00265C342420866A0047B6D4 /* TestConnectNative.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestConnectNative.m; sourceTree = "<group>"; };
 		00265C362420BF820047B6D4 /* TestConnectNative.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestConnectNative.swift; sourceTree = "<group>"; };
@@ -750,7 +748,7 @@
 		402789472419F02900DDDD5B /* DemoIntegrateRN */ = {
 			isa = PBXGroup;
 			children = (
-				95B39B112608C0AD004F015D /* Kore Demo */,
+				95B39B112608C0AD004F015D /* KoreBotSDK */,
 				402789482419F02900DDDD5B /* AppDelegate.swift */,
 				4027894A2419F02900DDDD5B /* SceneDelegate.swift */,
 				402789532419F02A00DDDD5B /* LaunchScreen.storyboard */,
@@ -811,7 +809,7 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		95B39B112608C0AD004F015D /* Kore Demo */ = {
+		95B39B112608C0AD004F015D /* KoreBotSDK */ = {
 			isa = PBXGroup;
 			children = (
 				95B6C95A2620795E00DACE12 /* SDKConfiguration.swift */,
@@ -822,7 +820,7 @@
 				95B6C6E6262078DC00DACE12 /* Library */,
 				95B6C94A262078F000DACE12 /* Resources */,
 			);
-			path = "Kore Demo";
+			path = KoreBotSDK;
 			sourceTree = "<group>";
 		};
 		95B6C68426205F4700DACE12 /* UnUsed */ = {
@@ -830,7 +828,6 @@
 			children = (
 				4027894E2419F02900DDDD5B /* Main.storyboard */,
 				4027894C2419F02900DDDD5B /* ViewController.swift */,
-				000F115A24306A34002F4E1C /* SecondViewController.swift */,
 			);
 			path = UnUsed;
 			sourceTree = "<group>";
@@ -1889,7 +1886,6 @@
 				95B6C8C3262078E100DACE12 /* KAComponentOperation.swift in Sources */,
 				95B6C938262078E200DACE12 /* KREThread+CoreDataProperties.swift in Sources */,
 				95B6C935262078E200DACE12 /* DataModel.xcdatamodeld in Sources */,
-				000F115B24306A34002F4E1C /* SecondViewController.swift in Sources */,
 				95B6C7F7262078DF00DACE12 /* TableListBubbleView.swift in Sources */,
 				95B6C8E1262078E200DACE12 /* ChatMessagesViewController.swift in Sources */,
 				95B6C905262078E200DACE12 /* AttachmentCell.swift in Sources */,

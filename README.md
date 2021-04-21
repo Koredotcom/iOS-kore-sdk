@@ -68,48 +68,20 @@ JWT_SERVER URL - specify the server URL for JWT token generation. This token is 
 static let JWT_SERVER = "<jwt-token-server-url>";
 ```
 
-## Running the Demo app
-#### a. Using Cocoa Pods
-    * Download or clone the repository.
-    * Run "pod install" in the Examples/CocoapodsDemo project folder.
-    * Open Examples/CocoapodsDemo/KoreBotSDKDemo.xcworkspace in Xcode.
-    * Run the KoreBotSDKDemo.app in xcode
-
-#### b. Using Carthage
-    * Download or clone the repository.
-    * Run "carthage update --platform iOS" in the Examples/CarthageDemo project folder.
-    * Open Examples/CarthageDemo/KoreBotSDKDemo.xcodeproj in Xcode.
-    * Run the KoreBotSDKDemo.app in Xcode
-
-## Integrating into your app
-#### 1. Setup KoreBotSDK
-###### a. Using CocoaPods
-    Add the following to your Podfile:
-    pod 'KoreBotSDK'
-    
-    Or to get latest pod changes use:
-    pod 'KoreBotSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git’
-    
-    Run pod install in your project folder.
-###### b. Using Carthage
-    Add the following to your Cartfile:
-    github "Koredotcom/iOS-kore-sdk" "master"
-    
-    Run "carthage update --platform iOS" in your project folder.
-    
-#### 2. Initializing the Bot client
+## Setup KoreBotSDK
+#### 1. Initializing the Bot client
     import KoreBotSDK
     let botInfo: NSDictionary = ["chatBot":"<bot-name>", "taskBotId":"<bot-identifier>"]
     let botClient: BotClient = BotClient(botInfoParameters: botInfo)
 
-#### 3. JWT generation
+#### 2. JWT generation
     a. You need to have secure token service hosted in your environment which returns the JWT token.
     b. Generate JWT in your enviornment.
-To integrate jwt signing in code refer to KoreBotSDKDemo App. - https://github.com/Koredotcom/iOS-kore-sdk/blob/master/KoreBotSDK/KoreBotSDKDemo/KoreBotSDKDemo/Controllers/AppLaunch/AppLaunchViewController.swift
+To integrate jwt signing in code refer to DemoIntegrateRN App. - https://github.com/Koredotcom/iOS-kore-sdk/blob/react_native_master/ios/DemoIntegrateRN/TestConnectNative.swift
 
 NOTE: Please refer about JWT signing and verification at - https://developer.kore.com/docs/bots/kore-web-sdk/
 
-#### 4. Connect with JWT
+#### 3. Connect with JWT
     botClient.connectWithJwToken(jwToken, success: { (client) in
         // listen to RTM events
  
@@ -117,10 +89,10 @@ NOTE: Please refer about JWT signing and verification at - https://developer.kor
         
     })
 
-#### 5. Send message
+#### 4. Send message
     botClient.sendMessage("Tweet hello", options: [])
     
-#### 6. Listen to events
+#### 5. Listen to events
     self.botClient.onMessage = { [weak self] (object) in
         //"object" type as "BotMessageModel"
     }
@@ -134,19 +106,19 @@ NOTE: Please refer about JWT signing and verification at - https://developer.kor
         //"error" type as "NSError"
     }
     
-#### 7. Subscribe to push notifications
+#### 6. Subscribe to push notifications
     self.botClient.subscribeToNotifications(deviceToken, success: { (staus) in
         // do something
     }, failure: { (error) in
     })
     
-#### 8. Unsubscribe to push notifications
+#### 7. Unsubscribe to push notifications
     self.botClient.unsubscribeToNotifications(deviceToken, success: { (staus) in
         // do something
     }, failure: { (error) in
     })
 
-#### 9. Example
+#### 8. Example
     self.botClient.connectWithJwToken(jwtToken, success: { (client) in
         client.connectionDidOpen = { () in
             
@@ -174,7 +146,7 @@ NOTE: Please refer about JWT signing and verification at - https://developer.kor
     }, failure: { (error) in
         
     })
-#### 10. getHistory - fetches all the history that the bot has previously based on last messageId whenever the bot is reconnected.
+#### 9. getHistory - fetches all the history that the bot has previously based on last messageId whenever the bot is reconnected.
     self.botClient.getHistory(offset: 0, success: { (responseObj) in
         // do something
     }, failure: { (error) in
