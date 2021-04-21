@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>clientId</key>
+	<string>cs-66a7adba-e28e-514f-8752-4ca155450b77</string>
+	<key>chatBot</key>
+	<string>Asana</string>
+	<key>taskBotId</key>
+	<string>st-75bdb67c-894d-520e-a98b-2927a485f604</string>
+</dict>
+</plist>
