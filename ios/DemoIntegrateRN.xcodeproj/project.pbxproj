@@ -22,47 +22,6 @@
 		454F314D1D6344D9AB8F77CE /* iCielVAGRoundedNext-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = BA8EFE8B8D234EC09202FED9 /* iCielVAGRoundedNext-Light.otf */; };
 		5D84111A1191443D6CDD9613 /* libPods-DemoIntegrateRNTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 259C658CD224319E053CEED8 /* libPods-DemoIntegrateRNTests.a */; };
 		79658B4F6E044D36BCAC9E83 /* iCielVAGRoundedNext-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F321FDDCE5724D229FE1EFA1 /* iCielVAGRoundedNext-Bold.otf */; };
-		95A6EC842630065100B6710E /* KAHTTPSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC4D2630065100B6710E /* KAHTTPSessionManager.swift */; };
-		95A6EC852630065100B6710E /* KAAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC4E2630065100B6710E /* KAAccount.swift */; };
-		95A6EC862630065100B6710E /* KoraApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC4F2630065100B6710E /* KoraApplication.swift */; };
-		95A6EC872630065100B6710E /* KAAssetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC502630065100B6710E /* KAAssetManager.swift */; };
-		95A6EC882630065100B6710E /* KAHTTPRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC512630065100B6710E /* KAHTTPRequestManager.swift */; };
-		95A6EC892630065100B6710E /* KAComponentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC522630065100B6710E /* KAComponentOperation.swift */; };
-		95A6EC8A2630065100B6710E /* UsageLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC532630065100B6710E /* UsageLimits.swift */; };
-		95A6EC8B2630065100B6710E /* KAFileUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC542630065100B6710E /* KAFileUtilities.swift */; };
-		95A6EC8C2630065100B6710E /* DropDownCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A6EC582630065100B6710E /* DropDownCell.xib */; };
-		95A6EC8D2630065100B6710E /* DPDKeyboardListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC5A2630065100B6710E /* DPDKeyboardListener.swift */; };
-		95A6EC8E2630065100B6710E /* DPDConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC5B2630065100B6710E /* DPDConstants.swift */; };
-		95A6EC8F2630065100B6710E /* DPDUIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC5C2630065100B6710E /* DPDUIView+Extension.swift */; };
-		95A6EC902630065100B6710E /* DropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC5E2630065100B6710E /* DropDown.swift */; };
-		95A6EC912630065100B6710E /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC5F2630065100B6710E /* DropDownCell.swift */; };
-		95A6EC922630065100B6710E /* DropDown+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC602630065100B6710E /* DropDown+Appearance.swift */; };
-		95A6EC932630065100B6710E /* ChatMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC612630065100B6710E /* ChatMessagesViewController.swift */; };
-		95A6EC942630065100B6710E /* KABottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC632630065100B6710E /* KABottomSheetViewController.swift */; };
-		95A6EC952630065100B6710E /* KoraNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC642630065100B6710E /* KoraNotification.swift */; };
-		95A6EC962630065100B6710E /* KoraAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC652630065100B6710E /* KoraAssistant.swift */; };
-		95A6EC972630065100B6710E /* KAPanelWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC662630065100B6710E /* KAPanelWindowManager.swift */; };
-		95A6EC982630065100B6710E /* KAPanelCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC672630065100B6710E /* KAPanelCollectionView.swift */; };
-		95A6EC992630065100B6710E /* ApplicationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC682630065100B6710E /* ApplicationManager.swift */; };
-		95A6EC9A2630065100B6710E /* UIViewController+Kora.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC692630065100B6710E /* UIViewController+Kora.swift */; };
-		95A6EC9B2630065100B6710E /* KAPanelItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC6A2630065100B6710E /* KAPanelItemViewController.swift */; };
-		95A6EC9C2630065100B6710E /* ChatMessagesViewController+Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC6B2630065100B6710E /* ChatMessagesViewController+Widgets.swift */; };
-		95A6EC9D2630065100B6710E /* KAPanelHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC6C2630065100B6710E /* KAPanelHeaderView.swift */; };
-		95A6EC9E2630065100B6710E /* ChatMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A6EC6D2630065100B6710E /* ChatMessagesViewController.xib */; };
-		95A6EC9F2630065200B6710E /* AttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC6F2630065100B6710E /* AttachmentCell.swift */; };
-		95A6ECA02630065200B6710E /* AttachmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A6EC702630065100B6710E /* AttachmentCell.xib */; };
-		95A6ECA12630065200B6710E /* TableTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC722630065100B6710E /* TableTemplateViewController.swift */; };
-		95A6ECA22630065200B6710E /* TableTemplateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A6EC732630065100B6710E /* TableTemplateViewController.xib */; };
-		95A6ECA32630065200B6710E /* InputTOWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC742630065100B6710E /* InputTOWebViewController.swift */; };
-		95A6ECA42630065200B6710E /* KRETypingActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC762630065100B6710E /* KRETypingActivityIndicator.m */; };
-		95A6ECA52630065200B6710E /* KRETypingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A6EC772630065100B6710E /* KRETypingCollectionViewCell.xib */; };
-		95A6ECA62630065200B6710E /* KRETypingStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC7A2630065100B6710E /* KRETypingStatusView.m */; };
-		95A6ECA72630065200B6710E /* KRETypingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC7B2630065100B6710E /* KRETypingCollectionViewCell.m */; };
-		95A6ECA82630065200B6710E /* BotMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC7E2630065100B6710E /* BotMessagesView.swift */; };
-		95A6ECA92630065200B6710E /* KREFetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC7F2630065100B6710E /* KREFetchedResultsController.swift */; };
-		95A6ECAA2630065200B6710E /* MessageBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC802630065100B6710E /* MessageBubbleCell.swift */; };
-		95A6ECAB2630065200B6710E /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EC822630065100B6710E /* AppLaunchViewController.swift */; };
-		95A6ECAC2630065200B6710E /* AppLaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A6EC832630065100B6710E /* AppLaunchViewController.xib */; };
 		95A6ECBF2630066D00B6710E /* KREMessage+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6ECB52630066D00B6710E /* KREMessage+CoreDataProperties.swift */; };
 		95A6ECC02630066D00B6710E /* KREThread+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6ECB62630066D00B6710E /* KREThread+CoreDataClass.swift */; };
 		95A6ECC12630066D00B6710E /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 95A6ECB72630066D00B6710E /* DataModel.xcdatamodeld */; };
@@ -158,6 +117,47 @@
 		95A6EDAA2630068200B6710E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95A6EDA52630068100B6710E /* Assets.xcassets */; };
 		95A6EDAB2630068200B6710E /* Messages.plist in Resources */ = {isa = PBXBuildFile; fileRef = 95A6EDA82630068100B6710E /* Messages.plist */; };
 		95A6EDAC2630068200B6710E /* BotConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 95A6EDA92630068100B6710E /* BotConfiguration.plist */; };
+		95A6EEDF2630113600B6710E /* BotMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEA72630113500B6710E /* BotMessagesView.swift */; };
+		95A6EEE02630113600B6710E /* KREFetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEA82630113500B6710E /* KREFetchedResultsController.swift */; };
+		95A6EEE12630113600B6710E /* MessageBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEA92630113500B6710E /* MessageBubbleCell.swift */; };
+		95A6EEE22630113600B6710E /* KAHTTPSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEAC2630113500B6710E /* KAHTTPSessionManager.swift */; };
+		95A6EEE32630113600B6710E /* KAAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEAD2630113500B6710E /* KAAccount.swift */; };
+		95A6EEE42630113600B6710E /* KoraApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEAE2630113500B6710E /* KoraApplication.swift */; };
+		95A6EEE52630113600B6710E /* KAAssetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEAF2630113500B6710E /* KAAssetManager.swift */; };
+		95A6EEE62630113600B6710E /* KAHTTPRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEB02630113500B6710E /* KAHTTPRequestManager.swift */; };
+		95A6EEE72630113600B6710E /* KAComponentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEB12630113500B6710E /* KAComponentOperation.swift */; };
+		95A6EEE82630113600B6710E /* UsageLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEB22630113500B6710E /* UsageLimits.swift */; };
+		95A6EEE92630113600B6710E /* KAFileUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEB32630113500B6710E /* KAFileUtilities.swift */; };
+		95A6EEEA2630113600B6710E /* DropDownCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A6EEB72630113500B6710E /* DropDownCell.xib */; };
+		95A6EEEB2630113600B6710E /* DPDKeyboardListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEB92630113500B6710E /* DPDKeyboardListener.swift */; };
+		95A6EEEC2630113600B6710E /* DPDConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEBA2630113500B6710E /* DPDConstants.swift */; };
+		95A6EEED2630113600B6710E /* DPDUIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEBB2630113500B6710E /* DPDUIView+Extension.swift */; };
+		95A6EEEE2630113600B6710E /* DropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEBD2630113500B6710E /* DropDown.swift */; };
+		95A6EEEF2630113600B6710E /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEBE2630113500B6710E /* DropDownCell.swift */; };
+		95A6EEF02630113600B6710E /* DropDown+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEBF2630113500B6710E /* DropDown+Appearance.swift */; };
+		95A6EEF12630113600B6710E /* ChatMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEC02630113500B6710E /* ChatMessagesViewController.swift */; };
+		95A6EEF22630113600B6710E /* KABottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEC22630113500B6710E /* KABottomSheetViewController.swift */; };
+		95A6EEF32630113600B6710E /* KoraNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEC32630113500B6710E /* KoraNotification.swift */; };
+		95A6EEF42630113600B6710E /* KoraAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEC42630113500B6710E /* KoraAssistant.swift */; };
+		95A6EEF52630113600B6710E /* KAPanelWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEC52630113500B6710E /* KAPanelWindowManager.swift */; };
+		95A6EEF62630113600B6710E /* KAPanelCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEC62630113500B6710E /* KAPanelCollectionView.swift */; };
+		95A6EEF72630113600B6710E /* ApplicationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEC72630113500B6710E /* ApplicationManager.swift */; };
+		95A6EEF82630113600B6710E /* UIViewController+Kora.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEC82630113500B6710E /* UIViewController+Kora.swift */; };
+		95A6EEF92630113600B6710E /* KAPanelItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEC92630113500B6710E /* KAPanelItemViewController.swift */; };
+		95A6EEFA2630113600B6710E /* ChatMessagesViewController+Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EECA2630113500B6710E /* ChatMessagesViewController+Widgets.swift */; };
+		95A6EEFB2630113600B6710E /* KAPanelHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EECB2630113500B6710E /* KAPanelHeaderView.swift */; };
+		95A6EEFC2630113600B6710E /* ChatMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A6EECC2630113500B6710E /* ChatMessagesViewController.xib */; };
+		95A6EEFD2630113600B6710E /* AttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EECE2630113500B6710E /* AttachmentCell.swift */; };
+		95A6EEFE2630113600B6710E /* AttachmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A6EECF2630113500B6710E /* AttachmentCell.xib */; };
+		95A6EEFF2630113600B6710E /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EED12630113600B6710E /* AppLaunchViewController.swift */; };
+		95A6EF002630113600B6710E /* AppLaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A6EED22630113600B6710E /* AppLaunchViewController.xib */; };
+		95A6EF012630113600B6710E /* KRETypingActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EED42630113600B6710E /* KRETypingActivityIndicator.m */; };
+		95A6EF022630113600B6710E /* KRETypingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A6EED52630113600B6710E /* KRETypingCollectionViewCell.xib */; };
+		95A6EF032630113600B6710E /* KRETypingStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EED82630113600B6710E /* KRETypingStatusView.m */; };
+		95A6EF042630113600B6710E /* KRETypingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EED92630113600B6710E /* KRETypingCollectionViewCell.m */; };
+		95A6EF052630113600B6710E /* TableTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEDC2630113600B6710E /* TableTemplateViewController.swift */; };
+		95A6EF062630113600B6710E /* TableTemplateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A6EEDD2630113600B6710E /* TableTemplateViewController.xib */; };
+		95A6EF072630113600B6710E /* InputTOWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6EEDE2630113600B6710E /* InputTOWebViewController.swift */; };
 		95B6C8A8262078E100DACE12 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B6C765262078DD00DACE12 /* CoreDataManager.swift */; };
 		95B6C8A9262078E100DACE12 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B6C765262078DD00DACE12 /* CoreDataManager.swift */; };
 		95B6C8AA262078E100DACE12 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B6C765262078DD00DACE12 /* CoreDataManager.swift */; };
@@ -228,51 +228,6 @@
 		6A2E37AE7E587482006C6117 /* Pods-DemoIntegrateRN-DemoIntegrateRNUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DemoIntegrateRN-DemoIntegrateRNUITests.release.xcconfig"; path = "Target Support Files/Pods-DemoIntegrateRN-DemoIntegrateRNUITests/Pods-DemoIntegrateRN-DemoIntegrateRNUITests.release.xcconfig"; sourceTree = "<group>"; };
 		788A12AC50B5454DBB05E81C /* iCielVAGRoundedNext-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "iCielVAGRoundedNext-Medium.otf"; path = "../assets/fonts/iCielVAGRoundedNext-Medium.otf"; sourceTree = "<group>"; };
 		846D12D046DDE76A361CAB61 /* Pods-DemoIntegrateRN.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DemoIntegrateRN.release.xcconfig"; path = "Target Support Files/Pods-DemoIntegrateRN/Pods-DemoIntegrateRN.release.xcconfig"; sourceTree = "<group>"; };
-		95A6EC4D2630065100B6710E /* KAHTTPSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAHTTPSessionManager.swift; sourceTree = "<group>"; };
-		95A6EC4E2630065100B6710E /* KAAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAAccount.swift; sourceTree = "<group>"; };
-		95A6EC4F2630065100B6710E /* KoraApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraApplication.swift; sourceTree = "<group>"; };
-		95A6EC502630065100B6710E /* KAAssetManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAAssetManager.swift; sourceTree = "<group>"; };
-		95A6EC512630065100B6710E /* KAHTTPRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAHTTPRequestManager.swift; sourceTree = "<group>"; };
-		95A6EC522630065100B6710E /* KAComponentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAComponentOperation.swift; sourceTree = "<group>"; };
-		95A6EC532630065100B6710E /* UsageLimits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsageLimits.swift; sourceTree = "<group>"; };
-		95A6EC542630065100B6710E /* KAFileUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAFileUtilities.swift; sourceTree = "<group>"; };
-		95A6EC562630065100B6710E /* DropDown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDown.h; sourceTree = "<group>"; };
-		95A6EC582630065100B6710E /* DropDownCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DropDownCell.xib; sourceTree = "<group>"; };
-		95A6EC5A2630065100B6710E /* DPDKeyboardListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPDKeyboardListener.swift; sourceTree = "<group>"; };
-		95A6EC5B2630065100B6710E /* DPDConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPDConstants.swift; sourceTree = "<group>"; };
-		95A6EC5C2630065100B6710E /* DPDUIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DPDUIView+Extension.swift"; sourceTree = "<group>"; };
-		95A6EC5E2630065100B6710E /* DropDown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDown.swift; sourceTree = "<group>"; };
-		95A6EC5F2630065100B6710E /* DropDownCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownCell.swift; sourceTree = "<group>"; };
-		95A6EC602630065100B6710E /* DropDown+Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DropDown+Appearance.swift"; sourceTree = "<group>"; };
-		95A6EC612630065100B6710E /* ChatMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessagesViewController.swift; sourceTree = "<group>"; };
-		95A6EC632630065100B6710E /* KABottomSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KABottomSheetViewController.swift; sourceTree = "<group>"; };
-		95A6EC642630065100B6710E /* KoraNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraNotification.swift; sourceTree = "<group>"; };
-		95A6EC652630065100B6710E /* KoraAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraAssistant.swift; sourceTree = "<group>"; };
-		95A6EC662630065100B6710E /* KAPanelWindowManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelWindowManager.swift; sourceTree = "<group>"; };
-		95A6EC672630065100B6710E /* KAPanelCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelCollectionView.swift; sourceTree = "<group>"; };
-		95A6EC682630065100B6710E /* ApplicationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationManager.swift; sourceTree = "<group>"; };
-		95A6EC692630065100B6710E /* UIViewController+Kora.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Kora.swift"; sourceTree = "<group>"; };
-		95A6EC6A2630065100B6710E /* KAPanelItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelItemViewController.swift; sourceTree = "<group>"; };
-		95A6EC6B2630065100B6710E /* ChatMessagesViewController+Widgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChatMessagesViewController+Widgets.swift"; sourceTree = "<group>"; };
-		95A6EC6C2630065100B6710E /* KAPanelHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelHeaderView.swift; sourceTree = "<group>"; };
-		95A6EC6D2630065100B6710E /* ChatMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatMessagesViewController.xib; sourceTree = "<group>"; };
-		95A6EC6F2630065100B6710E /* AttachmentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentCell.swift; sourceTree = "<group>"; };
-		95A6EC702630065100B6710E /* AttachmentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AttachmentCell.xib; sourceTree = "<group>"; };
-		95A6EC722630065100B6710E /* TableTemplateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableTemplateViewController.swift; sourceTree = "<group>"; };
-		95A6EC732630065100B6710E /* TableTemplateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableTemplateViewController.xib; sourceTree = "<group>"; };
-		95A6EC742630065100B6710E /* InputTOWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTOWebViewController.swift; sourceTree = "<group>"; };
-		95A6EC762630065100B6710E /* KRETypingActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingActivityIndicator.m; sourceTree = "<group>"; };
-		95A6EC772630065100B6710E /* KRETypingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KRETypingCollectionViewCell.xib; sourceTree = "<group>"; };
-		95A6EC782630065100B6710E /* KRETypingCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingCollectionViewCell.h; sourceTree = "<group>"; };
-		95A6EC792630065100B6710E /* KRETypingStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingStatusView.h; sourceTree = "<group>"; };
-		95A6EC7A2630065100B6710E /* KRETypingStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingStatusView.m; sourceTree = "<group>"; };
-		95A6EC7B2630065100B6710E /* KRETypingCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingCollectionViewCell.m; sourceTree = "<group>"; };
-		95A6EC7C2630065100B6710E /* KRETypingActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingActivityIndicator.h; sourceTree = "<group>"; };
-		95A6EC7E2630065100B6710E /* BotMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotMessagesView.swift; sourceTree = "<group>"; };
-		95A6EC7F2630065100B6710E /* KREFetchedResultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREFetchedResultsController.swift; sourceTree = "<group>"; };
-		95A6EC802630065100B6710E /* MessageBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleCell.swift; sourceTree = "<group>"; };
-		95A6EC822630065100B6710E /* AppLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchViewController.swift; sourceTree = "<group>"; };
-		95A6EC832630065100B6710E /* AppLaunchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppLaunchViewController.xib; sourceTree = "<group>"; };
 		95A6ECB52630066D00B6710E /* KREMessage+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREMessage+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		95A6ECB62630066D00B6710E /* KREThread+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KREThread+CoreDataClass.swift"; sourceTree = "<group>"; };
 		95A6ECB82630066D00B6710E /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -375,6 +330,51 @@
 		95A6EDA52630068100B6710E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		95A6EDA82630068100B6710E /* Messages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Messages.plist; sourceTree = "<group>"; };
 		95A6EDA92630068100B6710E /* BotConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BotConfiguration.plist; sourceTree = "<group>"; };
+		95A6EEA72630113500B6710E /* BotMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotMessagesView.swift; sourceTree = "<group>"; };
+		95A6EEA82630113500B6710E /* KREFetchedResultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREFetchedResultsController.swift; sourceTree = "<group>"; };
+		95A6EEA92630113500B6710E /* MessageBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleCell.swift; sourceTree = "<group>"; };
+		95A6EEAC2630113500B6710E /* KAHTTPSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAHTTPSessionManager.swift; sourceTree = "<group>"; };
+		95A6EEAD2630113500B6710E /* KAAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAAccount.swift; sourceTree = "<group>"; };
+		95A6EEAE2630113500B6710E /* KoraApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraApplication.swift; sourceTree = "<group>"; };
+		95A6EEAF2630113500B6710E /* KAAssetManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAAssetManager.swift; sourceTree = "<group>"; };
+		95A6EEB02630113500B6710E /* KAHTTPRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAHTTPRequestManager.swift; sourceTree = "<group>"; };
+		95A6EEB12630113500B6710E /* KAComponentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAComponentOperation.swift; sourceTree = "<group>"; };
+		95A6EEB22630113500B6710E /* UsageLimits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsageLimits.swift; sourceTree = "<group>"; };
+		95A6EEB32630113500B6710E /* KAFileUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAFileUtilities.swift; sourceTree = "<group>"; };
+		95A6EEB52630113500B6710E /* DropDown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDown.h; sourceTree = "<group>"; };
+		95A6EEB72630113500B6710E /* DropDownCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DropDownCell.xib; sourceTree = "<group>"; };
+		95A6EEB92630113500B6710E /* DPDKeyboardListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPDKeyboardListener.swift; sourceTree = "<group>"; };
+		95A6EEBA2630113500B6710E /* DPDConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPDConstants.swift; sourceTree = "<group>"; };
+		95A6EEBB2630113500B6710E /* DPDUIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DPDUIView+Extension.swift"; sourceTree = "<group>"; };
+		95A6EEBD2630113500B6710E /* DropDown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDown.swift; sourceTree = "<group>"; };
+		95A6EEBE2630113500B6710E /* DropDownCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownCell.swift; sourceTree = "<group>"; };
+		95A6EEBF2630113500B6710E /* DropDown+Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DropDown+Appearance.swift"; sourceTree = "<group>"; };
+		95A6EEC02630113500B6710E /* ChatMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessagesViewController.swift; sourceTree = "<group>"; };
+		95A6EEC22630113500B6710E /* KABottomSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KABottomSheetViewController.swift; sourceTree = "<group>"; };
+		95A6EEC32630113500B6710E /* KoraNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraNotification.swift; sourceTree = "<group>"; };
+		95A6EEC42630113500B6710E /* KoraAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraAssistant.swift; sourceTree = "<group>"; };
+		95A6EEC52630113500B6710E /* KAPanelWindowManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelWindowManager.swift; sourceTree = "<group>"; };
+		95A6EEC62630113500B6710E /* KAPanelCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelCollectionView.swift; sourceTree = "<group>"; };
+		95A6EEC72630113500B6710E /* ApplicationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationManager.swift; sourceTree = "<group>"; };
+		95A6EEC82630113500B6710E /* UIViewController+Kora.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Kora.swift"; sourceTree = "<group>"; };
+		95A6EEC92630113500B6710E /* KAPanelItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelItemViewController.swift; sourceTree = "<group>"; };
+		95A6EECA2630113500B6710E /* ChatMessagesViewController+Widgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChatMessagesViewController+Widgets.swift"; sourceTree = "<group>"; };
+		95A6EECB2630113500B6710E /* KAPanelHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelHeaderView.swift; sourceTree = "<group>"; };
+		95A6EECC2630113500B6710E /* ChatMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatMessagesViewController.xib; sourceTree = "<group>"; };
+		95A6EECE2630113500B6710E /* AttachmentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentCell.swift; sourceTree = "<group>"; };
+		95A6EECF2630113500B6710E /* AttachmentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AttachmentCell.xib; sourceTree = "<group>"; };
+		95A6EED12630113600B6710E /* AppLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchViewController.swift; sourceTree = "<group>"; };
+		95A6EED22630113600B6710E /* AppLaunchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppLaunchViewController.xib; sourceTree = "<group>"; };
+		95A6EED42630113600B6710E /* KRETypingActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingActivityIndicator.m; sourceTree = "<group>"; };
+		95A6EED52630113600B6710E /* KRETypingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KRETypingCollectionViewCell.xib; sourceTree = "<group>"; };
+		95A6EED62630113600B6710E /* KRETypingCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingCollectionViewCell.h; sourceTree = "<group>"; };
+		95A6EED72630113600B6710E /* KRETypingStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingStatusView.h; sourceTree = "<group>"; };
+		95A6EED82630113600B6710E /* KRETypingStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingStatusView.m; sourceTree = "<group>"; };
+		95A6EED92630113600B6710E /* KRETypingCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingCollectionViewCell.m; sourceTree = "<group>"; };
+		95A6EEDA2630113600B6710E /* KRETypingActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingActivityIndicator.h; sourceTree = "<group>"; };
+		95A6EEDC2630113600B6710E /* TableTemplateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableTemplateViewController.swift; sourceTree = "<group>"; };
+		95A6EEDD2630113600B6710E /* TableTemplateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableTemplateViewController.xib; sourceTree = "<group>"; };
+		95A6EEDE2630113600B6710E /* InputTOWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTOWebViewController.swift; sourceTree = "<group>"; };
 		95B6C765262078DD00DACE12 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		95B6C766262078DD00DACE12 /* DataStoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStoreManager.swift; sourceTree = "<group>"; };
 		95B6C768262078DD00DACE12 /* KABotClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KABotClient.swift; sourceTree = "<group>"; };
@@ -536,155 +536,6 @@
 				B1604CEEB89642EE8FD94279 /* iCielVAGRoundedNext-Regular.otf */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
-		};
-		95A6EC4A2630065100B6710E /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				95A6EC4B2630065100B6710E /* ChatMessages */,
-				95A6EC712630065100B6710E /* InputViews */,
-				95A6EC752630065100B6710E /* TypingStatus */,
-				95A6EC7D2630065100B6710E /* BotMessages */,
-				95A6EC812630065100B6710E /* AppLaunch */,
-			);
-			name = Controllers;
-			path = "../../../../MashRaq React Native /iOS-kore-sdk-master/Examples/Shared/Controllers";
-			sourceTree = "<group>";
-		};
-		95A6EC4B2630065100B6710E /* ChatMessages */ = {
-			isa = PBXGroup;
-			children = (
-				95A6EC612630065100B6710E /* ChatMessagesViewController.swift */,
-				95A6EC6D2630065100B6710E /* ChatMessagesViewController.xib */,
-				95A6EC4C2630065100B6710E /* File Upload */,
-				95A6EC552630065100B6710E /* DropDown */,
-				95A6EC622630065100B6710E /* PanelView */,
-				95A6EC6E2630065100B6710E /* Attachment Cell */,
-			);
-			path = ChatMessages;
-			sourceTree = "<group>";
-		};
-		95A6EC4C2630065100B6710E /* File Upload */ = {
-			isa = PBXGroup;
-			children = (
-				95A6EC4D2630065100B6710E /* KAHTTPSessionManager.swift */,
-				95A6EC4E2630065100B6710E /* KAAccount.swift */,
-				95A6EC4F2630065100B6710E /* KoraApplication.swift */,
-				95A6EC502630065100B6710E /* KAAssetManager.swift */,
-				95A6EC512630065100B6710E /* KAHTTPRequestManager.swift */,
-				95A6EC522630065100B6710E /* KAComponentOperation.swift */,
-				95A6EC532630065100B6710E /* UsageLimits.swift */,
-				95A6EC542630065100B6710E /* KAFileUtilities.swift */,
-			);
-			path = "File Upload";
-			sourceTree = "<group>";
-		};
-		95A6EC552630065100B6710E /* DropDown */ = {
-			isa = PBXGroup;
-			children = (
-				95A6EC562630065100B6710E /* DropDown.h */,
-				95A6EC572630065100B6710E /* resources */,
-				95A6EC592630065100B6710E /* helpers */,
-				95A6EC5D2630065100B6710E /* src */,
-			);
-			path = DropDown;
-			sourceTree = "<group>";
-		};
-		95A6EC572630065100B6710E /* resources */ = {
-			isa = PBXGroup;
-			children = (
-				95A6EC582630065100B6710E /* DropDownCell.xib */,
-			);
-			path = resources;
-			sourceTree = "<group>";
-		};
-		95A6EC592630065100B6710E /* helpers */ = {
-			isa = PBXGroup;
-			children = (
-				95A6EC5A2630065100B6710E /* DPDKeyboardListener.swift */,
-				95A6EC5B2630065100B6710E /* DPDConstants.swift */,
-				95A6EC5C2630065100B6710E /* DPDUIView+Extension.swift */,
-			);
-			path = helpers;
-			sourceTree = "<group>";
-		};
-		95A6EC5D2630065100B6710E /* src */ = {
-			isa = PBXGroup;
-			children = (
-				95A6EC5E2630065100B6710E /* DropDown.swift */,
-				95A6EC5F2630065100B6710E /* DropDownCell.swift */,
-				95A6EC602630065100B6710E /* DropDown+Appearance.swift */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
-		95A6EC622630065100B6710E /* PanelView */ = {
-			isa = PBXGroup;
-			children = (
-				95A6EC632630065100B6710E /* KABottomSheetViewController.swift */,
-				95A6EC642630065100B6710E /* KoraNotification.swift */,
-				95A6EC652630065100B6710E /* KoraAssistant.swift */,
-				95A6EC662630065100B6710E /* KAPanelWindowManager.swift */,
-				95A6EC672630065100B6710E /* KAPanelCollectionView.swift */,
-				95A6EC682630065100B6710E /* ApplicationManager.swift */,
-				95A6EC692630065100B6710E /* UIViewController+Kora.swift */,
-				95A6EC6A2630065100B6710E /* KAPanelItemViewController.swift */,
-				95A6EC6B2630065100B6710E /* ChatMessagesViewController+Widgets.swift */,
-				95A6EC6C2630065100B6710E /* KAPanelHeaderView.swift */,
-			);
-			path = PanelView;
-			sourceTree = "<group>";
-		};
-		95A6EC6E2630065100B6710E /* Attachment Cell */ = {
-			isa = PBXGroup;
-			children = (
-				95A6EC6F2630065100B6710E /* AttachmentCell.swift */,
-				95A6EC702630065100B6710E /* AttachmentCell.xib */,
-			);
-			path = "Attachment Cell";
-			sourceTree = "<group>";
-		};
-		95A6EC712630065100B6710E /* InputViews */ = {
-			isa = PBXGroup;
-			children = (
-				95A6EC722630065100B6710E /* TableTemplateViewController.swift */,
-				95A6EC732630065100B6710E /* TableTemplateViewController.xib */,
-				95A6EC742630065100B6710E /* InputTOWebViewController.swift */,
-			);
-			path = InputViews;
-			sourceTree = "<group>";
-		};
-		95A6EC752630065100B6710E /* TypingStatus */ = {
-			isa = PBXGroup;
-			children = (
-				95A6EC762630065100B6710E /* KRETypingActivityIndicator.m */,
-				95A6EC772630065100B6710E /* KRETypingCollectionViewCell.xib */,
-				95A6EC782630065100B6710E /* KRETypingCollectionViewCell.h */,
-				95A6EC792630065100B6710E /* KRETypingStatusView.h */,
-				95A6EC7A2630065100B6710E /* KRETypingStatusView.m */,
-				95A6EC7B2630065100B6710E /* KRETypingCollectionViewCell.m */,
-				95A6EC7C2630065100B6710E /* KRETypingActivityIndicator.h */,
-			);
-			path = TypingStatus;
-			sourceTree = "<group>";
-		};
-		95A6EC7D2630065100B6710E /* BotMessages */ = {
-			isa = PBXGroup;
-			children = (
-				95A6EC7E2630065100B6710E /* BotMessagesView.swift */,
-				95A6EC7F2630065100B6710E /* KREFetchedResultsController.swift */,
-				95A6EC802630065100B6710E /* MessageBubbleCell.swift */,
-			);
-			path = BotMessages;
-			sourceTree = "<group>";
-		};
-		95A6EC812630065100B6710E /* AppLaunch */ = {
-			isa = PBXGroup;
-			children = (
-				95A6EC822630065100B6710E /* AppLaunchViewController.swift */,
-				95A6EC832630065100B6710E /* AppLaunchViewController.xib */,
-			);
-			path = AppLaunch;
 			sourceTree = "<group>";
 		};
 		95A6ECB42630066D00B6710E /* DataModel */ = {
@@ -1101,12 +952,160 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		95A6EEA52630110200B6710E /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				95A6EEAA2630113500B6710E /* ChatMessages */,
+				95A6EED02630113600B6710E /* AppLaunch */,
+				95A6EEA62630113500B6710E /* BotMessages */,
+				95A6EEDB2630113600B6710E /* InputViews */,
+				95A6EED32630113600B6710E /* TypingStatus */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		95A6EEA62630113500B6710E /* BotMessages */ = {
+			isa = PBXGroup;
+			children = (
+				95A6EEA72630113500B6710E /* BotMessagesView.swift */,
+				95A6EEA82630113500B6710E /* KREFetchedResultsController.swift */,
+				95A6EEA92630113500B6710E /* MessageBubbleCell.swift */,
+			);
+			path = BotMessages;
+			sourceTree = "<group>";
+		};
+		95A6EEAA2630113500B6710E /* ChatMessages */ = {
+			isa = PBXGroup;
+			children = (
+				95A6EEAB2630113500B6710E /* File Upload */,
+				95A6EEB42630113500B6710E /* DropDown */,
+				95A6EEC02630113500B6710E /* ChatMessagesViewController.swift */,
+				95A6EECC2630113500B6710E /* ChatMessagesViewController.xib */,
+				95A6EEC12630113500B6710E /* PanelView */,
+				95A6EECD2630113500B6710E /* Attachment Cell */,
+			);
+			path = ChatMessages;
+			sourceTree = "<group>";
+		};
+		95A6EEAB2630113500B6710E /* File Upload */ = {
+			isa = PBXGroup;
+			children = (
+				95A6EEAC2630113500B6710E /* KAHTTPSessionManager.swift */,
+				95A6EEAD2630113500B6710E /* KAAccount.swift */,
+				95A6EEAE2630113500B6710E /* KoraApplication.swift */,
+				95A6EEAF2630113500B6710E /* KAAssetManager.swift */,
+				95A6EEB02630113500B6710E /* KAHTTPRequestManager.swift */,
+				95A6EEB12630113500B6710E /* KAComponentOperation.swift */,
+				95A6EEB22630113500B6710E /* UsageLimits.swift */,
+				95A6EEB32630113500B6710E /* KAFileUtilities.swift */,
+			);
+			path = "File Upload";
+			sourceTree = "<group>";
+		};
+		95A6EEB42630113500B6710E /* DropDown */ = {
+			isa = PBXGroup;
+			children = (
+				95A6EEB52630113500B6710E /* DropDown.h */,
+				95A6EEB62630113500B6710E /* resources */,
+				95A6EEB82630113500B6710E /* helpers */,
+				95A6EEBC2630113500B6710E /* src */,
+			);
+			path = DropDown;
+			sourceTree = "<group>";
+		};
+		95A6EEB62630113500B6710E /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				95A6EEB72630113500B6710E /* DropDownCell.xib */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
+		95A6EEB82630113500B6710E /* helpers */ = {
+			isa = PBXGroup;
+			children = (
+				95A6EEB92630113500B6710E /* DPDKeyboardListener.swift */,
+				95A6EEBA2630113500B6710E /* DPDConstants.swift */,
+				95A6EEBB2630113500B6710E /* DPDUIView+Extension.swift */,
+			);
+			path = helpers;
+			sourceTree = "<group>";
+		};
+		95A6EEBC2630113500B6710E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				95A6EEBD2630113500B6710E /* DropDown.swift */,
+				95A6EEBE2630113500B6710E /* DropDownCell.swift */,
+				95A6EEBF2630113500B6710E /* DropDown+Appearance.swift */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		95A6EEC12630113500B6710E /* PanelView */ = {
+			isa = PBXGroup;
+			children = (
+				95A6EEC22630113500B6710E /* KABottomSheetViewController.swift */,
+				95A6EEC32630113500B6710E /* KoraNotification.swift */,
+				95A6EEC42630113500B6710E /* KoraAssistant.swift */,
+				95A6EEC52630113500B6710E /* KAPanelWindowManager.swift */,
+				95A6EEC62630113500B6710E /* KAPanelCollectionView.swift */,
+				95A6EEC72630113500B6710E /* ApplicationManager.swift */,
+				95A6EEC82630113500B6710E /* UIViewController+Kora.swift */,
+				95A6EEC92630113500B6710E /* KAPanelItemViewController.swift */,
+				95A6EECA2630113500B6710E /* ChatMessagesViewController+Widgets.swift */,
+				95A6EECB2630113500B6710E /* KAPanelHeaderView.swift */,
+			);
+			path = PanelView;
+			sourceTree = "<group>";
+		};
+		95A6EECD2630113500B6710E /* Attachment Cell */ = {
+			isa = PBXGroup;
+			children = (
+				95A6EECE2630113500B6710E /* AttachmentCell.swift */,
+				95A6EECF2630113500B6710E /* AttachmentCell.xib */,
+			);
+			path = "Attachment Cell";
+			sourceTree = "<group>";
+		};
+		95A6EED02630113600B6710E /* AppLaunch */ = {
+			isa = PBXGroup;
+			children = (
+				95A6EED12630113600B6710E /* AppLaunchViewController.swift */,
+				95A6EED22630113600B6710E /* AppLaunchViewController.xib */,
+			);
+			path = AppLaunch;
+			sourceTree = "<group>";
+		};
+		95A6EED32630113600B6710E /* TypingStatus */ = {
+			isa = PBXGroup;
+			children = (
+				95A6EED42630113600B6710E /* KRETypingActivityIndicator.m */,
+				95A6EED52630113600B6710E /* KRETypingCollectionViewCell.xib */,
+				95A6EED62630113600B6710E /* KRETypingCollectionViewCell.h */,
+				95A6EED72630113600B6710E /* KRETypingStatusView.h */,
+				95A6EED82630113600B6710E /* KRETypingStatusView.m */,
+				95A6EED92630113600B6710E /* KRETypingCollectionViewCell.m */,
+				95A6EEDA2630113600B6710E /* KRETypingActivityIndicator.h */,
+			);
+			path = TypingStatus;
+			sourceTree = "<group>";
+		};
+		95A6EEDB2630113600B6710E /* InputViews */ = {
+			isa = PBXGroup;
+			children = (
+				95A6EEDC2630113600B6710E /* TableTemplateViewController.swift */,
+				95A6EEDD2630113600B6710E /* TableTemplateViewController.xib */,
+				95A6EEDE2630113600B6710E /* InputTOWebViewController.swift */,
+			);
+			path = InputViews;
+			sourceTree = "<group>";
+		};
 		95B39B112608C0AD004F015D /* KoreBotSDK */ = {
 			isa = PBXGroup;
 			children = (
 				95B6C95A2620795E00DACE12 /* SDKConfiguration.swift */,
 				95B6C767262078DD00DACE12 /* Common */,
-				95A6EC4A2630065100B6710E /* Controllers */,
+				95A6EEA52630110200B6710E /* Controllers */,
 				95B6C764262078DD00DACE12 /* CoreData */,
 				95A6ECB42630066D00B6710E /* DataModel */,
 				95A6ECCB2630067800B6710E /* Library */,
@@ -1251,35 +1250,35 @@
 				95A6ED5C2630067800B6710E /* TaskMenuTablViewCell.xib in Resources */,
 				95A6ED782630067900B6710E /* ImageComponentCollectionViewCell.xib in Resources */,
 				402789502419F02900DDDD5B /* Main.storyboard in Resources */,
-				95A6ECA02630065200B6710E /* AttachmentCell.xib in Resources */,
 				95A6EDAB2630068200B6710E /* Messages.plist in Resources */,
 				95A6ED662630067800B6710E /* ListWidgetDetailsViewController.xib in Resources */,
-				95A6ECA22630065200B6710E /* TableTemplateViewController.xib in Resources */,
 				95A6ED682630067800B6710E /* InlineFormTableViewCell.xib in Resources */,
+				95A6EEFE2630113600B6710E /* AttachmentCell.xib in Resources */,
 				79658B4F6E044D36BCAC9E83 /* iCielVAGRoundedNext-Bold.otf in Resources */,
-				95A6ECA52630065200B6710E /* KRETypingCollectionViewCell.xib in Resources */,
 				95A6ED7A2630067900B6710E /* MultiImageBubbleView.xib in Resources */,
 				D6C636D8D0E3471D8E8206E6 /* iCielVAGRoundedNext-DemiBold.otf in Resources */,
 				454F314D1D6344D9AB8F77CE /* iCielVAGRoundedNext-Light.otf in Resources */,
 				C52FC60E52AB4F5CA4ED19F1 /* iCielVAGRoundedNext-LightItalic.otf in Resources */,
 				95A6ED7E2630067900B6710E /* FeedbackCell.xib in Resources */,
+				95A6EEEA2630113600B6710E /* DropDownCell.xib in Resources */,
+				95A6EF022630113600B6710E /* KRETypingCollectionViewCell.xib in Resources */,
 				95A6ED852630067900B6710E /* FeedbackSliderViewController.xib in Resources */,
 				95A6ED722630067900B6710E /* ListViewDetailsViewController.xib in Resources */,
 				95A6ED7F2630067900B6710E /* ratingselect_4.gif in Resources */,
-				95A6ECAC2630065200B6710E /* AppLaunchViewController.xib in Resources */,
-				95A6EC8C2630065100B6710E /* DropDownCell.xib in Resources */,
 				95A6ED6F2630067900B6710E /* NewListTableViewCell.xib in Resources */,
 				C085FBAC523647499E3C8198 /* iCielVAGRoundedNext-Medium.otf in Resources */,
 				95A6EDAC2630068200B6710E /* BotConfiguration.plist in Resources */,
 				95A6ED832630067900B6710E /* ratingselect_3.gif in Resources */,
 				95A6ED9D2630067900B6710E /* CalenderViewController.xib in Resources */,
 				95A6ED812630067900B6710E /* ratingselect_1.gif in Resources */,
+				95A6EF062630113600B6710E /* TableTemplateViewController.xib in Resources */,
+				95A6EEFC2630113600B6710E /* ChatMessagesViewController.xib in Resources */,
 				95A6ED5D2630067800B6710E /* TaskMenuViewController.xib in Resources */,
 				95A6ED992630067900B6710E /* MultiSelectCell.xib in Resources */,
 				95A6ED802630067900B6710E /* ratingselect_5.gif in Resources */,
 				95A6ED5B2630067800B6710E /* TaskMenu.json in Resources */,
+				95A6EF002630113600B6710E /* AppLaunchViewController.xib in Resources */,
 				95A6ED6D2630067900B6710E /* NotificationCustomView.xib in Resources */,
-				95A6EC9E2630065100B6710E /* ChatMessagesViewController.xib in Resources */,
 				95A6ED902630067900B6710E /* CustomCollectionViewCell.xib in Resources */,
 				95A6EDAA2630068200B6710E /* Assets.xcassets in Resources */,
 				1E70B3406C6B4A469DACD4F5 /* iCielVAGRoundedNext-Regular.otf in Resources */,
@@ -1463,122 +1462,122 @@
 			buildActionMask = 2147483647;
 			files = (
 				95A6ECBF2630066D00B6710E /* KREMessage+CoreDataProperties.swift in Sources */,
-				95A6EC9C2630065100B6710E /* ChatMessagesViewController+Widgets.swift in Sources */,
 				95A6ED862630067900B6710E /* FeedbackCell.swift in Sources */,
-				95A6EC842630065100B6710E /* KAHTTPSessionManager.swift in Sources */,
 				95A6ED732630067900B6710E /* ListViewDetailsViewController.swift in Sources */,
-				95A6EC952630065100B6710E /* KoraNotification.swift in Sources */,
-				95A6EC9F2630065200B6710E /* AttachmentCell.swift in Sources */,
 				95A6ED502630067800B6710E /* Identity.swift in Sources */,
 				95A6ED8D2630067900B6710E /* MiniTableBubbleView.swift in Sources */,
-				95A6EC992630065100B6710E /* ApplicationManager.swift in Sources */,
-				95A6EC8A2630065100B6710E /* UsageLimits.swift in Sources */,
 				95A6ED7C2630067900B6710E /* FeedbackBubbleView.swift in Sources */,
+				95A6EF012630113600B6710E /* KRETypingActivityIndicator.m in Sources */,
 				95A6ECC42630066D00B6710E /* KREContact+CoreDataProperties.swift in Sources */,
 				95A6ED8E2630067900B6710E /* CustomCollectionViewLayout.swift in Sources */,
 				95A6ED652630067800B6710E /* TableListBubbleView.swift in Sources */,
+				95A6EEF22630113600B6710E /* KABottomSheetViewController.swift in Sources */,
+				95A6EEE42630113600B6710E /* KoraApplication.swift in Sources */,
+				95A6EEE52630113600B6710E /* KAAssetManager.swift in Sources */,
 				95A6ECC62630066D00B6710E /* KREComponent+CoreDataClass.swift in Sources */,
-				95A6EC932630065100B6710E /* ChatMessagesViewController.swift in Sources */,
 				95A6ED972630067900B6710E /* ListWidgetBubbleView.swift in Sources */,
 				95A6ED4F2630067800B6710E /* CALayer+MBAnimationPersistence.m in Sources */,
 				95A6ED692630067800B6710E /* InlineFormTableViewCell.swift in Sources */,
 				95B6C8A8262078E100DACE12 /* CoreDataManager.swift in Sources */,
-				95A6EC8D2630065100B6710E /* DPDKeyboardListener.swift in Sources */,
+				95A6EEF32630113600B6710E /* KoraNotification.swift in Sources */,
 				95A6ECC12630066D00B6710E /* DataModel.xcdatamodeld in Sources */,
 				00265C352420866A0047B6D4 /* TestConnectNative.m in Sources */,
-				95A6ECA82630065200B6710E /* BotMessagesView.swift in Sources */,
-				95A6ECA72630065200B6710E /* KRETypingCollectionViewCell.m in Sources */,
 				95A6ED702630067900B6710E /* NewListTableViewCell.swift in Sources */,
+				95A6EEE82630113600B6710E /* UsageLimits.swift in Sources */,
 				95A6ED962630067900B6710E /* MenuBubbleView.swift in Sources */,
+				95A6EEE22630113600B6710E /* KAHTTPSessionManager.swift in Sources */,
+				95A6EEEF2630113600B6710E /* DropDownCell.swift in Sources */,
+				95A6EEE32630113600B6710E /* KAAccount.swift in Sources */,
 				95A6ED9B2630067900B6710E /* MultiSelectNewBubbleView.swift in Sources */,
+				95A6EEE12630113600B6710E /* MessageBubbleCell.swift in Sources */,
 				95A6ED542630067800B6710E /* SectionedThread.swift in Sources */,
+				95A6EEDF2630113600B6710E /* BotMessagesView.swift in Sources */,
 				95A6ED982630067900B6710E /* ListBubbleView.swift in Sources */,
+				95A6EEFF2630113600B6710E /* AppLaunchViewController.swift in Sources */,
 				95A6ED4B2630067800B6710E /* TSBaseParser.m in Sources */,
 				95A6ED742630067900B6710E /* ChartBubbleView.swift in Sources */,
 				95A6ED762630067900B6710E /* CarouselBubbleView.swift in Sources */,
 				95A6ED632630067800B6710E /* OptionsBubbleView.swift in Sources */,
-				95A6EC942630065100B6710E /* KABottomSheetViewController.swift in Sources */,
-				95A6ECA92630065200B6710E /* KREFetchedResultsController.swift in Sources */,
 				95A6ED622630067800B6710E /* KREUtilities.m in Sources */,
 				95A6ED5A2630067800B6710E /* TaskMenuData.swift in Sources */,
-				95A6EC862630065100B6710E /* KoraApplication.swift in Sources */,
+				95A6EEE72630113600B6710E /* KAComponentOperation.swift in Sources */,
 				95A6ED562630067800B6710E /* TaskMenuViewController.swift in Sources */,
-				95A6EC892630065100B6710E /* KAComponentOperation.swift in Sources */,
-				95A6EC982630065100B6710E /* KAPanelCollectionView.swift in Sources */,
 				95A6ED9E2630067900B6710E /* CalenderBubbleView.swift in Sources */,
+				95A6EEFD2630113600B6710E /* AttachmentCell.swift in Sources */,
 				95A6ECC52630066D00B6710E /* KREContact+CoreDataClass.swift in Sources */,
 				95A6ED8A2630067900B6710E /* QuickRepliesData.swift in Sources */,
 				95B6C8AE262078E100DACE12 /* KABotClient.swift in Sources */,
 				95A6ED6C2630067800B6710E /* NotificationCustomView.swift in Sources */,
-				95A6EC882630065100B6710E /* KAHTTPRequestManager.swift in Sources */,
-				95A6ECAB2630065200B6710E /* AppLaunchViewController.swift in Sources */,
 				00D083282429E31C00C54A10 /* RNViewManager.swift in Sources */,
 				95A6ED912630067900B6710E /* TableBubbleView.swift in Sources */,
 				95A6ED532630067800B6710E /* Component.swift in Sources */,
 				95A6ECC02630066D00B6710E /* KREThread+CoreDataClass.swift in Sources */,
 				95A6ED592630067800B6710E /* TaskMenuTablViewCell.swift in Sources */,
-				95A6EC962630065100B6710E /* KoraAssistant.swift in Sources */,
 				95A6ED792630067900B6710E /* ImageComponentCollectionViewCell.swift in Sources */,
-				95A6EC912630065100B6710E /* DropDownCell.swift in Sources */,
+				95A6EEF52630113600B6710E /* KAPanelWindowManager.swift in Sources */,
+				95A6EF052630113600B6710E /* TableTemplateViewController.swift in Sources */,
+				95A6EEF82630113600B6710E /* UIViewController+Kora.swift in Sources */,
 				95A6ED842630067900B6710E /* iOSDevCenters+GIF.swift in Sources */,
 				95A6ED4E2630067800B6710E /* KoraASRService.swift in Sources */,
 				95A6ED4D2630067800B6710E /* AudioController.swift in Sources */,
-				95A6EC9D2630065100B6710E /* KAPanelHeaderView.swift in Sources */,
+				95A6EF072630113600B6710E /* InputTOWebViewController.swift in Sources */,
 				95A6ED642630067800B6710E /* TableListData.swift in Sources */,
 				95A6ED882630067900B6710E /* QuickReplyCollectionViewFlowLayout.swift in Sources */,
 				95A6ED9C2630067900B6710E /* TextBubbleView.swift in Sources */,
 				95A6ED752630067900B6710E /* BalloonMarker.swift in Sources */,
-				95A6ECA62630065200B6710E /* KRETypingStatusView.m in Sources */,
 				95A6ECC72630066D00B6710E /* KREComponent+CoreDataProperties.swift in Sources */,
+				95A6EEFA2630113600B6710E /* ChatMessagesViewController+Widgets.swift in Sources */,
 				95A6ED612630067800B6710E /* KREAttributedLabel.m in Sources */,
 				95A6ED872630067900B6710E /* DropDownBubbleView.swift in Sources */,
 				95B6C8AB262078E100DACE12 /* DataStoreManager.swift in Sources */,
 				4027894D2419F02900DDDD5B /* ViewController.swift in Sources */,
+				95A6EEED2630113600B6710E /* DPDUIView+Extension.swift in Sources */,
 				95A6ED8C2630067900B6710E /* ResponsiveTableBubbleView.swift in Sources */,
-				95A6EC922630065100B6710E /* DropDown+Appearance.swift in Sources */,
-				95A6EC8E2630065100B6710E /* DPDConstants.swift in Sources */,
 				95A6ED9A2630067900B6710E /* MultiSelectCell.swift in Sources */,
 				95A6ED7B2630067900B6710E /* FloatRatingView.swift in Sources */,
 				95B6C95B2620795E00DACE12 /* SDKConfiguration.swift in Sources */,
-				95A6EC972630065100B6710E /* KAPanelWindowManager.swift in Sources */,
-				95A6ECA32630065200B6710E /* InputTOWebViewController.swift in Sources */,
 				402789492419F02900DDDD5B /* AppDelegate.swift in Sources */,
-				95A6ECA12630065200B6710E /* TableTemplateViewController.swift in Sources */,
-				95A6EC9A2630065100B6710E /* UIViewController+Kora.swift in Sources */,
+				95A6EEF12630113600B6710E /* ChatMessagesViewController.swift in Sources */,
+				95A6EEFB2630113600B6710E /* KAPanelHeaderView.swift in Sources */,
+				95A6EEE92630113600B6710E /* KAFileUtilities.swift in Sources */,
 				95A6ECC22630066D00B6710E /* KREThread+CoreDataProperties.swift in Sources */,
+				95A6EEEC2630113600B6710E /* DPDConstants.swift in Sources */,
+				95A6EEF92630113600B6710E /* KAPanelItemViewController.swift in Sources */,
+				95A6EEEE2630113600B6710E /* DropDown.swift in Sources */,
 				95A6ED5E2630067800B6710E /* AudioComposeView.swift in Sources */,
 				95A6ED5F2630067800B6710E /* NSMutableAttributedString+KREUtils.m in Sources */,
 				95A6ED952630067900B6710E /* MiniTableViewCell.swift in Sources */,
 				95A6ED9F2630067900B6710E /* CalenderViewController.swift in Sources */,
-				95A6EC8F2630065100B6710E /* DPDUIView+Extension.swift in Sources */,
 				95A6ED892630067900B6710E /* QuickReplyWelcomeBubbleView.swift in Sources */,
+				95A6EEF72630113600B6710E /* ApplicationManager.swift in Sources */,
 				95A6ED6E2630067900B6710E /* NewListData.swift in Sources */,
+				95A6EF042630113600B6710E /* KRETypingCollectionViewCell.m in Sources */,
 				95A6ED6B2630067800B6710E /* NotificationBubbleView.swift in Sources */,
 				95A6ED932630067900B6710E /* ExpandedTableViewCell.swift in Sources */,
 				95A6ED942630067900B6710E /* ResponsiveCustonCell.swift in Sources */,
-				95A6EC872630065100B6710E /* KAAssetManager.swift in Sources */,
 				00265C372420BF820047B6D4 /* TestConnectNative.swift in Sources */,
 				95A6ED512630067800B6710E /* Message.swift in Sources */,
-				95A6EC852630065100B6710E /* KAAccount.swift in Sources */,
 				95A6ED672630067800B6710E /* ListWidgetDetailsViewController.swift in Sources */,
 				4027894B2419F02900DDDD5B /* SceneDelegate.swift in Sources */,
-				95A6EC8B2630065100B6710E /* KAFileUtilities.swift in Sources */,
 				95B6C8B1262078E100DACE12 /* Common.swift in Sources */,
 				95A6ED712630067900B6710E /* NewListBubbleView.swift in Sources */,
+				95A6EEF62630113600B6710E /* KAPanelCollectionView.swift in Sources */,
 				95A6ED602630067800B6710E /* KRELayoutManager.m in Sources */,
-				95A6EC9B2630065100B6710E /* KAPanelItemViewController.swift in Sources */,
 				95A6ED772630067900B6710E /* MultiImageBubbleView.swift in Sources */,
 				95A6ED6A2630067800B6710E /* InLineFormBubbleView.swift in Sources */,
-				95A6ECA42630065200B6710E /* KRETypingActivityIndicator.m in Sources */,
+				95A6EEF02630113600B6710E /* DropDown+Appearance.swift in Sources */,
 				95A6ED922630067900B6710E /* SubTableViewCell.swift in Sources */,
+				95A6EEE02630113600B6710E /* KREFetchedResultsController.swift in Sources */,
 				95A6ED8F2630067900B6710E /* CustomCollectionViewCell.swift in Sources */,
-				95A6EC902630065100B6710E /* DropDown.swift in Sources */,
 				95A6ED552630067800B6710E /* ComposeBarView.swift in Sources */,
 				95A6ED8B2630067900B6710E /* BubbleView.swift in Sources */,
+				95A6EF032630113600B6710E /* KRETypingStatusView.m in Sources */,
 				95A6ED7D2630067900B6710E /* FeedbackSliderViewController.swift in Sources */,
+				95A6EEE62630113600B6710E /* KAHTTPRequestManager.swift in Sources */,
 				95A6ECC32630066D00B6710E /* KREMessage+CoreDataClass.swift in Sources */,
-				95A6ECAA2630065200B6710E /* MessageBubbleCell.swift in Sources */,
 				95A6ED522630067800B6710E /* Thread.swift in Sources */,
+				95A6EEF42630113600B6710E /* KoraAssistant.swift in Sources */,
+				95A6EEEB2630113600B6710E /* DPDKeyboardListener.swift in Sources */,
 				95A6ED4C2630067800B6710E /* TSMarkdownParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
