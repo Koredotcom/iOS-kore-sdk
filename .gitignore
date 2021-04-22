@@ -20,7 +20,7 @@ xcuserdata
 
 ## Other
 *.xccheckout
-profile
+##profile
 *.moved-aside
 *.xcuserstate
 *.xcscmblueprint
