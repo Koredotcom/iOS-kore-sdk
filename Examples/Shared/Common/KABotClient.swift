@@ -744,11 +744,12 @@ open class KABotClient: NSObject {
         formatter.dateFormat = "dd/MM/yyyy, HH:mm:s"
         let todayDate = formatter.string(from: date)
         
-        let messagePayload : [String: Any] = ["clientMessageId" : timestamp,"message":message,"resourceId": "/bot.message","timeDateDay": todayDate, "currentPage": "https://pilot.findly.ai/sdk/demo/#home", "botInfo": botInfo,"meta": meta, "client": "sdk"]
+        let messagePayload : [String: Any] = ["clientMessageId" : timestamp,"message":message,"resourceId": "/bot.message","timeDateDay": todayDate, "currentPage": "\(SDKConfiguration.serverConfig.BOT_SERVER)/sdk/demo/#home", "botInfo": botInfo,"meta": meta, "client": "sdk"]
           
         var parameters: NSDictionary?
         parameters = ["query": text as Any,
         "maxNumOfResults": 16,
+        "pageNumber": 0,
         "userId": userInfoUserId as Any,
         "streamId": findlyStreamId,
         "lang": "en",

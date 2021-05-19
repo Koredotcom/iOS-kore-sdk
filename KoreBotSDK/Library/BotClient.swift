@@ -228,8 +228,8 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             if connection == nil {
                 connection = RTMPersistentConnection()
             }
-            let dic: [String:Any] = ["scheme": "wss", "host": "pilot.findly.ai"] //kk dev.findly.ai
-            reWriteOptions = dic
+            let dic: [String:Any] = ["scheme": "wss", "host": "qa.findly.ai"] //kk dev.findly.ai pilot.findly.ai
+            reWriteOptions = dic 
             connection?.connect(botInfo: botInfo, botInfoParameters: botInfoParameters, reWriteOptions: reWriteOptions, tryReconnect: isReconnect)
             connection?.connectionDelegate = self
             return connection

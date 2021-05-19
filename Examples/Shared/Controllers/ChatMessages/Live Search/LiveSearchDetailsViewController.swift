@@ -191,6 +191,8 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
             self?.receviceMessage(dictionary: dictionary)
             }, failure: { (error) in
                 print(error)
+                self.indicatorView.stopAnimating()
+                self.indicatorView.isHidden = true
         })
     }
     func receviceMessage(dictionary:[String: Any]){

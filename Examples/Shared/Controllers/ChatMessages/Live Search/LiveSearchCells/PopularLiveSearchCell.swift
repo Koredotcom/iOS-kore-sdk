@@ -11,12 +11,14 @@ import UIKit
 class PopularLiveSearchCell: UITableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subView: UIView!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var closeButtonWidthConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        subView.layer.cornerRadius = 10
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

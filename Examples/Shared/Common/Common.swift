@@ -23,8 +23,8 @@ var showLiveSearchTemplateNotification = "LiveSearchViewTemplateNotificationName
 var isSpeakingEnabled = false
 var selectedTheme = "Theme 1"
 var themeColorUserDefaults = "ThemeColor"
-let FindlyUrl = "https://pilot.findly.ai/" //"https://app.findly.ai/"
-var findlySidx = "sidx-a0d5b74c-ef8d-51df-8cf0-d32617d3e66e" //"sidx-29f25be6-a8af-5f2b-8ca3-80b0601d458a"
+let FindlyUrl = "https://qa.findly.ai//"//"https://pilot.findly.ai/" //"https://app.findly.ai/" 
+var findlySidx = "sidx-24471eaf-88c7-5789-9cfc-4a17e7e94a9e" //"sidx-29f25be6-a8af-5f2b-8ca3-80b0601d458a"
 var findlyUserId = "4bbe86a4-dfdc-429d-98de-253f5248a322"//"03B41D62-FB69-5B6D-A95E-473842F4DFE3"
 var userInfoUserId: String?
 var authInfoAccessToken: String?

@@ -24,6 +24,8 @@ class LiveSearchBubbleView: BubbleView {
     var rowsDataLimit = 2
     var isShowMore = false
     
+    var reloadTableView = true
+    
     let yourAttributes : [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Bold", size: 15.0) as Any,
         NSAttributedString.Key.foregroundColor : themeColor]
@@ -35,6 +37,7 @@ class LiveSearchBubbleView: BubbleView {
     var headerArray = ["POPULAR SEARCHS","RECENT SEARCHS"]
     var expandArray:NSMutableArray = []
     var likeAndDislikeArray:NSMutableArray = []
+    var headersExpandArray:NSMutableArray = []
     var checkboxIndexPath = [IndexPath]()
     
     public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
@@ -145,45 +148,53 @@ class LiveSearchBubbleView: BubbleView {
             self.tileBgv.layer.borderWidth = 1.0
         }
         
-        if (components.count > 0) {
-            let component: KREComponent = components.firstObject as! KREComponent
-            if (component.componentDesc != nil) {
-                let jsonString = component.componentDesc
-                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
-                let jsonDecoder = JSONDecoder()
-                guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObject as Any , options: .prettyPrinted),
-                    let allItems = try? jsonDecoder.decode(LiveSearchChatItems.self, from: jsonData) else {
-                        return
+        if reloadTableView {
+            if (components.count > 0) {
+                let component: KREComponent = components.firstObject as! KREComponent
+                if (component.componentDesc != nil) {
+                    let jsonString = component.componentDesc
+                    let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
+                    let jsonDecoder = JSONDecoder()
+                    guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObject as Any , options: .prettyPrinted),
+                        let allItems = try? jsonDecoder.decode(LiveSearchChatItems.self, from: jsonData) else {
+                            return
+                    }
+                    
+                    self.headerArray = []
+                    self.expandArray = []
+                    self.likeAndDislikeArray = []
+                    self.headersExpandArray = []
+                    let faqs = allItems.template?.results?.faq
+                    self.arrayOfFaqResults = faqs ?? []
+                    if self.arrayOfFaqResults.count > 0 {
+                        self.headerArray.append("FAQS")
+                        self.headersExpandArray.add("open")
+                    }
+                    for _ in 0..<self.arrayOfFaqResults.count{
+                        self.expandArray.add("close")
+                         self.likeAndDislikeArray.add("")
+                    }
+                    
+                    let pages = allItems.template?.results?.page
+                    self.arrayOfPageResults = pages ?? []
+                    if self.arrayOfPageResults.count > 0 {
+                        self.headerArray.append("PAGES")
+                        self.headersExpandArray.add("open")
+                    }
+                    let task = allItems.template?.results?.task
+                    self.arrayOfTaskResults = task ?? []
+                    if self.arrayOfTaskResults.count > 0 {
+                        self.headerArray.append("TASKS")
+                        self.headersExpandArray.add("open")
+                    }
+                    self.titleLbl.text = "Sure, please find the matched results below"
+                    self.tableView.reloadData()
+                    
                 }
-                
-                self.headerArray = []
-                self.expandArray = []
-                self.likeAndDislikeArray = []
-                let faqs = allItems.template?.results?.faq
-                self.arrayOfFaqResults = faqs ?? []
-                if self.arrayOfFaqResults.count > 0 {
-                    self.headerArray.append("SUGGESTED FAQS")
-                }
-                for _ in 0..<self.arrayOfFaqResults.count{
-                    self.expandArray.add("close")
-                     self.likeAndDislikeArray.add("")
-                }
-                
-                let pages = allItems.template?.results?.page
-                self.arrayOfPageResults = pages ?? []
-                if self.arrayOfPageResults.count > 0 {
-                    self.headerArray.append("SUGGESTED PAGES")
-                }
-                let task = allItems.template?.results?.task
-                self.arrayOfTaskResults = task ?? []
-                if self.arrayOfTaskResults.count > 0 {
-                    self.headerArray.append("SUGGESTED TASKS")
-                }
-                self.titleLbl.text = "Sure, please find the matched results below"
-                self.tableView.reloadData()
-                
             }
         }
+        
+        
     }
     
     //MARK: View height calculation
@@ -211,7 +222,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         let headerName = headerArray[indexPath.section]
         switch headerName {
-        case "SUGGESTED FAQS":
+        case "FAQS":
             if checkboxIndexPath.contains(indexPath) {
                 return UITableView.automaticDimension
             }
@@ -224,7 +235,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let headerName = headerArray[indexPath.section]
         switch headerName {
-        case "SUGGESTED FAQS":
+        case "FAQS":
              if checkboxIndexPath.contains(indexPath) {
                 return UITableView.automaticDimension
              }
@@ -240,12 +251,21 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let headerName = headerArray[section]
         switch headerName {
-        case "SUGGESTED FAQS":
-            return arrayOfFaqResults.count > rowsDataLimit ? rowsDataLimit : arrayOfFaqResults.count
-        case "SUGGESTED PAGES":
-            return arrayOfPageResults.count > rowsDataLimit ? rowsDataLimit : arrayOfPageResults.count
-        case "SUGGESTED TASKS":
-            return arrayOfTaskResults.count > rowsDataLimit ? rowsDataLimit : arrayOfTaskResults.count
+        case "FAQS":
+            if headersExpandArray [section] as! String == "open"{
+                return arrayOfFaqResults.count > rowsDataLimit ? rowsDataLimit : arrayOfFaqResults.count
+            }
+            return 0
+        case "PAGES":
+            if headersExpandArray [section] as! String == "open"{
+                return arrayOfPageResults.count > rowsDataLimit ? rowsDataLimit : arrayOfPageResults.count
+            }
+            return 0
+        case "TASKS":
+            if headersExpandArray [section] as! String == "open"{
+                return arrayOfTaskResults.count > rowsDataLimit ? rowsDataLimit : arrayOfTaskResults.count
+            }
+            return 0
         default:
             break
         }
@@ -254,7 +274,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let headerName = headerArray[indexPath.section]
         switch headerName {
-        case "SUGGESTED FAQS":
+        case "FAQS":
             let cell : LiveSearchFaqTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchFaqCellIdentifier) as! LiveSearchFaqTableViewCell
             cell.backgroundColor = UIColor.clear
             cell.selectionStyle = .none
@@ -294,7 +314,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             cell.subView.clipsToBounds = false
             cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
             return cell
-        case "SUGGESTED PAGES":
+        case "PAGES":
             let cell : LiveSearchPageTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchPageCellIdentifier) as! LiveSearchPageTableViewCell
             cell.backgroundColor = UIColor.clear
             cell.selectionStyle = .none
@@ -303,8 +323,8 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             cell.titleLabel?.numberOfLines = 2
             cell.descriptionLabel?.numberOfLines = 2
             let results = arrayOfPageResults[indexPath.row]
-            cell.titleLabel?.text = results.title
-            cell.descriptionLabel?.text = results.searchResultPreview
+            cell.titleLabel?.text = results.pageTitle
+            cell.descriptionLabel?.text = results.pageSearchResultPreview
             if results.imageUrl == nil || results.imageUrl == ""{
                 cell.profileImageView.image = UIImage(named: "placeholder_image")
             }else{
@@ -325,7 +345,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
             
             return cell
-        case "SUGGESTED TASKS":
+        case "TASKS":
             /*
             let cell : LiveSearchTaskTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchTaskCellIdentifier) as! LiveSearchTaskTableViewCell
             cell.backgroundColor = UIColor.clear
@@ -372,7 +392,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
         
         let headerName = headerArray[indexPath.section]
         switch headerName {
-        case "SUGGESTED FAQS":
+        case "FAQS":
             if checkboxIndexPath.contains(indexPath) {
                 
                 checkboxIndexPath.remove(at: checkboxIndexPath.firstIndex(of: indexPath)!)
@@ -381,9 +401,13 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             }
             tableView.reloadData()
             NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
-        case "SUGGESTED PAGES":
+        case "PAGES":
+            let results = arrayOfPageResults[indexPath.row]
+            if results.url != nil {
+                self.linkAction(results.url!)
+            }
             break
-        case "SUGGESTED TASKS":
+        case "TASKS":
             if let payload = arrayOfTaskResults[indexPath.row].payload {
                 self.optionsAction(arrayOfTaskResults[indexPath.row].name, payload)
             }
@@ -405,8 +429,30 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
         headerLabel.font = headerLabel.font.withSize(15.0)
         
         headerLabel.textColor = .gray
-        headerLabel.text =  headerArray[section]
+        //headerLabel.text =  headerArray[section]
         view.addSubview(headerLabel)
+        
+        let dropDownBtn = UIButton(frame: CGRect.zero)
+        dropDownBtn.backgroundColor = .clear
+        dropDownBtn.translatesAutoresizingMaskIntoConstraints = false
+        dropDownBtn.clipsToBounds = true
+        dropDownBtn.layer.cornerRadius = 5
+        dropDownBtn.setTitleColor(.gray, for: .normal)
+        dropDownBtn.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
+        dropDownBtn.setTitle(" \(headerArray[section])", for: .normal)
+        dropDownBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
+        dropDownBtn.contentVerticalAlignment = UIControl.ContentVerticalAlignment.top
+        dropDownBtn.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)!
+        view.addSubview(dropDownBtn)
+        dropDownBtn.tag = section
+        dropDownBtn.semanticContentAttribute = .forceLeftToRight
+        
+        dropDownBtn.addTarget(self, action: #selector(self.headerDropDownButtonAction(_:)), for: .touchUpInside)
+        if headersExpandArray[section] as! String == "open"{
+            dropDownBtn.setImage(UIImage.init(named: "downarrow"), for: .normal)
+        }else{
+            dropDownBtn.setImage(UIImage.init(named: "rightarrow"), for: .normal)
+        }
         
         let showMoreButton = UIButton(frame: CGRect.zero)
         showMoreButton.backgroundColor = .clear
@@ -456,4 +502,15 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
            likeAndDislikeArray.replaceObject(at: sender.tag, with: "DisLike")
            tableView.reloadData()
        }
+    
+    @objc fileprivate func headerDropDownButtonAction(_ sender: AnyObject!) {
+        if headersExpandArray[sender.tag] as! String == "open"{
+            headersExpandArray.replaceObject(at: sender.tag, with: "close")
+        }else{
+            headersExpandArray.replaceObject(at: sender.tag, with: "open")
+        }
+        tableView.reloadData()
+        reloadTableView = false
+        NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+    }
 }

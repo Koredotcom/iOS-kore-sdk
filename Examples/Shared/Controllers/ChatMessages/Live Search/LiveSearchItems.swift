@@ -74,6 +74,8 @@ class TemplateResultElements: NSObject, Decodable {
     public var name: String?
     public var payload: String?
     public var externalFileUrl : String?
+    public var pageTitle: String?
+    public var pageSearchResultPreview : String?
     
     enum ColorCodeKeys: String, CodingKey {
         case contentType = "contentType"
@@ -88,6 +90,8 @@ class TemplateResultElements: NSObject, Decodable {
         case name = "name"
         case payload = "payload"
         case externalFileUrl = "externalFileUrl"
+        case pageTitle = "pageTitle"
+        case pageSearchResultPreview = "pageSearchResultPreview"
     }
     
     // MARK: - init
@@ -109,6 +113,8 @@ class TemplateResultElements: NSObject, Decodable {
         name = try? container.decode(String.self, forKey: .name)
         payload = try? container.decode(String.self, forKey: .payload)
         externalFileUrl = try? container.decode(String.self, forKey: .externalFileUrl)
+        pageTitle = try? container.decode(String.self, forKey: .pageTitle)
+        pageSearchResultPreview = try? container.decode(String.self, forKey: .pageSearchResultPreview)
     }
 }
 
