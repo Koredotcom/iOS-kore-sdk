@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Gilroy-Bold.otf">
+            <string>Gilroy-Bold</string>
+        </array>
+        <array key="Gilroy-Regular.otf">
+            <string>Gilroy-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AppLaunchViewController">
+            <connections>
+                <outlet property="authorizationTF" destination="GqC-8b-UHL" id="AZt-ZA-2PV"/>
+                <outlet property="bottomConstraint" destination="EZF-i9-8Bj" id="t6E-es-AU6"/>
+                <outlet property="chatButton" destination="17E-ZR-uVC" id="xnX-bS-0rW"/>
+                <outlet property="imgView" destination="6hj-Om-n0n" id="HDy-IB-Ldv"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="xauthTF" destination="YsG-dv-o8t" id="MJe-Ge-IG4"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="17E-ZR-uVC" userLabel="Chat with Bot">
+                    <rect key="frame" x="20" y="666" width="374" height="50"/>
+                    <color key="backgroundColor" red="0.23137254901960785" green="0.27843137254901962" blue="0.34509803921568627" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="EP5-2O-snM"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Gilroy-Bold" family="Gilroy" pointSize="17"/>
+                    <state key="normal" title="CONNECT">
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="chatButtonAction:" destination="-1" eventType="touchUpInside" id="hxy-YT-WwB"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kore_logo_mask" translatesAutoresizingMaskIntoConstraints="NO" id="6hj-Om-n0n">
+                    <rect key="frame" x="149" y="251" width="116" height="234"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="6hj-Om-n0n" secondAttribute="height" constant="-118" id="0cA-3U-JTe"/>
+                        <constraint firstAttribute="height" constant="234" id="Yyp-aY-oop"/>
+                    </constraints>
+                </imageView>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please Enter Xauth" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YsG-dv-o8t">
+                    <rect key="frame" x="20" y="617" width="374" height="34"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="34" id="rzd-2H-zJ8"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Gilroy-Regular" family="Gilroy" pointSize="17"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="UTZ-JD-dQd"/>
+                    </connections>
+                </textField>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please Enter Authorization" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GqC-8b-UHL">
+                    <rect key="frame" x="20" y="568" width="374" height="34"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="34" id="6pg-R3-JjS"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Gilroy-Regular" family="Gilroy" pointSize="17"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="e9e-a9-6nv"/>
+                    </connections>
+                </textField>
+            </subviews>
+            <color key="backgroundColor" red="0.14117647058823529" green="0.20392156862745098" blue="0.27450980392156865" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="YsG-dv-o8t" secondAttribute="trailing" constant="20" id="6q0-Fw-3ub"/>
+                <constraint firstItem="6hj-Om-n0n" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="8kf-PP-VB9"/>
+                <constraint firstAttribute="trailing" secondItem="17E-ZR-uVC" secondAttribute="trailing" constant="20" id="9fj-d6-sTa"/>
+                <constraint firstAttribute="bottom" secondItem="17E-ZR-uVC" secondAttribute="bottom" constant="20" id="EZF-i9-8Bj"/>
+                <constraint firstItem="6hj-Om-n0n" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="HlX-35-ydR"/>
+                <constraint firstAttribute="trailing" secondItem="GqC-8b-UHL" secondAttribute="trailing" constant="20" id="YU5-9U-ZKG"/>
+                <constraint firstItem="YsG-dv-o8t" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="a3W-BH-RVl"/>
+                <constraint firstItem="17E-ZR-uVC" firstAttribute="top" secondItem="YsG-dv-o8t" secondAttribute="bottom" constant="15" id="chd-aw-9G7"/>
+                <constraint firstItem="YsG-dv-o8t" firstAttribute="top" secondItem="GqC-8b-UHL" secondAttribute="bottom" constant="15" id="ckc-bs-gGA"/>
+                <constraint firstItem="GqC-8b-UHL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="iNz-BG-FYb"/>
+                <constraint firstItem="17E-ZR-uVC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="srz-88-hcr"/>
+            </constraints>
+            <point key="canvasLocation" x="-160" y="307"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="kore_logo_mask" width="116" height="116"/>
+    </resources>
+</document>
