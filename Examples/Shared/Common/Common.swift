@@ -23,12 +23,12 @@ var showLiveSearchTemplateNotification = "LiveSearchViewTemplateNotificationName
 var isSpeakingEnabled = false
 var selectedTheme = "Theme 1"
 var themeColorUserDefaults = "ThemeColor"
-let FindlyUrl = "https://qa.findly.ai//"//"https://pilot.findly.ai/" //"https://app.findly.ai/" 
+let FindlyUrl = "https://qa.findly.ai/"//"https://pilot.findly.ai/" //"https://app.findly.ai/" 
 var findlySidx = "sidx-24471eaf-88c7-5789-9cfc-4a17e7e94a9e" //"sidx-29f25be6-a8af-5f2b-8ca3-80b0601d458a"
-var findlyUserId = "4bbe86a4-dfdc-429d-98de-253f5248a322"//"03B41D62-FB69-5B6D-A95E-473842F4DFE3"
+//var findlyUserId = "4bbe86a4-dfdc-429d-98de-253f5248a322"
 var userInfoUserId: String?
 var authInfoAccessToken: String?
-let findlyStreamId = SDKConfiguration.botConfig.botId //"st-a4a4fabe-11d3-56cc-801d-894ddcd26c51"
+let findlyStreamId = SDKConfiguration.botConfig.botId
 let recentSearchArray = NSMutableArray()
 
 //var isAutoSendMessage = false
@@ -40,11 +40,14 @@ var isEndOfTask = true
 let userColor: UIColor = UIColor(red: 38 / 255.0, green: 52 / 255.0, blue: 74 / 255.0, alpha: 1)
 let botColor: UIColor = UIColor(red: 237 / 255.0, green: 238 / 255.0, blue: 241 / 255.0, alpha: 1)
 
-var themeColor: UIColor = UIColor.init(hexString: "#2881DF")  // 149C3F
-var headerTitle = ""
-var backgroudImage = ""
-var leftImage = ""
+var themeColor: UIColor = UIColor.init(hexString: "#2881DF")
+var headerTitle :String?
+var backgroudImage :String?
+var leftImage :String?
 var dynamicIdentity:String?
+
+public var serachInterfaceItems: SearchInterfaceModel?
+public var resultViewSettingItems: GetResultViewSettingModel?
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
@@ -105,5 +108,26 @@ open class Utilities: NSObject {
             break
         }
         return nil
+    }
+}
+
+extension UIImageView {
+    func downloaded(from url: URL, contentMode mode: ContentMode = .scaleAspectFit) {
+        contentMode = mode
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard
+                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                let data = data, error == nil,
+                let image = UIImage(data: data)
+                else { return }
+            DispatchQueue.main.async() { [weak self] in
+                self?.image = image
+            }
+        }.resume()
+    }
+    func downloaded(from link: String, contentMode mode: ContentMode = .scaleAspectFit) {
+        guard let url = URL(string: link) else { return }
+        downloaded(from: url, contentMode: mode)
     }
 }

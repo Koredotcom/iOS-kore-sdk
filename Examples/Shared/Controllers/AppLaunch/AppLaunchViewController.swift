@@ -43,6 +43,36 @@ class AppLaunchViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ChatMessagesViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         getThemeColorApi()
+        
+//        kaBotClient.getSearchInterfaceResults(success: { (serarchInterfaceDic) in
+//            print(serarchInterfaceDic)
+//
+//            let jsonDecoder = JSONDecoder()
+//            guard let jsonData = try? JSONSerialization.data(withJSONObject: serarchInterfaceDic as Any , options: .prettyPrinted),
+//                let allItems = try? jsonDecoder.decode(SearchInterfaceModel.self, from: jsonData) else {
+//                    return
+//            }
+//            print(allItems)
+//
+//        }) { (error) in
+//            print(error)
+//        }
+        
+        
+        
+//        kaBotClient.getResultViewSettings(success: { (serarchInterfaceDic) in
+//            print(serarchInterfaceDic)
+//
+//            let jsonDecoder = JSONDecoder()
+//            guard let jsonData = try? JSONSerialization.data(withJSONObject: serarchInterfaceDic as Any , options: .prettyPrinted),
+//                let allItems = try? jsonDecoder.decode(GetResultViewSettingModel.self, from: jsonData) else {
+//                    return
+//            }
+//            print(allItems)
+//
+//        }) { (error) in
+//            print(error)
+//        }
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -184,7 +214,46 @@ class AppLaunchViewController: UIViewController {
             kaBotClient.connect(block: { [weak self] (client, thread) in
               
                 if !SDKConfiguration.widgetConfig.isPanelView {
-                    self?.navigateToChatViewController(client: client, thread: thread)
+                    //self?.navigateToChatViewController(client: client, thread: thread)
+                    
+                    self?.kaBotClient.getSearchInterfaceResults(success: { (serarchInterfaceDic) in
+                        print(serarchInterfaceDic)
+
+                        let jsonDecoder = JSONDecoder()
+                        guard let jsonData = try? JSONSerialization.data(withJSONObject: serarchInterfaceDic as Any , options: .prettyPrinted),
+                            let allItems = try? jsonDecoder.decode(SearchInterfaceModel.self, from: jsonData) else {
+                                return
+                        }
+                        print(allItems)
+                        serachInterfaceItems = allItems
+                        
+                        self!.kaBotClient.getResultViewSettings(success: { (serarchInterfaceDic) in
+                            print(serarchInterfaceDic)
+
+                            let jsonDecoder = JSONDecoder()
+                            guard let jsonData = try? JSONSerialization.data(withJSONObject: serarchInterfaceDic as Any , options: .prettyPrinted),
+                                let allItems = try? jsonDecoder.decode(GetResultViewSettingModel.self, from: jsonData) else {
+                                    return
+                            }
+                            print(allItems)
+                            resultViewSettingItems = allItems
+                            self?.navigateToChatViewController(client: client, thread: thread)
+
+                        }) { (error) in
+                            print(error)
+                            self?.activityIndicatorView.stopAnimating()
+                            self?.chatButton.isUserInteractionEnabled = true
+                            self?.careMarkButton.isUserInteractionEnabled = true
+                            self?.pfizerButton.isUserInteractionEnabled = true
+                        }
+
+                    }) { (error) in
+                        print(error)
+                        self?.activityIndicatorView.stopAnimating()
+                        self?.chatButton.isUserInteractionEnabled = true
+                        self?.careMarkButton.isUserInteractionEnabled = true
+                        self?.pfizerButton.isUserInteractionEnabled = true
+                    }
                 }else{
                     if !clientIdForWidget.hasPrefix("<") && !clientSecretForWidget.hasPrefix("<") && !chatBotNameForWidget.hasPrefix("<") && !botIdForWidget.hasPrefix("<") && !identityForWidget.hasPrefix("<") {
                         
@@ -264,11 +333,11 @@ class AppLaunchViewController: UIViewController {
         requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
         requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
         
-        let parameters: NSDictionary = ["clientId": clientId,
-                                        "clientSecret": clientSecret,
-                                        "identity": identity,
+        let parameters: NSDictionary = ["clientId": clientId as String,
+                                        "clientSecret": clientSecret as String,
+                                        "identity": identity as String,
                                         "aud": "https://idproxy.kore.com/authorize",
-                                        "isAnonymous": isAnonymous]
+                                        "isAnonymous": isAnonymous as Bool]
         
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
         sessionManager?.requestSerializer = requestSerializer
@@ -331,15 +400,14 @@ extension AppLaunchViewController{
            requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
            requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
            
-           // Headers: {"alg": "RS256","typ": "JWT"}
            requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
            requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
            
-           let parameters: NSDictionary = ["clientId": clientId,
-                                           "clientSecret": clientSecret,
-                                           "identity": identity,
+           let parameters: NSDictionary = ["clientId": clientId as String,
+                                           "clientSecret": clientSecret as String,
+                                           "identity": identity as String,
                                            "aud": "https://idproxy.kore.com/authorize",
-                                           "isAnonymous": isAnonymous]
+                                           "isAnonymous": isAnonymous as Bool]
            
            
            sessionManager?.responseSerializer = AFJSONResponseSerializer.init()

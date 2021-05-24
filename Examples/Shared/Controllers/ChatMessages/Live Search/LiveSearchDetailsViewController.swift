@@ -530,8 +530,8 @@ extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSo
                 cell.titleLabel.textColor = .black
                 cell.descriptionLabel.textColor = .dark
                 let results = arrayOfPageResults[indexPath.row]
-                cell.titleLabel?.text = results.title
-                cell.descriptionLabel?.text = results.searchResultPreview
+                cell.titleLabel?.text = results.pageTitle
+                cell.descriptionLabel?.text = results.pageSearchResultPreview
                 if results.imageUrl == nil || results.imageUrl == ""{
                     cell.profileImageView.image = UIImage(named: "placeholder_image")
                 }else{

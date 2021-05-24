@@ -20,6 +20,10 @@ class LiveSearchFaqTableViewCell: UITableViewCell {
     @IBOutlet weak var dislikeButton: UIButton!
     @IBOutlet weak var likeAndDislikeButtonHeightConstrain: NSLayoutConstraint!
     
+    @IBOutlet weak var subViewBottomConstrain: NSLayoutConstraint!
+    @IBOutlet weak var underLineLabel: UILabel!
+    @IBOutlet weak var imageVWidthConstraint: NSLayoutConstraint!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

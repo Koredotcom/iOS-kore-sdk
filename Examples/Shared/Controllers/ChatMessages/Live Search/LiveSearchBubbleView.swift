@@ -441,7 +441,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
         dropDownBtn.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
         dropDownBtn.setTitle(" \(headerArray[section])", for: .normal)
         dropDownBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
-        dropDownBtn.contentVerticalAlignment = UIControl.ContentVerticalAlignment.top
+        dropDownBtn.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
         dropDownBtn.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)!
         view.addSubview(dropDownBtn)
         dropDownBtn.tag = section

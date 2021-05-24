@@ -86,6 +86,14 @@ class TextBubbleView : BubbleView {
                 let parsedString:String = KREUtilities.formatHTMLEscapedString(htmlStrippedString);
                 self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
                 
+                let welcomeMsg = serachInterfaceItems?.interactionsConfig?.welcomeMsg
+                if welcomeMsg == parsedString{
+                    let url = URL(string: (serachInterfaceItems?.interactionsConfig?.welcomeMsgEmoji)!)
+                    iconImageView.downloaded(from: url!)
+
+                }else{
+                    iconImageView.image = UIImage.init(named: "findly")
+                }
             }
         }
     }

@@ -107,6 +107,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let welcomeMsg = serachInterfaceItems?.interactionsConfig?.welcomeMsg
+        
         //Initialize elements
         self.configureThreadView()
         self.configureComposeBar()
@@ -129,7 +131,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         liveSearchViewConfigure()
         configureWebView()
         configureLoginView()
-        welcomeMessage(messageString: "👋 Hello! How can I help you today?")
+        welcomeMessage(messageString: "\(welcomeMsg!)")
         
         let dic = NSMutableDictionary()
         dic.setObject("Payment" , forKey: "_id" as NSCopying)
@@ -221,7 +223,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         super.viewWillAppear(animated)
         addNotifications()
         
-        let urlString = leftImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let urlString = leftImage?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         let url = URL(string: urlString!)
         var data : Data?
         if url != nil {
@@ -542,7 +544,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         colorDropDown.animationduration = 0.25
         colorDropDown.textColor = .darkGray
         
-        let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let urlString = backgroudImage?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         let url = URL(string: urlString!)
         if url != nil{
             backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
@@ -570,7 +572,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             }
             
             if selectedTheme == "Theme 1"{
-                let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                let urlString = backgroudImage?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
                 let url = URL(string: urlString!)
                 if url != nil{
                     self!.backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
@@ -1651,7 +1653,7 @@ extension ChatMessagesViewController: KABotClientDelegate {
         let botId:String = SDKConfiguration.botConfig.botId
         let info:NSMutableDictionary = NSMutableDictionary.init()
         info.setValue(botId, forKey: "botId");
-        let urlString = leftImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let urlString = leftImage?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         info.setValue(urlString ?? "findly", forKey: "imageName");
         self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5)
     }
