@@ -122,6 +122,7 @@
                 <outlet property="subViewTopConstaint" destination="3Ia-d8-8F4" id="50Y-Mm-XO8"/>
                 <outlet property="subViewTrailingConstraint" destination="YN8-OI-H10" id="u1Y-vn-iSt"/>
                 <outlet property="titleLabel" destination="dPl-pc-Vyh" id="KHb-af-88h"/>
+                <outlet property="topImageV" destination="ZSg-hU-Uqt" id="eCf-qC-Qd1"/>
                 <outlet property="underLineLabel" destination="0kE-S9-mwh" id="4I2-VX-h75"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="105.46875"/>

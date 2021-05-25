@@ -31,6 +31,8 @@
 		95C52ECB254BDA64001AC8F4 /* CardTemplateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C52EC9254BDA64001AC8F4 /* CardTemplateTableViewCell.swift */; };
 		95C52ECC254BDA64001AC8F4 /* CardTemplateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95C52ECA254BDA64001AC8F4 /* CardTemplateTableViewCell.xib */; };
 		95C52ED0254C0977001AC8F4 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C52ECF254C0977001AC8F4 /* LoginView.swift */; };
+		95F1D1EC265CC6C200E2AC34 /* TitleWithCenteredContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F1D1EA265CC6C200E2AC34 /* TitleWithCenteredContentCell.swift */; };
+		95F1D1ED265CC6C200E2AC34 /* TitleWithCenteredContentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95F1D1EB265CC6C200E2AC34 /* TitleWithCenteredContentCell.xib */; };
 		95F6CE292539444E00010BAD /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6CE282539444E00010BAD /* WebView.swift */; };
 		95FD1B7C2537046C00BC4BF1 /* LiveSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD1B7B2537046C00BC4BF1 /* LiveSearchView.swift */; };
 		95FD1B80253705C500BC4BF1 /* PopularLiveSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD1B7E253705C500BC4BF1 /* PopularLiveSearchCell.swift */; };
@@ -202,6 +204,8 @@
 		95C52EC9254BDA64001AC8F4 /* CardTemplateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTemplateTableViewCell.swift; sourceTree = "<group>"; };
 		95C52ECA254BDA64001AC8F4 /* CardTemplateTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CardTemplateTableViewCell.xib; sourceTree = "<group>"; };
 		95C52ECF254C0977001AC8F4 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		95F1D1EA265CC6C200E2AC34 /* TitleWithCenteredContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleWithCenteredContentCell.swift; sourceTree = "<group>"; };
+		95F1D1EB265CC6C200E2AC34 /* TitleWithCenteredContentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleWithCenteredContentCell.xib; sourceTree = "<group>"; };
 		95F6CE282539444E00010BAD /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		95FD1B7B2537046C00BC4BF1 /* LiveSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchView.swift; sourceTree = "<group>"; };
 		95FD1B7E253705C500BC4BF1 /* PopularLiveSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularLiveSearchCell.swift; sourceTree = "<group>"; };
@@ -389,6 +393,8 @@
 			children = (
 				95912124265B87B60099860B /* TitleWithImageCell.swift */,
 				95912125265B87B60099860B /* TitleWithImageCell.xib */,
+				95F1D1EA265CC6C200E2AC34 /* TitleWithCenteredContentCell.swift */,
+				95F1D1EB265CC6C200E2AC34 /* TitleWithCenteredContentCell.xib */,
 			);
 			path = "Search Result Layout Cells";
 			sourceTree = "<group>";
@@ -1137,6 +1143,7 @@
 				CD89236924C55BAC006F71DE /* CalenderViewController.xib in Resources */,
 				CD445141250B852100879219 /* FeedbackCell.xib in Resources */,
 				95FD1B8B25373E0700BC4BF1 /* LiveSearchPageTableViewCell.xib in Resources */,
+				95F1D1ED265CC6C200E2AC34 /* TitleWithCenteredContentCell.xib in Resources */,
 				CD445150250B855F00879219 /* ratingselect_4.gif in Resources */,
 				D1F338FB2201D99A005BE5F1 /* KRETypingCollectionViewCell.xib in Resources */,
 				CD445151250B855F00879219 /* ratingselect_5.gif in Resources */,
@@ -1284,6 +1291,7 @@
 				D101F91F24E163F700D47DB8 /* KABottomSheetViewController.swift in Sources */,
 				D1F338E22201D99A005BE5F1 /* CarouselBubbleView.swift in Sources */,
 				D1F338F02201D99A005BE5F1 /* ResponsiveCustonCell.swift in Sources */,
+				95F1D1EC265CC6C200E2AC34 /* TitleWithCenteredContentCell.swift in Sources */,
 				D1F338DA2201D99A005BE5F1 /* AudioComposeView.swift in Sources */,
 				CD445145250B852100879219 /* FeedbackCell.swift in Sources */,
 				D1F338FE2201D99A005BE5F1 /* BotMessagesView.swift in Sources */,

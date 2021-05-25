@@ -23,6 +23,7 @@ class LiveSearchFaqTableViewCell: UITableViewCell {
     @IBOutlet weak var subViewBottomConstrain: NSLayoutConstraint!
     @IBOutlet weak var underLineLabel: UILabel!
     @IBOutlet weak var imageVWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var topImageV: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
