@@ -27,6 +27,8 @@
 		95912127265B87B60099860B /* TitleWithImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95912125265B87B60099860B /* TitleWithImageCell.xib */; };
 		9596DC49259069CB00F03A36 /* SearchDetailsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9596DC47259069CB00F03A36 /* SearchDetailsCollectionViewCell.swift */; };
 		9596DC4A259069CB00F03A36 /* SearchDetailsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9596DC48259069CB00F03A36 /* SearchDetailsCollectionViewCell.xib */; };
+		95A99A36265F659E00FA3A68 /* TitleWithHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A99A34265F659E00FA3A68 /* TitleWithHeaderCell.swift */; };
+		95A99A37265F659E00FA3A68 /* TitleWithHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A99A35265F659E00FA3A68 /* TitleWithHeaderCell.xib */; };
 		95C52EC4254BCA8E001AC8F4 /* CardTemplateBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C52EC3254BCA8E001AC8F4 /* CardTemplateBubbleView.swift */; };
 		95C52ECB254BDA64001AC8F4 /* CardTemplateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C52EC9254BDA64001AC8F4 /* CardTemplateTableViewCell.swift */; };
 		95C52ECC254BDA64001AC8F4 /* CardTemplateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95C52ECA254BDA64001AC8F4 /* CardTemplateTableViewCell.xib */; };
@@ -200,6 +202,8 @@
 		95912125265B87B60099860B /* TitleWithImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleWithImageCell.xib; sourceTree = "<group>"; };
 		9596DC47259069CB00F03A36 /* SearchDetailsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDetailsCollectionViewCell.swift; sourceTree = "<group>"; };
 		9596DC48259069CB00F03A36 /* SearchDetailsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchDetailsCollectionViewCell.xib; sourceTree = "<group>"; };
+		95A99A34265F659E00FA3A68 /* TitleWithHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleWithHeaderCell.swift; sourceTree = "<group>"; };
+		95A99A35265F659E00FA3A68 /* TitleWithHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleWithHeaderCell.xib; sourceTree = "<group>"; };
 		95C52EC3254BCA8E001AC8F4 /* CardTemplateBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTemplateBubbleView.swift; sourceTree = "<group>"; };
 		95C52EC9254BDA64001AC8F4 /* CardTemplateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTemplateTableViewCell.swift; sourceTree = "<group>"; };
 		95C52ECA254BDA64001AC8F4 /* CardTemplateTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CardTemplateTableViewCell.xib; sourceTree = "<group>"; };
@@ -395,6 +399,8 @@
 				95912125265B87B60099860B /* TitleWithImageCell.xib */,
 				95F1D1EA265CC6C200E2AC34 /* TitleWithCenteredContentCell.swift */,
 				95F1D1EB265CC6C200E2AC34 /* TitleWithCenteredContentCell.xib */,
+				95A99A34265F659E00FA3A68 /* TitleWithHeaderCell.swift */,
+				95A99A35265F659E00FA3A68 /* TitleWithHeaderCell.xib */,
 			);
 			path = "Search Result Layout Cells";
 			sourceTree = "<group>";
@@ -1132,6 +1138,7 @@
 				D101F92A24E163F800D47DB8 /* ChatMessagesViewController.xib in Resources */,
 				CD445152250B855F00879219 /* ratingselect_1.gif in Resources */,
 				CD445139250B7C5400879219 /* ListWidgetDetailsViewController.xib in Resources */,
+				95A99A37265F659E00FA3A68 /* TitleWithHeaderCell.xib in Resources */,
 				D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */,
 				D1F338E62201D99A005BE5F1 /* MultiImageBubbleView.xib in Resources */,
 				CD445164250B9B3E00879219 /* DropDownCell.xib in Resources */,
@@ -1335,6 +1342,7 @@
 				D1F338D22201D99A005BE5F1 /* KoraASRService.swift in Sources */,
 				D1F338D82201D99A005BE5F1 /* SectionedThread.swift in Sources */,
 				D1F338EE2201D99A005BE5F1 /* SubTableViewCell.swift in Sources */,
+				95A99A36265F659E00FA3A68 /* TitleWithHeaderCell.swift in Sources */,
 				D1F338FF2201D99A005BE5F1 /* KREFetchedResultsController.swift in Sources */,
 				95709C64265631E400D32048 /* SearchInterfaceModel.swift in Sources */,
 				D1F338EB2201D99A005BE5F1 /* CustomCollectionViewCell.swift in Sources */,

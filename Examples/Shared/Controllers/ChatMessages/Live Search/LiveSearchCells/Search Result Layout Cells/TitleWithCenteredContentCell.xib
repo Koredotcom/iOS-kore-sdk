@@ -126,6 +126,7 @@
                     <constraint firstItem="0AJ-W5-3kT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="x54-SL-BzQ"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="centerImagV" destination="DOq-pp-TZ3" id="HzG-cP-Jrg"/>
