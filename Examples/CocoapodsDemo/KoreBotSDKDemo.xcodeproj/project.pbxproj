@@ -23,6 +23,11 @@
 		95672B1425822B9F003F2C1F /* FilterTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95672B1225822B9F003F2C1F /* FilterTableCell.xib */; };
 		95709C64265631E400D32048 /* SearchInterfaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95709C63265631E400D32048 /* SearchInterfaceModel.swift */; };
 		95709C662656469900D32048 /* GetResultViewSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95709C652656469900D32048 /* GetResultViewSettingModel.swift */; };
+		957BBDD1266653A2000F6964 /* GridTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957BBDCF266653A2000F6964 /* GridTableViewCell.swift */; };
+		957BBDD2266653A2000F6964 /* GridTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 957BBDD0266653A2000F6964 /* GridTableViewCell.xib */; };
+		957BBDD5266653C8000F6964 /* GridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957BBDD3266653C8000F6964 /* GridCollectionViewCell.swift */; };
+		957BBDD6266653C8000F6964 /* GridCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 957BBDD4266653C8000F6964 /* GridCollectionViewCell.xib */; };
+		957BBDD8266655EE000F6964 /* DynamicHeightCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957BBDD7266655EE000F6964 /* DynamicHeightCollectionView.swift */; };
 		95912126265B87B60099860B /* TitleWithImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95912124265B87B60099860B /* TitleWithImageCell.swift */; };
 		95912127265B87B60099860B /* TitleWithImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95912125265B87B60099860B /* TitleWithImageCell.xib */; };
 		9596DC49259069CB00F03A36 /* SearchDetailsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9596DC47259069CB00F03A36 /* SearchDetailsCollectionViewCell.swift */; };
@@ -198,6 +203,11 @@
 		95672B1225822B9F003F2C1F /* FilterTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilterTableCell.xib; sourceTree = "<group>"; };
 		95709C63265631E400D32048 /* SearchInterfaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInterfaceModel.swift; sourceTree = "<group>"; };
 		95709C652656469900D32048 /* GetResultViewSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetResultViewSettingModel.swift; sourceTree = "<group>"; };
+		957BBDCF266653A2000F6964 /* GridTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridTableViewCell.swift; sourceTree = "<group>"; };
+		957BBDD0266653A2000F6964 /* GridTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GridTableViewCell.xib; sourceTree = "<group>"; };
+		957BBDD3266653C8000F6964 /* GridCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCollectionViewCell.swift; sourceTree = "<group>"; };
+		957BBDD4266653C8000F6964 /* GridCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GridCollectionViewCell.xib; sourceTree = "<group>"; };
+		957BBDD7266655EE000F6964 /* DynamicHeightCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicHeightCollectionView.swift; sourceTree = "<group>"; };
 		95912124265B87B60099860B /* TitleWithImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleWithImageCell.swift; sourceTree = "<group>"; };
 		95912125265B87B60099860B /* TitleWithImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleWithImageCell.xib; sourceTree = "<group>"; };
 		9596DC47259069CB00F03A36 /* SearchDetailsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDetailsCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -392,6 +402,18 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		957BBD9C26661E58000F6964 /* GridView */ = {
+			isa = PBXGroup;
+			children = (
+				957BBDCF266653A2000F6964 /* GridTableViewCell.swift */,
+				957BBDD0266653A2000F6964 /* GridTableViewCell.xib */,
+				957BBDD7266655EE000F6964 /* DynamicHeightCollectionView.swift */,
+				957BBDD3266653C8000F6964 /* GridCollectionViewCell.swift */,
+				957BBDD4266653C8000F6964 /* GridCollectionViewCell.xib */,
+			);
+			path = GridView;
+			sourceTree = "<group>";
+		};
 		95912123265B875E0099860B /* Search Result Layout Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -401,6 +423,7 @@
 				95F1D1EB265CC6C200E2AC34 /* TitleWithCenteredContentCell.xib */,
 				95A99A34265F659E00FA3A68 /* TitleWithHeaderCell.swift */,
 				95A99A35265F659E00FA3A68 /* TitleWithHeaderCell.xib */,
+				957BBD9C26661E58000F6964 /* GridView */,
 			);
 			path = "Search Result Layout Cells";
 			sourceTree = "<group>";
@@ -1138,11 +1161,13 @@
 				D101F92A24E163F800D47DB8 /* ChatMessagesViewController.xib in Resources */,
 				CD445152250B855F00879219 /* ratingselect_1.gif in Resources */,
 				CD445139250B7C5400879219 /* ListWidgetDetailsViewController.xib in Resources */,
+				957BBDD2266653A2000F6964 /* GridTableViewCell.xib in Resources */,
 				95A99A37265F659E00FA3A68 /* TitleWithHeaderCell.xib in Resources */,
 				D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */,
 				D1F338E62201D99A005BE5F1 /* MultiImageBubbleView.xib in Resources */,
 				CD445164250B9B3E00879219 /* DropDownCell.xib in Resources */,
 				95FD1B8F25373E1B00BC4BF1 /* LiveSearchTaskTableViewCell.xib in Resources */,
+				957BBDD6266653C8000F6964 /* GridCollectionViewCell.xib in Resources */,
 				95FD1B8725373DF100BC4BF1 /* LiveSearchFaqTableViewCell.xib in Resources */,
 				D1F338F82201D99A005BE5F1 /* TableTemplateViewController.xib in Resources */,
 				D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */,
@@ -1287,6 +1312,7 @@
 				D1F339002201D99A005BE5F1 /* MessageBubbleCell.swift in Sources */,
 				955286EA25385E7F00D235B5 /* LiveSearchBubbleView.swift in Sources */,
 				CD4BFFF924D16091008E08CE /* NotificationBubbleView.swift in Sources */,
+				957BBDD1266653A2000F6964 /* GridTableViewCell.swift in Sources */,
 				D1F338FD2201D99A005BE5F1 /* KRETypingCollectionViewCell.m in Sources */,
 				D1F338CA2201D99A005BE5F1 /* KREMessage+CoreDataClass.swift in Sources */,
 				D101F92324E163F800D47DB8 /* KAPanelCollectionView.swift in Sources */,
@@ -1303,6 +1329,7 @@
 				CD445145250B852100879219 /* FeedbackCell.swift in Sources */,
 				D1F338FE2201D99A005BE5F1 /* BotMessagesView.swift in Sources */,
 				CD445149250B855000879219 /* FloatRatingView.swift in Sources */,
+				957BBDD8266655EE000F6964 /* DynamicHeightCollectionView.swift in Sources */,
 				CD4BFFFD24D160CA008E08CE /* NotificationCustomView.swift in Sources */,
 				D1F338F32201D99A005BE5F1 /* ListBubbleView.swift in Sources */,
 				D1F338E52201D99A005BE5F1 /* ImageComponentCollectionViewCell.swift in Sources */,
@@ -1332,6 +1359,7 @@
 				95FD1B8625373DF100BC4BF1 /* LiveSearchFaqTableViewCell.swift in Sources */,
 				CD445157250B8A2F00879219 /* InLineFormBubbleView.swift in Sources */,
 				95672B1325822B9F003F2C1F /* FilterTableCell.swift in Sources */,
+				957BBDD5266653C8000F6964 /* GridCollectionViewCell.swift in Sources */,
 				CD445167250B9B3E00879219 /* DPDUIView+Extension.swift in Sources */,
 				D1F338F72201D99A005BE5F1 /* TableTemplateViewController.swift in Sources */,
 				CD89236724C55BAC006F71DE /* CalenderBubbleView.swift in Sources */,
