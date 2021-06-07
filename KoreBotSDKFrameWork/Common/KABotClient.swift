@@ -264,9 +264,9 @@ open class KABotClient: NSObject {
     }
     
     func getComponentType(_ templateType: String,_ tabledesign:String) -> ComponentType {
-        if (templateType == "quick_replies") {
+        if (templateType == "quick_replies" || templateType == "quick_replies_welcome" || templateType == "button") {
             return .quickReply
-        } else if (templateType == "button") {
+        } else if (templateType == "buttonn") {
             return .options
         }else if (templateType == "list") {
             return .list
@@ -295,7 +295,7 @@ open class KABotClient: NSObject {
         else if (templateType == "daterange" || templateType == "dateTemplate") {
             return .calendarView
         }
-        else if (templateType == "quick_replies_welcome"){
+        else if (templateType == "quick_replies_welcomee"){
             return .quick_replies_welcome
         }
         else if (templateType == "Notification") {

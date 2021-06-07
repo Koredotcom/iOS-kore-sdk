@@ -168,7 +168,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
          let rightImage = UIImage(named: "Group", in: frameworkBundle, compatibleWith: nil)
          navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(cancel(_:)))
          
-         navigationController?.setNavigationBarHidden(false, animated: false)
+         navigationController?.setNavigationBarHidden(true, animated: false)
          
          let font:UIFont? = UIFont(name: "Gilroy-Bold", size:17)
          let titleStr = brandingShared.brandingInfoModel?.botName != "" ? brandingShared.brandingInfoModel?.botName: SDKConfiguration.botConfig.chatBotName
@@ -192,7 +192,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
          }
          composeView.backgroundColor = widgetFooterColor
          botMessagesView.tableView.layer.borderColor = widgetDividerColor.cgColor
-         botMessagesView.tableView.layer.borderWidth = 1.0
+         botMessagesView.tableView.layer.borderWidth = 0.0
          UserDefaults.standard.set(brandingShared.brandingInfoModel?.buttonActiveTextColor, forKey: "ButtonTextColor")
          UserDefaults.standard.set(brandingShared.brandingInfoModel?.buttonActiveBgColor, forKey: "ButtonBgColor")
          UserDefaults.standard.set(brandingShared.brandingInfoModel?.widgetBorderColor, forKey: "widgetBorderColor")
@@ -262,6 +262,12 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     @objc func more(_ sender: Any) {
         //colorDropDown.show()
     }
+    
+    @IBAction func tapsOnBackBtnAction(_ sender: Any) {
+           prepareForDeinit()
+           navigationController?.setNavigationBarHidden(true, animated: false) //kk
+           navigationController?.popViewController(animated: true)
+       }
     
     //MARK: Menu Button Action
     @IBAction func menuButtonAction(_ sender: Any) {
@@ -353,7 +359,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.quickSelectContainerView.addSubview(self.quickReplyView)
         
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[quickReplyView]|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
-        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
+       // self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView]|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
         
                 self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
                     if let text = text, let payload = payload {
@@ -504,9 +511,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func getComponentType(_ templateType: String,_ tabledesign: String) -> ComponentType {
-        if (templateType == "quick_replies") {
+        if (templateType == "quick_replies" || templateType == "quick_replies_welcome" || templateType == "button") {
             return .quickReply
-        } else if (templateType == "button") {
+        } else if (templateType == "buttonn") {
             return .options
         }else if (templateType == "list") {
             return .list
@@ -535,7 +542,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         else if (templateType == "daterange" || templateType == "dateTemplate") {
             return .calendarView
         }
-        else if (templateType == "quick_replies_welcome"){
+        else if (templateType == "quick_replies_welcomee"){
             return .quick_replies_welcome
         }
         else if (templateType == "Notification") {
@@ -1015,43 +1022,51 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func populateQuickReplyCards(with message: KREMessage?) {
-        if message?.templateType == (ComponentType.quickReply.rawValue as NSNumber) {
-            let component: KREComponent = message!.components![0] as! KREComponent
-            if (!component.isKind(of: KREComponent.self)) {
-                return;
-            }
-            if ((component.componentDesc) != nil) {
-                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
-                let quickReplies: Array<Dictionary<String, String>> = jsonObject["quick_replies"] as! Array<Dictionary<String, String>>
-                var words: Array<Word> = Array<Word>()
-
-                for dictionary in quickReplies {
-                    let title: String = dictionary["title"] != nil ? dictionary["title"]! : ""
-                    let payload: String = dictionary["payload"] != nil ? dictionary["payload"]! : ""
-                    let imageURL: String = dictionary["image_url"] != nil ? dictionary["image_url"]! : ""
-
-                    let word: Word = Word(title: title, payload: payload, imageURL: imageURL)
-                    words.append(word)
+            if message?.templateType == (ComponentType.quickReply.rawValue as NSNumber) {
+                let component: KREComponent = message!.components![0] as! KREComponent
+                if (!component.isKind(of: KREComponent.self)) {
+                    return;
                 }
+                if ((component.componentDesc) != nil) {
+                    let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
+                    
+                     var quickReplies: Array<Dictionary<String, String>>
+                    if jsonObject["template_type"] as! String == "button"{
+                         quickReplies = jsonObject["buttons"] as? Array<Dictionary<String, String>> ?? []
+                    }else{
+                         quickReplies = jsonObject["quick_replies"] as? Array<Dictionary<String, String>> ?? []
+                    }
+                    
+                    var words: Array<Word> = Array<Word>()
+
+                    for dictionary in quickReplies {
+                        let title: String = dictionary["title"] != nil ? dictionary["title"]! : ""
+                        let payload: String = dictionary["payload"] != nil ? dictionary["payload"]! : ""
+                        let imageURL: String = dictionary["image_url"] != nil ? dictionary["image_url"]! : ""
+
+                        let word: Word = Word(title: title, payload: payload, imageURL: imageURL)
+                        words.append(word)
+                    }
+                    self.quickReplyView.words = words
+                    self.updateQuickSelectViewConstraints()
+                }
+            } else if(message != nil) {
+                let words: Array<Word> = Array<Word>()
                 self.quickReplyView.words = words
-                
-                self.updateQuickSelectViewConstraints()
+                self.closeQuickSelectViewConstraints()
             }
-        } else if(message != nil) {
-            let words: Array<Word> = Array<Word>()
-            self.quickReplyView.words = words
-            self.closeQuickSelectViewConstraints()
         }
-    }
     
     func closeQuickReplyCards(){
         self.closeQuickSelectViewConstraints()
     }
     
     func updateQuickSelectViewConstraints() {
-        if self.quickSelectContainerHeightConstraint.constant == 60.0 {return}
+        let height = self.quickReplyView.collectionView.collectionViewLayout.collectionViewContentSize.height
+        let quickSelectCollVheight = height > 60.0 ? height : 60.0
+        if self.quickSelectContainerHeightConstraint.constant == quickSelectCollVheight {return}
         
-        self.quickSelectContainerHeightConstraint.constant = 60.0
+        self.quickSelectContainerHeightConstraint.constant = quickSelectCollVheight
         UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
             self.view.layoutIfNeeded()
         }) { (Bool) in

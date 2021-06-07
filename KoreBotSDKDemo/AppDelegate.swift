@@ -23,8 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 window.overrideUserInterfaceStyle = .light
             }
             window.backgroundColor = UIColor.white
-            let appLaunchViewController: AppLaunchViewController = AppLaunchViewController()
-            //let appLaunchViewController: ViewController = ViewController()
+            //let appLaunchViewController: AppLaunchViewController = AppLaunchViewController()
+            let appLaunchViewController: ViewController = ViewController()
             let navigationController: UINavigationController = UINavigationController(rootViewController: appLaunchViewController)
 
             window.rootViewController = navigationController

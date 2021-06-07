@@ -18,7 +18,8 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
                 self.label.textColor = UIColor(hex: 0x485260)
                 self.label.backgroundColor = UIColor(hex: 0x485260)
             } else {
-                let textColor =  UserDefaults.standard.value(forKey: "ButtonTextColor") as? String
+               // self.label.font = UIFont(name: "Gilroy-Medium", size: 14.0)!
+                let textColor =  UserDefaults.standard.value(forKey: "ButtonBgColor") as? String
                 self.label.textColor = UIColor.init(hexString: textColor!)
                 //self.label.backgroundColor = UIColor(hex: 0xEDEDEF)
             }
@@ -96,7 +97,7 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
         super.layoutSubviews()
     }
     
-    // MARK: - 
+    // MARK: -
     override public func tintColorDidChange() {
 
     }
@@ -108,3 +109,4 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
         return width + 24.0 + (withImage ? 32.0 : 0.0)
     }
 }
+

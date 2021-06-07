@@ -8,6 +8,8 @@
 
 import UIKit
 
+
+
 public class Word: NSObject {
     static let titleCharLimit: Int = 40
     
@@ -39,8 +41,11 @@ public class Word: NSObject {
 
 open class KREQuickSelectView: UIView {
     // MARK: - properties
-    lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: bounds, collectionViewLayout: flowLayout)
+  open lazy var collectionView: UICollectionView = {
+        let layout = TagFlowLayout()
+        layout.scrollDirection = .vertical
+        let collectionView = UICollectionView(frame: bounds, collectionViewLayout: layout)
+        //let collectionView = UICollectionView(frame: bounds, collectionViewLayout: flowLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = UIColor.clear
         collectionView.bounces = true
@@ -50,12 +55,17 @@ open class KREQuickSelectView: UIView {
         collectionView.delegate = self
         addSubview(collectionView)
         collectionView.semanticContentAttribute = .forceLeftToRight
+        
+        layout.minimumInteritemSpacing = 1.0
+        layout.minimumLineSpacing = 10
+        layout.sectionInset = UIEdgeInsets(top: 4.0, left: 10.0, bottom: 8.0, right: 10.0)
+        
         return collectionView
     }()
     lazy var flowLayout: UICollectionViewFlowLayout = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = CGSize(width: 1.0, height: cellHeight)
-        flowLayout.scrollDirection = .horizontal
+        flowLayout.scrollDirection = .vertical
         flowLayout.minimumInteritemSpacing = 13.0
         flowLayout.minimumLineSpacing = 1
         flowLayout.sectionInset = UIEdgeInsets(top: 4.0, left: 10.0, bottom: 8.0, right: 10.0)
@@ -65,6 +75,7 @@ open class KREQuickSelectView: UIView {
     let cellHeight: CGFloat = 36.0
     let contentHeight: CGFloat = 44.0
     let prototypeCell = KRETokenCollectionViewCell()
+    
     
     public var sendQuickReplyAction: ((_ text: String?, _ payload: String?) -> Void)?
     public var words: [Word]? {
@@ -137,9 +148,10 @@ open class KREQuickSelectView: UIView {
     override open var intrinsicContentSize: CGSize {
         return CGSize(width: UIView.noIntrinsicMetric, height: contentHeight)
     }
+    
 }
 
-// MARK: - 
+// MARK: -
 extension KREQuickSelectView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // MARK:- datasource
     @nonobjc public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -156,10 +168,11 @@ extension KREQuickSelectView: UICollectionViewDelegate, UICollectionViewDataSour
             let word = words?[indexPath.row] {
             cell.labelText = word.title
             cell.imageURL = word.imageURL
-            let borderColor =  UserDefaults.standard.value(forKey: "widgetBorderColor") as? String
-            cell.layer.borderColor = UIColor.init(hexString: borderColor!).cgColor
-            cell.layer.borderWidth = 1.5
-            let bgColor =  UserDefaults.standard.value(forKey: "ButtonBgColor") as? String
+//            let borderColor =  UserDefaults.standard.value(forKey: "widgetBorderColor") as? String
+//            cell.layer.borderColor = UIColor.init(hexString: borderColor!).cgColor
+//            cell.layer.borderWidth = 1.5
+            cell.layer.cornerRadius = 10
+            let bgColor =  UserDefaults.standard.value(forKey: "ButtonTextColor") as? String
             cell.backgroundColor = UIColor.init(hexString: bgColor!) //.clear //kk
             cell.krefocused = false
         }
@@ -185,4 +198,52 @@ extension KREQuickSelectView: UICollectionViewDelegate, UICollectionViewDataSour
         }
         return CGSize(width: min(maxContentWidth(), width), height: cellHeight)
     }
+}
+
+// MARK: - NewCollectionViewFlowLayout
+extension KREQuickSelectView{
+    class Row {
+        var attributes = [UICollectionViewLayoutAttributes]()
+        var spacing: CGFloat = 0
+
+        init(spacing: CGFloat) {
+            self.spacing = spacing
+        }
+
+        func add(attribute: UICollectionViewLayoutAttributes) {
+            attributes.append(attribute)
+        }
+
+        func tagLayout(collectionViewWidth: CGFloat) {
+            let padding = 2
+            var offset = padding
+            for attribute in attributes {
+                attribute.frame.origin.x = CGFloat(offset)
+                offset += Int(attribute.frame.width + spacing)
+            }
+        }
+    }
+
+    class TagFlowLayout: UICollectionViewFlowLayout {
+        override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+            guard let attributes = super.layoutAttributesForElements(in: rect) else {
+                return nil
+            }
+
+            var rows = [Row]()
+            var currentRowY: CGFloat = -1
+
+            for attribute in attributes {
+                if currentRowY != attribute.frame.origin.y {
+                    currentRowY = attribute.frame.origin.y
+                    rows.append(Row(spacing: 10))
+                }
+                rows.last?.add(attribute: attribute)
+            }
+
+            rows.forEach { $0.tagLayout(collectionViewWidth: collectionView?.frame.width ?? 0) }
+            return rows.flatMap { $0.attributes }
+        }
+    }
+
 }
