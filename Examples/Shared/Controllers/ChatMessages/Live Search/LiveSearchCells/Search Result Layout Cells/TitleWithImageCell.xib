@@ -128,6 +128,9 @@
                 <outlet property="likeButton" destination="J4P-qd-8ji" id="fxs-Y8-zIc"/>
                 <outlet property="subView" destination="KaZ-Mz-zet" id="ZfP-az-JWZ"/>
                 <outlet property="subViewBottomConstrain" destination="eM4-e1-CP2" id="tH9-ge-bCg"/>
+                <outlet property="subViewLeadingConstraint" destination="uBk-af-AId" id="8SG-db-Uqm"/>
+                <outlet property="subViewTopConstaint" destination="61c-nP-ve6" id="W5j-Tg-Bs7"/>
+                <outlet property="subViewTrailingConstraint" destination="DBO-ab-dwQ" id="dSg-iv-jeC"/>
                 <outlet property="titleLabel" destination="TIl-0Y-eIi" id="fG1-Qq-JUn"/>
                 <outlet property="topImageV" destination="NtS-6u-z7q" id="ejn-Tg-d9I"/>
                 <outlet property="topImageVHeightConstrain" destination="rpz-F9-g9N" id="R0j-TA-eC1"/>

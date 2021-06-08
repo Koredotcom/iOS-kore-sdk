@@ -90,6 +90,9 @@
                 <outlet property="likeButton" destination="WTl-MR-ciK" id="moT-9G-pDH"/>
                 <outlet property="subView" destination="K64-H3-LBm" id="52g-D6-rb0"/>
                 <outlet property="subViewBottomConstrain" destination="0HM-Kn-QSu" id="Zpr-v7-hUB"/>
+                <outlet property="subViewLeadingConstraint" destination="vwj-S8-b5P" id="bmz-SZ-5ha"/>
+                <outlet property="subViewTopConstaint" destination="VZl-Hb-RhM" id="Zu2-Gc-feR"/>
+                <outlet property="subViewTrailingConstraint" destination="DHS-S7-h5c" id="Pvm-0S-A7e"/>
                 <outlet property="titleLabel" destination="QCd-Og-6Oi" id="ooo-Mj-8BH"/>
                 <outlet property="underLineLabel" destination="vgH-FL-ISJ" id="c3t-Y0-ZuG"/>
             </connections>

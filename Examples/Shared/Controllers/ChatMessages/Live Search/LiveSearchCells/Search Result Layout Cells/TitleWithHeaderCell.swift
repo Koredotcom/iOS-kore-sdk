@@ -10,6 +10,10 @@ import UIKit
 
 class TitleWithHeaderCell: UITableViewCell {
     
+    @IBOutlet weak var subViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var subViewTopConstaint: NSLayoutConstraint!
+    @IBOutlet weak var subViewTrailingConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var subView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
    

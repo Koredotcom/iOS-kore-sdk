@@ -29,7 +29,7 @@
                 <outlet property="indicatorView" destination="MsV-Cc-Kt3" id="ies-hV-rIq"/>
                 <outlet property="subView" destination="tzG-3J-5ce" id="wcg-go-yMD"/>
                 <outlet property="submitButton" destination="OPm-6A-UvH" id="xOb-5f-KxX"/>
-                <outlet property="tableview" destination="cdB-sk-fxe" id="czi-ZY-Xch"/>
+                <outlet property="tableView" destination="cdB-sk-fxe" id="mm5-3W-h78"/>
                 <outlet property="topBadgeLabel" destination="4SM-V0-WsE" id="VK7-hs-ydE"/>
                 <outlet property="topBadgeView" destination="PaT-zq-w2L" id="f9Q-wY-XOI"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -316,6 +316,6 @@
         <image name="Filter-1" width="20" height="20"/>
         <image name="XButtonGray20" width="20" height="20"/>
         <image name="leftarrow" width="20" height="20"/>
-        <image name="rightarrow" width="20" height="20"/>
+        <image name="rightarrow" width="10" height="10"/>
     </resources>
 </document>
