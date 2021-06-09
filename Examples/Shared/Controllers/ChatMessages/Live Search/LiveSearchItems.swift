@@ -145,7 +145,9 @@ class TemplateFacets: NSObject, Decodable {
     public var page: Int?
     public var task: Int?
     public var document: Int?
+    public var files: Int?
     
+
     
     enum ColorCodeKeys: String, CodingKey {
         case all_results = "all results"
@@ -153,6 +155,7 @@ class TemplateFacets: NSObject, Decodable {
         case page = "page"
         case task = "task"
         case document = "document"
+        case files = "object"
     }
     
     // MARK: - init
@@ -167,5 +170,6 @@ class TemplateFacets: NSObject, Decodable {
         page = try? container.decode(Int.self, forKey: .page)
         task = try? container.decode(Int.self, forKey: .task)
         document = try? container.decode(Int.self, forKey: .document)
+        files = try? container.decode(Int.self, forKey: .files)
     }
 }

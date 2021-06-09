@@ -66,7 +66,7 @@ class TemplateChatResultElements: NSObject, Decodable {
     public var page: [TemplateResultElements]?
     public var task: [TemplateResultElements]?
     public var document: [TemplateResultElements]?
-   
+    public var files: [TemplateResultElements]?
 
     
     
@@ -75,6 +75,7 @@ class TemplateChatResultElements: NSObject, Decodable {
         case page = "page"
         case task = "task"
         case document = "document"
+        case files = "object"
     }
     
     // MARK: - init
@@ -88,6 +89,7 @@ class TemplateChatResultElements: NSObject, Decodable {
         page = try? container.decode([TemplateResultElements].self, forKey: .page)
         task = try? container.decode([TemplateResultElements].self, forKey: .task)
         document = try? container.decode([TemplateResultElements].self, forKey: .document)
+        files = try? container.decode([TemplateResultElements].self, forKey: .files)
     }
 }
 
