@@ -46,7 +46,8 @@ open class HTTPRequestManager : NSObject {
     // MARK: requests
     open func signInWithToken(_ token: String, botInfo: [String: Any], success:((_ user: UserModel?, _ authInfo: AuthInfoModel?) -> Void)?, failure:((_ error: Error) -> Void)?)  {
         let urlString: String = Constants.URL.jwtAuthorizationUrl
-        let parameters: NSDictionary = ["assertion": token, "botInfo": botInfo]
+        let tokenDic = Dictionary<String, Any>()
+        let parameters: NSDictionary = ["assertion": token, "botInfo": botInfo, "token": tokenDic]
         
         sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: { (progress) in
             

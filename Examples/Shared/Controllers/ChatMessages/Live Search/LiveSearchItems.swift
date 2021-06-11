@@ -76,7 +76,22 @@ class TemplateResultElements: NSObject, Decodable {
     public var externalFileUrl : String?
     public var pageTitle: String?
     public var pageSearchResultPreview : String?
+    public var pagePreview : String?
+    public var pageImageUrl : String?
+    public var pageUrl : String?
+    public var faqQuestion : String?
+    public var faqAnswer : String?
     
+    public var fileTitle : String?
+    public var filePreview : String?
+    public var fileimageUrl : String?
+    public var fileUrl : String?
+    
+    public var product : String?
+    public var category : String?
+    public var dataImageUrl : String?
+    public var dataUrl : String?
+
     enum ColorCodeKeys: String, CodingKey {
         case contentType = "contentType"
         case question = "question"
@@ -92,6 +107,22 @@ class TemplateResultElements: NSObject, Decodable {
         case externalFileUrl = "externalFileUrl"
         case pageTitle = "pageTitle"
         case pageSearchResultPreview = "pageSearchResultPreview"
+        case pagePreview = "pagePreview"
+        case pageImageUrl = "pageImageUrl"
+        case pageUrl = "pageUrl"
+        case faqQuestion = "faqQuestion"
+        case faqAnswer = "faqAnswer"
+        
+        case fileTitle = "fileTitle"
+        case filePreview = "filePreview"
+        case fileimageUrl = "fileimageUrl"
+        case fileUrl = "fileUrl"
+        
+        case product = "product"
+        case category = "category"
+        case dataImageUrl = "dataImageUrl"
+        case dataUrl = "dataUrl"
+        
     }
     
     // MARK: - init
@@ -115,6 +146,21 @@ class TemplateResultElements: NSObject, Decodable {
         externalFileUrl = try? container.decode(String.self, forKey: .externalFileUrl)
         pageTitle = try? container.decode(String.self, forKey: .pageTitle)
         pageSearchResultPreview = try? container.decode(String.self, forKey: .pageSearchResultPreview)
+        pagePreview = try? container.decode(String.self, forKey: .pagePreview)
+        pageImageUrl = try? container.decode(String.self, forKey: .pageImageUrl)
+        pageUrl = try? container.decode(String.self, forKey: .pageUrl)
+        faqQuestion = try? container.decode(String.self, forKey: .faqQuestion)
+        faqAnswer = try? container.decode(String.self, forKey: .faqAnswer)
+        
+        fileTitle = try? container.decode(String.self, forKey: .fileTitle)
+        filePreview = try? container.decode(String.self, forKey: .filePreview)
+        fileimageUrl = try? container.decode(String.self, forKey: .fileimageUrl)
+        fileUrl = try? container.decode(String.self, forKey: .fileUrl)
+        
+        product = try? container.decode(String.self, forKey: .product)
+        category = try? container.decode(String.self, forKey: .category)
+        dataImageUrl = try? container.decode(String.self, forKey: .dataImageUrl)
+        dataUrl = try? container.decode(String.self, forKey: .dataUrl)
     }
 }
 

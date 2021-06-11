@@ -404,8 +404,8 @@ open class KABotClient: NSObject {
                             message.addComponent(optionsComponent)
                         }
                     case "search":
-                        if let dictionary = payload["payload"] as? [String: Any] {
-                            let templateType = dictionary["template_type"] as? String ?? ""
+                        if let dictionary = payload as? [String: Any] { //payload["payload"] as? [String: Any]
+                            let templateType = dictionary["templateType"] as? String ?? ""
                             var tabledesign = "responsive"
                             if let value = dictionary["table_design"] as? String {
                                 tabledesign = value
@@ -417,23 +417,6 @@ open class KABotClient: NSObject {
                             }
                             
                             ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
-                            //                            if let tText = dictionary["text"] as? String, tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable) {
-                            //                                textMessage = Message()
-                            //                                textMessage?.messageType = .reply
-                            //                                textMessage?.sentDate = message.sentDate
-                            //                                textMessage?.messageId = message.messageId
-                            //                                if let iconUrl = object?.iconUrl {
-                            //                                    textMessage?.iconUrl = iconUrl
-                            //                                }
-                            //                                let textComponent: Component = Component()
-                            //                                textComponent.payload = tText
-                            //                                textMessage?.addComponent(textComponent)
-                            //                            }
-                            //
-                            //                            let optionsComponent: Component = Component(componentType)
-                            //                            optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                            //                            message.sentDate = object?.createdOn
-                            //                            message.addComponent(optionsComponent)
                             
                             
                             let optionsComponent: Component = Component(componentType)
@@ -524,13 +507,13 @@ open class KABotClient: NSObject {
         if (isAnonymous) {
             identity = self.getUUID()
         } else {
-            identity = dynamicIdentity //SDKConfiguration.botConfig.identity //kk
+            identity = dynamicIdentity
         }
         
         let botInfo: [String: Any] = ["chatBot": chatBotName, "taskBotId": botId]
         
         self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: isAnonymous, success: { [weak self] (jwToken) in
-            
+            jwtToken = jwToken
             let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
             let context = dataStoreManager.coreDataManager.workerContext
             context.perform {
@@ -629,10 +612,16 @@ open class KABotClient: NSObject {
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
         
         // NOTE: You must set your URL to generate JWT.
-        let urlString: String = "\(FindlyUrl)api/1.1/searchAssist/\(findlySidx)/popularSearches"//SDKConfiguration.serverConfig.koreJwtUrl() //sidx-f3a43e5f-74b6-5632-a488-8af83c480b88
+        let urlString: String = "\(FindlyUrl)searchassistapi/searchsdk/stream/\(SDKConfiguration.botConfig.botId)/\(findlySidx)/popularSearches"//SDKConfiguration.serverConfig.koreJwtUrl() //sidx-f3a43e5f-74b6-5632-a488-8af83c480b88
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+        
+        let authorizationStr = "bearer \(authInfoAccessToken!)"
+        requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
+        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        let auth = jwtToken
+        requestSerializer.setValue(auth, forHTTPHeaderField:"auth")
        
         
         let parameters: NSDictionary = [:]
@@ -662,7 +651,7 @@ open class KABotClient: NSObject {
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
         
        // let urlString: String = "\(FindlyUrl)searchAssistant/liveSearch/\(findlySidx)"
-        let urlString: String = "\(FindlyUrl)api/1.1/searchAssist/\(findlySidx)/liveSearch"
+        let urlString: String = "\(FindlyUrl)searchassistapi/searchsdk/stream/\(SDKConfiguration.botConfig.botId)/\(findlySidx)/liveSearch"
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
@@ -670,13 +659,36 @@ open class KABotClient: NSObject {
         let authorizationStr = "bearer \(authInfoAccessToken!)"
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
         requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        let auth = jwtToken
+        requestSerializer.setValue(auth, forHTTPHeaderField:"auth")
+        
+        let message : [String: Any] = ["body": text!]
+                let meta : [String: Any] = ["timezone": "en-GB", "locale": "Asia/Calcutta"]
+                
+                let chatBotName: String = SDKConfiguration.botConfig.chatBotName
+                let botId: String = SDKConfiguration.botConfig.botId
+                let botInfo: [String: Any] = ["chatBot": chatBotName, "taskBotId": botId,"customData": "{}"]
+    
+                let timestamp = NSDate().timeIntervalSince1970
+                let date = Date()
+                let formatter = DateFormatter()
+                formatter.dateFormat = "dd/MM/yyyy, HH:mm:s"
+                let todayDate = formatter.string(from: date)
+                
+                let messagePayload : [String: Any] = ["clientMessageId" : timestamp,"message":message,"resourceId": "/bot.message","timeDateDay": todayDate, "currentPage": "\(SDKConfiguration.serverConfig.BOT_SERVER)/sdk/demo/#home", "botInfo": botInfo,"meta": meta, "client": "sdk"]
         
         let parameters: NSDictionary = ["query": text as Any,
                                         "maxNumOfResults": 16,
                                         "userId": userInfoUserId as Any,
                                         "streamId": findlyStreamId,
-                                        "lang": "en"
+                                        "lang": "en",
+                                        "messagePayload": messagePayload
                                         ]
+        
+        
+//        let jsonData = try! JSONSerialization.data(withJSONObject: parameters, options: JSONSerialization.WritingOptions.prettyPrinted)
+//        let jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
+//        print(jsonString)
         
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
         sessionManager?.requestSerializer = requestSerializer
@@ -696,7 +708,7 @@ open class KABotClient: NSObject {
     }
     
     
-    func getSearchResults(_ text: String!, _ filterArray: NSMutableArray!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+    func getSearchResults(_ text: String!, _ filterArray: NSMutableArray!, _ pageNo:Int, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
         // Session Configuration
         let configuration = URLSessionConfiguration.default
@@ -706,7 +718,7 @@ open class KABotClient: NSObject {
         
         // NOTE: You must set your URL to generate JWT.
         //let urlString: String = "\(FindlyUrl)searchAssistant/search/\(findlySidx)"
-        let urlString: String = "\(FindlyUrl)api/1.1/findly/\(findlySidx)/search"
+        let urlString: String = "\(FindlyUrl)searchassistapi/searchsdk/stream/\(SDKConfiguration.botConfig.botId)/\(findlySidx)/search"
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
@@ -714,6 +726,8 @@ open class KABotClient: NSObject {
         let authorizationStr = "bearer \(authInfoAccessToken!)"
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
         requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        let auth = jwtToken
+        requestSerializer.setValue(auth, forHTTPHeaderField:"auth")
         
         let message : [String: Any] = ["body": text!]
         let meta : [String: Any] = ["timezone": "en-GB", "locale": "Asia/Calcutta"]
@@ -739,8 +753,8 @@ open class KABotClient: NSObject {
           
         var parameters: NSDictionary?
         parameters = ["query": text as Any,
-        "maxNumOfResults": 16,
-        "pageNumber": 0,
+        "maxNumOfResults": 10,
+        "pageNumber": pageNo,
         "userId": userInfoUserId as Any,
         "streamId": findlyStreamId,
         "lang": "en",
@@ -749,7 +763,8 @@ open class KABotClient: NSObject {
         
         if filterArray.count>0 {
             parameters = ["query": text as Any,
-            "maxNumOfResults": 16,
+            "maxNumOfResults": 10,
+            "pageNumber": pageNo,
             "userId": userInfoUserId as Any,
             "streamId": findlyStreamId,
             "lang": "en",
@@ -784,11 +799,12 @@ open class KABotClient: NSObject {
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
         
         // NOTE: You must set your URL to generate JWT.
-        let urlString: String = "\(FindlyUrl)api/public/searchAssist/stream/\(SDKConfiguration.botConfig.botId)/\(findlySidx)/searchInterface"
+        let urlString: String = "\(FindlyUrl)searchassistapi/searchsdk/stream/\(SDKConfiguration.botConfig.botId)/\(findlySidx)/searchInterface"
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-        let auth = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MjE0ODcxOTgzOTYsImV4cCI6MTYyMTU3MzU5ODM5NiwiYXVkIjoiaHR0cHM6Ly9pZHByb3h5LmtvcmUuY29tL2F1dGhvcml6ZSIsImlzcyI6ImNzLTRkM2E2NDk4LWFjZmQtNWIzNS1iMzk4LWZlMWQ1MmIxYjdmZSIsInN1YiI6IjBkYmMxZDZmLWU2YjgtNDU2OS1hY2I1LWU3NDFiMzFjMGEzZSIsImlzQW5vbnltb3VzIjoiZmFsc2UifQ.B3KP8_vCrTcScVEcvkqfabnaqcEyoVc9mh8ghayiAIA"
+        //let auth = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MjE0ODcxOTgzOTYsImV4cCI6MTYyMTU3MzU5ODM5NiwiYXVkIjoiaHR0cHM6Ly9pZHByb3h5LmtvcmUuY29tL2F1dGhvcml6ZSIsImlzcyI6ImNzLTRkM2E2NDk4LWFjZmQtNWIzNS1iMzk4LWZlMWQ1MmIxYjdmZSIsInN1YiI6IjBkYmMxZDZmLWU2YjgtNDU2OS1hY2I1LWU3NDFiMzFjMGEzZSIsImlzQW5vbnltb3VzIjoiZmFsc2UifQ.B3KP8_vCrTcScVEcvkqfabnaqcEyoVc9mh8ghayiAIA"
+        let auth = jwtToken
         requestSerializer.setValue(auth, forHTTPHeaderField:"auth")
        
         
@@ -820,12 +836,14 @@ open class KABotClient: NSObject {
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
         
         // NOTE: You must set your URL to generate JWT.
-        let urlString: String = "\(FindlyUrl)api/1.1/findly/\(findlySidx)/getresultviewsettings"
+        let urlString: String = "\(FindlyUrl)searchassistapi/searchsdk/stream/\(SDKConfiguration.botConfig.botId)/\(findlySidx)/getresultviewsettings"
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
         let authorizationStr = "bearer \(authInfoAccessToken!)"
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
+        let auth = jwtToken
+        requestSerializer.setValue(auth, forHTTPHeaderField:"auth")
         
         //let authorizationStr = "bearer Su-Y4wKdh0yjlU2bc40Em8iNyNqrYt2KoVT4_VjJNGGLwxxBAFgYsm7g3bzf7w6M"
         //requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")

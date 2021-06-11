@@ -16,6 +16,7 @@ protocol LiveSearchDetailsViewDelegate {
 
 class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDelegate {
     var rowsDataLimit = 5
+    var pageNumber = 0
     @IBOutlet weak var subView: UIView!
     @IBOutlet weak var headingLebel: UILabel!
     @IBOutlet weak var closeButton: UIButton!
@@ -79,6 +80,7 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
     var likeAndDislikeArray:NSMutableArray = []
     var arrayOfCollectionViewCount:NSMutableArray = []
     var factsArray:NSMutableArray = []
+    var sysContentType = "All"
     var isFilterApply = false
     
     var dataString: String!
@@ -228,7 +230,7 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
         let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: dataString!) as! NSDictionary
         let template = jsonObject["template"] as! Dictionary<String, Any>
         let query = template["originalQuery"] as! String
-        self.kaBotClient.getSearchResults(query, filterArray ,success: { [weak self] (dictionary) in
+        self.kaBotClient.getSearchResults(query, filterArray, pageNumber ,success: { [weak self] (dictionary) in
             print(dictionary)
             self?.receviceMessage(dictionary: dictionary)
             }, failure: { (error) in
@@ -293,7 +295,7 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
             self.documentExpandArray.add("close")
         }
         
-        let files = allItems.template?.results?.files
+        let files = allItems.template?.results?.file
         self.arrayOfFilesResults = files ?? []
         if self.arrayOfFilesResults.count > 0 {
             self.headerArray.append("FILES")
@@ -371,6 +373,7 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
         isFilterApply = false
         submitButton.isHidden = true
         cleartButton.isHidden = true
+        self.pageNumber = 0
         callingSearchApi(filterArray: [])
         arrayOfSeletedValues = []
         badgeLabel.text = "\(arrayOfSeletedValues.count)"
@@ -380,6 +383,7 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
     }
     
     @IBAction func tapsOnSubmitBnAct(_ sender: Any) {
+        self.pageNumber = 0
         callingSearchApi(filterArray: factsArray)
     }
     
@@ -743,11 +747,21 @@ extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSo
                     facetValue.add(selectedindex["value"]!)
                 }
             }
-            let facts: [String: Any] = ["facetType": "value", "fieldName": index["fieldName"] as! String ,"facetValue": facetValue]
+            let facts: [String: Any] = ["facetType": "value", "fieldName": index["fieldName"] as! String ,"facetValue": facetValue, "facetName": index["fieldName"] as! String]
             factsArray.add(facts)
         }
+        
+        //This for select collectionView type
+        if sysContentType != "All"{
+            let facetValue = NSMutableArray()
+            facetValue.add(sysContentType)
+            let facts: [String: Any] = ["facetType": "value", "fieldName": "sysContentType" ,"facetValue": facetValue, "facetName": "facetContentType"]
+            factsArray.add(facts)
+        }
+        
+        
         print(factsArray)
-        //filterView.isHidden = true
+        
         
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -1064,6 +1078,7 @@ extension LiveSearchDetailsViewController : UICollectionViewDelegate, UICollecti
         headerArray = []
         let headerName = arrayOfCollectionView[indexPath.item]
         rowsDataLimit = 100
+        
         switch headerName {
         case "All Results":
             if self.arrayOfFaqResults.count > 0 {
@@ -1081,33 +1096,51 @@ extension LiveSearchDetailsViewController : UICollectionViewDelegate, UICollecti
             if self.arrayOfFilesResults.count > 0 {
                 self.headerArray.append("FILES")
             }
+            sysContentType = "All"
             rowsDataLimit = 5
         case "FAQ's":
             if self.arrayOfFaqResults.count > 0 {
                 self.headerArray.append("FAQS")
             }
+            sysContentType = "faq"
         case "Pages":
             if self.arrayOfPageResults.count > 0 {
                 self.headerArray.append("PAGES")
             }
+            sysContentType = "page"
         case "Actions":
             if self.arrayOfTaskResults.count > 0 {
                 self.headerArray.append("ACTIONS")
             }
+            sysContentType = "task"
         case "Documents":
             if self.arrayOfDocumentsResults.count > 0 {
                 self.headerArray.append("DOCUMENTS")
             }
+            sysContentType = "document"
         case "Files":
             if self.arrayOfFilesResults.count > 0 {
                 self.headerArray.append("FILES")
             }
+            sysContentType = "object"
         default:
             break
         }
         collectionView.reloadData()
         self.collectionView.scrollToItem(at: IndexPath(row: indexPath.item, section: 0), at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
-        tableView.reloadData()
+        //tableView.reloadData() //kk
+        
+        createJsonData()
+        self.pageNumber = 0
+        if sysContentType == "All"{
+            if arrayOfSeletedValues.count > 0 {
+                callingSearchApi(filterArray: factsArray)
+            }else{
+                callingSearchApi(filterArray: [])
+            }
+        }else{
+            callingSearchApi(filterArray: factsArray)
+        }
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 5.0, left: 10.0, bottom: 5.0, right: 10.0)
@@ -1130,6 +1163,22 @@ extension LiveSearchDetailsViewController{
                 self.flotingButtonView.alpha = 1 // Here you will get the animation you want
                 self.badgeView.alpha = 1
             }, completion: { _ in
+                
+                let height = scrollView.frame.size.height
+                let contentYoffset = scrollView.contentOffset.y
+                let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+                if distanceFromBottom < height || Int(distanceFromBottom) == Int(height) {
+                    print(" you reached end of the table")
+                    
+                    if self.sysContentType != "All"{
+                        self.pageNumber = self.pageNumber+1
+                        if self.factsArray.count > 0{
+                            self.callingSearchApi(filterArray: self.factsArray)
+                        }else{
+                            self.callingSearchApi(filterArray: [])
+                        }
+                    }
+                }
                 self.flotingButtonView.isHidden = false // Here you hide it when animation done
                 if self.arrayOfSeletedValues.count > 0{
                     self.badgeView.isHidden = false

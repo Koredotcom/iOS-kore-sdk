@@ -1136,7 +1136,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func callSearchApi(text:String){
         self.liveSearchContainerView.isHidden = true
-        self.kaBotClient.getSearchResults(text, [] ,success: { [weak self] (dictionary) in
+        self.kaBotClient.getSearchResults(text, [], 0 ,success: { [weak self] (dictionary) in
             print(dictionary)
             self?.receviceMessage(dictionary: dictionary)
             

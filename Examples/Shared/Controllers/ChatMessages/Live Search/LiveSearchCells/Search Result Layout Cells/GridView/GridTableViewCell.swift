@@ -48,12 +48,15 @@ extension GridTableViewCell: UICollectionViewDataSource, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GridCollectionViewCell", for: indexPath) as! GridCollectionViewCell
         let results = self.arr[indexPath.row]
+        var gridImage: String?
         if appearanceType == "FAQS" {
             cell.titleLbl?.text = results.question
             cell.descriptionLbl?.text = results.answer
+            gridImage = results.imageUrl
         }else{
             cell.titleLbl?.text = results.pageTitle
-            cell.descriptionLbl?.text = results.pageSearchResultPreview
+            cell.descriptionLbl?.text = results.pagePreview
+            gridImage = results.pageImageUrl
         }
         cell.backgroundColor = .white
         
@@ -72,11 +75,12 @@ extension GridTableViewCell: UICollectionViewDataSource, UICollectionViewDelegat
             cell.topImavHeightConstraint.constant = 5
             cell.topImgV.isHidden = true
             cell.leftImagV.isHidden = false
-            if results.imageUrl == nil || results.imageUrl == ""{
+            cell.leftImagV.layer.cornerRadius = 5.0
+            if gridImage == nil || gridImage == ""{
                 cell.leftImagV.image = UIImage(named: "placeholder_image")
                 
             }else{
-                let url = URL(string: results.imageUrl!)
+                let url = URL(string: gridImage!)
                 cell.leftImagV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
                 
             }
@@ -87,12 +91,12 @@ extension GridTableViewCell: UICollectionViewDataSource, UICollectionViewDelegat
             cell.topImavHeightConstraint.constant = 100
             cell.topImgV.isHidden = false
             cell.leftImagV.isHidden = true
-            if results.imageUrl == nil || results.imageUrl == ""{
-                cell.topImgV.image = UIImage(named: "placeholder_image")
+            if gridImage == nil || gridImage == ""{
+                cell.leftImagV.image = UIImage(named: "placeholder_image")
                 
             }else{
-                let url = URL(string: results.imageUrl!)
-                cell.topImgV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+                let url = URL(string: gridImage!)
+                cell.leftImagV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
                 
             }
         case "tileWithHeader":
@@ -121,7 +125,7 @@ extension GridTableViewCell: UICollectionViewDataSource, UICollectionViewDelegat
             descTextHeight = requiredHeight(text: results.answer ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
         }else{
             titleTextHeight = requiredHeight(text: results.pageTitle ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
-            descTextHeight = requiredHeight(text: results.pageSearchResultPreview ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
+            descTextHeight = requiredHeight(text: results.pagePreview ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
         }
         
         switch layOutType {

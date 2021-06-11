@@ -40,30 +40,57 @@ class LiveSearchBubbleView: BubbleView {
     var arrayOfFaqResults = [TemplateResultElements]()
     var arrayOfPageResults = [TemplateResultElements]()
     var arrayOfTaskResults = [TemplateResultElements]()
+    var arrayOfFileResults = [TemplateResultElements]()
+    var arrayOfDataResults = [TemplateResultElements]()
+    
     var headerArray = ["POPULAR SEARCHS","RECENT SEARCHS"]
     var faqsExpandArray:NSMutableArray = []
     var pagesExpandArray:NSMutableArray = []
+    var filesExpandArray:NSMutableArray = []
+    var dataExpandArray:NSMutableArray = []
+    
+    
     var likeAndDislikeArray:NSMutableArray = []
     var headersExpandArray:NSMutableArray = []
     var checkboxIndexPath = [IndexPath]()
     
-    let sectionAndRowsLimit:Int = (serachInterfaceItems?.interactionsConfig?.liveSearchResultsLimit)!
+    let sectionAndRowsLimit:Int = 2//(serachInterfaceItems?.interactionsConfig?.liveSearchResultsLimit)!
     
-    let searchFAQsTemplateType = "listTemplate3" //listTemplate1 gridTemplate
-    let searchPageTemplateType = "gridTemplate"
-    let searchDocumentTemplateType = "listTemplate3"
+    let liveSearchFileTemplateType = resultViewSettingItems?.settings?[2].appearance?[0].template?.type ?? "listTemplate1"
+     let fileLayOutType = resultViewSettingItems?.settings?[2].appearance?[0].template?.layout?.layoutType ?? "tileWithText"
+     let isFileClickable = resultViewSettingItems?.settings?[2].appearance?[0].template?.layout?.isClickable ?? true
+     
+     let liveSearchFAQsTemplateType = resultViewSettingItems?.settings?[2].appearance?[1].template?.type ?? "listTemplate1"
+     let faqLayOutType = resultViewSettingItems?.settings?[2].appearance?[1].template?.layout?.layoutType ??  "tileWithText"
+     let isFaqsClickable = resultViewSettingItems?.settings?[2].appearance?[1].template?.layout?.isClickable ?? true
+     
+     let liveSearchPageTemplateType = resultViewSettingItems?.settings?[2].appearance?[2].template?.type ?? "listTemplate1"
+     let pageLayOutType = resultViewSettingItems?.settings?[2].appearance?[2].template?.layout?.layoutType ?? "tileWithImage"
+     let isPagesClickable = resultViewSettingItems?.settings?[2].appearance?[2].template?.layout?.isClickable ?? true
+     
+     let liveSearchDataTemplateType = resultViewSettingItems?.settings?[2].appearance?[3].template?.type ?? "listTemplate1"
+     let dataLayOutType = resultViewSettingItems?.settings?[2].appearance?[3].template?.layout?.layoutType ?? "tileWithText"
+     let isDataClickable = resultViewSettingItems?.settings?[2].appearance?[3].template?.layout?.isClickable ?? true
+     
     
-    let faqLayOutType = "tileWithText"
-    let pageLayOutType = "tileWithImage"
-    let DocumentLayOutType = "tileWithText"
-    
-    let isFaqsExpand = false
-    let isPagesExpand = true
-    enum searchTemplateTypes: String{
-        case listTemplate1 = "listTemplate1"
-        case listTemplate2 = "listTemplate2"
-        case listTemplate3 = "listTemplate3"
-    }
+     enum LiveSearchHeaderTypes: String{
+         case faq = "FAQS"
+         case web = "WEB"
+         case task = "TASKS"
+         case file = "Files"
+         case data = "DATA"
+     }
+     enum LiveSearchLayoutTypes: String{
+         case tileWithText = "tileWithText"
+         case tileWithImage = "tileWithImage"
+         case tileWithCenteredContent = "tileWithCenteredContent"
+         case tileWithHeader = "tileWithHeader"
+     }
+     enum LiveSearchTemplateTypes: String{
+         case listTemplate1 = "listTemplate1"
+         case listTemplate2 = "listTemplate2"
+         case listTemplate3 = "listTemplate3"
+     }
     
     public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
@@ -196,6 +223,7 @@ class LiveSearchBubbleView: BubbleView {
                     self.pagesExpandArray = []
                     self.likeAndDislikeArray = []
                     self.headersExpandArray = []
+                    //FAQS
                     let faqs = allItems.template?.results?.faq
                     self.arrayOfFaqResults = faqs ?? []
                     if self.arrayOfFaqResults.count > 0 {
@@ -206,23 +234,44 @@ class LiveSearchBubbleView: BubbleView {
                         self.faqsExpandArray.add("close")
                         self.likeAndDislikeArray.add("")
                     }
-                    
+                    //Page Or Web
                     let pages = allItems.template?.results?.page
                     self.arrayOfPageResults = pages ?? []
                     if self.arrayOfPageResults.count > 0 {
-                        self.headerArray.append("PAGES")
+                        self.headerArray.append("WEB")
                         self.headersExpandArray.add("open")
                     }
                     for _ in 0..<self.arrayOfPageResults.count{
                         self.pagesExpandArray.add("close")
                     }
-                    
+                    //Tasks
                     let task = allItems.template?.results?.task
                     self.arrayOfTaskResults = task ?? []
                     if self.arrayOfTaskResults.count > 0 {
                         self.headerArray.append("TASKS")
                         self.headersExpandArray.add("open")
                     }
+                    //Files
+                    let files = allItems.template?.results?.file
+                    self.arrayOfFileResults = files ?? []
+                    if self.arrayOfFileResults.count > 0 {
+                        self.headerArray.append("Files")
+                        self.headersExpandArray.add("open")
+                    }
+                    for _ in 0..<self.arrayOfFileResults.count{
+                        self.filesExpandArray.add("close")
+                    }
+                    //Data
+                    let data = allItems.template?.results?.data
+                    self.arrayOfDataResults = data ?? []
+                    if self.arrayOfDataResults.count > 0 {
+                        self.headerArray.append("DATA")
+                        self.headersExpandArray.add("open")
+                    }
+                    for _ in 0..<self.arrayOfDataResults.count{
+                        self.dataExpandArray.add("close")
+                    }
+                    
                     self.titleLbl.text = "Sure, please find the matched results below"
                     self.tableView.reloadData()
                     
@@ -285,185 +334,175 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
         return UITableView.automaticDimension
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        //        let headerName = headerArray[indexPath.section]
-        //        switch headerName {
-        //        case "FAQS":
-        //             if checkboxIndexPath.contains(indexPath) {
-        //                return UITableView.automaticDimension
-        //             }
-        //            return 120
-        //        default:
-        //            break
-        //        }
-        //        return UITableView.automaticDimension
-        
-        let headerName = headerArray[indexPath.section]
-        switch headerName {
-        case "FAQS":
-            if searchFAQsTemplateType == "gridTemplate"{
-                return UITableView.automaticDimension
-            }else{
-                let layOutType = faqLayOutType
-                switch layOutType {
-                case "tileWithText":
-                    
-                    if  faqsExpandArray[indexPath.row] as! String == "close"{
-                        return 75
-                    }
+                let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[indexPath.section])!
+                switch headerName {
+                case .faq:
+                    return   heightForTable(resultExpandArray: faqsExpandArray, layoutType: faqLayOutType, TemplateType: liveSearchFAQsTemplateType, index: indexPath.row)
+                case .web:
+                    return   heightForTable(resultExpandArray: pagesExpandArray, layoutType: pageLayOutType, TemplateType: liveSearchPageTemplateType, index: indexPath.row)
+                case .file:
+                    return   heightForTable(resultExpandArray: filesExpandArray, layoutType: fileLayOutType, TemplateType: liveSearchFileTemplateType, index: indexPath.row)
+                case .data:
+                    return   heightForTable(resultExpandArray: dataExpandArray, layoutType: dataLayOutType, TemplateType: liveSearchDataTemplateType, index: indexPath.row)
+                case .task:
                     return UITableView.automaticDimension
-                    
-                    
-                case "tileWithImage":
-                    if  faqsExpandArray[indexPath.row] as! String == "close"{
-                        return 75
-                    }
-                    return UITableView.automaticDimension
-                case "tileWithCenteredContent":
-                    if  faqsExpandArray[indexPath.row] as! String == "close"{
-                        return 75+100
-                    }
-                    return UITableView.automaticDimension
-                case "tileWithHeader":
-                    if  faqsExpandArray[indexPath.row] as! String == "close"{
-                        return 50
-                    }
-                    return UITableView.automaticDimension
-                default:
-                    break
                 }
+               
             }
-            
-        case "PAGES":
-            if searchPageTemplateType == "gridTemplate"{
-                return UITableView.automaticDimension
-            }else{
-                let layOutType = pageLayOutType
-                switch layOutType {
-                case "tileWithText":
-                    if  pagesExpandArray[indexPath.row] as! String == "close"{
-                        return 75
-                    }
-                    return UITableView.automaticDimension
-                    
-                case "tileWithImage":
-                    if  pagesExpandArray[indexPath.row] as! String == "close"{
-                        return 75
-                    }
-                    return UITableView.automaticDimension
-                case "tileWithCenteredContent":
-                    if  pagesExpandArray[indexPath.row] as! String == "close"{
-                        return 75+100
-                    }
-                    return UITableView.automaticDimension
-                case "tileWithHeader":
-                    if  pagesExpandArray[indexPath.row] as! String == "close"{
-                        return 50
-                    }
-                    return UITableView.automaticDimension
-                default:
-                    break
-                }
-            }
-            
-        default:
-            break
-        }
-        return UITableView.automaticDimension
-    }
     func numberOfSections(in tableView: UITableView) -> Int {
         return headerArray.count > sectionAndRowsLimit ? sectionAndRowsLimit : headerArray.count
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let headerName = headerArray[section]
+        let headerName: LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[section])!
         switch headerName {
-        case "FAQS":
+        case .faq:
             if headersExpandArray [section] as! String == "open"{
-                if searchFAQsTemplateType == "gridTemplate"{
+                if liveSearchFAQsTemplateType == "gridTemplate" || liveSearchFAQsTemplateType == "carousel"{
                     return 1
                 }
                 return arrayOfFaqResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfFaqResults.count
             }
             return 0
-        case "PAGES":
+        case .web:
             if headersExpandArray [section] as! String == "open"{
-                if searchPageTemplateType == "gridTemplate"{
+                if liveSearchPageTemplateType == "gridTemplate" || liveSearchPageTemplateType == "carousel"{
                     return 1
                 }
                 return arrayOfPageResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfPageResults.count
             }
             return 0
-        case "TASKS":
+        case .task:
             if headersExpandArray [section] as! String == "open"{
                 return arrayOfTaskResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfTaskResults.count
             }
             return 0
-        default:
-            break
+        case .file:
+            if headersExpandArray [section] as! String == "open"{
+                return arrayOfFileResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfFileResults.count
+            }
+            return 0
+        case .data:
+            if headersExpandArray [section] as! String == "open"{
+                return arrayOfDataResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfDataResults.count
+            }
+            return 0
         }
-        return 0
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let headerName = headerArray[indexPath.section]
+        let headerName: LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[indexPath.section])!
         switch headerName {
-        case "FAQS":
-            if searchFAQsTemplateType == "gridTemplate"{
+        case .faq:
+            if liveSearchFAQsTemplateType == "gridTemplate" || liveSearchFAQsTemplateType == "carousel"{
                 let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                cell.configure(with: arrayOfFaqResults, appearanceType: headerName, layOutType: faqLayOutType)
+                cell.configure(with: arrayOfFaqResults, appearanceType: headerName.rawValue, layOutType: faqLayOutType)
                 return cell
             }else{
-                let layOutType = faqLayOutType
+                let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: faqLayOutType)!
                 switch layOutType {
-                case "tileWithText":
+                case .tileWithText:
                     let cell : LiveSearchFaqTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchFaqCellIdentifier) as! LiveSearchFaqTableViewCell
-                    titleWithTextCellMethod(cell: cell, cellResultArray: arrayOfFaqResults, expandArray: faqsExpandArray, indexPath: indexPath, isExpand: isFaqsExpand, templateType: searchFAQsTemplateType, appearanceType: headerName)
+                    titleWithTextCellMethod(cell: cell, cellResultArray: arrayOfFaqResults, expandArray: faqsExpandArray, indexPath: indexPath, isClickable: isFaqsClickable, templateType: liveSearchFAQsTemplateType, appearanceType: headerName.rawValue)
                     return cell
-                case "tileWithImage":
+                case .tileWithImage:
                     let cell : TitleWithImageCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithImageCellIdentifier) as! TitleWithImageCell
-                    titleWithImageCellMethod(cell: cell, cellResultArray: arrayOfFaqResults, expandArray: faqsExpandArray, indexPath: indexPath, isExpand: isFaqsExpand, templateType: searchFAQsTemplateType, appearanceType: headerName)
+                    titleWithImageCellMethod(cell: cell, cellResultArray: arrayOfFaqResults, expandArray: faqsExpandArray, indexPath: indexPath, isClickable: isFaqsClickable, templateType: liveSearchFAQsTemplateType, appearanceType: headerName.rawValue)
                     return cell
-                case "tileWithCenteredContent":
+                case .tileWithCenteredContent:
                     let cell : TitleWithCenteredContentCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithCenteredContentCellIdentifier) as! TitleWithCenteredContentCell
-                    titleWithCenteredContentCellMethod(cell: cell, cellResultArray: arrayOfFaqResults, expandArray: faqsExpandArray, indexPath: indexPath, isExpand: isFaqsExpand, templateType: searchFAQsTemplateType, appearanceType: headerName)
+                    titleWithCenteredContentCellMethod(cell: cell, cellResultArray: arrayOfFaqResults, expandArray: faqsExpandArray, indexPath: indexPath, isClickable: isFaqsClickable, templateType: liveSearchFAQsTemplateType, appearanceType: headerName.rawValue)
                     return cell
-                case "tileWithHeader":
+                case .tileWithHeader:
                     let cell : TitleWithHeaderCell = self.tableView.dequeueReusableCell(withIdentifier: TitleWithHeaderCellIdentifier) as! TitleWithHeaderCell
-                    TitleWithHeaderCellMethod(cell: cell, cellResultArray: arrayOfFaqResults, expandArray: faqsExpandArray, indexPath: indexPath, isExpand: isFaqsExpand, templateType: searchFAQsTemplateType, appearanceType: headerName)
+                    TitleWithHeaderCellMethod(cell: cell, cellResultArray: arrayOfFaqResults, expandArray: faqsExpandArray, indexPath: indexPath, isClickable: isFaqsClickable, templateType: liveSearchFAQsTemplateType, appearanceType: headerName.rawValue)
                     return cell
-                default:
-                    break
                 }
             }
-        case "PAGES":
-            if searchPageTemplateType == "gridTemplate"{
+        case .web:
+            if liveSearchPageTemplateType == "gridTemplate" || liveSearchPageTemplateType == "carousel"{
                 let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                cell.configure(with: arrayOfPageResults, appearanceType: headerName, layOutType: pageLayOutType)
+                cell.configure(with: arrayOfPageResults, appearanceType: headerName.rawValue, layOutType: pageLayOutType)
                 return cell
             }else{
-                let layOutType = pageLayOutType
+                let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: pageLayOutType)!
                 switch layOutType {
-                case "tileWithText":
+                case .tileWithText:
                     let cell : LiveSearchFaqTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchFaqCellIdentifier) as! LiveSearchFaqTableViewCell
-                    titleWithTextCellMethod(cell: cell, cellResultArray: arrayOfPageResults, expandArray: pagesExpandArray, indexPath: indexPath, isExpand: isPagesExpand, templateType: searchPageTemplateType, appearanceType: headerName)
+                    titleWithTextCellMethod(cell: cell, cellResultArray: arrayOfPageResults, expandArray: pagesExpandArray, indexPath: indexPath, isClickable: isPagesClickable, templateType: liveSearchPageTemplateType, appearanceType: headerName.rawValue)
                     return cell
-                case "tileWithImage":
+                case .tileWithImage:
                     let cell : TitleWithImageCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithImageCellIdentifier) as! TitleWithImageCell
                     titleWithImageCellMethod(cell: cell, cellResultArray: arrayOfPageResults, expandArray:
-                        pagesExpandArray, indexPath: indexPath, isExpand: isPagesExpand, templateType: searchPageTemplateType, appearanceType: headerName)
+                        pagesExpandArray, indexPath: indexPath, isClickable: isPagesClickable, templateType: liveSearchPageTemplateType, appearanceType: headerName.rawValue)
                     return cell
-                case "tileWithCenteredContent":
+                case .tileWithCenteredContent:
                     let cell : TitleWithCenteredContentCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithCenteredContentCellIdentifier) as! TitleWithCenteredContentCell
-                    titleWithCenteredContentCellMethod(cell: cell, cellResultArray: arrayOfPageResults, expandArray: pagesExpandArray, indexPath: indexPath, isExpand: isPagesExpand, templateType: searchPageTemplateType, appearanceType: headerName)
+                    titleWithCenteredContentCellMethod(cell: cell, cellResultArray: arrayOfPageResults, expandArray: pagesExpandArray, indexPath: indexPath, isClickable: isPagesClickable, templateType: liveSearchPageTemplateType, appearanceType: headerName.rawValue)
                     return cell
-                case "tileWithHeader":
+                case .tileWithHeader:
                     let cell : TitleWithHeaderCell = self.tableView.dequeueReusableCell(withIdentifier: TitleWithHeaderCellIdentifier) as! TitleWithHeaderCell
-                    TitleWithHeaderCellMethod(cell: cell, cellResultArray: arrayOfPageResults, expandArray: pagesExpandArray, indexPath: indexPath, isExpand: isPagesExpand, templateType: searchPageTemplateType, appearanceType: headerName)
+                    TitleWithHeaderCellMethod(cell: cell, cellResultArray: arrayOfPageResults, expandArray: pagesExpandArray, indexPath: indexPath, isClickable: isPagesClickable, templateType: liveSearchPageTemplateType, appearanceType: headerName.rawValue)
                     return cell
-                default:
-                    break
                 }
             }
-        case "TASKS":
-            /*
+            
+        case .file:
+            if liveSearchFileTemplateType == "gridTemplate" || liveSearchFileTemplateType == "carousel"{
+                let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
+                cell.configure(with: arrayOfFileResults, appearanceType: headerName.rawValue, layOutType: fileLayOutType)
+                return cell
+            }else{
+                let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: fileLayOutType)!
+                switch layOutType {
+                case .tileWithText:
+                    let cell : LiveSearchFaqTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchFaqCellIdentifier) as! LiveSearchFaqTableViewCell
+                    titleWithTextCellMethod(cell: cell, cellResultArray: arrayOfFileResults, expandArray: filesExpandArray, indexPath: indexPath, isClickable: isFileClickable, templateType: liveSearchFileTemplateType, appearanceType: headerName.rawValue)
+                    return cell
+                case .tileWithImage:
+                    let cell : TitleWithImageCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithImageCellIdentifier) as! TitleWithImageCell
+                    titleWithImageCellMethod(cell: cell, cellResultArray: arrayOfFileResults, expandArray:
+                        filesExpandArray, indexPath: indexPath, isClickable: isFileClickable, templateType: liveSearchFileTemplateType, appearanceType: headerName.rawValue)
+                    return cell
+                case .tileWithCenteredContent:
+                    let cell : TitleWithCenteredContentCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithCenteredContentCellIdentifier) as! TitleWithCenteredContentCell
+                    titleWithCenteredContentCellMethod(cell: cell, cellResultArray: arrayOfFileResults, expandArray: filesExpandArray, indexPath: indexPath, isClickable: isFileClickable, templateType: liveSearchFileTemplateType, appearanceType: headerName.rawValue)
+                    return cell
+                case .tileWithHeader:
+                    let cell : TitleWithHeaderCell = self.tableView.dequeueReusableCell(withIdentifier: TitleWithHeaderCellIdentifier) as! TitleWithHeaderCell
+                    TitleWithHeaderCellMethod(cell: cell, cellResultArray: arrayOfFileResults, expandArray: filesExpandArray, indexPath: indexPath, isClickable: isFileClickable, templateType: liveSearchFileTemplateType, appearanceType: headerName.rawValue)
+                    return cell
+                }
+            }
+            
+        case .data:
+            if liveSearchDataTemplateType == "gridTemplate" || liveSearchDataTemplateType == "carousel"{
+                let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
+                cell.configure(with: arrayOfDataResults, appearanceType: headerName.rawValue, layOutType: dataLayOutType)
+                return cell
+            }else{
+                let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue:  dataLayOutType)!
+                switch layOutType {
+                case .tileWithText:
+                    let cell : LiveSearchFaqTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchFaqCellIdentifier) as! LiveSearchFaqTableViewCell
+                    titleWithTextCellMethod(cell: cell, cellResultArray: arrayOfDataResults, expandArray: dataExpandArray, indexPath: indexPath, isClickable: isDataClickable, templateType: liveSearchDataTemplateType, appearanceType: headerName.rawValue)
+                    return cell
+                case .tileWithImage:
+                    let cell : TitleWithImageCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithImageCellIdentifier) as! TitleWithImageCell
+                    titleWithImageCellMethod(cell: cell, cellResultArray: arrayOfDataResults, expandArray:
+                        dataExpandArray, indexPath: indexPath, isClickable: isDataClickable, templateType: liveSearchDataTemplateType, appearanceType: headerName.rawValue)
+                    return cell
+                case .tileWithCenteredContent:
+                    let cell : TitleWithCenteredContentCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithCenteredContentCellIdentifier) as! TitleWithCenteredContentCell
+                    titleWithCenteredContentCellMethod(cell: cell, cellResultArray: arrayOfDataResults, expandArray: dataExpandArray, indexPath: indexPath, isClickable: isDataClickable, templateType: liveSearchDataTemplateType, appearanceType: headerName.rawValue)
+                    return cell
+                case .tileWithHeader:
+                    let cell : TitleWithHeaderCell = self.tableView.dequeueReusableCell(withIdentifier: TitleWithHeaderCellIdentifier) as! TitleWithHeaderCell
+                    TitleWithHeaderCellMethod(cell: cell, cellResultArray: arrayOfDataResults, expandArray: dataExpandArray, indexPath: indexPath, isClickable: isDataClickable, templateType: liveSearchDataTemplateType, appearanceType: headerName.rawValue)
+                    return cell
+                }
+            }
+            
+        case .task:
+           /*
              let cell : LiveSearchTaskTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchTaskCellIdentifier) as! LiveSearchTaskTableViewCell
              cell.backgroundColor = UIColor.clear
              cell.selectionStyle = .none
@@ -500,41 +539,109 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             cell.titleLabel?.layer.borderWidth = 1.0
             cell.titleLabel?.layer.borderColor = UIColor.init(red: 44/255, green: 128/255, blue: 248/255, alpha: 1.0).cgColor
             return cell
-        default:
-            break
         }
-        return UITableViewCell()
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let headerName = headerArray[indexPath.section]
-        switch headerName {
-        case "FAQS":
-            if checkboxIndexPath.contains(indexPath) {
+//        let headerName = headerArray[indexPath.section]
+//        switch headerName {
+//        case "FAQS":
+//            if checkboxIndexPath.contains(indexPath) {
+//                
+//                checkboxIndexPath.remove(at: checkboxIndexPath.firstIndex(of: indexPath)!)
+//            }else{
+//                checkboxIndexPath.append(indexPath)
+//            }
+//            tableView.reloadData()
+//            NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+//        case "PAGES":
+//            let results = arrayOfPageResults[indexPath.row]
+//            if results.url != nil {
+//                self.linkAction(results.url!)
+//            }
+//            break
+//        case "TASKS":
+//            if let payload = arrayOfTaskResults[indexPath.row].payload {
+//                self.optionsAction(arrayOfTaskResults[indexPath.row].name, payload)
+//            }
+//            isEndOfTask = false //kk
+//            //if results.postBackPayload?.payload != nil{
+//            //    self.optionsAction(results.postBackPayload?.payload, results.postBackPayload?.payload)
+//        //}
+//        default:
+//            break
+//        }
+        
+        
+            let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[indexPath.section])!
+            switch headerName {
+            case .faq:
+                if !isFaqsClickable{
+                    if faqsExpandArray[indexPath.row] as! String == "close" {
+                        faqsExpandArray.replaceObject(at: indexPath.row, with: "open")
+                    }else{
+                        faqsExpandArray.replaceObject(at: indexPath.row, with: "close")
+                    }
+                    tableView.reloadData()
+                }else{
+                    let results = arrayOfFaqResults[indexPath.row]
+                       if results.fileUrl != nil {
+                        self.linkAction(results.fileUrl!)
+                    }
+                }
                 
-                checkboxIndexPath.remove(at: checkboxIndexPath.firstIndex(of: indexPath)!)
-            }else{
-                checkboxIndexPath.append(indexPath)
+            case .web:
+                if !isPagesClickable{
+                    if pagesExpandArray[indexPath.row] as! String == "close" {
+                        pagesExpandArray.replaceObject(at: indexPath.row, with: "open")
+                    }else{
+                        pagesExpandArray.replaceObject(at: indexPath.row, with: "close")
+                    }
+                    tableView.reloadData()
+                }else{
+                    let results = arrayOfPageResults[indexPath.row]
+                        if results.pageUrl != nil {
+                            self.linkAction(results.pageUrl!)
+                     }
+                }
+                break
+            case .file:
+                if !isFileClickable{
+                    if filesExpandArray[indexPath.row] as! String == "close" {
+                        filesExpandArray.replaceObject(at: indexPath.row, with: "open")
+                    }else{
+                        filesExpandArray.replaceObject(at: indexPath.row, with: "close")
+                    }
+                    tableView.reloadData()
+                }else{
+                    let results = arrayOfFileResults[indexPath.row]
+                       if results.fileUrl != nil {
+                           self.linkAction(results.fileUrl!)
+                    }
+                }
+            case .data:
+                if !isDataClickable{
+                    if dataExpandArray[indexPath.row] as! String == "close" {
+                        dataExpandArray.replaceObject(at: indexPath.row, with: "open")
+                    }else{
+                        dataExpandArray.replaceObject(at: indexPath.row, with: "close")
+                    }
+                    tableView.reloadData()
+                }else{
+                    let results = arrayOfDataResults[indexPath.row]
+                       if results.dataUrl != nil {
+                           self.linkAction(results.dataUrl!)
+                    }
+                }
+            case .task:
+                 if let payload = arrayOfTaskResults[indexPath.row].payload {
+                    self.optionsAction(arrayOfTaskResults[indexPath.row].name, payload)
+                }
+                isEndOfTask = false //kk
+                //if results.postBackPayload?.payload != nil{
+                //    self.optionsAction(results.postBackPayload?.payload, results.postBackPayload?.payload)
+                //}
             }
-            tableView.reloadData()
-            NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
-        case "PAGES":
-            let results = arrayOfPageResults[indexPath.row]
-            if results.url != nil {
-                self.linkAction(results.url!)
-            }
-            break
-        case "TASKS":
-            if let payload = arrayOfTaskResults[indexPath.row].payload {
-                self.optionsAction(arrayOfTaskResults[indexPath.row].name, payload)
-            }
-            isEndOfTask = false //kk
-            //if results.postBackPayload?.payload != nil{
-            //    self.optionsAction(results.postBackPayload?.payload, results.postBackPayload?.payload)
-        //}
-        default:
-            break
-        }
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
@@ -684,444 +791,512 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
 
 extension LiveSearchBubbleView{
     
-    func titleWithTextCellMethod(cell: LiveSearchFaqTableViewCell,cellResultArray: [TemplateResultElements],expandArray: NSMutableArray, indexPath: IndexPath, isExpand: Bool, templateType: String, appearanceType: String){
-        
-        cell.backgroundColor = UIColor.clear
-        cell.selectionStyle = .none
-        cell.titleLabel.textColor = .black
-        cell.descriptionLabel.textColor = .dark
-        cell.titleLabel?.numberOfLines = 0 //2
-        cell.descriptionLabel?.numberOfLines = 0 //2
-        let results = cellResultArray[indexPath.row]
-        if appearanceType == "FAQS" {
-            cell.titleLabel?.text = results.question
-            cell.descriptionLabel?.text = results.answer
+    func heightForTable(resultExpandArray: NSMutableArray, layoutType: String, TemplateType: String, index: Int) -> CGFloat{
+        if TemplateType == "gridTemplate" || TemplateType == "carousel"{
+            return UITableView.automaticDimension
         }else{
-            cell.titleLabel?.text = results.pageTitle
-            cell.descriptionLabel?.text = results.pageSearchResultPreview
-        }
-        let buttonsHeight = expandArray[indexPath.row] as! String == "close" ? 0.0: 0.0 //30.0
-        cell.likeAndDislikeButtonHeightConstrain.constant = CGFloat(buttonsHeight)
-        
-        cell.likeButton.addTarget(self, action: #selector(self.likeButtonAction(_:)), for: .touchUpInside)
-        cell.likeButton.tag = indexPath.row
-        cell.dislikeButton.addTarget(self, action: #selector(self.disLikeButtonAction(_:)), for: .touchUpInside)
-        cell.dislikeButton.tag = indexPath.row
-        
-        
-        cell.subViewLeadingConstraint.constant = 5.0
-        cell.subViewTopConstaint.constant = 5.0
-        cell.subViewTrailingConstraint.constant = 5.0
-        
-        
-        
-        if isExpand{
-            cell.imageVWidthConstraint.constant = 10
-            if expandArray [indexPath.row] as! String == "open"{
-                cell.topImageV.image = UIImage(named: "downarrow")
-            }else{
-                cell.topImageV.image = UIImage(named: "rightarrow")
-            }
-        }else{
-            cell.imageVWidthConstraint.constant = 0
-        }
-        let templateType: searchTemplateTypes = searchTemplateTypes(rawValue: templateType)!
-        switch templateType {
-        case .listTemplate1:
-            cell.subViewBottomConstrain.constant =  10.0
-            cell.subView.layer.cornerRadius = 10
-            cell.underLineLabel.isHidden = true
-            
-            cell.subView.layer.shadowOpacity = 0.7
-            cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
-            cell.subView.layer.shadowRadius = 8.0
-            cell.subView.clipsToBounds = false
-            cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
-            
-        case .listTemplate2:
-            cell.subViewBottomConstrain.constant = 0.0
-            cell.subView.layer.cornerRadius = 0.0
-            cell.underLineLabel.isHidden = false
-            let totalRow = tableView.numberOfRows(inSection: indexPath.section)
-            if(indexPath.row == totalRow - 1){
-                //cell.underLineLabel.isHidden = true
-            }
-            
-            //            cell.subViewTopConstaint.constant = 0.0
-            //            cell.subView.layer.shadowOpacity = 1
-            //            cell.subView.layer.shadowOffset = CGSize(width: 0, height: 0)
-            //            cell.subView.layer.shadowRadius = 5.0
-            //            cell.subView.clipsToBounds = false
-            //            cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
-            
-        case .listTemplate3:
-            cell.subViewBottomConstrain.constant = 0.0
-            cell.subView.layer.cornerRadius = 0.0
-            cell.underLineLabel.isHidden = false
-            if #available(iOS 11.0, *) {
-                if indexPath.row == 0{
-                    cell.subView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
-                }else{
-                    let totalRow = tableView.numberOfRows(inSection: indexPath.section)
-                    if(indexPath.row == totalRow - 1){
-                        cell.subView.roundCorners([ .layerMinXMaxYCorner, .layerMaxXMaxYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
-                        cell.underLineLabel.isHidden = true
-                        cell.subViewBottomConstrain.constant = 1.0
-                        
-                    }
+            let layOutType:LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: layoutType)!
+            switch layOutType {
+            case .tileWithText:
+                if  resultExpandArray[index] as! String == "close"{
+                    return 75
                 }
+                return UITableView.automaticDimension
                 
-                cell.subViewTopConstaint.constant = 1.0
-                cell.subView.layer.shadowOpacity = 0.7
-                cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
-                cell.subView.layer.shadowRadius = 8.0
-                cell.subView.clipsToBounds = false
-                cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
-                
-            } else {
-                // Fallback on earlier versions
+            case .tileWithImage:
+                if  resultExpandArray[index] as! String == "close"{
+                    return 75
+                }
+                return UITableView.automaticDimension
+            case .tileWithCenteredContent:
+                if  resultExpandArray[index] as! String == "close"{
+                    return 75+100
+                }
+                return UITableView.automaticDimension
+            case .tileWithHeader:
+                if  resultExpandArray[index] as! String == "close"{
+                    return 60
+                }
+                return UITableView.automaticDimension
             }
         }
     }
-    
-    func titleWithImageCellMethod(cell: TitleWithImageCell,cellResultArray: [TemplateResultElements],expandArray: NSMutableArray, indexPath: IndexPath, isExpand: Bool, templateType: String, appearanceType: String){
-        cell.backgroundColor = UIColor.clear
-        cell.selectionStyle = .none
-        cell.titleLabel.textColor = .black
-        cell.descriptionLabel.textColor = .dark
-        cell.titleLabel?.numberOfLines = 0 //2
-        cell.descriptionLabel?.numberOfLines = 0 //2
-        let results = cellResultArray[indexPath.row]
-        if appearanceType == "FAQS" {
-            cell.titleLabel?.text = results.question
-            cell.descriptionLabel?.text = results.answer
-        }else{
-            cell.titleLabel?.text = results.pageTitle
-            cell.descriptionLabel?.text = results.pageSearchResultPreview
-        }
-        
-        let buttonsHeight = expandArray[indexPath.row] as! String == "close" ? 0.0: 0.0 //30.0
-        cell.likeAndDislikeButtonHeightConstrain.constant = CGFloat(buttonsHeight)
-        
-        if results.imageUrl == nil || results.imageUrl == ""{
-            cell.topImageV.image = UIImage(named: "placeholder_image")
-            //cell.bottomImageV.image = UIImage(named: "placeholder_image")
-        }else{
-            let url = URL(string: results.imageUrl!)
-            cell.topImageV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
-            //cell.bottomImageV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
-        }
-        
-        if isExpand{
-            if expandArray [indexPath.row] as! String == "open"{
-                cell.topImageVWidthConstrain.constant = 10
-                cell.topImageVHeightConstrain.constant = 20
-                cell.bottomImageVWidthConstrain.constant = 50
-                cell.topImageV.image = UIImage(named: "downarrow")
-                if results.imageUrl == nil || results.imageUrl == ""{
-                    cell.bottomImageV.image = UIImage(named: "placeholder_image")
+        func titleWithTextCellMethod(cell: LiveSearchFaqTableViewCell,cellResultArray: [TemplateResultElements],expandArray: NSMutableArray, indexPath: IndexPath, isClickable: Bool, templateType: String, appearanceType: String){
+            
+            cell.backgroundColor = UIColor.clear
+            cell.selectionStyle = .none
+            cell.titleLabel.textColor = .black
+            cell.descriptionLabel.textColor = .dark
+            cell.titleLabel?.numberOfLines = 0 //2
+            cell.descriptionLabel?.numberOfLines = 0 //2
+            let results = cellResultArray[indexPath.row]
+            if appearanceType == "FAQS" {
+                cell.titleLabel?.text = results.faqQuestion
+                cell.descriptionLabel?.text = results.faqAnswer
+            }else{
+                cell.titleLabel?.text = results.pageTitle
+                cell.descriptionLabel?.text = results.pageSearchResultPreview
+            }
+            let buttonsHeight = expandArray[indexPath.row] as! String == "close" ? 0.0: 0.0 //30.0
+            cell.likeAndDislikeButtonHeightConstrain.constant = CGFloat(buttonsHeight)
+            
+            cell.likeButton.addTarget(self, action: #selector(self.likeButtonAction(_:)), for: .touchUpInside)
+            cell.likeButton.tag = indexPath.row
+            cell.dislikeButton.addTarget(self, action: #selector(self.disLikeButtonAction(_:)), for: .touchUpInside)
+            cell.dislikeButton.tag = indexPath.row
+            
+            
+            cell.subViewLeadingConstraint.constant = 5.0
+            cell.subViewTopConstaint.constant = 5.0
+            cell.subViewTrailingConstraint.constant = 5.0
+            
+            
+            
+            if !isClickable{
+                cell.imageVWidthConstraint.constant = 10
+                if expandArray [indexPath.row] as! String == "open"{
+                    cell.topImageV.image = UIImage(named: "downarrow")
                 }else{
-                    let url = URL(string: results.imageUrl!)
-                    cell.bottomImageV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+                    cell.topImageV.image = UIImage(named: "rightarrow")
                 }
             }else{
-                cell.topImageV.image = UIImage(named: "rightarrow")
-                cell.topImageVWidthConstrain.constant = 10
-                cell.topImageVHeightConstrain.constant = 20
-                cell.bottomImageVWidthConstrain.constant = 0
+                cell.imageVWidthConstraint.constant = 0
             }
-        }
-        
-        cell.likeButton.addTarget(self, action: #selector(self.likeButtonAction(_:)), for: .touchUpInside)
-        cell.likeButton.tag = indexPath.row
-        cell.dislikeButton.addTarget(self, action: #selector(self.disLikeButtonAction(_:)), for: .touchUpInside)
-        cell.dislikeButton.tag = indexPath.row
-        //        if likeAndDislikeArray[indexPath.row] as! String == "Like"{
-        //            cell.likeButton.tintColor = .blue
-        //            cell.dislikeButton.tintColor = .darkGray
-        //        }else if likeAndDislikeArray[indexPath.row] as! String == "DisLike"{
-        //            cell.likeButton.tintColor = .darkGray
-        //            cell.dislikeButton.tintColor = .blue
-        //        }
-        
-        cell.subViewLeadingConstraint.constant = 5.0
-        cell.subViewTopConstaint.constant = 5.0
-        cell.subViewTrailingConstraint.constant = 5.0
-        
-        let templateType: searchTemplateTypes = searchTemplateTypes(rawValue: templateType)!
-        switch templateType {
-        case .listTemplate1:
-            cell.subViewBottomConstrain.constant =  11.0
-            cell.subView.layer.cornerRadius = 10
-            cell.underLineLabel.isHidden = true
-            
-            cell.subView.layer.shadowOpacity = 0.7
-            cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
-            cell.subView.layer.shadowRadius = 8.0
-            cell.subView.clipsToBounds = false
-            cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
-            
-        case .listTemplate2:
-            cell.subViewBottomConstrain.constant = 0.0
-            cell.subView.layer.cornerRadius = 0.0
-            cell.underLineLabel.isHidden = false
-            let totalRow = tableView.numberOfRows(inSection: indexPath.section)
-            if(indexPath.row == totalRow - 1){
+            let templateType: LiveSearchTemplateTypes = LiveSearchTemplateTypes(rawValue: templateType)!
+            switch templateType {
+            case .listTemplate1:
+                cell.subViewBottomConstrain.constant =  10.0
+                cell.subView.layer.cornerRadius = 10
                 cell.underLineLabel.isHidden = true
-            }
-        case .listTemplate3:
-            cell.subViewBottomConstrain.constant = 0.0
-            cell.subView.layer.cornerRadius = 0.0
-            cell.underLineLabel.isHidden = false
-            if #available(iOS 11.0, *) {
-                if indexPath.row == 0{
-                    cell.subView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
-                }else{
-                    let totalRow = tableView.numberOfRows(inSection: indexPath.section)
-                    if(indexPath.row == totalRow - 1){
-                        cell.subView.roundCorners([ .layerMinXMaxYCorner, .layerMaxXMaxYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
-                        cell.underLineLabel.isHidden = true
-                        cell.subViewBottomConstrain.constant = 1.0
-                    }
-                }
                 
-                cell.subViewTopConstaint.constant = 1.0
                 cell.subView.layer.shadowOpacity = 0.7
                 cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
                 cell.subView.layer.shadowRadius = 8.0
                 cell.subView.clipsToBounds = false
                 cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
                 
-            } else {
+            case .listTemplate2:
+                cell.subViewBottomConstrain.constant = 0.0
+                cell.subView.layer.cornerRadius = 0.0
+                cell.underLineLabel.isHidden = false
+                let totalRow = tableView.numberOfRows(inSection: indexPath.section)
+                if(indexPath.row == totalRow - 1){
+                    //cell.underLineLabel.isHidden = true
+                }
                 
+                //            cell.subViewTopConstaint.constant = 0.0
+                //            cell.subView.layer.shadowOpacity = 1
+                //            cell.subView.layer.shadowOffset = CGSize(width: 0, height: 0)
+                //            cell.subView.layer.shadowRadius = 5.0
+                //            cell.subView.clipsToBounds = false
+                //            cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
+                
+            case .listTemplate3:
+                cell.subViewBottomConstrain.constant = 0.0
+                cell.subView.layer.cornerRadius = 0.0
+                cell.underLineLabel.isHidden = false
+                if #available(iOS 11.0, *) {
+                    if indexPath.row == 0{
+                        cell.subView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
+                    }else{
+                        let totalRow = tableView.numberOfRows(inSection: indexPath.section)
+                        if(indexPath.row == totalRow - 1){
+                            cell.subView.roundCorners([ .layerMinXMaxYCorner, .layerMaxXMaxYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
+                            cell.underLineLabel.isHidden = true
+                            cell.subViewBottomConstrain.constant = 1.0
+                            
+                        }
+                    }
+                    
+                    cell.subViewTopConstaint.constant = 1.0
+                    cell.subView.layer.shadowOpacity = 0.7
+                    cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
+                    cell.subView.layer.shadowRadius = 8.0
+                    cell.subView.clipsToBounds = false
+                    cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
+                    
+                } else {
+                    // Fallback on earlier versions
+                }
             }
         }
         
-    }
-    
-    func titleWithCenteredContentCellMethod(cell: TitleWithCenteredContentCell,cellResultArray: [TemplateResultElements],expandArray: NSMutableArray, indexPath: IndexPath, isExpand: Bool, templateType: String, appearanceType: String){
-        
-        cell.backgroundColor = UIColor.clear
-        cell.selectionStyle = .none
-        cell.titleLabel.textColor = .black
-        cell.descriptionLabel.textColor = .dark
-        cell.titleLabel?.numberOfLines = 0 //2
-        cell.descriptionLabel?.numberOfLines = 0 //2
-        let results = cellResultArray[indexPath.row]
-        if appearanceType == "FAQS" {
-            cell.titleLabel?.text = results.question
-            cell.descriptionLabel?.text = results.answer
-        }else{
-            cell.titleLabel?.text = results.pageTitle
-            cell.descriptionLabel?.text = results.pageSearchResultPreview
-        }
-        let buttonsHeight = expandArray[indexPath.row] as! String == "close" ? 0.0: 0.0 //30.0
-        cell.likeAndDislikeButtonHeightConstrain.constant = CGFloat(buttonsHeight)
-        
-        if isExpand{
-            cell.topCenterImagV.isHidden = true
-            cell.titleLabel.textAlignment = .left
-            cell.descriptionLabel.textAlignment = .left
+        func titleWithImageCellMethod(cell: TitleWithImageCell,cellResultArray: [TemplateResultElements],expandArray: NSMutableArray, indexPath: IndexPath, isClickable: Bool, templateType: String, appearanceType: String){
+            cell.backgroundColor = UIColor.clear
+            cell.selectionStyle = .none
+            cell.titleLabel.textColor = .black
+            cell.descriptionLabel.textColor = .dark
+            cell.titleLabel?.numberOfLines = 0 //2
+            cell.descriptionLabel?.numberOfLines = 0 //2
+            let results = cellResultArray[indexPath.row]
+            var gridImage: String?
+            let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: appearanceType)!
+            switch headerName {
+            case .faq:
+               cell.titleLabel?.text = results.faqQuestion
+                cell.descriptionLabel?.text = results.faqAnswer
+                 gridImage = results.imageUrl
+            case .web:
+                cell.titleLabel?.text = results.pageTitle
+                cell.descriptionLabel?.text = results.pagePreview
+                gridImage = results.pageImageUrl
+            case .file:
+                cell.titleLabel?.text = results.fileTitle
+                cell.descriptionLabel?.text = results.filePreview
+                gridImage = results.fileimageUrl
+            case .data:
+                cell.titleLabel?.text = results.category
+                cell.descriptionLabel?.text = results.product
+                gridImage = results.dataImageUrl
+            case .task:
+                break
+            }
             
-            if expandArray [indexPath.row] as! String == "open"{
-                cell.centerImagV.isHidden = false
-                cell.centerImagVHeightConstrain.constant = 100
-                
-                cell.topImageVWidthConstrain.constant = 10
-                cell.topImageVHeightConstrain.constant = 20
-                cell.topCenterImageVHeightConstrain.constant = 5
-                cell.topImageV.image = UIImage(named: "downarrow")
-                if results.imageUrl == nil || results.imageUrl == ""{
-                    cell.centerImagV.image = UIImage(named: "placeholder_image")
+            let buttonsHeight = expandArray[indexPath.row] as! String == "close" ? 0.0: 0.0 //30.0
+            cell.likeAndDislikeButtonHeightConstrain.constant = CGFloat(buttonsHeight)
+            
+            if gridImage == nil || gridImage == ""{
+                cell.topImageV.image = UIImage(named: "placeholder_image")
+                //cell.bottomImageV.image = UIImage(named: "placeholder_image")
+            }else{
+                let url = URL(string: gridImage!)
+                cell.topImageV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+                //cell.bottomImageV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+            }
+            
+            if !isClickable{
+                if expandArray [indexPath.row] as! String == "open"{
+                    cell.topImageVWidthConstrain.constant = 10
+                    cell.topImageVHeightConstrain.constant = 20
+                    cell.bottomImageVWidthConstrain.constant = 50
+                    cell.topImageV.image = UIImage(named: "downarrow")
+                    if gridImage == nil || gridImage == ""{
+                        cell.bottomImageV.image = UIImage(named: "placeholder_image")
+                    }else{
+                        let url = URL(string: gridImage!)
+                        cell.bottomImageV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+                    }
                 }else{
-                    let url = URL(string: results.imageUrl!)
-                    cell.centerImagV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+                    cell.topImageV.image = UIImage(named: "rightarrow")
+                    cell.topImageVWidthConstrain.constant = 10
+                    cell.topImageVHeightConstrain.constant = 20
+                    cell.bottomImageVWidthConstrain.constant = 0
+                }
+            }
+            
+            cell.likeButton.addTarget(self, action: #selector(self.likeButtonAction(_:)), for: .touchUpInside)
+            cell.likeButton.tag = indexPath.row
+            cell.dislikeButton.addTarget(self, action: #selector(self.disLikeButtonAction(_:)), for: .touchUpInside)
+            cell.dislikeButton.tag = indexPath.row
+            //        if likeAndDislikeArray[indexPath.row] as! String == "Like"{
+            //            cell.likeButton.tintColor = .blue
+            //            cell.dislikeButton.tintColor = .darkGray
+            //        }else if likeAndDislikeArray[indexPath.row] as! String == "DisLike"{
+            //            cell.likeButton.tintColor = .darkGray
+            //            cell.dislikeButton.tintColor = .blue
+            //        }
+            
+            cell.subViewLeadingConstraint.constant = 5.0
+            cell.subViewTopConstaint.constant = 5.0
+            cell.subViewTrailingConstraint.constant = 5.0
+            
+            let templateType: LiveSearchTemplateTypes = LiveSearchTemplateTypes(rawValue: templateType)!
+            switch templateType {
+            case .listTemplate1:
+                cell.subViewBottomConstrain.constant =  11.0
+                cell.subView.layer.cornerRadius = 10
+                cell.underLineLabel.isHidden = true
+                
+                cell.subView.layer.shadowOpacity = 0.7
+                cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
+                cell.subView.layer.shadowRadius = 8.0
+                cell.subView.clipsToBounds = false
+                cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
+                
+            case .listTemplate2:
+                cell.subViewBottomConstrain.constant = 0.0
+                cell.subView.layer.cornerRadius = 0.0
+                cell.underLineLabel.isHidden = false
+                let totalRow = tableView.numberOfRows(inSection: indexPath.section)
+                if(indexPath.row == totalRow - 1){
+                    cell.underLineLabel.isHidden = true
+                }
+            case .listTemplate3:
+                cell.subViewBottomConstrain.constant = 0.0
+                cell.subView.layer.cornerRadius = 0.0
+                cell.underLineLabel.isHidden = false
+                if #available(iOS 11.0, *) {
+                    if indexPath.row == 0{
+                        cell.subView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
+                    }else{
+                        let totalRow = tableView.numberOfRows(inSection: indexPath.section)
+                        if(indexPath.row == totalRow - 1){
+                            cell.subView.roundCorners([ .layerMinXMaxYCorner, .layerMaxXMaxYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
+                            cell.underLineLabel.isHidden = true
+                            cell.subViewBottomConstrain.constant = 1.0
+                        }
+                    }
+                    
+                    cell.subViewTopConstaint.constant = 1.0
+                    cell.subView.layer.shadowOpacity = 0.7
+                    cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
+                    cell.subView.layer.shadowRadius = 8.0
+                    cell.subView.clipsToBounds = false
+                    cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
+                    
+                } else {
+                    
+                }
+            }
+            
+        }
+        
+        func titleWithCenteredContentCellMethod(cell: TitleWithCenteredContentCell,cellResultArray: [TemplateResultElements],expandArray: NSMutableArray, indexPath: IndexPath, isClickable: Bool, templateType: String, appearanceType: String){
+            
+            cell.backgroundColor = UIColor.clear
+            cell.selectionStyle = .none
+            cell.titleLabel.textColor = .black
+            cell.descriptionLabel.textColor = .dark
+            cell.titleLabel?.numberOfLines = 0 //2
+            cell.descriptionLabel?.numberOfLines = 0 //2
+            let results = cellResultArray[indexPath.row]
+            var gridImage: String?
+            let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: appearanceType)!
+            switch headerName {
+            case .faq:
+               cell.titleLabel?.text = results.faqQuestion
+               cell.descriptionLabel?.text = results.faqAnswer
+               gridImage = results.imageUrl
+            case .web:
+                cell.titleLabel?.text = results.pageTitle
+                cell.descriptionLabel?.text = results.pagePreview
+                gridImage = results.pageImageUrl
+            case .file:
+                cell.titleLabel?.text = results.fileTitle
+                cell.descriptionLabel?.text = results.filePreview
+                gridImage = results.fileimageUrl
+            case .data:
+               cell.titleLabel?.text = results.category
+               cell.descriptionLabel?.text = results.product
+               gridImage = results.dataImageUrl
+            case .task:
+                break
+            }
+            let buttonsHeight = expandArray[indexPath.row] as! String == "close" ? 0.0: 0.0 //30.0
+            cell.likeAndDislikeButtonHeightConstrain.constant = CGFloat(buttonsHeight)
+            
+            if !isClickable{
+                cell.topCenterImagV.isHidden = true
+                cell.titleLabel.textAlignment = .left
+                cell.descriptionLabel.textAlignment = .left
+                
+                if expandArray [indexPath.row] as! String == "open"{
+                    cell.centerImagV.isHidden = false
+                    cell.centerImagVHeightConstrain.constant = 100
+                    
+                    cell.topImageVWidthConstrain.constant = 10
+                    cell.topImageVHeightConstrain.constant = 20
+                    cell.topCenterImageVHeightConstrain.constant = 5
+                    cell.topImageV.image = UIImage(named: "downarrow")
+                    if gridImage == nil || gridImage == ""{
+                        cell.centerImagV.image = UIImage(named: "placeholder_image")
+                    }else{
+                        let url = URL(string: gridImage!)
+                        cell.centerImagV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+                    }
+                }else{
+                    cell.centerImagV.isHidden = true
+                    cell.centerImagVHeightConstrain.constant = 0
+                    
+                    cell.topImageV.image = UIImage(named: "rightarrow")
+                    cell.topImageVWidthConstrain.constant = 10
+                    cell.topImageVHeightConstrain.constant = 20
                 }
             }else{
+                cell.topCenterImagV.isHidden = false
+                cell.titleLabel.textAlignment = .center
+                cell.descriptionLabel.textAlignment = .center
                 cell.centerImagV.isHidden = true
-                cell.centerImagVHeightConstrain.constant = 0
                 
-                cell.topImageV.image = UIImage(named: "rightarrow")
-                cell.topImageVWidthConstrain.constant = 10
-                cell.topImageVHeightConstrain.constant = 20
-            }
-        }else{
-            cell.topCenterImagV.isHidden = false
-            cell.titleLabel.textAlignment = .center
-            cell.descriptionLabel.textAlignment = .center
-            cell.centerImagV.isHidden = true
-            
-            cell.topImageVWidthConstrain.constant = 0
-            cell.topCenterImageVHeightConstrain.constant = 100
-            cell.titleLabelHorizontalConstrain.constant = 0
-            
-            if results.imageUrl == nil || results.imageUrl == ""{
-                cell.topCenterImagV.image = UIImage(named: "placeholder_image")
+                cell.topImageVWidthConstrain.constant = 0
+                cell.topCenterImageVHeightConstrain.constant = 100
+                cell.titleLabelHorizontalConstrain.constant = 0
                 
-            }else{
-                let url = URL(string: results.imageUrl!)
-                cell.topCenterImagV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
-                
-            }
-        }
-        
-        cell.likeButton.addTarget(self, action: #selector(self.likeButtonAction(_:)), for: .touchUpInside)
-        cell.likeButton.tag = indexPath.row
-        cell.dislikeButton.addTarget(self, action: #selector(self.disLikeButtonAction(_:)), for: .touchUpInside)
-        cell.dislikeButton.tag = indexPath.row
-        //        if likeAndDislikeArray[indexPath.row] as! String == "Like"{
-        //            cell.likeButton.tintColor = .blue
-        //            cell.dislikeButton.tintColor = .darkGray
-        //        }else if likeAndDislikeArray[indexPath.row] as! String == "DisLike"{
-        //            cell.likeButton.tintColor = .darkGray
-        //            cell.dislikeButton.tintColor = .blue
-        //        }
-        
-        cell.subViewLeadingConstraint.constant = 5.0
-        cell.subViewTopConstaint.constant = 5.0
-        cell.subViewTrailingConstraint.constant = 5.0
-        
-        let templateType: searchTemplateTypes = searchTemplateTypes(rawValue: templateType)!
-        switch templateType {
-        case .listTemplate1:
-            cell.subViewBottomConstrain.constant =  11.0
-            cell.subView.layer.cornerRadius = 10
-            cell.underLineLabel.isHidden = true
-            
-            cell.subView.layer.shadowOpacity = 0.7
-            cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
-            cell.subView.layer.shadowRadius = 8.0
-            cell.subView.clipsToBounds = false
-            cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
-            
-        case .listTemplate2:
-            cell.subViewBottomConstrain.constant = 0.0
-            cell.subView.layer.cornerRadius = 0.0
-            cell.underLineLabel.isHidden = false
-            let totalRow = tableView.numberOfRows(inSection: indexPath.section)
-            if(indexPath.row == totalRow - 1){
-                cell.underLineLabel.isHidden = true
-            }
-        case .listTemplate3:
-            cell.subViewBottomConstrain.constant = 0.0
-            cell.subView.layer.cornerRadius = 0.0
-            cell.underLineLabel.isHidden = false
-            if #available(iOS 11.0, *) {
-                if indexPath.row == 0{
-                    cell.subView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
+                if gridImage == nil || gridImage == ""{
+                    cell.topCenterImagV.image = UIImage(named: "placeholder_image")
+                    
                 }else{
-                    let totalRow = tableView.numberOfRows(inSection: indexPath.section)
-                    if(indexPath.row == totalRow - 1){
-                        cell.subView.roundCorners([ .layerMinXMaxYCorner, .layerMaxXMaxYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
-                        cell.underLineLabel.isHidden = true
-                        cell.subViewBottomConstrain.constant = 1.0
-                    }
+                    let url = URL(string: gridImage!)
+                    cell.topCenterImagV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+                    
                 }
+            }
+            
+            cell.likeButton.addTarget(self, action: #selector(self.likeButtonAction(_:)), for: .touchUpInside)
+            cell.likeButton.tag = indexPath.row
+            cell.dislikeButton.addTarget(self, action: #selector(self.disLikeButtonAction(_:)), for: .touchUpInside)
+            cell.dislikeButton.tag = indexPath.row
+            //        if likeAndDislikeArray[indexPath.row] as! String == "Like"{
+            //            cell.likeButton.tintColor = .blue
+            //            cell.dislikeButton.tintColor = .darkGray
+            //        }else if likeAndDislikeArray[indexPath.row] as! String == "DisLike"{
+            //            cell.likeButton.tintColor = .darkGray
+            //            cell.dislikeButton.tintColor = .blue
+            //        }
+            
+            cell.subViewLeadingConstraint.constant = 5.0
+            cell.subViewTopConstaint.constant = 5.0
+            cell.subViewTrailingConstraint.constant = 5.0
+            
+            let templateType: LiveSearchTemplateTypes = LiveSearchTemplateTypes(rawValue: templateType)!
+            switch templateType {
+            case .listTemplate1:
+                cell.subViewBottomConstrain.constant =  11.0
+                cell.subView.layer.cornerRadius = 10
+                cell.underLineLabel.isHidden = true
                 
-                cell.subViewTopConstaint.constant = 1.0
                 cell.subView.layer.shadowOpacity = 0.7
                 cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
                 cell.subView.layer.shadowRadius = 8.0
                 cell.subView.clipsToBounds = false
                 cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
                 
-            } else {
-                
-            }
-        }
-        
-    }
-    
-    func TitleWithHeaderCellMethod(cell: TitleWithHeaderCell,cellResultArray: [TemplateResultElements],expandArray: NSMutableArray, indexPath: IndexPath, isExpand: Bool, templateType: String, appearanceType: String) {
-        
-        cell.backgroundColor = UIColor.clear
-        cell.selectionStyle = .none
-        cell.titleLabel.textColor = .black
-        
-        cell.titleLabel?.numberOfLines = 0 //2
-        
-        let results = cellResultArray[indexPath.row]
-        if appearanceType == "FAQS" {
-            cell.titleLabel?.text = results.question
-        }else{
-            cell.titleLabel?.text = results.pageTitle
-        }
-        
-        let buttonsHeight = expandArray[indexPath.row] as! String == "close" ? 0.0: 0.0 //30.0
-        cell.likeAndDislikeButtonHeightConstrain.constant = CGFloat(buttonsHeight)
-        
-        cell.likeButton.addTarget(self, action: #selector(self.likeButtonAction(_:)), for: .touchUpInside)
-        cell.likeButton.tag = indexPath.row
-        cell.dislikeButton.addTarget(self, action: #selector(self.disLikeButtonAction(_:)), for: .touchUpInside)
-        cell.dislikeButton.tag = indexPath.row
-        //     if likeAndDislikeArray[indexPath.row] as! String == "Like"{
-        //         cell.likeButton.tintColor = .blue
-        //         cell.dislikeButton.tintColor = .darkGray
-        //     }else if likeAndDislikeArray[indexPath.row] as! String == "DisLike"{
-        //         cell.likeButton.tintColor = .darkGray
-        //         cell.dislikeButton.tintColor = .blue
-        //     }
-        
-        cell.subViewLeadingConstraint.constant = 5.0
-        cell.subViewTopConstaint.constant = 5.0
-        cell.subViewTrailingConstraint.constant = 5.0
-        
-        let templateType: searchTemplateTypes = searchTemplateTypes(rawValue: templateType)!
-        switch templateType {
-        case .listTemplate1:
-            cell.subViewBottomConstrain.constant =  11.0
-            cell.subView.layer.cornerRadius = 10
-            cell.underLineLabel.isHidden = true
-            
-            cell.subView.layer.shadowOpacity = 0.7
-            cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
-            cell.subView.layer.shadowRadius = 8.0
-            cell.subView.clipsToBounds = false
-            cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
-            
-        case .listTemplate2:
-            cell.subViewBottomConstrain.constant = 0.0
-            cell.subView.layer.cornerRadius = 0.0
-            cell.underLineLabel.isHidden = false
-            let totalRow = tableView.numberOfRows(inSection: indexPath.section)
-            if(indexPath.row == totalRow - 1){
-                cell.underLineLabel.isHidden = true
-            }
-        case .listTemplate3:
-            cell.subViewBottomConstrain.constant = 0.0
-            cell.subView.layer.cornerRadius = 0.0
-            cell.underLineLabel.isHidden = false
-            if #available(iOS 11.0, *) {
-                if indexPath.row == 0{
-                    cell.subView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
-                }else{
-                    let totalRow = tableView.numberOfRows(inSection: indexPath.section)
-                    if(indexPath.row == totalRow - 1){
-                        cell.subView.roundCorners([ .layerMinXMaxYCorner, .layerMaxXMaxYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
-                        cell.underLineLabel.isHidden = true
-                        cell.subViewBottomConstrain.constant = 1.0
-                    }
+            case .listTemplate2:
+                cell.subViewBottomConstrain.constant = 0.0
+                cell.subView.layer.cornerRadius = 0.0
+                cell.underLineLabel.isHidden = false
+                let totalRow = tableView.numberOfRows(inSection: indexPath.section)
+                if(indexPath.row == totalRow - 1){
+                    cell.underLineLabel.isHidden = true
                 }
+            case .listTemplate3:
+                cell.subViewBottomConstrain.constant = 0.0
+                cell.subView.layer.cornerRadius = 0.0
+                cell.underLineLabel.isHidden = false
+                if #available(iOS 11.0, *) {
+                    if indexPath.row == 0{
+                        cell.subView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
+                    }else{
+                        let totalRow = tableView.numberOfRows(inSection: indexPath.section)
+                        if(indexPath.row == totalRow - 1){
+                            cell.subView.roundCorners([ .layerMinXMaxYCorner, .layerMaxXMaxYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
+                            cell.underLineLabel.isHidden = true
+                            cell.subViewBottomConstrain.constant = 1.0
+                        }
+                    }
+                    
+                    cell.subViewTopConstaint.constant = 1.0
+                    cell.subView.layer.shadowOpacity = 0.7
+                    cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
+                    cell.subView.layer.shadowRadius = 8.0
+                    cell.subView.clipsToBounds = false
+                    cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
+                    
+                } else {
+                    
+                }
+            }
+            
+        }
+        
+        func TitleWithHeaderCellMethod(cell: TitleWithHeaderCell,cellResultArray: [TemplateResultElements],expandArray: NSMutableArray, indexPath: IndexPath, isClickable: Bool, templateType: String, appearanceType: String) {
+            
+            cell.backgroundColor = UIColor.clear
+            cell.selectionStyle = .none
+            cell.titleLabel.textColor = .black
+            
+            cell.titleLabel?.numberOfLines = 0 //2
+            
+            let results = cellResultArray[indexPath.row]
+            let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: appearanceType)!
+            switch headerName {
+            case .faq:
+               cell.titleLabel?.text = results.faqQuestion
+            case .web:
+                cell.titleLabel?.text = results.pageTitle
+            case .file:
+               cell.titleLabel?.text = results.fileTitle
+            case .data:
+               cell.titleLabel?.text = results.category
+            case .task:
+                break
+            }
+            
+            let buttonsHeight = expandArray[indexPath.row] as! String == "close" ? 0.0: 0.0 //30.0
+            cell.likeAndDislikeButtonHeightConstrain.constant = CGFloat(buttonsHeight)
+            
+            cell.likeButton.addTarget(self, action: #selector(self.likeButtonAction(_:)), for: .touchUpInside)
+            cell.likeButton.tag = indexPath.row
+            cell.dislikeButton.addTarget(self, action: #selector(self.disLikeButtonAction(_:)), for: .touchUpInside)
+            cell.dislikeButton.tag = indexPath.row
+            //     if likeAndDislikeArray[indexPath.row] as! String == "Like"{
+            //         cell.likeButton.tintColor = .blue
+            //         cell.dislikeButton.tintColor = .darkGray
+            //     }else if likeAndDislikeArray[indexPath.row] as! String == "DisLike"{
+            //         cell.likeButton.tintColor = .darkGray
+            //         cell.dislikeButton.tintColor = .blue
+            //     }
+            
+            cell.subViewLeadingConstraint.constant = 5.0
+            cell.subViewTopConstaint.constant = 5.0
+            cell.subViewTrailingConstraint.constant = 5.0
+            
+            let templateType: LiveSearchTemplateTypes = LiveSearchTemplateTypes(rawValue: templateType)!
+            switch templateType {
+            case .listTemplate1:
+                cell.subViewBottomConstrain.constant =  11.0
+                cell.subView.layer.cornerRadius = 10
+                cell.underLineLabel.isHidden = true
                 
-                cell.subViewTopConstaint.constant = 1.0
                 cell.subView.layer.shadowOpacity = 0.7
                 cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
                 cell.subView.layer.shadowRadius = 8.0
                 cell.subView.clipsToBounds = false
                 cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
                 
-            } else {
-                
+            case .listTemplate2:
+                cell.subViewBottomConstrain.constant = 0.0
+                cell.subView.layer.cornerRadius = 0.0
+                cell.underLineLabel.isHidden = false
+                let totalRow = tableView.numberOfRows(inSection: indexPath.section)
+                if(indexPath.row == totalRow - 1){
+                    cell.underLineLabel.isHidden = true
+                }
+            case .listTemplate3:
+                cell.subViewBottomConstrain.constant = 0.0
+                cell.subView.layer.cornerRadius = 0.0
+                cell.underLineLabel.isHidden = false
+                if #available(iOS 11.0, *) {
+                    if indexPath.row == 0{
+                        cell.subView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
+                    }else{
+                        let totalRow = tableView.numberOfRows(inSection: indexPath.section)
+                        if(indexPath.row == totalRow - 1){
+                            cell.subView.roundCorners([ .layerMinXMaxYCorner, .layerMaxXMaxYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
+                            cell.underLineLabel.isHidden = true
+                            cell.subViewBottomConstrain.constant = 1.0
+                        }
+                    }
+                    
+                    cell.subViewTopConstaint.constant = 1.0
+                    cell.subView.layer.shadowOpacity = 0.7
+                    cell.subView.layer.shadowOffset = CGSize(width: 2, height: 2)
+                    cell.subView.layer.shadowRadius = 8.0
+                    cell.subView.clipsToBounds = false
+                    cell.subView.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
+                    
+                } else {
+                    
+                }
             }
+            
         }
         
-    }
-    
-    func  reloadTableViewSilently() {
-        DispatchQueue.main.async {
-            //            self.tabV.beginUpdates()
-            //            self.tabV.endUpdates()
-            self.tableView.reloadData()
+        func  reloadTableViewSilently() {
+            DispatchQueue.main.async {
+                //            self.tabV.beginUpdates()
+                //            self.tabV.endUpdates()
+                self.tableView.reloadData()
+            }
         }
     }
-}

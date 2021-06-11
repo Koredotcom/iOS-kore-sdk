@@ -140,11 +140,13 @@ class AppLaunchViewController: UIViewController {
             self.chatButton.isUserInteractionEnabled = false
             self.careMarkButton.isUserInteractionEnabled = true
             self.pfizerButton.isUserInteractionEnabled = true
-            SDKConfiguration.botConfig.clientId = "cs-4d3a6498-acfd-5b35-b398-fe1d52b1b7fe"
-            SDKConfiguration.botConfig.clientSecret = "98Toq/wxVUYnNKcuU1PIm8eq75+av18Dn+eha5NY8iU="
-            SDKConfiguration.botConfig.botId =  "st-d5ffc5b4-eb1d-5c0f-aeac-438b4aff59ea"
-            SDKConfiguration.botConfig.chatBotName = "April 7"
-            findlySidx = "sidx-24471eaf-88c7-5789-9cfc-4a17e7e94a9e"
+            SDKConfiguration.botConfig.clientId = "cs-85d24fec-86e3-5b3e-8fb7-0e296f09fa21"
+            SDKConfiguration.botConfig.clientSecret = "KWf79rvhmDEPjA+G0Z+EKJasibER0oT4/pzvucFAWSQ="
+            SDKConfiguration.botConfig.botId =  "st-12466d46-dc91-5855-a301-b6ecd7a95d82"
+            SDKConfiguration.botConfig.searchIndexID =  "sidx-4c33c7cf-9561-58f2-b547-4745ce12b513"
+            SDKConfiguration.botConfig.chatBotName = "31May"
+            //findlySidx = "sidx-24471eaf-88c7-5789-9cfc-4a17e7e94a9e"
+            
         }else if sender.tag == 2{
             self.chatButton.isUserInteractionEnabled = true
             self.careMarkButton.isUserInteractionEnabled = false
@@ -152,8 +154,9 @@ class AppLaunchViewController: UIViewController {
             SDKConfiguration.botConfig.clientId = "cs-0b9dcc51-26f3-53ed-b9d9-65888e5aaaeb"
             SDKConfiguration.botConfig.clientSecret = "97KKpL/OF4ees3Z69voceE1nm5FnelhxrtrwOJuRMPA="
             SDKConfiguration.botConfig.botId =  "st-bd231a03-1ab7-58fb-8862-c19416471cdb"
+            SDKConfiguration.botConfig.searchIndexID =  "sidx-6fff8b04-f206-565c-bb02-fb13ae366fd3"
             SDKConfiguration.botConfig.chatBotName = "careMark"
-            findlySidx = "sidx-6fff8b04-f206-565c-bb02-fb13ae366fd3"
+            //findlySidx = "sidx-6fff8b04-f206-565c-bb02-fb13ae366fd3"
         }else if sender.tag == 3{
             self.chatButton.isUserInteractionEnabled = true
             self.careMarkButton.isUserInteractionEnabled = true
@@ -161,8 +164,9 @@ class AppLaunchViewController: UIViewController {
             SDKConfiguration.botConfig.clientId = "cs-549d8874-cf8c-5715-bce1-cb83ec4faedb"
             SDKConfiguration.botConfig.clientSecret = "ZLnSvXa5fhxrRM8znYbhWOVN/yDNH8vikdIivggA6WI="
             SDKConfiguration.botConfig.botId =  "st-8dbd1e15-1f88-5ff7-9c23-e30ac1d38212"
+            SDKConfiguration.botConfig.searchIndexID =  "sidx-d9006b59-6c8c-5a78-bcbd-00e3e0ceb9aa"
             SDKConfiguration.botConfig.chatBotName = "Pfizer"
-            findlySidx = "sidx-d9006b59-6c8c-5a78-bcbd-00e3e0ceb9aa"
+            //findlySidx = "sidx-d9006b59-6c8c-5a78-bcbd-00e3e0ceb9aa"
         }
         
         
