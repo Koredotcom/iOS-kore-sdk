@@ -229,7 +229,7 @@ class LiveSearchView: UIView {
             let faqs = allItems.template?.results?.faq
             self?.arrayOfFaqResults = faqs ?? []
             if self!.arrayOfFaqResults.count > 0 {
-                self!.headerArray.append("FAQS")
+                self!.headerArray.append(LiveSearchHeaderTypes.faq.rawValue)
                 self!.headersExpandArray.add("open")
             }
             for _ in 0..<self!.arrayOfFaqResults.count{
@@ -240,7 +240,7 @@ class LiveSearchView: UIView {
             let pages = allItems.template?.results?.page
             self?.arrayOfPageResults = pages ?? []
             if self!.arrayOfPageResults.count > 0 {
-                self!.headerArray.append("WEB")
+                self!.headerArray.append(LiveSearchHeaderTypes.web.rawValue)
                 self!.headersExpandArray.add("open")
             }
             for _ in 0..<self!.arrayOfPageResults.count{
@@ -250,7 +250,7 @@ class LiveSearchView: UIView {
             let task = allItems.template?.results?.task
             self?.arrayOfTaskResults = task ?? []
             if self!.arrayOfTaskResults.count > 0 {
-                self!.headerArray.append("TASKS")
+                self!.headerArray.append(LiveSearchHeaderTypes.task.rawValue)
                 self!.headersExpandArray.add("open")
                 isShowLoginView = true
             }else{
@@ -260,7 +260,7 @@ class LiveSearchView: UIView {
             let files = allItems.template?.results?.file
             self?.arrayOfFileResults = files ?? []
             if self!.arrayOfFileResults.count > 0 {
-                self!.headerArray.append("Files")
+                self!.headerArray.append(LiveSearchHeaderTypes.file.rawValue)
                 self!.headersExpandArray.add("open")
             }
             for _ in 0..<self!.arrayOfFileResults.count{
@@ -270,7 +270,7 @@ class LiveSearchView: UIView {
             let data = allItems.template?.results?.data
             self?.arrayOfDataResults = data ?? []
             if self!.arrayOfDataResults.count > 0 {
-                self!.headerArray.append("DATA")
+                self!.headerArray.append(LiveSearchHeaderTypes.data.rawValue)
                 self!.headersExpandArray.add("open")
             }
             for _ in 0..<self!.arrayOfDataResults.count{
@@ -506,11 +506,17 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 return 0
             case .file:
                 if headersExpandArray [section] as! String == "open"{
+                    if liveSearchFileTemplateType == "gridTemplate" || liveSearchFileTemplateType == "carousel"{
+                        return 1
+                    }
                     return arrayOfFileResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfFileResults.count
                 }
                 return 0
             case .data:
                 if headersExpandArray [section] as! String == "open"{
+                    if liveSearchDataTemplateType == "gridTemplate" || liveSearchDataTemplateType == "carousel"{
+                        return 1
+                    }
                     return arrayOfDataResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfDataResults.count
                 }
                 return 0

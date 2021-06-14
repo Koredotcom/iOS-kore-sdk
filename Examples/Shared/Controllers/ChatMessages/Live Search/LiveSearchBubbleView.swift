@@ -56,21 +56,21 @@ class LiveSearchBubbleView: BubbleView {
     
     let sectionAndRowsLimit:Int = 2//(serachInterfaceItems?.interactionsConfig?.liveSearchResultsLimit)!
     
-    let liveSearchFileTemplateType = resultViewSettingItems?.settings?[2].appearance?[0].template?.type ?? "listTemplate1"
-     let fileLayOutType = resultViewSettingItems?.settings?[2].appearance?[0].template?.layout?.layoutType ?? "tileWithText"
-     let isFileClickable = resultViewSettingItems?.settings?[2].appearance?[0].template?.layout?.isClickable ?? true
+    let liveSearchFileTemplateType = resultViewSettingItems?.settings?[0].appearance?[0].template?.type ?? "listTemplate1"
+     let fileLayOutType = resultViewSettingItems?.settings?[0].appearance?[0].template?.layout?.layoutType ?? "tileWithText"
+     let isFileClickable = resultViewSettingItems?.settings?[0].appearance?[0].template?.layout?.isClickable ?? true
      
      let liveSearchFAQsTemplateType = resultViewSettingItems?.settings?[2].appearance?[1].template?.type ?? "listTemplate1"
-     let faqLayOutType = resultViewSettingItems?.settings?[2].appearance?[1].template?.layout?.layoutType ??  "tileWithText"
-     let isFaqsClickable = resultViewSettingItems?.settings?[2].appearance?[1].template?.layout?.isClickable ?? true
+     let faqLayOutType = resultViewSettingItems?.settings?[0].appearance?[1].template?.layout?.layoutType ??  "tileWithText"
+     let isFaqsClickable = resultViewSettingItems?.settings?[0].appearance?[1].template?.layout?.isClickable ?? true
      
-     let liveSearchPageTemplateType = resultViewSettingItems?.settings?[2].appearance?[2].template?.type ?? "listTemplate1"
-     let pageLayOutType = resultViewSettingItems?.settings?[2].appearance?[2].template?.layout?.layoutType ?? "tileWithImage"
-     let isPagesClickable = resultViewSettingItems?.settings?[2].appearance?[2].template?.layout?.isClickable ?? true
+     let liveSearchPageTemplateType = resultViewSettingItems?.settings?[0].appearance?[2].template?.type ?? "listTemplate1"
+     let pageLayOutType = resultViewSettingItems?.settings?[0].appearance?[2].template?.layout?.layoutType ?? "tileWithImage"
+     let isPagesClickable = resultViewSettingItems?.settings?[0].appearance?[2].template?.layout?.isClickable ?? true
      
-     let liveSearchDataTemplateType = resultViewSettingItems?.settings?[2].appearance?[3].template?.type ?? "listTemplate1"
-     let dataLayOutType = resultViewSettingItems?.settings?[2].appearance?[3].template?.layout?.layoutType ?? "tileWithText"
-     let isDataClickable = resultViewSettingItems?.settings?[2].appearance?[3].template?.layout?.isClickable ?? true
+     let liveSearchDataTemplateType = resultViewSettingItems?.settings?[0].appearance?[3].template?.type ?? "listTemplate1"
+     let dataLayOutType = resultViewSettingItems?.settings?[0].appearance?[3].template?.layout?.layoutType ?? "tileWithText"
+     let isDataClickable = resultViewSettingItems?.settings?[0].appearance?[3].template?.layout?.isClickable ?? true
      
     
      enum LiveSearchHeaderTypes: String{
@@ -227,7 +227,7 @@ class LiveSearchBubbleView: BubbleView {
                     let faqs = allItems.template?.results?.faq
                     self.arrayOfFaqResults = faqs ?? []
                     if self.arrayOfFaqResults.count > 0 {
-                        self.headerArray.append("FAQS")
+                        self.headerArray.append(LiveSearchHeaderTypes.faq.rawValue)
                         self.headersExpandArray.add("open")
                     }
                     for _ in 0..<self.arrayOfFaqResults.count{
@@ -238,7 +238,7 @@ class LiveSearchBubbleView: BubbleView {
                     let pages = allItems.template?.results?.page
                     self.arrayOfPageResults = pages ?? []
                     if self.arrayOfPageResults.count > 0 {
-                        self.headerArray.append("WEB")
+                        self.headerArray.append(LiveSearchHeaderTypes.web.rawValue)
                         self.headersExpandArray.add("open")
                     }
                     for _ in 0..<self.arrayOfPageResults.count{
@@ -248,14 +248,14 @@ class LiveSearchBubbleView: BubbleView {
                     let task = allItems.template?.results?.task
                     self.arrayOfTaskResults = task ?? []
                     if self.arrayOfTaskResults.count > 0 {
-                        self.headerArray.append("TASKS")
+                        self.headerArray.append(LiveSearchHeaderTypes.task.rawValue)
                         self.headersExpandArray.add("open")
                     }
                     //Files
                     let files = allItems.template?.results?.file
                     self.arrayOfFileResults = files ?? []
                     if self.arrayOfFileResults.count > 0 {
-                        self.headerArray.append("Files")
+                        self.headerArray.append(LiveSearchHeaderTypes.file.rawValue)
                         self.headersExpandArray.add("open")
                     }
                     for _ in 0..<self.arrayOfFileResults.count{
@@ -265,7 +265,7 @@ class LiveSearchBubbleView: BubbleView {
                     let data = allItems.template?.results?.data
                     self.arrayOfDataResults = data ?? []
                     if self.arrayOfDataResults.count > 0 {
-                        self.headerArray.append("DATA")
+                        self.headerArray.append(LiveSearchHeaderTypes.data.rawValue)
                         self.headersExpandArray.add("open")
                     }
                     for _ in 0..<self.arrayOfDataResults.count{
@@ -378,11 +378,17 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             return 0
         case .file:
             if headersExpandArray [section] as! String == "open"{
+                if liveSearchFileTemplateType == "gridTemplate" || liveSearchFileTemplateType == "carousel"{
+                    return 1
+                }
                 return arrayOfFileResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfFileResults.count
             }
             return 0
         case .data:
             if headersExpandArray [section] as! String == "open"{
+                if liveSearchDataTemplateType == "gridTemplate" || liveSearchDataTemplateType == "carousel"{
+                    return 1
+                }
                 return arrayOfDataResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfDataResults.count
             }
             return 0
@@ -830,13 +836,24 @@ extension LiveSearchBubbleView{
             cell.titleLabel?.numberOfLines = 0 //2
             cell.descriptionLabel?.numberOfLines = 0 //2
             let results = cellResultArray[indexPath.row]
-            if appearanceType == "FAQS" {
-                cell.titleLabel?.text = results.faqQuestion
-                cell.descriptionLabel?.text = results.faqAnswer
-            }else{
-                cell.titleLabel?.text = results.pageTitle
-                cell.descriptionLabel?.text = results.pageSearchResultPreview
-            }
+             let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: appearanceType)!
+                   switch headerName {
+                   case .faq:
+                       cell.titleLabel?.text = results.faqQuestion
+                       cell.descriptionLabel?.text = results.faqAnswer
+                   case .web:
+                       cell.titleLabel?.text = results.pageTitle
+                       cell.descriptionLabel?.text = results.pagePreview
+                   case .file:
+                       cell.titleLabel?.text = results.fileTitle
+                       cell.descriptionLabel?.text = results.filePreview
+                   case .data:
+                       cell.titleLabel?.text = results.category
+                       cell.descriptionLabel?.text = results.product
+                   case .task:
+                       break
+                   }
+            
             let buttonsHeight = expandArray[indexPath.row] as! String == "close" ? 0.0: 0.0 //30.0
             cell.likeAndDislikeButtonHeightConstrain.constant = CGFloat(buttonsHeight)
             

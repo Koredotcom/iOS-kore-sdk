@@ -188,20 +188,20 @@ class TemplatePastBackPayload: NSObject, Decodable {
 class TemplateFacets: NSObject, Decodable {
     public var all_results: Int?
     public var faq: Int?
-    public var page: Int?
+    public var web: Int?
     public var task: Int?
-    public var document: Int?
-    public var files: Int?
+    public var data: Int?
+    public var file: Int?
     
 
     
     enum ColorCodeKeys: String, CodingKey {
         case all_results = "all results"
         case faq = "faq"
-        case page = "page"
+        case web = "web"
         case task = "task"
-        case document = "document"
-        case files = "object"
+        case data = "data"
+        case file = "file"
     }
     
     // MARK: - init
@@ -213,9 +213,9 @@ class TemplateFacets: NSObject, Decodable {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
         all_results = try? container.decode(Int.self, forKey: .all_results)
         faq = try? container.decode(Int.self, forKey: .faq)
-        page = try? container.decode(Int.self, forKey: .page)
+        web = try? container.decode(Int.self, forKey: .web)
         task = try? container.decode(Int.self, forKey: .task)
-        document = try? container.decode(Int.self, forKey: .document)
-        files = try? container.decode(Int.self, forKey: .files)
+        data = try? container.decode(Int.self, forKey: .data)
+        file = try? container.decode(Int.self, forKey: .file)
     }
 }
