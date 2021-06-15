@@ -27,6 +27,7 @@ class LiveSearchBubbleView: BubbleView {
     
     fileprivate let GridTableViewCellIdentifier = "GridTableViewCell"
     
+    var totalNumOfResults:Int?
     // var rowsDataLimit = 2
     var isShowMore = false
     
@@ -60,7 +61,7 @@ class LiveSearchBubbleView: BubbleView {
      let fileLayOutType = resultViewSettingItems?.settings?[0].appearance?[0].template?.layout?.layoutType ?? "tileWithText"
      let isFileClickable = resultViewSettingItems?.settings?[0].appearance?[0].template?.layout?.isClickable ?? true
      
-     let liveSearchFAQsTemplateType = resultViewSettingItems?.settings?[2].appearance?[1].template?.type ?? "listTemplate1"
+     let liveSearchFAQsTemplateType = resultViewSettingItems?.settings?[0].appearance?[1].template?.type ?? "listTemplate1"
      let faqLayOutType = resultViewSettingItems?.settings?[0].appearance?[1].template?.layout?.layoutType ??  "tileWithText"
      let isFaqsClickable = resultViewSettingItems?.settings?[0].appearance?[1].template?.layout?.isClickable ?? true
      
@@ -91,6 +92,12 @@ class LiveSearchBubbleView: BubbleView {
          case listTemplate2 = "listTemplate2"
          case listTemplate3 = "listTemplate3"
      }
+    
+    enum LiveSearchTypes: String{
+        case listTemplate = "listTemplate"
+        case grid = "grid"
+        case carousel = "carousel"
+    }
     
     public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
@@ -273,6 +280,7 @@ class LiveSearchBubbleView: BubbleView {
                     }
                     
                     self.titleLbl.text = "Sure, please find the matched results below"
+                    totalNumOfResults =  allItems.template?.totalNumOfResults
                     self.tableView.reloadData()
                     
                 }
@@ -350,14 +358,14 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
                
             }
     func numberOfSections(in tableView: UITableView) -> Int {
-        return headerArray.count > sectionAndRowsLimit ? sectionAndRowsLimit : headerArray.count
+        return headerArray.count //> sectionAndRowsLimit ? sectionAndRowsLimit : headerArray.count
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let headerName: LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[section])!
         switch headerName {
         case .faq:
             if headersExpandArray [section] as! String == "open"{
-                if liveSearchFAQsTemplateType == "gridTemplate" || liveSearchFAQsTemplateType == "carousel"{
+                if liveSearchFAQsTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFAQsTemplateType == LiveSearchTypes.carousel.rawValue{
                     return 1
                 }
                 return arrayOfFaqResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfFaqResults.count
@@ -365,7 +373,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             return 0
         case .web:
             if headersExpandArray [section] as! String == "open"{
-                if liveSearchPageTemplateType == "gridTemplate" || liveSearchPageTemplateType == "carousel"{
+                if liveSearchPageTemplateType == LiveSearchTypes.grid.rawValue || liveSearchPageTemplateType == LiveSearchTypes.carousel.rawValue{
                     return 1
                 }
                 return arrayOfPageResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfPageResults.count
@@ -378,7 +386,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             return 0
         case .file:
             if headersExpandArray [section] as! String == "open"{
-                if liveSearchFileTemplateType == "gridTemplate" || liveSearchFileTemplateType == "carousel"{
+                if liveSearchFileTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFileTemplateType == LiveSearchTypes.carousel.rawValue{
                     return 1
                 }
                 return arrayOfFileResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfFileResults.count
@@ -386,7 +394,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             return 0
         case .data:
             if headersExpandArray [section] as! String == "open"{
-                if liveSearchDataTemplateType == "gridTemplate" || liveSearchDataTemplateType == "carousel"{
+                if liveSearchDataTemplateType == LiveSearchTypes.grid.rawValue || liveSearchDataTemplateType == LiveSearchTypes.carousel.rawValue{
                     return 1
                 }
                 return arrayOfDataResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfDataResults.count
@@ -398,9 +406,9 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
         let headerName: LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[indexPath.section])!
         switch headerName {
         case .faq:
-            if liveSearchFAQsTemplateType == "gridTemplate" || liveSearchFAQsTemplateType == "carousel"{
+            if liveSearchFAQsTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFAQsTemplateType == LiveSearchTypes.carousel.rawValue{
                 let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                cell.configure(with: arrayOfFaqResults, appearanceType: headerName.rawValue, layOutType: faqLayOutType)
+                cell.configure(with: arrayOfFaqResults, appearanceType: headerName.rawValue, layOutType: faqLayOutType, templateType:liveSearchFAQsTemplateType)
                 return cell
             }else{
                 let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: faqLayOutType)!
@@ -424,9 +432,9 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
                 }
             }
         case .web:
-            if liveSearchPageTemplateType == "gridTemplate" || liveSearchPageTemplateType == "carousel"{
+            if liveSearchPageTemplateType == LiveSearchTypes.grid.rawValue || liveSearchPageTemplateType == LiveSearchTypes.carousel.rawValue{
                 let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                cell.configure(with: arrayOfPageResults, appearanceType: headerName.rawValue, layOutType: pageLayOutType)
+                cell.configure(with: arrayOfPageResults, appearanceType: headerName.rawValue, layOutType: pageLayOutType, templateType:liveSearchPageTemplateType)
                 return cell
             }else{
                 let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: pageLayOutType)!
@@ -452,9 +460,9 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             }
             
         case .file:
-            if liveSearchFileTemplateType == "gridTemplate" || liveSearchFileTemplateType == "carousel"{
+            if liveSearchFileTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFileTemplateType == LiveSearchTypes.carousel.rawValue{
                 let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                cell.configure(with: arrayOfFileResults, appearanceType: headerName.rawValue, layOutType: fileLayOutType)
+                cell.configure(with: arrayOfFileResults, appearanceType: headerName.rawValue, layOutType: fileLayOutType, templateType:liveSearchFileTemplateType)
                 return cell
             }else{
                 let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: fileLayOutType)!
@@ -480,9 +488,9 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             }
             
         case .data:
-            if liveSearchDataTemplateType == "gridTemplate" || liveSearchDataTemplateType == "carousel"{
+            if liveSearchDataTemplateType == LiveSearchTypes.grid.rawValue || liveSearchDataTemplateType == LiveSearchTypes.carousel.rawValue{
                 let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                cell.configure(with: arrayOfDataResults, appearanceType: headerName.rawValue, layOutType: dataLayOutType)
+                cell.configure(with: arrayOfDataResults, appearanceType: headerName.rawValue, layOutType: dataLayOutType, templateType: liveSearchDataTemplateType)
                 return cell
             }else{
                 let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue:  dataLayOutType)!
@@ -704,7 +712,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
 //        let boolValue = section == 0 ? false : true
 //        showMoreButton.isHidden = boolValue
         
-        let views: [String: UIView] = ["dropDownBtn": headerLabel, "showMoreButton": showMoreButton]
+        let views: [String: UIView] = ["dropDownBtn": dropDownBtn, "showMoreButton": showMoreButton]
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[dropDownBtn]-5-[showMoreButton(100)]-0-|", options:[], metrics:nil, views:views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[dropDownBtn]-5-|", options:[], metrics:nil, views:views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[showMoreButton]-5-|", options:[], metrics:nil, views:views))
@@ -733,7 +741,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
         headerLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)
         headerLabel.font = headerLabel.font.withSize(15.0)
         headerLabel.textColor = .gray
-        headerLabel.text =  "(516 results)"
+        headerLabel.text =  "(\(totalNumOfResults ?? 0) results)"
         view.addSubview(headerLabel)
         
         let dropDownBtn = UIButton(frame: CGRect.zero)
@@ -798,8 +806,10 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
 extension LiveSearchBubbleView{
     
     func heightForTable(resultExpandArray: NSMutableArray, layoutType: String, TemplateType: String, index: Int) -> CGFloat{
-        if TemplateType == "gridTemplate" || TemplateType == "carousel"{
+        if TemplateType == LiveSearchTypes.grid.rawValue {
             return UITableView.automaticDimension
+        }else if TemplateType == LiveSearchTypes.carousel.rawValue{
+            return 250
         }else{
             let layOutType:LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: layoutType)!
             switch layOutType {
@@ -811,7 +821,7 @@ extension LiveSearchBubbleView{
                 
             case .tileWithImage:
                 if  resultExpandArray[index] as! String == "close"{
-                    return 75
+                    return 80
                 }
                 return UITableView.automaticDimension
             case .tileWithCenteredContent:

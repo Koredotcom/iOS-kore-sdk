@@ -14,6 +14,7 @@ class GridTableViewCell: UITableViewCell {
     var arr = [TemplateResultElements]()
     var appearanceType:String?
     var layOutType:String?
+     var templateType:String?
     
     enum LiveSearchHeaderTypes: String{
            case faq = "FAQS"
@@ -30,10 +31,11 @@ class GridTableViewCell: UITableViewCell {
        }
      
     
-    func configure(with arr: [TemplateResultElements], appearanceType: String, layOutType:String ) {
+    func configure(with arr: [TemplateResultElements], appearanceType: String, layOutType:String, templateType:String ) {
         self.arr = arr
         self.appearanceType = appearanceType
         self.layOutType = layOutType
+        self.templateType = templateType
         self.collectionView.reloadData()
         self.collectionView.layoutIfNeeded()
     }
@@ -43,6 +45,8 @@ class GridTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        
         collectionView.register(UINib.init(nibName: "GridCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "GridCollectionViewCell")
     }
 
@@ -50,6 +54,15 @@ class GridTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+        if  templateType ==  "carousel"{
+            if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+                layout.scrollDirection = .horizontal
+            }
+        }else{
+            if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+                layout.scrollDirection = .vertical  // .horizontal
+            }
+        }
     }
     
 }
@@ -63,17 +76,7 @@ extension GridTableViewCell: UICollectionViewDataSource, UICollectionViewDelegat
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GridCollectionViewCell", for: indexPath) as! GridCollectionViewCell
         cell.backgroundColor = .white
         let results = self.arr[indexPath.row]
-        var gridImage: String?
-//        if appearanceType == "FAQS" {
-//            cell.titleLbl?.text = results.question
-//            cell.descriptionLbl?.text = results.answer
-//            gridImage = results.imageUrl
-//        }else{
-//            cell.titleLbl?.text = results.pageTitle
-//            cell.descriptionLbl?.text = results.pagePreview
-//            gridImage = results.pageImageUrl
-//        }
-        
+        var gridImage: String? 
         let appearancetype:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: appearanceType!)!
         switch appearancetype {
         case .faq:
@@ -150,41 +153,46 @@ extension GridTableViewCell: UICollectionViewDataSource, UICollectionViewDelegat
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let results = self.arr[indexPath.row]
-        var titleTextHeight:CGFloat!
-        var descTextHeight:CGFloat!
-    
-        let appearancetype:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: appearanceType!)!
-        switch appearancetype {
-        case .faq:
-          titleTextHeight = requiredHeight(text: results.faqQuestion ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
-           descTextHeight = requiredHeight(text: results.faqAnswer ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
-        case .web:
-            titleTextHeight = requiredHeight(text: results.pageTitle ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
-            descTextHeight = requiredHeight(text: results.pagePreview ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
-        case .file:
-            titleTextHeight = requiredHeight(text: results.fileTitle ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
-            descTextHeight = requiredHeight(text: results.filePreview ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
-        case .data:
-            titleTextHeight = requiredHeight(text: results.category ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
-            descTextHeight = requiredHeight(text: results.product ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
-        case .task:
-            break
+        if templateType ==  "carousel"{
+            return CGSize(width: ((collectionView.frame.size.width-3*10)/2) - 20, height: 240)
+        }else{
+            let results = self.arr[indexPath.row]
+                var titleTextHeight:CGFloat!
+                var descTextHeight:CGFloat!
+            
+                let appearancetype:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: appearanceType!)!
+                switch appearancetype {
+                case .faq:
+                  titleTextHeight = requiredHeight(text: results.faqQuestion ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
+                   descTextHeight = requiredHeight(text: results.faqAnswer ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
+                case .web:
+                    titleTextHeight = requiredHeight(text: results.pageTitle ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
+                    descTextHeight = requiredHeight(text: results.pagePreview ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
+                case .file:
+                    titleTextHeight = requiredHeight(text: results.fileTitle ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
+                    descTextHeight = requiredHeight(text: results.filePreview ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
+                case .data:
+                    titleTextHeight = requiredHeight(text: results.category ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
+                    descTextHeight = requiredHeight(text: results.product ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
+                case .task:
+                    break
+                }
+                
+                let layoutType:LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: layOutType!)!
+                switch layoutType {
+                case .tileWithText:
+                   return CGSize(width: (collectionView.frame.size.width-3*10)/2, height: titleTextHeight+descTextHeight+55) //40
+                case .tileWithImage:
+                    //let leftImagevSpaceing = 25
+                    return CGSize(width: (collectionView.frame.size.width-3*10)/2, height: titleTextHeight+descTextHeight+55+25)
+                case .tileWithCenteredContent:
+                    //let topImagevSpaceing = 100
+                    return CGSize(width: (collectionView.frame.size.width-3*10)/2, height: titleTextHeight+descTextHeight+55+100)
+                case .tileWithHeader:
+                  return CGSize(width: (collectionView.frame.size.width-3*10)/2, height: titleTextHeight+35)
+                }
         }
         
-        let layoutType:LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: layOutType!)!
-        switch layoutType {
-        case .tileWithText:
-           return CGSize(width: (collectionView.frame.size.width-3*10)/2, height: titleTextHeight+descTextHeight+55) //40
-        case .tileWithImage:
-            //let leftImagevSpaceing = 25
-            return CGSize(width: (collectionView.frame.size.width-3*10)/2, height: titleTextHeight+descTextHeight+55+25)
-        case .tileWithCenteredContent:
-            //let topImagevSpaceing = 100
-            return CGSize(width: (collectionView.frame.size.width-3*10)/2, height: titleTextHeight+descTextHeight+55+100)
-        case .tileWithHeader:
-          return CGSize(width: (collectionView.frame.size.width-3*10)/2, height: titleTextHeight+35)
-        }
         
     }
     

@@ -100,6 +100,12 @@ class LiveSearchView: UIView {
         case listTemplate3 = "listTemplate3"
     }
     
+    enum LiveSearchTypes: String{
+        case listTemplate = "listTemplate"
+        case grid = "grid"
+        case carousel = "carousel"
+    }
+    
     convenience init() {
         self.init(frame: CGRect.zero)
     }
@@ -332,7 +338,7 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
             let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[indexPath.section])!
             switch headerName {
             case .faq:
-//                if liveSearchFAQsTemplateType == "gridTemplate" || liveSearchFAQsTemplateType == "carousel"{
+//                if liveSearchFAQsTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFAQsTemplateType == LiveSearchTypes.carousel.rawValue{
 //                    return UITableView.automaticDimension
 //                }else{
 //                    let layOutType = faqLayOutType
@@ -368,7 +374,7 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 return   heightForTable(resultExpandArray: faqsExpandArray, layoutType: faqLayOutType, TemplateType: liveSearchFAQsTemplateType, index: indexPath.row)
                 
             case .web:
-//                if liveSearchPageTemplateType == "gridTemplate" || liveSearchPageTemplateType == "carousel"{
+//                if liveSearchPageTemplateType == LiveSearchTypes.grid.rawValue || liveSearchPageTemplateType == LiveSearchTypes.carousel.rawValue{
 //                    return UITableView.automaticDimension
 //                }else{
 //                    let layOutType = pageLayOutType
@@ -400,7 +406,7 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
 //                }
                  return   heightForTable(resultExpandArray: pagesExpandArray, layoutType: pageLayOutType, TemplateType: liveSearchPageTemplateType, index: indexPath.row)
             case .file:
-//                if liveSearchFileTemplateType == "gridTemplate" || liveSearchFileTemplateType == "carousel"{
+//                if liveSearchFileTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFileTemplateType == LiveSearchTypes.carousel.rawValue{
 //                    return UITableView.automaticDimension
 //                }else{
 //                    let layOutType = fileLayOutType
@@ -433,7 +439,7 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                  return   heightForTable(resultExpandArray: filesExpandArray, layoutType: fileLayOutType, TemplateType: liveSearchFileTemplateType, index: indexPath.row)
                 
             case .data:
-//                if liveSearchDataTemplateType == "gridTemplate" || liveSearchDataTemplateType == "carousel"{
+//                if liveSearchDataTemplateType == LiveSearchTypes.grid.rawValue || liveSearchDataTemplateType == LiveSearchTypes.carousel.rawValue{
 //                    return UITableView.automaticDimension
 //                }else{
 //                    let layOutType = dataLayOutType
@@ -485,7 +491,7 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
             switch headerName {
             case .faq:
                 if headersExpandArray [section] as! String == "open"{
-                    if liveSearchFAQsTemplateType == "gridTemplate" || liveSearchFAQsTemplateType == "carousel"{
+                    if liveSearchFAQsTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFAQsTemplateType == LiveSearchTypes.carousel.rawValue{
                         return 1
                     }
                     return arrayOfFaqResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfFaqResults.count
@@ -493,7 +499,7 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 return 0
             case .web:
                 if headersExpandArray [section] as! String == "open"{
-                    if liveSearchPageTemplateType == "gridTemplate" || liveSearchPageTemplateType == "carousel"{
+                    if liveSearchPageTemplateType == LiveSearchTypes.grid.rawValue || liveSearchPageTemplateType == LiveSearchTypes.carousel.rawValue{
                         return 1
                     }
                     return arrayOfPageResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfPageResults.count
@@ -506,7 +512,7 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 return 0
             case .file:
                 if headersExpandArray [section] as! String == "open"{
-                    if liveSearchFileTemplateType == "gridTemplate" || liveSearchFileTemplateType == "carousel"{
+                    if liveSearchFileTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFileTemplateType == LiveSearchTypes.carousel.rawValue{
                         return 1
                     }
                     return arrayOfFileResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfFileResults.count
@@ -514,7 +520,7 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 return 0
             case .data:
                 if headersExpandArray [section] as! String == "open"{
-                    if liveSearchDataTemplateType == "gridTemplate" || liveSearchDataTemplateType == "carousel"{
+                    if liveSearchDataTemplateType == LiveSearchTypes.grid.rawValue || liveSearchDataTemplateType == LiveSearchTypes.carousel.rawValue{
                         return 1
                     }
                     return arrayOfDataResults.count > sectionAndRowsLimit ? sectionAndRowsLimit : arrayOfDataResults.count
@@ -547,9 +553,9 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
             let headerName: LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[indexPath.section])!
             switch headerName {
             case .faq:
-                if liveSearchFAQsTemplateType == "gridTemplate" || liveSearchFAQsTemplateType == "carousel"{
+                if liveSearchFAQsTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFAQsTemplateType == LiveSearchTypes.carousel.rawValue{
                     let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                    cell.configure(with: arrayOfFaqResults, appearanceType: headerName.rawValue, layOutType: faqLayOutType)
+                    cell.configure(with: arrayOfFaqResults, appearanceType: headerName.rawValue, layOutType: faqLayOutType, templateType:liveSearchFAQsTemplateType)
                     return cell
                 }else{
                     let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: faqLayOutType)!
@@ -573,9 +579,9 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                     }
                 }
             case .web:
-                if liveSearchPageTemplateType == "gridTemplate" || liveSearchPageTemplateType == "carousel"{
+                if liveSearchPageTemplateType == LiveSearchTypes.grid.rawValue || liveSearchPageTemplateType == LiveSearchTypes.carousel.rawValue{
                     let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                    cell.configure(with: arrayOfPageResults, appearanceType: headerName.rawValue, layOutType: pageLayOutType)
+                    cell.configure(with: arrayOfPageResults, appearanceType: headerName.rawValue, layOutType: pageLayOutType, templateType:liveSearchPageTemplateType)
                     return cell
                 }else{
                     let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: pageLayOutType)!
@@ -601,9 +607,9 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 }
                 
             case .file:
-                if liveSearchFileTemplateType == "gridTemplate" || liveSearchFileTemplateType == "carousel"{
+                if liveSearchFileTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFileTemplateType == LiveSearchTypes.carousel.rawValue{
                     let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                    cell.configure(with: arrayOfFileResults, appearanceType: headerName.rawValue, layOutType: fileLayOutType)
+                    cell.configure(with: arrayOfFileResults, appearanceType: headerName.rawValue, layOutType: fileLayOutType, templateType:liveSearchFileTemplateType)
                     return cell
                 }else{
                     let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: fileLayOutType)!
@@ -629,9 +635,9 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 }
                 
             case .data:
-                if liveSearchDataTemplateType == "gridTemplate" || liveSearchDataTemplateType == "carousel"{
+                if liveSearchDataTemplateType == LiveSearchTypes.grid.rawValue || liveSearchDataTemplateType == LiveSearchTypes.carousel.rawValue{
                     let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                    cell.configure(with: arrayOfDataResults, appearanceType: headerName.rawValue, layOutType: dataLayOutType)
+                    cell.configure(with: arrayOfDataResults, appearanceType: headerName.rawValue, layOutType: dataLayOutType, templateType:liveSearchDataTemplateType)
                     return cell
                 }else{
                     let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue:  dataLayOutType)!
@@ -864,8 +870,10 @@ extension LiveSearchView{
 extension LiveSearchView{
     
     func heightForTable(resultExpandArray: NSMutableArray, layoutType: String, TemplateType: String, index: Int) -> CGFloat{
-        if TemplateType == "gridTemplate" || TemplateType == "carousel"{
+        if TemplateType == LiveSearchTypes.grid.rawValue{
             return UITableView.automaticDimension
+        }else if TemplateType == LiveSearchTypes.carousel.rawValue{
+            return 250
         }else{
             let layOutType:LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: layoutType)!
             switch layOutType {
@@ -877,7 +885,7 @@ extension LiveSearchView{
                 
             case .tileWithImage:
                 if  resultExpandArray[index] as! String == "close"{
-                    return 75
+                    return 80
                 }
                 return UITableView.automaticDimension
             case .tileWithCenteredContent:

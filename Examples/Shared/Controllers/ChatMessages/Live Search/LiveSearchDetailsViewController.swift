@@ -611,7 +611,7 @@ extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSo
             case .faq:
                 if liveSearchFAQsTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFAQsTemplateType == LiveSearchTypes.carousel.rawValue{
                     let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                    cell.configure(with: arrayOfFaqResults, appearanceType: headerName.rawValue, layOutType: faqLayOutType)
+                    cell.configure(with: arrayOfFaqResults, appearanceType: headerName.rawValue, layOutType: faqLayOutType, templateType:liveSearchFAQsTemplateType)
                     return cell
                 }else{
                     let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: faqLayOutType)!
@@ -637,7 +637,7 @@ extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSo
             case .web:
                 if liveSearchPageTemplateType == LiveSearchTypes.grid.rawValue || liveSearchPageTemplateType == LiveSearchTypes.carousel.rawValue{
                     let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                    cell.configure(with: arrayOfPageResults, appearanceType: headerName.rawValue, layOutType: pageLayOutType)
+                    cell.configure(with: arrayOfPageResults, appearanceType: headerName.rawValue, layOutType: pageLayOutType, templateType:liveSearchPageTemplateType)
                     return cell
                 }else{
                     let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: pageLayOutType)!
@@ -665,7 +665,7 @@ extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSo
             case .file:
                 if liveSearchFileTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFileTemplateType == LiveSearchTypes.carousel.rawValue{
                     let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                    cell.configure(with: arrayOfFileResults, appearanceType: headerName.rawValue, layOutType: fileLayOutType)
+                    cell.configure(with: arrayOfFileResults, appearanceType: headerName.rawValue, layOutType: fileLayOutType, templateType:liveSearchFileTemplateType)
                     return cell
                 }else{
                     let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: fileLayOutType)!
@@ -693,7 +693,7 @@ extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSo
             case .data:
                 if liveSearchDataTemplateType == LiveSearchTypes.grid.rawValue || liveSearchDataTemplateType == LiveSearchTypes.carousel.rawValue{
                     let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                    cell.configure(with: arrayOfDataResults, appearanceType: headerName.rawValue, layOutType: dataLayOutType)
+                    cell.configure(with: arrayOfDataResults, appearanceType: headerName.rawValue, layOutType: dataLayOutType, templateType:liveSearchDataTemplateType)
                     return cell
                 }else{
                     let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue:  dataLayOutType)!
@@ -1237,8 +1237,10 @@ extension LiveSearchDetailsViewController{
 extension LiveSearchDetailsViewController{
     
     func heightForTable(resultExpandArray: NSMutableArray, layoutType: String, TemplateType: String, index: Int) -> CGFloat{
-        if TemplateType == LiveSearchTypes.grid.rawValue || TemplateType == LiveSearchTypes.carousel.rawValue{
+        if TemplateType == LiveSearchTypes.grid.rawValue{
             return UITableView.automaticDimension
+        }else if TemplateType == LiveSearchTypes.carousel.rawValue{
+            return 250
         }else{
             let layOutType:LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: layoutType)!
             switch layOutType {
@@ -1250,7 +1252,7 @@ extension LiveSearchDetailsViewController{
                 
             case .tileWithImage:
                 if  resultExpandArray[index] as! String == "close"{
-                    return 75
+                    return 80
                 }
                 return UITableView.automaticDimension
             case .tileWithCenteredContent:

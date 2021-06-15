@@ -33,6 +33,7 @@ class LiveSearchChatItems: NSObject, Decodable {
 class TemplateChatElements: NSObject, Decodable {
     public var originalQuery: String?
     public var cleanQuery: String?
+    public var totalNumOfResults: Int?
     
     public var facets: TemplateFacets?
     public var results: TemplateChatResultElements?
@@ -44,6 +45,7 @@ class TemplateChatElements: NSObject, Decodable {
         case facets = "facets"
         case results = "results"
         case searchFacets = "searchFacets"
+        case totalNumOfResults = "totalNumOfResults"
     }
     
     // MARK: - init
@@ -58,6 +60,7 @@ class TemplateChatElements: NSObject, Decodable {
         facets = try? container.decode(TemplateFacets.self, forKey: .facets)
         results = try? container.decode(TemplateChatResultElements.self, forKey: .results)
         searchFacets = try? container.decode([TemplateSearchFacets].self, forKey: .searchFacets)
+        totalNumOfResults = try? container.decode(Int.self, forKey: .totalNumOfResults)
     }
 }
 
