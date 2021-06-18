@@ -15,6 +15,8 @@ class PopularLiveSearchCell: UITableViewCell {
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var closeButtonWidthConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var subVTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var subVLeadingConstraint: NSLayoutConstraint!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

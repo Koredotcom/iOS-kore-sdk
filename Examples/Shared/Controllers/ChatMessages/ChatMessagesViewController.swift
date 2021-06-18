@@ -211,7 +211,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.composeView.setText(text)
     }
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view?.isDescendant(of: self.liveSearchView.tableView) == true {
+        if touch.view?.isDescendant(of: self.liveSearchView.tableView) == true || touch.view?.isDescendant(of: self.liveSearchView.autoSearchTableView) == true {
             return false
         }
         isShowLoginView = false //kk

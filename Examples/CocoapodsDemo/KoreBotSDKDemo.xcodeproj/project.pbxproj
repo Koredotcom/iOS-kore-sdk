@@ -23,6 +23,7 @@
 		95672B1425822B9F003F2C1F /* FilterTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95672B1225822B9F003F2C1F /* FilterTableCell.xib */; };
 		95709C64265631E400D32048 /* SearchInterfaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95709C63265631E400D32048 /* SearchInterfaceModel.swift */; };
 		95709C662656469900D32048 /* GetResultViewSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95709C652656469900D32048 /* GetResultViewSettingModel.swift */; };
+		957376822678CD58004A6DB7 /* AutoSuggestionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957376812678CD58004A6DB7 /* AutoSuggestionModel.swift */; };
 		957BBDD1266653A2000F6964 /* GridTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957BBDCF266653A2000F6964 /* GridTableViewCell.swift */; };
 		957BBDD2266653A2000F6964 /* GridTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 957BBDD0266653A2000F6964 /* GridTableViewCell.xib */; };
 		957BBDD5266653C8000F6964 /* GridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957BBDD3266653C8000F6964 /* GridCollectionViewCell.swift */; };
@@ -203,6 +204,7 @@
 		95672B1225822B9F003F2C1F /* FilterTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilterTableCell.xib; sourceTree = "<group>"; };
 		95709C63265631E400D32048 /* SearchInterfaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInterfaceModel.swift; sourceTree = "<group>"; };
 		95709C652656469900D32048 /* GetResultViewSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetResultViewSettingModel.swift; sourceTree = "<group>"; };
+		957376812678CD58004A6DB7 /* AutoSuggestionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoSuggestionModel.swift; sourceTree = "<group>"; };
 		957BBDCF266653A2000F6964 /* GridTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridTableViewCell.swift; sourceTree = "<group>"; };
 		957BBDD0266653A2000F6964 /* GridTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GridTableViewCell.xib; sourceTree = "<group>"; };
 		957BBDD3266653C8000F6964 /* GridCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -462,6 +464,7 @@
 				955286E02537FA5F00D235B5 /* LiveSearchDetailsViewController.xib */,
 				95FD1B82253726D500BC4BF1 /* LiveSearchItems.swift */,
 				955286E72538589700D235B5 /* LiveSearchChatItems.swift */,
+				957376812678CD58004A6DB7 /* AutoSuggestionModel.swift */,
 				95FD1B7D2537059300BC4BF1 /* LiveSearchCells */,
 				955286E925385E7F00D235B5 /* LiveSearchBubbleView.swift */,
 				95C52ECE254C094C001AC8F4 /* LoginTemplate */,
@@ -1294,6 +1297,7 @@
 				95C52ECB254BDA64001AC8F4 /* CardTemplateTableViewCell.swift in Sources */,
 				D1F338CD2201D99A005BE5F1 /* KREComponent+CoreDataClass.swift in Sources */,
 				D1F338D12201D99A005BE5F1 /* AudioController.swift in Sources */,
+				957376822678CD58004A6DB7 /* AutoSuggestionModel.swift in Sources */,
 				D1F338DE2201D99A005BE5F1 /* KREUtilities.m in Sources */,
 				CDB86A0F24C0127C00D1CCC7 /* TableListData.swift in Sources */,
 				CD445168250B9B3E00879219 /* DropDown.swift in Sources */,

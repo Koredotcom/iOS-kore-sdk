@@ -866,7 +866,53 @@ open class KABotClient: NSObject {
         
     }
     
-    
+    // MARK:AutoSuggestion
+
+        func autoSuggestionSearchResults(_ text: String!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+            
+            // Session Configuration
+            let configuration = URLSessionConfiguration.default
+            
+            //Manager
+            sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
+            
+            // NOTE: You must set your URL to generate JWT.
+            //let urlString: String = "\(FindlyUrl)searchAssistant/search/\(findlySidx)"
+            let urlString: String = "\(FindlyUrl)searchassistapi/searchsdk/stream/\(SDKConfiguration.botConfig.botId)/\(findlySidx)/autoSuggestions"
+            let requestSerializer = AFJSONRequestSerializer()
+            requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
+            requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+            
+            let authorizationStr = "bearer \(authInfoAccessToken!)"
+            requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
+            requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+            let auth = jwtToken
+            requestSerializer.setValue(auth, forHTTPHeaderField:"auth")
+            
+            var parameters: NSDictionary?
+            parameters = ["query": text as Any,
+            "maxNumOfResults": 5,
+            "userId": userInfoUserId as Any,
+            "streamId": findlyStreamId,
+            "lang": "en",
+            "isDev": false]
+            
+            sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
+            sessionManager?.requestSerializer = requestSerializer
+            sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
+                if let dictionary = responseObject as? [String: Any]{
+                    success?(dictionary)
+                } else {
+                    let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                    failure?(error)
+                    NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+                }
+            }) { (sessionDataTask, error) in
+                failure?(error)
+                NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+            }
+            
+        }
     
     // MARK: -
     open func showTypingStatusForBot() {

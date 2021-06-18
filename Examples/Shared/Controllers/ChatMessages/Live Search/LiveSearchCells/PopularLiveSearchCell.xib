@@ -65,6 +65,8 @@
             <connections>
                 <outlet property="closeButton" destination="LYD-tB-fYa" id="rPh-0d-toN"/>
                 <outlet property="closeButtonWidthConstraint" destination="Ih2-sg-q7s" id="SD8-7P-q93"/>
+                <outlet property="subVLeadingConstraint" destination="I7J-fd-R82" id="m3a-Qa-wgw"/>
+                <outlet property="subVTrailingConstraint" destination="Fqw-Hy-393" id="he9-eY-pZE"/>
                 <outlet property="subView" destination="Qed-RW-4IE" id="Dy3-Pz-qfi"/>
                 <outlet property="titleLabel" destination="09Y-Lw-kGY" id="zFb-uX-qto"/>
             </connections>

@@ -114,10 +114,10 @@
         width = self.frame.size.width-kDancingDotsWidth-kCollectionViewLeftPadding-kDancingDotsPadding;
     }
     self.collectionView.frame = CGRectMake(kCollectionViewLeftPadding, 0, width, self.frame.size.height);
-    self.dancingDots.frame = CGRectMake(20,
+    self.dancingDots.frame = CGRectMake(35,
                                         (self.frame.size.height-10.0)/2,
                                         kDancingDotsWidth,
-                                        10.0); //self.collectionView.frame.size.width+kDancingDotsPadding
+                                        10.0); //self.collectionView.frame.size.width+kDancingDotsPadding 20
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
