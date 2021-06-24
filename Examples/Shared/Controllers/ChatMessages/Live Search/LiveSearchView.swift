@@ -978,7 +978,7 @@ extension LiveSearchView{
         if TemplateType == LiveSearchTypes.grid.rawValue{
             return UITableView.automaticDimension
         }else if TemplateType == LiveSearchTypes.carousel.rawValue{
-            return 250
+            return 160 //250
         }else{
             let layOutType:LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: layoutType)!
             switch layOutType {

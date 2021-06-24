@@ -117,6 +117,7 @@ class LiveSearchBubbleView: BubbleView {
         }
     }
     
+    
     override func initialize() {
         super.initialize()
         intializeCardLayout()
@@ -298,7 +299,7 @@ class LiveSearchBubbleView: BubbleView {
         if textSize.height < self.titleLbl.font.pointSize {
             textSize.height = self.titleLbl.font.pointSize
         }
-        return CGSize(width: 0.0, height: textSize.height+60+tableView.contentSize.height)
+        return CGSize(width: 0.0, height: textSize.height+60+tableView.contentSize.height+150)  //150
     }
     
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
@@ -809,7 +810,7 @@ extension LiveSearchBubbleView{
         if TemplateType == LiveSearchTypes.grid.rawValue {
             return UITableView.automaticDimension
         }else if TemplateType == LiveSearchTypes.carousel.rawValue{
-            return 250
+            return 160//250
         }else{
             let layOutType:LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: layoutType)!
             switch layOutType {

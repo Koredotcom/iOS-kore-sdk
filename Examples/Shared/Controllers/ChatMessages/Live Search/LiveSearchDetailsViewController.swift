@@ -15,8 +15,9 @@ protocol LiveSearchDetailsViewDelegate {
 }
 
 class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDelegate {
-    var rowsDataLimit = 5
+    var rowsDataLimit = 10
     var pageNumber = 0
+    
     @IBOutlet weak var subView: UIView!
     @IBOutlet weak var headingLebel: UILabel!
     @IBOutlet weak var closeButton: UIButton!
@@ -38,6 +39,15 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
     @IBOutlet weak var topBadgeView: UIView!
     @IBOutlet weak var topBadgeLabel: UILabel!
     
+    
+    @IBOutlet weak var currentPageNoLbl: UILabel!
+    @IBOutlet weak var totalPageNoLbl: UILabel!
+    @IBOutlet weak var pagenationView: UIView!
+    @IBOutlet weak var pageNationVHeightConstraint: NSLayoutConstraint!
+    
+    var maximumPageNumber = 0
+    
+    @IBOutlet weak var errorImagV: UIImageView!
     
     fileprivate let liveSearchFaqCellIdentifier = "LiveSearchFaqTableViewCell"
     fileprivate let liveSearchPageCellIdentifier = "LiveSearchPageTableViewCell"
@@ -168,6 +178,12 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        pageNationVHeightConstraint.constant = 0
+        currentPageNoLbl.layer.cornerRadius = 5
+        currentPageNoLbl.layer.borderWidth = 1.0
+        currentPageNoLbl.layer.borderColor = UIColor.lightGray.cgColor
+        errorImagV.isHidden = true
         
         arrayOfCollectionView = [LiveSearchCollectionVHeaderTypes.allResults.rawValue,LiveSearchCollectionVHeaderTypes.faq.rawValue, LiveSearchCollectionVHeaderTypes.web.rawValue,LiveSearchCollectionVHeaderTypes.task.rawValue, LiveSearchCollectionVHeaderTypes.data.rawValue, LiveSearchCollectionVHeaderTypes.file.rawValue]
         
@@ -347,7 +363,7 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
             self.filesExpandArray.add("close")
         }
         
-        
+        errorImagV.isHidden = headerArray.count > 0 ? true : false
         
         arrayOfCollectionViewCount = []
         arrayOfCollectionViewCount.add(allItems.template?.facets?.all_results as Any)
@@ -447,6 +463,51 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
         let frame: CGRect = CGRect(x : contentOffset ,y : self.collectionView.contentOffset.y ,width : self.collectionView.frame.width,height : self.collectionView.frame.height)
         self.collectionView.scrollRectToVisible(frame, animated: true)
     }
+    
+    @IBAction func tapsOnRightArrowBtnAct(_ sender: Any) {
+        let maximumPage = maximumPageNumber-1
+        if maximumPage > self.pageNumber {
+            self.pageNumber = self.pageNumber+1
+        }
+        
+        if  self.pageNumber <= maximumPage{
+            currentPageNoLbl.text =  "\(self.pageNumber+1)"
+            apiMethods()
+        }
+    }
+    
+    @IBAction func tapsOnDobuleRightArrowBtnAct(_ sender: Any) {
+        self.pageNumber = maximumPageNumber-1
+        currentPageNoLbl.text =  "\(maximumPageNumber)"
+        apiMethods()
+    }
+    
+    @IBAction func tapsOnLeftArrowBtnAct(_ sender: Any) {
+        if self.pageNumber > 0 {
+            self.pageNumber = self.pageNumber-1
+        }
+        
+        let maximumPage = maximumPageNumber-1
+        if maximumPage >= self.pageNumber{
+           
+           currentPageNoLbl.text =  "\(self.pageNumber+1)"
+          apiMethods()
+        }
+    }
+    @IBAction func tapsOnDobuleLeftArrowBtnAct(_ sender: Any) {
+        self.pageNumber = 0
+        currentPageNoLbl.text =  "\(self.pageNumber+1)"
+        apiMethods()
+    }
+    
+    func apiMethods() {
+        if self.factsArray.count > 0{
+            self.callingSearchApi(filterArray: self.factsArray)
+        }else{
+            self.callingSearchApi(filterArray: [])
+        }
+    }
+    
 }
 
 extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSource{
@@ -973,6 +1034,7 @@ extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSo
         return 0
     }
     
+    
     @objc fileprivate func shareButtonAction(_ sender: AnyObject!) {
         let results = arrayOfPageResults[sender.tag]
         if results.url != nil {
@@ -1005,7 +1067,7 @@ extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSo
             self.headerArray.append(LiveSearchHeaderTypes.file.rawValue)
         }
         
-        rowsDataLimit = 100
+        //rowsDataLimit = 100
         let headerName : LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[sender.tag])!
         switch headerName {
         case .faq:
@@ -1068,7 +1130,7 @@ extension LiveSearchDetailsViewController : UICollectionViewDelegate, UICollecti
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchDetailsCollectionViewCellIdentifier, for: indexPath) as! SearchDetailsCollectionViewCell
         cell.backgroundColor = .clear
         cell.imageV.image = UIImage.init(named: "\(arrayOfCollectionViewImages[indexPath.item])")
-        cell.titleLabel.text = "\(arrayOfCollectionView[indexPath.row]) (\(arrayOfCollectionViewCount[indexPath.row]))"
+        cell.titleLabel.text = "\(arrayOfCollectionView[indexPath.item]) (\(arrayOfCollectionViewCount[indexPath.item]))"
         cell.layer.cornerRadius = 5
         if collectionViewSelectedIndex == indexPath.item {
             //cell.backgroundColor = .white
@@ -1085,7 +1147,7 @@ extension LiveSearchDetailsViewController : UICollectionViewDelegate, UICollecti
         collectionViewSelectedIndex = indexPath.item
         headerArray = []
         let headerName:LiveSearchCollectionVHeaderTypes = LiveSearchCollectionVHeaderTypes(rawValue: arrayOfCollectionView[indexPath.item])!
-        rowsDataLimit = 100
+        //rowsDataLimit = 100
         
         switch headerName {
         case .allResults:
@@ -1105,7 +1167,7 @@ extension LiveSearchDetailsViewController : UICollectionViewDelegate, UICollecti
                 self.headerArray.append(LiveSearchHeaderTypes.file.rawValue)
             }
             sysContentType = LiveSearchSysContentTypes.allResults.rawValue
-            rowsDataLimit = 5
+            //rowsDataLimit = 5
         case .faq:
             if self.arrayOfFaqResults.count > 0 {
                 self.headerArray.append(LiveSearchHeaderTypes.faq.rawValue)
@@ -1137,15 +1199,27 @@ extension LiveSearchDetailsViewController : UICollectionViewDelegate, UICollecti
         self.collectionView.scrollToItem(at: IndexPath(row: indexPath.item, section: 0), at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
         //tableView.reloadData() //kk
         
+        let tottalCount = arrayOfCollectionViewCount[indexPath.item] as! Int
+        let roundvalue: Double = Double(tottalCount) / Double(rowsDataLimit)
+        maximumPageNumber = Int(round(roundvalue))
+        
         createJsonData()
         self.pageNumber = 0
+        totalPageNoLbl.text = "\(maximumPageNumber)"
+        currentPageNoLbl.text = "\(pageNumber+1)"
         if sysContentType == "All"{
+            pageNationVHeightConstraint.constant = 0
             if arrayOfSeletedValues.count > 0 {
                 callingSearchApi(filterArray: factsArray)
             }else{
                 callingSearchApi(filterArray: [])
             }
         }else{
+            if maximumPageNumber == 0 || maximumPageNumber == 1{
+                pageNationVHeightConstraint.constant = 00
+            }else{
+                pageNationVHeightConstraint.constant = 50
+            }
             callingSearchApi(filterArray: factsArray)
         }
     }
@@ -1180,9 +1254,9 @@ extension LiveSearchDetailsViewController{
                     if self.sysContentType != "All"{
                         self.pageNumber = self.pageNumber+1
                         if self.factsArray.count > 0{
-                            self.callingSearchApi(filterArray: self.factsArray)
+                            //self.callingSearchApi(filterArray: self.factsArray)
                         }else{
-                            self.callingSearchApi(filterArray: [])
+                            //self.callingSearchApi(filterArray: [])
                         }
                     }
                 }
@@ -1240,7 +1314,7 @@ extension LiveSearchDetailsViewController{
         if TemplateType == LiveSearchTypes.grid.rawValue{
             return UITableView.automaticDimension
         }else if TemplateType == LiveSearchTypes.carousel.rawValue{
-            return 250
+            return 160
         }else{
             let layOutType:LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: layoutType)!
             switch layOutType {
@@ -1654,4 +1728,8 @@ extension LiveSearchDetailsViewController{
             self.tableView.reloadData()
         }
     }
+    
+    
+    
+    
 }

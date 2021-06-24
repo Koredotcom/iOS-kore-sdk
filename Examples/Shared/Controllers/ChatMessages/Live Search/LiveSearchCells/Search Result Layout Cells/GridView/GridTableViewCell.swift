@@ -154,7 +154,7 @@ extension GridTableViewCell: UICollectionViewDataSource, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         if templateType ==  "carousel"{
-            return CGSize(width: ((collectionView.frame.size.width-3*10)/2) - 20, height: 240)
+            return CGSize(width: ((collectionView.frame.size.width-3*10)/1) - 40, height: 150) //240
         }else{
             let results = self.arr[indexPath.row]
                 var titleTextHeight:CGFloat!
