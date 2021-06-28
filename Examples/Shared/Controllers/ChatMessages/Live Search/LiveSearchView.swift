@@ -911,7 +911,7 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 headerLabel.isHidden = false
             }else{
                 let boolValue = section == 0 ? false : true
-                showMoreButton.isHidden = boolValue
+                showMoreButton.isHidden = true //boolValue
                 dropDownBtn.isHidden = false
                 headerLabel.isHidden = true
                 if headersExpandArray[section] as! String == "open"{
@@ -958,7 +958,7 @@ extension LiveSearchView{
     }
     
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
-        NotificationCenter.default.post(name: Notification.Name(showLiveSearchTemplateNotification), object: liveSearchJsonString)
+        NotificationCenter.default.post(name: Notification.Name(showLiveSearchTemplateNotification), object: liveSearchJsonString! + ",,All")
     }
     
     @objc fileprivate func headerDropDownButtonAction(_ sender: AnyObject!) {

@@ -36,6 +36,7 @@
                 <outlet property="tableView" destination="cdB-sk-fxe" id="mm5-3W-h78"/>
                 <outlet property="topBadgeLabel" destination="4SM-V0-WsE" id="VK7-hs-ydE"/>
                 <outlet property="topBadgeView" destination="PaT-zq-w2L" id="f9Q-wY-XOI"/>
+                <outlet property="topFilterButton" destination="peN-Bc-7rh" id="RXK-hE-wmM"/>
                 <outlet property="totalPageNoLbl" destination="IPw-CE-Tz5" id="g9x-Gx-K7q"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

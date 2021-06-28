@@ -45,6 +45,7 @@ class LiveSearchBubbleView: BubbleView {
     var arrayOfDataResults = [TemplateResultElements]()
     
     var headerArray = ["POPULAR SEARCHS","RECENT SEARCHS"]
+    var headerArrayDisplay:NSMutableArray = []
     var faqsExpandArray:NSMutableArray = []
     var pagesExpandArray:NSMutableArray = []
     var filesExpandArray:NSMutableArray = []
@@ -92,6 +93,14 @@ class LiveSearchBubbleView: BubbleView {
          case listTemplate2 = "listTemplate2"
          case listTemplate3 = "listTemplate3"
      }
+    
+    enum LiveSearchSysContentTypes: String{
+           case faq = "faq"
+           case web = "web"
+           case task = "task"
+           case file = "file"
+           case data = "data"
+       }
     
     enum LiveSearchTypes: String{
         case listTemplate = "listTemplate"
@@ -227,6 +236,7 @@ class LiveSearchBubbleView: BubbleView {
                     }
                     
                     self.headerArray = []
+                    headerArrayDisplay = []
                     self.faqsExpandArray = []
                     self.pagesExpandArray = []
                     self.likeAndDislikeArray = []
@@ -236,6 +246,7 @@ class LiveSearchBubbleView: BubbleView {
                     self.arrayOfFaqResults = faqs ?? []
                     if self.arrayOfFaqResults.count > 0 {
                         self.headerArray.append(LiveSearchHeaderTypes.faq.rawValue)
+                        headerArrayDisplay.add("Faqs")
                         self.headersExpandArray.add("open")
                     }
                     for _ in 0..<self.arrayOfFaqResults.count{
@@ -247,6 +258,7 @@ class LiveSearchBubbleView: BubbleView {
                     self.arrayOfPageResults = pages ?? []
                     if self.arrayOfPageResults.count > 0 {
                         self.headerArray.append(LiveSearchHeaderTypes.web.rawValue)
+                        headerArrayDisplay.add("Web")
                         self.headersExpandArray.add("open")
                     }
                     for _ in 0..<self.arrayOfPageResults.count{
@@ -257,6 +269,7 @@ class LiveSearchBubbleView: BubbleView {
                     self.arrayOfTaskResults = task ?? []
                     if self.arrayOfTaskResults.count > 0 {
                         self.headerArray.append(LiveSearchHeaderTypes.task.rawValue)
+                        headerArrayDisplay.add("Tasks")
                         self.headersExpandArray.add("open")
                     }
                     //Files
@@ -264,6 +277,7 @@ class LiveSearchBubbleView: BubbleView {
                     self.arrayOfFileResults = files ?? []
                     if self.arrayOfFileResults.count > 0 {
                         self.headerArray.append(LiveSearchHeaderTypes.file.rawValue)
+                        headerArrayDisplay.add("Files")
                         self.headersExpandArray.add("open")
                     }
                     for _ in 0..<self.arrayOfFileResults.count{
@@ -274,6 +288,7 @@ class LiveSearchBubbleView: BubbleView {
                     self.arrayOfDataResults = data ?? []
                     if self.arrayOfDataResults.count > 0 {
                         self.headerArray.append(LiveSearchHeaderTypes.data.rawValue)
+                        headerArrayDisplay.add("Data")
                         self.headersExpandArray.add("open")
                     }
                     for _ in 0..<self.arrayOfDataResults.count{
@@ -299,14 +314,35 @@ class LiveSearchBubbleView: BubbleView {
         if textSize.height < self.titleLbl.font.pointSize {
             textSize.height = self.titleLbl.font.pointSize
         }
-        return CGSize(width: 0.0, height: textSize.height+60+tableView.contentSize.height+150)  //150
+        return CGSize(width: 0.0, height: textSize.height+60+tableView.contentSize.height+30)  //150
     }
     
-    @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
+    @objc fileprivate func showMoreButtonAction(_ sender: UIButton!) {
         let component: KREComponent = components.firstObject as! KREComponent
         if (component.componentDesc != nil) {
             let jsonString = component.componentDesc
-            NotificationCenter.default.post(name: Notification.Name(showLiveSearchTemplateNotification), object: jsonString)
+            //NotificationCenter.default.post(name: Notification.Name(showLiveSearchTemplateNotification), object: jsonString)
+            let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[sender.tag])!
+            switch headerName {
+            case .faq:
+                NotificationCenter.default.post(name: Notification.Name(showLiveSearchTemplateNotification), object: jsonString! + ",,\(LiveSearchSysContentTypes.faq.rawValue)")
+            case .web:
+               NotificationCenter.default.post(name: Notification.Name(showLiveSearchTemplateNotification), object: jsonString! + ",,\(LiveSearchSysContentTypes.web.rawValue)")
+            case .file:
+                NotificationCenter.default.post(name: Notification.Name(showLiveSearchTemplateNotification), object: jsonString! + ",,\(LiveSearchSysContentTypes.file.rawValue)")
+            case .data:
+                NotificationCenter.default.post(name: Notification.Name(showLiveSearchTemplateNotification), object: jsonString! + ",,\(LiveSearchSysContentTypes.data.rawValue)")
+            case .task:
+                NotificationCenter.default.post(name: Notification.Name(showLiveSearchTemplateNotification), object: jsonString! + ",,\(LiveSearchSysContentTypes.task.rawValue)")
+            }
+        }
+    }
+    
+    @objc fileprivate func showMoreFooterButtonAction(_ sender: AnyObject!) {
+        let component: KREComponent = components.firstObject as! KREComponent
+        if (component.componentDesc != nil) {
+            let jsonString = component.componentDesc
+            NotificationCenter.default.post(name: Notification.Name(showLiveSearchTemplateNotification), object: jsonString! + ",,All")
         }
     }
 }
@@ -700,12 +736,13 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
         showMoreButton.clipsToBounds = true
         showMoreButton.layer.cornerRadius = 5
         showMoreButton.setTitleColor(.darkGray, for: .normal)
-        showMoreButton.setTitle("Show All", for: .normal)
+        showMoreButton.setTitle("Show All \(headerArrayDisplay[section])", for: .normal)
         showMoreButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
         showMoreButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
         view.addSubview(showMoreButton)
         showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
-        showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
+        showMoreButton.tag = section
+        showMoreButton.addTarget(self, action: #selector(showMoreButtonAction(_:)), for: .touchUpInside)
 //        let attributeString = NSMutableAttributedString(string: "Show All",
 //                                                        attributes: yourAttributes)
 //        showMoreButton.setAttributedTitle(attributeString, for: .normal)
@@ -760,7 +797,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
         dropDownBtn.tag = section
         dropDownBtn.semanticContentAttribute = .forceLeftToRight
        
-        dropDownBtn.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
+        dropDownBtn.addTarget(self, action: #selector(self.showMoreFooterButtonAction(_:)), for: .touchUpInside)
         
         let views: [String: UIView] = ["dropDownBtn": dropDownBtn, "headerLabel": headerLabel]
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[dropDownBtn(100)]|", options:[], metrics:nil, views:views))

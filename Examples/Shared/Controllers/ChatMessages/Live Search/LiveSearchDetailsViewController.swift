@@ -31,6 +31,7 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
     @IBOutlet weak var cleartButton: UIButton!
     @IBOutlet weak var clearBtnWidthConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var topFilterButton: UIButton!
     @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var flotingButtonView: UIView!
     @IBOutlet weak var badgeView: UIView!
@@ -95,6 +96,7 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
     var sysContentType = "All"
     var isFilterApply = false
     
+    
     var dataString: String!
     var jsonData : Componentss?
     var viewDelegate: LiveSearchDetailsViewDelegate?
@@ -120,7 +122,7 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
      let liveSearchDataTemplateType = resultViewSettingItems?.settings?[1].appearance?[3].template?.type ?? "listTemplate1"
      let dataLayOutType = resultViewSettingItems?.settings?[1].appearance?[3].template?.layout?.layoutType ?? "tileWithText"
      let isDataClickable = resultViewSettingItems?.settings?[1].appearance?[3].template?.layout?.isClickable ?? true
-     
+     var isShowFileterView = resultViewSettingItems?.settings?[1].facets?.isEnabled ?? false
     
      enum LiveSearchHeaderTypes: String{
          case faq = "FAQS"
@@ -178,6 +180,13 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if !isShowFileterView {
+            topBadgeView.isHidden = true
+            topFilterButton.isHidden = true
+            flotingButtonView.isHidden = true
+            badgeView.isHidden = true
+        }
         
         pageNationVHeightConstraint.constant = 0
         currentPageNoLbl.layer.cornerRadius = 5
@@ -250,7 +259,35 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
         
         //getData()
         
-        callingSearchApi(filterArray: [])
+        let seletedType = self.dataString.components(separatedBy:",,")
+        self.dataString = seletedType[0]
+        
+        let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: dataString!) as! NSDictionary
+        self.receviceMessage(dictionary: jsonObject as! [String : Any], isReload: false)
+        
+        let dataStrSelectType: LiveSearchSysContentTypes = LiveSearchSysContentTypes(rawValue: seletedType[1])!
+        switch dataStrSelectType {
+        case .allResults:
+            sysContentType = LiveSearchSysContentTypes.allResults.rawValue
+            collectionView(collectionView, didSelectItemAt: IndexPath(row: 0, section: 0))
+        case .faq:
+            sysContentType = LiveSearchSysContentTypes.faq.rawValue
+             collectionView(collectionView, didSelectItemAt: IndexPath(row: 1, section: 0))
+        case .web:
+            sysContentType = LiveSearchSysContentTypes.web.rawValue
+             collectionView(collectionView, didSelectItemAt: IndexPath(row: 2, section: 0))
+        case .task:
+            sysContentType = LiveSearchSysContentTypes.task.rawValue
+            collectionView(collectionView, didSelectItemAt: IndexPath(row: 3, section: 0))
+        case .data:
+            sysContentType = LiveSearchSysContentTypes.data.rawValue
+            collectionView(collectionView, didSelectItemAt: IndexPath(row: 4, section: 0))
+        case .file:
+            sysContentType = LiveSearchSysContentTypes.file.rawValue
+            collectionView(collectionView, didSelectItemAt: IndexPath(row: 5, section: 0))
+        }
+        
+       // callingSearchApi(filterArray: [])
     }
     override func viewDidAppear(_ animated: Bool) {
         hideFilterView()
@@ -286,16 +323,17 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
         let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: dataString!) as! NSDictionary
         let template = jsonObject["template"] as! Dictionary<String, Any>
         let query = template["originalQuery"] as! String
+        //let query = "Pay now"
         self.kaBotClient.getSearchResults(query, filterArray, pageNumber ,success: { [weak self] (dictionary) in
             print(dictionary)
-            self?.receviceMessage(dictionary: dictionary)
+            self?.receviceMessage(dictionary: dictionary, isReload: true)
             }, failure: { (error) in
                 print(error)
                 self.indicatorView.stopAnimating()
                 self.indicatorView.isHidden = true
         })
     }
-    func receviceMessage(dictionary:[String: Any]){
+    func receviceMessage(dictionary:[String: Any], isReload: Bool){
         let jsonDecoder = JSONDecoder()
         guard let jsonData = try? JSONSerialization.data(withJSONObject: dictionary as Any , options: .prettyPrinted),
             let allItems = try? jsonDecoder.decode(LiveSearchChatItems.self, from: jsonData) else {
@@ -312,58 +350,59 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
         actionExpandArray = []
         filesExpandArray = []
         dataExpandArray = []
-        
-        self.likeAndDislikeArray = []
-        let faqs = allItems.template?.results?.faq
-        self.arrayOfFaqResults = faqs ?? []
-        if self.arrayOfFaqResults.count > 0 {
-            self.headerArray.append(LiveSearchHeaderTypes.faq.rawValue)
-        }
-        for _ in 0..<self.arrayOfFaqResults.count{
-            self.faqsExpandArray.add("close")
-            self.likeAndDislikeArray.add("")
-        }
-        
-        let pages = allItems.template?.results?.page
-        self.arrayOfPageResults = pages ?? []
-        if self.arrayOfPageResults.count > 0 {
-            self.headerArray.append(LiveSearchHeaderTypes.web.rawValue)
-        }
-        for _ in 0..<self.arrayOfPageResults.count{
-            self.pagesExpandArray.add("close")
-        }
-        
-        let task = allItems.template?.results?.task
-        self.arrayOfTaskResults = task ?? []
-        if self.arrayOfTaskResults.count > 0 {
-            self.headerArray.append(LiveSearchHeaderTypes.task.rawValue)
-        }
-        for _ in 0..<self.arrayOfTaskResults.count{
-            self.actionExpandArray.add("close")
-        }
-        
-        let data = allItems.template?.results?.data
-        self.arrayOfDataResults = data ?? []
-        if self.arrayOfDataResults.count > 0 {
-            self.headerArray.append(LiveSearchHeaderTypes.data.rawValue)
+        if isReload{
+            self.likeAndDislikeArray = []
+            let faqs = allItems.template?.results?.faq
+            self.arrayOfFaqResults = faqs ?? []
+            if self.arrayOfFaqResults.count > 0 {
+                self.headerArray.append(LiveSearchHeaderTypes.faq.rawValue)
+            }
+            for _ in 0..<self.arrayOfFaqResults.count{
+                self.faqsExpandArray.add("close")
+                self.likeAndDislikeArray.add("")
+            }
             
-        }
-        for _ in 0..<self.arrayOfDataResults.count{
-            self.dataExpandArray.add("close")
-        }
-        
-        
-        let files = allItems.template?.results?.file
-        self.arrayOfFileResults = files ?? [] 
-        if self.arrayOfFileResults.count > 0 {
-            self.headerArray.append(LiveSearchHeaderTypes.file.rawValue)
+            let pages = allItems.template?.results?.page
+            self.arrayOfPageResults = pages ?? []
+            if self.arrayOfPageResults.count > 0 {
+                self.headerArray.append(LiveSearchHeaderTypes.web.rawValue)
+            }
+            for _ in 0..<self.arrayOfPageResults.count{
+                self.pagesExpandArray.add("close")
+            }
             
-        }
-        for _ in 0..<self.arrayOfFileResults.count{
-            self.filesExpandArray.add("close")
+            let task = allItems.template?.results?.task
+            self.arrayOfTaskResults = task ?? []
+            if self.arrayOfTaskResults.count > 0 {
+                self.headerArray.append(LiveSearchHeaderTypes.task.rawValue)
+            }
+            for _ in 0..<self.arrayOfTaskResults.count{
+                self.actionExpandArray.add("close")
+            }
+            
+            let data = allItems.template?.results?.data
+            self.arrayOfDataResults = data ?? []
+            if self.arrayOfDataResults.count > 0 {
+                self.headerArray.append(LiveSearchHeaderTypes.data.rawValue)
+                
+            }
+            for _ in 0..<self.arrayOfDataResults.count{
+                self.dataExpandArray.add("close")
+            }
+            
+            
+            let files = allItems.template?.results?.file
+            self.arrayOfFileResults = files ?? []
+            if self.arrayOfFileResults.count > 0 {
+                self.headerArray.append(LiveSearchHeaderTypes.file.rawValue)
+                
+            }
+            for _ in 0..<self.arrayOfFileResults.count{
+                self.filesExpandArray.add("close")
+            }
+            errorImagV.isHidden = headerArray.count > 0 ? true : false
         }
         
-        errorImagV.isHidden = headerArray.count > 0 ? true : false
         
         arrayOfCollectionViewCount = []
         arrayOfCollectionViewCount.add(allItems.template?.facets?.all_results as Any)
@@ -373,14 +412,17 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
         arrayOfCollectionViewCount.add(allItems.template?.facets?.data as Any)
         arrayOfCollectionViewCount.add(allItems.template?.facets?.file as Any)
         
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.reloadData()
-        tableView.reloadData()
-        filterTableView.reloadData()
-        indicatorView.stopAnimating()
-        indicatorView.isHidden = true
-        reloadTableViewSilently()
+        if isReload{
+            collectionView.delegate = self
+            collectionView.dataSource = self
+            collectionView.reloadData()
+            tableView.reloadData()
+            filterTableView.reloadData()
+            indicatorView.stopAnimating()
+            indicatorView.isHidden = true
+            reloadTableViewSilently()
+        }
+        
     }
 
     /*
@@ -1199,9 +1241,11 @@ extension LiveSearchDetailsViewController : UICollectionViewDelegate, UICollecti
         self.collectionView.scrollToItem(at: IndexPath(row: indexPath.item, section: 0), at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
         //tableView.reloadData() //kk
         
+        if arrayOfCollectionViewCount.count > 0{
         let tottalCount = arrayOfCollectionViewCount[indexPath.item] as! Int
         let roundvalue: Double = Double(tottalCount) / Double(rowsDataLimit)
         maximumPageNumber = Int(round(roundvalue))
+        }
         
         createJsonData()
         self.pageNumber = 0
@@ -1260,11 +1304,14 @@ extension LiveSearchDetailsViewController{
                         }
                     }
                 }
-                self.flotingButtonView.isHidden = false // Here you hide it when animation done
-                if self.arrayOfSeletedValues.count > 0{
-                    self.badgeView.isHidden = false
-                }else{
-                    self.badgeView.isHidden = true
+                
+                if self.isShowFileterView{
+                    self.flotingButtonView.isHidden = false // Here you hide it when animation done
+                    if self.arrayOfSeletedValues.count > 0{
+                        self.badgeView.isHidden = false
+                    }else{
+                        self.badgeView.isHidden = true
+                    }
                 }
             })
         }
