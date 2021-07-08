@@ -399,6 +399,21 @@ open class KABotClient: NSObject {
                             message.sentDate = object?.createdOn
                             message.addComponent(optionsComponent)
                         }
+                    case "image":
+                        if let dictionary = payload["payload"] as? [String: Any] {
+                            let optionsComponent: Component = Component(.image)
+                            optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                            message.sentDate = object?.createdOn
+                            message.addComponent(optionsComponent)
+                        }
+                    case "message":
+                        if let dictionary = payload["payload"] as? [String: Any] {
+                            let  componentType = dictionary["audioUrl"] != nil ? Component(.audio) : Component(.video)
+                            let optionsComponent: Component = componentType
+                            optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                            message.sentDate = object?.createdOn
+                            message.addComponent(optionsComponent)
+                        }
                     case "error":
                         if let dictionary = payload["payload"] as? [String: Any] {
                             let errorComponent: Component = Component(.error)

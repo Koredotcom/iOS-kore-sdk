@@ -11,6 +11,8 @@
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		1D9FA1702AE04EE1A8F6AF2C /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */; };
+		950AF5892696C6AC003B4D58 /* AudioBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950AF5872696C6AC003B4D58 /* AudioBubbleView.swift */; };
+		950AF58A2696C6AC003B4D58 /* AudioBubbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 950AF5882696C6AC003B4D58 /* AudioBubbleView.xib */; };
 		9518C069255A8D5900741731 /* DropDownBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9518C068255A8D5900741731 /* DropDownBubbleView.swift */; };
 		951EA67B261EDC1900EE565D /* InlineFormTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951EA679261EDC1800EE565D /* InlineFormTableViewCell.swift */; };
 		951EA67C261EDC1900EE565D /* InlineFormTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 951EA67A261EDC1900EE565D /* InlineFormTableViewCell.xib */; };
@@ -164,6 +166,8 @@
 		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		950AF5872696C6AC003B4D58 /* AudioBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioBubbleView.swift; sourceTree = "<group>"; };
+		950AF5882696C6AC003B4D58 /* AudioBubbleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AudioBubbleView.xib; sourceTree = "<group>"; };
 		9518C068255A8D5900741731 /* DropDownBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownBubbleView.swift; sourceTree = "<group>"; };
 		951EA679261EDC1800EE565D /* InlineFormTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineFormTableViewCell.swift; sourceTree = "<group>"; };
 		951EA67A261EDC1900EE565D /* InlineFormTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InlineFormTableViewCell.xib; sourceTree = "<group>"; };
@@ -346,6 +350,15 @@
 				5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		950AF57F2696C41B003B4D58 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				950AF5872696C6AC003B4D58 /* AudioBubbleView.swift */,
+				950AF5882696C6AC003B4D58 /* AudioBubbleView.xib */,
+			);
+			path = Audio;
 			sourceTree = "<group>";
 		};
 		9518C067255A8D4000741731 /* DropDownBubbleView */ = {
@@ -823,6 +836,7 @@
 				D1F3389B2201D99A005BE5F1 /* Table */,
 				D1F338A72201D99A005BE5F1 /* Menu */,
 				D1F338A92201D99A005BE5F1 /* ListBubbleView.swift */,
+				950AF57F2696C41B003B4D58 /* Audio */,
 				9518C067255A8D4000741731 /* DropDownBubbleView */,
 				CD0563F025247F1900E75768 /* Feedback */,
 				CD0563EE25247F1800E75768 /* InLine Form */,
@@ -867,9 +881,9 @@
 			isa = PBXGroup;
 			children = (
 				D1F338962201D99A005BE5F1 /* MultiImageBubbleView.swift */,
-				D1F338972201D99A005BE5F1 /* ImageComponentCollectionViewCell.xib */,
-				D1F338982201D99A005BE5F1 /* ImageComponentCollectionViewCell.swift */,
 				D1F338992201D99A005BE5F1 /* MultiImageBubbleView.xib */,
+				D1F338982201D99A005BE5F1 /* ImageComponentCollectionViewCell.swift */,
+				D1F338972201D99A005BE5F1 /* ImageComponentCollectionViewCell.xib */,
 			);
 			path = Image;
 			sourceTree = "<group>";
@@ -1042,6 +1056,7 @@
 				CD05640725247F1900E75768 /* ratingselect_2.gif in Resources */,
 				CD05640325247F1900E75768 /* FeedbackCell.xib in Resources */,
 				CD05640625247F1900E75768 /* ratingselect_1.gif in Resources */,
+				950AF58A2696C6AC003B4D58 /* AudioBubbleView.xib in Resources */,
 				D101F92A24E163F800D47DB8 /* ChatMessagesViewController.xib in Resources */,
 				D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */,
 				D1F338E62201D99A005BE5F1 /* MultiImageBubbleView.xib in Resources */,
@@ -1205,6 +1220,7 @@
 				D1F338DA2201D99A005BE5F1 /* AudioComposeView.swift in Sources */,
 				D1F338FE2201D99A005BE5F1 /* BotMessagesView.swift in Sources */,
 				CD4BFFFD24D160CA008E08CE /* NotificationCustomView.swift in Sources */,
+				950AF5892696C6AC003B4D58 /* AudioBubbleView.swift in Sources */,
 				CD05640925247F1900E75768 /* iOSDevCenters+GIF.swift in Sources */,
 				D1F338F32201D99A005BE5F1 /* ListBubbleView.swift in Sources */,
 				D1F338E52201D99A005BE5F1 /* ImageComponentCollectionViewCell.swift in Sources */,

@@ -29,6 +29,9 @@ public class Componentss: NSObject, Decodable {
       public var messageTodisplay: String?
       public var starArrays: [SmileyArraysAction]?
       public var feedbackView: String?
+      public var url: String?
+      public var videoUrl: String?
+      public var audioUrl: String?
     
     
     enum ColorCodeKeys: String, CodingKey {
@@ -52,7 +55,9 @@ public class Componentss: NSObject, Decodable {
             case messageTodisplay = "messageTodisplay"
             case starArrays = "starArrays"
             case feedbackView = "view"
-        
+            case url = "url"
+            case videoUrl = "videoUrl"
+            case audioUrl = "audioUrl"
        }
        
        // MARK: - init
@@ -82,6 +87,9 @@ public class Componentss: NSObject, Decodable {
            messageTodisplay = try? container.decode(String.self, forKey: .messageTodisplay)
            starArrays = try? container.decode([SmileyArraysAction].self, forKey: .starArrays)
            feedbackView = try? container.decode(String.self, forKey: .feedbackView)
+           url = try? container.decode(String.self, forKey: .url)
+           videoUrl = try? container.decode(String.self, forKey: .videoUrl)
+           audioUrl = try? container.decode(String.self, forKey: .audioUrl)
        }
 }
 // MARK: - Elements

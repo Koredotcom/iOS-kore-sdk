@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import AVFoundation
+import AVKit
 
 class ImageComponentView : UIImageView {
 
@@ -42,6 +44,10 @@ class ImageComponentCollectionViewCell : UICollectionViewCell {
     @IBOutlet weak var plusCountLabel: UILabel!
     @IBOutlet weak var dimmingView: UIView!
     @IBOutlet weak var displayView: UIView!
+    @IBOutlet weak var videoPlayerView: UIView!
+    
+    var player: AVPlayer!
+    var playerViewController: AVPlayerViewController!
     
     var index: NSNumber!
     var component: Component! {
@@ -83,5 +89,9 @@ class ImageComponentCollectionViewCell : UICollectionViewCell {
         self.plusCountLabel.isHidden = true
         self.dimmingView.isHidden = true
         self.displayView.isHidden = false
+        
+       //player
+       // playerViewController
+        
     }
 }

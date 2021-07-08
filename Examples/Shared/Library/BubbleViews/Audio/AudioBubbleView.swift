@@ -1,15 +1,15 @@
 //
-//  MultiImageBubbleView.swift
+//  AudioBubbleView.swift
 //  KoreBotSDKDemo
 //
-//  Created by developer@kore.com on 09/05/16.
-//  Copyright © 2016 Kore Inc. All rights reserved.
+//  Created by Kartheek.Pagidimarri on 08/07/21.
+//  Copyright © 2021 Kore. All rights reserved.
 //
 
 import UIKit
 import AVFoundation
 import AVKit
-class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class AudioBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     var imageDataDic = NSDictionary()
     var initialViewingIndex: Int!
     var componentItems =  Componentss()
@@ -59,8 +59,7 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
     
     
     override var intrinsicContentSize : CGSize {
-        
-        return CGSize(width: BubbleViewMaxWidth, height: 200)
+        return CGSize(width: BubbleViewMaxWidth, height: 44)
     }
     
     func visibleCells() -> NSArray {
@@ -94,41 +93,25 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell: ImageComponentCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageComponentCollectionViewCell", for:indexPath) as! ImageComponentCollectionViewCell
-         
-        if  componentItems.videoUrl != nil {
-            cell.videoPlayerView.isHidden = false
-            let url = componentItems.videoUrl
-            let playerURL = URL(string:url!)
-            cell.player = AVPlayer(url: playerURL!)
-            cell.playerViewController = AVPlayerViewController()
-            cell.playerViewController.player = cell.player
-            cell.playerViewController.view.frame = cell.videoPlayerView.frame
-            cell.playerViewController.videoGravity = AVLayerVideoGravity.resizeAspectFill
-            cell.playerViewController.player?.pause()
-            cell.videoPlayerView.addSubview(cell.playerViewController.view)
-            cell.playerViewController.view.backgroundColor = .black
-            
-            }else{
-            cell.videoPlayerView.isHidden = true
-            
-            let url = URL(string: (componentItems.url!))
-             if url != nil{
-                cell.imageComponent.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
-            }else{
-                cell.imageComponent.image = UIImage(named: "placeholder_image")
-            }
-            
-            if cell.playerViewController != nil{
-                cell.videoPlayerView.willRemoveSubview(cell.playerViewController.view)
-            }
-            
-            
+        
+        if cell.playerViewController != nil{
+            cell.videoPlayerView.willRemoveSubview(cell.playerViewController.view)
         }
-           
         
-        //
         
-       // cell.component = self.components.object(at: (indexPath as NSIndexPath).row) as! Component //kk
+        cell.videoPlayerView.isHidden = false
+        let url = componentItems.audioUrl
+        let playerURL = URL(string:url!)
+        cell.player = AVPlayer(url: playerURL!)
+        cell.playerViewController = AVPlayerViewController()
+        cell.playerViewController.player = cell.player
+        cell.playerViewController.view.frame = cell.videoPlayerView.frame
+        cell.playerViewController.player?.pause()
+        cell.videoPlayerView.addSubview(cell.playerViewController.view)
+        cell.playerViewController.view.backgroundColor = .clear
+    
+    
+        // cell.component = self.components.object(at: (indexPath as NSIndexPath).row) as! Component //kk
         //        cell.index = [indexPath.row]
         
         if (((indexPath as NSIndexPath).row == 4) && (self.components.count > MAX_CELLS)) {

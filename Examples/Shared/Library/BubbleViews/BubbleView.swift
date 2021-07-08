@@ -57,8 +57,11 @@ class BubbleView: UIView {
             case .text:
                 bubbleView = TextBubbleView()
                 break
-            case .image:
-                bubbleView = Bundle.main.loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as! BubbleView
+            case .image, .video:
+                bubbleView = Bundle.main.loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as? BubbleView
+                break
+            case .audio:
+                bubbleView = Bundle.main.loadNibNamed("AudioBubbleView", owner: self, options: nil)![0] as? BubbleView
                 break
             case .options:
                 bubbleView = OptionsBubbleView()

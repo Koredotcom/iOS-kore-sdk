@@ -87,7 +87,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(FeedbackBubbleCell.self, forCellReuseIdentifier:"FeedbackBubbleCell")
         self.tableView.register(InLineFormCell.self, forCellReuseIdentifier:"InLineFormCell")
         self.tableView.register(DropDownell.self, forCellReuseIdentifier:"DropDownell")
-
+        self.tableView.register(AudioBubbleCell.self, forCellReuseIdentifier:"AudioBubbleCell")
+        
     }
     
     override func layoutSubviews() {
@@ -137,7 +138,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .text:
                 cellIdentifier = "TextBubbleCell"
                 break
-            case .image:
+            case .image, .video:
                 cellIdentifier = "ImageBubbleCell"
                 break
             case .options:
@@ -200,6 +201,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .dropdown_template:
                 cellIdentifier = "DropDownell"
                 break
+            case .audio:
+                cellIdentifier = "AudioBubbleCell"
+                break
             }
             
         }
@@ -232,7 +236,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             }
             cell.bubbleView.drawBorder = true
             break
-        case .image:
+        case .image, .video, .audio:
             break
         case .options:
             let bubbleView: OptionsBubbleView = cell.bubbleView as! OptionsBubbleView

@@ -214,6 +214,14 @@ class ImageBubbleCell : MessageBubbleCell {
     }
 }
 
+class AudioBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .audio
+    }
+}
+
+
+
 class OptionsBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .options
@@ -477,3 +485,6 @@ class DropDownell : MessageBubbleCell {
         }
     }
 }
+
+
+
