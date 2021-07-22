@@ -14,7 +14,9 @@ import CoreData
 import Mantle
 
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, LiveSearchViewDelegate, LiveSearchDetailsViewDelegate, UIGestureRecognizerDelegate, LoginViewDelegate {
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, LiveSearchViewDelegate, LiveSearchDetailsViewDelegate, UIGestureRecognizerDelegate, LoginViewDelegate, CustomDataViewDelegate {
+    
+    
     // MARK: properties
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
@@ -27,6 +29,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     @IBOutlet weak var composeBarContainerView: UIView!
     @IBOutlet weak var audioComposeContainerView: UIView!
     @IBOutlet weak var panelCollectionViewContainerView: UIView!
+    
     @IBOutlet weak var menuButton: UIButton!
     
     @IBOutlet weak var quickSelectContainerHeightConstraint: NSLayoutConstraint!
@@ -77,6 +80,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var liveSearchView:  LiveSearchView!
     @IBOutlet weak var webViewContainerView: UIView!
     var webView: WebView!
+    @IBOutlet weak var CustomDataContainerView: UIView!
+    var customDataView: CustomDataView!
     
     public var maxPanelHeight: CGFloat {
         var maxHeight = UIScreen.main.bounds.height
@@ -116,6 +121,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.configureQuickReplyView()
         self.configureTypingStatusView()
         self.configureSTTClient()
+        self.configureCustomData()
         
         self.configureViewForKeyboard(true)
         
@@ -133,7 +139,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         configureLoginView()
         welcomeMessage(messageString: "\(welcomeMsg!)")
         
-        let dic = NSMutableDictionary()
+       /* let dic = NSMutableDictionary()
         dic.setObject("Payment" , forKey: "_id" as NSCopying)
         dic.setObject(1, forKey: "count" as NSCopying)
         recentSearchArray.add(dic)
@@ -148,7 +154,20 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let dic3 = NSMutableDictionary()
         dic3.setObject("Pay now" , forKey: "_id" as NSCopying)
         dic3.setObject(1, forKey: "count" as NSCopying)
-        recentSearchArray.add(dic3)
+        recentSearchArray.add(dic3)*/
+    }
+    
+    func configureCustomData(){
+        CustomDataContainerView.isHidden = true
+        CustomDataContainerView.backgroundColor = .clear
+        customDataView = CustomDataView()
+        customDataView.viewDelegate = self
+        customDataView?.translatesAutoresizingMaskIntoConstraints = false
+        CustomDataContainerView.addSubview(self.customDataView!)
+        
+        let views: [String: Any] = ["customDataView" : self.customDataView as Any]
+        CustomDataContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[customDataView]|", options:[], metrics:nil, views: views))
+        CustomDataContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[customDataView]|", options:[], metrics:nil, views: views))
     }
     
     func configureLoginView(){
@@ -159,7 +178,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         loginContainerView.addSubview(self.loginView!)
         
         
-        let views: [String: Any] = ["loginView" : self.loginView]
+        let views: [String: Any] = ["loginView" : self.loginView as Any]
         loginContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[loginView]|", options:[], metrics:nil, views: views))
         loginContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-50-[loginView]|", options:[], metrics:nil, views: views))
         self.tapToDismissGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(ChatMessagesViewController.dismissKeyboard(_:)))
@@ -175,7 +194,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if isAutoSendMessage == "Pay bill" || isAutoSendMessage == "Pay Bill"{
             isEndOfTask = false //kkk
         }
-        self.botClient.sendMessage(isAutoSendMessage!, options: [:])
+        self.botClient.sendMessage(isAutoSendMessage!, options: [:], taskMetaData:[:])
         isShowLoginView = false
     }
     func ShowLoginView(){
@@ -188,7 +207,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         webView?.translatesAutoresizingMaskIntoConstraints = false
         webViewContainerView.addSubview(webView!)
         
-        let views: [String: Any] = ["webView" : webView]
+        let views: [String: Any] = ["webView" : webView as Any]
         webViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[webView]|", options:[], metrics:nil, views: views))
         webViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[webView]|", options:[], metrics:nil, views: views))
     }
@@ -237,10 +256,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         let moreImage = UIImage(named: "more")
         let questionImage = UIImage(named: "question")
-        let moreButton   = UIBarButtonItem(image: moreImage,  style: .plain, target: self, action: #selector(more(_:)))
+        let moreButton   = UIBarButtonItem(image: moreImage,  style: .plain, target: self, action: #selector(customDataButtonAct(_:)))
         let questionButton = UIBarButtonItem(image: questionImage,  style: .plain, target: self, action: #selector(more(_:)))
         navigationItem.rightBarButtonItems = [moreButton, questionButton]
-        //navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(more(_:)))
+        
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         
@@ -335,6 +354,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: More
     @objc func more(_ sender: Any) {
         // colorDropDown.show()
+    }
+    @objc func customDataButtonAct(_ sender: Any){
+        if CustomDataContainerView.isHidden{
+            CustomDataContainerView.isHidden = false
+        }else{
+            composeView.becomeFirstResponder()
+            CustomDataContainerView.isHidden = true
+        }
     }
     
     //MARK: Menu Button Action
@@ -438,7 +465,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
             if let text = text, let payload = payload {
-                self?.sendTextMessage(text, options: ["body": payload])
+                self?.sendTextMessage(text, options: ["body": payload] , taskMetaData: nil)
             }
         }
     }
@@ -830,7 +857,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 strongSelf.composeView.setText(transcript)
                 if !strongSelf.composeView.isKeyboardEnabled {
                     strongSelf.audioComposeView.stopRecording()
-                    strongSelf.sendTextMessage(transcript, options: nil)
+                    strongSelf.sendTextMessage(transcript, options: nil, taskMetaData: nil)
                     strongSelf.composeView.setText("")
                     strongSelf.composeViewBottomConstraint.isActive = false
                     strongSelf.composeBarContainerHeightConstraint.isActive = true
@@ -1024,7 +1051,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
         
         if let utterance = params["utterance"] as? String, let options = params["options"] as? [String: Any] {
-            sendTextMessage(utterance, dictionary: options, options: options)
+            sendTextMessage(utterance, dictionary: options, options: options, taskMetaData: nil)
         }
     }
     
@@ -1059,11 +1086,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.taskMenuContainerHeightConstant.constant = 0
         if (self.composeView.isFirstResponder) {
             _ = self.composeView.resignFirstResponder()
+        }else{
+            UIApplication.shared.sendAction(#selector(self.resignFirstResponder), to:nil, from:nil, for:nil)
         }
     }
     
     // MARK: Helper functions
-    func sendMessage(_ message: Message, dictionary: [String: Any]? = nil, options: [String: Any]?) {
+    func sendMessage(_ message: Message, dictionary: [String: Any]? = nil, options: [String: Any]?, taskMetaData: [String: Any]?) {
         NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
         NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
         let composedMessage: Message = message
@@ -1088,13 +1117,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     }
                     if isShowLoginView {
                         if isLogin {
-                            self.botClient.sendMessage(text, options: options)
+                            self.botClient.sendMessage(text, options: options, taskMetaData: taskMetaData)
                         }else{
                             NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
                             self.ShowLoginView()
                         }
                     }else{
-                        self.botClient.sendMessage(text, options: options)
+                        self.botClient.sendMessage(text, options: options, taskMetaData: taskMetaData)
                     }
                      
                  }
@@ -1107,7 +1136,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             })
         }
     }
-    func sendTextMessage(_ text: String, dictionary: [String: Any]? = nil, options: [String: Any]?) {
+    func sendTextMessage(_ text: String, dictionary: [String: Any]? = nil, options: [String: Any]?, taskMetaData: [String: Any]?) {
         let message: Message = Message()
         message.messageType = .default
         message.sentDate = Date()
@@ -1115,7 +1144,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let textComponent: Component = Component()
         textComponent.payload = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         message.addComponent(textComponent)
-        sendMessage(message, options: options)
+        sendMessage(message, options: options, taskMetaData: taskMetaData)
         
         let dic = NSMutableDictionary()
         dic.setObject(text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), forKey: "_id" as NSCopying)
@@ -1254,11 +1283,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     // MARK: BotMessagesDelegate methods
     func optionsButtonTapAction(text: String) {
-        self.sendTextMessage(text, options: nil)
+        self.sendTextMessage(text, options: nil, taskMetaData: nil)
     }
     
     func optionsButtonTapNewAction(text:String, payload:String){
-        self.sendTextMessage(text, options: ["body": payload])
+        self.sendTextMessage(text, options: ["body": payload], taskMetaData: nil)
+    }
+    func optionsButtonTapTaskAction (text:String, payload:String, taskData: [String: Any]?){
+        self.sendTextMessage(text, options: ["body": payload], taskMetaData: taskData)
     }
     
     func linkButtonTapAction(urlString: String) {
@@ -1267,6 +1299,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             let webViewController = SFSafariViewController(url: url)
             present(webViewController, animated: true, completion:nil)
         }
+    }
+    func oKButtonTapAction(text: String) {
+        CustomDataContainerView.isHidden = true
     }
     
     func populateQuickReplyCards(with message: KREMessage?) {
@@ -1369,7 +1404,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: ComposeBarViewDelegate methods
     
     func composeBarView(_: ComposeBarView, sendButtonAction text: String) {
-        self.sendTextMessage(text, options: nil)
+        self.sendTextMessage(text, options: nil, taskMetaData: nil)
     }
     
     func composeBarViewSpeechToTextButtonAction(_: ComposeBarView) {

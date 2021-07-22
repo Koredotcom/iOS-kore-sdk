@@ -140,12 +140,25 @@ class AppLaunchViewController: UIViewController {
             self.chatButton.isUserInteractionEnabled = false
             self.careMarkButton.isUserInteractionEnabled = true
             self.pfizerButton.isUserInteractionEnabled = true
-            SDKConfiguration.botConfig.clientId = "cs-85d24fec-86e3-5b3e-8fb7-0e296f09fa21"
-            SDKConfiguration.botConfig.clientSecret = "KWf79rvhmDEPjA+G0Z+EKJasibER0oT4/pzvucFAWSQ="
-            SDKConfiguration.botConfig.botId =  "st-12466d46-dc91-5855-a301-b6ecd7a95d82"
-            SDKConfiguration.botConfig.searchIndexID =  "sidx-4c33c7cf-9561-58f2-b547-4745ce12b513"
-            SDKConfiguration.botConfig.chatBotName = "31May"
-            //findlySidx = "sidx-24471eaf-88c7-5789-9cfc-4a17e7e94a9e"
+//            SDKConfiguration.botConfig.clientId = "cs-3c6514cd-3904-5145-8a83-cf469529de29"
+//            SDKConfiguration.botConfig.clientSecret = "XoBPDcb3hJpcLzu5hxPV/Fh4VNh8cPKezWI0irPgil0="
+//            SDKConfiguration.botConfig.botId =  "st-db7c8d37-fa7d-5d9a-9e30-e332566a7389"
+//            SDKConfiguration.botConfig.searchIndexID =  "sidx-3fc74f2c-9bb1-5946-b2c2-a7e43c72082e"
+//            SDKConfiguration.botConfig.chatBotName = "July 14"
+            
+//            SDKConfiguration.botConfig.clientId = "cs-cd5db130-8296-55ba-8307-7a87d4ec8fff"
+//            SDKConfiguration.botConfig.clientSecret = "ozk5oqlrWerwpZ6odW9wkKr4WHBebTYDYIqP7LBqP4s="
+//            SDKConfiguration.botConfig.botId =  "st-ba8e817a-0bcd-5855-bd91-eb2be2fdec30"
+//            SDKConfiguration.botConfig.searchIndexID =  "sidx-8fb06646-1d82-56bb-9901-e27fc84611e0"
+//            SDKConfiguration.botConfig.chatBotName = "May 20" //dev
+            
+           // //findlySidx = "sidx-24471eaf-88c7-5789-9cfc-4a17e7e94a9e"
+            
+            SDKConfiguration.botConfig.clientId = "cs-ec0f96bd-fe44-5724-bbd7-681ef518510d"
+            SDKConfiguration.botConfig.clientSecret = "DdBJMuVfpk6xkieZuNxP3PzREpPoYHnmCAZSywVM7cY="
+            SDKConfiguration.botConfig.botId =  "st-9c915712-360f-5e37-80ba-dc2728bea035"
+            SDKConfiguration.botConfig.searchIndexID =  "sidx-d9e0b3b3-4e64-58ec-9338-9cb98d1a977b"
+            SDKConfiguration.botConfig.chatBotName = "july8" //qa
             
         }else if sender.tag == 2{
             self.chatButton.isUserInteractionEnabled = true

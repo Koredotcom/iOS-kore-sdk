@@ -11,6 +11,7 @@
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		1D9FA1702AE04EE1A8F6AF2C /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */; };
+		952B877526A93AF300EC245F /* CustomDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952B877426A93AF300EC245F /* CustomDataView.swift */; };
 		954BD0522580BBA0000D0236 /* LiveSearchNewTaskViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954BD0502580BBA0000D0236 /* LiveSearchNewTaskViewCell.swift */; };
 		954BD0532580BBA0000D0236 /* LiveSearchNewTaskViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 954BD0512580BBA0000D0236 /* LiveSearchNewTaskViewCell.xib */; };
 		955286E12537FA5F00D235B5 /* LiveSearchDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955286DF2537FA5F00D235B5 /* LiveSearchDetailsViewController.swift */; };
@@ -19,6 +20,7 @@
 		955286E62538085900D235B5 /* LiveSearchCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 955286E42538085900D235B5 /* LiveSearchCollectionViewCell.xib */; };
 		955286E82538589700D235B5 /* LiveSearchChatItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955286E72538589700D235B5 /* LiveSearchChatItems.swift */; };
 		955286EA25385E7F00D235B5 /* LiveSearchBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955286E925385E7F00D235B5 /* LiveSearchBubbleView.swift */; };
+		9556350A268DD3E600BA569B /* PinterestLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95563509268DD3E500BA569B /* PinterestLayout.swift */; };
 		95672B1325822B9F003F2C1F /* FilterTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95672B1125822B9F003F2C1F /* FilterTableCell.swift */; };
 		95672B1425822B9F003F2C1F /* FilterTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95672B1225822B9F003F2C1F /* FilterTableCell.xib */; };
 		95709C64265631E400D32048 /* SearchInterfaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95709C63265631E400D32048 /* SearchInterfaceModel.swift */; };
@@ -192,6 +194,7 @@
 		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		952B877426A93AF300EC245F /* CustomDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDataView.swift; sourceTree = "<group>"; };
 		954BD0502580BBA0000D0236 /* LiveSearchNewTaskViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchNewTaskViewCell.swift; sourceTree = "<group>"; };
 		954BD0512580BBA0000D0236 /* LiveSearchNewTaskViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LiveSearchNewTaskViewCell.xib; sourceTree = "<group>"; };
 		955286DF2537FA5F00D235B5 /* LiveSearchDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchDetailsViewController.swift; sourceTree = "<group>"; };
@@ -200,6 +203,7 @@
 		955286E42538085900D235B5 /* LiveSearchCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LiveSearchCollectionViewCell.xib; sourceTree = "<group>"; };
 		955286E72538589700D235B5 /* LiveSearchChatItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchChatItems.swift; sourceTree = "<group>"; };
 		955286E925385E7F00D235B5 /* LiveSearchBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSearchBubbleView.swift; sourceTree = "<group>"; };
+		95563509268DD3E500BA569B /* PinterestLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinterestLayout.swift; sourceTree = "<group>"; };
 		95672B1125822B9F003F2C1F /* FilterTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableCell.swift; sourceTree = "<group>"; };
 		95672B1225822B9F003F2C1F /* FilterTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilterTableCell.xib; sourceTree = "<group>"; };
 		95709C63265631E400D32048 /* SearchInterfaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInterfaceModel.swift; sourceTree = "<group>"; };
@@ -404,6 +408,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		952B877626A93AFE00EC245F /* CustomData */ = {
+			isa = PBXGroup;
+			children = (
+				952B877426A93AF300EC245F /* CustomDataView.swift */,
+			);
+			path = CustomData;
+			sourceTree = "<group>";
+		};
 		957BBD9C26661E58000F6964 /* GridView */ = {
 			isa = PBXGroup;
 			children = (
@@ -459,6 +471,7 @@
 		95FD1B7A2537039400BC4BF1 /* Live Search */ = {
 			isa = PBXGroup;
 			children = (
+				95563509268DD3E500BA569B /* PinterestLayout.swift */,
 				95FD1B7B2537046C00BC4BF1 /* LiveSearchView.swift */,
 				955286DF2537FA5F00D235B5 /* LiveSearchDetailsViewController.swift */,
 				955286E02537FA5F00D235B5 /* LiveSearchDetailsViewController.xib */,
@@ -698,6 +711,7 @@
 			children = (
 				D101F91024E163F700D47DB8 /* ChatMessagesViewController.swift */,
 				D101F91D24E163F700D47DB8 /* ChatMessagesViewController.xib */,
+				952B877626A93AFE00EC245F /* CustomData */,
 				95F6CE272539442700010BAD /* Home WebView */,
 				95FD1B7A2537039400BC4BF1 /* Live Search */,
 				CD445158250B9B3E00879219 /* DropDown */,
@@ -1310,9 +1324,11 @@
 				D1F338C62201D99A005BE5F1 /* KREMessage+CoreDataProperties.swift in Sources */,
 				D1F338E32201D99A005BE5F1 /* MultiImageBubbleView.swift in Sources */,
 				D1F338C72201D99A005BE5F1 /* KREThread+CoreDataClass.swift in Sources */,
+				952B877526A93AF300EC245F /* CustomDataView.swift in Sources */,
 				D1F338CC2201D99A005BE5F1 /* KREContact+CoreDataClass.swift in Sources */,
 				D101F92424E163F800D47DB8 /* ApplicationManager.swift in Sources */,
 				D101F92624E163F800D47DB8 /* KAPanelItemViewController.swift in Sources */,
+				9556350A268DD3E600BA569B /* PinterestLayout.swift in Sources */,
 				D1F339002201D99A005BE5F1 /* MessageBubbleCell.swift in Sources */,
 				955286EA25385E7F00D235B5 /* LiveSearchBubbleView.swift in Sources */,
 				CD4BFFF924D16091008E08CE /* NotificationBubbleView.swift in Sources */,

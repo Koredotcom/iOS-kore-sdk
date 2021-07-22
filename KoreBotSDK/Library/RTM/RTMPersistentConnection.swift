@@ -211,7 +211,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     }
     
     // MARK: sending message
-    open func sendMessage(_ message: String, parameters: [String: Any], options: [String: Any]?) {
+    open func sendMessage(_ message: String, parameters: [String: Any], options: [String: Any]?, taskMetaData: [String: Any]?) {
         guard let readyState = self.websocket?.readyState else {
             return
         }
@@ -233,6 +233,10 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             messageObject.addEntries(from: ["body": message, "attachments":[], "customData": parameters] as [String : Any])
             if let object = options {
                 messageObject.addEntries(from: object)
+            }
+            
+            if taskMetaData != nil {
+                dictionary.setObject(taskMetaData, forKey: "linkedBotNLMeta" as NSCopying)
             }
             
             dictionary.setObject(messageObject, forKey: "message" as NSCopying)

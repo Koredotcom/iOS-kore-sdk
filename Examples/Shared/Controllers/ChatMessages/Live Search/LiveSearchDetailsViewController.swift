@@ -872,8 +872,8 @@ extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSo
         if sysContentType != "All"{
             let facetValue = NSMutableArray()
             facetValue.add(sysContentType)
-            let facts: [String: Any] = ["facetType": "value", "fieldName": "sysContentType" ,"facetValue": facetValue, "facetName": "facetContentType"]
-            factsArray.add(facts)
+            let facts: [String: Any] = ["facetType": "value", "fieldName": "sys_content_type" ,"facetValue": facetValue, "facetName": "facetContentType"]
+            factsArray.add(facts) //sysContentType
         }
         
         

@@ -228,7 +228,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             if connection == nil {
                 connection = RTMPersistentConnection()
             }
-            let dic: [String:Any] = ["scheme": "wss", "host": "dev.findly.ai"] //kk dev.findly.ai pilot.findly.ai
+            let dic: [String:Any] = ["scheme": "wss", "host": "qa.findly.ai"] //kk dev.findly.ai qa.findly.ai
             reWriteOptions = dic 
             connection?.connect(botInfo: botInfo, botInfoParameters: botInfoParameters, reWriteOptions: reWriteOptions, tryReconnect: isReconnect)
             connection?.connectionDelegate = self
@@ -237,7 +237,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         return nil
     }
     
-    open func sendMessage(_ message: String, dictionary: [String: Any]? = nil, options: [String: Any]?) {
+    open func sendMessage(_ message: String, dictionary: [String: Any]? = nil, options: [String: Any]?, taskMetaData: [String:Any]?) {
         guard let connection = connection else {
             NSLog("WebSocket connection not available")
             return
@@ -254,7 +254,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                 parameters["botToken"] = botToken
             }
             dictionary?.forEach { (key, value) in parameters[key] = value }
-            connection.sendMessage(message, parameters: parameters, options: options)
+            connection.sendMessage(message, parameters: parameters, options: options, taskMetaData: taskMetaData)
             break
         case .CLOSED:
             break

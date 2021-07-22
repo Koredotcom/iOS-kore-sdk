@@ -12,6 +12,7 @@ protocol LiveSearchViewDelegate {
     func optionsButtonTapNewAction(text:String, payload:String)
     func linkButtonTapAction(urlString:String)
     func addTextToTextView(text:String)
+    func optionsButtonTapTaskAction(text:String, payload:String, taskData: [String:Any]?)
     //func showOrHideLiveSeachView(text:String)
     
 }
@@ -26,6 +27,7 @@ class LiveSearchView: UIView {
     fileprivate let liveSearchFaqCellIdentifier = "LiveSearchFaqTableViewCell"
     fileprivate let liveSearchPageCellIdentifier = "LiveSearchPageTableViewCell"
     fileprivate let liveSearchTaskCellIdentifier = "LiveSearchTaskTableViewCell"
+    fileprivate let liveSearchNewTaskCellIdentifier = "LiveSearchNewTaskViewCell"
     
     fileprivate let titleWithImageCellIdentifier = "TitleWithImageCell"
     fileprivate let titleWithCenteredContentCellIdentifier = "TitleWithCenteredContentCell"
@@ -39,6 +41,7 @@ class LiveSearchView: UIView {
     var headerArray = ["POPULAR SEARCHS","RECENT SEARCHS"]
     var kaBotClient = KABotClient()
     var popularSearchArray:NSMutableArray = []
+    var recentSearchNewArray:NSArray = []
     var autoSuggestionSearchItems = AutoSuggestionModel()
     var arrayOfResults = [TemplateResultElements]()
     
@@ -83,6 +86,11 @@ class LiveSearchView: UIView {
     let liveSearchDataTemplateType = resultViewSettingItems?.settings?[2].appearance?[3].template?.type ?? "listTemplate1"
     let dataLayOutType = resultViewSettingItems?.settings?[2].appearance?[3].template?.layout?.layoutType ?? "tileWithText"
     let isDataClickable = resultViewSettingItems?.settings?[2].appearance?[3].template?.layout?.isClickable ?? true
+    
+    let faqHeading = resultViewSettingItems?.settings?[2].appearance?[1].template?.mapping?.heading ?? ""
+    let faqDescription = resultViewSettingItems?.settings?[2].appearance?[1].template?.mapping?.descrip ?? ""
+    let faqimg = resultViewSettingItems?.settings?[2].appearance?[1].template?.mapping?.img ?? ""
+    let faqUrl = resultViewSettingItems?.settings?[2].appearance?[1].template?.mapping?.url ?? ""
     
    
     enum LiveSearchHeaderTypes: String{
@@ -141,6 +149,8 @@ class LiveSearchView: UIView {
         self.tableView.register(UINib(nibName: liveSearchFaqCellIdentifier, bundle: nil), forCellReuseIdentifier: liveSearchFaqCellIdentifier)
         self.tableView.register(UINib(nibName: liveSearchPageCellIdentifier, bundle: nil), forCellReuseIdentifier: liveSearchPageCellIdentifier)
         self.tableView.register(UINib(nibName: liveSearchTaskCellIdentifier, bundle: nil), forCellReuseIdentifier: liveSearchTaskCellIdentifier)
+        self.tableView.register(UINib(nibName: liveSearchNewTaskCellIdentifier, bundle: nil), forCellReuseIdentifier: liveSearchNewTaskCellIdentifier)
+        
         
         self.tableView.register(UINib(nibName: titleWithImageCellIdentifier, bundle: nil), forCellReuseIdentifier: titleWithImageCellIdentifier)
         self.tableView.register(UINib(nibName: titleWithCenteredContentCellIdentifier, bundle: nil), forCellReuseIdentifier: titleWithCenteredContentCellIdentifier)
@@ -206,7 +216,9 @@ class LiveSearchView: UIView {
         }
         self.backgroundColor = UIColor.init(red: 240/255, green: 242/255, blue: 244/255, alpha: 1.0)
         
+        headerArray = []
         callingPopularSearchApi()
+        callingRecentSearchApi()
     }
     @objc func callingLiveSearchView(notification:Notification) {
         let dataString: String = notification.object as! String
@@ -216,9 +228,16 @@ class LiveSearchView: UIView {
             autoSuggestionSearchItems = AutoSuggestionModel()
             autoSearchTableView.reloadData()
             autoSearchView.isHidden = true
-            callingPopularSearchApi()
+             
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+                self.headerArray = []
+                self.callingPopularSearchApi()
+                self.callingRecentSearchApi()
+            })
+            
         }else{
             autoSearchView.isHidden = false
+             headerArray = []
             callingAutoSuggestionSearchApi(searchText: dataString)
             callingLiveSearchApi(searchText: dataString)
         }
@@ -226,21 +245,45 @@ class LiveSearchView: UIView {
     
     func callingPopularSearchApi(){
         kaBotClient.getPopularSearchResults(success: { [weak self] (arrayOfResults) in
+            DispatchQueue.main.async {
             self?.popularSearchArray = arrayOfResults.mutableCopy() as! NSMutableArray
             self?.isPopularSearch = true
-            self?.headerArray = ["POPULAR SEARCHS","RECENT SEARCHS"]
-            DispatchQueue.main.async {
+            if (self?.popularSearchArray.count)! > 0{
+                self?.headerArray.append("POPULAR SEARCHS")
+            }
+            
                 self!.tableView.reloadData()
             }
             
             }, failure: { (error) in
                 print(error)
                 self.isPopularSearch = true
-                self.headerArray = ["POPULAR SEARCHS","RECENT SEARCHS"]
+               // self.headerArray = ["POPULAR SEARCHS","RECENT SEARCHS"]
                 self.tableView.reloadData()
                 
         })
     }
+    func callingRecentSearchApi(){
+        kaBotClient.getRecentSearchResults(success: { [weak self] (dictionary) in
+            DispatchQueue.main.async {
+            self?.recentSearchNewArray = dictionary["recentSearches"] as? NSArray ?? []
+            self?.isPopularSearch = true
+            if (self?.recentSearchNewArray.count)! > 0{
+                self?.headerArray.append("RECENT SEARCHS")
+            }
+            
+                self!.tableView.reloadData()
+            }
+            }, failure: { (error) in
+                print(error)
+                self.isPopularSearch = true
+               // self.headerArray = ["POPULAR SEARCHS","RECENT SEARCHS"]
+                self.tableView.reloadData()
+                
+        })
+    }
+    
+
     
     func callingAutoSuggestionSearchApi(searchText: String){
         kaBotClient.autoSuggestionSearchResults(searchText ,success: { [weak self] (dictionary) in
@@ -266,81 +309,88 @@ class LiveSearchView: UIView {
                 let theJSONText = String(data: theJSONData, encoding: String.Encoding.ascii) {
                 self?.liveSearchJsonString = theJSONText
             }
-            
-            let jsonDecoder = JSONDecoder()
-            guard let jsonData = try? JSONSerialization.data(withJSONObject: dictionary as Any , options: .prettyPrinted),
-                let allItems = try? jsonDecoder.decode(LiveSearchChatItems.self, from: jsonData) else {
-                    return
-            }
-            self?.arrayOfResults = []
-            self?.headerArray = []
-            
-            self?.faqsExpandArray = []
-            self?.pagesExpandArray = []
-            self?.filesExpandArray = []
-            self?.dataExpandArray = []
-            
-            self?.headersExpandArray = []
-            self?.likeAndDislikeArray = []
-            
-            let faqs = allItems.template?.results?.faq
-            self?.arrayOfFaqResults = faqs ?? []
-            if self!.arrayOfFaqResults.count > 0 {
-                self!.headerArray.append(LiveSearchHeaderTypes.faq.rawValue)
-                self!.headersExpandArray.add("open")
-            }
-            for _ in 0..<self!.arrayOfFaqResults.count{
-                self!.faqsExpandArray.add("close")
-                self?.likeAndDislikeArray.add("")
-            }
-            
-            let pages = allItems.template?.results?.page
-            self?.arrayOfPageResults = pages ?? []
-            if self!.arrayOfPageResults.count > 0 {
-                self!.headerArray.append(LiveSearchHeaderTypes.web.rawValue)
-                self!.headersExpandArray.add("open")
-            }
-            for _ in 0..<self!.arrayOfPageResults.count{
-                self!.pagesExpandArray.add("close")
-            }
-            
-            let task = allItems.template?.results?.task
-            self?.arrayOfTaskResults = task ?? []
-            if self!.arrayOfTaskResults.count > 0 {
-                self!.headerArray.append(LiveSearchHeaderTypes.task.rawValue)
-                self!.headersExpandArray.add("open")
-                isShowLoginView = true
+            if let isBotLocked = dictionary["isBotLocked"] as? Bool, isBotLocked{
+                isEndOfTask = false
             }else{
-                isShowLoginView = false
-            }
-             
-            let files = allItems.template?.results?.file
-            self?.arrayOfFileResults = files ?? []
-            if self!.arrayOfFileResults.count > 0 {
-                self!.headerArray.append(LiveSearchHeaderTypes.file.rawValue)
-                self!.headersExpandArray.add("open")
-            }
-            for _ in 0..<self!.arrayOfFileResults.count{
-                self!.filesExpandArray.add("close")
+                isEndOfTask = true
+                 DispatchQueue.main.async {
+                let jsonDecoder = JSONDecoder()
+                guard let jsonData = try? JSONSerialization.data(withJSONObject: dictionary as Any , options: .prettyPrinted),
+                    let allItems = try? jsonDecoder.decode(LiveSearchChatItems.self, from: jsonData) else {
+                        return
+                }
+                
+                self?.arrayOfResults = []
+                self?.headerArray = []
+                
+                self?.faqsExpandArray = []
+                self?.pagesExpandArray = []
+                self?.filesExpandArray = []
+                self?.dataExpandArray = []
+                
+                self?.headersExpandArray = []
+                self?.likeAndDislikeArray = []
+                
+                let faqs = allItems.template?.results?.faq
+                self?.arrayOfFaqResults = faqs ?? []
+                if self!.arrayOfFaqResults.count > 0 {
+                    self!.headerArray.append(LiveSearchHeaderTypes.faq.rawValue)
+                    self!.headersExpandArray.add("open")
+                }
+                for _ in 0..<self!.arrayOfFaqResults.count{
+                    self!.faqsExpandArray.add("close")
+                    self?.likeAndDislikeArray.add("")
+                }
+                
+                let pages = allItems.template?.results?.page
+                self?.arrayOfPageResults = pages ?? []
+                if self!.arrayOfPageResults.count > 0 {
+                    self!.headerArray.append(LiveSearchHeaderTypes.web.rawValue)
+                    self!.headersExpandArray.add("open")
+                }
+                for _ in 0..<self!.arrayOfPageResults.count{
+                    self!.pagesExpandArray.add("close")
+                }
+                
+                let task = allItems.template?.results?.task
+                self?.arrayOfTaskResults = task ?? []
+                if self!.arrayOfTaskResults.count > 0 {
+                    self!.headerArray.append(LiveSearchHeaderTypes.task.rawValue)
+                    self!.headersExpandArray.add("open")
+                    //isShowLoginView = true //kk
+                }else{
+                    //isShowLoginView = false //kk
+                }
+                 
+                let files = allItems.template?.results?.file
+                self?.arrayOfFileResults = files ?? []
+                if self!.arrayOfFileResults.count > 0 {
+                    self!.headerArray.append(LiveSearchHeaderTypes.file.rawValue)
+                    self!.headersExpandArray.add("open")
+                }
+                for _ in 0..<self!.arrayOfFileResults.count{
+                    self!.filesExpandArray.add("close")
+                }
+                
+                let data = allItems.template?.results?.data
+                self?.arrayOfDataResults = data ?? []
+                if self!.arrayOfDataResults.count > 0 {
+                    self!.headerArray.append(LiveSearchHeaderTypes.data.rawValue)
+                    self!.headersExpandArray.add("open")
+                }
+                for _ in 0..<self!.arrayOfDataResults.count{
+                    self!.dataExpandArray.add("close")
+                }
+                
+                
+                self?.isPopularSearch = false
+               
+                    self!.tableView.reloadData()
+                    self?.notifyLabel.isHidden = true
+                    self?.reloadTableViewSilently()
+                }
             }
             
-            let data = allItems.template?.results?.data
-            self?.arrayOfDataResults = data ?? []
-            if self!.arrayOfDataResults.count > 0 {
-                self!.headerArray.append(LiveSearchHeaderTypes.data.rawValue)
-                self!.headersExpandArray.add("open")
-            }
-            for _ in 0..<self!.arrayOfDataResults.count{
-                self!.dataExpandArray.add("close")
-            }
-            
-            
-            self?.isPopularSearch = false
-            DispatchQueue.main.async {
-                self!.tableView.reloadData()
-                self?.notifyLabel.isHidden = true
-                self?.reloadTableViewSilently()
-            }
             }, failure: { (error) in
                 print(error)
         })
@@ -397,137 +447,15 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                         let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[indexPath.section])!
                         switch headerName {
                         case .faq:
-            //                if liveSearchFAQsTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFAQsTemplateType == LiveSearchTypes.carousel.rawValue{
-            //                    return UITableView.automaticDimension
-            //                }else{
-            //                    let layOutType = faqLayOutType
-            //                    switch layOutType {
-            //                    case "tileWithText":
-            //
-            //                        if  faqsExpandArray[indexPath.row] as! String == "close"{
-            //                            return 75
-            //                        }
-            //                        return UITableView.automaticDimension
-            //
-            //
-            //                    case "tileWithImage":
-            //                        if  faqsExpandArray[indexPath.row] as! String == "close"{
-            //                            return 75
-            //                        }
-            //                        return UITableView.automaticDimension
-            //                    case "tileWithCenteredContent":
-            //                        if  faqsExpandArray[indexPath.row] as! String == "close"{
-            //                            return 75+100
-            //                        }
-            //                        return UITableView.automaticDimension
-            //                    case "tileWithHeader":
-            //                        if  faqsExpandArray[indexPath.row] as! String == "close"{
-            //                            return 50
-            //                        }
-            //                        return UITableView.automaticDimension
-            //                    default:
-            //                        break
-            //                    }
-            //                }
-                            
                             return   heightForTable(resultExpandArray: faqsExpandArray, layoutType: faqLayOutType, TemplateType: liveSearchFAQsTemplateType, index: indexPath.row)
                             
                         case .web:
-            //                if liveSearchPageTemplateType == LiveSearchTypes.grid.rawValue || liveSearchPageTemplateType == LiveSearchTypes.carousel.rawValue{
-            //                    return UITableView.automaticDimension
-            //                }else{
-            //                    let layOutType = pageLayOutType
-            //                    switch layOutType {
-            //                    case "tileWithText":
-            //                        if  pagesExpandArray[indexPath.row] as! String == "close"{
-            //                            return 75
-            //                        }
-            //                        return UITableView.automaticDimension
-            //
-            //                    case "tileWithImage":
-            //                        if  pagesExpandArray[indexPath.row] as! String == "close"{
-            //                            return 75
-            //                        }
-            //                        return UITableView.automaticDimension
-            //                    case "tileWithCenteredContent":
-            //                        if  pagesExpandArray[indexPath.row] as! String == "close"{
-            //                            return 75+100
-            //                        }
-            //                        return UITableView.automaticDimension
-            //                    case "tileWithHeader":
-            //                        if  pagesExpandArray[indexPath.row] as! String == "close"{
-            //                            return 50
-            //                        }
-            //                        return UITableView.automaticDimension
-            //                    default:
-            //                        break
-            //                    }
-            //                }
-                             return   heightForTable(resultExpandArray: pagesExpandArray, layoutType: pageLayOutType, TemplateType: liveSearchPageTemplateType, index: indexPath.row)
+                            return   heightForTable(resultExpandArray: pagesExpandArray, layoutType: pageLayOutType, TemplateType: liveSearchPageTemplateType, index: indexPath.row)
                         case .file:
-            //                if liveSearchFileTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFileTemplateType == LiveSearchTypes.carousel.rawValue{
-            //                    return UITableView.automaticDimension
-            //                }else{
-            //                    let layOutType = fileLayOutType
-            //                    switch layOutType {
-            //                    case "tileWithText":
-            //                        if  filesExpandArray[indexPath.row] as! String == "close"{
-            //                            return 75
-            //                        }
-            //                        return UITableView.automaticDimension
-            //
-            //                    case "tileWithImage":
-            //                        if  filesExpandArray[indexPath.row] as! String == "close"{
-            //                            return 75
-            //                        }
-            //                        return UITableView.automaticDimension
-            //                    case "tileWithCenteredContent":
-            //                        if  filesExpandArray[indexPath.row] as! String == "close"{
-            //                            return 75+100
-            //                        }
-            //                        return UITableView.automaticDimension
-            //                    case "tileWithHeader":
-            //                        if  filesExpandArray[indexPath.row] as! String == "close"{
-            //                            return 50
-            //                        }
-            //                        return UITableView.automaticDimension
-            //                    default:
-            //                        break
-            //                    }
-            //                }
+           
                              return   heightForTable(resultExpandArray: filesExpandArray, layoutType: fileLayOutType, TemplateType: liveSearchFileTemplateType, index: indexPath.row)
                             
                         case .data:
-            //                if liveSearchDataTemplateType == LiveSearchTypes.grid.rawValue || liveSearchDataTemplateType == LiveSearchTypes.carousel.rawValue{
-            //                    return UITableView.automaticDimension
-            //                }else{
-            //                    let layOutType = dataLayOutType
-            //                    switch layOutType {
-            //                    case "tileWithText":
-            //                        if  dataExpandArray[indexPath.row] as! String == "close"{
-            //                            return 75
-            //                        }
-            //                        return UITableView.automaticDimension
-            //
-            //                    case "tileWithImage":
-            //                        if  dataExpandArray[indexPath.row] as! String == "close"{
-            //                            return 75
-            //                        }
-            //                        return UITableView.automaticDimension
-            //                    case "tileWithCenteredContent":
-            //                        if  dataExpandArray[indexPath.row] as! String == "close"{
-            //                            return 75+100
-            //                        }
-            //                        return UITableView.automaticDimension
-            //                    case "tileWithHeader":
-            //                        if  dataExpandArray[indexPath.row] as! String == "close"{
-            //                            return 50
-            //                        }
-            //                        return UITableView.automaticDimension
-            //                    default:
-            //                        break
-            //                    }
-            //                }
                             return   heightForTable(resultExpandArray: dataExpandArray, layoutType: dataLayOutType, TemplateType: liveSearchDataTemplateType, index: indexPath.row)
                             
                             case .task:
@@ -550,10 +478,14 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
             return autoSearchItems > 3 ? 3 :  autoSearchItems
         }else{
             if isPopularSearch{
-                if section == 0{
-                    return popularSearchArray.count
+                if headerArray.count > 0{
+                    if headerArray[section] == "POPULAR SEARCHS"{
+                        return popularSearchArray.count
+                    }
+                    return recentSearchNewArray.count
                 }
-                return recentSearchArray.count
+                return 0
+                
             }else {
                 let headerName: LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[section])!
                 switch headerName {
@@ -628,7 +560,7 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 if headerArray[indexPath.section] == "POPULAR SEARCHS"{
                     cell.titleLabel.text = ((popularSearchArray.object(at: indexPath.row) as AnyObject).object(forKey: "_id") as! String)
                 }else{
-                    cell.titleLabel.text = ((recentSearchArray.object(at: indexPath.row) as AnyObject).object(forKey: "_id") as! String)
+                    cell.titleLabel.text = (recentSearchNewArray.object(at: indexPath.row) as AnyObject) as? String         //cell.titleLabel.text = ((recentSearchArray.object(at: indexPath.row) as AnyObject).object(forKey: "_id") as! String)
                     cell.closeButton.addTarget(self, action: #selector(closeButtonAction(_:)), for: .touchUpInside)
                     cell.closeButton.tag = indexPath.row
                 }
@@ -751,7 +683,7 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                     }
                     
                 case .task:
-                    let cell : LiveSearchTaskTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchTaskCellIdentifier) as! LiveSearchTaskTableViewCell
+                    /*let cell : LiveSearchTaskTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchTaskCellIdentifier) as! LiveSearchTaskTableViewCell
                     cell.backgroundColor = UIColor.clear
                     cell.selectionStyle = .none
                     cell.titleLabel.textColor = .black
@@ -764,7 +696,19 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                     }else{
                         let url = URL(string: gridImage!)
                         cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "task"))
-                    }
+                    }*/
+                    
+                    let cell : LiveSearchNewTaskViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchNewTaskCellIdentifier) as! LiveSearchNewTaskViewCell
+                     cell.backgroundColor = UIColor.clear
+                     cell.selectionStyle = .none
+                     let results = arrayOfTaskResults[indexPath.row]
+                     cell.titleLabel?.text = "\(results.name!)     "
+                     cell.titleLabel?.layer.cornerRadius = 5.0
+                     cell.titleLabel?.layer.borderWidth = 0.0
+                     cell.titleLabel.layer.shadowOpacity = 0.7
+                     cell.titleLabel.layer.shadowOffset = CGSize(width: 2, height: 2)
+                     cell.titleLabel.layer.shadowRadius = 8.0
+                     cell.titleLabel.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
                     return cell
                 }
             }
@@ -784,7 +728,7 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 case "POPULAR SEARCHS":
                     self.viewDelegate?.addTextToTextView(text: ((popularSearchArray.object(at: indexPath.row) as AnyObject).object(forKey: "_id") as! String))
                 case "RECENT SEARCHS":
-                    self.viewDelegate?.addTextToTextView(text: ((recentSearchArray.object(at: indexPath.row) as AnyObject).object(forKey: "_id") as! String))
+                    self.viewDelegate?.addTextToTextView(text: ((recentSearchNewArray.object(at: indexPath.row) as AnyObject) as? String)!)
                 default:
                     break
                 }
@@ -850,7 +794,14 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                         }
                     }
                 case .task:
-                    break
+                    if let payload = arrayOfTaskResults[indexPath.row].payload {
+                        let taskData = NSMutableDictionary()
+                        taskData.setValue(arrayOfTaskResults[indexPath.row].name, forKey: "intent")
+                        taskData.setValue("null", forKey: "childBotName")
+                        taskData.setValue(true, forKey: "isRefresh")
+                        viewDelegate?.optionsButtonTapTaskAction(text: arrayOfTaskResults[indexPath.row].name!, payload: payload, taskData: taskData as? [String : Any])
+                    }
+                    isEndOfTask = false //kk
                 }
             }
         }
@@ -939,8 +890,8 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
 
 extension LiveSearchView{
     @objc fileprivate func closeButtonAction(_ sender: AnyObject!) {
-        recentSearchArray.removeObject(at: sender.tag)
-        tableView.reloadData()
+//        recentSearchArray.removeObject(at: sender.tag)
+//        tableView.reloadData()
     }
     @objc fileprivate func shareButtonAction(_ sender: AnyObject!) {
         let results = arrayOfPageResults[sender.tag]

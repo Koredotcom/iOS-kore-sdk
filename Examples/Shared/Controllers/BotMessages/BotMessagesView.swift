@@ -15,6 +15,7 @@ protocol BotMessagesViewDelegate {
     func populateQuickReplyCards(with message: KREMessage?)
     func closeQuickReplyCards()
     func optionsButtonTapNewAction(text:String, payload:String)
+    func optionsButtonTapTaskAction(text:String, payload:String, taskData: [String:Any]?)
     func populateCalenderView(with message: KREMessage?)
     func populateFeedbackSliderView(with message: KREMessage?)
 }
@@ -375,8 +376,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             break
         case .search:
             let bubbleView: LiveSearchBubbleView = cell.bubbleView as! LiveSearchBubbleView
-            bubbleView.optionsAction = {[weak self] (text, payload) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+            bubbleView.optionsTaskAction = {[weak self] (text, payload, taskData) in
+                self?.viewDelegate?.optionsButtonTapTaskAction(text: text!, payload: payload!, taskData: taskData)
             }
             bubbleView.linkAction = {[weak self] (text) in
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)

@@ -8,8 +8,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChatMessagesViewController" customModule="BankAssist_ai" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChatMessagesViewController" customModule="Findly_ai" customModuleProvider="target">
             <connections>
+                <outlet property="CustomDataContainerView" destination="qrJ-KB-FoM" id="QmW-Gm-uF3"/>
                 <outlet property="audioComposeContainerView" destination="h7Y-kP-4Xx" id="SEi-cL-oTX"/>
                 <outlet property="backgroungImageView" destination="ni7-ts-YyA" id="AfI-X9-IDG"/>
                 <outlet property="bottomConstraint" destination="l2o-ug-Hr8" id="NEt-NH-Siu"/>
@@ -86,6 +87,10 @@
                         <constraint firstAttribute="height" id="3FM-F5-fhO"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qrJ-KB-FoM">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="522"/>
+                    <color key="backgroundColor" systemColor="systemGray4Color" red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -99,6 +104,7 @@
                 <constraint firstItem="eO0-Rx-huK" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" id="D1F-iQ-We7"/>
                 <constraint firstItem="y23-6f-O9g" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="E8u-iv-Arc"/>
                 <constraint firstItem="015-T1-HUy" firstAttribute="leading" secondItem="0uF-el-Vxb" secondAttribute="leading" id="FY4-Ou-cdW"/>
+                <constraint firstItem="y23-6f-O9g" firstAttribute="top" secondItem="qrJ-KB-FoM" secondAttribute="bottom" id="FsG-Vg-NpK"/>
                 <constraint firstAttribute="trailing" secondItem="z3x-8O-A97" secondAttribute="trailing" id="Hls-Eo-Deb"/>
                 <constraint firstItem="h7Y-kP-4Xx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="JWO-aq-HcR"/>
                 <constraint firstItem="G9X-9o-2qP" firstAttribute="leading" secondItem="0uF-el-Vxb" secondAttribute="leading" id="LlB-pl-9Ru"/>
@@ -107,15 +113,18 @@
                 <constraint firstItem="8ru-91-Smj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="T5H-X0-Phe"/>
                 <constraint firstAttribute="trailing" secondItem="Usv-h4-tDT" secondAttribute="trailing" id="TCv-Jw-LtC"/>
                 <constraint firstItem="7Z6-mY-xVo" firstAttribute="top" secondItem="h7Y-kP-4Xx" secondAttribute="bottom" id="Uuu-Vc-Kho"/>
+                <constraint firstItem="qrJ-KB-FoM" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" id="Vw1-4p-vcu"/>
                 <constraint firstItem="z3x-8O-A97" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Wld-We-VMY"/>
                 <constraint firstItem="015-T1-HUy" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" id="Xnu-VB-Uzp"/>
                 <constraint firstItem="h7Y-kP-4Xx" firstAttribute="top" secondItem="8ru-91-Smj" secondAttribute="bottom" id="Z1V-03-a8G"/>
+                <constraint firstItem="qrJ-KB-FoM" firstAttribute="leading" secondItem="0uF-el-Vxb" secondAttribute="leading" id="aI9-AP-X9Q"/>
                 <constraint firstItem="ni7-ts-YyA" firstAttribute="top" secondItem="owa-n2-Opo" secondAttribute="bottom" id="dd9-SZ-zC4"/>
                 <constraint firstItem="G9X-9o-2qP" firstAttribute="top" secondItem="owa-n2-Opo" secondAttribute="bottom" id="dxO-T9-Dtm"/>
                 <constraint firstItem="owa-n2-Opo" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" constant="-5" id="fdx-Y4-hzb"/>
                 <constraint firstItem="Usv-h4-tDT" firstAttribute="top" secondItem="ni7-ts-YyA" secondAttribute="bottom" id="g5Z-nH-9DT"/>
                 <constraint firstItem="8ru-91-Smj" firstAttribute="top" secondItem="015-T1-HUy" secondAttribute="bottom" id="hMU-gm-cI2"/>
                 <constraint firstItem="0uF-el-Vxb" firstAttribute="bottom" secondItem="7Z6-mY-xVo" secondAttribute="bottom" id="l2o-ug-Hr8"/>
+                <constraint firstItem="qrJ-KB-FoM" firstAttribute="top" secondItem="owa-n2-Opo" secondAttribute="bottom" id="mxB-7u-YMy"/>
                 <constraint firstItem="015-T1-HUy" firstAttribute="top" secondItem="owa-n2-Opo" secondAttribute="bottom" id="nTp-sS-S3T"/>
                 <constraint firstItem="eO0-Rx-huK" firstAttribute="leading" secondItem="0uF-el-Vxb" secondAttribute="leading" id="qbV-LA-dvR"/>
                 <constraint firstItem="0uF-el-Vxb" firstAttribute="bottom" secondItem="Usv-h4-tDT" secondAttribute="bottom" constant="1" id="shv-iF-pyx"/>

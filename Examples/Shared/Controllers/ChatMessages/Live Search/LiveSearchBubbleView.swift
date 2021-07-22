@@ -109,6 +109,7 @@ class LiveSearchBubbleView: BubbleView {
     }
     
     public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    public var optionsTaskAction: ((_ text: String?, _ payload: String?, _ taskData: [String: Any]) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
     override func applyBubbleMask() {
         //nothing to put here
@@ -314,7 +315,8 @@ class LiveSearchBubbleView: BubbleView {
         if textSize.height < self.titleLbl.font.pointSize {
             textSize.height = self.titleLbl.font.pointSize
         }
-        return CGSize(width: 0.0, height: textSize.height+60+tableView.contentSize.height+30)  //150
+        let tableViewHeight = tableView.contentSize.height < 120 ? 120 : tableView.contentSize.height
+        return CGSize(width: 0.0, height: textSize.height+tableViewHeight+20)  //150
     }
     
     @objc fileprivate func showMoreButtonAction(_ sender: UIButton!) {
@@ -583,47 +585,21 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
             let cell : LiveSearchNewTaskViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchNewTaskCellIdentifier) as! LiveSearchNewTaskViewCell
             cell.backgroundColor = UIColor.clear
             cell.selectionStyle = .none
-            cell.titleLabel.textColor = UIColor.init(red: 44/255, green: 128/255, blue: 248/255, alpha: 1.0)
+            //cell.titleLabel.textColor = UIColor.init(red: 44/255, green: 128/255, blue: 248/255, alpha: 1.0)
             let results = arrayOfTaskResults[indexPath.row]
             cell.titleLabel?.text = "\(results.name!)     "
             cell.titleLabel?.layer.cornerRadius = 5.0
-            cell.titleLabel?.layer.borderWidth = 1.0
-            cell.titleLabel?.layer.borderColor = UIColor.init(red: 44/255, green: 128/255, blue: 248/255, alpha: 1.0).cgColor
+            cell.titleLabel?.layer.borderWidth = 0.0
+            cell.titleLabel.layer.shadowOpacity = 0.7
+            cell.titleLabel.layer.shadowOffset = CGSize(width: 2, height: 2)
+            cell.titleLabel.layer.shadowRadius = 8.0
+            //cell.titleLabel.clipsToBounds = false
+            cell.titleLabel.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
+           // cell.titleLabel?.layer.borderColor = UIColor.init(red: 44/255, green: 128/255, blue: 248/255, alpha: 1.0).cgColor
             return cell
         }
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-//        let headerName = headerArray[indexPath.section]
-//        switch headerName {
-//        case "FAQS":
-//            if checkboxIndexPath.contains(indexPath) {
-//                
-//                checkboxIndexPath.remove(at: checkboxIndexPath.firstIndex(of: indexPath)!)
-//            }else{
-//                checkboxIndexPath.append(indexPath)
-//            }
-//            tableView.reloadData()
-//            NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
-//        case "PAGES":
-//            let results = arrayOfPageResults[indexPath.row]
-//            if results.url != nil {
-//                self.linkAction(results.url!)
-//            }
-//            break
-//        case "TASKS":
-//            if let payload = arrayOfTaskResults[indexPath.row].payload {
-//                self.optionsAction(arrayOfTaskResults[indexPath.row].name, payload)
-//            }
-//            isEndOfTask = false //kk
-//            //if results.postBackPayload?.payload != nil{
-//            //    self.optionsAction(results.postBackPayload?.payload, results.postBackPayload?.payload)
-//        //}
-//        default:
-//            break
-//        }
-        
-        
             let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[indexPath.section])!
             switch headerName {
             case .faq:
@@ -686,7 +662,11 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
                 }
             case .task:
                  if let payload = arrayOfTaskResults[indexPath.row].payload {
-                    self.optionsAction(arrayOfTaskResults[indexPath.row].name, payload)
+                    let taskData = NSMutableDictionary()
+                    taskData.setValue(arrayOfTaskResults[indexPath.row].name, forKey: "intent")
+                    taskData.setValue("null", forKey: "childBotName")
+                    taskData.setValue(true, forKey: "isRefresh")
+                    self.optionsTaskAction(arrayOfTaskResults[indexPath.row].name, payload, taskData as! [String : Any])
                 }
                 isEndOfTask = false //kk
                 //if results.postBackPayload?.payload != nil{
@@ -751,7 +731,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
 //        showMoreButton.isHidden = boolValue
         
         let views: [String: UIView] = ["dropDownBtn": dropDownBtn, "showMoreButton": showMoreButton]
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[dropDownBtn]-5-[showMoreButton(100)]-0-|", options:[], metrics:nil, views:views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[dropDownBtn]-5-[showMoreButton(110)]-0-|", options:[], metrics:nil, views:views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[dropDownBtn]-5-|", options:[], metrics:nil, views:views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[showMoreButton]-5-|", options:[], metrics:nil, views:views))
         

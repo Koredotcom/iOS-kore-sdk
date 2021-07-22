@@ -154,8 +154,8 @@ open class KABotClient: NSObject {
     
     
     // MARK: -
-    public func sendMessage(_ message: String, options: [String: Any]?) {
-        botClient.sendMessage(message, options: options)
+    public func sendMessage(_ message: String, options: [String: Any]?, taskMetaData:[String:Any]?) {
+        botClient.sendMessage(message, options: options, taskMetaData: taskMetaData)
     }
     
     // methods
@@ -536,6 +536,11 @@ open class KABotClient: NSObject {
                             self?.botClient = client!
                             userInfoUserId = client?.userInfoModel?.userId
                             authInfoAccessToken = client?.authInfoModel?.accessToken
+                            self?.unbloackApi(success: { (dic) in
+                                
+                            }, failure: { (error) in
+                                
+                            })
                             block?(self?.botClient, self?.thread)
                     }, failure: { (error) in
                         failure?(error!)
@@ -601,8 +606,8 @@ open class KABotClient: NSObject {
         }
         
     }
-    //_ dictionary: [String: Any]
-    // MARK: Live Search Results
+    
+    // MARK: Search API'S
     func getPopularSearchResults(success:((_ arrayOfResults: NSArray) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
         // Session Configuration
@@ -630,6 +635,45 @@ open class KABotClient: NSObject {
         sessionManager?.requestSerializer = requestSerializer
         sessionManager?.get(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
             if let dictionary = responseObject as? NSArray,
+            dictionary.count > 0 {
+                success?(dictionary)
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                failure?(error)
+            }
+        }) { (sessionDataTask, error) in
+            failure?(error)
+        }
+        
+    }
+    
+    func getRecentSearchResults(success:((_ dictionary:[String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+        
+        // Session Configuration
+        let configuration = URLSessionConfiguration.default
+        
+        //Manager
+        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
+        
+        // NOTE: You must set your URL to generate JWT.
+        let urlString: String = "\(FindlyUrl)searchassistapi/searchsdk/stream/\(SDKConfiguration.botConfig.botId)/\(findlySidx)/recentSearches"//SDKConfiguration.serverConfig.koreJwtUrl() //sidx-f3a43e5f-74b6-5632-a488-8af83c480b88
+        let requestSerializer = AFJSONRequestSerializer()
+        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
+        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+        
+        let authorizationStr = "bearer \(authInfoAccessToken!)"
+        requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
+        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        let auth = jwtToken
+        requestSerializer.setValue(auth, forHTTPHeaderField:"auth")
+       
+        
+        let parameters: NSDictionary = [:]
+        
+        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.get(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
+            if let dictionary = responseObject as? [String: Any],
             dictionary.count > 0 {
                 success?(dictionary)
             } else {
@@ -684,6 +728,10 @@ open class KABotClient: NSObject {
                                         "lang": "en",
                                         "messagePayload": messagePayload
                                         ]
+        
+       // "queryPipelineId": "fqp-0c35a0e0-8c8f-5e5b-b9dd-278900c12029",
+                                    //"indexPipelineId" : "fip-e060bf10-4a4b-5866-8e9d-1861706087bb"
+        //"fqp-f8211839-d2f3-5bf4-bf96-903a8ecbfe0b" "fip-baecec9c-6a22-536e-8415-c1de58d565ee"
         
         
 //        let jsonData = try! JSONSerialization.data(withJSONObject: parameters, options: JSONSerialization.WritingOptions.prettyPrinted)
@@ -913,6 +961,56 @@ open class KABotClient: NSObject {
             }
             
         }
+    
+    // MARK:Unblock
+
+    func unbloackApi(success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+        
+        // Session Configuration
+        let configuration = URLSessionConfiguration.default
+        
+        //Manager
+        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
+        
+        // NOTE: You must set your URL to generate JWT.
+        let urlString: String = "\(FindlyUrl)searchassistapi/searchsdk/stream/\(SDKConfiguration.botConfig.botId)/\(findlySidx)/unlockbot"
+        let requestSerializer = AFJSONRequestSerializer()
+        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
+        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+        
+        let authorizationStr = "bearer \(authInfoAccessToken!)"
+        requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
+        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        let auth = jwtToken
+        requestSerializer.setValue(auth, forHTTPHeaderField:"auth")
+        
+        //{"userId":"u-570ef08c-b6e8-5ca4-a5de-38f3a9af679f","streamId":"st-db7c8d37-fa7d-5d9a-9e30-e332566a7389","lang":"en","botInfo":{"chatBot":"July 14","taskBotId":"st-db7c8d37-fa7d-5d9a-9e30-e332566a7389"},"client":"botbuilder"}
+        
+        let botInfo: [String: Any] = ["chatBot": SDKConfiguration.botConfig.chatBotName, "taskBotId": SDKConfiguration.botConfig.botId]
+        
+        var parameters: NSDictionary?
+        parameters = ["botInfo" : botInfo,
+        "userId": userInfoUserId as Any,
+        "streamId": findlyStreamId,
+        "lang": "en",
+        "client": "botbuilder"]
+        
+        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
+            if let dictionary = responseObject as? [String: Any]{
+                success?(dictionary)
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                failure?(error)
+                
+            }
+        }) { (sessionDataTask, error) in
+            failure?(error)
+            
+        }
+        
+    }
     
     // MARK: -
     open func showTypingStatusForBot() {
