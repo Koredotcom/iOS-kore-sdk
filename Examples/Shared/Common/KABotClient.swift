@@ -154,8 +154,8 @@ open class KABotClient: NSObject {
     
     
     // MARK: -
-    public func sendMessage(_ message: String, options: [String: Any]?, taskMetaData:[String:Any]?) {
-        botClient.sendMessage(message, options: options, taskMetaData: taskMetaData)
+    public func sendMessage(_ message: String, options: [String: Any]?, taskMetaData:[String:Any]?, botInfoCustomData:[String:Any]?) {
+        botClient.sendMessage(message, options: options, taskMetaData: taskMetaData, botInfoCustomData: botInfoCustomData)
     }
     
     // methods
@@ -782,7 +782,10 @@ open class KABotClient: NSObject {
         
         let chatBotName: String = SDKConfiguration.botConfig.chatBotName
         let botId: String = SDKConfiguration.botConfig.botId
-        let botInfo: [String: Any] = ["chatBot": chatBotName, "taskBotId": botId,"customData": "{}"]
+        
+        let userContext = botCustomData?.count == 0 ? [:] : ["userContext" : botCustomData!]
+        
+        let botInfo: [String: Any] = ["chatBot": chatBotName, "taskBotId": botId,"customData": userContext]
         
 //        //filters
 //        let facetValue = NSMutableArray()

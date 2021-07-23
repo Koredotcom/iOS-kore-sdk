@@ -91,6 +91,7 @@ class TemplateResultElements: NSObject, Decodable {
     public var category : String?
     public var dataImageUrl : String?
     public var dataUrl : String?
+    public var childBotName: String?
 
     enum ColorCodeKeys: String, CodingKey {
         case contentType = "contentType"
@@ -122,6 +123,7 @@ class TemplateResultElements: NSObject, Decodable {
         case category = "category"
         case dataImageUrl = "data_image_url"
         case dataUrl = "data_url"
+        case childBotName = "childBotName"
         
     }
     
@@ -161,6 +163,7 @@ class TemplateResultElements: NSObject, Decodable {
         category = try? container.decode(String.self, forKey: .category)
         dataImageUrl = try? container.decode(String.self, forKey: .dataImageUrl)
         dataUrl = try? container.decode(String.self, forKey: .dataUrl)
+        childBotName = try? container.decode(String.self, forKey: .childBotName)
     }
 }
 

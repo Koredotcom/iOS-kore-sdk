@@ -316,7 +316,7 @@ class LiveSearchBubbleView: BubbleView {
             textSize.height = self.titleLbl.font.pointSize
         }
         let tableViewHeight = tableView.contentSize.height < 120 ? 120 : tableView.contentSize.height
-        return CGSize(width: 0.0, height: textSize.height+tableViewHeight+20)  //150
+        return CGSize(width: 0.0, height: textSize.height+tableViewHeight+30)  //150
     }
     
     @objc fileprivate func showMoreButtonAction(_ sender: UIButton!) {
@@ -664,7 +664,11 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
                  if let payload = arrayOfTaskResults[indexPath.row].payload {
                     let taskData = NSMutableDictionary()
                     taskData.setValue(arrayOfTaskResults[indexPath.row].name, forKey: "intent")
-                    taskData.setValue("null", forKey: "childBotName")
+                    if let childBotname =  arrayOfTaskResults[indexPath.row].childBotName{
+                        taskData.setValue(childBotname, forKey: "childBotName")
+                    }else{
+                         taskData.setValue("null", forKey: "childBotName")
+                    }
                     taskData.setValue(true, forKey: "isRefresh")
                     self.optionsTaskAction(arrayOfTaskResults[indexPath.row].name, payload, taskData as! [String : Any])
                 }
@@ -1004,7 +1008,8 @@ extension LiveSearchBubbleView{
                 cell.topImageV.image = UIImage(named: "placeholder_image")
                 //cell.bottomImageV.image = UIImage(named: "placeholder_image")
             }else{
-                let url = URL(string: gridImage!)
+                let urlString = gridImage?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                let url = URL(string: urlString!)
                 cell.topImageV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
                 //cell.bottomImageV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
             }
@@ -1018,7 +1023,8 @@ extension LiveSearchBubbleView{
                     if gridImage == nil || gridImage == ""{
                         cell.bottomImageV.image = UIImage(named: "placeholder_image")
                     }else{
-                        let url = URL(string: gridImage!)
+                        let urlString = gridImage?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                        let url = URL(string: urlString!)
                         cell.bottomImageV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
                     }
                 }else{
@@ -1146,7 +1152,8 @@ extension LiveSearchBubbleView{
                     if gridImage == nil || gridImage == ""{
                         cell.centerImagV.image = UIImage(named: "placeholder_image")
                     }else{
-                        let url = URL(string: gridImage!)
+                        let urlString = gridImage?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                        let url = URL(string: urlString!)
                         cell.centerImagV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
                     }
                 }else{
@@ -1171,7 +1178,8 @@ extension LiveSearchBubbleView{
                     cell.topCenterImagV.image = UIImage(named: "placeholder_image")
                     
                 }else{
-                    let url = URL(string: gridImage!)
+                    let urlString = gridImage?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                    let url = URL(string: urlString!)
                     cell.topCenterImagV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
                     
                 }

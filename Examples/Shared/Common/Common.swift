@@ -31,8 +31,9 @@ var jwtToken: String?
 var authInfoAccessToken: String?
 let findlyStreamId = SDKConfiguration.botConfig.botId
 let recentSearchArray = NSMutableArray()
+var botCustomData: [String: Any]?
 
-//var isAutoSendMessage = false
+
 var isAutoSendMessage:String?
 var isShowLoginView = false
 var isLogin = false

@@ -89,8 +89,9 @@ class TextBubbleView : BubbleView {
                 let welcomeMsg = serachInterfaceItems?.interactionsConfig?.welcomeMsg
                 if welcomeMsg == parsedString{
                     let url = URL(string: (serachInterfaceItems?.interactionsConfig?.welcomeMsgEmoji)!)
-                    iconImageView.downloaded(from: url!)
-
+                    if url != nil {
+                        iconImageView.downloaded(from: url!)
+                    }
                 }else{
                     iconImageView.image = UIImage.init(named: "findly")
                 }

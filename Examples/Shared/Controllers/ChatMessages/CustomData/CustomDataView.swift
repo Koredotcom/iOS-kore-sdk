@@ -36,7 +36,7 @@ class CustomDataView: UIView, UITextViewDelegate {
        
        fileprivate func setupViews() {
         
-        
+        botCustomData = [:]
         customDataSubView = UIView(frame:.zero)
         customDataSubView.translatesAutoresizingMaskIntoConstraints = false
         customDataSubView.layer.cornerRadius = 5
@@ -53,6 +53,7 @@ class CustomDataView: UIView, UITextViewDelegate {
         
         
         self.descriptionTxtV = UITextView(frame: CGRect.zero)
+        //self.descriptionTxtV.text = "{\"userContext\" : \"test\"}"
         self.descriptionTxtV.delegate = self
         self.descriptionTxtV.textColor = .black
         self.descriptionTxtV.font = UIFont(name: "HelveticaNeue-Medium", size: 14.0)
@@ -126,11 +127,58 @@ class CustomDataView: UIView, UITextViewDelegate {
     @objc fileprivate func clearBtnAction(_ sender: AnyObject!) {
         descriptionTxtV.text = ""
         descriptionPlaceholderLbl.isHidden = false
+        botCustomData = [:]
     }
     
     @objc fileprivate func OkBtnAction(_ sender: AnyObject!) {
-        descriptionTxtV.resignFirstResponder()
-        viewDelegate?.oKButtonTapAction(text: descriptionTxtV.text)
+        let descTxt = descriptionTxtV.text!
+        
+        var jsonString = descTxt.replacingOccurrences(of: "”", with: "\"")
+         jsonString = jsonString.replacingOccurrences(of: "“", with: "\"")
+        
+        let jsonData = jsonString.data(using: String.Encoding.utf8)
+        if isValidJson(check: jsonData!){
+            print("Valid Json")
+            descriptionTxtV.resignFirstResponder()
+            viewDelegate?.oKButtonTapAction(text: jsonString)
+        }else{
+            print("InValid Json")
+             botCustomData = [:]
+        }
+        
+        let string = jsonString
+        let data = string.data(using: .utf8)!
+        do {
+            if let jsonData = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? [String:AnyObject]
+            {
+                 botCustomData = jsonData
+               print(jsonData) // use the json here
+            } else {
+                print("bad json")
+                 botCustomData = [:]
+            }
+        } catch let error as NSError {
+            print(error)
+            botCustomData = [:]
+        }
+    }
+    
+    func isValidJson(check data:Data) -> Bool
+    {
+        do{
+        if let _ = try JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
+           return true
+        } else if let _ = try JSONSerialization.jsonObject(with: data, options: []) as? NSArray {
+            return true
+        } else {
+            return false
+        }
+        }
+        catch let error as NSError {
+            print(error)
+            return false
+        }
+
     }
     
     /*

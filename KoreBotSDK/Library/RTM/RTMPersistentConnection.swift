@@ -211,7 +211,7 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
     }
     
     // MARK: sending message
-    open func sendMessage(_ message: String, parameters: [String: Any], options: [String: Any]?, taskMetaData: [String: Any]?) {
+    open func sendMessage(_ message: String, parameters: [String: Any], options: [String: Any]?, taskMetaData: [String: Any]?, botInfoCustomData: [String: Any]?) {
         guard let readyState = self.websocket?.readyState else {
             return
         }
@@ -242,7 +242,13 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             dictionary.setObject(messageObject, forKey: "message" as NSCopying)
             dictionary.setObject("/bot.message", forKey: "resourceid" as NSCopying)
             if (self.botInfoParameters != nil) {
-                dictionary.setObject(self.botInfoParameters as Any, forKey: "botInfo" as NSCopying)
+                if botInfoCustomData?.count == 0{
+                    dictionary.setObject(self.botInfoParameters as Any, forKey: "botInfo" as NSCopying)
+                }else{
+                    var botInfo = self.botInfoParameters
+                    botInfo?["userContext"] = botInfoCustomData
+                    dictionary.setObject(botInfo, forKey: "botInfo" as NSCopying)
+                }
             }
             let uuid: String = Constants.getUUID()
             dictionary.setObject(uuid, forKey: "id" as NSCopying)

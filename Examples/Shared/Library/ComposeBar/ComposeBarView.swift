@@ -103,7 +103,10 @@ class ComposeBarView: UIView {
         self.leftImage.translatesAutoresizingMaskIntoConstraints = false
         self.leftImage.backgroundColor = .clear
         let url = URL(string: searchBarIcon!)
-        let data = try? Data(contentsOf: url!)
+        var data : Data?
+        if url != nil {
+            data = try? Data(contentsOf: url!)
+        }
 
         if let imageData = data {
             let image = UIImage(data: imageData)

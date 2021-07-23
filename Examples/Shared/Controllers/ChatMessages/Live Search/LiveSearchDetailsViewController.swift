@@ -12,6 +12,7 @@ protocol LiveSearchDetailsViewDelegate {
     func optionsButtonTapNewAction(text:String, payload:String)
     func optionsButtonTapAction(text:String)
     func linkButtonTapAction(urlString:String)
+    func optionsButtonTapTaskAction(text:String, payload:String, taskData: [String:Any]?)
 }
 
 class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDelegate {
@@ -53,6 +54,7 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
     fileprivate let liveSearchFaqCellIdentifier = "LiveSearchFaqTableViewCell"
     fileprivate let liveSearchPageCellIdentifier = "LiveSearchPageTableViewCell"
     fileprivate let liveSearchTaskCellIdentifier = "LiveSearchTaskTableViewCell"
+    fileprivate let liveSearchNewTaskCellIdentifier = "LiveSearchNewTaskViewCell"
     fileprivate let LiveSearchCollectionViewCellIdentifier = "LiveSearchCollectionViewCell"
     fileprivate let SearchDetailsCollectionViewCellIdentifier = "SearchDetailsCollectionViewCell"
     fileprivate let FilterTableCellIdentifier = "FilterTableCell"
@@ -240,6 +242,8 @@ class LiveSearchDetailsViewController: UIViewController, UIGestureRecognizerDele
         tableView.register(UINib(nibName: liveSearchFaqCellIdentifier, bundle: nil), forCellReuseIdentifier: liveSearchFaqCellIdentifier)
         tableView.register(UINib(nibName: liveSearchPageCellIdentifier, bundle: nil), forCellReuseIdentifier: liveSearchPageCellIdentifier)
         tableView.register(UINib(nibName: liveSearchTaskCellIdentifier, bundle: nil), forCellReuseIdentifier: liveSearchTaskCellIdentifier)
+        tableView.register(UINib(nibName: liveSearchNewTaskCellIdentifier, bundle: nil), forCellReuseIdentifier: liveSearchNewTaskCellIdentifier)
+        
         filterTableView.register(UINib(nibName: FilterTableCellIdentifier, bundle: nil), forCellReuseIdentifier: FilterTableCellIdentifier)
         
         collectionView.backgroundColor = UIColor.init(hexString: "#eaeaea")
@@ -574,100 +578,43 @@ extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSo
         if tableView == filterTableView {
             return UITableView.automaticDimension
         }else{
-            let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[indexPath.section])!
-            switch headerName {
-            case .faq:
-                return   heightForTable(resultExpandArray: faqsExpandArray, layoutType: faqLayOutType, TemplateType: liveSearchFAQsTemplateType, index: indexPath.row)
-                
-            case .web:
-                return   heightForTable(resultExpandArray: pagesExpandArray, layoutType: pageLayOutType, TemplateType: liveSearchPageTemplateType, index: indexPath.row)
-                
-            case .task:
-               return UITableView.automaticDimension
-                
-            case .file:
-                return   heightForTable(resultExpandArray: filesExpandArray, layoutType: fileLayOutType, TemplateType: liveSearchFileTemplateType, index: indexPath.row)
-                
-            case .data:
-                return   heightForTable(resultExpandArray: dataExpandArray, layoutType: dataLayOutType, TemplateType: liveSearchDataTemplateType, index: indexPath.row)
+            if headerArray.count>0{
+                let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[indexPath.section])!
+                           switch headerName {
+                           case .faq:
+                               return   heightForTable(resultExpandArray: faqsExpandArray, layoutType: faqLayOutType, TemplateType: liveSearchFAQsTemplateType, index: indexPath.row)
+                               
+                           case .web:
+                               return   heightForTable(resultExpandArray: pagesExpandArray, layoutType: pageLayOutType, TemplateType: liveSearchPageTemplateType, index: indexPath.row)
+                               
+                           case .task:
+                              return UITableView.automaticDimension
+                               
+                           case .file:
+                               return   heightForTable(resultExpandArray: filesExpandArray, layoutType: fileLayOutType, TemplateType: liveSearchFileTemplateType, index: indexPath.row)
+                               
+                           case .data:
+                               return   heightForTable(resultExpandArray: dataExpandArray, layoutType: dataLayOutType, TemplateType: liveSearchDataTemplateType, index: indexPath.row)
+                           }
             }
+            return UITableView.automaticDimension
+           
         }
     }
-    
-//    func heightForTable(resultExpandArray: NSMutableArray, layoutType: String, TemplateType: String, index: Int) -> CGFloat{
-//        if TemplateType == LiveSearchTypes.grid.rawValue || TemplateType == "carousel"{
-//            return UITableView.automaticDimension
-//        }else{
-//            let layOutType:LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: layoutType)!
-//            switch layOutType {
-//            case .tileWithText:
-//                if  resultExpandArray[index] as! String == "close"{
-//                    return 75
-//                }
-//                return UITableView.automaticDimension
-//
-//            case .tileWithImage:
-//                if  resultExpandArray[index] as! String == "close"{
-//                    return 75
-//                }
-//                return UITableView.automaticDimension
-//            case .tileWithCenteredContent:
-//                if  resultExpandArray[index] as! String == "close"{
-//                    return 75+100
-//                }
-//                return UITableView.automaticDimension
-//            case .tileWithHeader:
-//                if  resultExpandArray[index] as! String == "close"{
-//                    return 50
-//                }
-//                return UITableView.automaticDimension
-//            }
-//        }
-//    }
     func numberOfSections(in tableView: UITableView) -> Int {
         if tableView == filterTableView {
             return arrayOfSearchFacets.count
+        }else if tableView == tableView{
+            return headerArray.count
         }
-        return headerArray.count
+        return 0
     }
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == filterTableView {
             return arrayOfSearchFacets[section].buckets!.count
-        }
-//        let headerName = headerArray[section]
-//        switch headerName {
-//        case "FAQS":
-//            if liveSearchFAQsTemplateType == LiveSearchTypes.grid.rawValue{
-//                return 1
-//            }
-//            return arrayOfFaqResults.count > rowsDataLimit ? rowsDataLimit : arrayOfFaqResults.count
-//        case "PAGES":
-//            if liveSearchPageTemplateType == LiveSearchTypes.grid.rawValue{
-//                return 1
-//            }
-//            return arrayOfPageResults.count > rowsDataLimit ? rowsDataLimit : arrayOfPageResults.count
-//        case "ACTIONS":
-//            if liveSearchActionTemplateType == LiveSearchTypes.grid.rawValue{
-//                return 1
-//            }
-//            return arrayOfTaskResults.count > rowsDataLimit ? rowsDataLimit : arrayOfTaskResults.count
-//        case "DOCUMENTS":
-//            if liveSearchDocumentTemplateType == LiveSearchTypes.grid.rawValue{
-//                return 1
-//            }
-//            return arrayOfDocumentsResults.count > rowsDataLimit ? rowsDataLimit : arrayOfDocumentsResults.count
-//        case "FILES":
-//            if liveSearchFilesTemplateType == LiveSearchTypes.grid.rawValue{
-//                return 1
-//            }
-//            return arrayOfFilesResults.count > rowsDataLimit ? rowsDataLimit : arrayOfFilesResults.count
-//        default:
-//            break
-//        }
-//        return 0
-
+        }else{
             let headerName: LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[section])!
             switch headerName {
             case .faq:
@@ -693,6 +640,8 @@ extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSo
                 }
                 return arrayOfDataResults.count > rowsDataLimit ? rowsDataLimit : arrayOfDataResults.count
             }
+        }
+            
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == filterTableView {
@@ -709,135 +658,152 @@ extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSo
             }
             return cell
         }else{
-            let headerName: LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[indexPath.section])!
-            switch headerName {
-            case .faq:
-                if liveSearchFAQsTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFAQsTemplateType == LiveSearchTypes.carousel.rawValue{
-                    let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                    cell.configure(with: arrayOfFaqResults, appearanceType: headerName.rawValue, layOutType: faqLayOutType, templateType:liveSearchFAQsTemplateType)
-                    return cell
-                }else{
-                    let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: faqLayOutType)!
-                    switch layOutType {
-                    case .tileWithText:
-                        let cell : LiveSearchFaqTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchFaqCellIdentifier) as! LiveSearchFaqTableViewCell
-                        titleWithTextCellMethod(cell: cell, cellResultArray: arrayOfFaqResults, expandArray: faqsExpandArray, indexPath: indexPath, isClickable: isFaqsClickable, templateType: liveSearchFAQsTemplateType, appearanceType: headerName.rawValue)
+            if headerArray.count > 0{
+                let headerName: LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[indexPath.section])!
+                switch headerName{
+                case .faq:
+                    if liveSearchFAQsTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFAQsTemplateType == LiveSearchTypes.carousel.rawValue{
+                        let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
+                        cell.configure(with: arrayOfFaqResults, appearanceType: headerName.rawValue, layOutType: faqLayOutType, templateType:liveSearchFAQsTemplateType)
                         return cell
-                    case .tileWithImage:
-                        let cell : TitleWithImageCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithImageCellIdentifier) as! TitleWithImageCell
-                        titleWithImageCellMethod(cell: cell, cellResultArray: arrayOfFaqResults, expandArray: faqsExpandArray, indexPath: indexPath, isClickable: isFaqsClickable, templateType: liveSearchFAQsTemplateType, appearanceType: headerName.rawValue)
-                        return cell
-                    case .tileWithCenteredContent:
-                        let cell : TitleWithCenteredContentCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithCenteredContentCellIdentifier) as! TitleWithCenteredContentCell
-                        titleWithCenteredContentCellMethod(cell: cell, cellResultArray: arrayOfFaqResults, expandArray: faqsExpandArray, indexPath: indexPath, isClickable: isFaqsClickable, templateType: liveSearchFAQsTemplateType, appearanceType: headerName.rawValue)
-                        return cell
-                    case .tileWithHeader:
-                        let cell : TitleWithHeaderCell = self.tableView.dequeueReusableCell(withIdentifier: TitleWithHeaderCellIdentifier) as! TitleWithHeaderCell
-                        TitleWithHeaderCellMethod(cell: cell, cellResultArray: arrayOfFaqResults, expandArray: faqsExpandArray, indexPath: indexPath, isClickable: isFaqsClickable, templateType: liveSearchFAQsTemplateType, appearanceType: headerName.rawValue)
-                        return cell
+                    }else{
+                        let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: faqLayOutType)!
+                        switch layOutType {
+                        case .tileWithText:
+                            let cell : LiveSearchFaqTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchFaqCellIdentifier) as! LiveSearchFaqTableViewCell
+                            titleWithTextCellMethod(cell: cell, cellResultArray: arrayOfFaqResults, expandArray: faqsExpandArray, indexPath: indexPath, isClickable: isFaqsClickable, templateType: liveSearchFAQsTemplateType, appearanceType: headerName.rawValue)
+                            return cell
+                        case .tileWithImage:
+                            let cell : TitleWithImageCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithImageCellIdentifier) as! TitleWithImageCell
+                            titleWithImageCellMethod(cell: cell, cellResultArray: arrayOfFaqResults, expandArray: faqsExpandArray, indexPath: indexPath, isClickable: isFaqsClickable, templateType: liveSearchFAQsTemplateType, appearanceType: headerName.rawValue)
+                            return cell
+                        case .tileWithCenteredContent:
+                            let cell : TitleWithCenteredContentCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithCenteredContentCellIdentifier) as! TitleWithCenteredContentCell
+                            titleWithCenteredContentCellMethod(cell: cell, cellResultArray: arrayOfFaqResults, expandArray: faqsExpandArray, indexPath: indexPath, isClickable: isFaqsClickable, templateType: liveSearchFAQsTemplateType, appearanceType: headerName.rawValue)
+                            return cell
+                        case .tileWithHeader:
+                            let cell : TitleWithHeaderCell = self.tableView.dequeueReusableCell(withIdentifier: TitleWithHeaderCellIdentifier) as! TitleWithHeaderCell
+                            TitleWithHeaderCellMethod(cell: cell, cellResultArray: arrayOfFaqResults, expandArray: faqsExpandArray, indexPath: indexPath, isClickable: isFaqsClickable, templateType: liveSearchFAQsTemplateType, appearanceType: headerName.rawValue)
+                            return cell
+                        }
                     }
-                }
-            case .web:
-                if liveSearchPageTemplateType == LiveSearchTypes.grid.rawValue || liveSearchPageTemplateType == LiveSearchTypes.carousel.rawValue{
-                    let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                    cell.configure(with: arrayOfPageResults, appearanceType: headerName.rawValue, layOutType: pageLayOutType, templateType:liveSearchPageTemplateType)
-                    return cell
-                }else{
-                    let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: pageLayOutType)!
-                    switch layOutType {
-                    case .tileWithText:
-                        let cell : LiveSearchFaqTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchFaqCellIdentifier) as! LiveSearchFaqTableViewCell
-                        titleWithTextCellMethod(cell: cell, cellResultArray: arrayOfPageResults, expandArray: pagesExpandArray, indexPath: indexPath, isClickable: isPagesClickable, templateType: liveSearchPageTemplateType, appearanceType: headerName.rawValue)
+                case .web:
+                    if liveSearchPageTemplateType == LiveSearchTypes.grid.rawValue || liveSearchPageTemplateType == LiveSearchTypes.carousel.rawValue{
+                        let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
+                        cell.configure(with: arrayOfPageResults, appearanceType: headerName.rawValue, layOutType: pageLayOutType, templateType:liveSearchPageTemplateType)
                         return cell
-                    case .tileWithImage:
-                        let cell : TitleWithImageCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithImageCellIdentifier) as! TitleWithImageCell
-                        titleWithImageCellMethod(cell: cell, cellResultArray: arrayOfPageResults, expandArray:
-                            pagesExpandArray, indexPath: indexPath, isClickable: isPagesClickable, templateType: liveSearchPageTemplateType, appearanceType: headerName.rawValue)
-                        return cell
-                    case .tileWithCenteredContent:
-                        let cell : TitleWithCenteredContentCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithCenteredContentCellIdentifier) as! TitleWithCenteredContentCell
-                        titleWithCenteredContentCellMethod(cell: cell, cellResultArray: arrayOfPageResults, expandArray: pagesExpandArray, indexPath: indexPath, isClickable: isPagesClickable, templateType: liveSearchPageTemplateType, appearanceType: headerName.rawValue)
-                        return cell
-                    case .tileWithHeader:
-                        let cell : TitleWithHeaderCell = self.tableView.dequeueReusableCell(withIdentifier: TitleWithHeaderCellIdentifier) as! TitleWithHeaderCell
-                        TitleWithHeaderCellMethod(cell: cell, cellResultArray: arrayOfPageResults, expandArray: pagesExpandArray, indexPath: indexPath, isClickable: isPagesClickable, templateType: liveSearchPageTemplateType, appearanceType: headerName.rawValue)
-                        return cell
+                    }else{
+                        let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: pageLayOutType)!
+                        switch layOutType {
+                        case .tileWithText:
+                            let cell : LiveSearchFaqTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchFaqCellIdentifier) as! LiveSearchFaqTableViewCell
+                            titleWithTextCellMethod(cell: cell, cellResultArray: arrayOfPageResults, expandArray: pagesExpandArray, indexPath: indexPath, isClickable: isPagesClickable, templateType: liveSearchPageTemplateType, appearanceType: headerName.rawValue)
+                            return cell
+                        case .tileWithImage:
+                            let cell : TitleWithImageCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithImageCellIdentifier) as! TitleWithImageCell
+                            titleWithImageCellMethod(cell: cell, cellResultArray: arrayOfPageResults, expandArray:
+                                pagesExpandArray, indexPath: indexPath, isClickable: isPagesClickable, templateType: liveSearchPageTemplateType, appearanceType: headerName.rawValue)
+                            return cell
+                        case .tileWithCenteredContent:
+                            let cell : TitleWithCenteredContentCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithCenteredContentCellIdentifier) as! TitleWithCenteredContentCell
+                            titleWithCenteredContentCellMethod(cell: cell, cellResultArray: arrayOfPageResults, expandArray: pagesExpandArray, indexPath: indexPath, isClickable: isPagesClickable, templateType: liveSearchPageTemplateType, appearanceType: headerName.rawValue)
+                            return cell
+                        case .tileWithHeader:
+                            let cell : TitleWithHeaderCell = self.tableView.dequeueReusableCell(withIdentifier: TitleWithHeaderCellIdentifier) as! TitleWithHeaderCell
+                            TitleWithHeaderCellMethod(cell: cell, cellResultArray: arrayOfPageResults, expandArray: pagesExpandArray, indexPath: indexPath, isClickable: isPagesClickable, templateType: liveSearchPageTemplateType, appearanceType: headerName.rawValue)
+                            return cell
+                        }
                     }
-                }
-                
-            case .file:
-                if liveSearchFileTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFileTemplateType == LiveSearchTypes.carousel.rawValue{
-                    let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                    cell.configure(with: arrayOfFileResults, appearanceType: headerName.rawValue, layOutType: fileLayOutType, templateType:liveSearchFileTemplateType)
-                    return cell
-                }else{
-                    let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: fileLayOutType)!
-                    switch layOutType {
-                    case .tileWithText:
-                        let cell : LiveSearchFaqTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchFaqCellIdentifier) as! LiveSearchFaqTableViewCell
-                        titleWithTextCellMethod(cell: cell, cellResultArray: arrayOfFileResults, expandArray: filesExpandArray, indexPath: indexPath, isClickable: isFileClickable, templateType: liveSearchFileTemplateType, appearanceType: headerName.rawValue)
+                    
+                case .file:
+                    if liveSearchFileTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFileTemplateType == LiveSearchTypes.carousel.rawValue{
+                        let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
+                        cell.configure(with: arrayOfFileResults, appearanceType: headerName.rawValue, layOutType: fileLayOutType, templateType:liveSearchFileTemplateType)
                         return cell
-                    case .tileWithImage:
-                        let cell : TitleWithImageCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithImageCellIdentifier) as! TitleWithImageCell
-                        titleWithImageCellMethod(cell: cell, cellResultArray: arrayOfFileResults, expandArray:
-                            filesExpandArray, indexPath: indexPath, isClickable: isFileClickable, templateType: liveSearchFileTemplateType, appearanceType: headerName.rawValue)
-                        return cell
-                    case .tileWithCenteredContent:
-                        let cell : TitleWithCenteredContentCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithCenteredContentCellIdentifier) as! TitleWithCenteredContentCell
-                        titleWithCenteredContentCellMethod(cell: cell, cellResultArray: arrayOfFileResults, expandArray: filesExpandArray, indexPath: indexPath, isClickable: isFileClickable, templateType: liveSearchFileTemplateType, appearanceType: headerName.rawValue)
-                        return cell
-                    case .tileWithHeader:
-                        let cell : TitleWithHeaderCell = self.tableView.dequeueReusableCell(withIdentifier: TitleWithHeaderCellIdentifier) as! TitleWithHeaderCell
-                        TitleWithHeaderCellMethod(cell: cell, cellResultArray: arrayOfFileResults, expandArray: filesExpandArray, indexPath: indexPath, isClickable: isFileClickable, templateType: liveSearchFileTemplateType, appearanceType: headerName.rawValue)
-                        return cell
+                    }else{
+                        let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: fileLayOutType)!
+                        switch layOutType {
+                        case .tileWithText:
+                            let cell : LiveSearchFaqTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchFaqCellIdentifier) as! LiveSearchFaqTableViewCell
+                            titleWithTextCellMethod(cell: cell, cellResultArray: arrayOfFileResults, expandArray: filesExpandArray, indexPath: indexPath, isClickable: isFileClickable, templateType: liveSearchFileTemplateType, appearanceType: headerName.rawValue)
+                            return cell
+                        case .tileWithImage:
+                            let cell : TitleWithImageCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithImageCellIdentifier) as! TitleWithImageCell
+                            titleWithImageCellMethod(cell: cell, cellResultArray: arrayOfFileResults, expandArray:
+                                filesExpandArray, indexPath: indexPath, isClickable: isFileClickable, templateType: liveSearchFileTemplateType, appearanceType: headerName.rawValue)
+                            return cell
+                        case .tileWithCenteredContent:
+                            let cell : TitleWithCenteredContentCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithCenteredContentCellIdentifier) as! TitleWithCenteredContentCell
+                            titleWithCenteredContentCellMethod(cell: cell, cellResultArray: arrayOfFileResults, expandArray: filesExpandArray, indexPath: indexPath, isClickable: isFileClickable, templateType: liveSearchFileTemplateType, appearanceType: headerName.rawValue)
+                            return cell
+                        case .tileWithHeader:
+                            let cell : TitleWithHeaderCell = self.tableView.dequeueReusableCell(withIdentifier: TitleWithHeaderCellIdentifier) as! TitleWithHeaderCell
+                            TitleWithHeaderCellMethod(cell: cell, cellResultArray: arrayOfFileResults, expandArray: filesExpandArray, indexPath: indexPath, isClickable: isFileClickable, templateType: liveSearchFileTemplateType, appearanceType: headerName.rawValue)
+                            return cell
+                        }
                     }
-                }
-                
-            case .data:
-                if liveSearchDataTemplateType == LiveSearchTypes.grid.rawValue || liveSearchDataTemplateType == LiveSearchTypes.carousel.rawValue{
-                    let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                    cell.configure(with: arrayOfDataResults, appearanceType: headerName.rawValue, layOutType: dataLayOutType, templateType:liveSearchDataTemplateType)
-                    return cell
-                }else{
-                    let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue:  dataLayOutType)!
-                    switch layOutType {
-                    case .tileWithText:
-                        let cell : LiveSearchFaqTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchFaqCellIdentifier) as! LiveSearchFaqTableViewCell
-                        titleWithTextCellMethod(cell: cell, cellResultArray: arrayOfDataResults, expandArray: dataExpandArray, indexPath: indexPath, isClickable: isDataClickable, templateType: liveSearchDataTemplateType, appearanceType: headerName.rawValue)
+                    
+                case .data:
+                    if liveSearchDataTemplateType == LiveSearchTypes.grid.rawValue || liveSearchDataTemplateType == LiveSearchTypes.carousel.rawValue{
+                        let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
+                        cell.configure(with: arrayOfDataResults, appearanceType: headerName.rawValue, layOutType: dataLayOutType, templateType:liveSearchDataTemplateType)
                         return cell
-                    case .tileWithImage:
-                        let cell : TitleWithImageCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithImageCellIdentifier) as! TitleWithImageCell
-                        titleWithImageCellMethod(cell: cell, cellResultArray: arrayOfDataResults, expandArray:
-                            dataExpandArray, indexPath: indexPath, isClickable: isDataClickable, templateType: liveSearchDataTemplateType, appearanceType: headerName.rawValue)
-                        return cell
-                    case .tileWithCenteredContent:
-                        let cell : TitleWithCenteredContentCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithCenteredContentCellIdentifier) as! TitleWithCenteredContentCell
-                        titleWithCenteredContentCellMethod(cell: cell, cellResultArray: arrayOfDataResults, expandArray: dataExpandArray, indexPath: indexPath, isClickable: isDataClickable, templateType: liveSearchDataTemplateType, appearanceType: headerName.rawValue)
-                        return cell
-                    case .tileWithHeader:
-                        let cell : TitleWithHeaderCell = self.tableView.dequeueReusableCell(withIdentifier: TitleWithHeaderCellIdentifier) as! TitleWithHeaderCell
-                        TitleWithHeaderCellMethod(cell: cell, cellResultArray: arrayOfDataResults, expandArray: dataExpandArray, indexPath: indexPath, isClickable: isDataClickable, templateType: liveSearchDataTemplateType, appearanceType: headerName.rawValue)
-                        return cell
+                    }else{
+                        let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue:  dataLayOutType)!
+                        switch layOutType {
+                        case .tileWithText:
+                            let cell : LiveSearchFaqTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchFaqCellIdentifier) as! LiveSearchFaqTableViewCell
+                            titleWithTextCellMethod(cell: cell, cellResultArray: arrayOfDataResults, expandArray: dataExpandArray, indexPath: indexPath, isClickable: isDataClickable, templateType: liveSearchDataTemplateType, appearanceType: headerName.rawValue)
+                            return cell
+                        case .tileWithImage:
+                            let cell : TitleWithImageCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithImageCellIdentifier) as! TitleWithImageCell
+                            titleWithImageCellMethod(cell: cell, cellResultArray: arrayOfDataResults, expandArray:
+                                dataExpandArray, indexPath: indexPath, isClickable: isDataClickable, templateType: liveSearchDataTemplateType, appearanceType: headerName.rawValue)
+                            return cell
+                        case .tileWithCenteredContent:
+                            let cell : TitleWithCenteredContentCell = self.tableView.dequeueReusableCell(withIdentifier: titleWithCenteredContentCellIdentifier) as! TitleWithCenteredContentCell
+                            titleWithCenteredContentCellMethod(cell: cell, cellResultArray: arrayOfDataResults, expandArray: dataExpandArray, indexPath: indexPath, isClickable: isDataClickable, templateType: liveSearchDataTemplateType, appearanceType: headerName.rawValue)
+                            return cell
+                        case .tileWithHeader:
+                            let cell : TitleWithHeaderCell = self.tableView.dequeueReusableCell(withIdentifier: TitleWithHeaderCellIdentifier) as! TitleWithHeaderCell
+                            TitleWithHeaderCellMethod(cell: cell, cellResultArray: arrayOfDataResults, expandArray: dataExpandArray, indexPath: indexPath, isClickable: isDataClickable, templateType: liveSearchDataTemplateType, appearanceType: headerName.rawValue)
+                            return cell
+                        }
                     }
+                    
+                case .task:
+                    //                let cell : LiveSearchTaskTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchTaskCellIdentifier) as! LiveSearchTaskTableViewCell
+                    //                cell.backgroundColor = UIColor.clear
+                    //                cell.selectionStyle = .none
+                    //                cell.titleLabel.textColor = .black
+                    //                let results = arrayOfTaskResults[indexPath.row]
+                    //                cell.titleLabel?.text = results.name
+                    //                var gridImage: String?
+                    //                gridImage = results.imageUrl
+                    //                if gridImage == nil || gridImage == ""{
+                    //                    cell.profileImageView.image = UIImage(named: "task")
+                    //                }else{
+                    //                    let url = URL(string: gridImage!)
+                    //                    cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "task"))
+                    //                }
+                    //                return cell
+                    let cell : LiveSearchNewTaskViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchNewTaskCellIdentifier) as! LiveSearchNewTaskViewCell
+                    cell.backgroundColor = UIColor.clear
+                    cell.selectionStyle = .none
+                    let results = arrayOfTaskResults[indexPath.row]
+                    cell.titleLabel?.text = "\(results.name!)     "
+                    cell.titleLabel?.layer.cornerRadius = 5.0
+                    cell.titleLabel?.layer.borderWidth = 0.0
+                    cell.titleLabel.layer.shadowOpacity = 0.7
+                    cell.titleLabel.layer.shadowOffset = CGSize(width: 2, height: 2)
+                    cell.titleLabel.layer.shadowRadius = 8.0
+                    cell.titleLabel.layer.shadowColor = UIColor.init(red: 209/255, green: 217/255, blue: 224/255, alpha: 1.0).cgColor
+                    return cell
                 }
-                
-            case .task:
-                let cell : LiveSearchTaskTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: liveSearchTaskCellIdentifier) as! LiveSearchTaskTableViewCell
-                cell.backgroundColor = UIColor.clear
-                cell.selectionStyle = .none
-                cell.titleLabel.textColor = .black
-                let results = arrayOfTaskResults[indexPath.row]
-                cell.titleLabel?.text = results.name
-                var gridImage: String?
-                gridImage = results.imageUrl
-                if gridImage == nil || gridImage == ""{
-                    cell.profileImageView.image = UIImage(named: "task")
-                }else{
-                    let url = URL(string: gridImage!)
-                    cell.profileImageView.setImageWith(url!, placeholderImage: UIImage(named: "task"))
-                }
-                return cell
+            }else{
+                return UITableViewCell()
             }
+            
         }
         
     }
@@ -952,7 +918,20 @@ extension LiveSearchDetailsViewController: UITableViewDelegate,UITableViewDataSo
                     }
                 }
             case .task:
-                break
+                if let payload = arrayOfTaskResults[indexPath.row].payload {
+                    let taskData = NSMutableDictionary()
+                    taskData.setValue(arrayOfTaskResults[indexPath.row].name, forKey: "intent")
+                    if let childBotname =  arrayOfTaskResults[indexPath.row].childBotName{
+                        taskData.setValue(childBotname, forKey: "childBotName")
+                    }else{
+                         taskData.setValue("null", forKey: "childBotName")
+                    }
+                    taskData.setValue(true, forKey: "isRefresh")
+                    viewDelegate?.optionsButtonTapTaskAction(text: arrayOfTaskResults[indexPath.row].name!, payload: payload, taskData: taskData as? [String : Any])
+                     
+                    self.dismiss(animated: true, completion: nil)
+                }
+               isEndOfTask = false //kk
             case .file:
                 if !isFileClickable{
                     if filesExpandArray[indexPath.row] as! String == "close" {
@@ -1509,7 +1488,8 @@ extension LiveSearchDetailsViewController{
             cell.topImageV.image = UIImage(named: "placeholder_image")
             //cell.bottomImageV.image = UIImage(named: "placeholder_image")
         }else{
-            let url = URL(string: gridImage!)
+            let urlString = gridImage?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+            let url = URL(string: urlString!)
             cell.topImageV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
             //cell.bottomImageV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
         }
@@ -1523,7 +1503,8 @@ extension LiveSearchDetailsViewController{
                 if gridImage == nil || gridImage == ""{
                     cell.bottomImageV.image = UIImage(named: "placeholder_image")
                 }else{
-                    let url = URL(string: gridImage!)
+                    let urlString = gridImage?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                    let url = URL(string: urlString!)
                     cell.bottomImageV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
                 }
             }else{
@@ -1624,7 +1605,8 @@ extension LiveSearchDetailsViewController{
                 if gridImage == nil || gridImage == ""{
                     cell.centerImagV.image = UIImage(named: "placeholder_image")
                 }else{
-                    let url = URL(string: gridImage!)
+                    let urlString = gridImage?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                    let url = URL(string: urlString!)
                     cell.centerImagV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
                 }
             }else{
@@ -1649,7 +1631,8 @@ extension LiveSearchDetailsViewController{
                 cell.topCenterImagV.image = UIImage(named: "placeholder_image")
                 
             }else{
-                let url = URL(string: gridImage!)
+                let urlString = gridImage?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                let url = URL(string: urlString!)
                 cell.topCenterImagV.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
                 
             }

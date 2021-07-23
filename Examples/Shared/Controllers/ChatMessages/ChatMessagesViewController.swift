@@ -194,7 +194,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if isAutoSendMessage == "Pay bill" || isAutoSendMessage == "Pay Bill"{
             isEndOfTask = false //kkk
         }
-        self.botClient.sendMessage(isAutoSendMessage!, options: [:], taskMetaData:[:])
+        self.botClient.sendMessage(isAutoSendMessage!, options: [:], taskMetaData:[:], botInfoCustomData:botCustomData)
         isShowLoginView = false
     }
     func ShowLoginView(){
@@ -264,7 +264,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         navigationController?.setNavigationBarHidden(false, animated: false)
         
         let font:UIFont? = UIFont(name: "Helvetica-Bold", size:17)
-        let attString:NSMutableAttributedString = NSMutableAttributedString(string: "Findly.ai", attributes: [.font:font!]) //headerTitle
+        let attString:NSMutableAttributedString = NSMutableAttributedString(string: "SearchAssist", attributes: [.font:font!]) //headerTitle
         let titleLabel = UILabel()
         titleLabel.textColor = .darkGray
         titleLabel.attributedText = attString
@@ -357,6 +357,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     @objc func customDataButtonAct(_ sender: Any){
         if CustomDataContainerView.isHidden{
+            composeView.resignFirstResponder()
+            customDataView.descriptionTxtV.becomeFirstResponder()
             CustomDataContainerView.isHidden = false
         }else{
             composeView.becomeFirstResponder()
@@ -1117,13 +1119,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     }
                     if isShowLoginView {
                         if isLogin {
-                            self.botClient.sendMessage(text, options: options, taskMetaData: taskMetaData)
+                            self.botClient.sendMessage(text, options: options, taskMetaData: taskMetaData, botInfoCustomData:botCustomData)
                         }else{
                             NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
                             self.ShowLoginView()
                         }
                     }else{
-                        self.botClient.sendMessage(text, options: options, taskMetaData: taskMetaData)
+                        self.botClient.sendMessage(text, options: options, taskMetaData: taskMetaData, botInfoCustomData:botCustomData)
                     }
                      
                  }

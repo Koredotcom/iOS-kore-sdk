@@ -237,7 +237,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         return nil
     }
     
-    open func sendMessage(_ message: String, dictionary: [String: Any]? = nil, options: [String: Any]?, taskMetaData: [String:Any]?) {
+    open func sendMessage(_ message: String, dictionary: [String: Any]? = nil, options: [String: Any]?, taskMetaData: [String:Any]?, botInfoCustomData: [String:Any]? ) {
         guard let connection = connection else {
             NSLog("WebSocket connection not available")
             return
@@ -254,7 +254,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                 parameters["botToken"] = botToken
             }
             dictionary?.forEach { (key, value) in parameters[key] = value }
-            connection.sendMessage(message, parameters: parameters, options: options, taskMetaData: taskMetaData)
+            connection.sendMessage(message, parameters: parameters, options: options, taskMetaData: taskMetaData, botInfoCustomData: botInfoCustomData)
             break
         case .CLOSED:
             break
