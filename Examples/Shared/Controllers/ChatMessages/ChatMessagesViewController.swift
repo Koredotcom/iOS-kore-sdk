@@ -555,6 +555,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         else if (templateType == "dropdown_template") {
             return .dropdown_template
         }
+        else if (templateType == "bankingFeedbackTemplate") {
+            return .bankingFeedbackTemplate
+        }
         return .text
     }
     
@@ -931,6 +934,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.taskMenuContainerHeightConstant.constant = 0
         if (self.composeView.isFirstResponder) {
             _ = self.composeView.resignFirstResponder()
+        }else{
+             UIApplication.shared.sendAction(#selector(self.resignFirstResponder), to:nil, from:nil, for:nil)
         }
     }
     

@@ -60,11 +60,13 @@ public class KREAction: NSObject, Decodable, Encodable {
 //            payload = try? values.decode(String.self, forKey: .payload)
 //        }
         
-        if let valueInteger = try values.decodeIfPresent(Int.self, forKey: .payload) {
-               payload = String(valueInteger)
+        
+        if let valueInteger = try? values.decodeIfPresent(Int.self, forKey: .payload) {
+               payload = String(valueInteger!)
         } else if let valueString = try? values.decodeIfPresent(String.self, forKey: .payload) {
                payload = valueString
         }
+        
         
         type = try? values.decode(String.self, forKey: .type)
         utterance = try? values.decode(String.self, forKey: .utterance)

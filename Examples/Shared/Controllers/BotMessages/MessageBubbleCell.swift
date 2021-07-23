@@ -485,3 +485,16 @@ class DropDownell : MessageBubbleCell {
         }
     }
 }
+
+class BankingFeedBackCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .bankingFeedbackTemplate
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 20
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}

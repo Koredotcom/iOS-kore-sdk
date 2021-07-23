@@ -37,7 +37,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         //nothing to put here
         if(self.maskLayer == nil){
             self.maskLayer = CAShapeLayer()
-           // self.tileBgv.layer.mask = self.maskLayer
+            // self.tileBgv.layer.mask = self.maskLayer
         }
         self.maskLayer.path = self.createBezierPath().cgPath
         self.maskLayer.position = CGPoint(x:0, y:0)
@@ -51,7 +51,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
     
     override func initialize() {
         super.initialize()
-       // UserDefaults.standard.set(false, forKey: "SliderKey")
+        // UserDefaults.standard.set(false, forKey: "SliderKey")
         intializeCardLayout()
         
         self.tileBgv = UIView(frame:.zero)
@@ -69,7 +69,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         } else {
             // Fallback on earlier versions
         }
-
+        
         
         let layout = TagFlowLayout()
         layout.scrollDirection = .vertical
@@ -82,9 +82,9 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         self.collectionView.showsVerticalScrollIndicator = false
         self.collectionView.bounces = false
         self.cardView.addSubview(self.collectionView)
-       
+        
         self.collectionView.register(UINib(nibName: "CustomCollectionViewCell", bundle: nil),
-                                    forCellWithReuseIdentifier: customCellIdentifier)
+                                     forCellWithReuseIdentifier: customCellIdentifier)
         
         let views: [String: UIView] = ["tileBgv": tileBgv, "collectionView": collectionView]
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-5-[collectionView]-0-|", options: [], metrics: nil, views: views))
@@ -116,14 +116,14 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         self.cardView = UIView(frame:.zero)
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
-//        cardView.layer.rasterizationScale =  UIScreen.main.scale
-//        cardView.layer.shadowColor = UIColor(red: 232/255, green: 232/255, blue: 230/255, alpha: 1).cgColor
-//        cardView.layer.shadowOpacity = 1
-//        cardView.layer.shadowOffset =  CGSize(width: 0.0, height: -3.0)
-//        cardView.layer.shadowRadius = 6.0
-//        cardView.layer.shouldRasterize = true
+        //        cardView.layer.rasterizationScale =  UIScreen.main.scale
+        //        cardView.layer.shadowColor = UIColor(red: 232/255, green: 232/255, blue: 230/255, alpha: 1).cgColor
+        //        cardView.layer.shadowOpacity = 1
+        //        cardView.layer.shadowOffset =  CGSize(width: 0.0, height: -3.0)
+        //        cardView.layer.shadowRadius = 6.0
+        //        cardView.layer.shouldRasterize = true
         cardView.backgroundColor =  UIColor.clear
-//        cardView.backgroundColor =  UIColor.white
+        //        cardView.backgroundColor =  UIColor.white
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
@@ -143,15 +143,15 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         }
         
         if (components.count > 0) {
-             let component: KREComponent = components.firstObject as! KREComponent
+            let component: KREComponent = components.firstObject as! KREComponent
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
                 let jsonDecoder = JSONDecoder()
                 guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObject as Any , options: .prettyPrinted),
                     let allItems = try? jsonDecoder.decode(Componentss.self, from: jsonData) else {
-                                                return
-                    }
+                        return
+                }
                 arrayOfElements = allItems.quickReplies ?? []
                 self.titleLbl.text = allItems.text ?? ""
             }
@@ -173,81 +173,81 @@ class QuickReplyWelcomeBubbleView: BubbleView {
     }
     
 }
-    extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
-        //MARK: collection view delegate methods
-        func numberOfSections(in collectionView: UICollectionView) -> Int {
-            return 1
-        }
-        
-        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return arrayOfElements.count
-        }
-        
-        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            // swiftlint:disable force_cast
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! CustomCollectionViewCell
-            cell.backgroundColor = .clear
-            let elements = arrayOfElements[indexPath.row]
-            cell.textLabel.text = elements.title
-            cell.textLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)!
-            cell.textLabel.textAlignment = .center
-            cell.textLabel.textColor = bubbleViewBotChatButtonTextColor
-            cell.layer.borderColor = bubbleViewBotChatButtonTextColor.cgColor
-            cell.backgroundColor = bubbleViewBotChatButtonBgColor
-            cell.layer.borderWidth = 1.0
-            cell.layer.cornerRadius = 15.0
-            return cell
-        }
-        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            //print("self.collectionView.contentSize.height...\(self.collectionView.contentSize.height)")
-            
-            let elements = arrayOfElements[indexPath.row]
-            self.optionsAction(elements.title, elements.payload)
-        }
-        func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath){
-            let  cell  = collectionView.cellForItem(at: indexPath) as! CustomCollectionViewCell
-            //cell.backgroundColor = userColor
-            //cell.textLabel.textColor = .white
-        }
-
-        func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath){
-            let  cell  = collectionView.cellForItem(at: indexPath) as! CustomCollectionViewCell
-            //cell.backgroundColor = .clear
-           // cell.textLabel.textColor = .black
-        }
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            let elements = arrayOfElements[indexPath.row]
-            let text = elements.title
-             let indexPath = IndexPath(row: indexPath.item, section: indexPath.section)
-             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! CustomCollectionViewCell
-            cell.textLabel.text = text
-            cell.layer.cornerRadius = 5.0
-            cell.layer.borderWidth = 1.5
-             return CGSize(width: cell.textLabel.intrinsicContentSize.width + 25, height: 40)
-        }
-        
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-            return UIEdgeInsets(top: 5.0, left: 0.0, bottom: 0.0, right: 0.0)
-        }
-        
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-            return 10.0
-        }
-        
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-            return 10.0
-        }
-        
+extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+    //MARK: collection view delegate methods
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
     }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return arrayOfElements.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // swiftlint:disable force_cast
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! CustomCollectionViewCell
+        cell.backgroundColor = .clear
+        let elements = arrayOfElements[indexPath.row]
+        cell.textLabel.text = elements.title
+        cell.textLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)!
+        cell.textLabel.textAlignment = .center
+        cell.textLabel.textColor = bubbleViewBotChatButtonTextColor
+        cell.layer.borderColor = bubbleViewBotChatButtonTextColor.cgColor
+        cell.backgroundColor = bubbleViewBotChatButtonBgColor
+        cell.layer.borderWidth = 1.0
+        cell.layer.cornerRadius = 15.0
+        return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        //print("self.collectionView.contentSize.height...\(self.collectionView.contentSize.height)")
+        
+        let elements = arrayOfElements[indexPath.row]
+        self.optionsAction(elements.title, elements.payload)
+    }
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath){
+        let  cell  = collectionView.cellForItem(at: indexPath) as! CustomCollectionViewCell
+        //cell.backgroundColor = userColor
+        //cell.textLabel.textColor = .white
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath){
+        let  cell  = collectionView.cellForItem(at: indexPath) as! CustomCollectionViewCell
+        //cell.backgroundColor = .clear
+        // cell.textLabel.textColor = .black
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let elements = arrayOfElements[indexPath.row]
+        let text = elements.title
+        let indexPath = IndexPath(row: indexPath.item, section: indexPath.section)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! CustomCollectionViewCell
+        cell.textLabel.text = text
+        cell.layer.cornerRadius = 5.0
+        cell.layer.borderWidth = 1.5
+        return CGSize(width: cell.textLabel.intrinsicContentSize.width + 25, height: 40)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 5.0, left: 0.0, bottom: 0.0, right: 0.0)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 10.0
+    }
+    
+}
 
 
 extension UIView {
     @available(iOS 11.0, *)
     func roundCorners(_ corners: CACornerMask, radius: CGFloat, borderColor: UIColor, borderWidth: CGFloat) {
-      self.layer.maskedCorners = corners
-      self.layer.cornerRadius = radius
-      self.layer.borderWidth = borderWidth
-      self.layer.borderColor = borderColor.cgColor
+        self.layer.maskedCorners = corners
+        self.layer.cornerRadius = radius
+        self.layer.borderWidth = borderWidth
+        self.layer.borderColor = borderColor.cgColor
     }
-
+    
 }

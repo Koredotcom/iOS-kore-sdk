@@ -87,6 +87,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(FeedbackBubbleCell.self, forCellReuseIdentifier:"FeedbackBubbleCell")
         self.tableView.register(InLineFormCell.self, forCellReuseIdentifier:"InLineFormCell")
         self.tableView.register(DropDownell.self, forCellReuseIdentifier:"DropDownell")
+        self.tableView.register(BankingFeedBackCell.self, forCellReuseIdentifier:"BankingFeedBackCell")
 
 
     }
@@ -200,6 +201,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 break
             case .dropdown_template:
                 cellIdentifier = "DropDownell"
+                break
+            case .bankingFeedbackTemplate:
+                cellIdentifier = "BankingFeedBackCell"
                 break
             }
             
@@ -373,6 +377,13 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             break
         case .dropdown_template:
             //let bubbleView: DropDownBubbleView = cell.bubbleView as! DropDownBubbleView
+            cell.bubbleView.drawBorder = true
+            break
+        case .bankingFeedbackTemplate:
+            let bubbleView: BankingFeedBackBubbleView = cell.bubbleView as! BankingFeedBackBubbleView
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+            }
             cell.bubbleView.drawBorder = true
             break
         }

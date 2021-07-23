@@ -257,8 +257,11 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
                 } else if elements.action?.url != nil {
                     self.linkAction(elements.action?.url)
                 }else{
-                    let payload = elements.action?.payload == "" || elements.action?.payload == nil ? elements.action?.title : elements.action?.payload
-                    self.optionsAction(elements.action?.title, payload)
+                    if elements.action?.payload != nil{
+                        let payload = elements.action?.payload == "" || elements.action?.payload == nil ? elements.action?.title : elements.action?.payload
+                        self.optionsAction(elements.action?.title, payload)
+                    }
+                   
                 }
             }
        // }

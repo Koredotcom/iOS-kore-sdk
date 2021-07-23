@@ -12,6 +12,7 @@
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		1D9FA1702AE04EE1A8F6AF2C /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */; };
 		950429CF25BE9ADA00B7ACFB /* brandingValues.json in Resources */ = {isa = PBXBuildFile; fileRef = 950429CE25BE9ADA00B7ACFB /* brandingValues.json */; };
+		9546FE94269C634200F4FE98 /* BankingFeedBackBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9546FE93269C634200F4FE98 /* BankingFeedBackBubbleView.swift */; };
 		95C49EF3255E40DB008CD1FD /* BrandingSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C49EF1255E40D9008CD1FD /* BrandingSingleton.swift */; };
 		95C49EF4255E40DB008CD1FD /* BrandingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C49EF2255E40DB008CD1FD /* BrandingModel.swift */; };
 		95E0D3DD253ECF7A00FE79B1 /* DropDownBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E0D3DC253ECF7A00FE79B1 /* DropDownBubbleView.swift */; };
@@ -156,6 +157,7 @@
 		5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		950429CE25BE9ADA00B7ACFB /* brandingValues.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = brandingValues.json; sourceTree = "<group>"; };
+		9546FE93269C634200F4FE98 /* BankingFeedBackBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankingFeedBackBubbleView.swift; sourceTree = "<group>"; };
 		95C49EF1255E40D9008CD1FD /* BrandingSingleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrandingSingleton.swift; sourceTree = "<group>"; };
 		95C49EF2255E40DB008CD1FD /* BrandingModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BrandingModel.swift; path = "../New Group/BrandingModel.swift"; sourceTree = "<group>"; };
 		95E0D3DC253ECF7A00FE79B1 /* DropDownBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownBubbleView.swift; sourceTree = "<group>"; };
@@ -374,6 +376,7 @@
 		CD44513A250B84D900879219 /* Feedback */ = {
 			isa = PBXGroup;
 			children = (
+				9546FE93269C634200F4FE98 /* BankingFeedBackBubbleView.swift */,
 				CD445140250B852100879219 /* FeedbackBubbleView.swift */,
 				CD44513D250B852000879219 /* FeedbackSliderViewController.swift */,
 				CD44513C250B852000879219 /* FeedbackSliderViewController.xib */,
@@ -1126,6 +1129,7 @@
 				D1F338CD2201D99A005BE5F1 /* KREComponent+CoreDataClass.swift in Sources */,
 				D1F338D12201D99A005BE5F1 /* AudioController.swift in Sources */,
 				D1F338DE2201D99A005BE5F1 /* KREUtilities.m in Sources */,
+				9546FE94269C634200F4FE98 /* BankingFeedBackBubbleView.swift in Sources */,
 				CDB86A0F24C0127C00D1CCC7 /* TableListData.swift in Sources */,
 				CD445168250B9B3E00879219 /* DropDown.swift in Sources */,
 				D1F338D62201D99A005BE5F1 /* Thread.swift in Sources */,

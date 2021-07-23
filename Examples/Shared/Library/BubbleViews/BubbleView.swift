@@ -128,6 +128,9 @@ class BubbleView: UIView {
         case .dropdown_template:
             bubbleView = DropDownBubbleView()
             break
+        case .bankingFeedbackTemplate:
+            bubbleView = BankingFeedBackBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         
