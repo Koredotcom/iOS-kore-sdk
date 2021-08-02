@@ -73,6 +73,28 @@ class LiveSearchBubbleView: BubbleView {
      let liveSearchDataTemplateType = resultViewSettingItems?.settings?[0].appearance?[3].template?.type ?? "listTemplate1"
      let dataLayOutType = resultViewSettingItems?.settings?[0].appearance?[3].template?.layout?.layoutType ?? "tileWithText"
      let isDataClickable = resultViewSettingItems?.settings?[0].appearance?[3].template?.layout?.isClickable ?? true
+    
+    
+    let fileHeading = resultViewSettingItems?.settings?[0].appearance?[0].template?.mapping?.heading ?? ""
+    let fileDescription = resultViewSettingItems?.settings?[0].appearance?[0].template?.mapping?.descrip ?? ""
+    let fileImg = resultViewSettingItems?.settings?[0].appearance?[0].template?.mapping?.img ?? ""
+    let fileUrl = resultViewSettingItems?.settings?[0].appearance?[0].template?.mapping?.url ?? ""
+    
+    let faqHeading = resultViewSettingItems?.settings?[0].appearance?[1].template?.mapping?.heading ?? ""
+    let faqDescription = resultViewSettingItems?.settings?[0].appearance?[1].template?.mapping?.descrip ?? ""
+    let faqImg = resultViewSettingItems?.settings?[0].appearance?[1].template?.mapping?.img ?? ""
+    let faqUrl = resultViewSettingItems?.settings?[0].appearance?[1].template?.mapping?.url ?? ""
+    
+    let webHeading = resultViewSettingItems?.settings?[0].appearance?[2].template?.mapping?.heading ?? ""
+    let webDescription = resultViewSettingItems?.settings?[0].appearance?[2].template?.mapping?.descrip ?? ""
+    let webImg = resultViewSettingItems?.settings?[0].appearance?[2].template?.mapping?.img ?? ""
+    let webUrl = resultViewSettingItems?.settings?[0].appearance?[2].template?.mapping?.url ?? ""
+    
+    let dataHeading = resultViewSettingItems?.settings?[0].appearance?[3].template?.mapping?.heading ?? ""
+    let dataDescription = resultViewSettingItems?.settings?[0].appearance?[3].template?.mapping?.descrip ?? ""
+    let dataImg = resultViewSettingItems?.settings?[0].appearance?[3].template?.mapping?.img ?? ""
+    let dataUrl = resultViewSettingItems?.settings?[0].appearance?[3].template?.mapping?.url ?? ""
+    var hashMapDic: NSDictionary = [String: Any]() as NSDictionary
      
     
      enum LiveSearchHeaderTypes: String{
@@ -235,7 +257,7 @@ class LiveSearchBubbleView: BubbleView {
                         let allItems = try? jsonDecoder.decode(LiveSearchChatItems.self, from: jsonData) else {
                             return
                     }
-                    
+                    self.hashMapDic = jsonObject as NSDictionary
                     self.headerArray = []
                     headerArrayDisplay = []
                     self.faqsExpandArray = []
@@ -600,6 +622,7 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
         }
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let mappingResults = ((hashMapDic.object(forKey: "template") as AnyObject).object(forKey: "results") as AnyObject)
             let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[indexPath.section])!
             switch headerName {
             case .faq:
@@ -611,9 +634,9 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
                     }
                     tableView.reloadData()
                 }else{
-                    let results = arrayOfFaqResults[indexPath.row]
-                       if results.fileUrl != nil {
-                        self.linkAction(results.fileUrl!)
+                   let url = (((mappingResults.object(forKey: "faq") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(faqUrl)") as? String)
+                    if url != "" {
+                        self.linkAction(url!)
                     }
                 }
                 
@@ -626,9 +649,9 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
                     }
                     tableView.reloadData()
                 }else{
-                    let results = arrayOfPageResults[indexPath.row]
-                        if results.pageUrl != nil {
-                            self.linkAction(results.pageUrl!)
+                    let url = (((mappingResults.object(forKey: "web") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(webUrl)") as? String)
+                    if url != "" {
+                            self.linkAction(url!)
                      }
                 }
                 break
@@ -641,9 +664,9 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
                     }
                     tableView.reloadData()
                 }else{
-                    let results = arrayOfFileResults[indexPath.row]
-                       if results.fileUrl != nil {
-                           self.linkAction(results.fileUrl!)
+                     let url = (((mappingResults.object(forKey: "file") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(fileUrl)") as? String)
+                     if url != "" {
+                           self.linkAction(url!)
                     }
                 }
             case .data:
@@ -655,9 +678,9 @@ extension LiveSearchBubbleView: UITableViewDelegate,UITableViewDataSource{
                     }
                     tableView.reloadData()
                 }else{
-                    let results = arrayOfDataResults[indexPath.row]
-                       if results.dataUrl != nil {
-                           self.linkAction(results.dataUrl!)
+                    let url = (((mappingResults.object(forKey: "data") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(dataUrl)") as? String)
+                    if url != "" {
+                           self.linkAction(url!)
                     }
                 }
             case .task:
@@ -867,21 +890,22 @@ extension LiveSearchBubbleView{
             cell.descriptionLabel.textColor = .dark
             cell.titleLabel?.numberOfLines = 0 //2
             cell.descriptionLabel?.numberOfLines = 0 //2
-            let results = cellResultArray[indexPath.row]
+           // let results = cellResultArray[indexPath.row]
+            let mappingResults = ((hashMapDic.object(forKey: "template") as AnyObject).object(forKey: "results") as AnyObject)
              let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: appearanceType)!
                    switch headerName {
                    case .faq:
-                       cell.titleLabel?.text = results.faqQuestion
-                       cell.descriptionLabel?.text = results.faqAnswer
+                       cell.titleLabel?.text = (((mappingResults.object(forKey: "faq") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(faqHeading)") as? String)
+                       cell.descriptionLabel?.text = (((mappingResults.object(forKey: "faq") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(faqDescription)") as? String)
                    case .web:
-                       cell.titleLabel?.text = results.pageTitle
-                       cell.descriptionLabel?.text = results.pagePreview
+                       cell.titleLabel?.text = (((mappingResults.object(forKey: "web") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(webHeading)") as? String)
+                       cell.descriptionLabel?.text = (((mappingResults.object(forKey: "web") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(webDescription)") as? String)
                    case .file:
-                       cell.titleLabel?.text = results.fileTitle
-                       cell.descriptionLabel?.text = results.filePreview
+                       cell.titleLabel?.text = (((mappingResults.object(forKey: "file") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(fileHeading)") as? String)
+                       cell.descriptionLabel?.text = (((mappingResults.object(forKey: "file") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(fileDescription)") as? String)
                    case .data:
-                       cell.titleLabel?.text = results.category
-                       cell.descriptionLabel?.text = results.product
+                       cell.titleLabel?.text = (((mappingResults.object(forKey: "data") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(dataHeading)") as? String)
+                       cell.descriptionLabel?.text = (((mappingResults.object(forKey: "data") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(dataDescription)") as? String)
                    case .task:
                        break
                    }
@@ -977,26 +1001,27 @@ extension LiveSearchBubbleView{
             cell.descriptionLabel.textColor = .dark
             cell.titleLabel?.numberOfLines = 0 //2
             cell.descriptionLabel?.numberOfLines = 0 //2
-            let results = cellResultArray[indexPath.row]
+            //let results = cellResultArray[indexPath.row]
+            let mappingResults = ((hashMapDic.object(forKey: "template") as AnyObject).object(forKey: "results") as AnyObject)
             var gridImage: String?
             let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: appearanceType)!
             switch headerName {
             case .faq:
-               cell.titleLabel?.text = results.faqQuestion
-                cell.descriptionLabel?.text = results.faqAnswer
-                 gridImage = results.imageUrl
+                 cell.titleLabel?.text = (((mappingResults.object(forKey: "faq") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(faqHeading)") as? String)
+                cell.descriptionLabel?.text = (((mappingResults.object(forKey: "faq") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(faqDescription)") as? String)
+                 gridImage = (((mappingResults.object(forKey: "faq") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(faqImg)") as? String)
             case .web:
-                cell.titleLabel?.text = results.pageTitle
-                cell.descriptionLabel?.text = results.pagePreview
-                gridImage = results.pageImageUrl
+                cell.titleLabel?.text = (((mappingResults.object(forKey: "web") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(webHeading)") as? String)
+                cell.descriptionLabel?.text = (((mappingResults.object(forKey: "web") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(webDescription)") as? String)
+                gridImage = (((mappingResults.object(forKey: "web") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(webImg)") as? String)
             case .file:
-                cell.titleLabel?.text = results.fileTitle
-                cell.descriptionLabel?.text = results.filePreview
-                gridImage = results.fileimageUrl
+                cell.titleLabel?.text = (((mappingResults.object(forKey: "file") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(fileHeading)") as? String)
+                cell.descriptionLabel?.text = (((mappingResults.object(forKey: "file") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(fileDescription)") as? String)
+                gridImage = (((mappingResults.object(forKey: "file") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(fileImg)") as? String)
             case .data:
-                cell.titleLabel?.text = results.category
-                cell.descriptionLabel?.text = results.product
-                gridImage = results.dataImageUrl
+                cell.titleLabel?.text = (((mappingResults.object(forKey: "data") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(dataHeading)") as? String)
+                cell.descriptionLabel?.text = (((mappingResults.object(forKey: "data") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(dataDescription)") as? String)
+                gridImage = (((mappingResults.object(forKey: "data") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(dataImg)") as? String)
             case .task:
                 break
             }
@@ -1110,26 +1135,27 @@ extension LiveSearchBubbleView{
             cell.descriptionLabel.textColor = .dark
             cell.titleLabel?.numberOfLines = 0 //2
             cell.descriptionLabel?.numberOfLines = 0 //2
-            let results = cellResultArray[indexPath.row]
+            //let results = cellResultArray[indexPath.row]
+            let mappingResults = ((hashMapDic.object(forKey: "template") as AnyObject).object(forKey: "results") as AnyObject)
             var gridImage: String?
             let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: appearanceType)!
             switch headerName {
             case .faq:
-               cell.titleLabel?.text = results.faqQuestion
-               cell.descriptionLabel?.text = results.faqAnswer
-               gridImage = results.imageUrl
+                cell.titleLabel?.text = (((mappingResults.object(forKey: "faq") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(faqHeading)") as? String)
+                cell.descriptionLabel?.text = (((mappingResults.object(forKey: "faq") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(faqDescription)") as? String)
+               gridImage = (((mappingResults.object(forKey: "faq") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(faqImg)") as? String)
             case .web:
-                cell.titleLabel?.text = results.pageTitle
-                cell.descriptionLabel?.text = results.pagePreview
-                gridImage = results.pageImageUrl
+                cell.titleLabel?.text = (((mappingResults.object(forKey: "web") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(webHeading)") as? String)
+                cell.descriptionLabel?.text = (((mappingResults.object(forKey: "web") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(webDescription)") as? String)
+                gridImage = (((mappingResults.object(forKey: "web") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(webImg)") as? String)
             case .file:
-                cell.titleLabel?.text = results.fileTitle
-                cell.descriptionLabel?.text = results.filePreview
-                gridImage = results.fileimageUrl
+                cell.titleLabel?.text = (((mappingResults.object(forKey: "file") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(fileHeading)") as? String)
+                cell.descriptionLabel?.text = (((mappingResults.object(forKey: "file") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(fileDescription)") as? String)
+                gridImage = (((mappingResults.object(forKey: "file") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(fileImg)") as? String)
             case .data:
-               cell.titleLabel?.text = results.category
-               cell.descriptionLabel?.text = results.product
-               gridImage = results.dataImageUrl
+               cell.titleLabel?.text = (((mappingResults.object(forKey: "data") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(dataHeading)") as? String)
+               cell.descriptionLabel?.text = (((mappingResults.object(forKey: "data") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(dataDescription)") as? String)
+               gridImage = (((mappingResults.object(forKey: "data") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(dataImg)") as? String)
             case .task:
                 break
             }
@@ -1257,20 +1283,20 @@ extension LiveSearchBubbleView{
             cell.backgroundColor = UIColor.clear
             cell.selectionStyle = .none
             cell.titleLabel.textColor = .black
-            
             cell.titleLabel?.numberOfLines = 0 //2
             
-            let results = cellResultArray[indexPath.row]
+            //let results = cellResultArray[indexPath.row]
+            let mappingResults = ((hashMapDic.object(forKey: "template") as AnyObject).object(forKey: "results") as AnyObject)
             let headerName:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: appearanceType)!
             switch headerName {
             case .faq:
-               cell.titleLabel?.text = results.faqQuestion
+                cell.titleLabel?.text = (((mappingResults.object(forKey: "faq") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(faqHeading)") as? String)
             case .web:
-                cell.titleLabel?.text = results.pageTitle
+                cell.titleLabel?.text = (((mappingResults.object(forKey: "web") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(webHeading)") as? String)
             case .file:
-               cell.titleLabel?.text = results.fileTitle
+               cell.titleLabel?.text = (((mappingResults.object(forKey: "file") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(fileHeading)") as? String)
             case .data:
-               cell.titleLabel?.text = results.category
+               cell.titleLabel?.text = (((mappingResults.object(forKey: "data") as AnyObject).object(at: indexPath.row) as AnyObject).object(forKey: "\(dataHeading)") as? String)
             case .task:
                 break
             }

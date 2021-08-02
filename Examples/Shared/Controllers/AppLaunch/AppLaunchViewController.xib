@@ -24,13 +24,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="17E-ZR-uVC" userLabel="Chat with Bot">
-                    <rect key="frame" x="10" y="597" width="115" height="50"/>
+                    <rect key="frame" x="10" y="597" width="345" height="50"/>
                     <color key="backgroundColor" red="0.23137254901960785" green="0.27843137254901962" blue="0.34509803921568627" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="EP5-2O-snM"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="13"/>
-                    <state key="normal" title="FUTURE BANK">
+                    <state key="normal" backgroundImage="buttonWithText">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <userDefinedRuntimeAttributes>
@@ -43,10 +43,11 @@
                     </connections>
                 </button>
                 <button opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AmI-7C-5oA" userLabel="Chat with Bot">
-                    <rect key="frame" x="130" y="597" width="115" height="50"/>
+                    <rect key="frame" x="360" y="597" width="0.0" height="50"/>
                     <color key="backgroundColor" red="0.23137254900000001" green="0.2784313725" blue="0.34509803919999998" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="Z5N-BK-5c6"/>
+                        <constraint firstAttribute="width" id="pAK-EC-3Bc"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="13"/>
                     <state key="normal" title="CVS">
@@ -80,9 +81,10 @@
                     </connections>
                 </textField>
                 <button opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="att-nz-zA6" userLabel="Chat with Bot">
-                    <rect key="frame" x="250" y="597" width="115" height="50"/>
+                    <rect key="frame" x="365" y="597" width="0.0" height="50"/>
                     <color key="backgroundColor" red="0.23137254900000001" green="0.2784313725" blue="0.34509803919999998" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
+                        <constraint firstAttribute="width" id="4iH-Nc-SbB"/>
                         <constraint firstAttribute="height" constant="50" id="BeJ-VV-exG"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="13"/>
@@ -108,10 +110,8 @@
                 <constraint firstAttribute="bottom" secondItem="17E-ZR-uVC" secondAttribute="bottom" constant="20" id="EZF-i9-8Bj"/>
                 <constraint firstItem="AmI-7C-5oA" firstAttribute="leading" secondItem="17E-ZR-uVC" secondAttribute="trailing" constant="5" id="HO4-Ix-Hr2"/>
                 <constraint firstItem="6hj-Om-n0n" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="HlX-35-ydR"/>
-                <constraint firstItem="AmI-7C-5oA" firstAttribute="width" secondItem="17E-ZR-uVC" secondAttribute="width" id="I8x-B4-RHM"/>
                 <constraint firstItem="att-nz-zA6" firstAttribute="bottom" secondItem="AmI-7C-5oA" secondAttribute="bottom" id="IFp-or-PCZ"/>
                 <constraint firstAttribute="trailing" secondItem="att-nz-zA6" secondAttribute="trailing" constant="10" id="Oz6-XR-O5N"/>
-                <constraint firstItem="att-nz-zA6" firstAttribute="width" secondItem="17E-ZR-uVC" secondAttribute="width" id="Y5u-0G-Iyr"/>
                 <constraint firstItem="att-nz-zA6" firstAttribute="leading" secondItem="AmI-7C-5oA" secondAttribute="trailing" constant="5" id="YPZ-UU-6Jk"/>
                 <constraint firstItem="YsG-dv-o8t" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="a3W-BH-RVl"/>
                 <constraint firstItem="17E-ZR-uVC" firstAttribute="top" secondItem="YsG-dv-o8t" secondAttribute="bottom" constant="15" id="chd-aw-9G7"/>
@@ -122,6 +122,7 @@
         </view>
     </objects>
     <resources>
+        <image name="buttonWithText" width="335" height="50"/>
         <image name="kore_logo_mask" width="116" height="116"/>
     </resources>
 </document>
