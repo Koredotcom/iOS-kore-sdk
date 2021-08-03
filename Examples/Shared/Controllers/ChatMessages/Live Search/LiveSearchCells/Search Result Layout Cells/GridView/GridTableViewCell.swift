@@ -14,7 +14,29 @@ class GridTableViewCell: UITableViewCell {
     var arr = [TemplateResultElements]()
     var appearanceType:String?
     var layOutType:String?
-     var templateType:String?
+    var templateType:String?
+    var isSearchScreen:String?
+    var hashMapArray: Array<Any> = Array()
+    
+    var fileHeading = resultViewSettingItems?.settings?[2].appearance?[0].template?.mapping?.heading ?? ""
+    var fileDescription = resultViewSettingItems?.settings?[2].appearance?[0].template?.mapping?.descrip ?? ""
+    var fileImg = resultViewSettingItems?.settings?[2].appearance?[0].template?.mapping?.img ?? ""
+    var fileUrl = resultViewSettingItems?.settings?[2].appearance?[0].template?.mapping?.url ?? ""
+    
+    var faqHeading = resultViewSettingItems?.settings?[2].appearance?[1].template?.mapping?.heading ?? ""
+    var faqDescription = resultViewSettingItems?.settings?[2].appearance?[1].template?.mapping?.descrip ?? ""
+    var faqImg = resultViewSettingItems?.settings?[2].appearance?[1].template?.mapping?.img ?? ""
+    var faqUrl = resultViewSettingItems?.settings?[2].appearance?[1].template?.mapping?.url ?? ""
+    
+    var webHeading = resultViewSettingItems?.settings?[2].appearance?[2].template?.mapping?.heading ?? ""
+    var webDescription = resultViewSettingItems?.settings?[2].appearance?[2].template?.mapping?.descrip ?? ""
+    var webImg = resultViewSettingItems?.settings?[2].appearance?[2].template?.mapping?.img ?? ""
+    var webUrl = resultViewSettingItems?.settings?[2].appearance?[2].template?.mapping?.url ?? ""
+    
+    var dataHeading = resultViewSettingItems?.settings?[2].appearance?[3].template?.mapping?.heading ?? ""
+    var dataDescription = resultViewSettingItems?.settings?[2].appearance?[3].template?.mapping?.descrip ?? ""
+    var dataImg = resultViewSettingItems?.settings?[2].appearance?[3].template?.mapping?.img ?? ""
+    var dataUrl = resultViewSettingItems?.settings?[2].appearance?[3].template?.mapping?.url ?? ""
     
     enum LiveSearchHeaderTypes: String{
            case faq = "FAQS"
@@ -40,13 +62,21 @@ class GridTableViewCell: UITableViewCell {
         self.collectionView.layoutIfNeeded()
     }
     
+    func configureNew(with arr: [TemplateResultElements], appearanceType: String, layOutType:String, templateType:String, hashMapArray: NSArray, isSearchScreen: String) {
+        self.arr = arr
+        self.appearanceType = appearanceType
+        self.layOutType = layOutType
+        self.templateType = templateType
+        self.hashMapArray = hashMapArray as! Array<Any>
+        self.isSearchScreen = isSearchScreen
+        self.collectionView.reloadData()
+        self.collectionView.layoutIfNeeded()
+    }
    
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
-        
         collectionView.register(UINib.init(nibName: "GridCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "GridCollectionViewCell")
     }
 
@@ -75,26 +105,91 @@ extension GridTableViewCell: UICollectionViewDataSource, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GridCollectionViewCell", for: indexPath) as! GridCollectionViewCell
         cell.backgroundColor = .white
-        let results = self.arr[indexPath.row]
-        var gridImage: String? 
+        
+        if isSearchScreen == "liveSearch"{
+             fileHeading = resultViewSettingItems?.settings?[2].appearance?[0].template?.mapping?.heading ?? ""
+             fileDescription = resultViewSettingItems?.settings?[2].appearance?[0].template?.mapping?.descrip ?? ""
+             fileImg = resultViewSettingItems?.settings?[2].appearance?[0].template?.mapping?.img ?? ""
+             fileUrl = resultViewSettingItems?.settings?[2].appearance?[0].template?.mapping?.url ?? ""
+            
+             faqHeading = resultViewSettingItems?.settings?[2].appearance?[1].template?.mapping?.heading ?? ""
+             faqDescription = resultViewSettingItems?.settings?[2].appearance?[1].template?.mapping?.descrip ?? ""
+             faqImg = resultViewSettingItems?.settings?[2].appearance?[1].template?.mapping?.img ?? ""
+             faqUrl = resultViewSettingItems?.settings?[2].appearance?[1].template?.mapping?.url ?? ""
+            
+             webHeading = resultViewSettingItems?.settings?[2].appearance?[2].template?.mapping?.heading ?? ""
+             webDescription = resultViewSettingItems?.settings?[2].appearance?[2].template?.mapping?.descrip ?? ""
+             webImg = resultViewSettingItems?.settings?[2].appearance?[2].template?.mapping?.img ?? ""
+             webUrl = resultViewSettingItems?.settings?[2].appearance?[2].template?.mapping?.url ?? ""
+            
+             dataHeading = resultViewSettingItems?.settings?[2].appearance?[3].template?.mapping?.heading ?? ""
+             dataDescription = resultViewSettingItems?.settings?[2].appearance?[3].template?.mapping?.descrip ?? ""
+             dataImg = resultViewSettingItems?.settings?[2].appearance?[3].template?.mapping?.img ?? ""
+             dataUrl = resultViewSettingItems?.settings?[2].appearance?[3].template?.mapping?.url ?? ""
+        }else if isSearchScreen == "Search"{
+             fileHeading = resultViewSettingItems?.settings?[0].appearance?[0].template?.mapping?.heading ?? ""
+             fileDescription = resultViewSettingItems?.settings?[0].appearance?[0].template?.mapping?.descrip ?? ""
+             fileImg = resultViewSettingItems?.settings?[0].appearance?[0].template?.mapping?.img ?? ""
+             fileUrl = resultViewSettingItems?.settings?[0].appearance?[0].template?.mapping?.url ?? ""
+            
+             faqHeading = resultViewSettingItems?.settings?[0].appearance?[1].template?.mapping?.heading ?? ""
+             faqDescription = resultViewSettingItems?.settings?[0].appearance?[1].template?.mapping?.descrip ?? ""
+             faqImg = resultViewSettingItems?.settings?[0].appearance?[1].template?.mapping?.img ?? ""
+             faqUrl = resultViewSettingItems?.settings?[0].appearance?[1].template?.mapping?.url ?? ""
+            
+             webHeading = resultViewSettingItems?.settings?[0].appearance?[2].template?.mapping?.heading ?? ""
+             webDescription = resultViewSettingItems?.settings?[0].appearance?[2].template?.mapping?.descrip ?? ""
+             webImg = resultViewSettingItems?.settings?[0].appearance?[2].template?.mapping?.img ?? ""
+             webUrl = resultViewSettingItems?.settings?[0].appearance?[2].template?.mapping?.url ?? ""
+            
+             dataHeading = resultViewSettingItems?.settings?[0].appearance?[3].template?.mapping?.heading ?? ""
+             dataDescription = resultViewSettingItems?.settings?[0].appearance?[3].template?.mapping?.descrip ?? ""
+             dataImg = resultViewSettingItems?.settings?[0].appearance?[3].template?.mapping?.img ?? ""
+             dataUrl = resultViewSettingItems?.settings?[0].appearance?[3].template?.mapping?.url ?? ""
+            
+        }else if isSearchScreen == "fullSearch"{
+            fileHeading = resultViewSettingItems?.settings?[1].appearance?[0].template?.mapping?.heading ?? ""
+             fileDescription = resultViewSettingItems?.settings?[1].appearance?[0].template?.mapping?.descrip ?? ""
+             fileImg = resultViewSettingItems?.settings?[1].appearance?[0].template?.mapping?.img ?? ""
+             fileUrl = resultViewSettingItems?.settings?[1].appearance?[0].template?.mapping?.url ?? ""
+            
+             faqHeading = resultViewSettingItems?.settings?[1].appearance?[1].template?.mapping?.heading ?? ""
+             faqDescription = resultViewSettingItems?.settings?[1].appearance?[1].template?.mapping?.descrip ?? ""
+             faqImg = resultViewSettingItems?.settings?[1].appearance?[1].template?.mapping?.img ?? ""
+             faqUrl = resultViewSettingItems?.settings?[1].appearance?[1].template?.mapping?.url ?? ""
+            
+             webHeading = resultViewSettingItems?.settings?[1].appearance?[2].template?.mapping?.heading ?? ""
+             webDescription = resultViewSettingItems?.settings?[1].appearance?[2].template?.mapping?.descrip ?? ""
+             webImg = resultViewSettingItems?.settings?[1].appearance?[2].template?.mapping?.img ?? ""
+             webUrl = resultViewSettingItems?.settings?[1].appearance?[2].template?.mapping?.url ?? ""
+            
+             dataHeading = resultViewSettingItems?.settings?[1].appearance?[3].template?.mapping?.heading ?? ""
+             dataDescription = resultViewSettingItems?.settings?[1].appearance?[3].template?.mapping?.descrip ?? ""
+             dataImg = resultViewSettingItems?.settings?[1].appearance?[3].template?.mapping?.img ?? ""
+             dataUrl = resultViewSettingItems?.settings?[1].appearance?[3].template?.mapping?.url ?? ""
+        }
+        //hashMapArray
+        let mappingResults = hashMapArray[indexPath.row]
+        //let results = self.arr[indexPath.row]
+        var gridImage: String?
         let appearancetype:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: appearanceType!)!
         switch appearancetype {
         case .faq:
-           cell.titleLbl?.text = results.faqQuestion
-            cell.descriptionLbl?.text = results.faqAnswer
-             gridImage = results.imageUrl
+           cell.titleLbl?.text = ((mappingResults as AnyObject).object(forKey: "\(faqHeading)") as? String)
+            cell.descriptionLbl?.text = ((mappingResults as AnyObject).object(forKey: "\(faqDescription)") as? String)
+            gridImage = ((mappingResults as AnyObject).object(forKey: "\(faqImg)") as? String)
         case .web:
-            cell.titleLbl?.text = results.pageTitle
-            cell.descriptionLbl?.text = results.pagePreview
-            gridImage = results.pageImageUrl
+            cell.titleLbl?.text = ((mappingResults as AnyObject).object(forKey: "\(webHeading)") as? String)
+            cell.descriptionLbl?.text = ((mappingResults as AnyObject).object(forKey: "\(webDescription)") as? String)
+            gridImage = ((mappingResults as AnyObject).object(forKey: "\(webImg)") as? String)
         case .file:
-            cell.titleLbl?.text = results.fileTitle
-            cell.descriptionLbl?.text = results.filePreview
-            gridImage = results.fileimageUrl
+           cell.titleLbl?.text = ((mappingResults as AnyObject).object(forKey: "\(fileHeading)") as? String)
+            cell.descriptionLbl?.text = ((mappingResults as AnyObject).object(forKey: "\(fileDescription)") as? String)
+            gridImage = ((mappingResults as AnyObject).object(forKey: "\(fileImg)") as? String)
         case .data:
-            cell.titleLbl?.text = results.category
-            cell.descriptionLbl?.text = results.product
-            gridImage = results.dataImageUrl
+            cell.titleLbl?.text = ((mappingResults as AnyObject).object(forKey: "\(dataHeading)") as? String)
+            cell.descriptionLbl?.text = ((mappingResults as AnyObject).object(forKey: "\(dataDescription)") as? String)
+            gridImage = ((mappingResults as AnyObject).object(forKey: "\(dataImg)") as? String)
         case .task:
             break
         }
@@ -156,24 +251,39 @@ extension GridTableViewCell: UICollectionViewDataSource, UICollectionViewDelegat
         if templateType ==  "carousel"{
             return CGSize(width: ((collectionView.frame.size.width-3*10)/1) - 40, height: 150) //240
         }else{
-            let results = self.arr[indexPath.row]
+            let mappingResults = hashMapArray[indexPath.row]
+            //let results = self.arr[indexPath.row]
                 var titleTextHeight:CGFloat!
                 var descTextHeight:CGFloat!
+                var headingTxt:String?
+                var descriptionTxt:String?
             
                 let appearancetype:LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: appearanceType!)!
                 switch appearancetype {
                 case .faq:
-                  titleTextHeight = requiredHeight(text: results.faqQuestion ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
-                   descTextHeight = requiredHeight(text: results.faqAnswer ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
+                headingTxt = ((mappingResults as AnyObject).object(forKey: "\(faqHeading)") as? String)
+                descriptionTxt = ((mappingResults as AnyObject).object(forKey: "\(faqDescription)") as? String)
+                
+                titleTextHeight = requiredHeight(text: headingTxt ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
+                descTextHeight = requiredHeight(text: descriptionTxt ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
                 case .web:
-                    titleTextHeight = requiredHeight(text: results.pageTitle ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
-                    descTextHeight = requiredHeight(text: results.pagePreview ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
+                    headingTxt = ((mappingResults as AnyObject).object(forKey: "\(webHeading)") as? String)
+                    descriptionTxt = ((mappingResults as AnyObject).object(forKey: "\(webDescription)") as? String)
+                    
+                    titleTextHeight = requiredHeight(text: headingTxt ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
+                    descTextHeight = requiredHeight(text: descriptionTxt ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
                 case .file:
-                    titleTextHeight = requiredHeight(text: results.fileTitle ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
-                    descTextHeight = requiredHeight(text: results.filePreview ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
+                    headingTxt = ((mappingResults as AnyObject).object(forKey: "\(fileHeading)") as? String)
+                    descriptionTxt = ((mappingResults as AnyObject).object(forKey: "\(fileDescription)") as? String)
+                    
+                    titleTextHeight = requiredHeight(text: headingTxt ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
+                    descTextHeight = requiredHeight(text: descriptionTxt ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
                 case .data:
-                    titleTextHeight = requiredHeight(text: results.category ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
-                    descTextHeight = requiredHeight(text: results.product ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
+                    headingTxt = ((mappingResults as AnyObject).object(forKey: "\(dataHeading)") as? String)
+                    descriptionTxt = ((mappingResults as AnyObject).object(forKey: "\(dataDescription)") as? String)
+                    
+                    titleTextHeight = requiredHeight(text: headingTxt ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Bold",  fontSize: 16.0)
+                    descTextHeight = requiredHeight(text: descriptionTxt ?? "", cellWidth: (collectionView.frame.size.width-3*10)/2, fontName: "HelveticaNeue-Medium",  fontSize: 14.0)
                 case .task:
                     break
                 }
@@ -192,7 +302,6 @@ extension GridTableViewCell: UICollectionViewDataSource, UICollectionViewDelegat
                   return CGSize(width: (collectionView.frame.size.width-3*10)/2, height: titleTextHeight+35)
                 }
         }
-        
         
     }
     

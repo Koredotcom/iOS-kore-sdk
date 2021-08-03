@@ -152,11 +152,11 @@ class AppLaunchViewController: UIViewController {
 //            SDKConfiguration.botConfig.searchIndexID =  "sidx-8fb06646-1d82-56bb-9901-e27fc84611e0"
 //            SDKConfiguration.botConfig.chatBotName = "May 20" //dev
             
-                        SDKConfiguration.botConfig.clientId = "cs-27605f21-7313-5141-8c34-7be052f8c451"
-                        SDKConfiguration.botConfig.clientSecret = "rsAQtkCD9RJ4eSyQWJMjAsBrb+30ISBQX+EeCuX45o0="
-                        SDKConfiguration.botConfig.botId =  "st-4e7e2c60-8dd8-5df6-abce-24c709613fb8"
-                        SDKConfiguration.botConfig.searchIndexID =  "sidx-fa7d0b2c-3965-52bb-918a-ed84b8d96c31"
-                        SDKConfiguration.botConfig.chatBotName = "App_maneesh" //dev
+//                        SDKConfiguration.botConfig.clientId = "cs-27605f21-7313-5141-8c34-7be052f8c451"
+//                        SDKConfiguration.botConfig.clientSecret = "rsAQtkCD9RJ4eSyQWJMjAsBrb+30ISBQX+EeCuX45o0="
+//                        SDKConfiguration.botConfig.botId =  "st-4e7e2c60-8dd8-5df6-abce-24c709613fb8"
+//                        SDKConfiguration.botConfig.searchIndexID =  "sidx-fa7d0b2c-3965-52bb-918a-ed84b8d96c31"
+//                        SDKConfiguration.botConfig.chatBotName = "App_maneesh" //dev
             
            // //findlySidx = "sidx-24471eaf-88c7-5789-9cfc-4a17e7e94a9e"
             
@@ -166,11 +166,11 @@ class AppLaunchViewController: UIViewController {
 //            SDKConfiguration.botConfig.searchIndexID =  "sidx-d9e0b3b3-4e64-58ec-9338-9cb98d1a977b"
 //            SDKConfiguration.botConfig.chatBotName = "july8" //qa
             
-//            SDKConfiguration.botConfig.clientId = "cs-e24fbff3-d40a-5787-91a9-67267fb0b4af"
-//            SDKConfiguration.botConfig.clientSecret = "++IOWwGALuxbkCbYwiyljE0GF+vTNcWsnQCS+aFI5Mg="
-//            SDKConfiguration.botConfig.botId =  "st-a9ce27ac-3454-55ad-9c82-e50e31c07009"
-//            SDKConfiguration.botConfig.searchIndexID =  "sidx-28c300e9-13d9-5d99-ae48-392767bb1ee3"
-//            SDKConfiguration.botConfig.chatBotName = "Mobile" //qa
+            SDKConfiguration.botConfig.clientId = "cs-e24fbff3-d40a-5787-91a9-67267fb0b4af"
+            SDKConfiguration.botConfig.clientSecret = "++IOWwGALuxbkCbYwiyljE0GF+vTNcWsnQCS+aFI5Mg="
+            SDKConfiguration.botConfig.botId =  "st-a9ce27ac-3454-55ad-9c82-e50e31c07009"
+            SDKConfiguration.botConfig.searchIndexID =  "sidx-28c300e9-13d9-5d99-ae48-392767bb1ee3"
+            SDKConfiguration.botConfig.chatBotName = "Mobile" //qa
             
         }else if sender.tag == 2{
             self.chatButton.isUserInteractionEnabled = true

@@ -107,7 +107,7 @@ class LiveSearchView: UIView {
     let dataImg = resultViewSettingItems?.settings?[2].appearance?[3].template?.mapping?.img ?? ""
     let dataUrl = resultViewSettingItems?.settings?[2].appearance?[3].template?.mapping?.url ?? ""
     var hashMapDic: NSDictionary = [String: Any]() as NSDictionary
-   
+    var isSearchType = "liveSearch"
     enum LiveSearchHeaderTypes: String{
         case faq = "FAQS"
         case web = "WEB"
@@ -244,7 +244,7 @@ class LiveSearchView: UIView {
             autoSearchTableView.reloadData()
             autoSearchView.isHidden = true
              
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
                 self.headerArray = []
                 self.callingPopularSearchApi()
                 self.callingRecentSearchApi()
@@ -586,12 +586,15 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 cell.closeButtonWidthConstraint.constant = CGFloat(width)
                 return cell
             }else{
+                let mappingResults = ((hashMapDic.object(forKey: "template") as AnyObject).object(forKey: "results") as AnyObject)
                 let headerName: LiveSearchHeaderTypes = LiveSearchHeaderTypes(rawValue: headerArray[indexPath.section])!
                 switch headerName {
                 case .faq:
                     if liveSearchFAQsTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFAQsTemplateType == LiveSearchTypes.carousel.rawValue{
                         let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                        cell.configure(with: arrayOfFaqResults, appearanceType: headerName.rawValue, layOutType: faqLayOutType, templateType:liveSearchFAQsTemplateType)
+                        //cell.configure(with: arrayOfFaqResults, appearanceType: headerName.rawValue, layOutType: faqLayOutType, templateType:liveSearchFAQsTemplateType)
+                        let hashMapArray = (mappingResults.object(forKey: "faq") as AnyObject)
+                        cell.configureNew(with: arrayOfFaqResults, appearanceType: headerName.rawValue, layOutType: faqLayOutType, templateType:liveSearchFAQsTemplateType, hashMapArray: hashMapArray as! NSArray, isSearchScreen: isSearchType)
                         return cell
                     }else{
                         let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: faqLayOutType)!
@@ -617,7 +620,9 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 case .web:
                     if liveSearchPageTemplateType == LiveSearchTypes.grid.rawValue || liveSearchPageTemplateType == LiveSearchTypes.carousel.rawValue{
                         let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                        cell.configure(with: arrayOfPageResults, appearanceType: headerName.rawValue, layOutType: pageLayOutType, templateType:liveSearchPageTemplateType)
+//                        cell.configure(with: arrayOfPageResults, appearanceType: headerName.rawValue, layOutType: pageLayOutType, templateType:liveSearchPageTemplateType)
+                        let hashMapArray = (mappingResults.object(forKey: "web") as AnyObject)
+                        cell.configureNew(with: arrayOfPageResults, appearanceType: headerName.rawValue, layOutType: pageLayOutType, templateType:liveSearchPageTemplateType, hashMapArray: hashMapArray as! NSArray, isSearchScreen: isSearchType)
                         return cell
                     }else{
                         let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: pageLayOutType)!
@@ -645,7 +650,9 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 case .file:
                     if liveSearchFileTemplateType == LiveSearchTypes.grid.rawValue || liveSearchFileTemplateType == LiveSearchTypes.carousel.rawValue{
                         let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                        cell.configure(with: arrayOfFileResults, appearanceType: headerName.rawValue, layOutType: fileLayOutType, templateType:liveSearchFileTemplateType)
+                        //cell.configure(with: arrayOfFileResults, appearanceType: headerName.rawValue, layOutType: fileLayOutType, templateType:liveSearchFileTemplateType)
+                        let hashMapArray = (mappingResults.object(forKey: "file") as AnyObject)
+                        cell.configureNew(with: arrayOfFileResults, appearanceType: headerName.rawValue, layOutType: fileLayOutType, templateType:liveSearchFileTemplateType, hashMapArray: hashMapArray as! NSArray, isSearchScreen: isSearchType)
                         return cell
                     }else{
                         let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue: fileLayOutType)!
@@ -673,7 +680,9 @@ extension LiveSearchView: UITableViewDelegate,UITableViewDataSource{
                 case .data:
                     if liveSearchDataTemplateType == LiveSearchTypes.grid.rawValue || liveSearchDataTemplateType == LiveSearchTypes.carousel.rawValue{
                         let cell = tableView.dequeueReusableCell(withIdentifier: GridTableViewCellIdentifier, for: indexPath) as! GridTableViewCell
-                        cell.configure(with: arrayOfDataResults, appearanceType: headerName.rawValue, layOutType: dataLayOutType, templateType:liveSearchDataTemplateType)
+                        //cell.configure(with: arrayOfDataResults, appearanceType: headerName.rawValue, layOutType: dataLayOutType, templateType:liveSearchDataTemplateType)
+                        let hashMapArray = (mappingResults.object(forKey: "data") as AnyObject)
+                        cell.configureNew(with: arrayOfDataResults, appearanceType: headerName.rawValue, layOutType: dataLayOutType, templateType:liveSearchDataTemplateType, hashMapArray: hashMapArray as! NSArray, isSearchScreen: isSearchType)
                         return cell
                     }else{
                         let layOutType :LiveSearchLayoutTypes = LiveSearchLayoutTypes(rawValue:  dataLayOutType)!
