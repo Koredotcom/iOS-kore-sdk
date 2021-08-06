@@ -69,7 +69,7 @@ class CalenderBubbleView: BubbleView {
         }
         
         let views: [String: UIView] = ["tileBgv": tileBgv]
-               self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-5-|", options: [], metrics: nil, views: views))
+               self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-5-|", options: [], metrics: nil, views: views))
                self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
               
         
@@ -136,7 +136,7 @@ class CalenderBubbleView: BubbleView {
         if textSize.height < self.titleLbl.font.pointSize {
             textSize.height = self.titleLbl.font.pointSize
         }
-        return CGSize(width: 0.0, height: textSize.height+40)
+        return CGSize(width: 0.0, height: textSize.height+15)
     }
     
     @objc fileprivate func SelectAllButtonAction(_ sender: AnyObject!) {

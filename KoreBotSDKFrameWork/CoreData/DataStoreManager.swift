@@ -235,7 +235,7 @@ class DataStoreManager: NSObject {
     public func createNewMessageIn(thread: KREThread!, message: Message, context: NSManagedObjectContext) {
         let request: NSFetchRequest<KREMessage> = KREMessage.fetchRequest()
         request.predicate = NSPredicate(format: "messageId == %@", message.messageId ?? "")
-        
+        print("messageId= \(message.messageId)")
         var nMessage: KREMessage?
         if let messages = try? context.fetch(request), messages.count > 0 {
             nMessage = messages.first

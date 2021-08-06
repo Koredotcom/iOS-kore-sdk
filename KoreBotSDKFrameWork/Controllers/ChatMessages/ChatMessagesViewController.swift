@@ -65,7 +65,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     let widgetFooterColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetFooterColor) ?? "#FFFFFF")
     let widgetBodyColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetBodyColor) ?? "#FFFFFF")
     let widgetDividerColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetDividerColor)!)
-    
+    var offSet = 0
     
     
     @IBOutlet weak var backgroungImageView: UIImageView!
@@ -1272,15 +1272,17 @@ extension ChatMessagesViewController {
         guard historyRequestInProgress == false else {
             return
         }
-        
+        self.botMessagesView.spinner.startAnimating()
         botClient.getHistory(offset: offset, success: { [weak self] (responseObj) in
             if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
                 self?.insertOrUpdateHistoryMessages(messages)
+                self?.botMessagesView.spinner.stopAnimating()
             }
             self?.historyRequestInProgress = false
             }, failure: { [weak self] (error) in
                 self?.historyRequestInProgress = false
                 print("Unable to fetch messges \(error?.localizedDescription ?? "")")
+                self?.botMessagesView.spinner.stopAnimating()
         })
     }
     
@@ -1386,8 +1388,17 @@ extension ChatMessagesViewController {
         dataStoreManager.getMessagesCount(completion: { [weak self] (count) in
             if count == 0 {
                 self?.getMessages(offset: 0)
+            }else{
+                self?.offSet =  count + 1
+                if (self?.botMessagesView.spinner.isHidden)!{
+                    self?.getMessages(offset: self!.offSet)
+                }
             }
         })
+    }
+    
+    func tableviewScrollDidEnd(){
+        fetchMessages()
     }
 }
 extension ChatMessagesViewController: KABotClientDelegate {

@@ -17,6 +17,7 @@ protocol BotMessagesViewDelegate {
     func optionsButtonTapNewAction(text:String, payload:String)
     func populateCalenderView(with message: KREMessage?)
     func populateFeedbackSliderView(with message: KREMessage?)
+    func tableviewScrollDidEnd()
 }
 
 class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFetchedResultsControllerDelegate {
@@ -27,6 +28,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     var shouldScrollToBottom: Bool = false
     var clearBackground = false
     var userActive = false
+    public let spinner = UIActivityIndicatorView(style: .gray)
     
     weak var thread: KREThread! {
         didSet{
@@ -57,6 +59,10 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.addSubview(self.tableView)
+        
+        spinner.color = UIColor.darkGray
+        spinner.hidesWhenStopped = true
+        tableView.tableFooterView = spinner
         
         self.tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
         
@@ -306,8 +312,15 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             bubbleView.linkAction = {[weak self] (text) in
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
             }
-            
             cell.bubbleView.drawBorder = true
+            let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+            if firstIndexPath.isEqual(indexPath) {
+                bubbleView.maskview.isHidden = true
+                //bubbleView.tableView.isUserInteractionEnabled = true
+            }else{
+                bubbleView.maskview.isHidden = false
+                //bubbleView.tableView.isUserInteractionEnabled = false
+            }
             break
         case .tableList:
             let bubbleView: TableListBubbleView = cell.bubbleView as! TableListBubbleView
@@ -513,6 +526,24 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     deinit {
         NSLog("BotMessagesView dealloc")
         self.fetchedResultsController = nil
+    }
+}
+extension BotMessagesView: UIScrollViewDelegate{
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if scrollView.isEqual(tableView){
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveLinear], animations: {
+               
+            }, completion: { _ in
+                
+                let height = scrollView.frame.size.height
+                let contentYoffset = scrollView.contentOffset.y
+                let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+                if distanceFromBottom < height || Int(distanceFromBottom) == Int(height) {
+                    print(" you reached end of the table")
+                   self.viewDelegate?.tableviewScrollDidEnd()
+                }
+            })
+        }
     }
 }
 extension String {

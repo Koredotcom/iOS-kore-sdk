@@ -33,6 +33,8 @@
 		955F8BFC2641913200549E4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 955F8BFA2641913200549E4E /* Main.storyboard */; };
 		955F8BFE2641913400549E4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 955F8BFD2641913400549E4E /* Assets.xcassets */; };
 		955F8C012641913400549E4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 955F8BFF2641913400549E4E /* LaunchScreen.storyboard */; };
+		9595198B26BBE649003B9AF2 /* brandingValuesNew.json in Resources */ = {isa = PBXBuildFile; fileRef = 9595198A26BBE649003B9AF2 /* brandingValuesNew.json */; };
+		9595198C26BBE649003B9AF2 /* brandingValuesNew.json in Resources */ = {isa = PBXBuildFile; fileRef = 9595198A26BBE649003B9AF2 /* brandingValuesNew.json */; };
 		9597A18B2632FAD300AB5643 /* DropDown.h in Headers */ = {isa = PBXBuildFile; fileRef = 9597A1462632FAD300AB5643 /* DropDown.h */; };
 		9597A18C2632FAD300AB5643 /* DropDownCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9597A1482632FAD300AB5643 /* DropDownCell.xib */; };
 		9597A18D2632FAD300AB5643 /* DPDKeyboardListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9597A14A2632FAD300AB5643 /* DPDKeyboardListener.swift */; };
@@ -223,6 +225,7 @@
 		955F8BFD2641913400549E4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		955F8C002641913400549E4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		955F8C022641913400549E4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9595198A26BBE649003B9AF2 /* brandingValuesNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = brandingValuesNew.json; sourceTree = "<group>"; };
 		9597A1462632FAD300AB5643 /* DropDown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDown.h; sourceTree = "<group>"; };
 		9597A1482632FAD300AB5643 /* DropDownCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DropDownCell.xib; sourceTree = "<group>"; };
 		9597A14A2632FAD300AB5643 /* DPDKeyboardListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPDKeyboardListener.swift; sourceTree = "<group>"; };
@@ -471,6 +474,7 @@
 		958A9E562649038E0022E4B9 /* KoreBotSDKPods */ = {
 			isa = PBXGroup;
 			children = (
+				9595198A26BBE649003B9AF2 /* brandingValuesNew.json */,
 			);
 			path = KoreBotSDKPods;
 			sourceTree = "<group>";
@@ -1187,6 +1191,7 @@
 				9597A2712632FAE200AB5643 /* TaskMenu.json in Resources */,
 				9597A1B92632FAD300AB5643 /* Gilroy-Medium.otf in Resources */,
 				9597A2962632FAE200AB5643 /* MultiImageBubbleView.xib in Resources */,
+				9595198B26BBE649003B9AF2 /* brandingValuesNew.json in Resources */,
 				9597A29F2632FAE200AB5643 /* ratingselect_3.gif in Resources */,
 				9597A2C42632FAF100AB5643 /* BotConfiguration.plist in Resources */,
 				9597A28A2632FAE200AB5643 /* NewListTableViewCell.xib in Resources */,
@@ -1209,6 +1214,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				955F8C012641913400549E4E /* LaunchScreen.storyboard in Resources */,
+				9595198C26BBE649003B9AF2 /* brandingValuesNew.json in Resources */,
 				955F8BFE2641913400549E4E /* Assets.xcassets in Resources */,
 				955F8BFC2641913200549E4E /* Main.storyboard in Resources */,
 			);

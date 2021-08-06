@@ -108,7 +108,7 @@ open class HTTPRequestManager : NSObject {
             sessionManager?.requestSerializer.setValue(token, forHTTPHeaderField: "Authorization")
         }
         
-        let parameters = ["botId": botInfo["taskBotId"], "direction": "false", "limit": "10"]
+        let parameters = ["botId": botInfo["taskBotId"], "direction": "false", "limit": "10", "offset": offset]
         sessionManager?.get(urlString, parameters: parameters, headers: nil, progress: { (progress) in
             
         }, success: { (dataTask, responseObject) in

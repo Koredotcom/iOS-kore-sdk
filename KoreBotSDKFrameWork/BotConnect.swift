@@ -152,8 +152,8 @@ public class BotConnect: NSObject {
                         }
                         let brandingShared = BrandingSingleton.shared
                         brandingShared.brandingInfoModel = brandingValues
-                        UserDefaults.standard.set("#3EA3AD", forKey: "ThemeColor")
-                        themeColor = UIColor.init(hexString: "#3EA3AD")
+                        UserDefaults.standard.set("#fd591e", forKey: "ThemeColor")
+                        themeColor = UIColor.init(hexString: "#fd591e")
                         self.navigateToChatViewController(client: client, thread: thread)}
                     
                 }

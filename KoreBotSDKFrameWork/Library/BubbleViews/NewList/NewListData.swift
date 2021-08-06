@@ -162,7 +162,12 @@ public class ComponentItemAction: NSObject, Decodable {
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: ActionKeys.self)
-        payload = try? container.decode(String.self, forKey: .payload)
+        //payload = try? container.decode(String.self, forKey: .payload)
+        if let payloadInteger = try? container.decodeIfPresent(Int.self, forKey: .payload) {
+               payload = String(payloadInteger)
+        } else if let payloadString = try? container.decodeIfPresent(String.self, forKey: .payload) {
+               payload = payloadString
+        }
         title = try? container.decode(String.self, forKey: .title)
         type = try? container.decode(String.self, forKey: .type)
         fallback_url = try? container.decode(String.self, forKey: .fallback_url)

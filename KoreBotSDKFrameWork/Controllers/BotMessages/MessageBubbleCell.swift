@@ -20,6 +20,16 @@ class MessageBubbleCell : UITableViewCell {
     var bubbleTrailingConstraint: NSLayoutConstraint!
     var bubbleBottomConstraint: NSLayoutConstraint!
     
+    lazy var dateLabel: UILabel = {
+        let dateLabel = UILabel(frame: .zero)
+        dateLabel.numberOfLines = 0
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        dateLabel.font = UIFont(name: "Gilroy-Regular", size: 10.0)
+        dateLabel.textColor = .lightGray
+        dateLabel.isHidden = false
+        return dateLabel
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.initialize()
@@ -93,15 +103,20 @@ class MessageBubbleCell : UITableViewCell {
         self.bubbleContainerView.backgroundColor = UIColor.clear
         self.bubbleContainerView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(self.bubbleContainerView)
+        //dateLabel
+        self.contentView.addSubview(dateLabel)
         
         // Setting Constraints
-        let views: [String: UIView] = ["senderImageView": senderImageView, "bubbleContainerView": bubbleContainerView, "userImageView": userImageView]
+        let views: [String: UIView] = ["senderImageView": senderImageView, "bubbleContainerView": bubbleContainerView, "userImageView": userImageView,"dateLabel":dateLabel]
         
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[dateLabel]-20-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(0)]", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[senderImageView(0)]-4-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[userImageView(0)]-8-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[userImageView(0)]-4-|", options:[], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[bubbleContainerView]", options:[], metrics:nil, views:views))
+        //self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[bubbleContainerView]", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[dateLabel(21)]-0-[bubbleContainerView]", options:[], metrics:nil, views:views))
+        //self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[bubbleContainerView]-0-[dateLabel(21)]|", options:[], metrics:nil, views:views))
 
         self.bubbleBottomConstraint = NSLayoutConstraint(item:self.contentView, attribute:.bottom, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.bottom, multiplier:1.0, constant:4.0)
         self.bubbleBottomConstraint.priority = UILayoutPriority.defaultHigh
@@ -140,6 +155,23 @@ class MessageBubbleCell : UITableViewCell {
         
         MessageBubbleCell.setComponents(components, bubbleView:self.bubbleView)
         self.tailPosition = self.bubbleView.tailPosition
+        
+        //        let showData = components[0].showDate
+        //        dateLabel.isHidden = !showData
+        if let message = components.first?.message, let sentOn = message.sentOn as Date? {
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
+//                    dateFormatter.dateStyle = .long
+//                    dateFormatter.timeStyle = .medium
+//                    dateFormatter.timeZone = TimeZone(identifier: "UTC")
+            
+                    dateLabel.text = dateFormatter.string(from: sentOn)
+        }
+        if self.tailPosition == .left{
+            dateLabel.textAlignment = .left
+        }else{
+            dateLabel.textAlignment = .right
+        }
         
         let component: KREComponent = components.first!
         let message: KREMessage = component.message!

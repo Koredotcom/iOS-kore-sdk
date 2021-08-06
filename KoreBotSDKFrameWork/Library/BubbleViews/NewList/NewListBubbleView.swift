@@ -12,6 +12,7 @@ class NewListBubbleView: BubbleView {
     static let elementsLimit: Int = 4
     
     var tileBgv: UIView!
+    public var maskview: UIView!
     var titleLbl: UILabel!
     var tableView: UITableView!
     var cardView: UIView!
@@ -28,6 +29,7 @@ class NewListBubbleView: BubbleView {
  
     var arrayOfComponents = [ComponentElements]()
     var arrayOfButtons = [ComponentItemAction]()
+    var maskViewBottomConstraint: NSLayoutConstraint!
     
     var showMore = false
     public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
@@ -80,11 +82,23 @@ class NewListBubbleView: BubbleView {
         self.cardView.addSubview(self.tableView)
         self.tableView.isScrollEnabled = false
         self.tableView.register(UINib(nibName: listCellIdentifier, bundle: frameworkBundle), forCellReuseIdentifier: listCellIdentifier)
+        
+        self.maskview = UIView(frame:.zero)
+        self.maskview.translatesAutoresizingMaskIntoConstraints = false
+        self.cardView.addSubview(self.maskview)
+        self.maskview.isHidden = true
+        maskview.backgroundColor = UIColor(white: 1, alpha: 0.5)
 
-        let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView]
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
+        let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView, "maskview": maskview]
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[maskview]", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[maskview]-0-|", options: [], metrics: nil, views: views))
+        
+        self.maskViewBottomConstraint = NSLayoutConstraint.init(item: self.cardView as Any, attribute: .bottom, relatedBy: .equal, toItem: self.maskview, attribute: .bottom, multiplier: 1.0, constant: 0.0)
+        self.cardView.addConstraint(self.maskViewBottomConstraint)
+        self.maskViewBottomConstraint.isActive = true
 
         self.titleLbl = UILabel(frame: CGRect.zero)
         self.titleLbl.textColor = BubbleViewBotChatTextColor
@@ -170,13 +184,13 @@ class NewListBubbleView: BubbleView {
                     finalHeight += cellHeight
             }
         
-//        if isShowMore{
-//            moreButtonHeight = 30.0
-//        }else{
-//             moreButtonHeight = 0.0
-//        }
         moreButtonHeight =  arrayOfComponents.count > rowsDataLimit ? 35.0 : 0.0
-        return CGSize(width: 0.0, height: textSize.height+60+finalHeight+moreButtonHeight)
+        if moreButtonHeight == 0.0 {
+            self.maskViewBottomConstraint.constant = 0.0
+        }else{
+            self.maskViewBottomConstraint.constant = 35.0
+        }
+        return CGSize(width: 0.0, height: textSize.height+45+finalHeight+moreButtonHeight)
     }
     
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
@@ -249,8 +263,8 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
         let elements = arrayOfComponents[indexPath.row]
         //if elements.action?.type != nil {
             if elements.action?.type == "postback"{
-                let payload = elements.action?.payload == "" || elements.action?.payload == nil ? elements.action?.title : elements.action?.payload
-                self.optionsAction(elements.action?.title, payload)
+                //let payload = elements.action?.payload == "" || elements.action?.payload == nil ? elements.action?.title : elements.action?.payload
+                self.optionsAction(elements.title, elements.action?.title)
             }else{
                 if elements.action?.fallback_url != nil {
                     self.linkAction(elements.action?.fallback_url)
@@ -258,8 +272,8 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
                     self.linkAction(elements.action?.url)
                 }else{
                     if elements.action?.payload != nil{
-                        let payload = elements.action?.payload == "" || elements.action?.payload == nil ? elements.action?.title : elements.action?.payload
-                        self.optionsAction(elements.action?.title, payload)
+                        //let payload = elements.action?.payload == "" || elements.action?.payload == nil ? elements.action?.title : elements.action?.payload
+                        self.optionsAction(elements.title, elements.action?.title)
                     }
                    
                 }
