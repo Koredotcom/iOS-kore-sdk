@@ -22,7 +22,7 @@ open class KABotClient: NSObject {
         didSet {
             if isConnected {
                 //whenever is connected is true it fetches the history if any
-                getRecentHistory()
+                //getRecentHistory()
                 fetchMessages()
             }
         }

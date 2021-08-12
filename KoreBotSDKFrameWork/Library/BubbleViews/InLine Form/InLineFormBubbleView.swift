@@ -18,7 +18,7 @@ class InLineFormBubbleView: BubbleView {
     fileprivate let cellIdentifier = "InlineFormTableViewCell"
     var footerButtonTitle:NSString?
     
-    var headingLabel: KREAttributedLabel!
+    var headingLabel: UILabel!
     var textfeilds: Array<Dictionary<String, Any>> = []
     //var titleLbl: UILabel!
     var textFBgV: UIView!
@@ -41,12 +41,10 @@ class InLineFormBubbleView: BubbleView {
         self.cardView = UIView(frame:.zero)
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
-        cardView.backgroundColor =  UIColor.white
-        cardView.layer.borderColor = UIColor.lightGray.cgColor
-        cardView.layer.borderWidth = 1.0
+        cardView.backgroundColor =  BubbleViewLeftTint
         cardView.clipsToBounds = true
         if #available(iOS 11.0, *) {
-            self.cardView.roundCorners([ .layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
+            self.cardView.roundCorners([ .layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.clear, borderWidth: 1.5)
         }
         
         let cardViews: [String: UIView] = ["cardView": cardView]
@@ -56,9 +54,9 @@ class InLineFormBubbleView: BubbleView {
         self.headingLabel = KREAttributedLabel(frame: CGRect.zero)
         self.headingLabel.textColor = BubbleViewBotChatTextColor
         self.headingLabel.backgroundColor = UIColor.clear
-        self.headingLabel.mentionTextColor = Common.UIColorRGB(0x8ac85a)
-        self.headingLabel.hashtagTextColor = Common.UIColorRGB(0x8ac85a)
-        self.headingLabel.linkTextColor = Common.UIColorRGB(0x0076FF)
+//        self.headingLabel.mentionTextColor = Common.UIColorRGB(0x8ac85a)
+//        self.headingLabel.hashtagTextColor = Common.UIColorRGB(0x8ac85a)
+//        self.headingLabel.linkTextColor = Common.UIColorRGB(0x0076FF)
         self.headingLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
         self.headingLabel.numberOfLines = 0
         self.headingLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -68,23 +66,28 @@ class InLineFormBubbleView: BubbleView {
         self.addSubview(self.headingLabel)
         
         
-        self.tableView = UITableView(frame: CGRect.zero,style:.plain)
-        self.tableView.translatesAutoresizingMaskIntoConstraints = false
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
-        self.tableView.backgroundColor = .clear
-        self.tableView.showsHorizontalScrollIndicator = false
-        self.tableView.showsVerticalScrollIndicator = false
-        self.tableView.bounces = false
-        self.tableView.separatorStyle = .none
-        self.addSubview(self.tableView)
-        self.tableView.isScrollEnabled = false
-        self.tableView.register(UINib(nibName: cellIdentifier, bundle: frameworkBundle), forCellReuseIdentifier: cellIdentifier)
+//        self.tableView = UITableView(frame: CGRect.zero,style:.plain)
+//        self.tableView.translatesAutoresizingMaskIntoConstraints = false
+//        self.tableView.dataSource = self
+//        self.tableView.delegate = self
+//        self.tableView.backgroundColor = .clear
+//        self.tableView.showsHorizontalScrollIndicator = false
+//        self.tableView.showsVerticalScrollIndicator = false
+//        self.tableView.bounces = false
+//        self.tableView.separatorStyle = .none
+//        self.addSubview(self.tableView)
+//        self.tableView.isScrollEnabled = false
+//        self.tableView.register(UINib(nibName: cellIdentifier, bundle: frameworkBundle), forCellReuseIdentifier: cellIdentifier)
         
-        let views: [String: UIView] = ["headingLabel": headingLabel, "tableView": tableView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[headingLabel]-10-[tableView]-10-|", options: [], metrics: nil, views: views))
+//        let views: [String: UIView] = ["headingLabel": headingLabel, "tableView": tableView]
+//        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[headingLabel]-10-[tableView]-10-|", options: [], metrics: nil, views: views))
+//        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[headingLabel]-10-|", options: [], metrics: nil, views: views))
+//        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[tableView]-10-|", options: [], metrics: nil, views: views))
+        
+        let views: [String: UIView] = ["headingLabel": headingLabel]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[headingLabel(>=15)]-5-|", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[headingLabel]-10-|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[tableView]-10-|", options: [], metrics: nil, views: views))
+               
         
         
         
@@ -97,24 +100,25 @@ class InLineFormBubbleView: BubbleView {
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
-                textfeilds = jsonObject["formFields"] != nil ? jsonObject["formFields"] as! Array<Dictionary<String, Any>> : []
-                arrayOfTextFieldsText = []
-                for _ in 0..<textfeilds.count{
-                    arrayOfTextFieldsText.add("")
-                }
-                var headerText: String = jsonObject["heading"] != nil ? jsonObject["heading"] as! String : ""
-                headerText = KREUtilities.formatHTMLEscapedString(headerText);
+//                textfeilds = jsonObject["formFields"] != nil ? jsonObject["formFields"] as! Array<Dictionary<String, Any>> : []
+//                arrayOfTextFieldsText = []
+//                for _ in 0..<textfeilds.count{
+//                    arrayOfTextFieldsText.add("")
+//                }
+//                var headerText: String = jsonObject["heading"] != nil ? jsonObject["heading"] as! String : ""
+//                headerText = KREUtilities.formatHTMLEscapedString(headerText);
+//
+//                if(headerText.count > InLineFormBubbleView.headerTextLimit){
+//                    headerText = String(headerText[..<headerText.index(headerText.startIndex, offsetBy: InLineFormBubbleView.headerTextLimit)]) + "..."
+//                }
+//                self.headingLabel.setHTMLString(headerText, withWidth: BubbleViewMaxWidth - 20)
+//                if jsonObject["fieldButton"] != nil {
+//                    let btnTitle = (jsonObject["fieldButton"] as AnyObject).object(forKey: "title") != nil ? ((jsonObject["fieldButton"] as AnyObject).object(forKey: "title") as! String) : ""
+//                    footerButtonTitle = btnTitle as NSString
+//                }
+                //tableView.reloadData()
                 
-                if(headerText.count > InLineFormBubbleView.headerTextLimit){
-                    headerText = String(headerText[..<headerText.index(headerText.startIndex, offsetBy: InLineFormBubbleView.headerTextLimit)]) + "..."
-                }
-                self.headingLabel.setHTMLString(headerText, withWidth: BubbleViewMaxWidth - 20)
-                if jsonObject["fieldButton"] != nil {
-                    let btnTitle = (jsonObject["fieldButton"] as AnyObject).object(forKey: "title") != nil ? ((jsonObject["fieldButton"] as AnyObject).object(forKey: "title") as! String) : ""
-                    footerButtonTitle = btnTitle as NSString
-                }
-                tableView.reloadData()
-                
+                self.headingLabel.text = "Your session has expired. Please re-login."
             }
         }
     }
@@ -122,11 +126,12 @@ class InLineFormBubbleView: BubbleView {
     override var intrinsicContentSize : CGSize {
         let limitingSize: CGSize  = CGSize(width: BubbleViewMaxWidth - 20, height: CGFloat.greatestFiniteMagnitude)
         let headingLabelSize: CGSize = self.headingLabel.sizeThatFits(limitingSize)
-        var tableviewHeight: CGFloat = 0.0
-        for _ in 0..<textfeilds.count{
-            tableviewHeight += 70.0
-        }
-        return CGSize(width: BubbleViewMaxWidth-60, height: headingLabelSize.height + tableviewHeight + 60)
+        return CGSize(width: BubbleViewMaxWidth-60, height: headingLabelSize.height + 10)
+//        var tableviewHeight: CGFloat = 0.0
+//        for _ in 0..<textfeilds.count{
+//            tableviewHeight += 70.0
+//        }
+       // return CGSize(width: BubbleViewMaxWidth-60, height: headingLabelSize.height + tableviewHeight + 60)
     }
     
     @objc func tapsOnInlineFormBtn(_ sender:UIButton) {

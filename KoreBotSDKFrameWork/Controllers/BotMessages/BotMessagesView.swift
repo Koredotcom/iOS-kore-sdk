@@ -18,6 +18,7 @@ protocol BotMessagesViewDelegate {
     func populateCalenderView(with message: KREMessage?)
     func populateFeedbackSliderView(with message: KREMessage?)
     func tableviewScrollDidEnd()
+    func disableComposeView(isHide: Bool)
 }
 
 class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFetchedResultsControllerDelegate {
@@ -220,6 +221,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         var isQuickReply = false
         var isCalenderView = false
         var isFeedbackView = false
+        var isDisableComposeView = false
         
         switch (cell.bubbleView.bubbleType!) {
         case .text:
@@ -314,7 +316,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             }
             cell.bubbleView.drawBorder = true
             let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
-            if firstIndexPath.isEqual(indexPath) {
+            let secondIndexPath:NSIndexPath = NSIndexPath.init(row: 1, section: 0)
+            if firstIndexPath.isEqual(indexPath) || secondIndexPath.isEqual(indexPath) {
                 bubbleView.maskview.isHidden = true
                 //bubbleView.tableView.isUserInteractionEnabled = true
             }else{
@@ -383,6 +386,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
             }
             cell.bubbleView.drawBorder = true
+            isDisableComposeView = true
             break
         case .dropdown_template:
             //let bubbleView: DropDownBubbleView = cell.bubbleView as! DropDownBubbleView
@@ -413,6 +417,14 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                     }
                 }
             }
+            
+            if isDisableComposeView{
+                if firstIndexPath.isEqual(indexPath){
+                    self.viewDelegate?.disableComposeView(isHide: true)
+                }
+            }
+        }else{
+            self.viewDelegate?.disableComposeView(isHide: false)
         }
         
         return cell

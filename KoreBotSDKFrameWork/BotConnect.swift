@@ -99,7 +99,7 @@ public class BotConnect: NSObject {
     
     func brandingApis(client: BotClient?, thread: KREThread?){
         self.kaBotClient.brandingApiRequest(authInfoAccessToken,success: { [weak self] (brandingArray) in
-            print(brandingArray)
+            //print(brandingArray)
             if brandingArray.count > 0{
                 brandingShared.hamburgerOptions = (((brandingArray as AnyObject).object(at: 0) as AnyObject).object(forKey: "hamburgermenu") as Any) as? Dictionary<String, Any>
             }
@@ -127,6 +127,7 @@ public class BotConnect: NSObject {
             }
             }, failure: { (error) in
                 print(error)
+                self.stopLoader()
                 self.getOfflineBrandingData(client: client, thread: thread)
                 
         })

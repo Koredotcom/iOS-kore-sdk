@@ -156,25 +156,31 @@ class MessageBubbleCell : UITableViewCell {
         MessageBubbleCell.setComponents(components, bubbleView:self.bubbleView)
         self.tailPosition = self.bubbleView.tailPosition
         
-        //        let showData = components[0].showDate
-        //        dateLabel.isHidden = !showData
-        if let message = components.first?.message, let sentOn = message.sentOn as Date? {
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
-//                    dateFormatter.dateStyle = .long
-//                    dateFormatter.timeStyle = .medium
-//                    dateFormatter.timeZone = TimeZone(identifier: "UTC")
-            
-                    dateLabel.text = dateFormatter.string(from: sentOn)
+       
+//        if let message = components.first?.message, let sentOn = message.sentOn as Date? {
+//                let dateFormatter = DateFormatter()
+//                dateFormatter.dateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
+//                dateLabel.text = dateFormatter.string(from: sentOn)
+//        }
+//        if self.tailPosition == .left{
+//            dateLabel.textAlignment = .left
+//        }else{
+//            dateLabel.textAlignment = .right
+//        }
+        
+        let component: KREComponent = components.first!
+        let message: KREMessage = component.message!
+        
+        if let sentOn = message.sentOn as Date? {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
+                dateLabel.text = dateFormatter.string(from: sentOn)
         }
         if self.tailPosition == .left{
             dateLabel.textAlignment = .left
         }else{
             dateLabel.textAlignment = .right
         }
-        
-        let component: KREComponent = components.first!
-        let message: KREMessage = component.message!
         
         
         let placeHolderIcon : UIImage = UIImage(named: "kora", in: bundle, compatibleWith: nil)!

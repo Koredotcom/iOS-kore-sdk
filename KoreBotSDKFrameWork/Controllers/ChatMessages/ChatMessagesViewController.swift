@@ -40,6 +40,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var quickReplyView: KREQuickSelectView!
     var typingStatusView: KRETypingStatusView!
     var webViewController: SFSafariViewController!
+    var disableComposeView: UIView!
     
     var taskMenuKeyBoard = true
     @IBOutlet weak var taskMenuContainerView: UIView!
@@ -305,6 +306,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.threadContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[botMessagesView]|", options:[], metrics:nil, views:["botMessagesView" : self.botMessagesView!]))
     }
     
+    func disableComposeView(isHide: Bool){
+        if isHide {
+            self.disableComposeView.isHidden = false
+            if (self.composeView.isFirstResponder) {
+                _ = self.composeView.resignFirstResponder()
+            }
+        }else{
+            self.disableComposeView.isHidden = true
+        }
+    }
+    
     func configureComposeBar() {
         self.composeView = ComposeBarView()
         self.composeView.translatesAutoresizingMaskIntoConstraints = false
@@ -312,8 +324,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.composeView.delegate = self
         self.composeBarContainerView.addSubview(self.composeView!)
         
+        self.disableComposeView = UIView(frame:.zero)
+        self.disableComposeView.translatesAutoresizingMaskIntoConstraints = false
+        self.composeBarContainerView.addSubview(self.disableComposeView)
+        self.disableComposeView.isHidden = true
+        disableComposeView.backgroundColor = UIColor(white: 1, alpha: 0.5)
+        
         self.composeBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[composeView]|", options:[], metrics:nil, views:["composeView" : self.composeView!]))
         self.composeBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[composeView]", options:[], metrics:nil, views:["composeView" : self.composeView!]))
+        
+        self.composeBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[disableComposeView]|", options:[], metrics:nil, views:["disableComposeView" : self.disableComposeView!]))
+        self.composeBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[disableComposeView]|", options:[], metrics:nil, views:["disableComposeView" : self.disableComposeView!]))
         
         self.composeViewBottomConstraint = NSLayoutConstraint.init(item: self.composeBarContainerView, attribute: .bottom, relatedBy: .equal, toItem: self.composeView, attribute: .bottom, multiplier: 1.0, constant: 0.0)
         self.composeBarContainerView.addConstraint(self.composeViewBottomConstraint)
