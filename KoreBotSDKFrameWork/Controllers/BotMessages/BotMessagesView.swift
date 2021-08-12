@@ -315,9 +315,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
             }
             cell.bubbleView.drawBorder = true
-            let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
-            let secondIndexPath:NSIndexPath = NSIndexPath.init(row: 1, section: 0)
-            if firstIndexPath.isEqual(indexPath) || secondIndexPath.isEqual(indexPath) {
+            let firstIndexPath:NSIndexPath = NSIndexPath.init(row: rowIndex, section: 0)
+           // let secondIndexPath:NSIndexPath = NSIndexPath.init(row: 1, section: 0)
+            if firstIndexPath.isEqual(indexPath)  { //|| secondIndexPath.isEqual(indexPath)
                 bubbleView.maskview.isHidden = true
                 //bubbleView.tableView.isUserInteractionEnabled = true
             }else{

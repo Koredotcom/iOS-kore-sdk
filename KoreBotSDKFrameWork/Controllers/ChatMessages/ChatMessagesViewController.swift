@@ -41,6 +41,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var typingStatusView: KRETypingStatusView!
     var webViewController: SFSafariViewController!
     var disableComposeView: UIView!
+    var disableAudioView: UIView!
     
     var taskMenuKeyBoard = true
     @IBOutlet weak var taskMenuContainerView: UIView!
@@ -265,6 +266,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @IBAction func tapsOnBackBtnAction(_ sender: Any) {
+        rowIndex = 1000
            prepareForDeinit()
            navigationController?.setNavigationBarHidden(true, animated: false) //kk
            navigationController?.popViewController(animated: true)
@@ -309,11 +311,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func disableComposeView(isHide: Bool){
         if isHide {
             self.disableComposeView.isHidden = false
+            self.disableAudioView.isHidden = false
             if (self.composeView.isFirstResponder) {
                 _ = self.composeView.resignFirstResponder()
             }
         }else{
             self.disableComposeView.isHidden = true
+            self.disableAudioView.isHidden = true
         }
     }
     
@@ -349,8 +353,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.audioComposeView.translatesAutoresizingMaskIntoConstraints = false
         self.audioComposeContainerView.addSubview(self.audioComposeView!)
         
+        self.disableAudioView = UIView(frame:.zero)
+        self.disableAudioView.translatesAutoresizingMaskIntoConstraints = false
+        self.audioComposeContainerView.addSubview(self.disableAudioView)
+        self.disableAudioView.isHidden = true
+        disableAudioView.backgroundColor = UIColor(white: 1, alpha: 0.5)
+        
         self.audioComposeContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[audioComposeView]|", options:[], metrics:nil, views:["audioComposeView" : self.audioComposeView!]))
         self.audioComposeContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[audioComposeView]|", options:[], metrics:nil, views:["audioComposeView" : self.audioComposeView!]))
+        
+        self.audioComposeContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[disableAudioView]|", options:[], metrics:nil, views:["disableAudioView" : self.disableAudioView!]))
+        self.audioComposeContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[disableAudioView]|", options:[], metrics:nil, views:["disableAudioView" : self.disableAudioView!]))
         
         self.audioComposeContainerHeightConstraint = NSLayoutConstraint.init(item: self.audioComposeContainerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.0)
         self.view.addConstraint(self.audioComposeContainerHeightConstraint)
@@ -965,6 +978,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     // MARK: Helper functions
     func sendMessage(_ message: Message, dictionary: [String: Any]? = nil, options: [String: Any]?) {
+        rowIndex = 0
         NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
         NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
         let composedMessage: Message = message

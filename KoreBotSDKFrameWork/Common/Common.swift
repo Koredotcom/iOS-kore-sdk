@@ -35,7 +35,7 @@ var tokenURL = "https://demodpd.kore.ai/finastraLoginDEMO"
 var uniqueUserId: String?
 var userInfoUserId: String?
 var authInfoAccessToken: String?
-
+var rowIndex = 1000
 public var authorizationToken: String?
 public var xAuthToken: String?
 

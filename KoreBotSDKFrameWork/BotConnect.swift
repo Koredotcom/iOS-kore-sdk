@@ -127,7 +127,6 @@ public class BotConnect: NSObject {
             }
             }, failure: { (error) in
                 print(error)
-                self.stopLoader()
                 self.getOfflineBrandingData(client: client, thread: thread)
                 
         })

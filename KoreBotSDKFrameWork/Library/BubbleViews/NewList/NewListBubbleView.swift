@@ -188,6 +188,7 @@ class NewListBubbleView: BubbleView {
         if moreButtonHeight == 0.0 {
             self.maskViewBottomConstraint.constant = 0.0
         }else{
+            maskview.isHidden = true
             self.maskViewBottomConstraint.constant = 35.0
         }
         return CGSize(width: 0.0, height: textSize.height+45+finalHeight+moreButtonHeight)
