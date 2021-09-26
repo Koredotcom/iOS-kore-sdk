@@ -9,7 +9,7 @@
 import UIKit
 import KoreBotSDK
 import CoreData
-import Mantle
+import ObjectMapper
 
 public protocol KABotClientDelegate: class {
     func botConnection(with connectionState: BotClientConnectionState)
@@ -612,11 +612,8 @@ open class KABotClient: NSObject {
     
     // MARK: - insert or update messages
     func insertOrUpdateHistoryMessages(_ messages: Array<[String: Any]>) {
-//        guard let models = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages], let botMessages = models, botMessages.count > 0 else {
-//            return
-//        }
-        let models = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages]
-        guard  let botMessages = models, botMessages.count > 0 else{
+        let botMessages = Mapper<BotMessages>().mapArray(JSONArray: messages)
+        guard botMessages.count > 0 else {
             return
         }
         

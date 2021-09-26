@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 import CoreLocation
 import AFNetworking
-import Mantle
 import KoreBotSDK
 import Intents
 

@@ -36,19 +36,25 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             if let isNetworkAvailable = isNetworkAvailable, isNetworkAvailable == false {
                 return .NO_NETWORK
             }
-            guard let readyState = connection?.websocket?.readyState else {
+            
+            guard let connection = connection else {
                 return .NONE
             }
-            switch readyState {
-            case .OPEN:
+            
+            let isConnecting = connection.isConnecting
+            let isConnected = connection.isConnected
+            
+            if (isConnected) {
                 return .CONNECTED
-            case .CLOSED:
+            }
+            if (!isConnecting && !isConnected) {
                 return.CLOSED
-            case .CLOSING:
-                return .CLOSING
-            case .CONNECTING:
+            }
+            if (isConnecting && !isConnected) {
                 return .CONNECTING
             }
+            
+            return .NONE
         }
     }
     fileprivate var reconnects = false
@@ -56,8 +62,8 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     open var connectionWillOpen: (() -> Void)?
     open var connectionDidOpen: (() -> Void)?
     open var connectionReady: (() -> Void)?
-    open var connectionDidClose: ((Int?, String?) -> Void)?
-    open var connectionDidFailWithError: ((NSError?) -> Void)?
+    open var connectionDidClose: ((UInt16?, String?) -> Void)?
+    open var connectionDidFailWithError: ((Error?) -> Void)?
     open var onMessage: ((BotMessageModel?) -> Void)?
     open var onMessageAck: ((Ack?) -> Void)?
     open var onUserMessageReceived:(([String:Any])-> Void)?
@@ -73,7 +79,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     fileprivate var successClosure: ((BotClient?) -> Void)?
     fileprivate var failureClosure: ((NSError) -> Void)?
     fileprivate var intermediaryClosure: ((BotClient?) -> Void)?
-
+    
     // MARK: - init
     public override init() {
         super.init()
@@ -99,21 +105,11 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                 self.connectionWillOpen?()
                 return
             }
-            guard let readyState = connection.websocket?.readyState else {
-                return
-            }
-            switch readyState {
-            case .OPEN:
-                break
-            case .CLOSED:
+            let isConnected = connection.isConnected
+            if isConnected {
                 self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: nil))
-                break
-            case .CLOSING:
-                self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: nil))
-                break
-            case .CONNECTING:
+            } else {
                 self.connectionWillOpen?()
-                break
             }
         } else {
             self.isNetworkAvailable = false
@@ -178,8 +174,8 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                 if self?.reconnects == false {
                     self?.successClosure?(self)
                 }
-                }, failure: { [weak self] (error) in
-                    self?.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as? [String : Any]))
+            }, failure: { [weak self] (error) in
+                self?.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as? [String : Any]))
             })
         } else {
             failureClosure?(NSError(domain: "RTM", code: 0, userInfo: nil))
@@ -195,7 +191,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         connectionReady?()
     }
     
-    open func rtmConnectionDidClose(_ code: Int, reason: String?) {
+    open func rtmConnectionDidClose(_ code: UInt16, reason: String?) {
         switch code {
         case 1000:
             connectionDidClose?(code, reason)
@@ -206,7 +202,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         }
     }
     
-    open func rtmConnectionDidFailWithError(_ error: NSError) {
+    open func rtmConnectionDidFailWithError(_ error: Error?) {
         connectionDidFailWithError?(error)
     }
     open func didReceivedUserMessage(_ usrMessage:[String:Any]) {
@@ -222,7 +218,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     
     // MARK: functions
     fileprivate func rtmConnectionWithBotInfoModel(_ botInfo: BotInfoModel, isReconnect: Bool) -> RTMPersistentConnection? {
-        if let connection = connection, (connection.websocket?.readyState == .OPEN || connection.websocket?.readyState == .CONNECTING) {
+        if let connection = connection, (connection.isConnected || connection.isConnecting) {
             return connection
         } else if let botInfoParameters = botInfoParameters {
             if connection == nil {
@@ -240,26 +236,15 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             NSLog("WebSocket connection not available")
             return
         }
-        guard let readyState = connection.websocket?.readyState else {
-            NSLog("WebSocket connection not available")
-            return
-        }
         
-        switch readyState {
-        case .OPEN:
+        let isConnected = connection.isConnected
+        if isConnected {
             var parameters = customData ?? [:]
             if let botToken = authInfoModel?.accessToken {
                 parameters["botToken"] = botToken
             }
             dictionary?.forEach { (key, value) in parameters[key] = value }
             connection.sendMessage(message, parameters: parameters, options: options)
-            break
-        case .CLOSED:
-            break
-        case .CLOSING:
-            break
-        case .CONNECTING:
-            break
         }
     }
     
@@ -291,7 +276,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             failure?(nil)
         }
     }
-
+    
     // MARK: - deinit
     deinit {
         print("BotClient dealloc")

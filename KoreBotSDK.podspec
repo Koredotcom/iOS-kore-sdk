@@ -17,10 +17,9 @@ Pod::Spec.new do |s|
         ss.ios.deployment_target = '10.0'
         ss.source_files = 'KoreBotSDK/**/*.{h,m,swift}'
         
-        ss.dependency 'Mantle', '2.1.0'
-        ss.dependency 'AFNetworking', '4.0.1'
-        ss.dependency 'SocketRocket'
-        
+        ss.dependency 'Starscream'
+        ss.dependency 'ObjectMapper'
+        ss.dependency 'AFNetworking', '4.0.1'        
         ss.ios.frameworks = 'SystemConfiguration'
     end
 
@@ -39,6 +38,7 @@ Pod::Spec.new do |s|
         ss.dependency 'GhostTypewriter'
         ss.dependency 'MarkdownKit'
         ss.dependency 'Charts', '~> 3.2.2'
+        ss.dependency 'ObjectMapper'
         ss.ios.frameworks = 'SystemConfiguration'
     end
 end

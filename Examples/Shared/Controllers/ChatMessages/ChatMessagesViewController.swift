@@ -11,7 +11,7 @@ import AVFoundation
 import SafariServices
 import KoreBotSDK
 import CoreData
-import Mantle
+import ObjectMapper
 import AssetsPickerViewController
 import Photos
 import MobileCoreServices
@@ -1313,7 +1313,7 @@ extension ChatMessagesViewController {
     
     // MARK: - insert or update messages
     func insertOrUpdateHistoryMessages(_ messages: Array<[String: Any]>) {
-        guard let botMessages = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages], botMessages.count > 0 else {
+        guard let botMessages = Mapper<BotMessages>().mapArray(JSONArray: messages) as? [BotMessages], botMessages.count > 0 else {
             return
         }
         

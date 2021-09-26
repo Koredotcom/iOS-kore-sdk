@@ -7,26 +7,27 @@
 //
 
 import UIKit
-import Mantle
+import ObjectMapper
 
-open class ComponentModel: MTLModel, MTLJSONSerializing {
-    // MARK: properties
+open class ComponentModel: Mappable {
+    
+    // MARK: - properties
     @objc open var type: String?
     @objc open var body: String?
     @objc open var payload: Any?
-
-    // MARK: MTLJSONSerializing methods
-    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
-        return ["type":"type",
-                "payload":"payload"
-                ]
+    
+    // MARK: -
+    public init() {
+        
     }
     
-    public static func payloadJSONTransformer() -> ValueTransformer {
-        return MTLValueTransformer.reversibleTransformer(forwardBlock: { (payload) in
-            return payload
-        }, reverse: { (payload) in
-            return nil
-        })
+    public required init?(map: Map) {
+        
+    }
+    
+    public func mapping(map: Map) {
+        type <- map["type"]
+        body <- map["body"]
+        payload <- map["payload"]
     }
 }

@@ -8,7 +8,6 @@
 
 import UIKit
 import AFNetworking
-import Mantle
 import KoreBotSDK
 
 open class KAHTTPRequestManager: NSObject {
