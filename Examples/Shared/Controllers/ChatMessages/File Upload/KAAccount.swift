@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 import CoreLocation
-import AFNetworking
+import Alamofire
 import KoreBotSDK
 import Intents
 
@@ -41,7 +41,7 @@ public class KAAccount: NSObject {
     var isContactSyncInProgress = false
     var jwtToken: String?
   
-    var networkReachabilityStatus = AFNetworkReachabilityStatus.notReachable
+    var networkReachabilityStatus: NetworkReachabilityManager.NetworkReachabilityStatus = .notReachable
     
     var requestSessionManager: KAHTTPSessionManager = {
         let sessionManager = KAHTTPSessionManager(baseURL: URL(string: SDKConfiguration.serverConfig.JWT_SERVER))

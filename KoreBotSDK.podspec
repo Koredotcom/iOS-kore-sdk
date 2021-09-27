@@ -19,7 +19,8 @@ Pod::Spec.new do |s|
         
         ss.dependency 'Starscream'
         ss.dependency 'ObjectMapper'
-        ss.dependency 'AFNetworking', '4.0.1'        
+        ss.dependency 'AFNetworking'
+        ss.dependency 'Alamofire'
         ss.ios.frameworks = 'SystemConfiguration'
     end
 
@@ -34,7 +35,7 @@ Pod::Spec.new do |s|
             'Symbols' => ['Widgets/Resources/Fonts/AppSymbols/*.ttf'],
         }
         ss.resources = ['Widgets/Widgets/**/*.{xcdatamodeld}', 'Widgets/Resources/*.{xcassets}']
-        ss.dependency 'AFNetworking', '4.0.1'
+        ss.dependency 'AFNetworking'
         ss.dependency 'GhostTypewriter'
         ss.dependency 'MarkdownKit'
         ss.dependency 'Charts', '~> 3.2.2'

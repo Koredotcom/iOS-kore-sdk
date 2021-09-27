@@ -10,6 +10,7 @@ import UIKit
 import KoreBotSDK
 import CoreData
 import ObjectMapper
+import Alamofire
 
 public protocol KABotClientDelegate: class {
     func botConnection(with connectionState: BotClientConnectionState)
@@ -670,7 +671,7 @@ open class KABotClient: NSObject {
     }
     
     // MARK: -
-    public func setReachabilityStatusChange(_ status: AFNetworkReachabilityStatus) {
+    public func setReachabilityStatusChange(_ status: NetworkReachabilityManager.NetworkReachabilityStatus) {
         botClient.setReachabilityStatusChange(status)
     }
     

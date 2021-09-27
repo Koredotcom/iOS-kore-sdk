@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import SocketRocket
 import AFNetworking
+import Alamofire
 
 public enum BotClientConnectionState : Int {
     case NONE
@@ -97,8 +97,8 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     }
     
     // MARK: - start network monitoring
-    public func setReachabilityStatusChange(_ status: AFNetworkReachabilityStatus) {
-        if status == .reachableViaWiFi || status == .reachableViaWWAN {
+    public func setReachabilityStatusChange(_ status: NetworkReachabilityManager.NetworkReachabilityStatus) {
+        if status == .reachable(.ethernetOrWiFi) || status == .reachable(.cellular) {
             self.isNetworkAvailable = true
             guard let connection = self.connection else {
                 // webSocket connection not available

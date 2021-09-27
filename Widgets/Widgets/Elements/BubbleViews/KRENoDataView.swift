@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 open class KRENoDataView: UIView {
     // MARK: -
@@ -73,18 +74,18 @@ open class KRENoDataView: UIView {
     }
     
     @objc func networkChanged(_ notification:Notification) {
-        if let key = notification.userInfo?["AFNetworkingReachabilityNotificationStatusItem"] as? Int {
+        if let key = notification.userInfo?["NetworkingReachabilityNotificationStatusItem"] as? NetworkReachabilityManager.NetworkReachabilityStatus {
             switch key {
-            case -1: //AFNetworkReachabilityStatusUnknown
+            case .unknown:
                 setNoNetworkState()
                 break
-            case 0: //AFNetworkReachabilityStatusNotReachable
+            case .notReachable:
                 setNoNetworkState()
                 break
-            case 1: //AFNetworkReachabilityStatusReachableViaWWAN
+            case .reachable(.ethernetOrWiFi):
                 setNoDataState()
                 break
-            case 2: //AFNetworkReachabilityStatusReachableViaWiFi
+            case .reachable(.cellular):
                 setNoDataState()
                 break
             default:

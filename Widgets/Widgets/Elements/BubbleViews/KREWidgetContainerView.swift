@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 public class KREWidgetContainerView: UIView {
     // MARK: - properties
@@ -492,16 +493,16 @@ public class KREWidgetContainerView: UIView {
     }
     
     @objc func networkChanged(_ notification:Notification) {
-        if let key = notification.userInfo?["AFNetworkingReachabilityNotificationStatusItem"] as? Int {
+        if let key = notification.userInfo?["NetworkingReachabilityNotificationStatusItem"] as? NetworkReachabilityManager.NetworkReachabilityStatus {
             switch key {
-            case -1: //AFNetworkReachabilityStatusUnknown
+            case .unknown:
                 break
-            case 0: //AFNetworkReachabilityStatusNotReachable
+            case .notReachable:
                 break
-            case 1: //AFNetworkReachabilityStatusReachableViaWWAN
+            case .reachable(.cellular):
                 populateBubbleView()
                 break
-            case 2: //AFNetworkReachabilityStatusReachableViaWiFi
+            case .reachable(.cellular):
                 populateBubbleView()
                 break
             default:

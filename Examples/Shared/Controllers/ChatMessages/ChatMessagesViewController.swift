@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import SafariServices
 import KoreBotSDK
+import Alamofire
 import CoreData
 import ObjectMapper
 import AssetsPickerViewController
@@ -850,14 +851,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @objc func startMonitoringForReachability() {
-        let networkReachabilityManager = AFNetworkReachabilityManager.shared()
-        networkReachabilityManager.setReachabilityStatusChange({ (status) in
-            print("Network reachability: \(AFNetworkReachabilityManager.shared().localizedNetworkReachabilityStatusString())")
+        let networkReachabilityManager = NetworkReachabilityManager.default
+        networkReachabilityManager?.startListening(onUpdatePerforming: { (status) in
+            print("Network reachability: \(status)")
             switch status {
-            case AFNetworkReachabilityStatus.reachableViaWWAN, AFNetworkReachabilityStatus.reachableViaWiFi:
+            case .reachable(.ethernetOrWiFi), .reachable(.cellular):
                 self.establishBotConnection()
                 break
-            case AFNetworkReachabilityStatus.notReachable:
+            case .notReachable:
                 fallthrough
             default:
                 break
@@ -865,7 +866,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             
             KABotClient.shared.setReachabilityStatusChange(status)
         })
-        networkReachabilityManager.startMonitoring()
     }
     
     @objc func stopMonitoringForReachability() {

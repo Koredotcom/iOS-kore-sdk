@@ -8,6 +8,7 @@
 
 import UIKit
 import AFNetworking
+import Alamofire
 import KoreBotSDK
 
 open class KAHTTPRequestManager: NSObject {
@@ -31,9 +32,9 @@ extension KAAccount {
     
     func networkReachability(with message: String?, shouldTriggerNotificaiton: Bool) -> Bool {
         var isReachable = true
-        let reachabilityStatus = AFNetworkReachabilityManager.shared().networkReachabilityStatus
+        let reachabilityStatus = NetworkReachabilityManager.default?.status
         switch reachabilityStatus {
-        case AFNetworkReachabilityStatus.notReachable:
+        case .notReachable:
             isReachable = false
         default:
             break

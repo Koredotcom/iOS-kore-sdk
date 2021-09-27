@@ -8,7 +8,7 @@
 
 import UIKit
 import KoreBotSDK
-//import InputBarAccessoryView
+import Alamofire
 import AFNetworking
 
 public enum KAPanelState {
@@ -225,19 +225,19 @@ public class KAPanelCollectionView: UIView {
         removeErrorView()
     }
     
-    @objc func networkChanged(_ notification:Notification) {
-        if let key = notification.userInfo?["AFNetworkingReachabilityNotificationStatusItem"] as? Int {
+    @objc func networkChanged(_ notification: Notification) {
+        if let key = notification.userInfo?["NetworkingReachabilityNotificationStatusItem"] as? NetworkReachabilityManager.NetworkReachabilityStatus {
             switch key {
-            case -1: //AFNetworkReachabilityStatusUnknown
+            case .unknown:
                 previousNetworkState = -1
                 break
-            case 0: //AFNetworkReachabilityStatusNotReachable
+            case .notReachable:
                 if previousNetworkState != 0 {
                     retry()
                 }
                 previousNetworkState = 0
                 break
-            case 1: //AFNetworkReachabilityStatusReachableViaWWAN
+            case .reachable(.cellular):
                 if self.errorView.superview != nil {
                     removeErrorView()
                 }
@@ -245,7 +245,7 @@ public class KAPanelCollectionView: UIView {
                 updatePanelState()
                 previousNetworkState = 1
                 break
-            case 2: //AFNetworkReachabilityStatusReachableViaWiFi
+            case .reachable(.ethernetOrWiFi):
                 if self.errorView.superview != nil {
                     removeErrorView()
                 }
