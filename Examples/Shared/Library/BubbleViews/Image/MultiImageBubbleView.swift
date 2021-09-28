@@ -9,6 +9,8 @@
 import UIKit
 import AVFoundation
 import AVKit
+import Photos
+
 class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     var imageDataDic = NSDictionary()
     var initialViewingIndex: Int!
@@ -107,6 +109,12 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
             cell.playerViewController.player?.pause()
             cell.videoPlayerView.addSubview(cell.playerViewController.view)
             cell.playerViewController.view.backgroundColor = .black
+        
+            cell.menuBtn.tag = indexPath.item
+            cell.menuBtn.addTarget(self, action: #selector(self.menuButtonAction(_:)), for: .touchUpInside)
+            cell.menuBtn.isUserInteractionEnabled = true
+            cell.videoPlayerView.addSubview(cell.menuBtn)
+            cell.videoPlayerView.bringSubviewToFront(cell.menuBtn)
             
             }else{
             cell.videoPlayerView.isHidden = true
@@ -148,6 +156,8 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
         
         return cell
     }
+    
+   
     
     // MARK: UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -201,3 +211,99 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
         }
     }
 }
+extension MultiImageBubbleView{
+    @objc fileprivate func menuButtonAction(_ sender: UIButton!) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let action1 = UIAlertAction(title: "Download", style: .default) { (action) in
+                print("Download is pressed.....")
+                self.loadFileAsync(url: URL(string: self.componentItems.videoUrl!)!) { (isSaved) in
+                    if isSaved{
+                        print("Video is saved!")
+                        DispatchQueue.main.async {
+                        let alert = UIAlertController(title: "BOT SDK", message: "Video is saved!", preferredStyle: UIAlertController.Style.alert)
+                        
+                        // add an action (button)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                        
+                        // show the alert
+                        UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+                        }
+                    }
+                }
+            }
+            let action2 = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+                print("Cancel is pressed......")
+            }
+            alertController.addAction(action1)
+            alertController.addAction(action2)
+            UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+
+        }
+    
+    
+    
+    
+    /// Downloads a file asynchronously
+    func loadFileAsync(url: URL, completion: @escaping (Bool) -> Void) {
+
+        // create your document folder url
+        let documentsUrl = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+
+        // your destination file url
+        let destination = documentsUrl.appendingPathComponent(url.lastPathComponent)
+
+        print("downloading file from URL: \(url.absoluteString)")
+        if FileManager().fileExists(atPath: destination.path) {
+            print("The file already exists at path, deleting and replacing with latest")
+
+            if FileManager().isDeletableFile(atPath: destination.path){
+                do{
+                    try FileManager().removeItem(at: destination)
+                    print("previous file deleted")
+                    self.saveFile(url: url, destination: destination) { (complete) in
+                        if complete{
+                            completion(true)
+                        }else{
+                            completion(false)
+                        }
+                    }
+                }catch{
+                    print("current file could not be deleted")
+                }
+            }
+        // download the data from your url
+        }else{
+            self.saveFile(url: url, destination: destination) { (complete) in
+                if complete{
+                    completion(true)
+                }else{
+                    completion(false)
+                }
+            }
+        }
+    }
+
+
+    func saveFile(url: URL, destination: URL, completion: @escaping (Bool) -> Void){
+        URLSession.shared.downloadTask(with: url, completionHandler: { (location, response, error) in
+            // after downloading your data you need to save it to your destination url
+            guard
+                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                let location = location, error == nil
+                else { print("error with the url response"); completion(false); return}
+            do {
+                try FileManager.default.moveItem(at: location, to: destination)
+                print("new file saved")
+                completion(true)
+            } catch {
+                print("file could not be saved: \(error)")
+                completion(false)
+            }
+        }).resume()
+    }
+    
+    
+    }
+
+
+

@@ -36,6 +36,23 @@ extension KREWidgetManager {
                         let commonWidgets = try? jsonDecoder.decode([KRECommonWidgetData].self, from: data) {
                         widgetElements.append(contentsOf: commonWidgets)
                     }
+                    if dictionary["templateType"] as? String == "form"{
+                        let elements = NSMutableArray()
+                        var elementsDic = NSMutableDictionary()
+                        let buttonArray = NSMutableArray()
+                        var buttonDic = NSMutableDictionary()
+                        buttonDic.setValue(dictionary["templateType"] as? String, forKey: "title")
+                        buttonDic.setValue("url", forKey: "type")
+                        buttonDic.setValue(dictionary["formLink"] as? String, forKey: "url")
+                        buttonArray.add(buttonDic)
+                        elementsDic.setValue(buttonArray, forKey: "button")
+                        elements.add(elementsDic)
+                        
+                        let data = try? JSONSerialization.data(withJSONObject: elements, options: .prettyPrinted)
+                        let commonWidgets = try? jsonDecoder.decode([KRECommonWidgetData].self, from: data!)
+                        widgetElements.append(contentsOf: commonWidgets!)
+                        
+                    }
                 case "summaryCard":
                     if let elements = dictionary["elements"] as? Array<[String: Any]>,
                         let data = try? JSONSerialization.data(withJSONObject: elements, options: .prettyPrinted),
