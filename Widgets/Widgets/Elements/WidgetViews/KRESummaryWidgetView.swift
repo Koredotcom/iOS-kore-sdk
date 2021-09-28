@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AFNetworking
 
 // MARK: - KREWidgetViewDelegate
 public protocol KREGenericWidgetViewDelegate: class {

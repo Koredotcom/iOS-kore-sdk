@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import AFNetworking
+import AlamofireImage
 
 public enum KREActionType : Int {
     case none = 0, webURL = 1, postback = 2, user_intent = 3, postback_disp_payload = 4
@@ -219,8 +219,8 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             cell.titleLabel.text = option.title
             cell.subTitleLabel.text = option.subTitle
             
-            if option.imageURL != "" {
-                cell.imgView.setImageWith(NSURL(string: option.imageURL!) as URL!,placeholderImage: UIImage.init(named: "placeholder_image"))
+            if let urlString = option.imageURL, let url = URL(string: urlString) {
+                cell.imgView.af.setImage(withURL: url, placeholderImage: UIImage(named: "placeholder_image"))
                 cell.imgViewWidthConstraint.constant = 60.0
             } else {
                 cell.imageView?.image = nil

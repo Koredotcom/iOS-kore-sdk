@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AFNetworking
 
 // MARK: -
 public class KREStandardWidgetViewCell: KREWidgetViewCell {

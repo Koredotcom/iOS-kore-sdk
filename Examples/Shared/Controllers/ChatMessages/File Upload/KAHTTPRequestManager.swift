@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AFNetworking
 import Alamofire
 import KoreBotSDK
 
@@ -48,16 +47,17 @@ extension KAAccount {
     }
 
     // MARK: - upload components
-    func requestSerializer() -> AFJSONRequestSerializer {
-        let requestSerializer = AFJSONRequestSerializer()
-        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-        requestSerializer.setValue(KoraAssistant.shared.applicationHeader, forHTTPHeaderField: "X-KORA-Client")
+    func getRequestHeaders() -> HTTPHeaders {
+        var headers: HTTPHeaders = [
+            "X-KORA-Client": KoraAssistant.shared.applicationHeader,
+            "Keep-Alive": "Connection",
+            "Content-Type": "application/json",
+        ]
         let tokenType = "bearer"
-        if let accessToken = AcccesssTokenn { //authInfo?.tokenType authInfo?.accessToken
-            requestSerializer.setValue("\(tokenType) \(accessToken)", forHTTPHeaderField: "Authorization")
+        if let accessToken = AcccesssTokenn {
+            headers["Authorization"] = "\(tokenType) \(accessToken)"
         }
-        return requestSerializer
+        return headers
     }
     
     // MARK: Add Query Params

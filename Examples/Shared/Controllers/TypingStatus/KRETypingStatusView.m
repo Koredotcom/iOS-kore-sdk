@@ -9,8 +9,6 @@
 #import "KRETypingStatusView.h"
 #import "KRETypingCollectionViewCell.h"
 #import "KRETypingActivityIndicator.h"
-#import <AFNetworking/AFNetworking.h>
-#import "UIImageView+AFNetworking.h"
 #import "KREUtilities.h"
 
 @interface KRETypingStatusView () <UICollectionViewDataSource>
@@ -130,7 +128,7 @@
                                                                                        forIndexPath:indexPath];
     NSDictionary *dict = [self.dataSource objectAtIndex:indexPath.row];
     NSString *url = dict[@"imageName"];
-    [cell.customImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@""]];
+//    [cell.customImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@""]];
     return cell;
 }
 

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class NotificationBubbleView: BubbleView {
     var cardView: UIView!
@@ -204,9 +205,8 @@ class NotificationBubbleView: BubbleView {
                     }
                self.headingLabel.text = allItems.text ?? ""
                
-                if allItems.image_url != nil {
-                    let imageurl = URL.init(string: allItems.image_url!)
-                    self.notificationView.profileImageView.setImageWith(imageurl!)
+                if let urlString = allItems.image_url, let imageUrl = URL.init(string: urlString) {
+                    self.notificationView.profileImageView.af.setImage(withURL: imageUrl)
                 }
                 self.notificationView.titleLabel.text = allItems.title ?? ""
                 self.notificationView.subTilteLabel.text = allItems.subtitle ?? ""

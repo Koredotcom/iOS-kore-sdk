@@ -9,7 +9,6 @@
 import UIKit
 import KoreBotSDK
 import Alamofire
-import AFNetworking
 
 public enum KAPanelState {
     case loading
@@ -158,7 +157,7 @@ public class KAPanelCollectionView: UIView {
 
         collectionViewTrailingConstraint.isActive = true
         
-        NotificationCenter.default.addObserver(self, selector: #selector(networkChanged(_:)), name: NSNotification.Name.AFNetworkingReachabilityDidChange, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(networkChanged(_:)), name: NSNotification.Name.AFNetworkingReachabilityDidChange, object: nil)
         
     }
 

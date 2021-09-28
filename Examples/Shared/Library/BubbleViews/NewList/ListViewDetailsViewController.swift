@@ -8,6 +8,7 @@
 
 import UIKit
 import SafariServices
+import AlamofireImage
 
 protocol NewListViewDelegate {
     func optionsButtonTapNewAction(text:String, payload:String)
@@ -94,7 +95,7 @@ extension ListViewDetailsViewController: UITableViewDelegate,UITableViewDataSour
         }else{
             cell.imageViewWidthConstraint.constant = 50.0
             let url = URL(string: elements.imageURL!)
-            cell.imgView.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+            cell.imgView.af.setImage(withURL: url!, placeholderImage: UIImage(named: "placeholder_image"))
         }
         cell.titleLabel.text = elements.title
         cell.subTitleLabel.text = elements.subtitle

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AFNetworking
 
 // MARK: - KRECalendarWidgetViewCell
 public class KRECalendarWidgetViewCell: KREWidgetViewCell {

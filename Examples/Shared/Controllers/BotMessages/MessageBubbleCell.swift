@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import AFNetworking
+import AlamofireImage
 
 class MessageBubbleCell : UITableViewCell {
     var bubbleContainerView: UIView!
@@ -151,7 +151,7 @@ class MessageBubbleCell : UITableViewCell {
         
         if (message.iconUrl != nil) {
             if let fileUrl = URL(string: message.iconUrl!) {
-                self.senderImageView.setImageWith(fileUrl, placeholderImage: placeHolderIcon)
+                self.senderImageView.af.setImage(withURL: fileUrl, placeholderImage: placeHolderIcon)
             }
         }
         NotificationCenter.default.addObserver(self, selector: #selector(MessageBubbleCell.updateImage(notification:)), name: NSNotification.Name(rawValue: updateUserImageNotification), object: nil)

@@ -49,7 +49,7 @@ open class KABotClient: NSObject {
     
     var thread: KREThread?
     let defaultTimeDifference = 15
-
+    
     // properties
     public static var suggestions: NSMutableOrderedSet = NSMutableOrderedSet()
     private var botClient: BotClient = BotClient()
@@ -57,7 +57,11 @@ open class KABotClient: NSObject {
     public var identity: String!
     public var userId: String!
     public var streamId: String = ""
-    var sessionManager: AFHTTPSessionManager?
+    let sessionManager: Session = {
+        let configuration = URLSessionConfiguration.af.default
+        configuration.timeoutIntervalForRequest = 30
+        return Session(configuration: configuration)
+    }()
     
     public var connectionState: BotClientConnectionState! {
         get {
@@ -219,7 +223,7 @@ open class KABotClient: NSObject {
         }
     }
     func addMessages(_ message: Message?, _ ttsBody: String?) {
-       // NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil) //showTypingStatusForBot()
+        // NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil) //showTypingStatusForBot()
         if let m = message, m.components.count > 0 {
             let delayInMilliSeconds = 500
             DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(delayInMilliSeconds)) {
@@ -350,13 +354,13 @@ open class KABotClient: NSObject {
             switch componentType {
             case "text":
                 if let payload = componentModel.payload as? [String: Any],
-                    let text = payload["text"] as? String {
+                   let text = payload["text"] as? String {
                     let textComponent = Component()
                     textComponent.payload = text
                     ttsBody = text
                     
                     if text.contains("use a web form")  {
-
+                        
                     }
                     message.addComponent(textComponent)
                     return (message, ttsBody)
@@ -375,7 +379,7 @@ open class KABotClient: NSObject {
                             if let value = dictionary["table_design"] as? String {
                                 tabledesign = value
                             }
-
+                            
                             let componentType = getComponentType(templateType, tabledesign)
                             if componentType != .quickReply {
                                 
@@ -459,20 +463,19 @@ open class KABotClient: NSObject {
                     self?.botClient.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
                         self?.fetchMessages(completion: { (reconnects) in
                             self?.botClient.connect(isReconnect: reconnects)
-                            
                         })
-                        }, success: { (client) in
-                            self?.botClient = client!
-                            AcccesssTokenn = client?.authInfoModel?.accessToken
-                            block?(self?.botClient, self?.thread)
+                    }, success: { (client) in
+                        self?.botClient = client!
+                        AcccesssTokenn = client?.authInfoModel?.accessToken
+                        block?(self?.botClient, self?.thread)
                     }, failure: { (error) in
                         failure?(error!)
                     })
                 })
             }
-            }, failure: { (error) in
-                print(error)
-                failure?(error)
+        }, failure: { (error) in
+            print(error!)
+            failure?(error!)
         })
         
     }
@@ -490,45 +493,36 @@ open class KABotClient: NSObject {
     }
     
     // MARK: get JWT token request
-    func getJwTokenWithClientId(_ clientId: String!, clientSecret: String!, identity: String!, isAnonymous: Bool!, success:((_ jwToken: String?) -> Void)?, failure:((_ error: Error) -> Void)?) {
+    func getJwTokenWithClientId(_ clientId: String, clientSecret: String, identity: String, isAnonymous: Bool, success:((_ jwToken: String?) -> Void)?, failure:((_ error: Error?) -> Void)?) {
+        let urlString = SDKConfiguration.serverConfig.koreJwtUrl()
+        let headers: HTTPHeaders = [
+            "Keep-Alive": "Connection",
+            "Accept": "application/json",
+            "alg": "RS256",
+            "typ": "JWT"
+        ]
         
-        // Session Configuration
-        let configuration = URLSessionConfiguration.default
-        
-        //Manager
-        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-        
-        // NOTE: You must set your URL to generate JWT.
-        let urlString: String = SDKConfiguration.serverConfig.koreJwtUrl()
-        let requestSerializer = AFJSONRequestSerializer()
-        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-        
-        // Headers: {"alg": "RS256","typ": "JWT"}
-        requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
-        requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
-        
-        let parameters: NSDictionary = ["clientId": clientId as String,
-                                        "clientSecret": clientSecret as String,
-                                        "identity": identity as String,
-                                        "aud": "https://idproxy.kore.com/authorize",
-                                        "isAnonymous": isAnonymous as Bool]
-        
-        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
-        sessionManager?.requestSerializer = requestSerializer
-        sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-            if let dictionary = responseObject as? [String: Any],
-                let jwToken: String = dictionary["jwt"] as? String {
-                
+        let parameters: [String: Any] = ["clientId": clientId,
+                          "clientSecret": clientSecret,
+                          "identity": identity,
+                          "aud": "https://idproxy.kore.com/authorize",
+                          "isAnonymous": isAnonymous]
+        let dataRequest = sessionManager.request(urlString, method: .post, parameters: parameters, headers: headers)
+        dataRequest.validate().responseJSON { (response) in
+            if let _ = response.error {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                failure?(error)
+              return
+            }
+
+            if let dictionary = response.value as? [String: Any],
+               let jwToken = dictionary["jwt"] as? String {
                 success?(jwToken)
             } else {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
             }
-        }) { (sessionDataTask, error) in
-            failure?(error)
         }
-        
     }
     
     
@@ -568,10 +562,10 @@ open class KABotClient: NSObject {
             }
             self?.historyRequestInProgress = false
             block?(true)
-            }, failure: { [weak self] (error) in
-                self?.historyRequestInProgress = false
-                print("Unable to fetch messges \(error?.localizedDescription ?? "")")
-                block?(false)
+        }, failure: { [weak self] (error) in
+            self?.historyRequestInProgress = false
+            print("Unable to fetch messges \(error?.localizedDescription ?? "")")
+            block?(false)
         })
     }
     

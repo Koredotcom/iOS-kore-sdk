@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class TableListBubbleView: BubbleView {
    
@@ -152,9 +153,10 @@ extension TableListBubbleView: UITableViewDelegate,UITableViewDataSource{
         }else{
             cell.imageViewWidthConstraint.constant = 40.0
             cell.imageViewHeightConstraint.constant = 40.0
-            let url = URL(string: (elements?.title?.image?.image_src)!)
-            cell.imgView.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
             
+            if let urlString = elements?.title?.image?.image_src, let url = URL(string: urlString) {
+                cell.imgView.af.setImage(withURL: url, placeholderImage: UIImage(named: "placeholder_image"))
+            }
             if elements?.title?.image?.radius != nil {
                 //cell.imgView.layer.cornerRadius = CGFloat((elements?.title?.image?.radius)!)
                 cell.imageViewWidthConstraint.constant = CGFloat((elements?.title?.image?.radius)!) * 2

@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import AlamofireImage
 
 public class KREIdentity: NSObject {
     // MARK: -
@@ -195,12 +196,12 @@ extension KREIdentityImageView {
                 image = profileImage
             } else if let url = getImageUrl(for: identity) {
                 contentMode = identity.contentMode
-                setImageWith(url, placeholderImage: placeholderImage)
+                af.setImage(withURL: url, placeholderImage: placeholderImage)
             }
         default:
             if let urlString = identity.imageUrl, let url = URL(string: urlString) {
                 contentMode = identity.contentMode
-                setImageWith(url, placeholderImage: placeholderImage)
+                af.setImage(withURL: url, placeholderImage: placeholderImage)
             } else if let iconImage = identity.image {
                 contentMode = identity.contentMode
                 image = iconImage
@@ -242,7 +243,7 @@ extension KREIdentityImageView {
     public func resetProfileImage() {
         userInitial.text = nil
         userInitial.isHidden = true
-        cancelImageDownloadTask()
+//        cancelImageDownloadTask()
         image = nil
         backgroundColor = UIColor.clear
         clearOverlayImage()

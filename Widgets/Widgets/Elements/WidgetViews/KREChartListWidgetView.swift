@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AFNetworking
 
 // MARK: - KREChartListWidgetView
 public class KREChartListWidgetView: KREWidgetView {

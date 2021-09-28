@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 public class KREDriveFileInfo: NSObject, Decodable {
     public var fileId: String?
@@ -273,9 +274,9 @@ public class KREDriveFileView: UIView, UIGestureRecognizerDelegate {
     public func configure(with object: KREDriveFileInfo) {
         titleLabel.text = object.fileName ?? "".addingPercentEncoding(withAllowedCharacters: .controlCharacters)
         var fileType = "***"
-//        if let urlString = object.fileType, let url = URL(string: urlString) {
-//            fileImageView.setImageWith(url, placeholderImage: UIImage(named: "file_general"))
-//        } else
+        if let urlString = object.fileType, let url = URL(string: urlString) {
+            fileImageView.af.setImage(withURL: url, placeholderImage: UIImage(named: "file_general"))
+        }
         if let fileExtension = object.fileType {
             fileType = fileExtension.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
             fileImageView.image = getFileImage(fileType: fileType)

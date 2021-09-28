@@ -11,6 +11,7 @@ import AVFoundation
 import SafariServices
 import KoreBotSDK
 import Alamofire
+import AlamofireImage
 import CoreData
 import ObjectMapper
 import AssetsPickerViewController
@@ -678,10 +679,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         colorDropDown.animationduration = 0.25
         colorDropDown.textColor = .darkGray
         
-        let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        let url = URL(string: urlString!)
-        if url != nil{
-            backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
+        if let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+           let url = URL(string: urlString) {
+            backgroungImageView.af.setImage(withURL: url, placeholderImage: UIImage(named: ""))
             backgroungImageView.contentMode = .scaleAspectFit
         }
         setupColorDropDown()
@@ -706,11 +706,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             }
             
             if selectedTheme == "Theme Logo"{
-                let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-                let url = URL(string: urlString!)
-                if url != nil{
-                    self!.backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
-                }else{
+                if let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let url = URL(string: urlString) {
+                    self!.backgroungImageView.af.setImage(withURL: url, placeholderImage: UIImage(named: ""))
+                } else {
                     self!.backgroungImageView.image = UIImage.init(named: "")
                 }
                 self!.backgroungImageView.contentMode = .scaleAspectFit
@@ -869,7 +867,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @objc func stopMonitoringForReachability() {
-        AFNetworkReachabilityManager.shared().stopMonitoring()
+        NetworkReachabilityManager.default?.stopListening()
     }
     
     @objc func navigateToComposeBar(_ notification: Notification) {
@@ -1234,7 +1232,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @objc func dropDownTemplateActtion(notification:Notification){
-         let dataString: String = notification.object as! String
+        let dataString: String = notification.object as! String
         composeView.setText(dataString)
     }
     

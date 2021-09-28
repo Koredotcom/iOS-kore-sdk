@@ -9,6 +9,7 @@
 import UIKit
 import Foundation
 import KoreBotSDK
+import Alamofire
 
 class KAOperation: Foundation.Operation {
     override var isAsynchronous: Bool {
@@ -104,7 +105,7 @@ class KAComponentOperation: KAOperation {
             }
         }
     }
-
+    
     // MARK: - start event
     override func start() {
         super.start()
@@ -117,12 +118,12 @@ class KAComponentOperation: KAOperation {
         completionGroup.notify(queue: DispatchQueue.main, execute: { [unowned self] in
             //let chunks = self.component.fileMeta.chunks.filter({$0.uploaded == false})
             //if chunks.count > 0 {
-                self.finish()
-//            } else {
-//                self.mergeRequest(with: { (status) in
-//                    self.finish()
-//                })
-//            }
+            self.finish()
+            //            } else {
+            //                self.mergeRequest(with: { (status) in
+            //                    self.finish()
+            //                })
+            //            }
         })
     }
     
@@ -136,31 +137,33 @@ class KAComponentOperation: KAOperation {
             block?(false)
             return
         }
-        var header: [String: String]?
+        var headers: HTTPHeaders? = [:]
         let authorization = "bearer \(AcccesssTokenn ?? "")"
-         header = ["Authorization": authorization]
+        headers = ["Authorization": authorization]
         if !checkBotUpload() {
-            header = nil
+            headers = nil
+        } else {
+            headers?["Authorization"] = authorization
         }
-        let sessionManager = account.sessionManager
-        sessionManager.requestSerializer = account.requestSerializer()
-        sessionManager.responseSerializer = AFJSONResponseSerializer.init()
-        sessionManager.post(fileTokenUrl(with: account.userId), parameters:nil , headers: header, progress: { [unowned self] (progress) in  //["userId": account.userId]
-            self.fileTokenRequestProgress = progress.fractionCompleted
-            self.updateProgress()
-        }, success: { [unowned self] (dataTask, responseObject) in
-            if let dictionary = responseObject as? [String: Any] {
+        
+        let sessionManager = account.sessionManager.session
+        let dataRequest = sessionManager.request(fileTokenUrl(with: account.userId), method: .get, headers: headers)
+        dataRequest.validate().responseJSON { [weak self] (response) in
+            if let error = response.error {
+                self?.error = error
+                block?(false)
+                return
+            }
+            
+            if let dictionary = response.value as? [String: Any] {
                 if let fileToken = dictionary["fileToken"] as? String {
-                    self.component.fileMeta.fileToken = fileToken
+                    self?.component.fileMeta.fileToken = fileToken
                 }
                 if let expiresOn = dictionary["expiresOn"] as? Double {
-                    self.component.fileMeta.expiresOn = Date(timeIntervalSince1970: expiresOn)
+                    self?.component.fileMeta.expiresOn = Date(timeIntervalSince1970: expiresOn)
                 }
             }
             block?(true)
-        }) { [weak self] (dataTask, error) in
-            self?.error = error
-            block?(false)
         }
     }
     
@@ -171,7 +174,7 @@ class KAComponentOperation: KAOperation {
         }
         let authorization = "bearer \(AcccesssTokenn ?? "")"
         _ = ["Authorization": authorization]
-
+        
         let fileName = component.fileMeta.fileName
         let fileType = component.templateType
         let fileExtension = component.fileMeta.fileExtn!
@@ -186,44 +189,50 @@ class KAComponentOperation: KAOperation {
         
         fileHandle.seek(toFileOffset: UInt64(chunk.offset))
         let chunkedData = fileHandle.readData(ofLength: chunk.size)
-        //let parameters: [String: Any] = ["fileToken": fileToken, "chunkNo": chunk.number]
         let parameters: [String: Any] = ["fileExtension": fileExtension, "fileContext": "workflows","thumbnailUpload": false, "filename": fileName!]
-       
-        let requestSerializer = account.requestSerializer()
+        
+        var headers = account.getRequestHeaders()
         if checkBotUpload() {
-            requestSerializer.setValue(authorization, forHTTPHeaderField: "Authorization")
+            headers["Authorization"] = authorization
         }
         
         let requestUrl = fileUploadUrl()
-    
-        let request = requestSerializer.multipartFormRequest(withMethod: "POST", urlString: requestUrl, parameters: parameters, constructingBodyWith: { [unowned self] (formData) in
-            formData.appendPart(withFileData: chunkedData, name: "file", fileName: self.component.fileMeta.fileName!, mimeType: "application/octet-stream")
-        }, error: nil)
-        let sessionManager = account.sessionManager
-        sessionManager.requestSerializer = requestSerializer
-        sessionManager.responseSerializer = AFJSONResponseSerializer.init()
-       
-        let uploadTask = sessionManager.uploadTask(withStreamedRequest: request as URLRequest, progress: { [unowned self] (progress) in
-            chunk.uploadProgress = progress.fractionCompleted
-            self.updateProgress()
-        }) { [unowned self] (response, responseObject, error) in
-            self.error = error
-            let success = (error == nil) ? true : false
-            chunk.uploaded = success
-            //kk
-            if success == true, let dictionary = responseObject as? [String: Any] {
-                if let fileId = dictionary["fileId"] {
-                    self.component.componentFileId = fileId as? String
+        
+        let sessionManager = account.sessionManager.session
+        sessionManager.upload(multipartFormData: { (formData) in
+            formData.append(chunkedData, withName: "file", fileName: self.component.fileMeta.fileName!, mimeType: "application/octet-stream")
+            for (key, value) in parameters {
+                if let value = value as? String, let data = value.data(using: .utf8) {
+                    formData.append(data, withName: key)
                 }
-                if let hash = dictionary["hash"] {
-                    self.component.componentHash = hash as? String
+                if let value = value as? Int, let data = "\(value)".data(using: .utf8) {
+                    formData.append(data, withName: key)
                 }
             }
-            self.mergeResponseProgress = 1.0
-            self.updateProgress()//kk
+        }, to: requestUrl, method: .post, headers: headers).uploadProgress { [weak self] (progress) in
+            chunk.uploadProgress = progress.fractionCompleted
+            self?.updateProgress()
+        }.responseJSON(completionHandler: { [weak self] (response) in
+            if let error = response.error {
+                self?.error = error
+                block?(false)
+                return
+            }
+            let success = true
+            chunk.uploaded = success
+            
+            if success == true, let dictionary = response.value as? [String: Any] {
+                if let fileId = dictionary["fileId"] as? String {
+                    self?.component.componentFileId = fileId
+                }
+                if let hash = dictionary["hash"] as? String {
+                    self?.component.componentHash = hash
+                }
+            }
+            self?.mergeResponseProgress = 1.0
+            self?.updateProgress()
             block?(success)
-        }
-        uploadTask.resume()
+        })
     }
     
     func sizeLimitCheck(bytes: Int64) -> Bool {
@@ -243,75 +252,73 @@ class KAComponentOperation: KAOperation {
             block?(false)
             return
         }
-
-        let requestSerializer: AFHTTPRequestSerializer = account.requestSerializer()
+        
+        var headers = account.getRequestHeaders()
         if checkBotUpload() {
             let authorization = "bearer \(AcccesssTokenn ?? "")"
-            requestSerializer.setValue(authorization, forHTTPHeaderField: "Authorization")
+            headers["Authorization"] = authorization
         }
         
         var parameters: [String: Any] = ["fileToken": fileToken, "totalChunks": component.fileMeta.numberOfChunks, "fileExtension": fileExtension, "fileContext": component.fileMeta.fileContext ?? "", "filename": fileName]
         let fileType = component.templateType ?? ""
-        var request: URLRequest?
+        let urlString = mergeRequestUrl(with: account.userId, fileMeta: component.fileMeta)
         switch fileType {
         case KAAsset.image.fileType, KAAsset.video.fileType:
             if component.fileMeta.fileContext == "profile" {
                 parameters["thumbnailUpload"] = "false"
-                request = requestSerializer.multipartFormRequest(withMethod: "PUT", urlString: mergeRequestUrl(with: account.userId, fileMeta: component.fileMeta), parameters: parameters, constructingBodyWith: nil, error: nil) as URLRequest
             } else if component.fileMeta.fileContext == "workflows" {
                 parameters["thumbnailUpload"] = "false"
-                request = requestSerializer.multipartFormRequest(withMethod: "PUT", urlString: mergeRequestUrl(with: account.userId, fileMeta: component.fileMeta), parameters: parameters, constructingBodyWith: nil, error: nil) as URLRequest
-            }
-            else {
+            } else {
                 parameters["thumbnailUpload"] = "true"
-              parameters["thumbnailExtension"] = "png"
-                
-                request = requestSerializer.multipartFormRequest(withMethod: "PUT", urlString: mergeRequestUrl(with: account.userId, fileMeta: component.fileMeta),parameters: parameters, constructingBodyWith: { [unowned self] (formData) -> Void in
-                    let thumbnailPath = KAFileUtilities.shared.thumbnailPath(for: self.component.fileMeta.fileName!, ofType: fileType)
-                    if FileManager.default.fileExists(atPath: thumbnailPath) == true {
-                        do {
-                            let data = try Data(contentsOf: URL(fileURLWithPath: thumbnailPath))
-                            formData.appendPart(withFileData: data, name: "thumbnail", fileName: self.component.fileMeta.fileName!, mimeType: "image/png")
-                        } catch {
-                            print(error.localizedDescription)
-                        }
-                    }
-                    }, error: nil) as URLRequest
+                parameters["thumbnailExtension"] = "png"
             }
+            break
         default:
             parameters["thumbnailUpload"] = "false"
-            request = try? requestSerializer.request(withMethod: "PUT", urlString: mergeRequestUrl(with: account.userId, fileMeta: component.fileMeta), parameters: parameters) as URLRequest
             break
         }
-        guard let urlRequest = request else {
-            block?(false)
-            return
-        }
-        let sessionManager = account.sessionManager
         
-        sessionManager.responseSerializer = AFJSONResponseSerializer.init()
-        let uploadTask = sessionManager.uploadTask(withStreamedRequest: urlRequest, progress: { [weak self] (progress) in
+        let sessionManager = account.sessionManager.session
+        sessionManager.upload(multipartFormData: { (formData) in
+            let thumbnailPath = KAFileUtilities.shared.thumbnailPath(for: self.component.fileMeta.fileName!, ofType: fileType)
+            if FileManager.default.fileExists(atPath: thumbnailPath) == true {
+                do {
+                    let data = try Data(contentsOf: URL(fileURLWithPath: thumbnailPath))
+                    formData.append(data, withName: "thumbnail", fileName: self.component.fileMeta.fileName!, mimeType: "image/png")
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+            for (key, value) in parameters {
+                if let value = value as? String, let data = value.data(using: .utf8) {
+                    formData.append(data, withName: key)
+                }
+                if let value = value as? Int, let data = "\(value)".data(using: .utf8) {
+                    formData.append(data, withName: key)
+                }
+            }
+        }, to: urlString, method: .put, headers: headers).uploadProgress { [weak self] (progress) in
             self?.mergeRequestProgress = progress.fractionCompleted
             self?.updateProgress()
-        }) { [unowned self] (response, responseObject, error) in
-            if (self.isCancelled) {
+        }.responseJSON(completionHandler: { [weak self] (response) in
+            if let error = response.error {
+                self?.error = error
+                block?(false)
                 return
             }
-            self.error = error
-            let success = ((error == nil) ? true : false)
-            if success == true, let dictionary = responseObject as? [String: Any] {
+            
+            if let dictionary = response.value as? [String: Any] {
                 if let fileId = dictionary["fileId"] {
-                    self.component.componentFileId = fileId as? String
+                    self?.component.componentFileId = fileId as? String
                 }
                 if let thumbnailURL = dictionary["thumbnailURL"] {
-                    self.component.thumbnailUrl = thumbnailURL as? String
+                    self?.component.thumbnailUrl = thumbnailURL as? String
                 }
             }
-            self.mergeResponseProgress = 1.0
-            self.updateProgress()
-            block?(success)
-        }
-        uploadTask.resume()
+            self?.mergeResponseProgress = 1.0
+            self?.updateProgress()
+            block?(true)
+        })
     }
     
     // MARK: - create and send chunks
@@ -320,9 +327,9 @@ class KAComponentOperation: KAOperation {
         let fileName = component.fileMeta.fileName
         let fileType = component.templateType
         let fileExtension = component.fileMeta.fileExtn!
-
+        
         let filePath = "\(KAFileUtilities.shared.path(for: fileName!, of: fileType!, with: fileExtension))"
-       
+        
         let fileManager = FileManager.default
         if fileManager.fileExists(atPath: filePath) == false {
             print("KAComponentOperation :: addComponent :: File is not existed at path : \(filePath)")
@@ -392,7 +399,7 @@ class KAComponentOperation: KAOperation {
         numberOfTasks = Double(component.fileMeta.chunks.count) + 3.0
         block?(true)
     }
-
+    
     func uploadChunks() {
         if component.fileMeta.chunks.count == 0 {
             print("KAComponentOperation :: addComponentToQueue :: No chunks")
@@ -429,7 +436,7 @@ class KAComponentOperation: KAOperation {
             block(value)
         }
     }
-
+    
     // MARK: - chunk upload URL
     func chunkUploadUrl(with userId: String, fileMeta: FileMeta) -> String {
         var server = ""
@@ -466,13 +473,13 @@ class KAComponentOperation: KAOperation {
     }
     
     func mergeRequestUrl(with userId: String, fileMeta: FileMeta) -> String {
-       var server = ""
-              if let botServer = component.componentServer {
-                  server = botServer + "/"
-               return "\(server)api/1.1/attachment/file/\(fileMeta.fileToken ?? "")"
-              } else {
-                  server = KORE_SERVER
-       }
+        var server = ""
+        if let botServer = component.componentServer {
+            server = botServer + "/"
+            return "\(server)api/1.1/attachment/file/\(fileMeta.fileToken ?? "")"
+        } else {
+            server = KORE_SERVER
+        }
         return "\(server)api/1.1/users/\(userId )/file/\(fileMeta.fileToken ?? "")"
     }
 }

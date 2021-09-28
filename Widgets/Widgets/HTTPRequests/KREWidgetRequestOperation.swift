@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import AFNetworking
+import Alamofire
 
 // MARK: - KREWidgetRequestOperation
 class KREWidgetRequestOperation: KREOperation {
@@ -138,24 +138,20 @@ class KREWidgetRequestOperation: KREOperation {
         
         urlString = widgetsUrl(with: userId, server: urlString, widgetId: widgetId)
 
-        let requestSerializer = widgetManager.requestSerializer()
-        sessionManager?.requestSerializer = requestSerializer
-        sessionManager?.responseSerializer = AFJSONResponseSerializer()
+        let headers = widgetManager.getRequestHeaders()
+        let method = HTTPMethod(rawValue: httpMethod.uppercased())
         
-        guard let urlRequest = try? requestSerializer.request(withMethod: httpMethod, urlString: urlString, parameters: body) as URLRequest else {
-            block?(false)
-            return
-        }
-        
-        let dataTask = sessionManager?.dataTask(with: urlRequest, uploadProgress: { (progress) in
-            
-        }, downloadProgress: { (progress) in
-            
-        }, completionHandler: { [weak self] (response, responseObject, error) in
-            self?.error = error
+        let dataRequest = sessionManager.request(urlString, method: method, parameters: body, headers: headers)
+        dataRequest.validate().responseJSON { [weak self] (response) in
             var success: Bool = false
-            widgetFilter?.baseHook?.error = error
-            guard error == nil, let dictionary = responseObject as? [String: Any] else {
+            if let error = response.error {
+                block?(false)
+                self?.error = error
+                widgetFilter?.baseHook?.error = error
+                return
+            }
+            
+            guard let dictionary = response.value as? [String: Any] else {
                 block?(success)
                 return
             }
@@ -169,8 +165,7 @@ class KREWidgetRequestOperation: KREOperation {
                 manager.insertOrUpdateWidgetComponent(for: widgetFilter, in: self?.widget, with: dictionary)
             }
             block?(success)
-        })
-        dataTask?.resume()
+        }
     }
     
     // MARK: -

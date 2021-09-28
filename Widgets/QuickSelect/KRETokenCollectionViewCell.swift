@@ -8,6 +8,7 @@
 
 import UIKit
 import QuartzCore
+import AlamofireImage
 
 public class KRETokenCollectionViewCell: UICollectionViewCell {
     var imageView: UIImageView!
@@ -47,7 +48,7 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
     var imageURL: String? {
         didSet {
             if let urlString = imageURL, let url = URL(string: urlString) {
-                imageView.setImageWith(url, placeholderImage: UIImage(named: "placeholder_image"))
+                imageView.af.setImage(withURL: url, placeholderImage: UIImage(named: "placeholder_image"))
             }
         }
     }
