@@ -88,10 +88,14 @@ open class HTTPRequestManager : NSObject {
         let urlString: String = Constants.URL.historyUrl
         let accessToken = String(format: "%@ %@", authInfo.tokenType ?? "", authInfo.accessToken ?? "")
         let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
             "Authorization": accessToken,
         ]
         
-        let parameters = ["botId": botInfo["taskBotId"], "direction": "false", "limit": "20"]
+        var parameters = ["direction": "false", "limit": "20"]
+        if let taskBotId = botInfo["taskBotId"] as? String {
+            parameters["botId"] = taskBotId
+        }
         let dataRequest = sessionManager.request(urlString, method: .get, parameters: parameters, headers: headers)
         dataRequest.validate().responseJSON { (response) in
             if let _ = response.error {
