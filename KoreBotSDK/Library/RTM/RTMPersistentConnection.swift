@@ -79,7 +79,7 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
     fileprivate var botInfoParameters: [String: Any]?
     fileprivate var reWriteOptions: [String: Any]?
     
-    var isConnected = false
+    var isConnected = true // kkkk
     var isConnecting = false
     var websocket: WebSocket?
     var connectionDelegate: RTMPersistentConnectionDelegate?

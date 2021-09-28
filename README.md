@@ -105,7 +105,7 @@ static let JWT_SERVER = "<jwt-token-server-url>";
 #### 3. JWT generation
     a. You need to have secure token service hosted in your environment which returns the JWT token.
     b. Generate JWT in your enviornment.
-To integrate jwt signing in code refer to KoreBotSDKDemo App. - https://github.com/Koredotcom/iOS-kore-sdk/blob/master/Examples/Shared/Controllers/AppLaunch/AppLaunchViewController.swift
+To integrate jwt signing in code refer to KoreBotSDKDemo App. - https://github.com/Koredotcom/iOS-kore-sdk/blob/master/KoreBotSDK/KoreBotSDKDemo/KoreBotSDKDemo/Controllers/AppLaunch/AppLaunchViewController.swift
 
 NOTE: Please refer about JWT signing and verification at - https://developer.kore.com/docs/bots/kore-web-sdk/
 

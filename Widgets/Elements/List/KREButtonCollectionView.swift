@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AlamofireImage
 
 public class KREButtonCollectionView: UIView {
     // MARK: - properties

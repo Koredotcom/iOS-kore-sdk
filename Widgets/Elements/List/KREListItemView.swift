@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AlamofireImage
 
 public class KREListItemView: UIView {
     // MARK: - properties

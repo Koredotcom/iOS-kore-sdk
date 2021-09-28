@@ -23,6 +23,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     // MARK: properties
     fileprivate var connection: RTMPersistentConnection?
     public var jwToken: String?
+    public var authorizationXAuthInfo: [String: Any]?
     fileprivate var clientId: String?
     fileprivate var botInfoParameters: [String: Any]?
     fileprivate var customData: [String: Any]?
@@ -61,7 +62,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     open var connectionWillOpen: (() -> Void)?
     open var connectionDidOpen: (() -> Void)?
     open var connectionReady: (() -> Void)?
-    open var connectionDidClose: ((UInt16?, String?) -> Void)?
+   open var connectionDidClose: ((UInt16?, String?) -> Void)?
     open var connectionDidFailWithError: ((Error?) -> Void)?
     open var onMessage: ((BotMessageModel?) -> Void)?
     open var onMessageAck: ((Ack?) -> Void)?
@@ -78,7 +79,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     fileprivate var successClosure: ((BotClient?) -> Void)?
     fileprivate var failureClosure: ((NSError) -> Void)?
     fileprivate var intermediaryClosure: ((BotClient?) -> Void)?
-    
+
     // MARK: - init
     public override init() {
         super.init()
@@ -96,7 +97,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     }
     
     // MARK: - start network monitoring
-    public func setReachabilityStatusChange(_ status: NetworkReachabilityManager.NetworkReachabilityStatus) {
+        public func setReachabilityStatusChange(_ status: NetworkReachabilityManager.NetworkReachabilityStatus) {
         if status == .reachable(.ethernetOrWiFi) || status == .reachable(.cellular) {
             self.isNetworkAvailable = true
             guard let connection = self.connection else {
@@ -122,9 +123,13 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         Constants.KORE_BOT_SERVER = url
     }
     
+    open func setWBKoreBotServerUrl(url: String) {
+        Constants.WB_BOT_SERVER = url
+    }
+    
     // MARK: make connection
     open func connectWithJwToken(_ jwtToken: String?, intermediary:((BotClient?) -> Void)?,  success:((BotClient?) -> Void)?, failure:((Error?) -> Void)?)  {
-        guard let jwtToken = jwtToken else {
+       guard let jwtToken = jwtToken else {
             failure?(nil)
             return
         }
@@ -173,8 +178,8 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                 if self?.reconnects == false {
                     self?.successClosure?(self)
                 }
-            }, failure: { [weak self] (error) in
-                self?.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as? [String : Any]))
+                }, failure: { [weak self] (error) in
+                    self?.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as? [String : Any]))
             })
         } else {
             failureClosure?(NSError(domain: "RTM", code: 0, userInfo: nil))
@@ -275,7 +280,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             failure?(nil)
         }
     }
-    
+
     // MARK: - deinit
     deinit {
         print("BotClient dealloc")

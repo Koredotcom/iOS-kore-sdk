@@ -53,7 +53,21 @@ public class KREAction: NSObject, Decodable, Encodable {
     required public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         title = try? values.decode(String.self, forKey: .title)
-        payload = try? values.decode(String.self, forKey: .payload)
+//        do {
+//            let val = try values.decode(Int.self, forKey: .payload)
+//            payload = String(val)
+//        } catch DecodingError.typeMismatch {
+//            payload = try? values.decode(String.self, forKey: .payload)
+//        }
+        
+        
+        if let valueInteger = try? values.decodeIfPresent(Int.self, forKey: .payload) {
+               payload = String(valueInteger!)
+        } else if let valueString = try? values.decodeIfPresent(String.self, forKey: .payload) {
+               payload = valueString
+        }
+        
+        
         type = try? values.decode(String.self, forKey: .type)
         utterance = try? values.decode(String.self, forKey: .utterance)
         url = try? values.decode(String.self, forKey: .url)
@@ -163,7 +177,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
         optionsView.separatorColor = UIColor.paleLilacFour
         optionsView.setNeedsLayout()
         optionsView.layoutIfNeeded()
-
+        optionsView.separatorColor = .white
         return optionsView
     }()
     
@@ -200,13 +214,14 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             
             cell.textLabel?.text = option.title
-            cell.textLabel?.numberOfLines = 0
             cell.textLabel?.textAlignment = .center
-            cell.textLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
-            let bgColor =  UserDefaults.standard.value(forKey: "ThemeColor") as? String
-            cell.textLabel?.textColor = UIColor.init(hexString: bgColor!)
+            //cell.textLabel?.textColor = UIColor.lightRoyalBlue
+            //cell.textLabel?.font = UIFont(name: "Gilroy-Regular", size: 16.0)
+            cell.textLabel?.textColor = UIColor.init(hexString: "#1565C0")
+            cell.backgroundColor = UIColor.init(hexString: "#E3F2FD")
             if #available(iOS 8.2, *) {
-                cell.textLabel?.font = UIFont.textFont(ofSize: 15.0, weight: .medium)
+                //cell.textLabel?.font = UIFont.textFont(ofSize: 14.0, weight: .medium)
+                cell.textLabel?.font = UIFont(name: "Gilroy-Regular", size: 16.0)
             } else {
                 // Fallback on earlier versions
             }
@@ -295,7 +310,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
         var height: CGFloat = 0.0
         for option in options  {
             if(option.optionType == KREOptionType.button){
-                height = optionsTableView.contentSize.height
+                height += kMaxRowHeight
             }else if(option.optionType == KREOptionType.list){
                 let cell:KREListTableViewCell = self.tableView(optionsTableView, cellForRowAt: IndexPath(row: options.index(of: option)!, section: 0)) as! KREListTableViewCell
                 var fittingSize = UIView.layoutFittingCompressedSize

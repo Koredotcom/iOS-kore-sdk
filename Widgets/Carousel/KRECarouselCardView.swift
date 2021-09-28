@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AlamofireImage
 
 public class KRECarouselCardView: UIView, UIGestureRecognizerDelegate {
     static let kMaxRowHeight: CGFloat = 44

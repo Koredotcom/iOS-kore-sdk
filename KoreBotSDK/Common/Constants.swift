@@ -12,16 +12,22 @@ open class Constants: NSObject {
     public static var KORE_BOT_SERVER = String(format: "https://pilot-bots.kore.com")
     struct URL {
         static let baseUrl = KORE_BOT_SERVER
-        static let jwtAuthorizationUrl = String(format: "%@/api/1.1/oAuth/token/jwtgrant", KORE_BOT_SERVER)
-        static let rtmUrl = String(format: "%@/api/rtm/start", KORE_BOT_SERVER)
-        static let historyUrl = String(format: "%@/api/1.1/botmessages/rtm", KORE_BOT_SERVER)
+        static let jwtAuthorizationUrl = String(format: "%@/oAuth/token/jwtgrant", KORE_BOT_SERVER)
+        static let rtmUrl = String(format: "%@/rtm/start", KORE_BOT_SERVER)
+        static let historyUrl = String(format: "%@/botmessages/rtm", KORE_BOT_SERVER)
         static func subscribeUrl(_ userId: String!) -> String {
-            return  String(format: "%@/api/users/%@/sdknotifications/subscribe", KORE_BOT_SERVER, userId)
+            return  String(format: "%@/users/%@/sdknotifications/subscribe", KORE_BOT_SERVER, userId)
         }
         static func unSubscribeUrl(_ userId: String!) -> String {
-            return  String(format: "%@/api/users/%@/sdknotifications/unsubscribe", KORE_BOT_SERVER, userId)
+            return  String(format: "%@/users/%@/sdknotifications/unsubscribe", KORE_BOT_SERVER, userId)
         }
     }
+    
+    public static var WB_BOT_SERVER = String(format: "https://pilot-bots.kore.com")
+    struct WB_URL {
+           static let baseUrl = WB_BOT_SERVER
+           static let jwtAuthorizationUrl = String(format: "%@/oAuth/token/jwtgrant", WB_BOT_SERVER)
+       }
     
     public static func getUUID() -> String {
         let uuid = UUID().uuidString

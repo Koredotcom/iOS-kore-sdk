@@ -16,15 +16,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        if let window = window {
-            window.backgroundColor = UIColor.white
-
-            let appLaunchViewController: AppLaunchViewController = AppLaunchViewController(nibName: "AppLaunchViewController", bundle: nil)
-            let navigationController: UINavigationController = UINavigationController(rootViewController: appLaunchViewController)
-
-            window.rootViewController = navigationController
-            window.makeKeyAndVisible()
-        }
+        if let window = window
+//        {
+//            window.backgroundColor = UIColor.white
+//
+//            let appLaunchViewController: AppLaunchViewController = AppLaunchViewController(nibName: "AppLaunchViewController", bundle: nil)
+//            let navigationController: UINavigationController = UINavigationController(rootViewController: appLaunchViewController)
+//
+//            window.rootViewController = navigationController
+//            window.makeKeyAndVisible()
+//        }
+                {
+                    if #available(iOS 13.0, *) {
+                            // prefer a light interface style with this:
+                        window.overrideUserInterfaceStyle = .light
+                    }
+                    window.backgroundColor = UIColor.white
+                    //let appLaunchViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SampleViewController") as? SampleViewController
+                    let appLaunchViewController = SampleViewController(nibName: "SampleViewController", bundle: nil)
+                    let navigationController: UINavigationController = UINavigationController(rootViewController: appLaunchViewController)
+        
+                    window.rootViewController = navigationController
+                    window.makeKeyAndVisible()
+                }
         return true
     }
     
