@@ -23,7 +23,7 @@ open class KABotClient: NSObject {
         didSet {
             if isConnected {
                 //whenever is connected is true it fetches the history if any
-                //getRecentHistory()
+                getRecentHistory()
                 fetchMessages()
             }
         }
@@ -174,8 +174,11 @@ open class KABotClient: NSObject {
         botClient.connectionDidOpen = { [weak self] () in
             self?.isConnected = true
             self?.isConnecting = false
-            //self?.sendMessage("Welpro", options: nil)
-            //NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
+            if !SDKConfiguration.botConfig.isWebhookEnabled{
+                self?.sendMessage("Welpro", options: nil)
+                NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
+            }
+            
         }
         
         botClient.connectionReady = {
@@ -451,24 +454,28 @@ open class KABotClient: NSObject {
                     try? context.save()
                     dataStoreManager.coreDataManager.saveChanges()
                     
-                    block?(nil, self?.thread)
-                    AcccesssTokenn = jwToken
-//                    self?.botClient.initialize(botInfoParameters: botInfo, customData: [:])
-//                    if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
-//                        self?.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
-//                    }
-//                    self?.botClient.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
-//                        self?.fetchMessages(completion: { (reconnects) in
-//                            self?.botClient.connect(isReconnect: reconnects)
-//
-//                        })
-//                        }, success: { (client) in
-//                            self?.botClient = client!
-//                            AcccesssTokenn = client?.authInfoModel?.accessToken
-//                            block?(self?.botClient, self?.thread)
-//                    }, failure: { (error) in
-//                        failure?(error!)
-//                    })
+                    if SDKConfiguration.botConfig.isWebhookEnabled{
+                        self?.fetachWebhookHistory()
+                        block?(nil, self?.thread)
+                        AcccesssTokenn = jwToken
+                    }else{
+                        self?.botClient.initialize(botInfoParameters: botInfo, customData: [:])
+                        if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
+                            self?.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
+                        }
+                        self?.botClient.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
+                            self?.fetchMessages(completion: { (reconnects) in
+                                self?.botClient.connect(isReconnect: reconnects)
+                                
+                            })
+                        }, success: { (client) in
+                            self?.botClient = client!
+                            AcccesssTokenn = client?.authInfoModel?.accessToken
+                            block?(self?.botClient, self?.thread)
+                        }, failure: { (error) in
+                            failure?(error!)
+                        })
+                    }
                 })
             }
             }, failure: { (error) in
@@ -522,7 +529,6 @@ open class KABotClient: NSObject {
                 let jwToken: String = dictionary["jwt"] as? String {
                 jwtToken = jwToken
                 success?(jwToken)
-                self.fetachWebhookHistory()
             } else {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)

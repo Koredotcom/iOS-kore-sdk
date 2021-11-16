@@ -134,19 +134,20 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         isSpeakingEnabled = true
         self.speechSynthesizer = AVSpeechSynthesizer()
         
-        
-        NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
-        self.kaBotClient.webhookSendMessage("ON_CONNECT", "event",[:], success: { [weak self] (dictionary) in
-            print(dictionary)
-            if dictionary["pollId"] as? String == nil{
-                self?.receviceMessage(dictionary: dictionary)
-            }else{
-                self?.callPollApi(pollID: dictionary["pollId"] as! NSString)
-            }
-            
-            }, failure: { (error) in
-                print(error)
-        })
+        if SDKConfiguration.botConfig.isWebhookEnabled{
+            NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
+            self.kaBotClient.webhookSendMessage("ON_CONNECT", "event",[:], success: { [weak self] (dictionary) in
+                print(dictionary)
+                if dictionary["pollId"] as? String == nil{
+                    self?.receviceMessage(dictionary: dictionary)
+                }else{
+                    self?.callPollApi(pollID: dictionary["pollId"] as! NSString)
+                }
+                
+                }, failure: { (error) in
+                    print(error)
+            })
+        }
     }
     
     override open func viewWillAppear(_ animated: Bool) {
@@ -942,14 +943,15 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
             dataStoreManager.createNewMessageIn(thread: self.thread, message: composedMessage, completion: { (success) in
                 let textComponent = composedMessage.components[0] as? Component
-//                if let _ = self.botClient, let text = textComponent?.payload {
-//                    self.botClient.sendMessage(text, dictionary: dictionary, options: options)
-//                }
-                
-                if let text = textComponent?.payload {
-                    self.webhookSendMessage(text: text, attahment: dictionary ?? [:])
+                if SDKConfiguration.botConfig.isWebhookEnabled{
+                    if let text = textComponent?.payload {
+                        self.webhookSendMessage(text: text, attahment: dictionary ?? [:])
+                    }
+                }else{
+                    if let _ = self.botClient, let text = textComponent?.payload {
+                        self.botClient.sendMessage(text, dictionary: dictionary, options: options)
+                    }
                 }
-                
                 self.textMessageSent()
             })
         }
