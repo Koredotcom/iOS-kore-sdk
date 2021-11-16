@@ -452,6 +452,7 @@ open class KABotClient: NSObject {
                     dataStoreManager.coreDataManager.saveChanges()
                     
                     block?(nil, self?.thread)
+                    AcccesssTokenn = jwToken
 //                    self?.botClient.initialize(botInfoParameters: botInfo, customData: [:])
 //                    if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
 //                        self?.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
@@ -692,7 +693,7 @@ open class KABotClient: NSObject {
     
     //https://qa1-bots.kore.ai
     // MARK: - Webhook Send message
-    func webhookSendMessage(_ text: String!, _ type: String!,_ attachmentArray: NSMutableArray!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+    func webhookSendMessage(_ text: String!, _ type: String!,_ attachmentDic: [String: Any]!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
         // Session Configuration
         let configuration = URLSessionConfiguration.default
@@ -721,7 +722,7 @@ open class KABotClient: NSObject {
        // {"session":{"new":false},"message":{"type":"text","val":"hello","attachments":[{}]},"from":{"id":"rajasekhar.balla@kore.com","userInfo":{"firstName":"","lastName":"","email":""}},"to":{"id":"Kore.ai","groupInfo":{"id":"","name":""}},"token":{}}
        
         let session = ["new":false]
-        let message : [String: Any] = ["type": type!,"val": text!, "attachments": "[{}]"]
+        let message : [String: Any] = ["type": type!,"val": text!, "attachments": attachmentDic!]
         
         let userInfo : [String: Any] = ["firstName": "","lastName": "", "email": ""]
         let from : [String: Any] = ["id": SDKConfiguration.botConfig.identity, "userInfo": userInfo]
@@ -810,7 +811,7 @@ open class KABotClient: NSObject {
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
         
-        let authorizationStr = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzcwNTY3MzM3ODMsImV4cCI6MTYzNzE0MzEzMzc4MywiYXVkIjoiaHR0cHM6Ly9pZHByb3h5LmtvcmUuY29tL2F1dGhvcml6ZSIsImlzcyI6ImNzLWFiMzI0MTQ3LTRjODItNWViNS1iNzNlLTQyY2Y4ZDgzNDBmOCIsInN1YiI6InJhamFzZWtoYXIuYmFsbGFAa29yZS5jb20iLCJpc0Fub255bW91cyI6ImZhbHNlIiwidXNlcklkZW50aXR5IjoicmFqYXNla2hhci5iYWxsYUBrb3JlLmNvbSIsImFwcElkIjoiY3MtYWIzMjQxNDctNGM4Mi01ZWI1LWI3M2UtNDJjZjhkODM0MGY4In0.JKeFTpLoAgdAoqOF8r5tgCa3fID73aMb090ZI5zx8Yo"//"bearer \(jwtToken!)"
+        let authorizationStr = "bearer \(jwtToken!)"
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
         requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
         

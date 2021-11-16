@@ -83,11 +83,11 @@ class SDKConfiguration: NSObject {
 
         static let identity = "rajasekhar.balla@kore.com"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
 
-        static let isAnonymous = true // This should be either true (in case of known-user) or false (in-case of anonymous user).
+        static let isAnonymous = false // This should be either true (in case of known-user) or false (in-case of anonymous user).
     }
 
     struct serverConfig {
-        static let JWT_SERVER = String(format: "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
+        static let JWT_SERVER = String(format: "http://localhost:3000/api/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
 
         static func koreJwtUrl() -> String {
             return String(format: "%@users/sts", JWT_SERVER)

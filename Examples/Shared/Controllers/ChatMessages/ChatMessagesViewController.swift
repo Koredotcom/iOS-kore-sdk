@@ -136,7 +136,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         
         NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
-        self.kaBotClient.webhookSendMessage("ON_CONNECT", "event",[], success: { [weak self] (dictionary) in
+        self.kaBotClient.webhookSendMessage("ON_CONNECT", "event",[:], success: { [weak self] (dictionary) in
             print(dictionary)
             if dictionary["pollId"] as? String == nil{
                 self?.receviceMessage(dictionary: dictionary)
@@ -947,7 +947,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
 //                }
                 
                 if let text = textComponent?.payload {
-                    self.webhookSendMessage(text: text)
+                    self.webhookSendMessage(text: text, attahment: dictionary ?? [:])
                 }
                 
                 self.textMessageSent()
@@ -955,8 +955,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
     }
     
-    func webhookSendMessage(text:String){
-        self.kaBotClient.webhookSendMessage(text, "text",[], success: { [weak self] (dictionary) in
+    func webhookSendMessage(text:String, attahment: [String:Any]){
+        self.kaBotClient.webhookSendMessage(text, "text", attahment, success: { [weak self] (dictionary) in
             print(dictionary)
             if dictionary["pollId"] as? String == nil{
                 self?.receviceMessage(dictionary: dictionary)
