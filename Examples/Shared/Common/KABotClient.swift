@@ -23,7 +23,7 @@ open class KABotClient: NSObject {
         didSet {
             if isConnected {
                 //whenever is connected is true it fetches the history if any
-                getRecentHistory()
+                //getRecentHistory()
                 fetchMessages()
             }
         }
@@ -174,8 +174,8 @@ open class KABotClient: NSObject {
         botClient.connectionDidOpen = { [weak self] () in
             self?.isConnected = true
             self?.isConnecting = false
-            self?.sendMessage("Welpro", options: nil)
-            NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
+            //self?.sendMessage("Welpro", options: nil)
+            //NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
         }
         
         botClient.connectionReady = {
@@ -451,22 +451,23 @@ open class KABotClient: NSObject {
                     try? context.save()
                     dataStoreManager.coreDataManager.saveChanges()
                     
-                    self?.botClient.initialize(botInfoParameters: botInfo, customData: [:])
-                    if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
-                        self?.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
-                    }
-                    self?.botClient.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
-                        self?.fetchMessages(completion: { (reconnects) in
-                            self?.botClient.connect(isReconnect: reconnects)
-                            
-                        })
-                        }, success: { (client) in
-                            self?.botClient = client!
-                            AcccesssTokenn = client?.authInfoModel?.accessToken
-                            block?(self?.botClient, self?.thread)
-                    }, failure: { (error) in
-                        failure?(error!)
-                    })
+                    block?(nil, self?.thread)
+//                    self?.botClient.initialize(botInfoParameters: botInfo, customData: [:])
+//                    if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
+//                        self?.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
+//                    }
+//                    self?.botClient.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
+//                        self?.fetchMessages(completion: { (reconnects) in
+//                            self?.botClient.connect(isReconnect: reconnects)
+//
+//                        })
+//                        }, success: { (client) in
+//                            self?.botClient = client!
+//                            AcccesssTokenn = client?.authInfoModel?.accessToken
+//                            block?(self?.botClient, self?.thread)
+//                    }, failure: { (error) in
+//                        failure?(error!)
+//                    })
                 })
             }
             }, failure: { (error) in
@@ -518,8 +519,9 @@ open class KABotClient: NSObject {
         sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
             if let dictionary = responseObject as? [String: Any],
                 let jwToken: String = dictionary["jwt"] as? String {
-                
+                jwtToken = jwToken
                 success?(jwToken)
+                self.fetachWebhookHistory()
             } else {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
@@ -530,6 +532,17 @@ open class KABotClient: NSObject {
         
     }
     
+    func fetachWebhookHistory(){
+        self.webhookHistoryApi(20, success: { [weak self] (responseObj) in
+            if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
+                self?.insertOrUpdateHistoryMessages(messages)
+            }
+            self?.historyRequestInProgress = false
+        }, failure: { [weak self] (error) in
+            self?.historyRequestInProgress = false
+            print("Unable to webhook history fetch messges \(error.localizedDescription)")
+        })
+    }
     
     // MARK: -
     open func showTypingStatusForBot() {
@@ -561,17 +574,17 @@ open class KABotClient: NSObject {
             return
         }
         //getHistory - fetch all the history that the bot has previously
-        botClient.getHistory(offset: offset, success: { [weak self] (responseObj) in
-            if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
-                self?.insertOrUpdateHistoryMessages(messages)
-            }
-            self?.historyRequestInProgress = false
-            block?(true)
-            }, failure: { [weak self] (error) in
-                self?.historyRequestInProgress = false
-                print("Unable to fetch messges \(error?.localizedDescription ?? "")")
-                block?(false)
-        })
+                botClient.getHistory(offset: offset, success: { [weak self] (responseObj) in
+                    if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
+                        self?.insertOrUpdateHistoryMessages(messages)
+                    }
+                    self?.historyRequestInProgress = false
+                    block?(true)
+                    }, failure: { [weak self] (error) in
+                        self?.historyRequestInProgress = false
+                        print("Unable to fetch messges \(error?.localizedDescription ?? "")")
+                        block?(false)
+                })
     }
     
     //MARK: getRecentHistory - fetch all the history that the bot has previously based on last messageId
@@ -675,6 +688,147 @@ open class KABotClient: NSObject {
     // MARK: -
     public func setReachabilityStatusChange(_ status: AFNetworkReachabilityStatus) {
         botClient.setReachabilityStatusChange(status)
+    }
+    
+    //https://qa1-bots.kore.ai
+    // MARK: - Webhook Send message
+    func webhookSendMessage(_ text: String!, _ type: String!,_ attachmentArray: NSMutableArray!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+        
+        // Session Configuration
+        let configuration = URLSessionConfiguration.default
+        
+        //Manager
+        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
+        
+        // NOTE: You must set your URL to generate JWT.
+        //let urlString: String = "\(FindlyUrl)searchAssistant/search/\(findlySidx)"
+        let urlString: String = "\(SDKConfiguration.serverConfig.BOT_SERVER)/chatbot/v2/webhook/\(SDKConfiguration.botConfig.botId)"
+        let requestSerializer = AFJSONRequestSerializer()
+        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
+        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+        
+        let authorizationStr = "bearer \(jwtToken!)"
+        requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
+        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        
+        
+//        //let message : [String: Any] = ["body": text!]
+//        let meta : [String: Any] = ["timezone": "en-GB", "locale": "Asia/Calcutta"]
+//
+//        let chatBotName: String = SDKConfiguration.botConfig.chatBotName
+//        let botId: String = SDKConfiguration.botConfig.botId
+        
+       // {"session":{"new":false},"message":{"type":"text","val":"hello","attachments":[{}]},"from":{"id":"rajasekhar.balla@kore.com","userInfo":{"firstName":"","lastName":"","email":""}},"to":{"id":"Kore.ai","groupInfo":{"id":"","name":""}},"token":{}}
+       
+        let session = ["new":false]
+        let message : [String: Any] = ["type": type!,"val": text!, "attachments": "[{}]"]
+        
+        let userInfo : [String: Any] = ["firstName": "","lastName": "", "email": ""]
+        let from : [String: Any] = ["id": SDKConfiguration.botConfig.identity, "userInfo": userInfo]
+        
+        let groupInfo : [String: Any] = ["id": "","name": ""]
+        let to : [String: Any] = ["id": "Kore.ai", "groupInfo": groupInfo]
+
+    
+        
+        //let messagePayload : [String: Any] = ["message":message,"resourceId": "/bot.message", "currentPage": "\(SDKConfiguration.serverConfig.BOT_SERVER)/sdk/demo/#home", "botInfo": botInfo,"meta": meta, "client": "sdk"]
+          
+        var parameters: NSDictionary?
+        parameters = ["session": session,
+        "message": message,
+        "from": from,
+        "to": to,
+        "token": "{}"]
+        
+       
+        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
+            if let dictionary = responseObject as? [String: Any]{
+                success?(dictionary)
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                failure?(error)
+                NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+            }
+        }) { (sessionDataTask, error) in
+            failure?(error)
+            NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+        }
+        
+    }
+    
+    // MARK: Search API'S
+    func pollApi(_ pollID: String!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+        
+        // Session Configuration
+        let configuration = URLSessionConfiguration.default
+        
+        //Manager
+        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
+        //https://qa1-bots.kore.ai/chatbot/v2/webhook/st-fd0f5024-2318-56fe-8354-555e1786133e/poll/60ec784a25cb3703b742e28dcda1c46f
+        // NOTE: You must set your URL to generate JWT.
+        let urlString: String = "\(SDKConfiguration.serverConfig.BOT_SERVER)/chatbot/v2/webhook/\(SDKConfiguration.botConfig.botId)/poll/\(pollID!)"
+        let requestSerializer = AFJSONRequestSerializer()
+        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
+        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+        
+        let authorizationStr = "bearer \(jwtToken!)"
+        requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
+        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        
+        let parameters: NSDictionary = [:]
+        
+        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.get(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
+            if let dictionary = responseObject as? [String: Any]{
+                success?(dictionary)
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                failure?(error)
+                NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+            }
+        }) { (sessionDataTask, error) in
+            failure?(error)
+        }
+        
+    }
+    
+    // MARK: Search API'S
+    func webhookHistoryApi(_ limit: Int!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+        
+        // Session Configuration
+        let configuration = URLSessionConfiguration.default
+        
+        //Manager
+        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
+        
+        // NOTE: You must set your URL to generate JWT.
+        let urlString: String = "\(SDKConfiguration.serverConfig.BOT_SERVER)/api/chathistory/\(SDKConfiguration.botConfig.botId)/ivr?botId=\(SDKConfiguration.botConfig.botId)&limit=\(limit!)"
+        let requestSerializer = AFJSONRequestSerializer()
+        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
+        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+        
+        let authorizationStr = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzcwNTY3MzM3ODMsImV4cCI6MTYzNzE0MzEzMzc4MywiYXVkIjoiaHR0cHM6Ly9pZHByb3h5LmtvcmUuY29tL2F1dGhvcml6ZSIsImlzcyI6ImNzLWFiMzI0MTQ3LTRjODItNWViNS1iNzNlLTQyY2Y4ZDgzNDBmOCIsInN1YiI6InJhamFzZWtoYXIuYmFsbGFAa29yZS5jb20iLCJpc0Fub255bW91cyI6ImZhbHNlIiwidXNlcklkZW50aXR5IjoicmFqYXNla2hhci5iYWxsYUBrb3JlLmNvbSIsImFwcElkIjoiY3MtYWIzMjQxNDctNGM4Mi01ZWI1LWI3M2UtNDJjZjhkODM0MGY4In0.JKeFTpLoAgdAoqOF8r5tgCa3fID73aMb090ZI5zx8Yo"//"bearer \(jwtToken!)"
+        requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
+        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        
+        let parameters: NSDictionary = [:]
+        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.get(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
+            if let dictionary = responseObject as? [String: Any]{
+                success?(dictionary)
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                failure?(error)
+                NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+            }
+        }) { (sessionDataTask, error) in
+            failure?(error)
+        }
+        
     }
     
     
