@@ -68,6 +68,10 @@ JWT_SERVER URL - specify the server URL for JWT token generation. This token is 
 static let JWT_SERVER = "<jwt-token-server-url>";
 ```
 
+Enable the webhook channel - This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
+  ```
+ static bool isWebhookEnabled = false; 
+  ```
 ## Running the Demo app
 #### a. Using Cocoa Pods
 	* Download or clone the repository.
