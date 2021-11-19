@@ -870,7 +870,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             print("Network reachability: \(AFNetworkReachabilityManager.shared().localizedNetworkReachabilityStatusString())")
             switch status {
             case AFNetworkReachabilityStatus.reachableViaWWAN, AFNetworkReachabilityStatus.reachableViaWiFi:
-                self.establishBotConnection()
+                //self.establishBotConnection()
                 break
             case AFNetworkReachabilityStatus.notReachable:
                 fallthrough

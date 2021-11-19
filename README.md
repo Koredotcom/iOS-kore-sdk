@@ -62,11 +62,6 @@ Anonymous user - if not anonymous, assign same identity (such as email or phone 
  ```
 static bool isAnonymous = false; 
  ```
- 
- Enable the webhook channel - This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
-  ```
- static bool isWebhookEnabled = false; 
-  ```
 
 JWT_SERVER URL - specify the server URL for JWT token generation. This token is used to authorize the SDK client. Refer to documentation on how to setup the JWT server for token generation - e.g. https://jwt-token-server.example.com/
  ```
