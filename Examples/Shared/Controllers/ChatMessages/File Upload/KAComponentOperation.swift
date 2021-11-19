@@ -145,7 +145,7 @@ class KAComponentOperation: KAOperation {
         let sessionManager = account.sessionManager
         sessionManager.requestSerializer = account.requestSerializer()
         sessionManager.responseSerializer = AFJSONResponseSerializer.init()
-        sessionManager.post(fileTokenUrl(with: account.userId), parameters:nil , headers: header, progress: { [unowned self] (progress) in  //["userId": account.userId]
+        sessionManager.post(fileTokenUrl(with: account.userId), parameters:[:] , headers: header, progress: { [unowned self] (progress) in  //["userId": account.userId]
             self.fileTokenRequestProgress = progress.fractionCompleted
             self.updateProgress()
         }, success: { [unowned self] (dataTask, responseObject) in
@@ -446,7 +446,11 @@ class KAComponentOperation: KAOperation {
         var server = ""
         if let botServer = component.componentServer {
             server = botServer + "/"
-            return "\(server)api/1.1/attachment/file"
+            if SDKConfiguration.botConfig.isWebhookEnabled{
+                return "\(server)api/attachments/file/\(SDKConfiguration.botConfig.botId)/ivr"
+            }else{
+                return "\(server)api/1.1/attachment/file"
+            }
         } else {
             server = KORE_SERVER
         }
@@ -458,7 +462,11 @@ class KAComponentOperation: KAOperation {
         https://koradev-bots.kora.ai/api/1.1/attachment/file/token
         if let botServer = component.componentServer {
             server = botServer + "/"
-            return "\(server)api/1.1/attachment/file/token"
+            if SDKConfiguration.botConfig.isWebhookEnabled{
+                return "\(server)api/attachments/\(SDKConfiguration.botConfig.botId)/ivr/token"
+            }else{
+                return "\(server)api/1.1/attachment/file/token"
+            }
         } else {
             server = KORE_SERVER
         }

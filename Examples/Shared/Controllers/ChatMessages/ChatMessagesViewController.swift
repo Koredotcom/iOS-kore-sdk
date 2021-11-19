@@ -133,6 +133,21 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         isSpeakingEnabled = true
         self.speechSynthesizer = AVSpeechSynthesizer()
+        
+        if SDKConfiguration.botConfig.isWebhookEnabled{
+            NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
+            self.kaBotClient.webhookSendMessage("ON_CONNECT", "event",[:], success: { [weak self] (dictionary) in
+                print(dictionary)
+                if dictionary["pollId"] as? String == nil{
+                    self?.receviceMessage(dictionary: dictionary)
+                }else{
+                    self?.callPollApi(pollID: dictionary["pollId"] as! NSString)
+                }
+                
+                }, failure: { (error) in
+                    print(error)
+            })
+        }
     }
     
     override open func viewWillAppear(_ animated: Bool) {
@@ -921,19 +936,108 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: Helper functions
     func sendMessage(_ message: Message, dictionary: [String: Any]? = nil, options: [String: Any]?) {
         
-        //NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil) // self.showTypingStatusForBot()
+        NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil) // self.showTypingStatusForBot()
         NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
         let composedMessage: Message = message
         if (composedMessage.components.count > 0) {
             let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
             dataStoreManager.createNewMessageIn(thread: self.thread, message: composedMessage, completion: { (success) in
                 let textComponent = composedMessage.components[0] as? Component
-                if let _ = self.botClient, let text = textComponent?.payload {
-                    self.botClient.sendMessage(text, dictionary: dictionary, options: options)
+                if SDKConfiguration.botConfig.isWebhookEnabled{
+                    if let text = textComponent?.payload {
+                        self.webhookSendMessage(text: text, attahment: dictionary ?? [:])
+                    }
+                }else{
+                    if let _ = self.botClient, let text = textComponent?.payload {
+                        self.botClient.sendMessage(text, dictionary: dictionary, options: options)
+                    }
                 }
                 self.textMessageSent()
             })
         }
+    }
+    
+    func webhookSendMessage(text:String, attahment: [String:Any]){
+        self.kaBotClient.webhookSendMessage(text, "text", attahment, success: { [weak self] (dictionary) in
+            print(dictionary)
+            if dictionary["pollId"] as? String == nil{
+                self?.receviceMessage(dictionary: dictionary)
+            }else{
+                self?.callPollApi(pollID: dictionary["pollId"] as! NSString)
+            }
+            
+            }, failure: { (error) in
+                print(error)
+        })
+    }
+    func callPollApi(pollID: NSString){
+        let pollIDStr = pollID
+        self.kaBotClient.pollApi(pollID as String, success: { [weak self] (dictionary) in
+            print(dictionary)
+            if dictionary["status"] as? String == "Inprogress"{
+                self?.callPollApi(pollID: pollIDStr)
+            }else{
+                self?.receviceMessage(dictionary: dictionary)
+            }
+            }, failure: { (error) in
+                print(error)
+        })
+    }
+    
+    func verifyIsObjectOfAnArray<T>(_ object: T) -> Bool {
+       if let _ = object as? [T] {
+          return true
+       }
+
+       return false
+    }
+    
+    func dateFormatter() -> DateFormatter {
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        return dateFormatter
+    }
+    
+    func receviceMessage(dictionary:[String: Any]){
+        let message: Message = Message()
+        message.messageType = .reply
+        let textComponent: Component = Component()
+        var templateType = ""
+        
+        let data: Array = dictionary["data"] != nil ? dictionary["data"] as! Array : []
+        if data.count > 0{
+            let valData: Dictionary<String, Any> = data[0] as! Dictionary<String, Any>
+            
+            message.sentDate = self.dateFormatter().date(from: valData["createdOn"] as? String ?? "")
+            message.messageId = valData["messageId"] as? String
+            if let iconUrl = valData["iconUrl"] as? String {
+                message.iconUrl = iconUrl
+            }
+            
+            let jsonString = valData["val"] as? String
+            if ((jsonString?.contains("payload")) != nil), let jsonObject: [String: Any] = Utilities.jsonObjectFromString(jsonString: jsonString ?? "") as? [String : Any] {
+                
+                var payloadObj: [String: Any] = [String: Any]()
+                payloadObj = jsonObject["payload"] as! [String : Any]
+                templateType = payloadObj["template_type"] as? String ?? ""
+                
+                let componentType = getComponentType(templateType, "responsive")
+                textComponent.payload = Utilities.stringFromJSONObject(object: payloadObj)
+                message.addComponent(textComponent)
+                let optionsComponent: Component = Component(componentType)
+                optionsComponent.payload = Utilities.stringFromJSONObject(object: payloadObj)
+                message.addComponent(optionsComponent)
+                
+            }else{
+                templateType = valData["type"] as? String ?? ""
+                textComponent.payload = jsonString
+                message.addComponent(textComponent)
+            }
+            
+        }
+        addMessages(message, "")
+        NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
     }
     
     func sendTextMessage(_ text: String, dictionary: [String: Any]? = nil, options: [String: Any]?) {
