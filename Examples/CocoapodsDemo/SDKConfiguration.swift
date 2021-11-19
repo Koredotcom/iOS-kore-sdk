@@ -21,7 +21,7 @@ class SDKConfiguration: NSObject {
 
         static let isAnonymous = false // This should be either true (in case of known-user) or false (in-case of anonymous user).
         
-        static let isWebhookEnabled = true
+        static let isWebhookEnabled = false // This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
     }
 
     struct serverConfig {
