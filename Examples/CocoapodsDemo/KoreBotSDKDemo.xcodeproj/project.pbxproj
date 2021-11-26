@@ -1412,10 +1412,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kore.rtc;
 				PRODUCT_NAME = "Barry Bot";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "Kore sdk";
+				PROVISIONING_PROFILE_SPECIFIER = com.kore.rtc;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/KoreBotSDKDemo/Resources/KoreBotSDKDemo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1437,10 +1437,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kore.rtc;
 				PRODUCT_NAME = "Barry Bot";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "Kore sdk";
+				PROVISIONING_PROFILE_SPECIFIER = com.kore.rtc;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/KoreBotSDKDemo/Resources/KoreBotSDKDemo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};

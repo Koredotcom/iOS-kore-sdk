@@ -136,6 +136,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         if SDKConfiguration.botConfig.isWebhookEnabled{
             NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
+            self.kaBotClient.webhookBotMetaApi(success: { [weak self] (dictionary) in
+                print(dictionary)
+                if let dic = dictionary as? [String: Any],
+                    let userIcon: String = dic["icon"] as? String  {
+                    webhookUserIcon = userIcon
+                }
+                 
+                }, failure: { (error) in
+                    print(error)
+            })
+            
             self.kaBotClient.webhookSendMessage("ON_CONNECT", "event",[:], success: { [weak self] (dictionary) in
                 print(dictionary)
                 if dictionary["pollId"] as? String == nil{
@@ -1004,15 +1015,18 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         message.messageType = .reply
         let textComponent: Component = Component()
         var templateType = ""
+        var ttsBody: String?
         
         let data: Array = dictionary["data"] != nil ? dictionary["data"] as! Array : []
-        if data.count > 0{
-            let valData: Dictionary<String, Any> = data[0] as! Dictionary<String, Any>
+        for i in 0..<data.count{
+            let valData: Dictionary<String, Any> = data[i] as! Dictionary<String, Any>
             
             message.sentDate = self.dateFormatter().date(from: valData["createdOn"] as? String ?? "")
             message.messageId = valData["messageId"] as? String
             if let iconUrl = valData["iconUrl"] as? String {
                 message.iconUrl = iconUrl
+            }else{
+                message.iconUrl = webhookUserIcon
             }
             
             let jsonString = valData["val"] as? String
@@ -1030,13 +1044,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 message.addComponent(optionsComponent)
                 
             }else{
+                ttsBody = jsonString
                 templateType = valData["type"] as? String ?? ""
                 textComponent.payload = jsonString
                 message.addComponent(textComponent)
             }
             
         }
-        addMessages(message, "")
+        addMessages(message, ttsBody)
         NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
     }
     
@@ -1502,7 +1517,14 @@ extension ChatMessagesViewController: KABotClientDelegate {
         let botId:String = SDKConfiguration.botConfig.botId
         let info:NSMutableDictionary = NSMutableDictionary.init()
         info.setValue(botId, forKey: "botId");
-        let urlString = leftImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        
+        let urlString:String?
+        if SDKConfiguration.botConfig.isWebhookEnabled{
+            urlString = webhookUserIcon?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        }else{
+             urlString = leftImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        }
+        
         info.setValue(urlString ?? "kora", forKey: "imageName");
         self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5)
     }

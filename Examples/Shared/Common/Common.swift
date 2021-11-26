@@ -34,6 +34,7 @@ var leftImage = "cancel"
 var AcccesssTokenn:String?
 var attachmentKeybord = false
 var jwtToken:String?
+var webhookUserIcon:String?
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
