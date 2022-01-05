@@ -9,14 +9,17 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="HelveticaNeue.ttc">
-            <string>HelveticaNeue</string>
-            <string>HelveticaNeue-Medium</string>
+        <array key="Gilroy-Bold.otf">
+            <string>Gilroy-Bold</string>
+        </array>
+        <array key="Gilroy-Regular.otf">
+            <string>Gilroy-Regular</string>
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CalenderViewController" customModule="BankAssist_ai" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CalenderViewController" customModule="Barry_Bot" customModuleProvider="target">
             <connections>
+                <outlet property="bgView" destination="Djm-YW-F5N" id="Of8-7p-416"/>
                 <outlet property="confirmButton" destination="Fyj-zI-ltK" id="Ybq-Tj-Ahf"/>
                 <outlet property="datePicker" destination="dbX-js-ngB" id="8NX-W9-CgJ"/>
                 <outlet property="dateRangeSubView" destination="3C6-vg-PbV" id="uQ0-Ex-get"/>
@@ -45,7 +48,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="wYc-nv-PuQ"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -66,7 +69,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="gcO-cP-cbT"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                             <state key="normal" title="Confirm">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
@@ -85,7 +88,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="RJy-pL-OWb"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                            <fontDescription key="fontDescription" name="Gilroy-Regular" family="Gilroy" pointSize="17"/>
                                             <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -94,7 +97,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="25" id="QpA-hD-QAX"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="21"/>
+                                            <fontDescription key="fontDescription" name="Gilroy-Bold" family="Gilroy" pointSize="21"/>
                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -142,13 +145,13 @@
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="End : Dec, 26 2020" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fJd-CR-P8q">
                                             <rect key="frame" x="10" y="36" width="260" height="34"/>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start: Oct, 26 2020" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bJt-bQ-AU7">
                                             <rect key="frame" x="10" y="0.0" width="260" height="34"/>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -186,15 +189,17 @@
                             </constraints>
                         </view>
                         <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="dbX-js-ngB">
-                            <rect key="frame" x="0.0" y="118" width="375" height="216"/>
+                            <rect key="frame" x="0.0" y="127" width="375" height="207"/>
                         </datePicker>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="dbX-js-ngB" firstAttribute="top" secondItem="gDW-LO-tKU" secondAttribute="bottom" constant="1" id="0bv-Zz-UIZ"/>
                         <constraint firstItem="5vi-6K-swE" firstAttribute="leading" secondItem="Djm-YW-F5N" secondAttribute="leading" id="13U-I4-494"/>
                         <constraint firstItem="Fyj-zI-ltK" firstAttribute="top" secondItem="dbX-js-ngB" secondAttribute="bottom" constant="6" id="39o-Sd-ad1"/>
                         <constraint firstItem="5vi-6K-swE" firstAttribute="top" secondItem="zCG-rQ-KY0" secondAttribute="bottom" constant="10" id="3bS-UC-rJ1"/>
                         <constraint firstAttribute="trailing" secondItem="dbX-js-ngB" secondAttribute="trailing" id="Dpe-Qk-zjd"/>
+                        <constraint firstItem="dbX-js-ngB" firstAttribute="top" secondItem="5vi-6K-swE" secondAttribute="bottom" constant="13" id="Fm7-OB-63K"/>
                         <constraint firstItem="dbX-js-ngB" firstAttribute="leading" secondItem="Djm-YW-F5N" secondAttribute="leading" id="GYE-NG-ika"/>
                         <constraint firstAttribute="trailing" secondItem="5vi-6K-swE" secondAttribute="trailing" id="Gbj-rq-c6l"/>
                         <constraint firstAttribute="bottom" secondItem="Fyj-zI-ltK" secondAttribute="bottom" id="Ii9-72-boX"/>
@@ -202,7 +207,6 @@
                         <constraint firstAttribute="trailing" secondItem="Fyj-zI-ltK" secondAttribute="trailing" id="R50-GC-r5C"/>
                         <constraint firstItem="zCG-rQ-KY0" firstAttribute="top" secondItem="Djm-YW-F5N" secondAttribute="top" constant="10" id="cyo-aJ-6YW"/>
                         <constraint firstAttribute="trailing" secondItem="gDW-LO-tKU" secondAttribute="trailing" id="dwW-CW-ZKB"/>
-                        <constraint firstItem="dbX-js-ngB" firstAttribute="top" secondItem="5vi-6K-swE" secondAttribute="bottom" constant="4" id="jYs-iX-A6k"/>
                         <constraint firstItem="HNX-qV-AsK" firstAttribute="leading" secondItem="zCG-rQ-KY0" secondAttribute="trailing" constant="8" id="kcS-9v-1vU"/>
                         <constraint firstItem="gDW-LO-tKU" firstAttribute="leading" secondItem="Djm-YW-F5N" secondAttribute="leading" id="mf2-eS-lXd"/>
                         <constraint firstAttribute="height" constant="380" id="oRk-s1-sER"/>

@@ -18,6 +18,7 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
     var viewingIndex: Int! {
         didSet(newViewingIndex) {
             if (self.viewingIndex != newViewingIndex) {
+                self.collectionView.collectionViewLayout.invalidateLayout()
                 self.collectionView.reloadData()
             }
         }
@@ -35,11 +36,23 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
                 }
                 componentItems = allItems
                 imageDataDic = jsonObject
+                textLblHeightConstarint.constant = 0.0
+                 if let text = imageDataDic["text"] as? String {
+                    textLblHeightConstarint.constant = 30.0
+                    textlabel.text = text
+                    self.collectionView.frame = CGRect.init(x: self.bounds.origin.x, y: self.bounds.origin.y+30, width: self.bounds.size.width, height: self.bounds.size.height)
+                }else{
+                    self.collectionView.frame = self.bounds
+                    textlabel.text = ""
+                }
             }
+            self.collectionView.collectionViewLayout.invalidateLayout()
             self.collectionView.reloadData()
         }
     }
+    @IBOutlet weak var textLblHeightConstarint: NSLayoutConstraint!
     
+    @IBOutlet weak var textlabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     var COMPONENT_PADDING: CGFloat = 0.0
     var INNER_PADDING: CGFloat = 10.0
@@ -51,12 +64,18 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
         
         self.collectionView.register(UINib.init(nibName: "ImageComponentCollectionViewCell", bundle:nil), forCellWithReuseIdentifier: "ImageComponentCollectionViewCell")
         self.viewingIndex = NSNotFound
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadVideoAct), name: NSNotification.Name(rawValue: reloadVideoCellNotification), object: nil)
+    }
+    
+    @objc func reloadVideoAct(notification:Notification){
+        self.collectionView.collectionViewLayout.invalidateLayout()
+        self.collectionView.reloadData()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.collectionView.frame = self.bounds
+       // self.collectionView.frame = self.bounds
     }
     
     
@@ -97,11 +116,16 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
         
         let cell: ImageComponentCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageComponentCollectionViewCell", for:indexPath) as! ImageComponentCollectionViewCell
          
-        if  componentItems.videoUrl != nil {
+        
+        if  imageDataDic["type"] as? String == "video" { //componentItems.videoUrl
             cell.videoPlayerView.isHidden = false
-            let url = componentItems.videoUrl
-            let playerURL = URL(string:url!)
-            cell.player = AVPlayer(url: playerURL!)
+            if let payload = imageDataDic["payload"] as? [String: Any]{
+                let url = payload["url"] as? String//componentItems.videoUrl
+                let escapedString = url?.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed)
+                let playerURL = URL(string: escapedString!)
+                cell.player = AVPlayer(url: playerURL!)
+            }
+           
             cell.playerViewController = AVPlayerViewController()
             cell.playerViewController.player = cell.player
             cell.playerViewController.view.frame = cell.videoPlayerView.frame
@@ -116,21 +140,47 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
             cell.videoPlayerView.addSubview(cell.menuBtn)
             cell.videoPlayerView.bringSubviewToFront(cell.menuBtn)
             
+        }else{
+
+            if imageDataDic["videoUrl"] as? String != nil{ //componentItems.videoUrl
+                cell.videoPlayerView.isHidden = false
+                
+                    let url = imageDataDic["videoUrl"] as? String
+                let escapedString = url?.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed)
+                    let playerURL = URL(string: escapedString ?? "")
+                    cell.player = AVPlayer(url: playerURL!)
+              
+                
+                cell.playerViewController = AVPlayerViewController()
+                cell.playerViewController.player = cell.player
+                cell.playerViewController.view.frame = cell.videoPlayerView.frame
+                cell.playerViewController.videoGravity = AVLayerVideoGravity.resizeAspectFill
+                cell.playerViewController.player?.pause()
+                cell.videoPlayerView.addSubview(cell.playerViewController.view)
+                cell.playerViewController.view.backgroundColor = .black
+                
+                cell.menuBtn.tag = indexPath.item
+                cell.menuBtn.addTarget(self, action: #selector(self.menuButtonAction(_:)), for: .touchUpInside)
+                cell.menuBtn.isUserInteractionEnabled = true
+                cell.videoPlayerView.addSubview(cell.menuBtn)
+                cell.videoPlayerView.bringSubviewToFront(cell.menuBtn)
+                
             }else{
-            cell.videoPlayerView.isHidden = true
-            
-            let url = URL(string: (componentItems.url!))
-             if url != nil{
-                cell.imageComponent.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
-            }else{
-                cell.imageComponent.image = UIImage(named: "placeholder_image")
+                cell.videoPlayerView.isHidden = true
+                if let payload = imageDataDic["payload"] as? [String: Any]{
+                    let url = URL(string: ( payload["url"] as? String ?? ""))
+                    if url != nil{
+                        cell.imageComponent.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+                    }else{
+                        cell.imageComponent.image = UIImage(named: "placeholder_image")
+                    }
+                }else{
+                    cell.imageComponent.image = UIImage(named: "placeholder_image")
+                }
+                if cell.playerViewController != nil{
+                    cell.videoPlayerView.willRemoveSubview(cell.playerViewController.view)
+                }
             }
-            
-            if cell.playerViewController != nil{
-                cell.videoPlayerView.willRemoveSubview(cell.playerViewController.view)
-            }
-            
-            
         }
            
         

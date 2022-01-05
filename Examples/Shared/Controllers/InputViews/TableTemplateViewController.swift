@@ -47,7 +47,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
         let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: dataString!) as! NSDictionary
         let data: Dictionary<String, Any> = jsonObject as! Dictionary<String, Any>
         self.data = TableData(data)
-        
+        titleLabel.text = jsonObject["text"] as? String ?? ""
         if(self.data.tableDesign == "regular"){
             self.collectionView.isHidden = false
             self.tableView.isHidden = true
@@ -163,7 +163,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
         }
         
         if indexPath.section == 0 {
-            return CGSize(width: itemWidth, height: 44)
+            return CGSize(width: itemWidth + 10, height: 44)
         } else if indexPath.section == 1 {
             return CGSize(width: -1, height: 2)
         } else {
@@ -173,7 +173,7 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
             if text == "---" {
                 return CGSize(width: -1, height: 1)
             }
-            return CGSize(width: itemWidth, height: 38)
+            return CGSize(width: itemWidth + 10, height: 38)
         }
     }
     

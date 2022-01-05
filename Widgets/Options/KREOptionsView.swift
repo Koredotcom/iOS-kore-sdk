@@ -220,7 +220,12 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             cell.subTitleLabel.text = option.subTitle
             
             if option.imageURL != "" {
-                cell.imgView.setImageWith(NSURL(string: option.imageURL!) as URL!,placeholderImage: UIImage.init(named: "placeholder_image"))
+                if verifyUrl(urlString: option.imageURL!){
+                    cell.imgView.setImageWith(NSURL(string: option.imageURL!) as URL!,placeholderImage: UIImage.init(named: "placeholder_image"))
+                }else{
+                    cell.imgView.image = UIImage.init(named: "placeholder_image")
+                }
+                
                 cell.imgViewWidthConstraint.constant = 60.0
             } else {
                 cell.imageView?.image = nil
@@ -250,6 +255,15 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             return cell
         }
         return UITableViewCell.init()
+    }
+    
+    func verifyUrl(urlString: String?) -> Bool {
+        if let urlString = urlString {
+            if let url = URL(string: urlString) {
+                return UIApplication.shared.canOpenURL(url)
+            }
+        }
+        return false
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

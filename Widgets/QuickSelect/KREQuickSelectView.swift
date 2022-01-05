@@ -49,7 +49,7 @@ open class KREQuickSelectView: UIView {
         collectionView.dataSource = self
         collectionView.delegate = self
         addSubview(collectionView)
-        collectionView.semanticContentAttribute = .forceRightToLeft
+        collectionView.semanticContentAttribute = .forceLeftToRight
         return collectionView
     }()
     lazy var flowLayout: UICollectionViewFlowLayout = {
@@ -57,7 +57,7 @@ open class KREQuickSelectView: UIView {
         flowLayout.itemSize = CGSize(width: 1.0, height: cellHeight)
         flowLayout.scrollDirection = .horizontal
         flowLayout.minimumInteritemSpacing = 13.0
-        flowLayout.minimumLineSpacing = 1
+        flowLayout.minimumLineSpacing = 10
         flowLayout.sectionInset = UIEdgeInsets(top: 4.0, left: 10.0, bottom: 8.0, right: 10.0)
         return flowLayout
     }()
@@ -159,6 +159,7 @@ extension KREQuickSelectView: UICollectionViewDelegate, UICollectionViewDataSour
             let bgColor =  UserDefaults.standard.value(forKey: "ThemeColor") as? String
             cell.layer.borderColor = UIColor.init(hexString: bgColor!).cgColor
             cell.layer.borderWidth = 1.5
+            cell.layer.cornerRadius = 15
             cell.krefocused = false
         }
         collectionViewCell.layoutIfNeeded()

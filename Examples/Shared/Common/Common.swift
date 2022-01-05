@@ -19,6 +19,7 @@ var showListViewTemplateNotification = "ListViewTemplateNotificationName"
 var showListWidgetViewTemplateNotification = "ListWidgetViewTemplateNotificationName"
 var showAttachmentSendButtonNotification = "ShowAttachmentSendButton"
 var dropDownTemplateNotification = "DropDownTemplateNotificationName"
+var reloadVideoCellNotification = "ReloadVideoCellNotification"
 
 var isSpeakingEnabled = false
 var selectedTheme = "Theme Logo"
@@ -35,6 +36,7 @@ var AcccesssTokenn:String?
 var attachmentKeybord = false
 var jwtToken:String?
 var webhookUserIcon:String?
+
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {

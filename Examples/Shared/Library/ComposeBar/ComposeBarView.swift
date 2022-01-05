@@ -64,6 +64,7 @@ class ComposeBarView: UIView {
         self.growingTextView.backgroundColor = .white
         self.growingTextView.layer.cornerRadius = 10.0
         self.growingTextView.isUserInteractionEnabled = false
+        //self.growingTextView.textView.text = "text Template with video attachment"//"Pie Chart"//"Quick Replies"
         
         let attributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: UIFont(name: "HelveticaNeue", size: 14.0)!, NSAttributedString.Key.foregroundColor: Common.UIColorRGB(0xB5B9BA)]
         self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Message...", attributes:attributes)

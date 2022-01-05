@@ -413,6 +413,25 @@ open class KABotClient: NSObject {
                         if let dictionary = payload["payload"] as? [String: Any] {
                             let  componentType = dictionary["audioUrl"] != nil ? Component(.audio) : Component(.video)
                             let optionsComponent: Component = componentType
+                            if let speechText = dictionary["text"] as? String{
+                                ttsBody = speechText
+                            }
+                            optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                            message.sentDate = object?.createdOn
+                            message.addComponent(optionsComponent)
+                        }
+                    case "video":
+                        if let _ = payload["payload"] as? [String: Any] {
+                            let  componentType = Component(.video)
+                            let optionsComponent: Component = componentType
+                            optionsComponent.payload = Utilities.stringFromJSONObject(object: payload)
+                            message.sentDate = object?.createdOn
+                            message.addComponent(optionsComponent)
+                        }
+                    case "audio":
+                        if let dictionary = payload["payload"] as? [String: Any] {
+                            let  componentType = Component(.audio)
+                            let optionsComponent: Component = componentType
                             optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                             message.sentDate = object?.createdOn
                             message.addComponent(optionsComponent)
@@ -678,7 +697,7 @@ open class KABotClient: NSObject {
                     componentModel.type = jsonObject["type"] as? String
                     
                     var payloadObj: [String: Any] = [String: Any]()
-                    payloadObj["payload"] = jsonObject["payload"] as! [String : Any]
+                    payloadObj["payload"] = jsonObject["payload"] as? [String : Any]
                     payloadObj["type"] = jsonObject["type"]
                     componentModel.payload = payloadObj
                 } else {
