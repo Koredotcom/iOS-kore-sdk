@@ -10,7 +10,7 @@ import UIKit
 import KoreBotSDK
 
 class ListBubbleView: BubbleView {
-    static let elementsLimit: Int = 4
+    static let elementsLimit: Int = 3
 
     var optionsView: KREOptionsView!
     var reloadTable = false
@@ -42,10 +42,10 @@ class ListBubbleView: BubbleView {
             }
         }
         
-        if !reloadTable{
-            reloadTable = true
+        //if !reloadTable{
+           // reloadTable = true
             NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
-        }
+       // }
     }
     
     // MARK: populate components

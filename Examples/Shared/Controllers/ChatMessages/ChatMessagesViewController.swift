@@ -140,7 +140,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 print(dictionary)
                 if let dic = dictionary as? [String: Any],
                     let userIcon: String = dic["icon"] as? String  {
-                    webhookUserIcon = userIcon
+                    botHistoryIcon = userIcon
                 }
                  
                 }, failure: { (error) in
@@ -977,6 +977,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             if dictionary["pollId"] as? String == nil{
                 self?.receviceMessage(dictionary: dictionary)
             }else{
+                self?.receviceMessage(dictionary: dictionary)
                 self?.callPollApi(pollID: dictionary["pollId"] as! NSString)
             }
             
@@ -1015,6 +1016,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func receviceMessage(dictionary:[String: Any]){
        
+        
         let data: Array = dictionary["data"] != nil ? dictionary["data"] as! Array : []
         for i in 0..<data.count{
             
@@ -1035,7 +1037,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             if let iconUrl = valData["iconUrl"] as? String {
                 message.iconUrl = iconUrl
             }else{
-                message.iconUrl = webhookUserIcon
+                message.iconUrl = botHistoryIcon
             }
             
             let jsonString = valData["val"] as? String
@@ -1125,46 +1127,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         message.addComponent(textComponent)
                     }
                 }
-                
-                
-//                var payloadObj: [String: Any] = [String: Any]()
-//                payloadObj = jsonObject["payload"] as? [String : Any] ?? [:]
-//                templateType = payloadObj["template_type"] as? String ?? ""
-//
-//                var tabledesign = "responsive"
-//                if let value = payloadObj["table_design"] as? String {
-//                    tabledesign = value
-//                }
-//                if let speeachhint = payloadObj["speech_hint"] as? String {
-//                    ttsBody = speeachhint
-//                }
-//
-//                let componentType = getComponentType(templateType, tabledesign)
-//                if payloadObj.count == 0{
-//                    if let text =  jsonObject["text"] as? String{
-//                        textComponent.payload = text
-//                    }else{
-//                        textComponent.payload = jsonString
-//                    }
-//
-//                }else{
-//                    textComponent.payload = Utilities.stringFromJSONObject(object: payloadObj)
-//                }
-//
-//                message.addComponent(textComponent)
-//                let optionsComponent: Component = Component(componentType)
-//                optionsComponent.payload = Utilities.stringFromJSONObject(object: payloadObj)
-//                message.addComponent(optionsComponent)
-//
-//            }else{
-//
-//                let stringToEmoji = emojiClient.shortnameToUnicode(string: jsonString ?? "")
-//                let emojiToString = emojiClient.toShort(string: stringToEmoji)
-//                templateType = valData["type"] as? String ?? ""
-//                textComponent.payload = stringToEmoji //kkkkk
-//                ttsBody = emojiToString
-//                message.addComponent(textComponent)
-//            }
             }else if let jsonObject: [String: Any] = valData["val"] as? [String : Any]{
                 let type = jsonObject["type"] as? String ?? ""
                 let text = jsonObject["text"] as? String
@@ -1249,55 +1211,21 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         message.addComponent(textComponent)
                     }
                 }
-                
-                
-//                var payloadObj: [String: Any] = [String: Any]()
-//                payloadObj = jsonObject["payload"] as? [String : Any] ?? [:]
-//                templateType = payloadObj["template_type"] as? String ?? ""
-//
-//                var tabledesign = "responsive"
-//                if let value = payloadObj["table_design"] as? String {
-//                    tabledesign = value
-//                }
-//                if let speeachhint = payloadObj["speech_hint"] as? String {
-//                    ttsBody = speeachhint
-//                }
-//
-//                let componentType = getComponentType(templateType, tabledesign)
-//                if payloadObj.count == 0{
-//                    if let text =  jsonObject["text"] as? String{
-//                        textComponent.payload = text
-//                    }else{
-//                        textComponent.payload = jsonString
-//                    }
-//
-//                }else{
-//                    textComponent.payload = Utilities.stringFromJSONObject(object: payloadObj)
-//                }
-//
-//                message.addComponent(textComponent)
-//                let optionsComponent: Component = Component(componentType)
-//                optionsComponent.payload = Utilities.stringFromJSONObject(object: payloadObj)
-//                message.addComponent(optionsComponent)
-//
-//            }else{
-//
-//                let stringToEmoji = emojiClient.shortnameToUnicode(string: jsonString ?? "")
-//                let emojiToString = emojiClient.toShort(string: stringToEmoji)
-//                templateType = valData["type"] as? String ?? ""
-//                textComponent.payload = stringToEmoji //kkkkk
-//                ttsBody = emojiToString
-//                message.addComponent(textComponent)
-//            }
             }
             else{
-                
                 let stringToEmoji = emojiClient.shortnameToUnicode(string: jsonString ?? "")
                 let emojiToString = emojiClient.toShort(string: stringToEmoji)
                 templateType = valData["type"] as? String ?? ""
                 textComponent.payload = stringToEmoji //kkkkk
-                ttsBody = emojiToString
+                if lastMessageID == valData["messageId"] as? String{
+                    ttsBody = ""
+                }else{
+                    ttsBody = emojiToString
+                }
+                
                 message.addComponent(textComponent)
+                lastMessageID = valData["messageId"] as? String
+                
             }
         addMessages(message, ttsBody)
         NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
@@ -1785,9 +1713,9 @@ extension ChatMessagesViewController: KABotClientDelegate {
         
         let urlString:String?
         if SDKConfiguration.botConfig.isWebhookEnabled{
-            urlString = webhookUserIcon?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+            urlString = botHistoryIcon?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         }else{
-             urlString = leftImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+             urlString = botHistoryIcon?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         }
         
         info.setValue(urlString ?? "kora", forKey: "imageName");
@@ -2190,10 +2118,19 @@ extension ChatMessagesViewController: AssetsPickerViewControllerDelegate {
                     attachment["fileId"] = fileId
                     attachment["fileName"] = component.fileMeta.fileName
                     attachment["fileType"] = component.templateType
-                    if component.templateType == "image" || component.templateType == "video" {
+                    if component.templateType == "image" {
                         textTo = "\(text)\n \u{1F4F7} \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                    }else if component.templateType == "video" {
+                        textTo = "\(text)\n 🎥 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
                     } else {
-                        textTo = "\(text)\n 📁 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                         if component.fileMeta.fileExtn == "pdf"{
+                            textTo = "\(text)\n 📄 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                         }else if component.fileMeta.fileExtn == "mp3"{
+                            textTo = "\(text)\n 🎵 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                         }else{
+                            textTo = "\(text)\n 📁 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                         }
+                        
                     }
                     self.removeActivityIndicator(spinner: activityIndicator)
                     

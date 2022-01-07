@@ -635,8 +635,8 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         self.titleLbl?.text = jsonObject["text"] as? String
         let placeHolderIcon : UIImage = UIImage(named:"kora")!
         self.senderImageView.image = placeHolderIcon
-        if (webhookUserIcon != nil) {
-            if let fileUrl = URL(string: webhookUserIcon!) {
+        if (botHistoryIcon != nil) {
+            if let fileUrl = URL(string: botHistoryIcon!) {
                 self.senderImageView.setImageWith(fileUrl, placeholderImage: placeHolderIcon)
             }
        }

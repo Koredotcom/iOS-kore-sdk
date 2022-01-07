@@ -35,7 +35,8 @@ var leftImage = "cancel"
 var AcccesssTokenn:String?
 var attachmentKeybord = false
 var jwtToken:String?
-var webhookUserIcon:String?
+var botHistoryIcon:String?
+var lastMessageID:String?
 
 
 open class Common : NSObject {

@@ -339,6 +339,8 @@ open class KABotClient: NSObject {
         
         if let iconUrl = object?.iconUrl {
             message.iconUrl = iconUrl
+        }else{
+            message.iconUrl = botHistoryIcon
         }
         
         guard let messages = object?.messages, messages.count > 0 else {
@@ -574,8 +576,9 @@ open class KABotClient: NSObject {
     }
     
     func fetachWebhookHistory(){
-        self.webhookHistoryApi(20, success: { [weak self] (responseObj) in
+        self.webhookHistoryApi(100, success: { [weak self] (responseObj) in
             if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
+                botHistoryIcon = responseObject["icon"] as? String
                 self?.insertOrUpdateHistoryMessages(messages)
             }
             self?.historyRequestInProgress = false
@@ -617,6 +620,7 @@ open class KABotClient: NSObject {
         //getHistory - fetch all the history that the bot has previously
                 botClient.getHistory(offset: offset, success: { [weak self] (responseObj) in
                     if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
+                        botHistoryIcon = responseObject["icon"] as? String
                         self?.insertOrUpdateHistoryMessages(messages)
                     }
                     self?.historyRequestInProgress = false
