@@ -321,6 +321,9 @@ open class KABotClient: NSObject {
         }
         else if (templateType == "dropdown_template") {
             return .dropdown_template
+        }else if (templateType == "custom_table")
+        {
+            return .custom_table
         }
         return .text
     }

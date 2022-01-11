@@ -17,7 +17,7 @@ import Photos
 import MobileCoreServices
 
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate {
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate {
     // MARK: properties
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
@@ -494,6 +494,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
         else if (templateType == "dropdown_template") {
             return .dropdown_template
+        }else if (templateType == "custom_table")
+        {
+            return .custom_table
         }
         return .text
     }
@@ -790,6 +793,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.addObserver(self, selector: #selector(stopTypingStatusForBot), name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(dropDownTemplateActtion), name: NSNotification.Name(rawValue: dropDownTemplateNotification), object: nil)
+        
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(showCustomTableTemplateView), name: NSNotification.Name(rawValue: showCustomTableTemplateNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -813,6 +819,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StartTyping"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: dropDownTemplateNotification), object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showCustomTableTemplateNotification), object: nil)
+        
     }
     
     // MARK: notification handlers
@@ -1313,6 +1322,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let dataString: String = notification.object as! String
         let tableTemplateViewController = TableTemplateViewController(dataString: dataString)
         self.navigationController?.present(tableTemplateViewController, animated: true, completion: nil)
+    }
+    
+    // MARK: show CustomTableTemplateView
+    @objc func showCustomTableTemplateView(notification:Notification) {
+        let dataString: String = notification.object as! String
+        let customTableTemplateViewController = CustomTableTemplateVC(dataString: dataString)
+        customTableTemplateViewController.viewDelegate = self
+        self.navigationController?.present(customTableTemplateViewController, animated: true, completion: nil)
     }
     
     @objc func reloadTable(notification:Notification){

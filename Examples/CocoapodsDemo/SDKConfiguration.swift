@@ -4,7 +4,6 @@
 //
 //  Created by developer@kore.com on 12/16/16.
 //  Copyright © 2016 Kore Inc. All rights reserved.
-//
 
 import UIKit
 import KoreBotSDK

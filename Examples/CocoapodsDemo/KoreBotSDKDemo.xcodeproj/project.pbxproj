@@ -26,6 +26,11 @@
 		958D272B2553D6360099674B /* KAHTTPRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958D272A2553D6350099674B /* KAHTTPRequestManager.swift */; };
 		959BBC2425519AF800557811 /* KAAssetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959BBC2325519AF800557811 /* KAAssetManager.swift */; };
 		959BBC2625519C7E00557811 /* KAFileUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959BBC2525519C7E00557811 /* KAFileUtilities.swift */; };
+		95A5F8BC2785A97400F7BEEE /* CustomTableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A5F8BB2785A97400F7BEEE /* CustomTableBubbleView.swift */; };
+		95A5F8E22785B35F00F7BEEE /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A5F8E02785B35F00F7BEEE /* CustomTableViewCell.swift */; };
+		95A5F8E32785B35F00F7BEEE /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A5F8E12785B35F00F7BEEE /* CustomTableViewCell.xib */; };
+		95A5F8E72785C4B700F7BEEE /* CustomTableTemplateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A5F8E52785C4B700F7BEEE /* CustomTableTemplateVC.swift */; };
+		95A5F8E82785C4B700F7BEEE /* CustomTableTemplateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A5F8E62785C4B700F7BEEE /* CustomTableTemplateVC.xib */; };
 		CD0563FF25247F1900E75768 /* InLineFormBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0563EF25247F1800E75768 /* InLineFormBubbleView.swift */; };
 		CD05640025247F1900E75768 /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0563F225247F1900E75768 /* FloatRatingView.swift */; };
 		CD05640125247F1900E75768 /* FeedbackBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0563F325247F1900E75768 /* FeedbackBubbleView.swift */; };
@@ -181,6 +186,11 @@
 		958D272A2553D6350099674B /* KAHTTPRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAHTTPRequestManager.swift; sourceTree = "<group>"; };
 		959BBC2325519AF800557811 /* KAAssetManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAAssetManager.swift; sourceTree = "<group>"; };
 		959BBC2525519C7E00557811 /* KAFileUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAFileUtilities.swift; sourceTree = "<group>"; };
+		95A5F8BB2785A97400F7BEEE /* CustomTableBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableBubbleView.swift; sourceTree = "<group>"; };
+		95A5F8E02785B35F00F7BEEE /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		95A5F8E12785B35F00F7BEEE /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
+		95A5F8E52785C4B700F7BEEE /* CustomTableTemplateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableTemplateVC.swift; sourceTree = "<group>"; };
+		95A5F8E62785C4B700F7BEEE /* CustomTableTemplateVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableTemplateVC.xib; sourceTree = "<group>"; };
 		CD0563EF25247F1800E75768 /* InLineFormBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InLineFormBubbleView.swift; sourceTree = "<group>"; };
 		CD0563F225247F1900E75768 /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
 		CD0563F325247F1900E75768 /* FeedbackBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackBubbleView.swift; sourceTree = "<group>"; };
@@ -391,6 +401,18 @@
 				959BBC2525519C7E00557811 /* KAFileUtilities.swift */,
 			);
 			path = "File Upload";
+			sourceTree = "<group>";
+		};
+		95A5F8BA2785A95700F7BEEE /* CustomTable */ = {
+			isa = PBXGroup;
+			children = (
+				95A5F8BB2785A97400F7BEEE /* CustomTableBubbleView.swift */,
+				95A5F8E02785B35F00F7BEEE /* CustomTableViewCell.swift */,
+				95A5F8E12785B35F00F7BEEE /* CustomTableViewCell.xib */,
+				95A5F8E52785C4B700F7BEEE /* CustomTableTemplateVC.swift */,
+				95A5F8E62785C4B700F7BEEE /* CustomTableTemplateVC.xib */,
+			);
+			path = CustomTable;
 			sourceTree = "<group>";
 		};
 		A851461715333BEDEFC8310F /* Frameworks */ = {
@@ -836,6 +858,7 @@
 				D1F3389B2201D99A005BE5F1 /* Table */,
 				D1F338A72201D99A005BE5F1 /* Menu */,
 				D1F338A92201D99A005BE5F1 /* ListBubbleView.swift */,
+				95A5F8BA2785A95700F7BEEE /* CustomTable */,
 				950AF57F2696C41B003B4D58 /* Audio */,
 				9518C067255A8D4000741731 /* DropDownBubbleView */,
 				CD0563F025247F1900E75768 /* Feedback */,
@@ -1051,10 +1074,12 @@
 			files = (
 				D1F339022201D99A005BE5F1 /* AppLaunchViewController.xib in Resources */,
 				CDB86A0824C00CD000D1CCC7 /* TaskMenuTablViewCell.xib in Resources */,
+				95A5F8E82785C4B700F7BEEE /* CustomTableTemplateVC.xib in Resources */,
 				D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */,
 				CD4BFFFC24D160CA008E08CE /* NotificationCustomView.xib in Resources */,
 				CD05640725247F1900E75768 /* ratingselect_2.gif in Resources */,
 				CD05640325247F1900E75768 /* FeedbackCell.xib in Resources */,
+				95A5F8E32785B35F00F7BEEE /* CustomTableViewCell.xib in Resources */,
 				CD05640625247F1900E75768 /* ratingselect_1.gif in Resources */,
 				950AF58A2696C6AC003B4D58 /* AudioBubbleView.xib in Resources */,
 				D101F92A24E163F800D47DB8 /* ChatMessagesViewController.xib in Resources */,
@@ -1237,11 +1262,14 @@
 				951EA67B261EDC1900EE565D /* InlineFormTableViewCell.swift in Sources */,
 				D1F338F12201D99A005BE5F1 /* MiniTableViewCell.swift in Sources */,
 				CD05640025247F1900E75768 /* FloatRatingView.swift in Sources */,
+				95A5F8E22785B35F00F7BEEE /* CustomTableViewCell.swift in Sources */,
 				CD8C5FD62509E4E800E5EB7D /* ListWidgetBubbleView.swift in Sources */,
 				953FA4CC255286C9006EA311 /* AttachmentCell.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
 				9518C069255A8D5900741731 /* DropDownBubbleView.swift in Sources */,
 				D1F338E82201D99A005BE5F1 /* ResponsiveTableBubbleView.swift in Sources */,
+				95A5F8E72785C4B700F7BEEE /* CustomTableTemplateVC.swift in Sources */,
+				95A5F8BC2785A97400F7BEEE /* CustomTableBubbleView.swift in Sources */,
 				CDB86A0C24C00CD000D1CCC7 /* TaskMenuTablViewCell.swift in Sources */,
 				D1F338D02201D99A005BE5F1 /* TSMarkdownParser.m in Sources */,
 				D1F338F22201D99A005BE5F1 /* MenuBubbleView.swift in Sources */,

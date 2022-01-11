@@ -123,6 +123,9 @@ class BubbleView: UIView {
         case .dropdown_template:
             bubbleView = DropDownBubbleView()
             break
+        case .custom_table:
+            bubbleView = CustomTableBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         
