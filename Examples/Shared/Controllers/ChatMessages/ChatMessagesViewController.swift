@@ -15,7 +15,7 @@ import Mantle
 import AssetsPickerViewController
 import Photos
 import MobileCoreServices
-
+import emojione_ios
 
 class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate {
     // MARK: properties
@@ -25,7 +25,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var botClient: BotClient!
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
     var kaBotClient: KABotClient!
-    
+    let emojiClient: ClientInterface = Client()
     
     @IBOutlet weak var threadContainerView: UIView!
     @IBOutlet weak var quickSelectContainerView: UIView!
@@ -131,11 +131,22 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
         
         
-        isSpeakingEnabled = true
+        isSpeakingEnabled = true 
         self.speechSynthesizer = AVSpeechSynthesizer()
         
         if SDKConfiguration.botConfig.isWebhookEnabled{
             NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
+            self.kaBotClient.webhookBotMetaApi(success: { [weak self] (dictionary) in
+                print(dictionary)
+                if let dic = dictionary as? [String: Any],
+                    let userIcon: String = dic["icon"] as? String  {
+                    botHistoryIcon = userIcon
+                }
+                 
+                }, failure: { (error) in
+                    print(error)
+            })
+            
             self.kaBotClient.webhookSendMessage("ON_CONNECT", "event",[:], success: { [weak self] (dictionary) in
                 print(dictionary)
                 if dictionary["pollId"] as? String == nil{
@@ -167,7 +178,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancel(_:)))
         
         let rightImage = UIImage(named: "more")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(more(_:)))
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: .plain, target: self, action: #selector(more(_:)))
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         
@@ -244,6 +255,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     // MARK: cancel
     @objc func cancel(_ sender: Any) {
         prepareForDeinit()
+        NotificationCenter.default.post(name: Notification.Name(reloadVideoCellNotification), object: nil)
         navigationController?.setNavigationBarHidden(true, animated: false)
         navigationController?.popViewController(animated: true)
     }
@@ -819,8 +831,12 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StartTyping"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: dropDownTemplateNotification), object: nil)
+
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showCustomTableTemplateNotification), object: nil)
+
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: reloadVideoCellNotification), object: nil)
+
         
     }
     
@@ -972,6 +988,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             if dictionary["pollId"] as? String == nil{
                 self?.receviceMessage(dictionary: dictionary)
             }else{
+                self?.receviceMessage(dictionary: dictionary)
                 self?.callPollApi(pollID: dictionary["pollId"] as! NSString)
             }
             
@@ -1009,45 +1026,225 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func receviceMessage(dictionary:[String: Any]){
-        let message: Message = Message()
-        message.messageType = .reply
-        let textComponent: Component = Component()
-        var templateType = ""
+       
         
         let data: Array = dictionary["data"] != nil ? dictionary["data"] as! Array : []
-        if data.count > 0{
-            let valData: Dictionary<String, Any> = data[0] as! Dictionary<String, Any>
+        for i in 0..<data.count{
             
+            let message: Message = Message()
+            message.messageType = .reply
+            let textComponent: Component = Component()
+            var templateType = ""
+            var ttsBody: String?
+            
+            
+            let valData: Dictionary<String, Any> = data[i] as! Dictionary<String, Any>
+            var textMessage: Message! = nil
             message.sentDate = self.dateFormatter().date(from: valData["createdOn"] as? String ?? "")
             message.messageId = valData["messageId"] as? String
+            if let type = valData["createdOn"] as? String, type == "incoming" {
+                message.messageType = .default
+            }
             if let iconUrl = valData["iconUrl"] as? String {
                 message.iconUrl = iconUrl
+            }else{
+                message.iconUrl = botHistoryIcon
             }
             
             let jsonString = valData["val"] as? String
             if ((jsonString?.contains("payload")) != nil), let jsonObject: [String: Any] = Utilities.jsonObjectFromString(jsonString: jsonString ?? "") as? [String : Any] {
                 
-                var payloadObj: [String: Any] = [String: Any]()
-                payloadObj = jsonObject["payload"] as! [String : Any]
-                templateType = payloadObj["template_type"] as? String ?? ""
                 
-                let componentType = getComponentType(templateType, "responsive")
-                textComponent.payload = Utilities.stringFromJSONObject(object: payloadObj)
-                message.addComponent(textComponent)
-                let optionsComponent: Component = Component(componentType)
-                optionsComponent.payload = Utilities.stringFromJSONObject(object: payloadObj)
-                message.addComponent(optionsComponent)
-                
-            }else{
-                templateType = valData["type"] as? String ?? ""
-                textComponent.payload = jsonString
-                message.addComponent(textComponent)
+                let type = jsonObject["type"] as? String ?? ""
+                let text = jsonObject["text"] as? String
+                ttsBody = jsonObject["speech_hint"] as? String
+                switch type {
+                case "template":
+                    if let dictionary = jsonObject["payload"] as? [String: Any] {
+                        let templateType = dictionary["template_type"] as? String ?? ""
+                        var tabledesign = "responsive"
+                        if let value = dictionary["table_design"] as? String {
+                            tabledesign = value
+                        }
+
+                        let componentType = getComponentType(templateType, tabledesign)
+                        if componentType != .quickReply {
+                            
+                        }
+                        
+                        ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
+                        if let tText = dictionary["text"] as? String, tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable) {
+                            textMessage = Message()
+                            textMessage?.messageType = .reply
+                            textMessage?.sentDate = message.sentDate
+                            textMessage?.messageId = message.messageId
+                            if let iconUrl = valData["iconUrl"] as? String {
+                                textMessage?.iconUrl = iconUrl
+                            }
+                            let textComponent: Component = Component()
+                            textComponent.payload = tText
+                            textMessage?.addComponent(textComponent)
+                        }
+                        
+                        let optionsComponent: Component = Component(componentType)
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.addComponent(optionsComponent)
+                    }
+                case "image":
+                    if let _ = jsonObject["payload"] as? [String: Any] {
+                        let optionsComponent: Component = Component(.image)
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject)
+                        message.sentDate = self.dateFormatter().date(from: valData["createdOn"] as? String ?? "")
+                        message.addComponent(optionsComponent)
+                    }
+                case "video":
+                    if let _ = jsonObject["payload"] as? [String: Any] {
+                        let  componentType = Component(.video)
+                        let optionsComponent: Component = componentType
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject)
+                        message.sentDate = self.dateFormatter().date(from: valData["createdOn"] as? String ?? "")
+                        message.addComponent(optionsComponent)
+                    }
+                case "audio":
+                    if let dictionary = jsonObject["payload"] as? [String: Any] {
+                        let  componentType = Component(.audio)
+                        let optionsComponent: Component = componentType
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = self.dateFormatter().date(from: valData["createdOn"] as? String ?? "")
+                        message.addComponent(optionsComponent)
+                    }
+                case "message":
+                    if let dictionary = jsonObject["payload"] as? [String: Any] {
+                        let  componentType = dictionary["audioUrl"] != nil ? Component(.audio) : Component(.video)
+                        let optionsComponent: Component = componentType
+                        if let speechText = dictionary["text"] as? String{
+                            ttsBody = speechText
+                        }
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = self.dateFormatter().date(from: valData["createdOn"] as? String ?? "")
+                        message.addComponent(optionsComponent)
+                    }
+                case "error":
+                    if let dictionary = jsonObject["payload"] as? [String: Any] {
+                        let errorComponent: Component = Component(.error)
+                        errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.addComponent(errorComponent)
+                        ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
+                    }
+                default:
+                    if let text = text, text.count > 0 {
+                        let textComponent: Component = Component()
+                        textComponent.payload = text
+                        message.addComponent(textComponent)
+                    }
+                }
+            }else if let jsonObject: [String: Any] = valData["val"] as? [String : Any]{
+                let type = jsonObject["type"] as? String ?? ""
+                let text = jsonObject["text"] as? String
+                ttsBody = jsonObject["speech_hint"] as? String
+                switch type {
+                case "template":
+                    if let dictionary = jsonObject["payload"] as? [String: Any] {
+                        let templateType = dictionary["template_type"] as? String ?? ""
+                        var tabledesign = "responsive"
+                        if let value = dictionary["table_design"] as? String {
+                            tabledesign = value
+                        }
+
+                        let componentType = getComponentType(templateType, tabledesign)
+                        if componentType != .quickReply {
+                            
+                        }
+                        
+                        ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
+                        if let tText = dictionary["text"] as? String, tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable) {
+                            textMessage = Message()
+                            textMessage?.messageType = .reply
+                            textMessage?.sentDate = message.sentDate
+                            textMessage?.messageId = message.messageId
+                            if let iconUrl = valData["iconUrl"] as? String {
+                                textMessage?.iconUrl = iconUrl
+                            }
+                            let textComponent: Component = Component()
+                            textComponent.payload = tText
+                            textMessage?.addComponent(textComponent)
+                        }
+                        
+                        let optionsComponent: Component = Component(componentType)
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.addComponent(optionsComponent)
+                    }
+                case "image":
+                    if let _ = jsonObject["payload"] as? [String: Any] {
+                        let optionsComponent: Component = Component(.image)
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject)
+                        message.sentDate = self.dateFormatter().date(from: valData["createdOn"] as? String ?? "")
+                        message.addComponent(optionsComponent)
+                    }
+                case "video":
+                    if let _ = jsonObject["payload"] as? [String: Any] {
+                        let  componentType = Component(.video)
+                        let optionsComponent: Component = componentType
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject)
+                        message.sentDate = self.dateFormatter().date(from: valData["createdOn"] as? String ?? "")
+                        message.addComponent(optionsComponent)
+                    }
+                case "audio":
+                    if let dictionary = jsonObject["payload"] as? [String: Any] {
+                        let  componentType = Component(.audio)
+                        let optionsComponent: Component = componentType
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = self.dateFormatter().date(from: valData["createdOn"] as? String ?? "")
+                        message.addComponent(optionsComponent)
+                    }
+                case "message":
+                    if let dictionary = jsonObject["payload"] as? [String: Any] {
+                        let  componentType = dictionary["audioUrl"] != nil ? Component(.audio) : Component(.video)
+                        let optionsComponent: Component = componentType
+                        if let speechText = dictionary["text"] as? String{
+                            ttsBody = speechText
+                        }
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = self.dateFormatter().date(from: valData["createdOn"] as? String ?? "")
+                        message.addComponent(optionsComponent)
+                    }
+                case "error":
+                    if let dictionary = jsonObject["payload"] as? [String: Any] {
+                        let errorComponent: Component = Component(.error)
+                        errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.addComponent(errorComponent)
+                        ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
+                    }
+                default:
+                    if let text = text, text.count > 0 {
+                        let textComponent: Component = Component()
+                        textComponent.payload = text
+                        message.addComponent(textComponent)
+                    }
+                }
             }
-            
-        }
-        addMessages(message, "")
+            else{
+                let stringToEmoji = emojiClient.shortnameToUnicode(string: jsonString ?? "")
+                let emojiToString = emojiClient.toShort(string: stringToEmoji)
+                templateType = valData["type"] as? String ?? ""
+                textComponent.payload = stringToEmoji //kkkkk
+                if lastMessageID == valData["messageId"] as? String{
+                    ttsBody = ""
+                }else{
+                    ttsBody = emojiToString
+                }
+                
+                message.addComponent(textComponent)
+                lastMessageID = valData["messageId"] as? String
+                
+            }
+        addMessages(message, ttsBody)
         NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
     }
+}
+    
+    
+    
     
     func sendTextMessage(_ text: String, dictionary: [String: Any]? = nil, options: [String: Any]?) {
         if attachmentArray.count>0 {
@@ -1117,11 +1314,24 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func linkButtonTapAction(urlString: String) {
-        if (urlString.count > 0) {
-            let url: URL = URL(string: urlString)!
-            let webViewController = SFSafariViewController(url: url)
-            present(webViewController, animated: true, completion:nil)
+        if verifyUrl(urlString: urlString){
+            if (urlString.count > 0) {
+                NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
+                let url: URL = URL(string: urlString)!
+                let webViewController = SFSafariViewController(url: url)
+                present(webViewController, animated: true, completion:nil)
+            }
         }
+        
+    }
+    
+    func verifyUrl(urlString: String?) -> Bool {
+        if let urlString = urlString {
+            if let url = URL(string: urlString) {
+                return UIApplication.shared.canOpenURL(url)
+            }
+        }
+        return false
     }
     
     func populateQuickReplyCards(with message: KREMessage?) {
@@ -1519,7 +1729,14 @@ extension ChatMessagesViewController: KABotClientDelegate {
         let botId:String = SDKConfiguration.botConfig.botId
         let info:NSMutableDictionary = NSMutableDictionary.init()
         info.setValue(botId, forKey: "botId");
-        let urlString = leftImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        
+        let urlString:String?
+        if SDKConfiguration.botConfig.isWebhookEnabled{
+            urlString = botHistoryIcon?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        }else{
+             urlString = botHistoryIcon?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        }
+        
         info.setValue(urlString ?? "kora", forKey: "imageName");
         self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5)
     }
@@ -1920,10 +2137,19 @@ extension ChatMessagesViewController: AssetsPickerViewControllerDelegate {
                     attachment["fileId"] = fileId
                     attachment["fileName"] = component.fileMeta.fileName
                     attachment["fileType"] = component.templateType
-                    if component.templateType == "image" || component.templateType == "video" {
+                    if component.templateType == "image" {
                         textTo = "\(text)\n \u{1F4F7} \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                    }else if component.templateType == "video" {
+                        textTo = "\(text)\n 🎥 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
                     } else {
-                        textTo = "\(text)\n 📁 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                         if component.fileMeta.fileExtn == "pdf"{
+                            textTo = "\(text)\n 📄 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                         }else if component.fileMeta.fileExtn == "mp3"{
+                            textTo = "\(text)\n 🎵 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                         }else{
+                            textTo = "\(text)\n 📁 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                         }
+                        
                     }
                     self.removeActivityIndicator(spinner: activityIndicator)
                     

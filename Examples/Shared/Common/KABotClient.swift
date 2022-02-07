@@ -342,6 +342,8 @@ open class KABotClient: NSObject {
         
         if let iconUrl = object?.iconUrl {
             message.iconUrl = iconUrl
+        }else{
+            message.iconUrl = botHistoryIcon
         }
         
         guard let messages = object?.messages, messages.count > 0 else {
@@ -415,6 +417,25 @@ open class KABotClient: NSObject {
                     case "message":
                         if let dictionary = payload["payload"] as? [String: Any] {
                             let  componentType = dictionary["audioUrl"] != nil ? Component(.audio) : Component(.video)
+                            let optionsComponent: Component = componentType
+                            if let speechText = dictionary["text"] as? String{
+                                ttsBody = speechText
+                            }
+                            optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                            message.sentDate = object?.createdOn
+                            message.addComponent(optionsComponent)
+                        }
+                    case "video":
+                        if let _ = payload["payload"] as? [String: Any] {
+                            let  componentType = Component(.video)
+                            let optionsComponent: Component = componentType
+                            optionsComponent.payload = Utilities.stringFromJSONObject(object: payload)
+                            message.sentDate = object?.createdOn
+                            message.addComponent(optionsComponent)
+                        }
+                    case "audio":
+                        if let dictionary = payload["payload"] as? [String: Any] {
+                            let  componentType = Component(.audio)
                             let optionsComponent: Component = componentType
                             optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                             message.sentDate = object?.createdOn
@@ -558,8 +579,9 @@ open class KABotClient: NSObject {
     }
     
     func fetachWebhookHistory(){
-        self.webhookHistoryApi(20, success: { [weak self] (responseObj) in
+        self.webhookHistoryApi(100, success: { [weak self] (responseObj) in
             if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
+                botHistoryIcon = responseObject["icon"] as? String
                 self?.insertOrUpdateHistoryMessages(messages)
             }
             self?.historyRequestInProgress = false
@@ -601,6 +623,7 @@ open class KABotClient: NSObject {
         //getHistory - fetch all the history that the bot has previously
                 botClient.getHistory(offset: offset, success: { [weak self] (responseObj) in
                     if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
+                        botHistoryIcon = responseObject["icon"] as? String
                         self?.insertOrUpdateHistoryMessages(messages)
                     }
                     self?.historyRequestInProgress = false
@@ -681,7 +704,7 @@ open class KABotClient: NSObject {
                     componentModel.type = jsonObject["type"] as? String
                     
                     var payloadObj: [String: Any] = [String: Any]()
-                    payloadObj["payload"] = jsonObject["payload"] as! [String : Any]
+                    payloadObj["payload"] = jsonObject["payload"] as? [String : Any]
                     payloadObj["type"] = jsonObject["type"]
                     componentModel.payload = payloadObj
                 } else {
@@ -783,7 +806,7 @@ open class KABotClient: NSObject {
         
     }
     
-    // MARK: Search API'S
+    // MARK:
     func pollApi(_ pollID: String!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
         // Session Configuration
@@ -820,7 +843,7 @@ open class KABotClient: NSObject {
         
     }
     
-    // MARK: Search API'S
+    // MARK:
     func webhookHistoryApi(_ limit: Int!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
         // Session Configuration
@@ -831,6 +854,42 @@ open class KABotClient: NSObject {
         
         // NOTE: You must set your URL to generate JWT.
         let urlString: String = "\(SDKConfiguration.serverConfig.BOT_SERVER)/api/chathistory/\(SDKConfiguration.botConfig.botId)/ivr?botId=\(SDKConfiguration.botConfig.botId)&limit=\(limit!)"
+        let requestSerializer = AFJSONRequestSerializer()
+        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
+        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+        
+        let authorizationStr = "bearer \(jwtToken!)"
+        requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
+        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        
+        let parameters: NSDictionary = [:]
+        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.get(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
+            if let dictionary = responseObject as? [String: Any]{
+                success?(dictionary)
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                failure?(error)
+                NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+            }
+        }) { (sessionDataTask, error) in
+            failure?(error)
+        }
+        
+    }
+    
+    // MARK:
+    func webhookBotMetaApi( success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+        
+        // Session Configuration
+        let configuration = URLSessionConfiguration.default
+        
+        //Manager
+        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
+        
+        // NOTE: You must set your URL to generate JWT.
+        let urlString: String = "\(SDKConfiguration.serverConfig.BOT_SERVER)/api/botmeta/\(SDKConfiguration.botConfig.botId)"
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")

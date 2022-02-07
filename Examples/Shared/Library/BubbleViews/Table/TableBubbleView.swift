@@ -49,7 +49,16 @@ class TableData {
             let values = element["Values"] as! Array<Any>
             var row = Array<String>()
             for value in values {
-                let val = value as? String ?? ""
+                var val = ""
+                if let intt = value as? Int {
+                     val = String(intt)
+                  }
+                  else if let str = value as? String {
+                    val = str
+                  }
+                  else {
+                    val = value as? String ?? ""
+                  }
                 row.append(val)
             }
             rows.append(row)
@@ -58,6 +67,13 @@ class TableData {
         print(headers)
     }
 }
+
+extension String {
+    var isInt: Bool {
+        return Int(self) != nil
+    }
+}
+
 class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var collectionView: UICollectionView!
     var showMoreButton: UIButton!

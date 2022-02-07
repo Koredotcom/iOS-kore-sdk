@@ -64,9 +64,10 @@ class ComposeBarView: UIView {
         self.growingTextView.backgroundColor = .white
         self.growingTextView.layer.cornerRadius = 10.0
         self.growingTextView.isUserInteractionEnabled = false
+        //self.growingTextView.textView.text = "text Template with video attachment"//"Pie Chart"//"Quick Replies"
         
         let attributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: UIFont(name: "HelveticaNeue", size: 14.0)!, NSAttributedString.Key.foregroundColor: Common.UIColorRGB(0xB5B9BA)]
-        self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Say Something...", attributes:attributes)
+        self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Message...", attributes:attributes)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidBeginEditingNotification(_ :)), name: UITextView.textDidBeginEditingNotification, object: self.growingTextView.textView)
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidChangeNotification(_ :)), name: UITextView.textDidChangeNotification, object: self.growingTextView.textView)
@@ -121,7 +122,7 @@ class ComposeBarView: UIView {
         self.attachmentButton.imageView?.contentMode = .scaleAspectFill
         self.attachmentButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
         self.attachmentButton.addTarget(self, action: #selector(self.composeBarAttachmentButtonAction(_:)), for: .touchUpInside)
-        self.menuButton.isHidden = false
+        
         self.attachmentButton.contentEdgeInsets = UIEdgeInsets(top: 9.0, left: 3.0, bottom: 7.0, right: 3.0)
         self.attachmentButton.clipsToBounds = true
         self.addSubview(self.attachmentButton)
@@ -143,8 +144,8 @@ class ComposeBarView: UIView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[bottomLineView]|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[bottomLineView(0.5)]|", options:[], metrics:nil, views:views))
         
-//        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[growingTextView][sendButton]-5-|", options:[], metrics:nil, views:views))
-         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[menuButton(32)]-5-[growingTextView]-5-[sendButton]-5-[attachmentButton(25)]-8-|", options:[], metrics:nil, views:views))
+
+         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[menuButton(0)]-5-[growingTextView]-5-[sendButton]-5-[attachmentButton(25)]-8-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[growingTextView]-5-[speechToTextButton]-5-[attachmentButton]-5-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-7-[growingTextView]-7-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[sendButton]-6-|", options:[], metrics:nil, views:views))

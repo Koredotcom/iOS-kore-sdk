@@ -116,14 +116,7 @@ class CalenderBubbleView: BubbleView {
         self.cardView = UIView(frame:.zero)
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
-//        cardView.layer.rasterizationScale =  UIScreen.main.scale
-//        cardView.layer.shadowColor = UIColor(red: 232/255, green: 232/255, blue: 230/255, alpha: 1).cgColor
-//        cardView.layer.shadowOpacity = 1
-//        cardView.layer.shadowOffset =  CGSize(width: 0.0, height: -3.0)
-//        cardView.layer.shadowRadius = 6.0
-//        cardView.layer.shouldRasterize = true
         cardView.backgroundColor =  UIColor.clear
-//        cardView.backgroundColor =  UIColor.white
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))

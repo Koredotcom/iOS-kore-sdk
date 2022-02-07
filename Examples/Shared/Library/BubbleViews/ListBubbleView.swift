@@ -10,12 +10,13 @@ import UIKit
 import KoreBotSDK
 
 class ListBubbleView: BubbleView {
-    static let elementsLimit: Int = 4
+    static let elementsLimit: Int = 3
 
     var optionsView: KREOptionsView!
-    
+    var reloadTable = false
     public var optionsAction: ((_ text: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
+    var spaceing = 10.0
     
     override func initialize() {
         super.initialize()
@@ -40,6 +41,11 @@ class ListBubbleView: BubbleView {
                 self?.linkAction(text)
             }
         }
+        
+        //if !reloadTable{
+           // reloadTable = true
+            NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+       // }
     }
     
     // MARK: populate components
@@ -73,16 +79,21 @@ class ListBubbleView: BubbleView {
                     
                     options.append(option)
                 }
-                
-                if let buttons = jsonObject["buttons"] as? Array<[String: Any]>, let buttonElement = buttons.first {
-                    let title: String = buttonElement["title"] != nil ? buttonElement["title"] as! String : ""
-                    
-                    let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button)
-                    if let action = Utilities.getKREActionFromDictionary(dictionary: buttonElement) {
-                        option.setDefaultAction(action: action)
+                spaceing = 0.0
+                if elements.count > 3{
+                    if let buttons = jsonObject["buttons"] as? Array<[String: Any]>, let buttonElement = buttons.first {
+                        let title: String = buttonElement["title"] != nil ? buttonElement["title"] as! String : ""
+                        
+                        let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button)
+                        if let action = Utilities.getKREActionFromDictionary(dictionary: buttonElement) {
+                            option.setDefaultAction(action: action)
+                        }
+                        options.append(option)
                     }
-                    options.append(option)
+                }else{
+                    spaceing = 15.0
                 }
+                
                 
                 self.optionsView.options.removeAll()
                 self.optionsView.options = options
@@ -93,7 +104,7 @@ class ListBubbleView: BubbleView {
     //MARK: View height calculation
     override var intrinsicContentSize : CGSize {
         let height = self.optionsView.getExpectedHeight(width: BubbleViewMaxWidth)
-        let viewSize:CGSize = CGSize(width: BubbleViewMaxWidth, height: height)
+        let viewSize:CGSize = CGSize(width: BubbleViewMaxWidth, height: height + CGFloat(spaceing))
         return viewSize;
     }
 }

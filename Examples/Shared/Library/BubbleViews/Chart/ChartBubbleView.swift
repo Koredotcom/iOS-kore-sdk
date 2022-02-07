@@ -16,12 +16,26 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
     var cardView : UIView!
     var xAxisValues: Array<String>!
     
+    var tileBgv: UIView!
+    var titleLbl: KREAttributedLabel!
+    let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
+    let kMinTextWidth: CGFloat = 20.0
+    var senderImageView: UIImageView!
+    
+    
     public var optionsAction: ((_ text: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
     var cellHeight: Double = 280.0
     var lengendsLimit = 5
+    
     override func applyBubbleMask() {
         //nothing to put here
+        if(self.maskLayer == nil){
+            self.maskLayer = CAShapeLayer()
+            self.tileBgv.layer.mask = self.maskLayer
+        }
+        self.maskLayer.path = self.createBezierPath().cgPath
+        self.maskLayer.position = CGPoint(x:0, y:0)
     }
     
     override var tailPosition: BubbleMaskTailPosition! {
@@ -64,22 +78,75 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         cardView.layer.shadowRadius = 6.0
         cardView.layer.shouldRasterize = true
         cardView.backgroundColor =  UIColor.white
-        let cardViews: [String: UIView] = ["cardView": cardView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+        
+        self.tileBgv = UIView(frame:.zero)
+        self.tileBgv.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.tileBgv)
+        self.tileBgv.layer.rasterizationScale =  UIScreen.main.scale
+        self.tileBgv.layer.shouldRasterize = true
+        self.tileBgv.layer.cornerRadius = 2.0
+        self.tileBgv.clipsToBounds = true
+        self.tileBgv.backgroundColor =  .white
+        if #available(iOS 11.0, *) {
+            self.tileBgv.roundCorners([.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.clear, borderWidth: 1.5)
+        } else {
+            
+        }
+        
+        self.senderImageView = UIImageView()
+        self.senderImageView.contentMode = .scaleAspectFit
+        self.senderImageView.clipsToBounds = true
+        self.senderImageView.layer.cornerRadius = 15
+        self.senderImageView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.senderImageView)
+        
+        let cardViews: [String: UIView] = ["senderImageView": senderImageView, "tileBgv": tileBgv, "cardView": cardView]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[senderImageView(30)]", options: [], metrics: nil, views: cardViews))
+        
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(30)]-10-[tileBgv]", options: [], metrics: nil, views: cardViews))
+        
+        
+        self.titleLbl = KREAttributedLabel(frame: CGRect.zero)
+        self.titleLbl.textColor = Common.UIColorRGB(0x484848)
+        self.titleLbl.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
+        self.titleLbl.numberOfLines = 0
+        self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
+        self.titleLbl.isUserInteractionEnabled = true
+        self.titleLbl.contentMode = UIView.ContentMode.topLeft
+        self.titleLbl.translatesAutoresizingMaskIntoConstraints = false
+        self.tileBgv.addSubview(self.titleLbl)
+        self.titleLbl.adjustsFontSizeToFitWidth = true
+        self.titleLbl.backgroundColor = .clear
+        self.titleLbl.layer.cornerRadius = 6.0
+        self.titleLbl.clipsToBounds = true
+        self.titleLbl.sizeToFit()
+        
+        let subView: [String: UIView] = ["titleLbl": titleLbl]
+        let metrics: [String: NSNumber] = ["textLabelMaxWidth": NSNumber(value: Float(kMaxTextWidth)), "textLabelMinWidth": NSNumber(value: Float(kMinTextWidth))]
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLbl]-10-|", options: [], metrics: metrics, views: subView))
+        
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[titleLbl(>=textLabelMinWidth,<=textLabelMaxWidth)]-16-|", options: [], metrics: metrics, views: subView))
+        
     }
     
     // MARK: initialize chart views
     func intializePieChartView(_ jsonObject: NSDictionary,_ pieType: String){
         intializeCardLayout()
         
+        
+        
         self.pcView = PieChartView()
         self.pcView.translatesAutoresizingMaskIntoConstraints = false
         self.cardView.addSubview(self.pcView)
         
-        let views: [String: UIView] = ["pcView": pcView]
+        let views: [String: UIView] = [ "pcView": pcView]
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[pcView]-15-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[pcView]-15-|", options: [], metrics: nil, views: views))
+      
+        
+        
         
         let elements: Array<Dictionary<String, Any>> = jsonObject["elements"] != nil ? jsonObject["elements"] as! Array<Dictionary<String, Any>> : []
         let elementsCount: Int = elements.count
@@ -141,6 +208,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             self.pcView.marker = marker
         }
         
+       
     }
     
     func intializeLineChartView(){
@@ -563,8 +631,16 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
                 setDataForStackedBarChart(jsonObject)
             }
         }
+        
+        self.titleLbl?.text = jsonObject["text"] as? String
+        let placeHolderIcon : UIImage = UIImage(named:"kora")!
+        self.senderImageView.image = placeHolderIcon
+        if (botHistoryIcon != nil) {
+            if let fileUrl = URL(string: botHistoryIcon!) {
+                self.senderImageView.setImageWith(fileUrl, placeholderImage: placeHolderIcon)
+            }
+       }
     }
-    
     // MARK: populate components
     override func populateComponents() {
         if (components.count > 0) {
@@ -580,7 +656,13 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
     }
     
     override var intrinsicContentSize : CGSize {
-        return CGSize(width: 0.0, height: cellHeight)
+        let limitingSize: CGSize  = CGSize(width: kMaxTextWidth, height: CGFloat.greatestFiniteMagnitude)
+        var textSize: CGSize = self.titleLbl.sizeThatFits(limitingSize)
+        if textSize.height < self.titleLbl.font.pointSize {
+            textSize.height = self.titleLbl.font.pointSize
+        }
+        
+        return CGSize(width: 0.0, height: cellHeight + Double(textSize.height) + 20)
     }
     
     override func prepareForReuse() {
