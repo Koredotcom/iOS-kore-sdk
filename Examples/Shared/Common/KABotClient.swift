@@ -738,7 +738,6 @@ open class KABotClient: NSObject {
         botClient.setReachabilityStatusChange(status)
     }
     
-    //https://qa1-bots.kore.ai
     // MARK: - Webhook Send message
     func webhookSendMessage(_ text: String!, _ type: String!,_ attachmentDic: [String: Any]!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
@@ -748,8 +747,6 @@ open class KABotClient: NSObject {
         //Manager
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
         
-        // NOTE: You must set your URL to generate JWT.
-        //let urlString: String = "\(FindlyUrl)searchAssistant/search/\(findlySidx)"
         let urlString: String = "\(SDKConfiguration.serverConfig.BOT_SERVER)/chatbot/v2/webhook/\(SDKConfiguration.botConfig.botId)"
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
@@ -757,17 +754,8 @@ open class KABotClient: NSObject {
         
         let authorizationStr = "bearer \(jwtToken!)"
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
-        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        requestSerializer.setValue("application/json", forHTTPHeaderField:"Content-Type")
         
-        
-//        //let message : [String: Any] = ["body": text!]
-//        let meta : [String: Any] = ["timezone": "en-GB", "locale": "Asia/Calcutta"]
-//
-//        let chatBotName: String = SDKConfiguration.botConfig.chatBotName
-//        let botId: String = SDKConfiguration.botConfig.botId
-        
-       // {"session":{"new":false},"message":{"type":"text","val":"hello","attachments":[{}]},"from":{"id":"rajasekhar.balla@kore.com","userInfo":{"firstName":"","lastName":"","email":""}},"to":{"id":"Kore.ai","groupInfo":{"id":"","name":""}},"token":{}}
-       
         let session = ["new":false]
         let message : [String: Any] = ["type": type!,"val": text!, "attachments": attachmentDic!]
         
@@ -778,9 +766,6 @@ open class KABotClient: NSObject {
         let to : [String: Any] = ["id": "Kore.ai", "groupInfo": groupInfo]
 
     
-        
-        //let messagePayload : [String: Any] = ["message":message,"resourceId": "/bot.message", "currentPage": "\(SDKConfiguration.serverConfig.BOT_SERVER)/sdk/demo/#home", "botInfo": botInfo,"meta": meta, "client": "sdk"]
-          
         var parameters: NSDictionary?
         parameters = ["session": session,
         "message": message,
@@ -814,8 +799,7 @@ open class KABotClient: NSObject {
         
         //Manager
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-        //https://qa1-bots.kore.ai/chatbot/v2/webhook/st-fd0f5024-2318-56fe-8354-555e1786133e/poll/60ec784a25cb3703b742e28dcda1c46f
-        // NOTE: You must set your URL to generate JWT.
+       
         let urlString: String = "\(SDKConfiguration.serverConfig.BOT_SERVER)/chatbot/v2/webhook/\(SDKConfiguration.botConfig.botId)/poll/\(pollID!)"
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
@@ -823,7 +807,7 @@ open class KABotClient: NSObject {
         
         let authorizationStr = "bearer \(jwtToken!)"
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
-        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        requestSerializer.setValue("application/json", forHTTPHeaderField:"Content-Type")
         
         let parameters: NSDictionary = [:]
         
@@ -852,7 +836,6 @@ open class KABotClient: NSObject {
         //Manager
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
         
-        // NOTE: You must set your URL to generate JWT.
         let urlString: String = "\(SDKConfiguration.serverConfig.BOT_SERVER)/api/chathistory/\(SDKConfiguration.botConfig.botId)/ivr?botId=\(SDKConfiguration.botConfig.botId)&limit=\(limit!)"
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
@@ -860,7 +843,7 @@ open class KABotClient: NSObject {
         
         let authorizationStr = "bearer \(jwtToken!)"
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
-        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        requestSerializer.setValue("application/json", forHTTPHeaderField:"Content-Type")
         
         let parameters: NSDictionary = [:]
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
@@ -896,7 +879,7 @@ open class KABotClient: NSObject {
         
         let authorizationStr = "bearer \(jwtToken!)"
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
-        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        requestSerializer.setValue("application/json", forHTTPHeaderField:"Content-Type")
         
         let parameters: NSDictionary = [:]
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
