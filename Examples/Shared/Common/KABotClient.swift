@@ -421,57 +421,60 @@ open class KABotClient: NSObject {
                             
                             let optionsComponent: Component = Component(componentType)
                             message.sentDate = object?.createdOn
-                            if templateType ==  "botAction"{
+                            switch templateType {
+                            case "botAction":
                                 
-                                let endOfTask:Bool? = ((((dictionary["template"] as AnyObject).object(forKey: "webhookPayload") as AnyObject).object(forKey: "endOfTask") as AnyObject) as? Bool)
-                                
-                                if endOfTask != nil{
-                                    isEndOfTask = endOfTask!
-                                }else{
-                                    isEndOfTask = false
-                                }
-                                
-                                var webhookPayloadisArray : Bool?
-                                let webhookPalyload = (((dictionary["template"] as AnyObject).object(forKey: "webhookPayload") as AnyObject).object(forKey: "text") as AnyObject)
-                                webhookPayloadisArray = verifyIsObjectOfAnArray(webhookPalyload) ? true : false
-                                
-                                if webhookPayloadisArray! {
-                                    let jsonString = (webhookPalyload.object(at: 0))
-                                    let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString as! String) as? NSDictionary ?? [:]
-                                    if jsonObject.count > 0{
-                                        let templateTypenew  = ((jsonObject["payload"] as AnyObject).object(forKey: "template_type") as! String)
-                                        
-                                        let componentType = getComponentType(templateTypenew, "responsive")
-                                        let optionsComponent: Component = Component(componentType)
-                                        optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject["payload"] as Any)
-                                        message.addComponent(optionsComponent)
+                                if let templateDic = dictionary["template"] as? [String: Any], let webhookPayloadDic = (templateDic ["webhookPayload"] as? [String:Any]){
+                                    let endOfTask = (webhookPayloadDic["endOfTask"] as? Bool)
+                                    if endOfTask != nil{
+                                        isEndOfTask = endOfTask!
                                     }else{
-                                        optionsComponent.payload = jsonString as? String
-                                        message.addComponent(optionsComponent)
+                                        isEndOfTask = false
                                     }
-                                }else{
-                                    let jsonString = (webhookPalyload as! String)
-                                    let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString ) as? NSDictionary ?? [:]
-                                    if jsonObject.count > 0{
-                                        let templateTypenew  = ((jsonObject["payload"] as AnyObject).object(forKey: "template_type") as! String)
-                                        
-                                        let componentType = getComponentType(templateTypenew, "responsive")
-                                        let optionsComponent: Component = Component(componentType)
-                                        optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject["payload"] as Any)
-                                        message.addComponent(optionsComponent)
+                                    
+                                    var webhookPayloadisArray = false
+                                    let webhookPalyload = (webhookPayloadDic["text"] as AnyObject)
+                                    webhookPayloadisArray = verifyIsObjectOfAnArray(webhookPalyload) ? true : false
+                                    
+                                    if webhookPayloadisArray {
+                                        let jsonString = (webhookPalyload.object(at: 0))
+                                        let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString as! String) as? NSDictionary ?? [:]
+                                        if jsonObject.count > 0{
+//                                            let templateTypenew  = ((jsonObject["payload"] as AnyObject).object(forKey: "template_type") as! String)
+//
+//                                            let componentType = getComponentType(templateTypenew, "responsive")
+//                                            let optionsComponent: Component = Component(componentType)
+//                                            optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject["payload"] as Any)
+//                                            message.addComponent(optionsComponent) //kaka
+                                        }else{
+                                            optionsComponent.payload = jsonString as? String
+                                            message.addComponent(optionsComponent)
+                                        }
                                     }else{
-                                        optionsComponent.payload = jsonString
-                                        message.addComponent(optionsComponent)
+                                        let jsonString = (webhookPalyload as! String)
+                                        let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString ) as? NSDictionary ?? [:]
+                                        if jsonObject.count > 0{
+//                                            let templateTypenew  = ((jsonObject["payload"] as AnyObject).object(forKey: "template_type") as! String)
+//
+//                                            let componentType = getComponentType(templateTypenew, "responsive")
+//                                            let optionsComponent: Component = Component(componentType)
+//                                            optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject["payload"] as Any)
+//                                            message.addComponent(optionsComponent) //kaka
+                                        }else{
+                                            optionsComponent.payload = jsonString
+                                            message.addComponent(optionsComponent)
+                                        }
                                     }
+                                    
                                 }
-                            }else{
-                                // let componentType = getComponentType(templateType, "responsive")
-                                // optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                                //message.addComponent(optionsComponent)
-                                //let optionsComponent: Component = Component(componentType)
-                                optionsComponent.payload = Utilities.stringFromJSONObject(object: payload)
+                                    
+                                break
+                            default:
+                                 optionsComponent.payload = Utilities.stringFromJSONObject(object: payload)
                                 message.addComponent(optionsComponent)
+                                break
                             }
+
                         }
                     case "error":
                         if let dictionary = payload["payload"] as? [String: Any] {
@@ -624,7 +627,7 @@ open class KABotClient: NSObject {
         
         let authorizationStr = "bearer \(authInfoAccessToken!)"
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
-        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        requestSerializer.setValue("application/json", forHTTPHeaderField:"Content-Type")
         let auth = jwtToken
         requestSerializer.setValue(auth, forHTTPHeaderField:"auth")
        
@@ -634,9 +637,10 @@ open class KABotClient: NSObject {
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
         sessionManager?.requestSerializer = requestSerializer
         sessionManager?.get(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-            if let dictionary = responseObject as? NSArray,
+            if let dictionary = responseObject as? [String: Any],
             dictionary.count > 0 {
-                success?(dictionary)
+                let popularArray =  dictionary["result"] as? NSArray
+                success?(popularArray ?? [])
             } else {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
@@ -663,7 +667,7 @@ open class KABotClient: NSObject {
         
         let authorizationStr = "bearer \(authInfoAccessToken!)"
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
-        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        requestSerializer.setValue("application/json", forHTTPHeaderField:"Content-Type")
         let auth = jwtToken
         requestSerializer.setValue(auth, forHTTPHeaderField:"auth")
        
@@ -702,7 +706,7 @@ open class KABotClient: NSObject {
         requestSerializer.setValue("published", forHTTPHeaderField:"state")
         let authorizationStr = "bearer \(authInfoAccessToken!)"
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
-        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        requestSerializer.setValue("application/json", forHTTPHeaderField:"Content-Type")
         let auth = jwtToken
         requestSerializer.setValue(auth, forHTTPHeaderField:"auth")
         
@@ -756,7 +760,7 @@ open class KABotClient: NSObject {
     }
     
     
-    func getSearchResults(_ text: String!, _ filterArray: NSMutableArray!, _ pageNo:Int, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+    func getSearchResults(_ text: String!,_ resultGrpORtabConfigDic: [String: Any]!, _ filterArray: NSMutableArray!, _ pageNo:Int, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
         // Session Configuration
         let configuration = URLSessionConfiguration.default
@@ -773,7 +777,7 @@ open class KABotClient: NSObject {
         
         let authorizationStr = "bearer \(authInfoAccessToken!)"
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
-        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        requestSerializer.setValue("application/json", forHTTPHeaderField:"Content-Type")
         let auth = jwtToken
         requestSerializer.setValue(auth, forHTTPHeaderField:"auth")
         
@@ -802,6 +806,23 @@ open class KABotClient: NSObject {
         
         let messagePayload : [String: Any] = ["clientMessageId" : timestamp,"message":message,"resourceId": "/bot.message","timeDateDay": todayDate, "currentPage": "\(SDKConfiguration.serverConfig.BOT_SERVER)/sdk/demo/#home", "botInfo": botInfo,"meta": meta, "client": "sdk"]
           
+//        let tabFilter: [String: Any] = ["fieldName" : "sys_content_type","facetValue":[facetValue]]
+//        var tabConfig: [String: Any] = ["filter": tabFilter]
+//        if facetValue == "All"{
+//            tabConfig = [:]
+//        }
+//
+//        let resultGroupFilter: [String: Any] = ["fieldName" : "sys_content_type","facetValue":[facetValue]]
+//        var resultGroup: [String: Any] = ["filter": resultGroupFilter]
+//        if pageNo == 0{
+//            resultGroup = [:]
+//        }
+        let tabConfig: [String: Any] = resultGrpORtabConfigDic
+        var resultGroup: [String: Any] = resultGrpORtabConfigDic
+        if pageNo == 0{
+            resultGroup = [:]
+        }
+        
         var parameters: NSDictionary?
         parameters = ["query": text as Any,
         "maxNumOfResults": 10,
@@ -810,7 +831,8 @@ open class KABotClient: NSObject {
         "streamId": findlyStreamId,
         "lang": "en",
         "isDev": false,
-        "messagePayload": messagePayload] //"filters":factsArray
+        "messagePayload": messagePayload,"tabConfig": tabConfig,
+        "searchRequestId": searchRequestId,"filters": [], "resultGroups":resultGroup] //"filters":factsArray
         
         if filterArray.count>0 {
             parameters = ["query": text as Any,
@@ -820,7 +842,8 @@ open class KABotClient: NSObject {
             "streamId": findlyStreamId,
             "lang": "en",
             "isDev": false,
-            "messagePayload": messagePayload,"filters": filterArray!]
+            "messagePayload": messagePayload,"filters": filterArray!,
+            "searchRequestId": searchRequestId, "tabConfig": tabConfig, "resultGroups":resultGroup]
         }
         
         sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
@@ -887,7 +910,48 @@ open class KABotClient: NSObject {
         sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
         
         // NOTE: You must set your URL to generate JWT.
-        let urlString: String = "\(FindlyUrl)searchassistapi/searchsdk/stream/\(SDKConfiguration.botConfig.botId)/\(findlySidx)/getresultviewsettings"
+        let urlString: String = "\(FindlyUrl)searchassistapi/searchsdk/stream/\(SDKConfiguration.botConfig.botId)/\(findlySidx)/resultTemplateSettings"
+        let requestSerializer = AFJSONRequestSerializer()
+        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
+        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+        let authorizationStr = "bearer \(authInfoAccessToken!)"
+        requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
+        let auth = jwtToken
+        requestSerializer.setValue(auth, forHTTPHeaderField:"auth")
+        
+        //let authorizationStr = "bearer Su-Y4wKdh0yjlU2bc40Em8iNyNqrYt2KoVT4_VjJNGGLwxxBAFgYsm7g3bzf7w6M"
+        //requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
+        
+        let parameters: NSDictionary = [:]
+        
+        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.get(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
+            if let dictionary = responseObject as? NSDictionary,
+            dictionary.count > 0 {
+                success?(dictionary)
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                failure?(error)
+            }
+        }) { (sessionDataTask, error) in
+            failure?(error)
+        }
+        
+    }
+    
+    //https://searchassist-qa.kore.ai/searchassistapi/searchsdk/stream/st-5716445a-aaa1-52ac-8e31-2fea9532b64f/sidx-3124cae8-4a4c-572e-9907-5cdb33d472b1/tabfacet
+    // MARK:TabFacet
+    func getTabFacet(success:((_ arrayOfResults: NSDictionary) -> Void)?, failure:((_ error: Error) -> Void)?) {
+        
+        // Session Configuration
+        let configuration = URLSessionConfiguration.default
+        
+        //Manager
+        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
+        
+        // NOTE: You must set your URL to generate JWT.
+        let urlString: String = "\(FindlyUrl)searchassistapi/searchsdk/stream/\(SDKConfiguration.botConfig.botId)/\(findlySidx)/tabfacet"
         let requestSerializer = AFJSONRequestSerializer()
         requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
         requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
@@ -936,7 +1000,7 @@ open class KABotClient: NSObject {
             
             let authorizationStr = "bearer \(authInfoAccessToken!)"
             requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
-            requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+            requestSerializer.setValue("application/json", forHTTPHeaderField:"Content-Type")
             let auth = jwtToken
             requestSerializer.setValue(auth, forHTTPHeaderField:"auth")
             
@@ -983,7 +1047,7 @@ open class KABotClient: NSObject {
         
         let authorizationStr = "bearer \(authInfoAccessToken!)"
         requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
-        requestSerializer.setValue("Content-Type", forHTTPHeaderField:"application/json")
+        requestSerializer.setValue("application/json", forHTTPHeaderField:"Content-Type")
         let auth = jwtToken
         requestSerializer.setValue(auth, forHTTPHeaderField:"auth")
         

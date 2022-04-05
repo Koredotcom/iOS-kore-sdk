@@ -254,6 +254,8 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             dictionary.setObject(uuid, forKey: "id" as NSCopying)
             dictionary.setObject(uuid, forKey: "clientMessageId" as NSCopying)
             dictionary.setObject("iOS", forKey: "client" as NSCopying)
+            dictionary.setObject("conversationalSearch", forKey: "interface" as NSCopying)
+            
 
             let meta = ["timezone": TimeZone.current.identifier, "locale": Locale.current.identifier]
             dictionary.setValue(meta, forKey: "meta")

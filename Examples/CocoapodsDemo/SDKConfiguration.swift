@@ -4,7 +4,7 @@
 //
 //  Created by developer@kore.com on 12/16/16.
 //  Copyright © 2016 Kore Inc. All rights reserved.
-//
+//  payment through online covid platform
 
 import UIKit
 import KoreBotSDK
@@ -44,15 +44,17 @@ class SDKConfiguration: NSObject {
 //    }
     
     struct botConfig {
-        static var clientId = "cs-c8f49568-0a86-5f2f-b9aa-a4f1b776976a" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
-
-        static var clientSecret = "27rHLP7JW+vG0BO7xQGPYNx/Z5Ce6Zuqp6WuDDFJMHA=" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
-
-        static var botId =  "st-d568b46e-443f-5a61-b15e-2a1c1b4b315b" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
         
-        static var searchIndexID =  "sidx-b3350cec-b831-55e9-925a-3e8a39d67f8c" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. sidx-4c33c7cf-9561-58f2-b547-4745ce12b513
+        //Change in ApplaunchViewController 
+        static var clientId = "cs-30d2773b-0131-5e3f-b6d5-ed93cbae67c6" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
 
-        static var chatBotName = "May 21" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
+        static var clientSecret = "UdsX+q2hBSNVttzDoARy05zCluj9b0Ns0f2LRjmFwow=" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
+
+        static var botId =  "st-1847ca83-3ea9-519d-bfe4-7c993c8bc477" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
+        
+        static var searchIndexID =  "sidx-810d6e38-b522-54d3-8f2b-cdee7667fb34" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. sidx-4c33c7cf-9561-58f2-b547-4745ce12b513
+
+        static var chatBotName = "Covid Help" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
 
         static let identity = "kartheek.pagidimarri@kore.com"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
 
@@ -68,8 +70,8 @@ class SDKConfiguration: NSObject {
             return String(format: "%@users/sts", JWT_SERVER)
         }
         
-        static let BOT_SERVER = String(format: "https://qa.findly.ai") //https://dev.findly.ai https://qa.findly.ai
-        public static let KORE_SERVER = String(format: "https://dev.findly.ai/")
+        static let BOT_SERVER = String(format: "https://searchassist-qa.kore.ai") //https://dev.findly.ai https://qa.findly.ai
+        public static let KORE_SERVER = String(format: "https://searchassist-qa.kore.ai/")
     }
    
     struct widgetConfig {

@@ -47,6 +47,7 @@ var headerTitle :String?
 var backgroudImage :String?
 var leftImage :String?
 var dynamicIdentity:String?
+var searchRequestId:String?
 
 public var serachInterfaceItems: SearchInterfaceModel?
 public var resultViewSettingItems: GetResultViewSettingModel?

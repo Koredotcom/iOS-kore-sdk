@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,7 +15,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LiveSearchFaqTableViewCell" rowHeight="111" id="KGk-i7-Jjw" customClass="LiveSearchFaqTableViewCell" customModule="Findly_ai" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LiveSearchFaqTableViewCell" rowHeight="111" id="KGk-i7-Jjw" customClass="LiveSearchFaqTableViewCell" customModule="SearchAssist_ai" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="111"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
@@ -108,10 +108,11 @@
                     <constraint firstAttribute="trailing" secondItem="ByF-gL-GR4" secondAttribute="trailing" id="YN8-OI-H10"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="descriptionLabel" destination="JbI-Sj-dqx" id="zvq-5S-FVT"/>
+                <outlet property="descriptionLblTopConstraint" destination="aEc-X8-PCJ" id="WAa-ke-bUi"/>
                 <outlet property="dislikeButton" destination="UBP-pD-X4Q" id="dUR-SW-mAp"/>
                 <outlet property="imageVWidthConstraint" destination="TwV-CG-qR9" id="emn-5c-RAr"/>
                 <outlet property="likeAndDislikeButtonHeightConstrain" destination="18b-hA-v0n" id="dGH-sF-yaN"/>
@@ -122,6 +123,7 @@
                 <outlet property="subViewTopConstaint" destination="3Ia-d8-8F4" id="50Y-Mm-XO8"/>
                 <outlet property="subViewTrailingConstraint" destination="YN8-OI-H10" id="u1Y-vn-iSt"/>
                 <outlet property="titleLabel" destination="dPl-pc-Vyh" id="KHb-af-88h"/>
+                <outlet property="titleLblHeightConstraint" destination="T6r-0l-sqQ" id="Ak2-dP-c6R"/>
                 <outlet property="topImageV" destination="ZSg-hU-Uqt" id="eCf-qC-Qd1"/>
                 <outlet property="underLineLabel" destination="0kE-S9-mwh" id="4I2-VX-h75"/>
             </connections>

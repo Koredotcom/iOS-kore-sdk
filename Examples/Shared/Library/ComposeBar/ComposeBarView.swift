@@ -78,6 +78,7 @@ class ComposeBarView: UIView {
         self.growingTextView.backgroundColor = .white
         self.growingTextView.layer.cornerRadius = 10.0
         self.growingTextView.isUserInteractionEnabled = false
+        //self.growingTextView.textView.text = "credit card"//"payment through online covid platform"
         
         let attributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: UIFont(name: "HelveticaNeue", size: 14.0)!, NSAttributedString.Key.foregroundColor: UIColor.init(hexString: searchBarPlaceholderTextColor!)]
         self.growingTextView.placeholderAttributedText = NSAttributedString(string: searchBarPlaceholderText!, attributes:attributes)

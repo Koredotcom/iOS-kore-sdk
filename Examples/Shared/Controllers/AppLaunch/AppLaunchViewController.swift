@@ -166,11 +166,30 @@ class AppLaunchViewController: UIViewController {
 //            SDKConfiguration.botConfig.searchIndexID =  "sidx-d9e0b3b3-4e64-58ec-9338-9cb98d1a977b"
 //            SDKConfiguration.botConfig.chatBotName = "july8" //qa
             
-            SDKConfiguration.botConfig.clientId = "cs-e24fbff3-d40a-5787-91a9-67267fb0b4af"
-            SDKConfiguration.botConfig.clientSecret = "++IOWwGALuxbkCbYwiyljE0GF+vTNcWsnQCS+aFI5Mg="
-            SDKConfiguration.botConfig.botId =  "st-a9ce27ac-3454-55ad-9c82-e50e31c07009"
-            SDKConfiguration.botConfig.searchIndexID =  "sidx-28c300e9-13d9-5d99-ae48-392767bb1ee3"
-            SDKConfiguration.botConfig.chatBotName = "Mobile" //qa
+//            SDKConfiguration.botConfig.clientId = "cs-e24fbff3-d40a-5787-91a9-67267fb0b4af"
+//            SDKConfiguration.botConfig.clientSecret = "++IOWwGALuxbkCbYwiyljE0GF+vTNcWsnQCS+aFI5Mg="
+//            SDKConfiguration.botConfig.botId =  "st-a9ce27ac-3454-55ad-9c82-e50e31c07009"
+//            SDKConfiguration.botConfig.searchIndexID =  "sidx-28c300e9-13d9-5d99-ae48-392767bb1ee3"
+//            SDKConfiguration.botConfig.chatBotName = "Mobile" //qa
+            
+            
+//            SDKConfiguration.botConfig.clientId = "cs-30d2773b-0131-5e3f-b6d5-ed93cbae67c6"
+//            SDKConfiguration.botConfig.clientSecret = "UdsX+q2hBSNVttzDoARy05zCluj9b0Ns0f2LRjmFwow="
+//            SDKConfiguration.botConfig.botId =  "st-1847ca83-3ea9-519d-bfe4-7c993c8bc477"
+//            SDKConfiguration.botConfig.searchIndexID =  "sidx-810d6e38-b522-54d3-8f2b-cdee7667fb34"
+//            SDKConfiguration.botConfig.chatBotName = "Covid Help"
+            
+//            SDKConfiguration.botConfig.clientId = "cs-90e90c39-ea7c-54c7-a9f4-f5ff472e8a83"
+//            SDKConfiguration.botConfig.clientSecret = "Yjz/buTJ6Vzj62PgDXhQk2Sc6WyjEpr5WP0gUFCNQJI="
+//            SDKConfiguration.botConfig.botId =  "st-5716445a-aaa1-52ac-8e31-2fea9532b64f"
+//            SDKConfiguration.botConfig.searchIndexID =  "sidx-3124cae8-4a4c-572e-9907-5cdb33d472b1"
+//            SDKConfiguration.botConfig.chatBotName = "dec29Regression"
+            
+            SDKConfiguration.botConfig.clientId = "cs-59dc4ca7-73e6-5ffa-8df5-0baa4f10ef5a"
+            SDKConfiguration.botConfig.clientSecret = "8iuc6uUWZGTWFDmScR6njiYVZiu1tacfizGspWuja0Q="
+            SDKConfiguration.botConfig.botId =  "st-e531fc73-2662-5a8f-a584-8a5bfb0d9d02"
+            SDKConfiguration.botConfig.searchIndexID =  "sidx-419a7a6b-744a-53e9-9772-58fec0a45f61"
+            SDKConfiguration.botConfig.chatBotName = "regressionjan31"
             
         }else if sender.tag == 2{
             self.chatButton.isUserInteractionEnabled = true

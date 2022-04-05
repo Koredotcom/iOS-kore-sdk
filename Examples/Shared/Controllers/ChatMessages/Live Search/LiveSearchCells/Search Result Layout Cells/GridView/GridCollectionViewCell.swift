@@ -18,6 +18,13 @@ class GridCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var titleLblLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var leftImgVWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var descriptionLblTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var descriptionLblHeightConstaraint: NSLayoutConstraint!
+    
+    
+    @IBOutlet weak var titleLblHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var priceLbl: UILabel!
+    @IBOutlet weak var priceLblHeightConstraint: NSLayoutConstraint!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.layer.cornerRadius = 5.0
@@ -27,6 +34,7 @@ class GridCollectionViewCell: UICollectionViewCell {
         self.layer.shadowOpacity = 0.5
         self.layer.shadowRadius = 4
         // Initialization code
+        self.contentView.translatesAutoresizingMaskIntoConstraints = false
     }
 
 }

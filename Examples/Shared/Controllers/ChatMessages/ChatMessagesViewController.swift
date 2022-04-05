@@ -14,7 +14,7 @@ import CoreData
 import Mantle
 
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, LiveSearchViewDelegate, LiveSearchDetailsViewDelegate, UIGestureRecognizerDelegate, LoginViewDelegate, CustomDataViewDelegate {
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, LiveSearchViewDelegate, LiveSearchDetailsViewDelegate, UIGestureRecognizerDelegate, LoginViewDelegate, CustomDataViewDelegate, PopularSearchViewDelegate {
     
     
     // MARK: properties
@@ -78,6 +78,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     @IBOutlet weak var liveSearchContainerView: UIView!
     var liveSearchView:  LiveSearchView!
+    var popularSearchView:  PopularSearchView!
     @IBOutlet weak var webViewContainerView: UIView!
     var webView: WebView!
     @IBOutlet weak var CustomDataContainerView: UIView!
@@ -98,6 +99,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         return maxHeight-panelCollectionViewContainerView.bounds.height - insets.bottom
     }
     var kaBotClient = KABotClient()
+    var tabsFacetDic = TabFacetModel()
+    var isFirstTimeShowPopularSearchv = true
     
     // MARK: init
     init(thread: KREThread?) {
@@ -135,9 +138,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.speechSynthesizer = AVSpeechSynthesizer()
         ConfigureDropDownView()
         liveSearchViewConfigure()
+        popularSearchViewConfigure()
         configureWebView()
         configureLoginView()
-        welcomeMessage(messageString: "\(welcomeMsg!)")
+       // welcomeMessage(messageString: "\(welcomeMsg!)")
         
        /* let dic = NSMutableDictionary()
         dic.setObject("Payment" , forKey: "_id" as NSCopying)
@@ -155,6 +159,24 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         dic3.setObject("Pay now" , forKey: "_id" as NSCopying)
         dic3.setObject(1, forKey: "count" as NSCopying)
         recentSearchArray.add(dic3)*/
+        
+        TabsFacetApi()
+    }
+    
+    func TabsFacetApi(){
+        self.kaBotClient.getTabFacet(success: { (tabacetDic) in
+            print(tabacetDic)
+            let jsonDecoder = JSONDecoder()
+            guard let jsonData = try? JSONSerialization.data(withJSONObject: tabacetDic as Any , options: .prettyPrinted),
+                let allItems = try? jsonDecoder.decode(TabFacetModel.self, from: jsonData) else {
+                    return
+            }
+            self.tabsFacetDic = allItems
+            print(self.tabsFacetDic)
+        }) { (error) in
+            print(error)
+            
+        }
     }
     
     func configureCustomData(){
@@ -226,11 +248,29 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.tapToDismissGestureRecognizer.delegate = self
         self.liveSearchContainerView.addGestureRecognizer(tapToDismissGestureRecognizer)
     }
+    
+    func popularSearchViewConfigure(){
+        popularSearchView = PopularSearchView()
+        popularSearchView.viewDelegate = self
+        popularSearchView?.translatesAutoresizingMaskIntoConstraints = false
+        liveSearchContainerView.addSubview(self.popularSearchView!)
+        
+        let views: [String: Any] = ["popularSearchView" : popularSearchView as Any]
+        liveSearchContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[popularSearchView]|", options:[], metrics:nil, views: views))
+        liveSearchContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[popularSearchView]|", options:[], metrics:nil, views: views))
+        
+        self.tapToDismissGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(ChatMessagesViewController.dismissKeyboard(_:)))
+        self.tapToDismissGestureRecognizer.delegate = self
+        self.liveSearchContainerView.addGestureRecognizer(tapToDismissGestureRecognizer)
+    }
+    
+    
+    
     func addTextToTextView(text: String) {
         self.composeView.setText(text)
     }
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view?.isDescendant(of: self.liveSearchView.tableView) == true || touch.view?.isDescendant(of: self.liveSearchView.autoSearchTableView) == true {
+        if touch.view?.isDescendant(of: self.liveSearchView.tableView) == true || touch.view?.isDescendant(of: self.liveSearchView.autoSearchTableView) == true || touch.view?.isDescendant(of: self.popularSearchView.tableView) == true{
             return false
         }
         isShowLoginView = false //kk
@@ -1139,6 +1179,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
     }
     func sendTextMessage(_ text: String, dictionary: [String: Any]? = nil, options: [String: Any]?, taskMetaData: [String: Any]?) {
+        self.popularSearchView.isHidden = true
         let message: Message = Message()
         message.messageType = .default
         message.sentDate = Date()
@@ -1152,22 +1193,22 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         dic.setObject(text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), forKey: "_id" as NSCopying)
         dic.setObject(1, forKey: "count" as NSCopying)
         
-        var j = 0
-        for i in 0..<recentSearchArray.count{
-            if ((recentSearchArray.object(at: i) as AnyObject).object(forKey: "_id") as! String) == text {
-                j = 1
-            }
-        }
-        if j == 0{
-            if isEndOfTask{
-                recentSearchArray.add(dic)
-            }
-        }
+//        var j = 0
+//        for i in 0..<recentSearchArray.count{
+//            if ((recentSearchArray.object(at: i) as AnyObject).object(forKey: "_id") as! String) == text {
+//                j = 1
+//            }
+//        }
+//        if j == 0{
+//            if isEndOfTask{
+//                recentSearchArray.add(dic)
+//            }
+//        } //kaka
     }
     
     func callSearchApi(text:String){
         self.liveSearchContainerView.isHidden = true
-        self.kaBotClient.getSearchResults(text, [], 0 ,success: { [weak self] (dictionary) in
+        self.kaBotClient.getSearchResults(text,[:],[], 0 ,success: { [weak self] (dictionary) in
             print(dictionary)
             self?.receviceMessage(dictionary: dictionary)
             
@@ -1177,66 +1218,66 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func receviceMessage(dictionary:[String: Any]){
-        let message: Message = Message()
-        message.messageType = .reply
-        message.sentDate = Date()
-        message.messageId = UUID().uuidString
-        let textComponent: Component = Component()
-        let templateType = dictionary["templateType"] as? String ?? ""
-        if templateType ==  "botAction"{
-            
-            let endOfTask:Bool? = ((((dictionary["template"] as AnyObject).object(forKey: "webhookPayload") as AnyObject).object(forKey: "endOfTask") as AnyObject) as? Bool)
-            
-            if endOfTask != nil{
-                isEndOfTask = endOfTask!
-            }else{
-                isEndOfTask = false
-            }
-            
-            var webhookPayloadisArray : Bool?
-            let webhookPalyload = (((dictionary["template"] as AnyObject).object(forKey: "webhookPayload") as AnyObject).object(forKey: "text") as AnyObject)
-            webhookPayloadisArray = verifyIsObjectOfAnArray(webhookPalyload) ? true : false
-            
-            if webhookPayloadisArray! {
-                let jsonString = (webhookPalyload.object(at: 0))
-                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString as! String) as? NSDictionary ?? [:]
-                if jsonObject.count > 0{
-                    let templateTypenew  = ((jsonObject["payload"] as AnyObject).object(forKey: "template_type") as! String)
-                               
-                    let componentType = getComponentType(templateTypenew, "responsive")
-                    let optionsComponent: Component = Component(componentType)
-                    optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject["payload"] as Any)
-                    message.addComponent(optionsComponent)
-                }else{
-                    textComponent.payload = jsonString as? String
-                    message.addComponent(textComponent)
-                }
-            }else{
-                let jsonString = (webhookPalyload as! String)
-                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString ) as? NSDictionary ?? [:]
-                if jsonObject.count > 0{
-                    let templateTypenew  = ((jsonObject["payload"] as AnyObject).object(forKey: "template_type") as! String)
-                               
-                    let componentType = getComponentType(templateTypenew, "responsive")
-                    let optionsComponent: Component = Component(componentType)
-                    optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject["payload"] as Any)
-                    message.addComponent(optionsComponent)
-                }else{
-                    textComponent.payload = jsonString
-                    message.addComponent(textComponent)
-                }
-            }
-        }else{
-            let componentType = getComponentType(templateType, "responsive")
-            textComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-            message.addComponent(textComponent)
-            let optionsComponent: Component = Component(componentType)
-            optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-            message.addComponent(optionsComponent)
-        }
-        
-        addMessages(message, "")
-        NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+//        let message: Message = Message()
+//        message.messageType = .reply
+//        message.sentDate = Date()
+//        message.messageId = UUID().uuidString
+//        let textComponent: Component = Component()
+//        let templateType = dictionary["templateType"] as? String ?? ""
+//        if templateType ==  "botAction"{
+//
+//            let endOfTask:Bool? = ((((dictionary["template"] as AnyObject).object(forKey: "webhookPayload") as AnyObject).object(forKey: "endOfTask") as AnyObject) as? Bool)
+//
+//            if endOfTask != nil{
+//                isEndOfTask = endOfTask!
+//            }else{
+//                isEndOfTask = false
+//            }
+//
+//            var webhookPayloadisArray : Bool?
+//            let webhookPalyload = (((dictionary["template"] as AnyObject).object(forKey: "webhookPayload") as AnyObject).object(forKey: "text") as AnyObject)
+//            webhookPayloadisArray = verifyIsObjectOfAnArray(webhookPalyload) ? true : false
+//
+//            if webhookPayloadisArray! {
+//                let jsonString = (webhookPalyload.object(at: 0))
+//                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString as! String) as? NSDictionary ?? [:]
+//                if jsonObject.count > 0{
+//                    let templateTypenew  = ((jsonObject["payload"] as AnyObject).object(forKey: "template_type") as! String)
+//
+//                    let componentType = getComponentType(templateTypenew, "responsive")
+//                    let optionsComponent: Component = Component(componentType)
+//                    optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject["payload"] as Any)
+//                    message.addComponent(optionsComponent)
+//                }else{
+//                    textComponent.payload = jsonString as? String
+//                    message.addComponent(textComponent)
+//                }
+//            }else{
+//                let jsonString = (webhookPalyload as! String)
+//                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString ) as? NSDictionary ?? [:]
+//                if jsonObject.count > 0{
+//                    let templateTypenew  = ((jsonObject["payload"] as AnyObject).object(forKey: "template_type") as! String)
+//
+//                    let componentType = getComponentType(templateTypenew, "responsive")
+//                    let optionsComponent: Component = Component(componentType)
+//                    optionsComponent.payload = Utilities.stringFromJSONObject(object: jsonObject["payload"] as Any)
+//                    message.addComponent(optionsComponent)
+//                }else{
+//                    textComponent.payload = jsonString
+//                    message.addComponent(textComponent)
+//                }
+//            }
+//        }else{
+//            let componentType = getComponentType(templateType, "responsive")
+//            textComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+//            message.addComponent(textComponent)
+//            let optionsComponent: Component = Component(componentType)
+//            optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+//            message.addComponent(optionsComponent)
+//        }
+//
+//        addMessages(message, "")
+//        NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil) //kaka
     }
     func welcomeMessage(messageString:String){
         let message: Message = Message()
@@ -1285,6 +1326,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     // MARK: BotMessagesDelegate methods
     func optionsButtonTapAction(text: String) {
+        self.popularSearchView.isHidden = true
+        isFirstTimeShowPopularSearchv = false
         self.sendTextMessage(text, options: nil, taskMetaData: nil)
     }
     
@@ -1528,7 +1571,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     @objc func showLiveSearchViewTemplateView(notification:Notification){
         let dataString: String = notification.object as! String
-        let liveSearchDetailsViewController = LiveSearchDetailsViewController(dataString: dataString)
+        let liveSearchDetailsViewController = LiveSearchDetailsViewController(dataString: dataString, tabFacetsDic: tabsFacetDic)
         liveSearchDetailsViewController.viewDelegate = self
         liveSearchDetailsViewController.modalPresentationStyle = .overFullScreen
         liveSearchDetailsViewController.view.backgroundColor = .white
@@ -1699,10 +1742,31 @@ extension ChatMessagesViewController: KABotClientDelegate {
         self.typingStatusView?.timerFired(toRemoveTypingStatus: nil)
     }
     
+    
     @objc func callingLiveSearchView(notification:Notification) {
+        //liveSearchContainerView.bringSubviewToFront(liveSearchView)
         navigationController?.setNavigationBarHidden(false, animated: false)
         let dataString: String = notification.object as! String
         print("chatView: \(dataString)")
+        
+        if isFirstTimeShowPopularSearchv{
+            if dataString == ""{
+//                if !popularSearchView.isHidden{
+//                    liveSearchContainerView.bringSubviewToFront(popularSearchView)
+//                }
+                popularSearchView.isHidden = false
+                liveSearchView.isHidden = true
+            }else{
+                popularSearchView.isHidden = true
+                liveSearchView.isHidden = false
+            }
+        }else{
+            popularSearchView.isHidden = true
+            liveSearchView.isHidden = false
+        }
+        
+        
+        //Task Start
          if isEndOfTask {
            if liveSearchContainerView.isHidden{
                 if dataString != ""{
