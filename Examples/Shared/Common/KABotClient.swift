@@ -401,11 +401,18 @@ open class KABotClient: NSObject {
                                 textComponent.payload = tText
                                 textMessage?.addComponent(textComponent)
                             }
-                            
+                            if templateType == "SYSTEM"{
+                               let textComponent = Component(.text)
+                               let text = dictionary["text"] as? String ?? ""
+                               textComponent.payload = text
+                               ttsBody = text
+                               message.addComponent(textComponent)
+                           }else{
                             let optionsComponent: Component = Component(componentType)
                             optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                             message.sentDate = object?.createdOn
                             message.addComponent(optionsComponent)
+                           }
                         }
                     case "image":
                         if let dictionary = payload["payload"] as? [String: Any] {
