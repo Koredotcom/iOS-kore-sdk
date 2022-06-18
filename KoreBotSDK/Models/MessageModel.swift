@@ -7,128 +7,126 @@
 //
 
 import UIKit
-import Mantle
+import ObjectMapper
 
-open class MessageModel: MTLModel, MTLJSONSerializing {
+open class MessageModel: Mappable {
     // MARK: properties
-    @objc open var type: String?
-    @objc open var clientId: String?
-    @objc open var component: ComponentModel?
-    @objc open var cInfo: NSDictionary?
-    @objc open var botInfo: AnyObject?
+    open var type: String?
+    open var clientId: String?
+    open var component: ComponentModel?
+    open var cInfo: NSDictionary?
+    open var botInfo: Any?
     
-    // MARK: MTLJSONSerializing methods
-    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
-        return ["type":"type",
-                "component":"component",
-                "cInfo":"cInfo"]
+    // MARK: -
+    public init() {
+        
     }
-    @objc public static func componentJSONTransformer() -> ValueTransformer {
-        return ValueTransformer.mtl_JSONDictionaryTransformer(withModelClass: ComponentModel.self)
+    
+    public required init?(map: Map) {
+        
+    }
+    
+    public func mapping(map: Map) {
+        type <- map["type"]
+        component <- map["component"]
+        cInfo <- map["cInfo"]
     }
 }
 
-open class BotMessageModel: MTLModel, MTLJSONSerializing {
+open class BotMessageModel: Mappable {
     // MARK: properties
-    @objc open var type: String?
-    @objc open var iconUrl: String?
-    @objc open var messages: Array<MessageModel> = [MessageModel]()
-    @objc open var createdOn: Date?
-    @objc open var messageId: String?
-    // MARK: MTLJSONSerializing methods
-    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
-        return ["type":"type",
-                "iconUrl":"icon",
-                "messages":"message",
-                "messageId":"messageId",
-                "createdOn":"createdOn"]
+    open var type: String?
+    open var iconUrl: String?
+    open var messages: Array<MessageModel> = [MessageModel]()
+    open var createdOn: Date?
+    open var messageId: String?
+    
+    // MARK: -
+    public init() {
+        
     }
     
-    @objc public static func messagesJSONTransformer() -> ValueTransformer {
-        return ValueTransformer.mtl_JSONArrayTransformer(withModelClass: MessageModel.self)
+    public required init?(map: Map) {
+        
     }
     
-    @objc public static func createdOnJSONTransformer() -> ValueTransformer {
-        return MTLValueTransformer.reversibleTransformer(forwardBlock: { (dateString) in
-            return self.dateFormatter().date(from: dateString as! String)
-            }, reverse: { (date) in
-                return nil
-        })
-    }
-    
-    public static func dateFormatter() -> DateFormatter {
+    public func mapping(map: Map) {
+        type <- map["type"]
+        iconUrl <- map["icon"]
+        messages <- map["message"]
+        messageId <- map["messageId"]
+        
         let dateFormatter: DateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        return dateFormatter
+        
+        createdOn <- (map["createdOn"], DateFormatterTransform(dateFormatter: dateFormatter))
     }
 }
 
-open class Ack: MTLModel, MTLJSONSerializing {
+open class Ack: Mappable {
     // MARK: properties
-    @objc open var status: Bool = false
-    @objc open var clientId: String?
+    open var status: Bool = false
+    open var clientId: String?
     
-    // MARK: MTLJSONSerializing methods
-    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
-        return ["status":"ok",
-                "clientId":"replyto"]
+    // MARK: -
+    public required init?(map: Map) {
+        
+    }
+    
+    public func mapping(map: Map) {
+        status <- map["ok"]
+        clientId <- map["replyto"]
     }
 }
 
 
 // MARK: - BotMessage
-open class BotMessages: MTLModel, MTLJSONSerializing {
-    @objc open var createdBy: String?
-    @objc open var createdOn: Date?
-    @objc open var lmodifiedOn: String?
-    @objc open var resourceid: String?
-    @objc open var tN: String?
-    @objc open var type: String?
-    @objc open var components: [BotMessageComponents]?
-    //    @objc open var channels: String?
-    @objc open var botId: String?
-    @objc open var messageId: String?
+open class BotMessages: Mappable {
+    open var createdBy: String?
+    open var createdOn: Date?
+    open var lmodifiedOn: String?
+    open var resourceid: String?
+    open var tN: String?
+    open var type: String?
+    open var components: [BotMessageComponents]?
+    //    open var channels: String?
+    open var botId: String?
+    open var messageId: String?
     
-    
-    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
-        return ["createdBy": "createdBy",
-                "createdOn": "createdOn",
-                "lmodifiedOn": "lmodifiedOn",
-                "resourceid": "resourceid",
-                "tN": "tN",
-                "type": "type",
-                "components": "components",
-                "botId": "botId",
-                "messageId": "_id"
-        ]
+    // MARK: -
+    public required init?(map: Map) {
+        
     }
     
-    @objc public static func componentsJSONTransformer() -> ValueTransformer {
-        return MTLJSONAdapter.arrayTransformer(withModelClass: BotMessageComponents.self)
-    }
-    
-    @objc public static func createdOnJSONTransformer() -> ValueTransformer {
-        return MTLValueTransformer.reversibleTransformer(forwardBlock: { (dateString) in
-            return self.dateFormatter().date(from: dateString as! String)
-        }, reverse: { (date) in
-            return nil
-        })
-    }
-    
-    public static func dateFormatter() -> DateFormatter {
+    public func mapping(map: Map) {
+        
         let dateFormatter: DateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        return dateFormatter
+        
+        createdBy <- map["createdBy"]
+        createdOn <- (map["createdOn"],  DateFormatterTransform(dateFormatter: dateFormatter))
+        lmodifiedOn <- map["lmodifiedOn"]
+        resourceid <- map["resourceid"]
+        tN <- map["tN"]
+        type <- map["type"]
+        components <- map["components"]
+        botId <- map["botId"]
+        messageId <- map["_id"]
     }
 }
 
 // MARK: - BotMessageComponents
-open class BotMessageComponents: MTLModel, MTLJSONSerializing {
-    @objc open var data : [String: Any]?
+open class BotMessageComponents: Mappable {
+    open var data: [String: Any]?
     
-    public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
-        return ["data": "data"]
+    // MARK: -
+    public required init?(map: Map) {
+        
+    }
+    
+    public func mapping(map: Map) {
+        data <- map["data"]
     }
 }

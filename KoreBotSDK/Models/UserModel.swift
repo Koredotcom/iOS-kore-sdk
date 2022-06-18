@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Mantle
 
 public class UserModel: NSObject, Decodable {
     // MARK: - properties

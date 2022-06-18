@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import AFNetworking
+import AlamofireImage
 
 // MARK: - KREStandardWidgetView
 public class KREStandardWidgetView: KREWidgetView {
@@ -107,7 +107,7 @@ public class KREStandardWidgetView: KREWidgetView {
                             let escapedString = urlString.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed) ?? ""
                             if let url = URL(string: escapedString) {
                                 cell.profileImageView.contentMode = .scaleAspectFit
-                                cell.profileImageView.setImageWith(url, placeholderImage: UIImage(named: "defaultSkillIcon"))
+                                cell.profileImageView.af.setImage(withURL: url, placeholderImage: UIImage(named: "defaultSkillIcon"))
                                 cell.profileImageView.isHidden = false
                             } else {
                                 cell.profileImageView.isHidden = true

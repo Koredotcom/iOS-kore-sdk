@@ -132,6 +132,7 @@ class KAComponentOperation: KAOperation {
     
     // MARK: - file token operation
     func fileTokenRequest(with block: ((_ status: Bool) -> Void)?) {
+        /*
         guard let account = account else {
             block?(false)
             return
@@ -161,10 +162,11 @@ class KAComponentOperation: KAOperation {
         }) { [weak self] (dataTask, error) in
             self?.error = error
             block?(false)
-        }
+        }*/
     }
     
     func chunkRequest(chunk: Chunk, block: ((_ status: Bool) -> Void)?) {
+        /*
         guard let account = account, let fileToken = component.fileMeta.fileToken else {
             block?(false)
             return
@@ -223,7 +225,7 @@ class KAComponentOperation: KAOperation {
             self.updateProgress()//kk
             block?(success)
         }
-        uploadTask.resume()
+        uploadTask.resume()*/
     }
     
     func sizeLimitCheck(bytes: Int64) -> Bool {
@@ -239,6 +241,7 @@ class KAComponentOperation: KAOperation {
     }
     
     func mergeRequest(with block: ((_ status: Bool) -> Void)?) {
+        /*
         guard let account = account, let fileToken = component.fileMeta.fileToken, let fileExtension = component.fileMeta.fileExtn, let fileName = component.fileMeta.fileName else {
             block?(false)
             return
@@ -311,7 +314,7 @@ class KAComponentOperation: KAOperation {
             self.updateProgress()
             block?(success)
         }
-        uploadTask.resume()
+        uploadTask.resume()*/
     }
     
     // MARK: - create and send chunks

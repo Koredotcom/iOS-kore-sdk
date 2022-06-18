@@ -9,7 +9,9 @@
 import UIKit
 import KoreBotSDK
 import CoreData
-import Mantle
+import ObjectMapper
+import Alamofire
+
 
 public protocol KABotClientDelegate: class {
     func botConnection(with connectionState: BotClientConnectionState)
@@ -56,7 +58,11 @@ open class KABotClient: NSObject {
     public var identity: String!
     public var userId: String!
     public var streamId: String = ""
-    var sessionManager: AFHTTPSessionManager?
+    let sessionManager: Session = {
+        let configuration = URLSessionConfiguration.af.default
+        configuration.timeoutIntervalForRequest = 30
+        return Session(configuration: configuration)
+    }()
     
     public var connectionState: BotClientConnectionState! {
         get {
@@ -328,6 +334,7 @@ open class KABotClient: NSObject {
         return .text
     }
     
+    
     func onReceiveMessage(object: BotMessageModel?) -> (Message?, String?) {
         NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil) //hideTypingStatusForBot()
         var ttsBody: String?
@@ -337,6 +344,7 @@ open class KABotClient: NSObject {
         if let type = object?.type, type == "incoming" {
             message.messageType = .default
         }
+        
         message.sentDate = object?.createdOn
         message.messageId = object?.messageId
         
@@ -401,18 +409,11 @@ open class KABotClient: NSObject {
                                 textComponent.payload = tText
                                 textMessage?.addComponent(textComponent)
                             }
-                            if templateType == "SYSTEM"{
-                               let textComponent = Component(.text)
-                               let text = dictionary["text"] as? String ?? ""
-                               textComponent.payload = text
-                               ttsBody = text
-                               message.addComponent(textComponent)
-                           }else{
+                            
                             let optionsComponent: Component = Component(componentType)
                             optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                             message.sentDate = object?.createdOn
                             message.addComponent(optionsComponent)
-                           }
                         }
                     case "image":
                         if let dictionary = payload["payload"] as? [String: Any] {
@@ -546,47 +547,42 @@ open class KABotClient: NSObject {
     // MARK: get JWT token request
     func getJwTokenWithClientId(_ clientId: String!, clientSecret: String!, identity: String!, isAnonymous: Bool!, success:((_ jwToken: String?) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
-        // Session Configuration
-        let configuration = URLSessionConfiguration.default
+        let urlString = SDKConfiguration.serverConfig.koreJwtUrl()
+        let headers: HTTPHeaders = [
+            "Keep-Alive": "Connection",
+            "Accept": "application/json",
+            "alg": "RS256",
+            "typ": "JWT"
+        ]
         
-        //Manager
-        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-        
-        // NOTE: You must set your URL to generate JWT.
-        let urlString: String = SDKConfiguration.serverConfig.koreJwtUrl()
-        let requestSerializer = AFJSONRequestSerializer()
-        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-        
-        // Headers: {"alg": "RS256","typ": "JWT"}
-        requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
-        requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
-        
-        let parameters: NSDictionary = ["clientId": clientId as String,
-                                        "clientSecret": clientSecret as String,
-                                        "identity": identity as String,
-                                        "aud": "https://idproxy.kore.com/authorize",
-                                        "isAnonymous": isAnonymous as Bool]
-        
-        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
-        sessionManager?.requestSerializer = requestSerializer
-        sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-            if let dictionary = responseObject as? [String: Any],
-                let jwToken: String = dictionary["jwt"] as? String {
+        let parameters: [String: Any] = ["clientId": clientId as String,
+                                         "clientSecret": clientSecret as String,
+                                         "identity": identity as String,
+                                         "aud": "https://idproxy.kore.com/authorize",
+                                         "isAnonymous": isAnonymous as Bool]
+        let dataRequest = sessionManager.request(urlString, method: .post, parameters: parameters, headers: headers)
+        dataRequest.validate().responseJSON { (response) in
+            if let _ = response.error {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                failure?(error)
+                return
+            }
+            
+            if let dictionary = response.value as? [String: Any],
+               let jwToken = dictionary["jwt"] as? String {
                 jwtToken = jwToken
                 success?(jwToken)
             } else {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
             }
-        }) { (sessionDataTask, error) in
-            failure?(error)
+            
         }
         
     }
     
     func fetachWebhookHistory(){
-        self.webhookHistoryApi(100, success: { [weak self] (responseObj) in
+        self.webhookHistoryApi(10, success: { [weak self] (responseObj) in
             if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
                 botHistoryIcon = responseObject["icon"] as? String
                 self?.insertOrUpdateHistoryMessages(messages)
@@ -680,15 +676,11 @@ open class KABotClient: NSObject {
     
     // MARK: - insert or update messages
     func insertOrUpdateHistoryMessages(_ messages: Array<[String: Any]>) {
-//        guard let models = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages], let botMessages = models, botMessages.count > 0 else {
-//            return
-//        }
-        let models = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages]
-        guard  let botMessages = models, botMessages.count > 0 else{
+        
+        let botMessages = Mapper<BotMessages>().mapArray(JSONArray: messages)
+        guard botMessages.count > 0 else {
             return
         }
-        
-        
         var allMessages: [Message] = [Message]()
         for message in botMessages {
             if message.type == "outgoing" || message.type == "incoming" {
@@ -741,27 +733,20 @@ open class KABotClient: NSObject {
     }
     
     // MARK: -
-    public func setReachabilityStatusChange(_ status: AFNetworkReachabilityStatus) {
+    public func setReachabilityStatusChange(_ status: NetworkReachabilityManager.NetworkReachabilityStatus) {
         botClient.setReachabilityStatusChange(status)
     }
     
     // MARK: - Webhook Send message
     func webhookSendMessage(_ text: String!, _ type: String!,_ attachmentDic: [String: Any]!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
-        // Session Configuration
-        let configuration = URLSessionConfiguration.default
-        
-        //Manager
-        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-        
         let urlString: String = "\(SDKConfiguration.serverConfig.BOT_SERVER)/chatbot/v2/webhook/\(SDKConfiguration.botConfig.botId)"
-        let requestSerializer = AFJSONRequestSerializer()
-        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-        
         let authorizationStr = "bearer \(jwtToken!)"
-        requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
-        requestSerializer.setValue("application/json", forHTTPHeaderField:"Content-Type")
+        let headers: HTTPHeaders = [
+            "Keep-Alive": "Connection",
+            "Content-Type": "application/json",
+            "Authorization": authorizationStr
+        ]
         
         let session = ["new":false]
         let message : [String: Any] = ["type": type!,"val": text!, "attachments": attachmentDic!]
@@ -773,98 +758,88 @@ open class KABotClient: NSObject {
         let to : [String: Any] = ["id": "Kore.ai", "groupInfo": groupInfo]
 
     
-        var parameters: NSDictionary?
-        parameters = ["session": session,
+        let parameters: [String: Any]  = ["session": session,
         "message": message,
         "from": from,
         "to": to,
         "token": "{}"]
         
-       
-        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
-        sessionManager?.requestSerializer = requestSerializer
-        sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-            if let dictionary = responseObject as? [String: Any]{
-                success?(dictionary)
-            } else {
+        let dataRequest = sessionManager.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+        dataRequest.validate().responseJSON { (response) in
+            if let _ = response.error {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
                 NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+                return
             }
-        }) { (sessionDataTask, error) in
-            failure?(error)
-            NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+            
+            if let dictionary = response.value as? [String: Any]{
+                    success?(dictionary)
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                    failure?(error)
+                NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+            }
         }
-        
     }
     
     // MARK:
     func pollApi(_ pollID: String!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
-        // Session Configuration
-        let configuration = URLSessionConfiguration.default
-        
-        //Manager
-        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-       
         let urlString: String = "\(SDKConfiguration.serverConfig.BOT_SERVER)/chatbot/v2/webhook/\(SDKConfiguration.botConfig.botId)/poll/\(pollID!)"
-        let requestSerializer = AFJSONRequestSerializer()
-        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-        
         let authorizationStr = "bearer \(jwtToken!)"
-        requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
-        requestSerializer.setValue("application/json", forHTTPHeaderField:"Content-Type")
+        let headers: HTTPHeaders = [
+            "Keep-Alive": "Connection",
+            "Content-Type": "application/json",
+            "Authorization": authorizationStr
+        ]
         
-        let parameters: NSDictionary = [:]
+        let parameters: [String: Any] = [:]
         
-        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
-        sessionManager?.requestSerializer = requestSerializer
-        sessionManager?.get(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-            if let dictionary = responseObject as? [String: Any]{
-                success?(dictionary)
-            } else {
+        let dataRequest = sessionManager.request(urlString, method: .get, parameters: parameters, headers: headers)
+        dataRequest.validate().responseJSON { (response) in
+            if let _ = response.error {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
                 NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+                return
             }
-        }) { (sessionDataTask, error) in
-            failure?(error)
+            
+            if let dictionary = response.value as? [String: Any]{
+                    success?(dictionary)
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                    failure?(error)
+            }
         }
-        
     }
     
     // MARK:
     func webhookHistoryApi(_ limit: Int!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
-        // Session Configuration
-        let configuration = URLSessionConfiguration.default
-        
-        //Manager
-        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-        
         let urlString: String = "\(SDKConfiguration.serverConfig.BOT_SERVER)/api/chathistory/\(SDKConfiguration.botConfig.botId)/ivr?botId=\(SDKConfiguration.botConfig.botId)&limit=\(limit!)"
-        let requestSerializer = AFJSONRequestSerializer()
-        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-        
+       
         let authorizationStr = "bearer \(jwtToken!)"
-        requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
-        requestSerializer.setValue("application/json", forHTTPHeaderField:"Content-Type")
-        
-        let parameters: NSDictionary = [:]
-        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
-        sessionManager?.requestSerializer = requestSerializer
-        sessionManager?.get(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-            if let dictionary = responseObject as? [String: Any]{
-                success?(dictionary)
-            } else {
+        let headers: HTTPHeaders = [
+            "Keep-Alive": "Connection",
+            "Content-Type": "application/json",
+            "Authorization": authorizationStr
+        ]
+        let parameters: [String: Any] = [:]
+        let dataRequest = sessionManager.request(urlString, method: .get, parameters: parameters, headers: headers)
+        dataRequest.validate().responseJSON { (response) in
+            if let _ = response.error {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
                 NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+                return
             }
-        }) { (sessionDataTask, error) in
-            failure?(error)
+            if let dictionary = response.value as? [String: Any]{
+                    success?(dictionary)
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                    failure?(error)
+            }
         }
         
     }
@@ -872,40 +847,31 @@ open class KABotClient: NSObject {
     // MARK:
     func webhookBotMetaApi( success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
-        // Session Configuration
-        let configuration = URLSessionConfiguration.default
-        
-        //Manager
-        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-        
-        // NOTE: You must set your URL to generate JWT.
         let urlString: String = "\(SDKConfiguration.serverConfig.BOT_SERVER)/api/botmeta/\(SDKConfiguration.botConfig.botId)"
-        let requestSerializer = AFJSONRequestSerializer()
-        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-        
         let authorizationStr = "bearer \(jwtToken!)"
-        requestSerializer.setValue(authorizationStr, forHTTPHeaderField:"Authorization")
-        requestSerializer.setValue("application/json", forHTTPHeaderField:"Content-Type")
-        
-        let parameters: NSDictionary = [:]
-        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
-        sessionManager?.requestSerializer = requestSerializer
-        sessionManager?.get(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-            if let dictionary = responseObject as? [String: Any]{
-                success?(dictionary)
-            } else {
+        let headers: HTTPHeaders = [
+            "Keep-Alive": "Connection",
+            "Content-Type": "application/json",
+            "Authorization": authorizationStr
+        ]
+        let parameters: [String: Any] = [:]
+        let dataRequest = sessionManager.request(urlString, method: .get, parameters: parameters, headers: headers)
+        dataRequest.validate().responseJSON { (response) in
+            if let _ = response.error {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
                 NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+                return
             }
-        }) { (sessionDataTask, error) in
-            failure?(error)
+            if let dictionary = response.value as? [String: Any]{
+                    success?(dictionary)
+            } else {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                    failure?(error)
+            }
         }
-        
     }
-    
-    
+
 }
 
 // MARK: - UserDefaults Sign-In status

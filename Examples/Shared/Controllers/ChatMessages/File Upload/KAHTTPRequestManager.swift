@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import AFNetworking
-import Mantle
+//import AFNetworking
+//import Mantle
 import KoreBotSDK
 
 open class KAHTTPRequestManager: NSObject {
@@ -26,10 +26,10 @@ open class KAHTTPRequestManager: NSObject {
 // MARK: - requests
 extension KAAccount {
     // MARK: - check networkReachability
-    public func networkReachability(shouldTriggerNotificaiton: Bool = true) -> Bool {
-        return networkReachability(with: "", shouldTriggerNotificaiton: shouldTriggerNotificaiton)
-    }
-    
+//    public func networkReachability(shouldTriggerNotificaiton: Bool = true) -> Bool {
+//        return networkReachability(with: "", shouldTriggerNotificaiton: shouldTriggerNotificaiton)
+//    }
+    /*
     func networkReachability(with message: String?, shouldTriggerNotificaiton: Bool) -> Bool {
         var isReachable = true
         let reachabilityStatus = AFNetworkReachabilityManager.shared().networkReachabilityStatus
@@ -75,6 +75,6 @@ extension KAAccount {
         })
         
         return urlComponents.string ?? urlString
-    }
+    }*/
 }
  

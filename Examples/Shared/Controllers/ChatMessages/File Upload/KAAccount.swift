@@ -9,8 +9,8 @@
 import UIKit
 import CoreData
 import CoreLocation
-import AFNetworking
-import Mantle
+//import AFNetworking
+//import Mantle
 import KoreBotSDK
 import Intents
 
@@ -42,17 +42,17 @@ public class KAAccount: NSObject {
     var isContactSyncInProgress = false
     var jwtToken: String?
   
-    var networkReachabilityStatus = AFNetworkReachabilityStatus.notReachable
+   // var networkReachabilityStatus = AFNetworkReachabilityStatus.notReachable
     
-    var requestSessionManager: KAHTTPSessionManager = {
-        let sessionManager = KAHTTPSessionManager(baseURL: URL(string: SDKConfiguration.serverConfig.JWT_SERVER))
-        return sessionManager
-    }()
-    
-    var sessionManager: KAHTTPSessionManager = {
-        let sessionManager = KAHTTPSessionManager(baseURL: URL(string: SDKConfiguration.serverConfig.JWT_SERVER))
-        return sessionManager
-    }()
+//    var requestSessionManager: KAHTTPSessionManager = {
+//        let sessionManager = KAHTTPSessionManager(baseURL: URL(string: SDKConfiguration.serverConfig.JWT_SERVER))
+//        return sessionManager
+//    }()
+//
+//    var sessionManager: KAHTTPSessionManager = {
+//        let sessionManager = KAHTTPSessionManager(baseURL: URL(string: SDKConfiguration.serverConfig.JWT_SERVER))
+//        return sessionManager
+//    }()
     
     var operationQueue = OperationQueue()
     
@@ -119,8 +119,8 @@ public class KAAccount: NSObject {
     
     // MARK: - cancel all tasks
     func suspendAllTasks() {
-        requestSessionManager.suspendAllTasks()
-        sessionManager.suspendAllTasks()
+//        requestSessionManager.suspendAllTasks()
+//        sessionManager.suspendAllTasks()
     }
     
     func resumeAllTasks() {
@@ -131,7 +131,7 @@ public class KAAccount: NSObject {
     }
     
     func cancelAllTasks() {
-        requestSessionManager.cancelAllTasks()
-        sessionManager.cancelAllTasks()
+//        requestSessionManager.cancelAllTasks()
+//        sessionManager.cancelAllTasks()
     }
 }

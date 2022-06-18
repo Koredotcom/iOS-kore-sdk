@@ -11,11 +11,14 @@ import AVFoundation
 import SafariServices
 import KoreBotSDK
 import CoreData
-import Mantle
+//import Mantle
 import AssetsPickerViewController
 import Photos
 import MobileCoreServices
 import emojione_ios
+import Alamofire
+import AlamofireImage
+import ObjectMapper
 
 class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate {
     // MARK: properties
@@ -710,7 +713,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         let url = URL(string: urlString!)
         if url != nil{
-            backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
+            backgroungImageView.af.setImage(withURL: url!, placeholderImage: UIImage(named: ""))
             backgroungImageView.contentMode = .scaleAspectFit
         }
         setupColorDropDown()
@@ -738,7 +741,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
                 let url = URL(string: urlString!)
                 if url != nil{
-                    self!.backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
+                    self!.backgroungImageView.af.setImage(withURL: url!, placeholderImage: UIImage(named: ""))
                 }else{
                     self!.backgroungImageView.image = UIImage.init(named: "")
                 }
@@ -890,14 +893,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @objc func startMonitoringForReachability() {
-        let networkReachabilityManager = AFNetworkReachabilityManager.shared()
-        networkReachabilityManager.setReachabilityStatusChange({ (status) in
-            print("Network reachability: \(AFNetworkReachabilityManager.shared().localizedNetworkReachabilityStatusString())")
+        let networkReachabilityManager = NetworkReachabilityManager.default
+        networkReachabilityManager?.startListening(onUpdatePerforming: { (status) in
+            print("Network reachability: \(status)")
             switch status {
-            case AFNetworkReachabilityStatus.reachableViaWWAN, AFNetworkReachabilityStatus.reachableViaWiFi:
-                //self.establishBotConnection()
+            case .reachable(.ethernetOrWiFi), .reachable(.cellular):
+               // self.establishBotConnection() //kk
                 break
-            case AFNetworkReachabilityStatus.notReachable:
+            case .notReachable:
                 fallthrough
             default:
                 break
@@ -905,11 +908,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             
             KABotClient.shared.setReachabilityStatusChange(status)
         })
-        networkReachabilityManager.startMonitoring()
     }
     
     @objc func stopMonitoringForReachability() {
-        AFNetworkReachabilityManager.shared().stopMonitoring()
+        NetworkReachabilityManager.default?.stopListening()
     }
     
     @objc func navigateToComposeBar(_ notification: Notification) {
@@ -1644,7 +1646,7 @@ extension ChatMessagesViewController {
     
     // MARK: - insert or update messages
     func insertOrUpdateHistoryMessages(_ messages: Array<[String: Any]>) {
-        guard let botMessages = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages], botMessages.count > 0 else {
+        guard let botMessages = Mapper<BotMessages>().mapArray(JSONArray: messages) as? [BotMessages], botMessages.count > 0 else {
             return
         }
         

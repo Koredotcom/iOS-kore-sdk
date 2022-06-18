@@ -8,7 +8,6 @@
 
 import UIKit
 import KoreBotSDK
-import AFNetworking
 
 // MARK: -
 public class KRESearchResultsViewController: UIViewController {

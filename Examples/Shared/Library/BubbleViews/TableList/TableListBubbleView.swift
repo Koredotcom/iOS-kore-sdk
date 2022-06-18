@@ -153,7 +153,7 @@ extension TableListBubbleView: UITableViewDelegate,UITableViewDataSource{
             cell.imageViewWidthConstraint.constant = 40.0
             cell.imageViewHeightConstraint.constant = 40.0
             let url = URL(string: (elements?.title?.image?.image_src)!)
-            cell.imgView.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+            cell.imgView.af.setImage(withURL: url!, placeholderImage: UIImage(named: "placeholder_image"))
             
             if elements?.title?.image?.radius != nil {
                 //cell.imgView.layer.cornerRadius = CGFloat((elements?.title?.image?.radius)!)
