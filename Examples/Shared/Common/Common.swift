@@ -19,7 +19,11 @@ var showListViewTemplateNotification = "ListViewTemplateNotificationName"
 var showListWidgetViewTemplateNotification = "ListWidgetViewTemplateNotificationName"
 var showAttachmentSendButtonNotification = "ShowAttachmentSendButton"
 var dropDownTemplateNotification = "DropDownTemplateNotificationName"
+
+var showCustomTableTemplateNotification = "ShowCustomTableTemplateNotificationName"
+
 var reloadVideoCellNotification = "ReloadVideoCellNotification"
+
 
 var isSpeakingEnabled = false
 var selectedTheme = "Theme Logo"

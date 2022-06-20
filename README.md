@@ -55,7 +55,7 @@ static let botId = "<bot-id>"
 
 BOT_SERVER URL- replace it with your server URL, if required
  ```
-static let BOT_SERVER = "https://bots.kore.ai/";
+static let BOT_SERVER = "https://bots.kore.ai";
  ```
 
 Anonymous user - if not anonymous, assign same identity (such as email or phone number) while making a connection
@@ -68,6 +68,16 @@ JWT_SERVER URL - specify the server URL for JWT token generation. This token is 
 static let JWT_SERVER = "<jwt-token-server-url>";
 ```
 
+Enable the webhook channel - This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
+  ```
+ static bool isWebhookEnabled = false; 
+  ```
+  
+  Enable the PanelView - This should be either true (Show PanelView) or false (Hide PanelView).
+  ```
+  static bool isPanelView = false; 
+   ```
+    
 ## Running the Demo app
 #### a. Using Cocoa Pods
 	* Download or clone the repository.

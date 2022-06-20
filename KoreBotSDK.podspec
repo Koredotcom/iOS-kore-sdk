@@ -39,6 +39,9 @@ Pod::Spec.new do |s|
         ss.dependency 'GhostTypewriter'
         ss.dependency 'MarkdownKit'
         ss.dependency 'Charts', '~> 3.2.2'
+	ss.dependency 'AssetsPickerViewController'
+	ss.dependency 'SwiftUTI'
+	ss.dependency 'emojione-ios'
         ss.ios.frameworks = 'SystemConfiguration'
     end
 end

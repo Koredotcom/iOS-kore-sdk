@@ -88,6 +88,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(InLineFormCell.self, forCellReuseIdentifier:"InLineFormCell")
         self.tableView.register(DropDownell.self, forCellReuseIdentifier:"DropDownell")
         self.tableView.register(AudioBubbleCell.self, forCellReuseIdentifier:"AudioBubbleCell")
+        self.tableView.register(CustomTableCell.self, forCellReuseIdentifier:"CustomTableCell")
         
     }
     
@@ -204,6 +205,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .audio:
                 cellIdentifier = "AudioBubbleCell"
                 break
+            case .custom_table:
+               cellIdentifier = "CustomTableCell"
+            break
             }
             
         }
@@ -374,6 +378,16 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             cell.bubbleView.drawBorder = true
             break
         case .dropdown_template:
+            cell.bubbleView.drawBorder = true
+            break
+        case .custom_table:
+            let bubbleView: CustomTableBubbleView = cell.bubbleView as! CustomTableBubbleView
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+            }
+            bubbleView.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
             cell.bubbleView.drawBorder = true
             break
         }
