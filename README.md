@@ -55,7 +55,7 @@ static let botId = "<bot-id>"
 
 BOT_SERVER URL- replace it with your server URL, if required
  ```
-static let BOT_SERVER = "https://bots.kore.ai/";
+static let BOT_SERVER = "https://bots.kore.ai";
  ```
 
 Anonymous user - if not anonymous, assign same identity (such as email or phone number) while making a connection
