@@ -15,8 +15,8 @@ Pod::Spec.new do |s|
 
     s.subspec 'Library' do |ss|
         ss.ios.deployment_target = '10.0'
-        ss.source_files = 'KoreBotSDK/**/*.{h,m,swift}'
-        
+        ss.source_files = ["KoreBotSDK/**/*.{h,m,swift}","ios/**/*.{h,m,mm,swift,gif}"]
+         ss.resources = ["ios/**/*.{xcdatamodeld}", "ios/**/*.{xcassets}", 'ios/**/*.xib', ]
         ss.dependency 'Starscream'
         ss.dependency 'ObjectMapper'
         ss.dependency 'AlamofireImage'
