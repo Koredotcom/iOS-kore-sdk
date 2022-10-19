@@ -103,8 +103,9 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
     
 #### 2. Initializing the Bot client
 	import KoreBotSDK
-	let botInfo: NSDictionary = ["chatBot":"<bot-name>", "taskBotId":"<bot-identifier>"]
-	let botClient: BotClient = BotClient(botInfoParameters: botInfo)
+	let botInfo: [String: Any] = ["chatBot":"<bot-name>", "taskBotId":"<bot-identifier>"]
+      let botClient: BotClient = BotClient()
+      botClient.initialize(botInfoParameters: botInfo, customData: [:])
 
 #### 3. JWT generation
     a. You need to have secure token service hosted in your environment which returns the JWT token.
@@ -114,15 +115,16 @@ To integrate jwt signing in code refer to KoreBotSDKDemo App. - https://github.c
 NOTE: Please refer about JWT signing and verification at - https://developer.kore.com/docs/bots/kore-web-sdk/
 
 #### 4. Connect with JWT
-    botClient.connectWithJwToken(jwToken, success: { (client) in
-        // listen to RTM events
- 
+    botClient.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
+    
+    }, success: { (client) in
+       
     }, failure: { (error) in
-		
+        
     })
 
 #### 5. Send message
-    botClient.sendMessage("Tweet hello", options: [])
+    botClient.sendMessage("Tweet hello", options: [:])
     
 #### 6. Listen to events
     self.botClient.onMessage = { [weak self] (object) in
