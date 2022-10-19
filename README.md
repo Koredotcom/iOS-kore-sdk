@@ -106,6 +106,9 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
 	let botInfo: [String: Any] = ["chatBot":"<bot-name>", "taskBotId":"<bot-identifier>"]
       let botClient: BotClient = BotClient()
       botClient.initialize(botInfoParameters: botInfo, customData: [:])
+      //Setting the server Url
+      let botServerUrl: String = "https://bots.kore.ai"
+      botClient.setKoreBotServerUrl(url: botServerUrl)
 
 #### 3. JWT generation
     a. You need to have secure token service hosted in your environment which returns the JWT token.
