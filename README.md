@@ -11,15 +11,15 @@ Kore Bot SDK for iOS enables you to talk to Kore bots over a web socket. This re
 ### Prerequisites
 * Service to generate JWT (JSON Web Tokens)- SDK uses this to send the user identity to Kore Platform.
 * SDK app credentials 
-	* Login to the Bots platform
-	* Navigate to the Bot builder
-	* Search and click on the bot 
-	* Go to channels
-	* Enable *Web / Mobile Client* channel against the bot as shown in the screen below.	
-	![Add bot to Web/Mobile Client channel](https://github.com/Koredotcom/iOS-kore-sdk/blob/master/channels.png)
-	
-	* create new or use existing SDK app to obtain client id and client secret
-	![Obtain Client id and Client secret](https://github.com/Koredotcom/iOS-kore-sdk/blob/master/web-mobile-client-channel.png)
+    * Login to the Bots platform
+    * Navigate to the Bot builder
+    * Search and click on the bot 
+    * Go to channels
+    * Enable *Web / Mobile Client* channel against the bot as shown in the screen below.    
+    ![Add bot to Web/Mobile Client channel](https://github.com/Koredotcom/iOS-kore-sdk/blob/master/channels.png)
+    
+    * create new or use existing SDK app to obtain client id and client secret
+    ![Obtain Client id and Client secret](https://github.com/Koredotcom/iOS-kore-sdk/blob/master/web-mobile-client-channel.png)
 
 ## Instructions
 
@@ -74,10 +74,10 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
   ```
 ## Running the Demo app
 #### a. Using Cocoa Pods
-	* Download or clone the repository.
-	* Run "pod install" in the Examples/CocoapodsDemo project folder.
-	* Open Examples/CocoapodsDemo/KoreBotSDKDemo.xcworkspace in Xcode.
-	* Run the KoreBotSDKDemo.app in xcode
+    * Download or clone the repository.
+    * Run "pod install" in the Examples/CocoapodsDemo project folder.
+    * Open Examples/CocoapodsDemo/KoreBotSDKDemo.xcworkspace in Xcode.
+    * Run the KoreBotSDKDemo.app in xcode
 
 #### b. Using Carthage
     * Download or clone the repository.
@@ -88,27 +88,28 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
 ## Integrating into your app
 #### 1. Setup KoreBotSDK
 ###### a. Using CocoaPods
-	Add the following to your Podfile:
-	pod 'KoreBotSDK'
-	
-	Or to get latest pod changes use:
-	pod 'KoreBotSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git’
-	
-	Run pod install in your project folder.
+    Add the following to your Podfile:
+    pod 'KoreBotSDK'
+    
+    Or to get latest pod changes use:
+    pod 'KoreBotSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git’
+    
+    Run pod install in your project folder.
 ###### b. Using Carthage
-	Add the following to your Cartfile:
-	github "Koredotcom/iOS-kore-sdk" "master"
-	
-	Run "carthage update --platform iOS" in your project folder.
+    Add the following to your Cartfile:
+    github "Koredotcom/iOS-kore-sdk" "master"
+    
+    Run "carthage update --platform iOS" in your project folder.
     
 #### 2. Initializing the Bot client
-	import KoreBotSDK
-	let botInfo: [String: Any] = ["chatBot":"<bot-name>", "taskBotId":"<bot-identifier>"]
-      let botClient: BotClient = BotClient()
-      botClient.initialize(botInfoParameters: botInfo, customData: [:])
-      //Setting the server Url
-      let botServerUrl: String = "https://bots.kore.ai"
-      botClient.setKoreBotServerUrl(url: botServerUrl)
+    import KoreBotSDK
+    
+    let botInfo: NSDictionary = ["chatBot":"<bot-name>", "taskBotId":"<bot-identifier>"]
+    let botClient: BotClient = BotClient(botInfoParameters: botInfo)
+    
+    //Setting the server Url
+    let botServerUrl: String = "https://bots.kore.ai"
+    botClient.setKoreBotServerUrl(url: botServerUrl)
 
 #### 3. JWT generation
     a. You need to have secure token service hosted in your environment which returns the JWT token.
@@ -118,29 +119,28 @@ To integrate jwt signing in code refer to KoreBotSDKDemo App. - https://github.c
 NOTE: Please refer about JWT signing and verification at - https://developer.kore.com/docs/bots/kore-web-sdk/
 
 #### 4. Connect with JWT
-    botClient.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
-    
-    }, success: { (client) in
-       
+    botClient.connectWithJwToken(jwToken, success: { (client) in
+        // listen to RTM events
+ 
     }, failure: { (error) in
         
     })
 
 #### 5. Send message
-    botClient.sendMessage("Tweet hello", options: [:])
+    botClient.sendMessage("Tweet hello", options: [] as AnyObject?)
     
 #### 6. Listen to events
     self.botClient.onMessage = { [weak self] (object) in
-		//"object" type as "BotMessageModel"
+        //"object" type as "BotMessageModel"
     }
     self.botClient.onMessageAck = { (ack) in
-		//"ack" type as "Ack"
+        //"ack" type as "Ack"
     }
     self.botClient.connectionDidClose = { (code, reason) in
-		//"code" type as "Int", "reason" type as "String"
+        //"code" type as "Int", "reason" type as "String"
     }
     self.botClient.connectionDidFailWithError = { (error) in
-		//"error" type as "NSError"
+        //"error" type as "NSError"
     }
     
 #### 7. Subscribe to push notifications
