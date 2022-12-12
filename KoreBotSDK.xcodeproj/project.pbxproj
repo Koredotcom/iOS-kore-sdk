@@ -111,12 +111,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D1200F0B1CC9F721009BBB1A = {
+		959F2A8029474113002ACDAD /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				D1200F171CC9F721009BBB1A /* KoreBotSDK */,
-				D1200F311CC9F797009BBB1A /* KoreBotSDK.podspec */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		959F2A8129474122002ACDAD /* Tests */ = {
+			isa = PBXGroup;
+			children = (
 				D1200F231CC9F721009BBB1A /* KoreBotSDKTests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		D1200F0B1CC9F721009BBB1A = {
+			isa = PBXGroup;
+			children = (
+				959F2A8029474113002ACDAD /* Sources */,
+				D1200F311CC9F797009BBB1A /* KoreBotSDK.podspec */,
+				959F2A8129474122002ACDAD /* Tests */,
 				D1200F161CC9F721009BBB1A /* Products */,
 				D1F337892201CD25005BE5F1 /* Widgets */,
 				D1F338542201D666005BE5F1 /* Frameworks */,
