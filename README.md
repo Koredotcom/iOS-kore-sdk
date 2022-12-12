@@ -182,5 +182,5 @@ NOTE: Please refer about JWT signing and verification at - https://developer.kor
     
 
 License
-----
+-----
 Copyright © Kore, Inc. MIT License; see LICENSE for further details.
