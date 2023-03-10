@@ -337,7 +337,15 @@ open class KABotClient: NSObject {
         if let type = object?.type, type == "incoming" {
             message.messageType = .default
         }
-        message.sentDate = object?.createdOn
+        if object?.createdOn != nil{
+            message.sentDate = object?.createdOn
+        }else{
+            let timestamp = NSDate().timeIntervalSince1970
+            let myTimeInterval = TimeInterval(timestamp)
+            let time = NSDate(timeIntervalSince1970: TimeInterval(myTimeInterval))
+            message.sentDate = time as Date
+        }
+       
         message.messageId = object?.messageId
         
         if let iconUrl = object?.iconUrl {

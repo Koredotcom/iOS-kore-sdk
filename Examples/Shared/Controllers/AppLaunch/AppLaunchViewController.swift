@@ -111,7 +111,7 @@ class AppLaunchViewController: UIViewController {
         
         let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
         dataStoreManager.deleteThreadIfRequired(with: botId, completionBlock: { (success) in
-            print("Delete Sucess")
+            
         })
         
         if !clientId.hasPrefix("<") && !clientSecret.hasPrefix("<") && !chatBotName.hasPrefix("<") && !botId.hasPrefix("<") {

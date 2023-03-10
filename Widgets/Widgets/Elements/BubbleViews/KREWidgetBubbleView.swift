@@ -330,12 +330,14 @@ open class KRECollectionViewCenteredFlowLayout: UICollectionViewFlowLayout {
             }
 
             return representedElements + cells.flatMap { group -> [UICollectionViewLayoutAttributes] in
-                guard let section = group.first?.indexPath.section else {
+                let indexPath = group.first?.indexPath
+                guard let section = indexPath?.section else {
                     return group
                 }
                 let evaluatedSectionInset = evaluatedSectionInsetForSection(at: section)
                 let evaluatedMinimumInteritemSpacing = evaluatedMinimumInteritemSpacingForSection(at: section)
-                var origin = (collectionView.bounds.width + evaluatedSectionInset.left - evaluatedSectionInset.right - group.reduce(0, { $0 + $1.frame.size.width }) - CGFloat(group.count - 1) * evaluatedMinimumInteritemSpacing) / 2
+                let value = group.reduce(0, { $0 + $1.frame.size.width })
+                var origin = (collectionView.bounds.width + evaluatedSectionInset.left - evaluatedSectionInset.right - value - CGFloat(group.count - 1) * evaluatedMinimumInteritemSpacing) / 2
                 return group.map {
                     $0.frame.origin.x = origin
                     origin += $0.frame.size.width + evaluatedMinimumInteritemSpacing
@@ -357,12 +359,14 @@ open class KRECollectionViewCenteredFlowLayout: UICollectionViewFlowLayout {
             }
 
             return representedElements + cells.flatMap { group -> [UICollectionViewLayoutAttributes] in
-                guard let section = group.first?.indexPath.section else {
+                let indexPath = group.first?.indexPath
+                guard let section = indexPath?.section else {
                     return group
                 }
                 let evaluatedSectionInset = evaluatedSectionInsetForSection(at: section)
                 let evaluatedMinimumInteritemSpacing = evaluatedMinimumInteritemSpacingForSection(at: section)
-                var origin = (collectionView.bounds.height + evaluatedSectionInset.top - evaluatedSectionInset.bottom - group.reduce(0, { $0 + $1.frame.size.height }) - CGFloat(group.count - 1) * evaluatedMinimumInteritemSpacing) / 2
+                let value = group.reduce(0, { $0 + $1.frame.size.height });
+                var origin = (collectionView.bounds.height + evaluatedSectionInset.top - evaluatedSectionInset.bottom - value - CGFloat(group.count - 1) * evaluatedMinimumInteritemSpacing) / 2
                 return group.map {
                     $0.frame.origin.y = origin
                     origin += $0.frame.size.height + evaluatedMinimumInteritemSpacing

@@ -39,7 +39,6 @@ class SDKConfiguration: NSObject {
         }
         
         static let BOT_SERVER = String(format: "https://bots.kore.ai")
-        
         public static let WIDGET_SERVER = String(format: "https://bots.kore.ai")
     }
    
