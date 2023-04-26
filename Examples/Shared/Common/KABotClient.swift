@@ -409,7 +409,8 @@ open class KABotClient: NSObject {
                                 textComponent.payload = tText
                                 textMessage?.addComponent(textComponent)
                             }
-                            if templateType == "SYSTEM"{
+
+                            if templateType == "SYSTEM" || templateType == "live_agent"{
                                let textComponent = Component(.text)
                                let text = dictionary["text"] as? String ?? ""
                                textComponent.payload = text

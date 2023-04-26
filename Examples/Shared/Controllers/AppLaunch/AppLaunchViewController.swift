@@ -111,7 +111,7 @@ class AppLaunchViewController: UIViewController {
         
         let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
         dataStoreManager.deleteThreadIfRequired(with: botId, completionBlock: { (success) in
-            print("Delete Sucess")
+            
         })
         
         if !clientId.hasPrefix("<") && !clientSecret.hasPrefix("<") && !chatBotName.hasPrefix("<") && !botId.hasPrefix("<") {
@@ -292,7 +292,7 @@ extension AppLaunchViewController{
         let user = KREUser()
         user.userId = SDKConfiguration.widgetConfig.botId //userId
         user.accessToken = widgetJWTToken
-        user.server = SDKConfiguration.serverConfig.KORE_SERVER
+        user.server = "\(SDKConfiguration.serverConfig.WIDGET_SERVER)/"
         user.tokenType = "bearer"
         user.userEmail = SDKConfiguration.widgetConfig.identity
         user.headers = ["X-KORA-Client": KoraAssistant.shared.applicationHeader]
