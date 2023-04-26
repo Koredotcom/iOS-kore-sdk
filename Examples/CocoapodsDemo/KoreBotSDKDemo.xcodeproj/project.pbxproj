@@ -31,6 +31,7 @@
 		95A5F8E32785B35F00F7BEEE /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A5F8E12785B35F00F7BEEE /* CustomTableViewCell.xib */; };
 		95A5F8E72785C4B700F7BEEE /* CustomTableTemplateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A5F8E52785C4B700F7BEEE /* CustomTableTemplateVC.swift */; };
 		95A5F8E82785C4B700F7BEEE /* CustomTableTemplateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A5F8E62785C4B700F7BEEE /* CustomTableTemplateVC.xib */; };
+		95E52A6A29F90BC5003C8532 /* BotConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E52A6929F90BC5003C8532 /* BotConnect.swift */; };
 		CD0563FF25247F1900E75768 /* InLineFormBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0563EF25247F1800E75768 /* InLineFormBubbleView.swift */; };
 		CD05640025247F1900E75768 /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0563F225247F1900E75768 /* FloatRatingView.swift */; };
 		CD05640125247F1900E75768 /* FeedbackBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0563F325247F1900E75768 /* FeedbackBubbleView.swift */; };
@@ -191,6 +192,7 @@
 		95A5F8E12785B35F00F7BEEE /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
 		95A5F8E52785C4B700F7BEEE /* CustomTableTemplateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableTemplateVC.swift; sourceTree = "<group>"; };
 		95A5F8E62785C4B700F7BEEE /* CustomTableTemplateVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableTemplateVC.xib; sourceTree = "<group>"; };
+		95E52A6929F90BC5003C8532 /* BotConnect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotConnect.swift; sourceTree = "<group>"; };
 		CD0563EF25247F1800E75768 /* InLineFormBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InLineFormBubbleView.swift; sourceTree = "<group>"; };
 		CD0563F225247F1900E75768 /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
 		CD0563F325247F1900E75768 /* FeedbackBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackBubbleView.swift; sourceTree = "<group>"; };
@@ -656,6 +658,7 @@
 			isa = PBXGroup;
 			children = (
 				D1A12B6D1E84DD3500F4E2B4 /* SDKConfiguration.swift */,
+				95E52A6929F90BC5003C8532 /* BotConnect.swift */,
 				D175AD4C1CEF0CD500BB9442 /* KoreBotSDKDemo */,
 				D175AD4B1CEF0CD500BB9442 /* Products */,
 				A851461715333BEDEFC8310F /* Frameworks */,
@@ -1214,6 +1217,7 @@
 				CD842D4624EFBD980053710B /* DPDKeyboardListener.swift in Sources */,
 				D1F338F92201D99A005BE5F1 /* InputTOWebViewController.swift in Sources */,
 				D1F338C42201D99A005BE5F1 /* DataStoreManager.swift in Sources */,
+				95E52A6A29F90BC5003C8532 /* BotConnect.swift in Sources */,
 				CDB869FD24C0093A00D1CCC7 /* NewListBubbleView.swift in Sources */,
 				D1F338D32201D99A005BE5F1 /* CALayer+MBAnimationPersistence.m in Sources */,
 				D1A12B6E1E84DD3500F4E2B4 /* SDKConfiguration.swift in Sources */,
