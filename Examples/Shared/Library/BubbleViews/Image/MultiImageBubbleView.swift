@@ -177,18 +177,24 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
                 }else{
                     cell.imageComponent.image = UIImage(named: "placeholder_image")
                 }
+                
+                if let gifImageUrl = imageDataDic["url"] as? String, gifImageUrl.contains(".gif"){
+                    UIImage.gifImageWithURL(gifImageUrl, completion: { gifImage in
+                        DispatchQueue.main.async {
+                            cell.imageComponent.image = gifImage
+                            cell.imageComponent.contentMode = .scaleAspectFill
+                        }
+                        
+                    })
+                    
+                }
+                
                 if cell.playerViewController != nil{
                     cell.videoPlayerView.willRemoveSubview(cell.playerViewController.view)
                 }
             }
         }
            
-        
-        //
-        
-       // cell.component = self.components.object(at: (indexPath as NSIndexPath).row) as! Component //kk
-        //        cell.index = [indexPath.row]
-        
         if (((indexPath as NSIndexPath).row == 4) && (self.components.count > MAX_CELLS)) {
             cell.plusCountLabel.isHidden = false
             //            cell.plusCountLabel.text = [NSString stringWithFormat:@"+%lu", (long)self.components.count - MAX_CELLS]
@@ -201,7 +207,7 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
         if (self.viewingIndex == NSNotFound) {
             cell.isViewing = false
         } else {
-            //            cell.isViewing = indexPath.row == MIN(_viewingIndex, MAX_CELLS - 1)
+        
         }
         
         return cell
