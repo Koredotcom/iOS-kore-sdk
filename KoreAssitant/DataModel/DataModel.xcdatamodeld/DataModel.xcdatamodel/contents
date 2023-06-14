@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="KREComponent" representedClassName="KREComponent" versionHashModifier="1" syncable="YES">
+        <attribute name="componentDesc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="componentId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="componentInfo" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="KREMessage" inverseName="components" inverseEntity="KREMessage" syncable="YES"/>
+    </entity>
+    <entity name="KREContact" representedClassName="KREContact" versionHashModifier="1" syncable="YES">
+        <attribute name="contactId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="identity" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="KREMessage" representedClassName="KREMessage" versionHashModifier="1" syncable="YES">
+        <attribute name="clientId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="iconUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isSender" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="messageId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageType" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sentOn" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="templateType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="author" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="KREContact" syncable="YES"/>
+        <relationship name="components" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="KREComponent" inverseName="message" inverseEntity="KREComponent" syncable="YES"/>
+        <relationship name="thread" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="KREThread" inverseName="messages" inverseEntity="KREThread" syncable="YES"/>
+    </entity>
+    <entity name="KREThread" representedClassName="KREThread" versionHashModifier="1" syncable="YES">
+        <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="threadId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="KREMessage" inverseName="thread" inverseEntity="KREMessage" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="KREComponent" positionX="-27" positionY="36" width="128" height="105"/>
+        <element name="KREContact" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="KREMessage" positionX="-45" positionY="27" width="128" height="195"/>
+        <element name="KREThread" positionX="-9" positionY="45" width="128" height="90"/>
+    </elements>
+</model>

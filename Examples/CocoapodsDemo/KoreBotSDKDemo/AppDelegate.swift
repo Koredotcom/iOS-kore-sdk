@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let window = window {
             window.backgroundColor = UIColor.white
 
-            let appLaunchViewController: AppLaunchViewController = AppLaunchViewController(nibName: "AppLaunchViewController", bundle: nil)
+            let appLaunchViewController: ViewController = ViewController(nibName: "ViewController", bundle: nil)
             let navigationController: UINavigationController = UINavigationController(rootViewController: appLaunchViewController)
 
             window.rootViewController = navigationController
