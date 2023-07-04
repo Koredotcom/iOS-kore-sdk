@@ -106,8 +106,7 @@ static let JWT_SERVER = "<jwt-token-server-url>";
     var widegtView: WidegtView!
 
 #### 3. Add WidgetSDKDelegate 
-
-   extension ViewController: WidgetViewDelegate{
+    extension ViewController: WidgetViewDelegate{
     func configureInfoView(){
         self.widegtView = WidegtView()
         self.widegtView.translatesAutoresizingMaskIntoConstraints = false
@@ -136,7 +135,7 @@ static let JWT_SERVER = "<jwt-token-server-url>";
                     self?.sheetController = nil
                 }
                 self.view.endEditing(true)
-
+                
                 let bottomSheetController = KABottomSheetController(controller: panelItemViewController, sizes: sizes)
                 bottomSheetController.inputViewHeight = CGFloat(inputViewHeight)
                 bottomSheetController.willSheetSizeChange = { [weak self] (controller, newSize) in
@@ -148,7 +147,7 @@ static let JWT_SERVER = "<jwt-token-server-url>";
                         controller.overlayColor = .clear
                         panelItemViewController.showPanelHeader(false)
                         bottomSheetController.closeSheet(true)
-
+                        
                         self?.sheetController = nil
                     }
                 }
@@ -158,7 +157,7 @@ static let JWT_SERVER = "<jwt-token-server-url>";
             } else if let bottomSheetController = weakSelf.sheetController,
                       let panelItemViewController = bottomSheetController.childViewController as? KAPanelItemViewController {
                 panelItemViewController.panelId = item?.id
-
+                
                 if bottomSheetController.presentingViewController == nil {
                     weakSelf.present(bottomSheetController, animated: true, completion: nil)
                 } else {
@@ -172,9 +171,7 @@ static let JWT_SERVER = "<jwt-token-server-url>";
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
-    
 }
-
 
 #### 4. Connect with WidgetSDK
 
@@ -192,7 +189,6 @@ static let JWT_SERVER = "<jwt-token-server-url>";
 
 #### 
     
-
 License
 ----
 Copyright © Kore, Inc. MIT License; see LICENSE for further details.
