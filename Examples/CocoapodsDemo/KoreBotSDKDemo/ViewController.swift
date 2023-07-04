@@ -12,6 +12,7 @@ import WidgetSDK
 class ViewController: UIViewController {
 
     @IBOutlet weak var panelCollectionViewContainerView: UIView!
+    
     public var sheetController: KABottomSheetController?
     var insets: UIEdgeInsets = .zero
     public var maxPanelHeight: CGFloat {
@@ -29,47 +30,35 @@ class ViewController: UIViewController {
         return maxHeight
     }
     
-    @IBOutlet weak var tapsOnBackBtnAct: UIButton!
     let widgetConnect = WidgetConnect()
-    var infoView: WidegtView!
+    var widegtView: WidegtView!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
         
         widgetConnect.show(WidgetSDKConfiguration.widgetConfig.clientId) { statusStr in
             self.configureInfoView()
         } failure: { error in
             print(error)
-            self.showAlert(title: "Widget SDK Demo", message: "YOU MUST SET WIDGET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
+            let title = "Widget SDK Demo"
+            let message = "YOU MUST SET WIDGET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation."
+            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(defaultAction)
+            self.present(alertController, animated: true, completion: nil)
         }
-        
     }
     
-    @IBAction func tapsOnBackBtnAct(_ sender: Any) {
-        self.navigationController?.dismiss(animated: true)
-    }
-    
-    func showAlert(title: String, message: String) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(defaultAction)
-        self.present(alertController, animated: true, completion: nil)
-    }
-
 }
-
 extension ViewController: WidgetViewDelegate{
     func configureInfoView(){
-        self.infoView = WidegtView()
-        self.infoView.translatesAutoresizingMaskIntoConstraints = false
-        self.infoView.viewDelegate = self
-        self.panelCollectionViewContainerView.addSubview(self.infoView)
-        self.panelCollectionViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[infoView]|", options:[], metrics:nil, views:["infoView" : infoView!]))
-        self.panelCollectionViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[infoView]|", options:[], metrics:nil, views:["infoView" : infoView!]))
+        self.widegtView = WidegtView()
+        self.widegtView.translatesAutoresizingMaskIntoConstraints = false
+        self.widegtView.viewDelegate = self
+        self.panelCollectionViewContainerView.addSubview(self.widegtView)
+        self.panelCollectionViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[widegtView]|", options:[], metrics:nil, views:["widegtView" : widegtView!]))
+        self.panelCollectionViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[widegtView]|", options:[], metrics:nil, views:["widegtView" : widegtView!]))
     }
     
     public func didselectWidegtView(item: WidgetSDK.KREPanelItem?){
