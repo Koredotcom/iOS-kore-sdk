@@ -94,7 +94,7 @@ public class KREBarChartView: UIView {
         legend.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
         legend.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
         
-        let marker = BalloonMarker(color: UIColor.white.withAlphaComponent(0.9), font: UIFont(name: "HelveticaNeue-Bold", size: 12.0)!, textColor: .black, insets: UIEdgeInsets(top: 8.0, left: 8.0, bottom: 20.0, right: 8.0))
+        let marker = BalloonMarkerWidget(color: UIColor.white.withAlphaComponent(0.9), font: UIFont(name: "HelveticaNeue-Bold", size: 12.0)!, textColor: .black, insets: UIEdgeInsets(top: 8.0, left: 8.0, bottom: 20.0, right: 8.0))
         bcView.marker = marker
     }
     

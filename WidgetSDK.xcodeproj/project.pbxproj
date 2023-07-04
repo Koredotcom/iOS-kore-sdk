@@ -1,0 +1,1941 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		953B18522A4C16F500F1F79E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6972A4B176D00080444 /* Assets.xcassets */; };
+		9545D5DE2A4B158500080444 /* WidgetSDK.docc in Sources */ = {isa = PBXBuildFile; fileRef = 9545D5DD2A4B158500080444 /* WidgetSDK.docc */; };
+		9545D5EA2A4B158500080444 /* WidgetSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 9545D5DC2A4B158500080444 /* WidgetSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9545D6512A4B16AC00080444 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9545D5FE2A4B16AB00080444 /* Info.plist */; };
+		9545D6522A4B16AC00080444 /* KoreBotSDK.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 9545D5FF2A4B16AB00080444 /* KoreBotSDK.podspec */; };
+		9545D6532A4B16AC00080444 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6042A4B16AB00080444 /* Info.plist */; };
+		9545D6542A4B16AC00080444 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6072A4B16AB00080444 /* Info.plist */; };
+		9545D6552A4B16AC00080444 /* SpeechToText.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6082A4B16AB00080444 /* SpeechToText.podspec */; };
+		9545D6562A4B16AC00080444 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9545D60D2A4B16AB00080444 /* Info.plist */; };
+		9545D65A2A4B16AC00080444 /* KoreWidgets.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6142A4B16AB00080444 /* KoreWidgets.podspec */; };
+		9545D65B2A4B16AC00080444 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6192A4B16AB00080444 /* Assets.xcassets */; };
+		9545D65C2A4B16AC00080444 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9545D61A2A4B16AB00080444 /* LaunchScreen.storyboard */; };
+		9545D65D2A4B16AC00080444 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9545D61C2A4B16AB00080444 /* Info.plist */; };
+		9545D65E2A4B16AC00080444 /* KoreTextParser.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 9545D61E2A4B16AB00080444 /* KoreTextParser.podspec */; };
+		9545D65F2A4B16AC00080444 /* SampleText.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6242A4B16AB00080444 /* SampleText.txt */; };
+		9545D6602A4B16AC00080444 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6252A4B16AB00080444 /* Assets.xcassets */; };
+		9545D6612A4B16AC00080444 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6262A4B16AB00080444 /* LaunchScreen.storyboard */; };
+		9545D6622A4B16AC00080444 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6282A4B16AB00080444 /* Info.plist */; };
+		9545D6642A4B16AC00080444 /* KABottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D63D2A4B16AC00080444 /* KABottomSheetViewController.swift */; };
+		9545D6652A4B16AC00080444 /* KoraNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D63E2A4B16AC00080444 /* KoraNotification.swift */; };
+		9545D6662A4B16AC00080444 /* KoraAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D63F2A4B16AC00080444 /* KoraAssistant.swift */; };
+		9545D6672A4B16AC00080444 /* KAPanelWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6402A4B16AC00080444 /* KAPanelWindowManager.swift */; };
+		9545D6682A4B16AC00080444 /* KAPanelCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6412A4B16AC00080444 /* KAPanelCollectionView.swift */; };
+		9545D6692A4B16AC00080444 /* ApplicationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6422A4B16AC00080444 /* ApplicationManager.swift */; };
+		9545D66A2A4B16AC00080444 /* UIViewController+Kora.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6432A4B16AC00080444 /* UIViewController+Kora.swift */; };
+		9545D66B2A4B16AC00080444 /* KAPanelItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6442A4B16AC00080444 /* KAPanelItemViewController.swift */; };
+		9545D66C2A4B16AC00080444 /* ChatMessagesViewController+Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6452A4B16AC00080444 /* ChatMessagesViewController+Widgets.swift */; };
+		9545D66D2A4B16AC00080444 /* KAPanelHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6462A4B16AC00080444 /* KAPanelHeaderView.swift */; };
+		9545D66E2A4B16AC00080444 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6482A4B16AC00080444 /* Constants.swift */; };
+		9545D6712A4B16BA00080444 /* WidegtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6702A4B16BA00080444 /* WidegtView.swift */; };
+		9545D6812A4B171A00080444 /* WidgetSDK.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6802A4B171A00080444 /* WidgetSDK.podspec */; };
+		9545D6832A4B173E00080444 /* WidgetSDK-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = 9545D6822A4B173E00080444 /* WidgetSDK-Bridging-Header.h */; };
+		9545D77C2A4B176F00080444 /* KREOptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6862A4B176D00080444 /* KREOptionsTableViewCell.swift */; };
+		9545D77D2A4B176F00080444 /* KREOptionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6872A4B176D00080444 /* KREOptionsTableViewCell.xib */; };
+		9545D77E2A4B176F00080444 /* KREListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6882A4B176D00080444 /* KREListTableViewCell.xib */; };
+		9545D77F2A4B176F00080444 /* KREListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6892A4B176D00080444 /* KREListTableViewCell.swift */; };
+		9545D7802A4B176F00080444 /* KREOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D68A2A4B176D00080444 /* KREOptionsView.swift */; };
+		9545D7812A4B176F00080444 /* KRETokenCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D68C2A4B176D00080444 /* KRETokenCollectionViewCell.swift */; };
+		9545D7822A4B176F00080444 /* KREQuickSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D68D2A4B176D00080444 /* KREQuickSelectView.swift */; };
+		9545D7832A4B176F00080444 /* KRECollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D68E2A4B176D00080444 /* KRECollectionView.swift */; };
+		9545D7842A4B176F00080444 /* KAFormActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D68F2A4B176D00080444 /* KAFormActionView.swift */; };
+		9545D7852A4B176F00080444 /* KRESummaryHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6912A4B176D00080444 /* KRESummaryHelpView.swift */; };
+		9545D7862A4B176F00080444 /* KREImagesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6932A4B176D00080444 /* KREImagesCollectionView.swift */; };
+		9545D7872A4B176F00080444 /* KREIdentityImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6952A4B176D00080444 /* KREIdentityImageView.swift */; };
+		9545D7892A4B176F00080444 /* appSymbols.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D69A2A4B176D00080444 /* appSymbols.ttf */; };
+		9545D78A2A4B176F00080444 /* Lato-HeavyItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D69C2A4B176D00080444 /* Lato-HeavyItalic.ttf */; };
+		9545D78B2A4B176F00080444 /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D69D2A4B176D00080444 /* Lato-Italic.ttf */; };
+		9545D78C2A4B176F00080444 /* Lato-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D69E2A4B176D00080444 /* Lato-LightItalic.ttf */; };
+		9545D78D2A4B176F00080444 /* Lato-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D69F2A4B176D00080444 /* Lato-Thin.ttf */; };
+		9545D78E2A4B176F00080444 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6A02A4B176D00080444 /* Lato-Bold.ttf */; };
+		9545D78F2A4B176F00080444 /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6A12A4B176D00080444 /* Lato-Black.ttf */; };
+		9545D7902A4B176F00080444 /* Lato-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6A22A4B176D00080444 /* Lato-ExtraBold.ttf */; };
+		9545D7912A4B176F00080444 /* Lato-SemiboldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6A32A4B176D00080444 /* Lato-SemiboldItalic.ttf */; };
+		9545D7922A4B176F00080444 /* Lato-HairlineItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6A42A4B176D00080444 /* Lato-HairlineItalic.ttf */; };
+		9545D7932A4B176F00080444 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6A52A4B176D00080444 /* Lato-Regular.ttf */; };
+		9545D7942A4B176F00080444 /* Lato-Hairline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6A62A4B176D00080444 /* Lato-Hairline.ttf */; };
+		9545D7952A4B176F00080444 /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6A72A4B176D00080444 /* Lato-BlackItalic.ttf */; };
+		9545D7962A4B176F00080444 /* Lato-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6A82A4B176D00080444 /* Lato-Semibold.ttf */; };
+		9545D7972A4B176F00080444 /* Lato-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6A92A4B176D00080444 /* Lato-MediumItalic.ttf */; };
+		9545D7982A4B176F00080444 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6AA2A4B176D00080444 /* OFL.txt */; };
+		9545D7992A4B176F00080444 /* Lato-Heavy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6AB2A4B176D00080444 /* Lato-Heavy.ttf */; };
+		9545D79A2A4B176F00080444 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6AC2A4B176D00080444 /* README.txt */; };
+		9545D79B2A4B176F00080444 /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6AD2A4B176D00080444 /* Lato-BoldItalic.ttf */; };
+		9545D79C2A4B176F00080444 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6AE2A4B176D00080444 /* Lato-Light.ttf */; };
+		9545D79D2A4B176F00080444 /* Lato-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6AF2A4B176D00080444 /* Lato-Medium.ttf */; };
+		9545D79E2A4B176F00080444 /* Lato-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6B02A4B176D00080444 /* Lato-ThinItalic.ttf */; };
+		9545D79F2A4B176F00080444 /* BebasNeue-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9545D6B22A4B176D00080444 /* BebasNeue-Regular.ttf */; };
+		9545D7A02A4B176F00080444 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6B52A4B176D00080444 /* DataModel.xcdatamodeld */; };
+		9545D7A12A4B176F00080444 /* KRECardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6B82A4B176D00080444 /* KRECardView.swift */; };
+		9545D7A22A4B176F00080444 /* KADriveFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6BA2A4B176D00080444 /* KADriveFileView.swift */; };
+		9545D7A32A4B176F00080444 /* KADriveFilesCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6BB2A4B176D00080444 /* KADriveFilesCarouselView.swift */; };
+		9545D7A42A4B176F00080444 /* KRECarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6BC2A4B176D00080444 /* KRECarouselView.swift */; };
+		9545D7A52A4B176F00080444 /* KRECarouselCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6BD2A4B176D00080444 /* KRECarouselCardView.swift */; };
+		9545D7A62A4B176F00080444 /* KAEmailCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6BF2A4B176D00080444 /* KAEmailCardView.swift */; };
+		9545D7A72A4B176F00080444 /* KAEmailCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6C02A4B176D00080444 /* KAEmailCarouselView.swift */; };
+		9545D7A82A4B176F00080444 /* KACarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6C12A4B176D00080444 /* KACarouselView.swift */; };
+		9545D7A92A4B176F00080444 /* KREKnowledgeElementViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6C32A4B176D00080444 /* KREKnowledgeElementViewCell.swift */; };
+		9545D7AA2A4B176F00080444 /* KREKnowledgeArticleBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6C42A4B176D00080444 /* KREKnowledgeArticleBottom.swift */; };
+		9545D7AB2A4B176F00080444 /* KREEmailComponentViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6C52A4B176D00080444 /* KREEmailComponentViewCell.swift */; };
+		9545D7AC2A4B176F00080444 /* KREKnowledgeFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6C62A4B176D00080444 /* KREKnowledgeFooterView.swift */; };
+		9545D7AD2A4B176F00080444 /* KRESkillComponentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6C72A4B176D00080444 /* KRESkillComponentTableViewCell.swift */; };
+		9545D7AE2A4B176F00080444 /* KREDriveFileElementViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6C82A4B176D00080444 /* KREDriveFileElementViewCell.swift */; };
+		9545D7AF2A4B176F00080444 /* KREKnowledgeCollectionElementViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6C92A4B176D00080444 /* KREKnowledgeCollectionElementViewCell.swift */; };
+		9545D7B02A4B176F00080444 /* KREMeetingNotesElementViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6CA2A4B176D00080444 /* KREMeetingNotesElementViewCell.swift */; };
+		9545D7B12A4B176F00080444 /* KRESearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6CB2A4B176D00080444 /* KRESearchResultsViewController.swift */; };
+		9545D7B22A4B176F00080444 /* KRESearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6CC2A4B176D00080444 /* KRESearchResultsView.swift */; };
+		9545D7B32A4B176F00080444 /* KREAskExpertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6CD2A4B176D00080444 /* KREAskExpertView.swift */; };
+		9545D7B42A4B176F00080444 /* KRESeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6D12A4B176D00080444 /* KRESeparatorView.swift */; };
+		9545D7B52A4B176F00080444 /* KREStackViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6D22A4B176D00080444 /* KREStackViewCell.swift */; };
+		9545D7B62A4B176F00080444 /* KREStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6D32A4B176D00080444 /* KREStackView.swift */; };
+		9545D7B72A4B176F00080444 /* BalloonMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6D52A4B176D00080444 /* BalloonMarker.swift */; };
+		9545D7B82A4B176F00080444 /* KRELineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6D62A4B176D00080444 /* KRELineChartView.swift */; };
+		9545D7B92A4B176F00080444 /* KREPieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6D72A4B176D00080444 /* KREPieChartView.swift */; };
+		9545D7BA2A4B176F00080444 /* KREBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6D82A4B176D00080444 /* KREBarChartView.swift */; };
+		9545D7BB2A4B176F00080444 /* KREListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6DA2A4B176D00080444 /* KREListItemView.swift */; };
+		9545D7BC2A4B176F00080444 /* KREListItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6DB2A4B176D00080444 /* KREListItemDetailView.swift */; };
+		9545D7BD2A4B176F00080444 /* KREButtonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6DC2A4B176D00080444 /* KREButtonCollectionViewCell.swift */; };
+		9545D7BE2A4B176F00080444 /* KREButtonCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6DD2A4B176D00080444 /* KREButtonCollectionView.swift */; };
+		9545D7BF2A4B176F00080444 /* ResponsiveCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6E02A4B176D00080444 /* ResponsiveCustomCell.swift */; };
+		9545D7C02A4B176F00080444 /* KREWidgetRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6E32A4B176D00080444 /* KREWidgetRequestOperation.swift */; };
+		9545D7C12A4B176F00080444 /* KREDriveListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6E42A4B176D00080444 /* KREDriveListManager.swift */; };
+		9545D7C22A4B176F00080444 /* KREWeatherRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6E52A4B176D00080444 /* KREWeatherRequestOperation.swift */; };
+		9545D7C32A4B176F00080444 /* KRECalendarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6E72A4B176D00080444 /* KRECalendarEvent.swift */; };
+		9545D7C42A4B176F00080444 /* KRETaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6E82A4B176D00080444 /* KRETaskList.swift */; };
+		9545D7C52A4B176F00080444 /* KREUniversalSearchTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6E92A4B176D00080444 /* KREUniversalSearchTemplate.swift */; };
+		9545D7C62A4B176F00080444 /* KREPanelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6EA2A4B176D00080444 /* KREPanelItem.swift */; };
+		9545D7C72A4B176F00080444 /* KREDriveFileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6EB2A4B176D00080444 /* KREDriveFileInfo.swift */; };
+		9545D7C82A4B176F00080444 /* KREEmailComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6EC2A4B176D00080444 /* KREEmailComponent.swift */; };
+		9545D7C92A4B176F00080444 /* KREBarChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6EE2A4B176D00080444 /* KREBarChartData.swift */; };
+		9545D7CA2A4B176F00080444 /* KREPieChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6EF2A4B176D00080444 /* KREPieChartData.swift */; };
+		9545D7CB2A4B176F00080444 /* KRELineChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6F02A4B176D00080444 /* KRELineChartData.swift */; };
+		9545D7CC2A4B176F00080444 /* KREContacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6F12A4B176D00080444 /* KREContacts.swift */; };
+		9545D7CD2A4B176F00080444 /* KRECommonWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6F22A4B176D00080444 /* KRECommonWidgetData.swift */; };
+		9545D7CE2A4B176F00080444 /* KREActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6F42A4B176D00080444 /* KREActivity.swift */; };
+		9545D7CF2A4B176F00080444 /* KREButtonTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6F52A4B176D00080444 /* KREButtonTemplate.swift */; };
+		9545D7D02A4B176F00080444 /* WidgetComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6F62A4B176D00080444 /* WidgetComponent.swift */; };
+		9545D7D12A4B176F00080444 /* KREKnowledgeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6F72A4B176D00080444 /* KREKnowledgeItem.swift */; };
+		9545D7D22A4B176F00080444 /* KREMeetingNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6F82A4B176D00080444 /* KREMeetingNote.swift */; };
+		9545D7D32A4B176F00080444 /* KREListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6FA2A4B176D00080444 /* KREListItem.swift */; };
+		9545D7D42A4B176F00080444 /* KREImageTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6FB2A4B176D00080444 /* KREImageTemplate.swift */; };
+		9545D7D52A4B176F00080444 /* KREHashTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6FC2A4B176D00080444 /* KREHashTag.swift */; };
+		9545D7D62A4B176F00080444 /* KREKnowledgeCollectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6FD2A4B176D00080444 /* KREKnowledgeCollectionItem.swift */; };
+		9545D7D72A4B176F00080444 /* KREWeatherComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6FE2A4B176D00080444 /* KREWeatherComponent.swift */; };
+		9545D7D82A4B176F00080444 /* KRESearchSkillData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D6FF2A4B176D00080444 /* KRESearchSkillData.swift */; };
+		9545D7D92A4B176F00080444 /* KREWidgetPersistentStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7012A4B176D00080444 /* KREWidgetPersistentStoreManager.swift */; };
+		9545D7DA2A4B176F00080444 /* KREWidgetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7022A4B176D00080444 /* KREWidgetManager.swift */; };
+		9545D7DB2A4B176F00080444 /* KRELoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7032A4B176D00080444 /* KRELoaderView.swift */; };
+		9545D7DC2A4B176F00080444 /* KREDeepLinkingUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7042A4B176D00080444 /* KREDeepLinkingUtility.swift */; };
+		9545D7DD2A4B176F00080444 /* UIViewController+KoreBotSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7052A4B176D00080444 /* UIViewController+KoreBotSDK.swift */; };
+		9545D7DE2A4B176F00080444 /* KREPanelRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7062A4B176D00080444 /* KREPanelRequestOperation.swift */; };
+		9545D7DF2A4B176F00080444 /* KRENetworkAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9545D7072A4B176D00080444 /* KRENetworkAlertViewController.xib */; };
+		9545D7E02A4B176F00080444 /* UIColor+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7082A4B176D00080444 /* UIColor+Constants.swift */; };
+		9545D7E12A4B176F00080444 /* KREErrorHandlingCommonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7092A4B176D00080444 /* KREErrorHandlingCommonView.swift */; };
+		9545D7E22A4B176F00080444 /* UIFont+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D70A2A4B176D00080444 /* UIFont+Constants.swift */; };
+		9545D7E32A4B176F00080444 /* KRELocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D70B2A4B176D00080444 /* KRELocationManager.swift */; };
+		9545D7E42A4B176F00080444 /* KRETimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D70C2A4B176D00080444 /* KRETimeManager.swift */; };
+		9545D7E52A4B176F00080444 /* KRENetworkAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D70D2A4B176D00080444 /* KRENetworkAlertViewController.swift */; };
+		9545D7E62A4B176F00080444 /* KREMeetingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D70E2A4B176D00080444 /* KREMeetingDataSource.swift */; };
+		9545D7E72A4B176F00080444 /* KRESummaryWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7112A4B176D00080444 /* KRESummaryWidgetView.swift */; };
+		9545D7E82A4B176F00080444 /* KREKnowledgeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7122A4B176D00080444 /* KREKnowledgeWidgetView.swift */; };
+		9545D7E92A4B176F00080444 /* KREMeetingNotesWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7132A4B176D00080444 /* KREMeetingNotesWidgetView.swift */; };
+		9545D7EA2A4B176F00080444 /* KREStandardWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7142A4B176D00080444 /* KREStandardWidgetView.swift */; };
+		9545D7EB2A4B176F00080444 /* KRECalendarWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7152A4B176D00080444 /* KRECalendarWidgetView.swift */; };
+		9545D7EC2A4B176F00080444 /* KREActivityWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7162A4B176D00080444 /* KREActivityWidgetView.swift */; };
+		9545D7ED2A4B176F00080444 /* KREDriveWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7172A4B176D00080444 /* KREDriveWidgetView.swift */; };
+		9545D7EE2A4B176F00080444 /* KREMeetingFollowUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7182A4B176D00080444 /* KREMeetingFollowUpView.swift */; };
+		9545D7EF2A4B176F00080444 /* KREChartListWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7192A4B176D00080444 /* KREChartListWidgetView.swift */; };
+		9545D7F02A4B176F00080444 /* KREChartWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D71A2A4B176D00080444 /* KREChartWidgetView.swift */; };
+		9545D7F12A4B176F00080444 /* KREListWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D71B2A4B176D00080444 /* KREListWidgetView.swift */; };
+		9545D7F22A4B176F00080444 /* KREASRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D71D2A4B176D00080444 /* KREASRService.swift */; };
+		9545D7F32A4B176F00080444 /* KREComposeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D71E2A4B176D00080444 /* KREComposeBarView.swift */; };
+		9545D7F42A4B176F00080444 /* KREAudioComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D71F2A4B176D00080444 /* KREAudioComposeView.swift */; };
+		9545D7F52A4B176F00080444 /* KRESeeMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7222A4B176D00080444 /* KRESeeMoreView.swift */; };
+		9545D7F62A4B176F00080444 /* KREFremimumAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7232A4B176D00080444 /* KREFremimumAlertViewController.swift */; };
+		9545D7F72A4B176F00080444 /* KAFreemiumCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7242A4B176D00080444 /* KAFreemiumCollectionView.swift */; };
+		9545D7F82A4B176F00080444 /* KREDriveWidgetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7262A4B176D00080444 /* KREDriveWidgetViewCell.swift */; };
+		9545D7F92A4B176F00080444 /* KREListWidgetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7272A4B176D00080444 /* KREListWidgetViewCell.swift */; };
+		9545D7FA2A4B176F00080444 /* KREUtterancesListWidgetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7282A4B176D00080444 /* KREUtterancesListWidgetViewCell.swift */; };
+		9545D7FB2A4B176F00080444 /* KRECalendarWidgetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7292A4B176D00080444 /* KRECalendarWidgetViewCell.swift */; };
+		9545D7FC2A4B176F00080444 /* KREMeetingFlowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D72A2A4B176D00080444 /* KREMeetingFlowTableViewCell.swift */; };
+		9545D7FD2A4B176F00080444 /* KREMeetingNotesWidgetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D72B2A4B176D00080444 /* KREMeetingNotesWidgetViewCell.swift */; };
+		9545D7FE2A4B176F00080444 /* KRETaskWidgetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D72C2A4B176D00080444 /* KRETaskWidgetViewCell.swift */; };
+		9545D7FF2A4B176F00080444 /* KREStandardWidgetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D72D2A4B176D00080444 /* KREStandardWidgetViewCell.swift */; };
+		9545D8002A4B176F00080444 /* KREKnowledgeWidgetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D72E2A4B176D00080444 /* KREKnowledgeWidgetViewCell.swift */; };
+		9545D8012A4B176F00080444 /* KREActivityWidgetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D72F2A4B176D00080444 /* KREActivityWidgetViewCell.swift */; };
+		9545D8022A4B176F00080444 /* KREChartWidgetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7302A4B176D00080444 /* KREChartWidgetViewCell.swift */; };
+		9545D8032A4B176F00080444 /* KREBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7322A4B176D00080444 /* KREBubbleView.swift */; };
+		9545D8042A4B176F00080444 /* KREWeatherBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7332A4B176D00080444 /* KREWeatherBubbleView.swift */; };
+		9545D8052A4B176F00080444 /* KREWidgetBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7342A4B176D00080444 /* KREWidgetBubbleView.swift */; };
+		9545D8062A4B176F00080444 /* KREUtteranceCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7352A4B176D00080444 /* KREUtteranceCollectionView.swift */; };
+		9545D8072A4B176F00080444 /* KREWidgetContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7362A4B176D00080444 /* KREWidgetContainerView.swift */; };
+		9545D8082A4B176F00080444 /* KRENoDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7372A4B176D00080444 /* KRENoDataView.swift */; };
+		9545D8092A4B176F00080444 /* KREMessageBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7382A4B176D00080444 /* KREMessageBubbleCell.swift */; };
+		9545D80A2A4B176F00080444 /* KALoginPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D73A2A4B176D00080444 /* KALoginPanelViewController.swift */; };
+		9545D80B2A4B176F00080444 /* KREWidgetComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D73B2A4B176D00080444 /* KREWidgetComponentView.swift */; };
+		9545D80C2A4B176F00080444 /* KREWidgetLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D73C2A4B176D00080444 /* KREWidgetLoginView.swift */; };
+		9545D80D2A4B176F00080444 /* KRETaskWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D73D2A4B176D00080444 /* KRETaskWidgetView.swift */; };
+		9545D80E2A4B176F00080444 /* KREWidgetLoginTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D73E2A4B176D00080444 /* KREWidgetLoginTableViewCell.swift */; };
+		9545D80F2A4B176F00080444 /* KRETaskPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D73F2A4B176D00080444 /* KRETaskPreviewCell.swift */; };
+		9545D8102A4B176F00080444 /* KREDocumentInformationCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7402A4B176D00080444 /* KREDocumentInformationCellTableViewCell.swift */; };
+		9545D8112A4B176F00080444 /* KREWidgetNoDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7412A4B176D00080444 /* KREWidgetNoDataTableViewCell.swift */; };
+		9545D8122A4B176F00080444 /* KREPieChartViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7432A4B176D00080444 /* KREPieChartViewCell.swift */; };
+		9545D8132A4B176F00080444 /* KREBarChartViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7442A4B176D00080444 /* KREBarChartViewCell.swift */; };
+		9545D8142A4B176F00080444 /* KRELineChartViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7452A4B176D00080444 /* KRELineChartViewCell.swift */; };
+		9545D8152A4B176F00080444 /* KRECustomWidgetDashboardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7462A4B176D00080444 /* KRECustomWidgetDashboardTableViewCell.swift */; };
+		9545D8162A4B176F00080444 /* KRETaskPreviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7472A4B176D00080444 /* KRETaskPreviewTableViewCell.swift */; };
+		9545D8172A4B176F00080444 /* KREWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7482A4B176D00080444 /* KREWidgetView.swift */; };
+		9545D8182A4B176F00080444 /* KREWidgetCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D74A2A4B176D00080444 /* KREWidgetCollectionViewLayout.swift */; };
+		9545D8192A4B176F00080444 /* KREMeetingNotesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D74C2A4B176D00080444 /* KREMeetingNotesViewCell.swift */; };
+		9545D81A2A4B176F00080444 /* KREMeetingNotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D74D2A4B176D00080444 /* KREMeetingNotesView.swift */; };
+		9545D81B2A4B176F00080444 /* KRECalendarEventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D74E2A4B176D00080444 /* KRECalendarEventCell.swift */; };
+		9545D81C2A4B176F00080444 /* KRESummaryWidgetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7502A4B176D00080444 /* KRESummaryWidgetViewCell.swift */; };
+		9545D81D2A4B176F00080444 /* KREListItemViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7512A4B176D00080444 /* KREListItemViewCell.swift */; };
+		9545D81E2A4B176F00080444 /* KADashBordBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7522A4B176D00080444 /* KADashBordBubble.swift */; };
+		9545D81F2A4B176F00080444 /* KRETaskListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7542A4B176D00080444 /* KRETaskListItemView.swift */; };
+		9545D8202A4B176F00080444 /* KAAnnouncementsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7552A4B176D00080444 /* KAAnnouncementsTableViewCell.swift */; };
+		9545D8212A4B176F00080444 /* KREWidgetEditFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7562A4B176D00080444 /* KREWidgetEditFooter.swift */; };
+		9545D8222A4B176F00080444 /* KRECalendarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7572A4B176D00080444 /* KRECalendarTableViewCell.swift */; };
+		9545D8232A4B176F00080444 /* KRECustomWidgeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7582A4B176D00080444 /* KRECustomWidgeTableViewCell.swift */; };
+		9545D8242A4B176F00080444 /* KAKnowledgeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7592A4B176D00080444 /* KAKnowledgeTableViewCell.swift */; };
+		9545D8252A4B176F00080444 /* KREDriveFileTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D75B2A4B176D00080444 /* KREDriveFileTemplateView.swift */; };
+		9545D8262A4B176F00080444 /* KREKnowledgeTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D75C2A4B176D00080444 /* KREKnowledgeTemplateView.swift */; };
+		9545D8272A4B176F00080444 /* KREMeetingNotesTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D75D2A4B176D00080444 /* KREMeetingNotesTemplateView.swift */; };
+		9545D8282A4B176F00080444 /* KREKnowledgeCollectionTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D75E2A4B176D00080444 /* KREKnowledgeCollectionTemplateView.swift */; };
+		9545D8292A4B176F00080444 /* KRESegmentButtonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D75F2A4B176D00080444 /* KRESegmentButtonCollectionViewCell.swift */; };
+		9545D82A2A4B176F00080444 /* KREWidgetActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7612A4B176D00080444 /* KREWidgetActionViewController.swift */; };
+		9545D82B2A4B176F00080444 /* KRETaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7622A4B176D00080444 /* KRETaskListViewController.swift */; };
+		9545D82C2A4B176F00080444 /* KREDriveListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7632A4B176D00080444 /* KREDriveListViewController.swift */; };
+		9545D82D2A4B176F00080444 /* KREKnowledgeWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7642A4B176D00080444 /* KREKnowledgeWidgetViewController.swift */; };
+		9545D82E2A4B176F00080444 /* KREMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7652A4B176D00080444 /* KREMessagesViewController.swift */; };
+		9545D82F2A4B176F00080444 /* KREListItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7662A4B176D00080444 /* KREListItemsViewController.swift */; };
+		9545D8302A4B176F00080444 /* KREEditReorderWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7672A4B176D00080444 /* KREEditReorderWidgetViewController.swift */; };
+		9545D8312A4B176F00080444 /* KREMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9545D7682A4B176D00080444 /* KREMessagesViewController.xib */; };
+		9545D8322A4B176F00080444 /* KREActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7692A4B176D00080444 /* KREActivityViewController.swift */; };
+		9545D8332A4B176F00080444 /* KREWidgetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D76A2A4B176D00080444 /* KREWidgetsViewController.swift */; };
+		9545D8342A4B176F00080444 /* KREMeetingDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D76B2A4B176D00080444 /* KREMeetingDetailsTableViewCell.swift */; };
+		9545D8352A4B176F00080444 /* KREMeetingNotesWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D76C2A4B176D00080444 /* KREMeetingNotesWidgetViewController.swift */; };
+		9545D8362A4B176F00080444 /* KRESlideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D76D2A4B176D00080444 /* KRESlideMenuViewController.swift */; };
+		9545D8372A4B176F00080444 /* KREMeetingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D76E2A4B176D00080444 /* KREMeetingDetailViewController.swift */; };
+		9545D8382A4B176F00080444 /* KRECalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D76F2A4B176D00080444 /* KRECalendarListViewController.swift */; };
+		9545D8392A4B176F00080444 /* KRESnackBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7702A4B176D00080444 /* KRESnackBarViewController.swift */; };
+		9545D83A2A4B176F00080444 /* KREWidgetFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7722A4B176D00080444 /* KREWidgetFilter.swift */; };
+		9545D83B2A4B176F00080444 /* KREWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7732A4B176D00080444 /* KREWidget.swift */; };
+		9545D83C2A4B176F00080444 /* KREWeatherWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7742A4B176D00080444 /* KREWeatherWidget.swift */; };
+		9545D83D2A4B176F00080444 /* KREWidgetComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7752A4B176D00080444 /* KREWidgetComponent.swift */; };
+		9545D83E2A4B176F00080444 /* KREUtteranceViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7762A4B176D00080444 /* KREUtteranceViewCell.swift */; };
+		9545D83F2A4B176F00080444 /* UITextView+SLKAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7782A4B176D00080444 /* UITextView+SLKAdditions.m */; };
+		9545D8402A4B176F00080444 /* KRETextViewInternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D7792A4B176D00080444 /* KRETextViewInternal.swift */; };
+		9545D8412A4B176F00080444 /* KREGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545D77A2A4B176D00080444 /* KREGrowingTextView.swift */; };
+		9545D8422A4B176F00080444 /* UITextView+SLKAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 9545D77B2A4B176D00080444 /* UITextView+SLKAdditions.h */; };
+		95D4A6C62A54281300254D22 /* WidgetSDKConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D4A6BF2A54281300254D22 /* WidgetSDKConfiguration.swift */; };
+		95D4A6C82A54281D00254D22 /* WidgetConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D4A6C72A54281D00254D22 /* WidgetConnect.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9545D62B2A4B16AB00080444 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9545D6002A4B16AB00080444 /* KoreBotSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D1200F151CC9F721009BBB1A;
+			remoteInfo = KoreBotSDK;
+		};
+		9545D62D2A4B16AB00080444 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9545D6002A4B16AB00080444 /* KoreBotSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D1200F1F1CC9F721009BBB1A;
+			remoteInfo = KoreBotSDKTests;
+		};
+		9545D6312A4B16AB00080444 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9545D6092A4B16AB00080444 /* SpeechToText.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0565C83E1DDC3DFB0012ACE6;
+			remoteInfo = SpeechToText;
+		};
+		9545D6332A4B16AB00080444 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9545D6092A4B16AB00080444 /* SpeechToText.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0565C8471DDC3DFB0012ACE6;
+			remoteInfo = SpeechToTextTests;
+		};
+		9545D6362A4B16AB00080444 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9545D61F2A4B16AB00080444 /* TextParser.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D19ABFE91DDDB10500CA6A99;
+			remoteInfo = TextParser;
+		};
+		9545D6392A4B16AB00080444 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9545D6152A4B16AB00080444 /* Widgets.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D1832B551DDC1EE700FDFB93;
+			remoteInfo = Widgets;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		9545D5D92A4B158500080444 /* WidgetSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WidgetSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9545D5DC2A4B158500080444 /* WidgetSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WidgetSDK.h; sourceTree = "<group>"; };
+		9545D5DD2A4B158500080444 /* WidgetSDK.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = WidgetSDK.docc; sourceTree = "<group>"; };
+		9545D5FE2A4B16AB00080444 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9545D5FF2A4B16AB00080444 /* KoreBotSDK.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KoreBotSDK.podspec; sourceTree = "<group>"; };
+		9545D6002A4B16AB00080444 /* KoreBotSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = KoreBotSDK.xcodeproj; sourceTree = "<group>"; };
+		9545D6042A4B16AB00080444 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9545D6072A4B16AB00080444 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9545D6082A4B16AB00080444 /* SpeechToText.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SpeechToText.podspec; sourceTree = "<group>"; };
+		9545D6092A4B16AB00080444 /* SpeechToText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SpeechToText.xcodeproj; sourceTree = "<group>"; };
+		9545D60D2A4B16AB00080444 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9545D6142A4B16AB00080444 /* KoreWidgets.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KoreWidgets.podspec; sourceTree = "<group>"; };
+		9545D6152A4B16AB00080444 /* Widgets.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Widgets.xcodeproj; sourceTree = "<group>"; };
+		9545D6192A4B16AB00080444 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9545D61B2A4B16AB00080444 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9545D61C2A4B16AB00080444 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9545D61E2A4B16AB00080444 /* KoreTextParser.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KoreTextParser.podspec; sourceTree = "<group>"; };
+		9545D61F2A4B16AB00080444 /* TextParser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = TextParser.xcodeproj; sourceTree = "<group>"; };
+		9545D6242A4B16AB00080444 /* SampleText.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleText.txt; sourceTree = "<group>"; };
+		9545D6252A4B16AB00080444 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9545D6272A4B16AB00080444 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9545D6282A4B16AB00080444 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9545D63D2A4B16AC00080444 /* KABottomSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KABottomSheetViewController.swift; sourceTree = "<group>"; };
+		9545D63E2A4B16AC00080444 /* KoraNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraNotification.swift; sourceTree = "<group>"; };
+		9545D63F2A4B16AC00080444 /* KoraAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraAssistant.swift; sourceTree = "<group>"; };
+		9545D6402A4B16AC00080444 /* KAPanelWindowManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelWindowManager.swift; sourceTree = "<group>"; };
+		9545D6412A4B16AC00080444 /* KAPanelCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelCollectionView.swift; sourceTree = "<group>"; };
+		9545D6422A4B16AC00080444 /* ApplicationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationManager.swift; sourceTree = "<group>"; };
+		9545D6432A4B16AC00080444 /* UIViewController+Kora.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Kora.swift"; sourceTree = "<group>"; };
+		9545D6442A4B16AC00080444 /* KAPanelItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelItemViewController.swift; sourceTree = "<group>"; };
+		9545D6452A4B16AC00080444 /* ChatMessagesViewController+Widgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChatMessagesViewController+Widgets.swift"; sourceTree = "<group>"; };
+		9545D6462A4B16AC00080444 /* KAPanelHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelHeaderView.swift; sourceTree = "<group>"; };
+		9545D6482A4B16AC00080444 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		9545D6702A4B16BA00080444 /* WidegtView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidegtView.swift; sourceTree = "<group>"; };
+		9545D6802A4B171A00080444 /* WidgetSDK.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = WidgetSDK.podspec; sourceTree = SOURCE_ROOT; };
+		9545D6822A4B173E00080444 /* WidgetSDK-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WidgetSDK-Bridging-Header.h"; sourceTree = "<group>"; };
+		9545D6862A4B176D00080444 /* KREOptionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREOptionsTableViewCell.swift; sourceTree = "<group>"; };
+		9545D6872A4B176D00080444 /* KREOptionsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KREOptionsTableViewCell.xib; sourceTree = "<group>"; };
+		9545D6882A4B176D00080444 /* KREListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KREListTableViewCell.xib; sourceTree = "<group>"; };
+		9545D6892A4B176D00080444 /* KREListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREListTableViewCell.swift; sourceTree = "<group>"; };
+		9545D68A2A4B176D00080444 /* KREOptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREOptionsView.swift; sourceTree = "<group>"; };
+		9545D68C2A4B176D00080444 /* KRETokenCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETokenCollectionViewCell.swift; sourceTree = "<group>"; };
+		9545D68D2A4B176D00080444 /* KREQuickSelectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREQuickSelectView.swift; sourceTree = "<group>"; };
+		9545D68E2A4B176D00080444 /* KRECollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECollectionView.swift; sourceTree = "<group>"; };
+		9545D68F2A4B176D00080444 /* KAFormActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAFormActionView.swift; sourceTree = "<group>"; };
+		9545D6912A4B176D00080444 /* KRESummaryHelpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRESummaryHelpView.swift; sourceTree = "<group>"; };
+		9545D6932A4B176D00080444 /* KREImagesCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREImagesCollectionView.swift; sourceTree = "<group>"; };
+		9545D6952A4B176D00080444 /* KREIdentityImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREIdentityImageView.swift; sourceTree = "<group>"; };
+		9545D6972A4B176D00080444 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9545D69A2A4B176D00080444 /* appSymbols.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = appSymbols.ttf; sourceTree = "<group>"; };
+		9545D69C2A4B176D00080444 /* Lato-HeavyItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-HeavyItalic.ttf"; sourceTree = "<group>"; };
+		9545D69D2A4B176D00080444 /* Lato-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Italic.ttf"; sourceTree = "<group>"; };
+		9545D69E2A4B176D00080444 /* Lato-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-LightItalic.ttf"; sourceTree = "<group>"; };
+		9545D69F2A4B176D00080444 /* Lato-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Thin.ttf"; sourceTree = "<group>"; };
+		9545D6A02A4B176D00080444 /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
+		9545D6A12A4B176D00080444 /* Lato-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Black.ttf"; sourceTree = "<group>"; };
+		9545D6A22A4B176D00080444 /* Lato-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-ExtraBold.ttf"; sourceTree = "<group>"; };
+		9545D6A32A4B176D00080444 /* Lato-SemiboldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-SemiboldItalic.ttf"; sourceTree = "<group>"; };
+		9545D6A42A4B176D00080444 /* Lato-HairlineItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-HairlineItalic.ttf"; sourceTree = "<group>"; };
+		9545D6A52A4B176D00080444 /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
+		9545D6A62A4B176D00080444 /* Lato-Hairline.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Hairline.ttf"; sourceTree = "<group>"; };
+		9545D6A72A4B176D00080444 /* Lato-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BlackItalic.ttf"; sourceTree = "<group>"; };
+		9545D6A82A4B176D00080444 /* Lato-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Semibold.ttf"; sourceTree = "<group>"; };
+		9545D6A92A4B176D00080444 /* Lato-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-MediumItalic.ttf"; sourceTree = "<group>"; };
+		9545D6AA2A4B176D00080444 /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
+		9545D6AB2A4B176D00080444 /* Lato-Heavy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Heavy.ttf"; sourceTree = "<group>"; };
+		9545D6AC2A4B176D00080444 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		9545D6AD2A4B176D00080444 /* Lato-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BoldItalic.ttf"; sourceTree = "<group>"; };
+		9545D6AE2A4B176D00080444 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
+		9545D6AF2A4B176D00080444 /* Lato-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Medium.ttf"; sourceTree = "<group>"; };
+		9545D6B02A4B176D00080444 /* Lato-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-ThinItalic.ttf"; sourceTree = "<group>"; };
+		9545D6B22A4B176D00080444 /* BebasNeue-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BebasNeue-Regular.ttf"; sourceTree = "<group>"; };
+		9545D6B62A4B176D00080444 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		9545D6B82A4B176D00080444 /* KRECardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECardView.swift; sourceTree = "<group>"; };
+		9545D6BA2A4B176D00080444 /* KADriveFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KADriveFileView.swift; sourceTree = "<group>"; };
+		9545D6BB2A4B176D00080444 /* KADriveFilesCarouselView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KADriveFilesCarouselView.swift; sourceTree = "<group>"; };
+		9545D6BC2A4B176D00080444 /* KRECarouselView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECarouselView.swift; sourceTree = "<group>"; };
+		9545D6BD2A4B176D00080444 /* KRECarouselCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECarouselCardView.swift; sourceTree = "<group>"; };
+		9545D6BF2A4B176D00080444 /* KAEmailCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAEmailCardView.swift; sourceTree = "<group>"; };
+		9545D6C02A4B176D00080444 /* KAEmailCarouselView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAEmailCarouselView.swift; sourceTree = "<group>"; };
+		9545D6C12A4B176D00080444 /* KACarouselView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KACarouselView.swift; sourceTree = "<group>"; };
+		9545D6C32A4B176D00080444 /* KREKnowledgeElementViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREKnowledgeElementViewCell.swift; sourceTree = "<group>"; };
+		9545D6C42A4B176D00080444 /* KREKnowledgeArticleBottom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREKnowledgeArticleBottom.swift; sourceTree = "<group>"; };
+		9545D6C52A4B176D00080444 /* KREEmailComponentViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREEmailComponentViewCell.swift; sourceTree = "<group>"; };
+		9545D6C62A4B176D00080444 /* KREKnowledgeFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREKnowledgeFooterView.swift; sourceTree = "<group>"; };
+		9545D6C72A4B176D00080444 /* KRESkillComponentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRESkillComponentTableViewCell.swift; sourceTree = "<group>"; };
+		9545D6C82A4B176D00080444 /* KREDriveFileElementViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREDriveFileElementViewCell.swift; sourceTree = "<group>"; };
+		9545D6C92A4B176D00080444 /* KREKnowledgeCollectionElementViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREKnowledgeCollectionElementViewCell.swift; sourceTree = "<group>"; };
+		9545D6CA2A4B176D00080444 /* KREMeetingNotesElementViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMeetingNotesElementViewCell.swift; sourceTree = "<group>"; };
+		9545D6CB2A4B176D00080444 /* KRESearchResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRESearchResultsViewController.swift; sourceTree = "<group>"; };
+		9545D6CC2A4B176D00080444 /* KRESearchResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRESearchResultsView.swift; sourceTree = "<group>"; };
+		9545D6CD2A4B176D00080444 /* KREAskExpertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREAskExpertView.swift; sourceTree = "<group>"; };
+		9545D6D12A4B176D00080444 /* KRESeparatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRESeparatorView.swift; sourceTree = "<group>"; };
+		9545D6D22A4B176D00080444 /* KREStackViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREStackViewCell.swift; sourceTree = "<group>"; };
+		9545D6D32A4B176D00080444 /* KREStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREStackView.swift; sourceTree = "<group>"; };
+		9545D6D52A4B176D00080444 /* BalloonMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalloonMarker.swift; sourceTree = "<group>"; };
+		9545D6D62A4B176D00080444 /* KRELineChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRELineChartView.swift; sourceTree = "<group>"; };
+		9545D6D72A4B176D00080444 /* KREPieChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREPieChartView.swift; sourceTree = "<group>"; };
+		9545D6D82A4B176D00080444 /* KREBarChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREBarChartView.swift; sourceTree = "<group>"; };
+		9545D6DA2A4B176D00080444 /* KREListItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREListItemView.swift; sourceTree = "<group>"; };
+		9545D6DB2A4B176D00080444 /* KREListItemDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREListItemDetailView.swift; sourceTree = "<group>"; };
+		9545D6DC2A4B176D00080444 /* KREButtonCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREButtonCollectionViewCell.swift; sourceTree = "<group>"; };
+		9545D6DD2A4B176D00080444 /* KREButtonCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREButtonCollectionView.swift; sourceTree = "<group>"; };
+		9545D6E02A4B176D00080444 /* ResponsiveCustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsiveCustomCell.swift; sourceTree = "<group>"; };
+		9545D6E32A4B176D00080444 /* KREWidgetRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidgetRequestOperation.swift; sourceTree = "<group>"; };
+		9545D6E42A4B176D00080444 /* KREDriveListManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREDriveListManager.swift; sourceTree = "<group>"; };
+		9545D6E52A4B176D00080444 /* KREWeatherRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWeatherRequestOperation.swift; sourceTree = "<group>"; };
+		9545D6E72A4B176D00080444 /* KRECalendarEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECalendarEvent.swift; sourceTree = "<group>"; };
+		9545D6E82A4B176D00080444 /* KRETaskList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETaskList.swift; sourceTree = "<group>"; };
+		9545D6E92A4B176D00080444 /* KREUniversalSearchTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREUniversalSearchTemplate.swift; sourceTree = "<group>"; };
+		9545D6EA2A4B176D00080444 /* KREPanelItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREPanelItem.swift; sourceTree = "<group>"; };
+		9545D6EB2A4B176D00080444 /* KREDriveFileInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREDriveFileInfo.swift; sourceTree = "<group>"; };
+		9545D6EC2A4B176D00080444 /* KREEmailComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREEmailComponent.swift; sourceTree = "<group>"; };
+		9545D6EE2A4B176D00080444 /* KREBarChartData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREBarChartData.swift; sourceTree = "<group>"; };
+		9545D6EF2A4B176D00080444 /* KREPieChartData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREPieChartData.swift; sourceTree = "<group>"; };
+		9545D6F02A4B176D00080444 /* KRELineChartData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRELineChartData.swift; sourceTree = "<group>"; };
+		9545D6F12A4B176D00080444 /* KREContacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREContacts.swift; sourceTree = "<group>"; };
+		9545D6F22A4B176D00080444 /* KRECommonWidgetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECommonWidgetData.swift; sourceTree = "<group>"; };
+		9545D6F42A4B176D00080444 /* KREActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREActivity.swift; sourceTree = "<group>"; };
+		9545D6F52A4B176D00080444 /* KREButtonTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREButtonTemplate.swift; sourceTree = "<group>"; };
+		9545D6F62A4B176D00080444 /* WidgetComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetComponent.swift; sourceTree = "<group>"; };
+		9545D6F72A4B176D00080444 /* KREKnowledgeItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREKnowledgeItem.swift; sourceTree = "<group>"; };
+		9545D6F82A4B176D00080444 /* KREMeetingNote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMeetingNote.swift; sourceTree = "<group>"; };
+		9545D6FA2A4B176D00080444 /* KREListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREListItem.swift; sourceTree = "<group>"; };
+		9545D6FB2A4B176D00080444 /* KREImageTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREImageTemplate.swift; sourceTree = "<group>"; };
+		9545D6FC2A4B176D00080444 /* KREHashTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREHashTag.swift; sourceTree = "<group>"; };
+		9545D6FD2A4B176D00080444 /* KREKnowledgeCollectionItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREKnowledgeCollectionItem.swift; sourceTree = "<group>"; };
+		9545D6FE2A4B176D00080444 /* KREWeatherComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWeatherComponent.swift; sourceTree = "<group>"; };
+		9545D6FF2A4B176D00080444 /* KRESearchSkillData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRESearchSkillData.swift; sourceTree = "<group>"; };
+		9545D7012A4B176D00080444 /* KREWidgetPersistentStoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidgetPersistentStoreManager.swift; sourceTree = "<group>"; };
+		9545D7022A4B176D00080444 /* KREWidgetManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidgetManager.swift; sourceTree = "<group>"; };
+		9545D7032A4B176D00080444 /* KRELoaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRELoaderView.swift; sourceTree = "<group>"; };
+		9545D7042A4B176D00080444 /* KREDeepLinkingUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREDeepLinkingUtility.swift; sourceTree = "<group>"; };
+		9545D7052A4B176D00080444 /* UIViewController+KoreBotSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+KoreBotSDK.swift"; sourceTree = "<group>"; };
+		9545D7062A4B176D00080444 /* KREPanelRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREPanelRequestOperation.swift; sourceTree = "<group>"; };
+		9545D7072A4B176D00080444 /* KRENetworkAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KRENetworkAlertViewController.xib; sourceTree = "<group>"; };
+		9545D7082A4B176D00080444 /* UIColor+Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Constants.swift"; sourceTree = "<group>"; };
+		9545D7092A4B176D00080444 /* KREErrorHandlingCommonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREErrorHandlingCommonView.swift; sourceTree = "<group>"; };
+		9545D70A2A4B176D00080444 /* UIFont+Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Constants.swift"; sourceTree = "<group>"; };
+		9545D70B2A4B176D00080444 /* KRELocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRELocationManager.swift; sourceTree = "<group>"; };
+		9545D70C2A4B176D00080444 /* KRETimeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETimeManager.swift; sourceTree = "<group>"; };
+		9545D70D2A4B176D00080444 /* KRENetworkAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRENetworkAlertViewController.swift; sourceTree = "<group>"; };
+		9545D70E2A4B176D00080444 /* KREMeetingDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMeetingDataSource.swift; sourceTree = "<group>"; };
+		9545D7112A4B176D00080444 /* KRESummaryWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRESummaryWidgetView.swift; sourceTree = "<group>"; };
+		9545D7122A4B176D00080444 /* KREKnowledgeWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREKnowledgeWidgetView.swift; sourceTree = "<group>"; };
+		9545D7132A4B176D00080444 /* KREMeetingNotesWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMeetingNotesWidgetView.swift; sourceTree = "<group>"; };
+		9545D7142A4B176D00080444 /* KREStandardWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREStandardWidgetView.swift; sourceTree = "<group>"; };
+		9545D7152A4B176D00080444 /* KRECalendarWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECalendarWidgetView.swift; sourceTree = "<group>"; };
+		9545D7162A4B176D00080444 /* KREActivityWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREActivityWidgetView.swift; sourceTree = "<group>"; };
+		9545D7172A4B176D00080444 /* KREDriveWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREDriveWidgetView.swift; sourceTree = "<group>"; };
+		9545D7182A4B176D00080444 /* KREMeetingFollowUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMeetingFollowUpView.swift; sourceTree = "<group>"; };
+		9545D7192A4B176D00080444 /* KREChartListWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREChartListWidgetView.swift; sourceTree = "<group>"; };
+		9545D71A2A4B176D00080444 /* KREChartWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREChartWidgetView.swift; sourceTree = "<group>"; };
+		9545D71B2A4B176D00080444 /* KREListWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREListWidgetView.swift; sourceTree = "<group>"; };
+		9545D71D2A4B176D00080444 /* KREASRService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREASRService.swift; sourceTree = "<group>"; };
+		9545D71E2A4B176D00080444 /* KREComposeBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREComposeBarView.swift; sourceTree = "<group>"; };
+		9545D71F2A4B176D00080444 /* KREAudioComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREAudioComposeView.swift; sourceTree = "<group>"; };
+		9545D7222A4B176D00080444 /* KRESeeMoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRESeeMoreView.swift; sourceTree = "<group>"; };
+		9545D7232A4B176D00080444 /* KREFremimumAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREFremimumAlertViewController.swift; sourceTree = "<group>"; };
+		9545D7242A4B176D00080444 /* KAFreemiumCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAFreemiumCollectionView.swift; sourceTree = "<group>"; };
+		9545D7262A4B176D00080444 /* KREDriveWidgetViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREDriveWidgetViewCell.swift; sourceTree = "<group>"; };
+		9545D7272A4B176D00080444 /* KREListWidgetViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREListWidgetViewCell.swift; sourceTree = "<group>"; };
+		9545D7282A4B176D00080444 /* KREUtterancesListWidgetViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREUtterancesListWidgetViewCell.swift; sourceTree = "<group>"; };
+		9545D7292A4B176D00080444 /* KRECalendarWidgetViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECalendarWidgetViewCell.swift; sourceTree = "<group>"; };
+		9545D72A2A4B176D00080444 /* KREMeetingFlowTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMeetingFlowTableViewCell.swift; sourceTree = "<group>"; };
+		9545D72B2A4B176D00080444 /* KREMeetingNotesWidgetViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMeetingNotesWidgetViewCell.swift; sourceTree = "<group>"; };
+		9545D72C2A4B176D00080444 /* KRETaskWidgetViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETaskWidgetViewCell.swift; sourceTree = "<group>"; };
+		9545D72D2A4B176D00080444 /* KREStandardWidgetViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREStandardWidgetViewCell.swift; sourceTree = "<group>"; };
+		9545D72E2A4B176D00080444 /* KREKnowledgeWidgetViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREKnowledgeWidgetViewCell.swift; sourceTree = "<group>"; };
+		9545D72F2A4B176D00080444 /* KREActivityWidgetViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREActivityWidgetViewCell.swift; sourceTree = "<group>"; };
+		9545D7302A4B176D00080444 /* KREChartWidgetViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREChartWidgetViewCell.swift; sourceTree = "<group>"; };
+		9545D7322A4B176D00080444 /* KREBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREBubbleView.swift; sourceTree = "<group>"; };
+		9545D7332A4B176D00080444 /* KREWeatherBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWeatherBubbleView.swift; sourceTree = "<group>"; };
+		9545D7342A4B176D00080444 /* KREWidgetBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidgetBubbleView.swift; sourceTree = "<group>"; };
+		9545D7352A4B176D00080444 /* KREUtteranceCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREUtteranceCollectionView.swift; sourceTree = "<group>"; };
+		9545D7362A4B176D00080444 /* KREWidgetContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidgetContainerView.swift; sourceTree = "<group>"; };
+		9545D7372A4B176D00080444 /* KRENoDataView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRENoDataView.swift; sourceTree = "<group>"; };
+		9545D7382A4B176D00080444 /* KREMessageBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMessageBubbleCell.swift; sourceTree = "<group>"; };
+		9545D73A2A4B176D00080444 /* KALoginPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KALoginPanelViewController.swift; sourceTree = "<group>"; };
+		9545D73B2A4B176D00080444 /* KREWidgetComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidgetComponentView.swift; sourceTree = "<group>"; };
+		9545D73C2A4B176D00080444 /* KREWidgetLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidgetLoginView.swift; sourceTree = "<group>"; };
+		9545D73D2A4B176D00080444 /* KRETaskWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETaskWidgetView.swift; sourceTree = "<group>"; };
+		9545D73E2A4B176D00080444 /* KREWidgetLoginTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidgetLoginTableViewCell.swift; sourceTree = "<group>"; };
+		9545D73F2A4B176D00080444 /* KRETaskPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETaskPreviewCell.swift; sourceTree = "<group>"; };
+		9545D7402A4B176D00080444 /* KREDocumentInformationCellTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREDocumentInformationCellTableViewCell.swift; sourceTree = "<group>"; };
+		9545D7412A4B176D00080444 /* KREWidgetNoDataTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidgetNoDataTableViewCell.swift; sourceTree = "<group>"; };
+		9545D7432A4B176D00080444 /* KREPieChartViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREPieChartViewCell.swift; sourceTree = "<group>"; };
+		9545D7442A4B176D00080444 /* KREBarChartViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREBarChartViewCell.swift; sourceTree = "<group>"; };
+		9545D7452A4B176D00080444 /* KRELineChartViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRELineChartViewCell.swift; sourceTree = "<group>"; };
+		9545D7462A4B176D00080444 /* KRECustomWidgetDashboardTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECustomWidgetDashboardTableViewCell.swift; sourceTree = "<group>"; };
+		9545D7472A4B176D00080444 /* KRETaskPreviewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETaskPreviewTableViewCell.swift; sourceTree = "<group>"; };
+		9545D7482A4B176D00080444 /* KREWidgetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidgetView.swift; sourceTree = "<group>"; };
+		9545D74A2A4B176D00080444 /* KREWidgetCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidgetCollectionViewLayout.swift; sourceTree = "<group>"; };
+		9545D74C2A4B176D00080444 /* KREMeetingNotesViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMeetingNotesViewCell.swift; sourceTree = "<group>"; };
+		9545D74D2A4B176D00080444 /* KREMeetingNotesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMeetingNotesView.swift; sourceTree = "<group>"; };
+		9545D74E2A4B176D00080444 /* KRECalendarEventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECalendarEventCell.swift; sourceTree = "<group>"; };
+		9545D7502A4B176D00080444 /* KRESummaryWidgetViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRESummaryWidgetViewCell.swift; sourceTree = "<group>"; };
+		9545D7512A4B176D00080444 /* KREListItemViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREListItemViewCell.swift; sourceTree = "<group>"; };
+		9545D7522A4B176D00080444 /* KADashBordBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KADashBordBubble.swift; sourceTree = "<group>"; };
+		9545D7542A4B176D00080444 /* KRETaskListItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETaskListItemView.swift; sourceTree = "<group>"; };
+		9545D7552A4B176D00080444 /* KAAnnouncementsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAAnnouncementsTableViewCell.swift; sourceTree = "<group>"; };
+		9545D7562A4B176D00080444 /* KREWidgetEditFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidgetEditFooter.swift; sourceTree = "<group>"; };
+		9545D7572A4B176D00080444 /* KRECalendarTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECalendarTableViewCell.swift; sourceTree = "<group>"; };
+		9545D7582A4B176D00080444 /* KRECustomWidgeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECustomWidgeTableViewCell.swift; sourceTree = "<group>"; };
+		9545D7592A4B176D00080444 /* KAKnowledgeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAKnowledgeTableViewCell.swift; sourceTree = "<group>"; };
+		9545D75B2A4B176D00080444 /* KREDriveFileTemplateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREDriveFileTemplateView.swift; sourceTree = "<group>"; };
+		9545D75C2A4B176D00080444 /* KREKnowledgeTemplateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREKnowledgeTemplateView.swift; sourceTree = "<group>"; };
+		9545D75D2A4B176D00080444 /* KREMeetingNotesTemplateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMeetingNotesTemplateView.swift; sourceTree = "<group>"; };
+		9545D75E2A4B176D00080444 /* KREKnowledgeCollectionTemplateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREKnowledgeCollectionTemplateView.swift; sourceTree = "<group>"; };
+		9545D75F2A4B176D00080444 /* KRESegmentButtonCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRESegmentButtonCollectionViewCell.swift; sourceTree = "<group>"; };
+		9545D7612A4B176D00080444 /* KREWidgetActionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidgetActionViewController.swift; sourceTree = "<group>"; };
+		9545D7622A4B176D00080444 /* KRETaskListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETaskListViewController.swift; sourceTree = "<group>"; };
+		9545D7632A4B176D00080444 /* KREDriveListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREDriveListViewController.swift; sourceTree = "<group>"; };
+		9545D7642A4B176D00080444 /* KREKnowledgeWidgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREKnowledgeWidgetViewController.swift; sourceTree = "<group>"; };
+		9545D7652A4B176D00080444 /* KREMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMessagesViewController.swift; sourceTree = "<group>"; };
+		9545D7662A4B176D00080444 /* KREListItemsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREListItemsViewController.swift; sourceTree = "<group>"; };
+		9545D7672A4B176D00080444 /* KREEditReorderWidgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREEditReorderWidgetViewController.swift; sourceTree = "<group>"; };
+		9545D7682A4B176D00080444 /* KREMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KREMessagesViewController.xib; sourceTree = "<group>"; };
+		9545D7692A4B176D00080444 /* KREActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREActivityViewController.swift; sourceTree = "<group>"; };
+		9545D76A2A4B176D00080444 /* KREWidgetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidgetsViewController.swift; sourceTree = "<group>"; };
+		9545D76B2A4B176D00080444 /* KREMeetingDetailsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMeetingDetailsTableViewCell.swift; sourceTree = "<group>"; };
+		9545D76C2A4B176D00080444 /* KREMeetingNotesWidgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMeetingNotesWidgetViewController.swift; sourceTree = "<group>"; };
+		9545D76D2A4B176D00080444 /* KRESlideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRESlideMenuViewController.swift; sourceTree = "<group>"; };
+		9545D76E2A4B176D00080444 /* KREMeetingDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREMeetingDetailViewController.swift; sourceTree = "<group>"; };
+		9545D76F2A4B176D00080444 /* KRECalendarListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRECalendarListViewController.swift; sourceTree = "<group>"; };
+		9545D7702A4B176D00080444 /* KRESnackBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRESnackBarViewController.swift; sourceTree = "<group>"; };
+		9545D7722A4B176D00080444 /* KREWidgetFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidgetFilter.swift; sourceTree = "<group>"; };
+		9545D7732A4B176D00080444 /* KREWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidget.swift; sourceTree = "<group>"; };
+		9545D7742A4B176D00080444 /* KREWeatherWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWeatherWidget.swift; sourceTree = "<group>"; };
+		9545D7752A4B176D00080444 /* KREWidgetComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREWidgetComponent.swift; sourceTree = "<group>"; };
+		9545D7762A4B176D00080444 /* KREUtteranceViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREUtteranceViewCell.swift; sourceTree = "<group>"; };
+		9545D7782A4B176D00080444 /* UITextView+SLKAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+SLKAdditions.m"; sourceTree = "<group>"; };
+		9545D7792A4B176D00080444 /* KRETextViewInternal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETextViewInternal.swift; sourceTree = "<group>"; };
+		9545D77A2A4B176D00080444 /* KREGrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREGrowingTextView.swift; sourceTree = "<group>"; };
+		9545D77B2A4B176D00080444 /* UITextView+SLKAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+SLKAdditions.h"; sourceTree = "<group>"; };
+		95D4A6BF2A54281300254D22 /* WidgetSDKConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetSDKConfiguration.swift; sourceTree = "<group>"; };
+		95D4A6C72A54281D00254D22 /* WidgetConnect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetConnect.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9545D5D62A4B158500080444 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9545D5CF2A4B158500080444 = {
+			isa = PBXGroup;
+			children = (
+				9545D6842A4B176D00080444 /* Widgets */,
+				9545D5DB2A4B158500080444 /* WidgetSDK */,
+				9545D5DA2A4B158500080444 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9545D5DA2A4B158500080444 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9545D5D92A4B158500080444 /* WidgetSDK.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9545D5DB2A4B158500080444 /* WidgetSDK */ = {
+			isa = PBXGroup;
+			children = (
+				95D4A6BF2A54281300254D22 /* WidgetSDKConfiguration.swift */,
+				95D4A6C72A54281D00254D22 /* WidgetConnect.swift */,
+				9545D6702A4B16BA00080444 /* WidegtView.swift */,
+				9545D6472A4B16AC00080444 /* Common */,
+				9545D5FB2A4B16AB00080444 /* Library */,
+				9545D63C2A4B16AC00080444 /* PanelView */,
+				9545D5DC2A4B158500080444 /* WidgetSDK.h */,
+				9545D6822A4B173E00080444 /* WidgetSDK-Bridging-Header.h */,
+				9545D6802A4B171A00080444 /* WidgetSDK.podspec */,
+				9545D5DD2A4B158500080444 /* WidgetSDK.docc */,
+			);
+			path = WidgetSDK;
+			sourceTree = "<group>";
+		};
+		9545D5FB2A4B16AB00080444 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				9545D5FC2A4B16AB00080444 /* KoreBotSDK */,
+				9545D6052A4B16AB00080444 /* SpeechToText */,
+				9545D6132A4B16AB00080444 /* Widgets */,
+				9545D61D2A4B16AB00080444 /* TextParser */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		9545D5FC2A4B16AB00080444 /* KoreBotSDK */ = {
+			isa = PBXGroup;
+			children = (
+				9545D5FD2A4B16AB00080444 /* KoreBotSDK */,
+				9545D5FF2A4B16AB00080444 /* KoreBotSDK.podspec */,
+				9545D6002A4B16AB00080444 /* KoreBotSDK.xcodeproj */,
+				9545D6032A4B16AB00080444 /* KoreBotSDKTests */,
+			);
+			path = KoreBotSDK;
+			sourceTree = "<group>";
+		};
+		9545D5FD2A4B16AB00080444 /* KoreBotSDK */ = {
+			isa = PBXGroup;
+			children = (
+				9545D5FE2A4B16AB00080444 /* Info.plist */,
+			);
+			path = KoreBotSDK;
+			sourceTree = "<group>";
+		};
+		9545D6012A4B16AB00080444 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9545D62C2A4B16AB00080444 /* KoreBotSDK.framework */,
+				9545D62E2A4B16AB00080444 /* KoreBotSDKTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9545D6032A4B16AB00080444 /* KoreBotSDKTests */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6042A4B16AB00080444 /* Info.plist */,
+			);
+			path = KoreBotSDKTests;
+			sourceTree = "<group>";
+		};
+		9545D6052A4B16AB00080444 /* SpeechToText */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6062A4B16AB00080444 /* SpeechToTextTests */,
+				9545D6082A4B16AB00080444 /* SpeechToText.podspec */,
+				9545D6092A4B16AB00080444 /* SpeechToText.xcodeproj */,
+				9545D60C2A4B16AB00080444 /* SpeechToText */,
+			);
+			path = SpeechToText;
+			sourceTree = "<group>";
+		};
+		9545D6062A4B16AB00080444 /* SpeechToTextTests */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6072A4B16AB00080444 /* Info.plist */,
+			);
+			path = SpeechToTextTests;
+			sourceTree = "<group>";
+		};
+		9545D60A2A4B16AB00080444 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6322A4B16AB00080444 /* SpeechToText.framework */,
+				9545D6342A4B16AB00080444 /* SpeechToTextTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9545D60C2A4B16AB00080444 /* SpeechToText */ = {
+			isa = PBXGroup;
+			children = (
+				9545D60D2A4B16AB00080444 /* Info.plist */,
+			);
+			path = SpeechToText;
+			sourceTree = "<group>";
+		};
+		9545D6132A4B16AB00080444 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6142A4B16AB00080444 /* KoreWidgets.podspec */,
+				9545D6152A4B16AB00080444 /* Widgets.xcodeproj */,
+				9545D6182A4B16AB00080444 /* Widgets */,
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
+		9545D6162A4B16AB00080444 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9545D63A2A4B16AB00080444 /* Widgets.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9545D6182A4B16AB00080444 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6192A4B16AB00080444 /* Assets.xcassets */,
+				9545D61A2A4B16AB00080444 /* LaunchScreen.storyboard */,
+				9545D61C2A4B16AB00080444 /* Info.plist */,
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
+		9545D61D2A4B16AB00080444 /* TextParser */ = {
+			isa = PBXGroup;
+			children = (
+				9545D61E2A4B16AB00080444 /* KoreTextParser.podspec */,
+				9545D61F2A4B16AB00080444 /* TextParser.xcodeproj */,
+				9545D6222A4B16AB00080444 /* TextParser */,
+			);
+			path = TextParser;
+			sourceTree = "<group>";
+		};
+		9545D6202A4B16AB00080444 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6372A4B16AB00080444 /* TextParser.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9545D6222A4B16AB00080444 /* TextParser */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6232A4B16AB00080444 /* Resources */,
+				9545D6252A4B16AB00080444 /* Assets.xcassets */,
+				9545D6262A4B16AB00080444 /* LaunchScreen.storyboard */,
+				9545D6282A4B16AB00080444 /* Info.plist */,
+			);
+			path = TextParser;
+			sourceTree = "<group>";
+		};
+		9545D6232A4B16AB00080444 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6242A4B16AB00080444 /* SampleText.txt */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		9545D63C2A4B16AC00080444 /* PanelView */ = {
+			isa = PBXGroup;
+			children = (
+				9545D63D2A4B16AC00080444 /* KABottomSheetViewController.swift */,
+				9545D63E2A4B16AC00080444 /* KoraNotification.swift */,
+				9545D63F2A4B16AC00080444 /* KoraAssistant.swift */,
+				9545D6402A4B16AC00080444 /* KAPanelWindowManager.swift */,
+				9545D6412A4B16AC00080444 /* KAPanelCollectionView.swift */,
+				9545D6422A4B16AC00080444 /* ApplicationManager.swift */,
+				9545D6432A4B16AC00080444 /* UIViewController+Kora.swift */,
+				9545D6442A4B16AC00080444 /* KAPanelItemViewController.swift */,
+				9545D6452A4B16AC00080444 /* ChatMessagesViewController+Widgets.swift */,
+				9545D6462A4B16AC00080444 /* KAPanelHeaderView.swift */,
+			);
+			path = PanelView;
+			sourceTree = "<group>";
+		};
+		9545D6472A4B16AC00080444 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6482A4B16AC00080444 /* Constants.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		9545D6842A4B176D00080444 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6852A4B176D00080444 /* Options */,
+				9545D68B2A4B176D00080444 /* QuickSelect */,
+				9545D6902A4B176D00080444 /* SummaryHelpView */,
+				9545D6922A4B176D00080444 /* Images */,
+				9545D6942A4B176D00080444 /* ProfileImageView */,
+				9545D6962A4B176D00080444 /* Resources */,
+				9545D6B32A4B176D00080444 /* KoreAssitant */,
+				9545D6B72A4B176D00080444 /* Carousel */,
+				9545D6C22A4B176D00080444 /* Search */,
+				9545D6CE2A4B176D00080444 /* Elements */,
+				9545D6DE2A4B176D00080444 /* Table */,
+				9545D6E12A4B176D00080444 /* Widgets */,
+				9545D7772A4B176D00080444 /* GrowingTextView */,
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
+		9545D6852A4B176D00080444 /* Options */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6862A4B176D00080444 /* KREOptionsTableViewCell.swift */,
+				9545D6872A4B176D00080444 /* KREOptionsTableViewCell.xib */,
+				9545D6882A4B176D00080444 /* KREListTableViewCell.xib */,
+				9545D6892A4B176D00080444 /* KREListTableViewCell.swift */,
+				9545D68A2A4B176D00080444 /* KREOptionsView.swift */,
+			);
+			path = Options;
+			sourceTree = "<group>";
+		};
+		9545D68B2A4B176D00080444 /* QuickSelect */ = {
+			isa = PBXGroup;
+			children = (
+				9545D68C2A4B176D00080444 /* KRETokenCollectionViewCell.swift */,
+				9545D68D2A4B176D00080444 /* KREQuickSelectView.swift */,
+				9545D68E2A4B176D00080444 /* KRECollectionView.swift */,
+				9545D68F2A4B176D00080444 /* KAFormActionView.swift */,
+			);
+			path = QuickSelect;
+			sourceTree = "<group>";
+		};
+		9545D6902A4B176D00080444 /* SummaryHelpView */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6912A4B176D00080444 /* KRESummaryHelpView.swift */,
+			);
+			path = SummaryHelpView;
+			sourceTree = "<group>";
+		};
+		9545D6922A4B176D00080444 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6932A4B176D00080444 /* KREImagesCollectionView.swift */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		9545D6942A4B176D00080444 /* ProfileImageView */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6952A4B176D00080444 /* KREIdentityImageView.swift */,
+			);
+			path = ProfileImageView;
+			sourceTree = "<group>";
+		};
+		9545D6962A4B176D00080444 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6972A4B176D00080444 /* Assets.xcassets */,
+				9545D6982A4B176D00080444 /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		9545D6982A4B176D00080444 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6992A4B176D00080444 /* AppSymbols */,
+				9545D69B2A4B176D00080444 /* Lato */,
+				9545D6B12A4B176D00080444 /* BebasNeue */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		9545D6992A4B176D00080444 /* AppSymbols */ = {
+			isa = PBXGroup;
+			children = (
+				9545D69A2A4B176D00080444 /* appSymbols.ttf */,
+			);
+			path = AppSymbols;
+			sourceTree = "<group>";
+		};
+		9545D69B2A4B176D00080444 /* Lato */ = {
+			isa = PBXGroup;
+			children = (
+				9545D69C2A4B176D00080444 /* Lato-HeavyItalic.ttf */,
+				9545D69D2A4B176D00080444 /* Lato-Italic.ttf */,
+				9545D69E2A4B176D00080444 /* Lato-LightItalic.ttf */,
+				9545D69F2A4B176D00080444 /* Lato-Thin.ttf */,
+				9545D6A02A4B176D00080444 /* Lato-Bold.ttf */,
+				9545D6A12A4B176D00080444 /* Lato-Black.ttf */,
+				9545D6A22A4B176D00080444 /* Lato-ExtraBold.ttf */,
+				9545D6A32A4B176D00080444 /* Lato-SemiboldItalic.ttf */,
+				9545D6A42A4B176D00080444 /* Lato-HairlineItalic.ttf */,
+				9545D6A52A4B176D00080444 /* Lato-Regular.ttf */,
+				9545D6A62A4B176D00080444 /* Lato-Hairline.ttf */,
+				9545D6A72A4B176D00080444 /* Lato-BlackItalic.ttf */,
+				9545D6A82A4B176D00080444 /* Lato-Semibold.ttf */,
+				9545D6A92A4B176D00080444 /* Lato-MediumItalic.ttf */,
+				9545D6AA2A4B176D00080444 /* OFL.txt */,
+				9545D6AB2A4B176D00080444 /* Lato-Heavy.ttf */,
+				9545D6AC2A4B176D00080444 /* README.txt */,
+				9545D6AD2A4B176D00080444 /* Lato-BoldItalic.ttf */,
+				9545D6AE2A4B176D00080444 /* Lato-Light.ttf */,
+				9545D6AF2A4B176D00080444 /* Lato-Medium.ttf */,
+				9545D6B02A4B176D00080444 /* Lato-ThinItalic.ttf */,
+			);
+			path = Lato;
+			sourceTree = "<group>";
+		};
+		9545D6B12A4B176D00080444 /* BebasNeue */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6B22A4B176D00080444 /* BebasNeue-Regular.ttf */,
+			);
+			path = BebasNeue;
+			sourceTree = "<group>";
+		};
+		9545D6B32A4B176D00080444 /* KoreAssitant */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6B42A4B176D00080444 /* DataModel */,
+			);
+			path = KoreAssitant;
+			sourceTree = "<group>";
+		};
+		9545D6B42A4B176D00080444 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6B52A4B176D00080444 /* DataModel.xcdatamodeld */,
+			);
+			path = DataModel;
+			sourceTree = "<group>";
+		};
+		9545D6B72A4B176D00080444 /* Carousel */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6B82A4B176D00080444 /* KRECardView.swift */,
+				9545D6B92A4B176D00080444 /* DriveCarousel */,
+				9545D6BC2A4B176D00080444 /* KRECarouselView.swift */,
+				9545D6BD2A4B176D00080444 /* KRECarouselCardView.swift */,
+				9545D6BE2A4B176D00080444 /* EMailCarousel */,
+				9545D6C12A4B176D00080444 /* KACarouselView.swift */,
+			);
+			path = Carousel;
+			sourceTree = "<group>";
+		};
+		9545D6B92A4B176D00080444 /* DriveCarousel */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6BA2A4B176D00080444 /* KADriveFileView.swift */,
+				9545D6BB2A4B176D00080444 /* KADriveFilesCarouselView.swift */,
+			);
+			path = DriveCarousel;
+			sourceTree = "<group>";
+		};
+		9545D6BE2A4B176D00080444 /* EMailCarousel */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6BF2A4B176D00080444 /* KAEmailCardView.swift */,
+				9545D6C02A4B176D00080444 /* KAEmailCarouselView.swift */,
+			);
+			path = EMailCarousel;
+			sourceTree = "<group>";
+		};
+		9545D6C22A4B176D00080444 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6C32A4B176D00080444 /* KREKnowledgeElementViewCell.swift */,
+				9545D6C42A4B176D00080444 /* KREKnowledgeArticleBottom.swift */,
+				9545D6C52A4B176D00080444 /* KREEmailComponentViewCell.swift */,
+				9545D6C62A4B176D00080444 /* KREKnowledgeFooterView.swift */,
+				9545D6C72A4B176D00080444 /* KRESkillComponentTableViewCell.swift */,
+				9545D6C82A4B176D00080444 /* KREDriveFileElementViewCell.swift */,
+				9545D6C92A4B176D00080444 /* KREKnowledgeCollectionElementViewCell.swift */,
+				9545D6CA2A4B176D00080444 /* KREMeetingNotesElementViewCell.swift */,
+				9545D6CB2A4B176D00080444 /* KRESearchResultsViewController.swift */,
+				9545D6CC2A4B176D00080444 /* KRESearchResultsView.swift */,
+				9545D6CD2A4B176D00080444 /* KREAskExpertView.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		9545D6CE2A4B176D00080444 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6CF2A4B176D00080444 /* Vendors */,
+				9545D6D42A4B176D00080444 /* Chart */,
+				9545D6D92A4B176D00080444 /* List */,
+			);
+			path = Elements;
+			sourceTree = "<group>";
+		};
+		9545D6CF2A4B176D00080444 /* Vendors */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6D02A4B176D00080444 /* KREStackView */,
+			);
+			path = Vendors;
+			sourceTree = "<group>";
+		};
+		9545D6D02A4B176D00080444 /* KREStackView */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6D12A4B176D00080444 /* KRESeparatorView.swift */,
+				9545D6D22A4B176D00080444 /* KREStackViewCell.swift */,
+				9545D6D32A4B176D00080444 /* KREStackView.swift */,
+			);
+			path = KREStackView;
+			sourceTree = "<group>";
+		};
+		9545D6D42A4B176D00080444 /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6D52A4B176D00080444 /* BalloonMarker.swift */,
+				9545D6D62A4B176D00080444 /* KRELineChartView.swift */,
+				9545D6D72A4B176D00080444 /* KREPieChartView.swift */,
+				9545D6D82A4B176D00080444 /* KREBarChartView.swift */,
+			);
+			path = Chart;
+			sourceTree = "<group>";
+		};
+		9545D6D92A4B176D00080444 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6DA2A4B176D00080444 /* KREListItemView.swift */,
+				9545D6DB2A4B176D00080444 /* KREListItemDetailView.swift */,
+				9545D6DC2A4B176D00080444 /* KREButtonCollectionViewCell.swift */,
+				9545D6DD2A4B176D00080444 /* KREButtonCollectionView.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		9545D6DE2A4B176D00080444 /* Table */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6DF2A4B176D00080444 /* CollectionView */,
+				9545D6E02A4B176D00080444 /* ResponsiveCustomCell.swift */,
+			);
+			path = Table;
+			sourceTree = "<group>";
+		};
+		9545D6DF2A4B176D00080444 /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CollectionView;
+			sourceTree = "<group>";
+		};
+		9545D6E12A4B176D00080444 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6E22A4B176D00080444 /* HTTPRequests */,
+				9545D6E62A4B176D00080444 /* Models */,
+				9545D7002A4B176D00080444 /* Common */,
+				9545D70F2A4B176D00080444 /* Elements */,
+				9545D7602A4B176D00080444 /* ViewControllers */,
+				9545D7712A4B176D00080444 /* DataModel */,
+				9545D7762A4B176D00080444 /* KREUtteranceViewCell.swift */,
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
+		9545D6E22A4B176D00080444 /* HTTPRequests */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6E32A4B176D00080444 /* KREWidgetRequestOperation.swift */,
+				9545D6E42A4B176D00080444 /* KREDriveListManager.swift */,
+				9545D6E52A4B176D00080444 /* KREWeatherRequestOperation.swift */,
+			);
+			path = HTTPRequests;
+			sourceTree = "<group>";
+		};
+		9545D6E62A4B176D00080444 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6E72A4B176D00080444 /* KRECalendarEvent.swift */,
+				9545D6E82A4B176D00080444 /* KRETaskList.swift */,
+				9545D6E92A4B176D00080444 /* KREUniversalSearchTemplate.swift */,
+				9545D6EA2A4B176D00080444 /* KREPanelItem.swift */,
+				9545D6EB2A4B176D00080444 /* KREDriveFileInfo.swift */,
+				9545D6EC2A4B176D00080444 /* KREEmailComponent.swift */,
+				9545D6ED2A4B176D00080444 /* Charts */,
+				9545D6F12A4B176D00080444 /* KREContacts.swift */,
+				9545D6F22A4B176D00080444 /* KRECommonWidgetData.swift */,
+				9545D6F32A4B176D00080444 /* Common */,
+				9545D6F52A4B176D00080444 /* KREButtonTemplate.swift */,
+				9545D6F62A4B176D00080444 /* WidgetComponent.swift */,
+				9545D6F72A4B176D00080444 /* KREKnowledgeItem.swift */,
+				9545D6F82A4B176D00080444 /* KREMeetingNote.swift */,
+				9545D6F92A4B176D00080444 /* List */,
+				9545D6FC2A4B176D00080444 /* KREHashTag.swift */,
+				9545D6FD2A4B176D00080444 /* KREKnowledgeCollectionItem.swift */,
+				9545D6FE2A4B176D00080444 /* KREWeatherComponent.swift */,
+				9545D6FF2A4B176D00080444 /* KRESearchSkillData.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		9545D6ED2A4B176D00080444 /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6EE2A4B176D00080444 /* KREBarChartData.swift */,
+				9545D6EF2A4B176D00080444 /* KREPieChartData.swift */,
+				9545D6F02A4B176D00080444 /* KRELineChartData.swift */,
+			);
+			path = Charts;
+			sourceTree = "<group>";
+		};
+		9545D6F32A4B176D00080444 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6F42A4B176D00080444 /* KREActivity.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		9545D6F92A4B176D00080444 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				9545D6FA2A4B176D00080444 /* KREListItem.swift */,
+				9545D6FB2A4B176D00080444 /* KREImageTemplate.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		9545D7002A4B176D00080444 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				9545D7012A4B176D00080444 /* KREWidgetPersistentStoreManager.swift */,
+				9545D7022A4B176D00080444 /* KREWidgetManager.swift */,
+				9545D7032A4B176D00080444 /* KRELoaderView.swift */,
+				9545D7042A4B176D00080444 /* KREDeepLinkingUtility.swift */,
+				9545D7052A4B176D00080444 /* UIViewController+KoreBotSDK.swift */,
+				9545D7062A4B176D00080444 /* KREPanelRequestOperation.swift */,
+				9545D7072A4B176D00080444 /* KRENetworkAlertViewController.xib */,
+				9545D7082A4B176D00080444 /* UIColor+Constants.swift */,
+				9545D7092A4B176D00080444 /* KREErrorHandlingCommonView.swift */,
+				9545D70A2A4B176D00080444 /* UIFont+Constants.swift */,
+				9545D70B2A4B176D00080444 /* KRELocationManager.swift */,
+				9545D70C2A4B176D00080444 /* KRETimeManager.swift */,
+				9545D70D2A4B176D00080444 /* KRENetworkAlertViewController.swift */,
+				9545D70E2A4B176D00080444 /* KREMeetingDataSource.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		9545D70F2A4B176D00080444 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				9545D7102A4B176D00080444 /* WidgetViews */,
+				9545D71C2A4B176D00080444 /* ComposeBar */,
+				9545D7202A4B176D00080444 /* Common */,
+				9545D7252A4B176D00080444 /* WidgetViewCells */,
+				9545D7312A4B176D00080444 /* BubbleViews */,
+				9545D7382A4B176D00080444 /* KREMessageBubbleCell.swift */,
+				9545D7392A4B176D00080444 /* Task Group */,
+			);
+			path = Elements;
+			sourceTree = "<group>";
+		};
+		9545D7102A4B176D00080444 /* WidgetViews */ = {
+			isa = PBXGroup;
+			children = (
+				9545D7112A4B176D00080444 /* KRESummaryWidgetView.swift */,
+				9545D7122A4B176D00080444 /* KREKnowledgeWidgetView.swift */,
+				9545D7132A4B176D00080444 /* KREMeetingNotesWidgetView.swift */,
+				9545D7142A4B176D00080444 /* KREStandardWidgetView.swift */,
+				9545D7152A4B176D00080444 /* KRECalendarWidgetView.swift */,
+				9545D7162A4B176D00080444 /* KREActivityWidgetView.swift */,
+				9545D7172A4B176D00080444 /* KREDriveWidgetView.swift */,
+				9545D7182A4B176D00080444 /* KREMeetingFollowUpView.swift */,
+				9545D7192A4B176D00080444 /* KREChartListWidgetView.swift */,
+				9545D71A2A4B176D00080444 /* KREChartWidgetView.swift */,
+				9545D71B2A4B176D00080444 /* KREListWidgetView.swift */,
+			);
+			path = WidgetViews;
+			sourceTree = "<group>";
+		};
+		9545D71C2A4B176D00080444 /* ComposeBar */ = {
+			isa = PBXGroup;
+			children = (
+				9545D71D2A4B176D00080444 /* KREASRService.swift */,
+				9545D71E2A4B176D00080444 /* KREComposeBarView.swift */,
+				9545D71F2A4B176D00080444 /* KREAudioComposeView.swift */,
+			);
+			path = ComposeBar;
+			sourceTree = "<group>";
+		};
+		9545D7202A4B176D00080444 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				9545D7212A4B176D00080444 /* Views */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		9545D7212A4B176D00080444 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9545D7222A4B176D00080444 /* KRESeeMoreView.swift */,
+				9545D7232A4B176D00080444 /* KREFremimumAlertViewController.swift */,
+				9545D7242A4B176D00080444 /* KAFreemiumCollectionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9545D7252A4B176D00080444 /* WidgetViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				9545D7262A4B176D00080444 /* KREDriveWidgetViewCell.swift */,
+				9545D7272A4B176D00080444 /* KREListWidgetViewCell.swift */,
+				9545D7282A4B176D00080444 /* KREUtterancesListWidgetViewCell.swift */,
+				9545D7292A4B176D00080444 /* KRECalendarWidgetViewCell.swift */,
+				9545D72A2A4B176D00080444 /* KREMeetingFlowTableViewCell.swift */,
+				9545D72B2A4B176D00080444 /* KREMeetingNotesWidgetViewCell.swift */,
+				9545D72C2A4B176D00080444 /* KRETaskWidgetViewCell.swift */,
+				9545D72D2A4B176D00080444 /* KREStandardWidgetViewCell.swift */,
+				9545D72E2A4B176D00080444 /* KREKnowledgeWidgetViewCell.swift */,
+				9545D72F2A4B176D00080444 /* KREActivityWidgetViewCell.swift */,
+				9545D7302A4B176D00080444 /* KREChartWidgetViewCell.swift */,
+			);
+			path = WidgetViewCells;
+			sourceTree = "<group>";
+		};
+		9545D7312A4B176D00080444 /* BubbleViews */ = {
+			isa = PBXGroup;
+			children = (
+				9545D7322A4B176D00080444 /* KREBubbleView.swift */,
+				9545D7332A4B176D00080444 /* KREWeatherBubbleView.swift */,
+				9545D7342A4B176D00080444 /* KREWidgetBubbleView.swift */,
+				9545D7352A4B176D00080444 /* KREUtteranceCollectionView.swift */,
+				9545D7362A4B176D00080444 /* KREWidgetContainerView.swift */,
+				9545D7372A4B176D00080444 /* KRENoDataView.swift */,
+			);
+			path = BubbleViews;
+			sourceTree = "<group>";
+		};
+		9545D7392A4B176D00080444 /* Task Group */ = {
+			isa = PBXGroup;
+			children = (
+				9545D73A2A4B176D00080444 /* KALoginPanelViewController.swift */,
+				9545D73B2A4B176D00080444 /* KREWidgetComponentView.swift */,
+				9545D73C2A4B176D00080444 /* KREWidgetLoginView.swift */,
+				9545D73D2A4B176D00080444 /* KRETaskWidgetView.swift */,
+				9545D73E2A4B176D00080444 /* KREWidgetLoginTableViewCell.swift */,
+				9545D73F2A4B176D00080444 /* KRETaskPreviewCell.swift */,
+				9545D7402A4B176D00080444 /* KREDocumentInformationCellTableViewCell.swift */,
+				9545D7412A4B176D00080444 /* KREWidgetNoDataTableViewCell.swift */,
+				9545D7422A4B176D00080444 /* Charts */,
+				9545D7462A4B176D00080444 /* KRECustomWidgetDashboardTableViewCell.swift */,
+				9545D7472A4B176D00080444 /* KRETaskPreviewTableViewCell.swift */,
+				9545D7482A4B176D00080444 /* KREWidgetView.swift */,
+				9545D7492A4B176D00080444 /* Layouts */,
+				9545D74B2A4B176D00080444 /* MeetingNotes */,
+				9545D74E2A4B176D00080444 /* KRECalendarEventCell.swift */,
+				9545D74F2A4B176D00080444 /* List */,
+				9545D7522A4B176D00080444 /* KADashBordBubble.swift */,
+				9545D7532A4B176D00080444 /* Task */,
+				9545D7552A4B176D00080444 /* KAAnnouncementsTableViewCell.swift */,
+				9545D7562A4B176D00080444 /* KREWidgetEditFooter.swift */,
+				9545D7572A4B176D00080444 /* KRECalendarTableViewCell.swift */,
+				9545D7582A4B176D00080444 /* KRECustomWidgeTableViewCell.swift */,
+				9545D7592A4B176D00080444 /* KAKnowledgeTableViewCell.swift */,
+				9545D75A2A4B176D00080444 /* Views */,
+				9545D75F2A4B176D00080444 /* KRESegmentButtonCollectionViewCell.swift */,
+			);
+			path = "Task Group";
+			sourceTree = "<group>";
+		};
+		9545D7422A4B176D00080444 /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				9545D7432A4B176D00080444 /* KREPieChartViewCell.swift */,
+				9545D7442A4B176D00080444 /* KREBarChartViewCell.swift */,
+				9545D7452A4B176D00080444 /* KRELineChartViewCell.swift */,
+			);
+			path = Charts;
+			sourceTree = "<group>";
+		};
+		9545D7492A4B176D00080444 /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				9545D74A2A4B176D00080444 /* KREWidgetCollectionViewLayout.swift */,
+			);
+			path = Layouts;
+			sourceTree = "<group>";
+		};
+		9545D74B2A4B176D00080444 /* MeetingNotes */ = {
+			isa = PBXGroup;
+			children = (
+				9545D74C2A4B176D00080444 /* KREMeetingNotesViewCell.swift */,
+				9545D74D2A4B176D00080444 /* KREMeetingNotesView.swift */,
+			);
+			path = MeetingNotes;
+			sourceTree = "<group>";
+		};
+		9545D74F2A4B176D00080444 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				9545D7502A4B176D00080444 /* KRESummaryWidgetViewCell.swift */,
+				9545D7512A4B176D00080444 /* KREListItemViewCell.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		9545D7532A4B176D00080444 /* Task */ = {
+			isa = PBXGroup;
+			children = (
+				9545D7542A4B176D00080444 /* KRETaskListItemView.swift */,
+			);
+			path = Task;
+			sourceTree = "<group>";
+		};
+		9545D75A2A4B176D00080444 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9545D75B2A4B176D00080444 /* KREDriveFileTemplateView.swift */,
+				9545D75C2A4B176D00080444 /* KREKnowledgeTemplateView.swift */,
+				9545D75D2A4B176D00080444 /* KREMeetingNotesTemplateView.swift */,
+				9545D75E2A4B176D00080444 /* KREKnowledgeCollectionTemplateView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9545D7602A4B176D00080444 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				9545D7612A4B176D00080444 /* KREWidgetActionViewController.swift */,
+				9545D7622A4B176D00080444 /* KRETaskListViewController.swift */,
+				9545D7632A4B176D00080444 /* KREDriveListViewController.swift */,
+				9545D7642A4B176D00080444 /* KREKnowledgeWidgetViewController.swift */,
+				9545D7652A4B176D00080444 /* KREMessagesViewController.swift */,
+				9545D7662A4B176D00080444 /* KREListItemsViewController.swift */,
+				9545D7672A4B176D00080444 /* KREEditReorderWidgetViewController.swift */,
+				9545D7682A4B176D00080444 /* KREMessagesViewController.xib */,
+				9545D7692A4B176D00080444 /* KREActivityViewController.swift */,
+				9545D76A2A4B176D00080444 /* KREWidgetsViewController.swift */,
+				9545D76B2A4B176D00080444 /* KREMeetingDetailsTableViewCell.swift */,
+				9545D76C2A4B176D00080444 /* KREMeetingNotesWidgetViewController.swift */,
+				9545D76D2A4B176D00080444 /* KRESlideMenuViewController.swift */,
+				9545D76E2A4B176D00080444 /* KREMeetingDetailViewController.swift */,
+				9545D76F2A4B176D00080444 /* KRECalendarListViewController.swift */,
+				9545D7702A4B176D00080444 /* KRESnackBarViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		9545D7712A4B176D00080444 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				9545D7722A4B176D00080444 /* KREWidgetFilter.swift */,
+				9545D7732A4B176D00080444 /* KREWidget.swift */,
+				9545D7742A4B176D00080444 /* KREWeatherWidget.swift */,
+				9545D7752A4B176D00080444 /* KREWidgetComponent.swift */,
+			);
+			path = DataModel;
+			sourceTree = "<group>";
+		};
+		9545D7772A4B176D00080444 /* GrowingTextView */ = {
+			isa = PBXGroup;
+			children = (
+				9545D7782A4B176D00080444 /* UITextView+SLKAdditions.m */,
+				9545D7792A4B176D00080444 /* KRETextViewInternal.swift */,
+				9545D77A2A4B176D00080444 /* KREGrowingTextView.swift */,
+				9545D77B2A4B176D00080444 /* UITextView+SLKAdditions.h */,
+			);
+			path = GrowingTextView;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		9545D5D42A4B158500080444 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9545D6832A4B173E00080444 /* WidgetSDK-Bridging-Header.h in Headers */,
+				9545D8422A4B176F00080444 /* UITextView+SLKAdditions.h in Headers */,
+				9545D5EA2A4B158500080444 /* WidgetSDK.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		9545D5D82A4B158500080444 /* WidgetSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9545D5ED2A4B158500080444 /* Build configuration list for PBXNativeTarget "WidgetSDK" */;
+			buildPhases = (
+				9545D5D42A4B158500080444 /* Headers */,
+				9545D5D52A4B158500080444 /* Sources */,
+				9545D5D62A4B158500080444 /* Frameworks */,
+				9545D5D72A4B158500080444 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WidgetSDK;
+			productName = WidgetSDK;
+			productReference = 9545D5D92A4B158500080444 /* WidgetSDK.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9545D5D02A4B158500080444 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					9545D5D82A4B158500080444 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+				};
+			};
+			buildConfigurationList = 9545D5D32A4B158500080444 /* Build configuration list for PBXProject "WidgetSDK" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9545D5CF2A4B158500080444;
+			productRefGroup = 9545D5DA2A4B158500080444 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 9545D6012A4B16AB00080444 /* Products */;
+					ProjectRef = 9545D6002A4B16AB00080444 /* KoreBotSDK.xcodeproj */;
+				},
+				{
+					ProductGroup = 9545D60A2A4B16AB00080444 /* Products */;
+					ProjectRef = 9545D6092A4B16AB00080444 /* SpeechToText.xcodeproj */;
+				},
+				{
+					ProductGroup = 9545D6202A4B16AB00080444 /* Products */;
+					ProjectRef = 9545D61F2A4B16AB00080444 /* TextParser.xcodeproj */;
+				},
+				{
+					ProductGroup = 9545D6162A4B16AB00080444 /* Products */;
+					ProjectRef = 9545D6152A4B16AB00080444 /* Widgets.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				9545D5D82A4B158500080444 /* WidgetSDK */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		9545D62C2A4B16AB00080444 /* KoreBotSDK.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = KoreBotSDK.framework;
+			remoteRef = 9545D62B2A4B16AB00080444 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9545D62E2A4B16AB00080444 /* KoreBotSDKTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = KoreBotSDKTests.xctest;
+			remoteRef = 9545D62D2A4B16AB00080444 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9545D6322A4B16AB00080444 /* SpeechToText.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SpeechToText.framework;
+			remoteRef = 9545D6312A4B16AB00080444 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9545D6342A4B16AB00080444 /* SpeechToTextTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SpeechToTextTests.xctest;
+			remoteRef = 9545D6332A4B16AB00080444 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9545D6372A4B16AB00080444 /* TextParser.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = TextParser.app;
+			remoteRef = 9545D6362A4B16AB00080444 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9545D63A2A4B16AB00080444 /* Widgets.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = Widgets.app;
+			remoteRef = 9545D6392A4B16AB00080444 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9545D5D72A4B158500080444 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9545D7982A4B176F00080444 /* OFL.txt in Resources */,
+				9545D7952A4B176F00080444 /* Lato-BlackItalic.ttf in Resources */,
+				953B18522A4C16F500F1F79E /* Assets.xcassets in Resources */,
+				9545D79F2A4B176F00080444 /* BebasNeue-Regular.ttf in Resources */,
+				9545D79A2A4B176F00080444 /* README.txt in Resources */,
+				9545D65C2A4B16AC00080444 /* LaunchScreen.storyboard in Resources */,
+				9545D7962A4B176F00080444 /* Lato-Semibold.ttf in Resources */,
+				9545D7DF2A4B176F00080444 /* KRENetworkAlertViewController.xib in Resources */,
+				9545D78D2A4B176F00080444 /* Lato-Thin.ttf in Resources */,
+				9545D65A2A4B16AC00080444 /* KoreWidgets.podspec in Resources */,
+				9545D6542A4B16AC00080444 /* Info.plist in Resources */,
+				9545D78B2A4B176F00080444 /* Lato-Italic.ttf in Resources */,
+				9545D6812A4B171A00080444 /* WidgetSDK.podspec in Resources */,
+				9545D7932A4B176F00080444 /* Lato-Regular.ttf in Resources */,
+				9545D6522A4B16AC00080444 /* KoreBotSDK.podspec in Resources */,
+				9545D6562A4B16AC00080444 /* Info.plist in Resources */,
+				9545D79E2A4B176F00080444 /* Lato-ThinItalic.ttf in Resources */,
+				9545D77E2A4B176F00080444 /* KREListTableViewCell.xib in Resources */,
+				9545D78F2A4B176F00080444 /* Lato-Black.ttf in Resources */,
+				9545D6512A4B16AC00080444 /* Info.plist in Resources */,
+				9545D78E2A4B176F00080444 /* Lato-Bold.ttf in Resources */,
+				9545D7912A4B176F00080444 /* Lato-SemiboldItalic.ttf in Resources */,
+				9545D79B2A4B176F00080444 /* Lato-BoldItalic.ttf in Resources */,
+				9545D77D2A4B176F00080444 /* KREOptionsTableViewCell.xib in Resources */,
+				9545D6602A4B16AC00080444 /* Assets.xcassets in Resources */,
+				9545D6532A4B16AC00080444 /* Info.plist in Resources */,
+				9545D7892A4B176F00080444 /* appSymbols.ttf in Resources */,
+				9545D6622A4B16AC00080444 /* Info.plist in Resources */,
+				9545D79D2A4B176F00080444 /* Lato-Medium.ttf in Resources */,
+				9545D7902A4B176F00080444 /* Lato-ExtraBold.ttf in Resources */,
+				9545D7992A4B176F00080444 /* Lato-Heavy.ttf in Resources */,
+				9545D8312A4B176F00080444 /* KREMessagesViewController.xib in Resources */,
+				9545D79C2A4B176F00080444 /* Lato-Light.ttf in Resources */,
+				9545D7972A4B176F00080444 /* Lato-MediumItalic.ttf in Resources */,
+				9545D7942A4B176F00080444 /* Lato-Hairline.ttf in Resources */,
+				9545D65B2A4B16AC00080444 /* Assets.xcassets in Resources */,
+				9545D65D2A4B16AC00080444 /* Info.plist in Resources */,
+				9545D6552A4B16AC00080444 /* SpeechToText.podspec in Resources */,
+				9545D7922A4B176F00080444 /* Lato-HairlineItalic.ttf in Resources */,
+				9545D6612A4B16AC00080444 /* LaunchScreen.storyboard in Resources */,
+				9545D78C2A4B176F00080444 /* Lato-LightItalic.ttf in Resources */,
+				9545D65E2A4B16AC00080444 /* KoreTextParser.podspec in Resources */,
+				9545D78A2A4B176F00080444 /* Lato-HeavyItalic.ttf in Resources */,
+				9545D65F2A4B16AC00080444 /* SampleText.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9545D5D52A4B158500080444 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9545D83F2A4B176F00080444 /* UITextView+SLKAdditions.m in Sources */,
+				9545D6692A4B16AC00080444 /* ApplicationManager.swift in Sources */,
+				9545D8062A4B176F00080444 /* KREUtteranceCollectionView.swift in Sources */,
+				9545D5DE2A4B158500080444 /* WidgetSDK.docc in Sources */,
+				9545D7FF2A4B176F00080444 /* KREStandardWidgetViewCell.swift in Sources */,
+				9545D7D42A4B176F00080444 /* KREImageTemplate.swift in Sources */,
+				9545D7EE2A4B176F00080444 /* KREMeetingFollowUpView.swift in Sources */,
+				9545D80D2A4B176F00080444 /* KRETaskWidgetView.swift in Sources */,
+				9545D7FA2A4B176F00080444 /* KREUtterancesListWidgetViewCell.swift in Sources */,
+				9545D6652A4B16AC00080444 /* KoraNotification.swift in Sources */,
+				9545D8272A4B176F00080444 /* KREMeetingNotesTemplateView.swift in Sources */,
+				9545D7F82A4B176F00080444 /* KREDriveWidgetViewCell.swift in Sources */,
+				9545D80F2A4B176F00080444 /* KRETaskPreviewCell.swift in Sources */,
+				9545D7A72A4B176F00080444 /* KAEmailCarouselView.swift in Sources */,
+				9545D7F72A4B176F00080444 /* KAFreemiumCollectionView.swift in Sources */,
+				9545D7E32A4B176F00080444 /* KRELocationManager.swift in Sources */,
+				9545D7872A4B176F00080444 /* KREIdentityImageView.swift in Sources */,
+				9545D83A2A4B176F00080444 /* KREWidgetFilter.swift in Sources */,
+				9545D7E62A4B176F00080444 /* KREMeetingDataSource.swift in Sources */,
+				9545D8232A4B176F00080444 /* KRECustomWidgeTableViewCell.swift in Sources */,
+				9545D7AD2A4B176F00080444 /* KRESkillComponentTableViewCell.swift in Sources */,
+				9545D7B62A4B176F00080444 /* KREStackView.swift in Sources */,
+				9545D7F22A4B176F00080444 /* KREASRService.swift in Sources */,
+				9545D7B22A4B176F00080444 /* KRESearchResultsView.swift in Sources */,
+				9545D8302A4B176F00080444 /* KREEditReorderWidgetViewController.swift in Sources */,
+				9545D80C2A4B176F00080444 /* KREWidgetLoginView.swift in Sources */,
+				9545D7C22A4B176F00080444 /* KREWeatherRequestOperation.swift in Sources */,
+				9545D7F42A4B176F00080444 /* KREAudioComposeView.swift in Sources */,
+				9545D7D32A4B176F00080444 /* KREListItem.swift in Sources */,
+				9545D80B2A4B176F00080444 /* KREWidgetComponentView.swift in Sources */,
+				9545D83E2A4B176F00080444 /* KREUtteranceViewCell.swift in Sources */,
+				9545D7CE2A4B176F00080444 /* KREActivity.swift in Sources */,
+				9545D81A2A4B176F00080444 /* KREMeetingNotesView.swift in Sources */,
+				9545D6642A4B16AC00080444 /* KABottomSheetViewController.swift in Sources */,
+				9545D7A52A4B176F00080444 /* KRECarouselCardView.swift in Sources */,
+				9545D7E42A4B176F00080444 /* KRETimeManager.swift in Sources */,
+				9545D7BE2A4B176F00080444 /* KREButtonCollectionView.swift in Sources */,
+				9545D8262A4B176F00080444 /* KREKnowledgeTemplateView.swift in Sources */,
+				9545D7D92A4B176F00080444 /* KREWidgetPersistentStoreManager.swift in Sources */,
+				9545D7BD2A4B176F00080444 /* KREButtonCollectionViewCell.swift in Sources */,
+				9545D82C2A4B176F00080444 /* KREDriveListViewController.swift in Sources */,
+				9545D8332A4B176F00080444 /* KREWidgetsViewController.swift in Sources */,
+				9545D7E92A4B176F00080444 /* KREMeetingNotesWidgetView.swift in Sources */,
+				9545D8412A4B176F00080444 /* KREGrowingTextView.swift in Sources */,
+				9545D8282A4B176F00080444 /* KREKnowledgeCollectionTemplateView.swift in Sources */,
+				9545D77C2A4B176F00080444 /* KREOptionsTableViewCell.swift in Sources */,
+				9545D7C52A4B176F00080444 /* KREUniversalSearchTemplate.swift in Sources */,
+				9545D80A2A4B176F00080444 /* KALoginPanelViewController.swift in Sources */,
+				9545D6672A4B16AC00080444 /* KAPanelWindowManager.swift in Sources */,
+				9545D8212A4B176F00080444 /* KREWidgetEditFooter.swift in Sources */,
+				9545D7AF2A4B176F00080444 /* KREKnowledgeCollectionElementViewCell.swift in Sources */,
+				9545D7DC2A4B176F00080444 /* KREDeepLinkingUtility.swift in Sources */,
+				9545D7832A4B176F00080444 /* KRECollectionView.swift in Sources */,
+				9545D7D22A4B176F00080444 /* KREMeetingNote.swift in Sources */,
+				9545D8392A4B176F00080444 /* KRESnackBarViewController.swift in Sources */,
+				9545D7DE2A4B176F00080444 /* KREPanelRequestOperation.swift in Sources */,
+				9545D7AB2A4B176F00080444 /* KREEmailComponentViewCell.swift in Sources */,
+				9545D8162A4B176F00080444 /* KRETaskPreviewTableViewCell.swift in Sources */,
+				9545D7BA2A4B176F00080444 /* KREBarChartView.swift in Sources */,
+				9545D7B12A4B176F00080444 /* KRESearchResultsViewController.swift in Sources */,
+				9545D83B2A4B176F00080444 /* KREWidget.swift in Sources */,
+				9545D7A12A4B176F00080444 /* KRECardView.swift in Sources */,
+				9545D7FE2A4B176F00080444 /* KRETaskWidgetViewCell.swift in Sources */,
+				9545D66E2A4B16AC00080444 /* Constants.swift in Sources */,
+				9545D8112A4B176F00080444 /* KREWidgetNoDataTableViewCell.swift in Sources */,
+				9545D8322A4B176F00080444 /* KREActivityViewController.swift in Sources */,
+				9545D7BB2A4B176F00080444 /* KREListItemView.swift in Sources */,
+				9545D7B92A4B176F00080444 /* KREPieChartView.swift in Sources */,
+				9545D7CB2A4B176F00080444 /* KRELineChartData.swift in Sources */,
+				9545D7C92A4B176F00080444 /* KREBarChartData.swift in Sources */,
+				9545D7842A4B176F00080444 /* KAFormActionView.swift in Sources */,
+				9545D8052A4B176F00080444 /* KREWidgetBubbleView.swift in Sources */,
+				9545D8042A4B176F00080444 /* KREWeatherBubbleView.swift in Sources */,
+				9545D7AE2A4B176F00080444 /* KREDriveFileElementViewCell.swift in Sources */,
+				9545D8402A4B176F00080444 /* KRETextViewInternal.swift in Sources */,
+				9545D7DA2A4B176F00080444 /* KREWidgetManager.swift in Sources */,
+				9545D7FC2A4B176F00080444 /* KREMeetingFlowTableViewCell.swift in Sources */,
+				9545D7A92A4B176F00080444 /* KREKnowledgeElementViewCell.swift in Sources */,
+				9545D7C02A4B176F00080444 /* KREWidgetRequestOperation.swift in Sources */,
+				9545D7852A4B176F00080444 /* KRESummaryHelpView.swift in Sources */,
+				9545D7C32A4B176F00080444 /* KRECalendarEvent.swift in Sources */,
+				9545D7C82A4B176F00080444 /* KREEmailComponent.swift in Sources */,
+				9545D7FD2A4B176F00080444 /* KREMeetingNotesWidgetViewCell.swift in Sources */,
+				9545D7812A4B176F00080444 /* KRETokenCollectionViewCell.swift in Sources */,
+				9545D7EB2A4B176F00080444 /* KRECalendarWidgetView.swift in Sources */,
+				9545D7B02A4B176F00080444 /* KREMeetingNotesElementViewCell.swift in Sources */,
+				9545D7B52A4B176F00080444 /* KREStackViewCell.swift in Sources */,
+				9545D7F12A4B176F00080444 /* KREListWidgetView.swift in Sources */,
+				9545D7CD2A4B176F00080444 /* KRECommonWidgetData.swift in Sources */,
+				9545D7EA2A4B176F00080444 /* KREStandardWidgetView.swift in Sources */,
+				9545D7D52A4B176F00080444 /* KREHashTag.swift in Sources */,
+				9545D7D12A4B176F00080444 /* KREKnowledgeItem.swift in Sources */,
+				9545D7A82A4B176F00080444 /* KACarouselView.swift in Sources */,
+				9545D6662A4B16AC00080444 /* KoraAssistant.swift in Sources */,
+				9545D7D72A4B176F00080444 /* KREWeatherComponent.swift in Sources */,
+				9545D7ED2A4B176F00080444 /* KREDriveWidgetView.swift in Sources */,
+				9545D8072A4B176F00080444 /* KREWidgetContainerView.swift in Sources */,
+				9545D7EF2A4B176F00080444 /* KREChartListWidgetView.swift in Sources */,
+				9545D81F2A4B176F00080444 /* KRETaskListItemView.swift in Sources */,
+				9545D7E12A4B176F00080444 /* KREErrorHandlingCommonView.swift in Sources */,
+				9545D7F92A4B176F00080444 /* KREListWidgetViewCell.swift in Sources */,
+				9545D8252A4B176F00080444 /* KREDriveFileTemplateView.swift in Sources */,
+				9545D7862A4B176F00080444 /* KREImagesCollectionView.swift in Sources */,
+				9545D77F2A4B176F00080444 /* KREListTableViewCell.swift in Sources */,
+				9545D7B72A4B176F00080444 /* BalloonMarker.swift in Sources */,
+				9545D66D2A4B16AC00080444 /* KAPanelHeaderView.swift in Sources */,
+				9545D7F02A4B176F00080444 /* KREChartWidgetView.swift in Sources */,
+				9545D7E72A4B176F00080444 /* KRESummaryWidgetView.swift in Sources */,
+				9545D83C2A4B176F00080444 /* KREWeatherWidget.swift in Sources */,
+				9545D7EC2A4B176F00080444 /* KREActivityWidgetView.swift in Sources */,
+				9545D7802A4B176F00080444 /* KREOptionsView.swift in Sources */,
+				9545D66B2A4B16AC00080444 /* KAPanelItemViewController.swift in Sources */,
+				9545D7CA2A4B176F00080444 /* KREPieChartData.swift in Sources */,
+				9545D7E02A4B176F00080444 /* UIColor+Constants.swift in Sources */,
+				9545D7A42A4B176F00080444 /* KRECarouselView.swift in Sources */,
+				9545D66C2A4B16AC00080444 /* ChatMessagesViewController+Widgets.swift in Sources */,
+				9545D7AA2A4B176F00080444 /* KREKnowledgeArticleBottom.swift in Sources */,
+				9545D7E52A4B176F00080444 /* KRENetworkAlertViewController.swift in Sources */,
+				9545D7BF2A4B176F00080444 /* ResponsiveCustomCell.swift in Sources */,
+				9545D7C42A4B176F00080444 /* KRETaskList.swift in Sources */,
+				9545D7B82A4B176F00080444 /* KRELineChartView.swift in Sources */,
+				9545D7E22A4B176F00080444 /* UIFont+Constants.swift in Sources */,
+				9545D7C62A4B176F00080444 /* KREPanelItem.swift in Sources */,
+				9545D8022A4B176F00080444 /* KREChartWidgetViewCell.swift in Sources */,
+				9545D82A2A4B176F00080444 /* KREWidgetActionViewController.swift in Sources */,
+				9545D7D02A4B176F00080444 /* WidgetComponent.swift in Sources */,
+				9545D8142A4B176F00080444 /* KRELineChartViewCell.swift in Sources */,
+				9545D8352A4B176F00080444 /* KREMeetingNotesWidgetViewController.swift in Sources */,
+				9545D7AC2A4B176F00080444 /* KREKnowledgeFooterView.swift in Sources */,
+				9545D7CF2A4B176F00080444 /* KREButtonTemplate.swift in Sources */,
+				9545D7BC2A4B176F00080444 /* KREListItemDetailView.swift in Sources */,
+				9545D6712A4B16BA00080444 /* WidegtView.swift in Sources */,
+				9545D7B32A4B176F00080444 /* KREAskExpertView.swift in Sources */,
+				9545D8292A4B176F00080444 /* KRESegmentButtonCollectionViewCell.swift in Sources */,
+				9545D8032A4B176F00080444 /* KREBubbleView.swift in Sources */,
+				9545D7F52A4B176F00080444 /* KRESeeMoreView.swift in Sources */,
+				9545D81D2A4B176F00080444 /* KREListItemViewCell.swift in Sources */,
+				9545D8182A4B176F00080444 /* KREWidgetCollectionViewLayout.swift in Sources */,
+				9545D8152A4B176F00080444 /* KRECustomWidgetDashboardTableViewCell.swift in Sources */,
+				9545D8122A4B176F00080444 /* KREPieChartViewCell.swift in Sources */,
+				9545D8222A4B176F00080444 /* KRECalendarTableViewCell.swift in Sources */,
+				9545D82B2A4B176F00080444 /* KRETaskListViewController.swift in Sources */,
+				9545D7822A4B176F00080444 /* KREQuickSelectView.swift in Sources */,
+				9545D7B42A4B176F00080444 /* KRESeparatorView.swift in Sources */,
+				9545D82F2A4B176F00080444 /* KREListItemsViewController.swift in Sources */,
+				95D4A6C82A54281D00254D22 /* WidgetConnect.swift in Sources */,
+				9545D82E2A4B176F00080444 /* KREMessagesViewController.swift in Sources */,
+				9545D8362A4B176F00080444 /* KRESlideMenuViewController.swift in Sources */,
+				9545D8082A4B176F00080444 /* KRENoDataView.swift in Sources */,
+				9545D83D2A4B176F00080444 /* KREWidgetComponent.swift in Sources */,
+				9545D7E82A4B176F00080444 /* KREKnowledgeWidgetView.swift in Sources */,
+				9545D80E2A4B176F00080444 /* KREWidgetLoginTableViewCell.swift in Sources */,
+				9545D7DD2A4B176F00080444 /* UIViewController+KoreBotSDK.swift in Sources */,
+				9545D8092A4B176F00080444 /* KREMessageBubbleCell.swift in Sources */,
+				9545D81E2A4B176F00080444 /* KADashBordBubble.swift in Sources */,
+				9545D7D82A4B176F00080444 /* KRESearchSkillData.swift in Sources */,
+				9545D82D2A4B176F00080444 /* KREKnowledgeWidgetViewController.swift in Sources */,
+				9545D7A62A4B176F00080444 /* KAEmailCardView.swift in Sources */,
+				95D4A6C62A54281300254D22 /* WidgetSDKConfiguration.swift in Sources */,
+				9545D8242A4B176F00080444 /* KAKnowledgeTableViewCell.swift in Sources */,
+				9545D81B2A4B176F00080444 /* KRECalendarEventCell.swift in Sources */,
+				9545D8102A4B176F00080444 /* KREDocumentInformationCellTableViewCell.swift in Sources */,
+				9545D7F32A4B176F00080444 /* KREComposeBarView.swift in Sources */,
+				9545D7D62A4B176F00080444 /* KREKnowledgeCollectionItem.swift in Sources */,
+				9545D7C72A4B176F00080444 /* KREDriveFileInfo.swift in Sources */,
+				9545D7A22A4B176F00080444 /* KADriveFileView.swift in Sources */,
+				9545D8012A4B176F00080444 /* KREActivityWidgetViewCell.swift in Sources */,
+				9545D8172A4B176F00080444 /* KREWidgetView.swift in Sources */,
+				9545D7F62A4B176F00080444 /* KREFremimumAlertViewController.swift in Sources */,
+				9545D7A32A4B176F00080444 /* KADriveFilesCarouselView.swift in Sources */,
+				9545D8202A4B176F00080444 /* KAAnnouncementsTableViewCell.swift in Sources */,
+				9545D8002A4B176F00080444 /* KREKnowledgeWidgetViewCell.swift in Sources */,
+				9545D66A2A4B16AC00080444 /* UIViewController+Kora.swift in Sources */,
+				9545D7A02A4B176F00080444 /* DataModel.xcdatamodeld in Sources */,
+				9545D7C12A4B176F00080444 /* KREDriveListManager.swift in Sources */,
+				9545D7CC2A4B176F00080444 /* KREContacts.swift in Sources */,
+				9545D7DB2A4B176F00080444 /* KRELoaderView.swift in Sources */,
+				9545D8382A4B176F00080444 /* KRECalendarListViewController.swift in Sources */,
+				9545D7FB2A4B176F00080444 /* KRECalendarWidgetViewCell.swift in Sources */,
+				9545D81C2A4B176F00080444 /* KRESummaryWidgetViewCell.swift in Sources */,
+				9545D8372A4B176F00080444 /* KREMeetingDetailViewController.swift in Sources */,
+				9545D8132A4B176F00080444 /* KREBarChartViewCell.swift in Sources */,
+				9545D6682A4B16AC00080444 /* KAPanelCollectionView.swift in Sources */,
+				9545D8192A4B176F00080444 /* KREMeetingNotesViewCell.swift in Sources */,
+				9545D8342A4B176F00080444 /* KREMeetingDetailsTableViewCell.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9545D61A2A4B16AB00080444 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9545D61B2A4B16AB00080444 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		9545D6262A4B16AB00080444 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9545D6272A4B16AB00080444 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9545D5EB2A4B158500080444 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		9545D5EC2A4B158500080444 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		9545D5EE2A4B158500080444 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kore.WidgetSDK;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/WidgetSDK-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9545D5EF2A4B158500080444 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kore.WidgetSDK;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/WidgetSDK-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9545D5D32A4B158500080444 /* Build configuration list for PBXProject "WidgetSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9545D5EB2A4B158500080444 /* Debug */,
+				9545D5EC2A4B158500080444 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9545D5ED2A4B158500080444 /* Build configuration list for PBXNativeTarget "WidgetSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9545D5EE2A4B158500080444 /* Debug */,
+				9545D5EF2A4B158500080444 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		9545D6B52A4B176D00080444 /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9545D6B62A4B176D00080444 /* DataModel.xcdatamodel */,
+			);
+			currentVersion = 9545D6B62A4B176D00080444 /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 9545D5D02A4B158500080444 /* Project object */;
+}

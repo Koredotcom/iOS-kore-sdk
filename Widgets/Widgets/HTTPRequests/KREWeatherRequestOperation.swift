@@ -8,7 +8,7 @@
 
 import UIKit
 import AFNetworking
-import KoreBotSDK
+//import KoreBotSDK
 
 // MARK: - KREOperation
 class KREOperation: Foundation.Operation {

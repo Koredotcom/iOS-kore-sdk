@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import KoreBotSDK
+//import KoreBotSDK
 import Mantle
 
 public enum KREMeetingStatus: String {
