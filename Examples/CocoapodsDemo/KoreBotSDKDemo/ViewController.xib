@@ -10,7 +10,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ViewController" customModule="Barry_Bot" customModuleProvider="target">
             <connections>
-                <outlet property="panelCollectionViewContainerView" destination="LT7-DV-e8x" id="L6e-51-top"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -18,22 +17,8 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <view contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="90" translatesAutoresizingMaskIntoConstraints="NO" id="LT7-DV-e8x" userLabel="panelCollectionViewContainerView">
-                    <rect key="frame" x="0.0" y="681" width="414" height="55"/>
-                    <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="55" id="iMW-n6-YYk"/>
-                    </constraints>
-                </view>
-            </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-            <constraints>
-                <constraint firstItem="LT7-DV-e8x" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="8iq-bA-yBA"/>
-                <constraint firstItem="LT7-DV-e8x" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Nsm-MD-cZn"/>
-                <constraint firstItem="LT7-DV-e8x" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="Z6B-vy-QIO"/>
-            </constraints>
             <point key="canvasLocation" x="139.69465648854961" y="19.718309859154932"/>
         </view>
     </objects>

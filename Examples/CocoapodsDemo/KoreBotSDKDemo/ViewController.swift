@@ -10,9 +10,7 @@ import AVFoundation
 import WidgetSDK
 
 class ViewController: UIViewController {
-
-    @IBOutlet weak var panelCollectionViewContainerView: UIView!
-    
+    var panelCollectionViewContainerView: UIView!
     public var sheetController: KABottomSheetController?
     var insets: UIEdgeInsets = .zero
     public var maxPanelHeight: CGFloat {
@@ -23,7 +21,8 @@ class ViewController: UIViewController {
         maxHeight -= delta
         return maxHeight
     }
-    let widgetPanelTopSpace = 70.0
+    
+    let widgetPanelTopSpace = UIApplication.shared.windows[0].safeAreaInsets.top
     public var panelHeight: CGFloat {
         var maxHeight = maxPanelHeight
         maxHeight -= panelCollectionViewContainerView.bounds.height - insets.bottom + widgetPanelTopSpace
@@ -38,7 +37,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         widgetConnect.show(WidgetSDKConfiguration.widgetConfig.clientId) { statusStr in
-            self.configureInfoView()
+            self.configureWidgetView()
         } failure: { error in
             print(error)
             let title = "Widget SDK Demo"
@@ -52,7 +51,19 @@ class ViewController: UIViewController {
     
 }
 extension ViewController: WidgetViewDelegate{
-    func configureInfoView(){
+    func configureWidgetView(){
+        panelCollectionViewContainerView = UIView()
+        panelCollectionViewContainerView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(panelCollectionViewContainerView)
+        panelCollectionViewContainerView.backgroundColor = .lightGray
+        
+        NSLayoutConstraint.activate([
+            panelCollectionViewContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            panelCollectionViewContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            panelCollectionViewContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            panelCollectionViewContainerView.heightAnchor.constraint(equalToConstant: 55.0)
+        ])
+        
         self.widegtView = WidegtView()
         self.widegtView.translatesAutoresizingMaskIntoConstraints = false
         self.widegtView.viewDelegate = self
@@ -60,7 +71,6 @@ extension ViewController: WidgetViewDelegate{
         self.panelCollectionViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[widegtView]|", options:[], metrics:nil, views:["widegtView" : widegtView!]))
         self.panelCollectionViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[widegtView]|", options:[], metrics:nil, views:["widegtView" : widegtView!]))
     }
-    
     public func didselectWidegtView(item: WidgetSDK.KREPanelItem?){
         let weakSelf = self
         switch item?.type {
@@ -80,7 +90,7 @@ extension ViewController: WidgetViewDelegate{
                     self?.sheetController = nil
                 }
                 self.view.endEditing(true)
-
+                
                 let bottomSheetController = KABottomSheetController(controller: panelItemViewController, sizes: sizes)
                 bottomSheetController.inputViewHeight = CGFloat(inputViewHeight)
                 bottomSheetController.willSheetSizeChange = { [weak self] (controller, newSize) in
@@ -92,7 +102,7 @@ extension ViewController: WidgetViewDelegate{
                         controller.overlayColor = .clear
                         panelItemViewController.showPanelHeader(false)
                         bottomSheetController.closeSheet(true)
-
+                        
                         self?.sheetController = nil
                     }
                 }
@@ -102,7 +112,7 @@ extension ViewController: WidgetViewDelegate{
             } else if let bottomSheetController = weakSelf.sheetController,
                       let panelItemViewController = bottomSheetController.childViewController as? KAPanelItemViewController {
                 panelItemViewController.panelId = item?.id
-
+                
                 if bottomSheetController.presentingViewController == nil {
                     weakSelf.present(bottomSheetController, animated: true, completion: nil)
                 } else {
@@ -116,5 +126,4 @@ extension ViewController: WidgetViewDelegate{
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
-    
 }

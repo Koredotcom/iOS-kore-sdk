@@ -83,8 +83,7 @@ static let JWT_SERVER = "<jwt-token-server-url>";
 #### 2. Initializing the Widget SDK in your Viewcontroller
     import WidgetSDK
     
-    @IBOutlet weak var panelCollectionViewContainerView: UIView!
-    
+    var panelCollectionViewContainerView: UIView!
     public var sheetController: KABottomSheetController?
     var insets: UIEdgeInsets = .zero
     public var maxPanelHeight: CGFloat {
@@ -95,19 +94,28 @@ static let JWT_SERVER = "<jwt-token-server-url>";
         maxHeight -= delta
         return maxHeight
     }
-    let widgetPanelTopSpace = 70.0
     public var panelHeight: CGFloat {
         var maxHeight = maxPanelHeight
-        maxHeight -= panelCollectionViewContainerView.bounds.height - insets.bottom + widgetPanelTopSpace
+        maxHeight -= panelCollectionViewContainerView.bounds.height - insets.bottom - insets.top + 25.0
         return maxHeight
     }
-    
     let widgetConnect = WidgetConnect()
     var widegtView: WidegtView!
 
 #### 3. Add WidgetSDKDelegate 
+
     extension ViewController: WidgetViewDelegate{
-    func configureInfoView(){
+    func configureWidgetView(){
+        panelCollectionViewContainerView = UIView()
+        panelCollectionViewContainerView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(panelCollectionViewContainerView)
+        panelCollectionViewContainerView.backgroundColor = .lightGray
+        NSLayoutConstraint.activate([
+            panelCollectionViewContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            panelCollectionViewContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            panelCollectionViewContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            panelCollectionViewContainerView.heightAnchor.constraint(equalToConstant: 55.0)
+        ])
         self.widegtView = WidegtView()
         self.widegtView.translatesAutoresizingMaskIntoConstraints = false
         self.widegtView.viewDelegate = self
@@ -115,7 +123,6 @@ static let JWT_SERVER = "<jwt-token-server-url>";
         self.panelCollectionViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[widegtView]|", options:[], metrics:nil, views:["widegtView" : widegtView!]))
         self.panelCollectionViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[widegtView]|", options:[], metrics:nil, views:["widegtView" : widegtView!]))
     }
-    
     public func didselectWidegtView(item: WidgetSDK.KREPanelItem?){
         let weakSelf = self
         switch item?.type {
@@ -125,7 +132,13 @@ static let JWT_SERVER = "<jwt-token-server-url>";
             if #available(iOS 11.0, *) {
                 self.insets = UIApplication.shared.delegate?.window??.safeAreaInsets ?? .zero
             }
-            var inputViewHeight = 0.0
+            let keyWindow = UIApplication.shared.connectedScenes
+                .filter({$0.activationState == .foregroundActive})
+                .compactMap({$0 as? UIWindowScene})
+                .first?.windows
+                .filter({$0.isKeyWindow}).first
+            let safeAreaBottom =  CGFloat(keyWindow?.safeAreaInsets.bottom ?? 0.0)
+            var inputViewHeight = safeAreaBottom
             inputViewHeight = inputViewHeight + (self.insets.bottom) + (self.panelCollectionViewContainerView.bounds.height)
             let sizes: [SheetSize] = [.fixed(0.0), .fixed(weakSelf.panelHeight)]
             if weakSelf.sheetController == nil {
@@ -173,10 +186,21 @@ static let JWT_SERVER = "<jwt-token-server-url>";
     }
 }
 
+#### 4. Configuration changes in your Viewcontroller
+
+        WidgetSDKConfiguration.widgetConfig.clientId =  "<client-id>"
+        WidgetSDKConfiguration.widgetConfig.clientSecret = "<client-secret>"
+        WidgetSDKConfiguration.widgetConfig.botId = "<bot-id>"
+        WidgetSDKConfiguration.widgetConfig.chatBotName = "<bot-name>"
+        WidgetSDKConfiguration.widgetConfig.identity = "<identity-email> or <random-id>"
+        WidgetSDKConfiguration.widgetConfig.isAnonymous = true
+        WidgetSDKConfiguration.serverConfig.JWT_SERVER = "http://<jwt-server-host>/"
+        WidgetSDKConfiguration.serverConfig.WIDGET_SERVER = "https://bots.kore.ai"
+
 #### 4. Connect with WidgetSDK
 
     widgetConnect.show(WidgetSDKConfiguration.widgetConfig.clientId) { statusStr in
-            self.configureInfoView()
+            self.configureWidgetView()
         } failure: { error in
             print(error)
             let title = "Widget SDK Demo"

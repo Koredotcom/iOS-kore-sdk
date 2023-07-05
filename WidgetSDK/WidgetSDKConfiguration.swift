@@ -5,7 +5,6 @@
 //  Created by developer@kore.com on 12/16/16.
 //  Copyright © 2016 Kore Inc. All rights reserved.
 //
-
 import UIKit
 public class WidgetSDKConfiguration: NSObject {
     
@@ -19,17 +18,15 @@ public class WidgetSDKConfiguration: NSObject {
         public static var clientSecret = "<client-secret>" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
         
         public static var botId =  "<bot-id>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
-
         public static var chatBotName = "<bot-name>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
         
         public static var identity = "<identity-email> or <random-id>"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
         
         public static var isAnonymous = true // This should be either true (in case of known-user) or false (in-case of anonymous user).
-
     }
     
     public struct serverConfig {
-        static var JWT_SERVER = String(format: "http://<jwt-server-host>/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
+        public static var JWT_SERVER = String(format: "http://<jwt-server-host>/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
         
         static func koreJwtUrl() -> String {
             return String(format: "%@users/sts", JWT_SERVER)
