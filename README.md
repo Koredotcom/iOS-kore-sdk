@@ -23,47 +23,6 @@ Kore Bot SDK for iOS enables you to talk to Kore bots over a web socket. This re
 
 ## Instructions
 
-### Configuration changes
-
-* Setting up clientId, clientSecret, botId, chatBotName and identity in WidgetSDK/WidgetSDKConfiguration.swift
-![SDKConfiguration setup](https://github.com/Koredotcom/iOS-kore-sdk/blob/master/sdk_configuration.png)
-
-Client id - Copy this id from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
- ```
- static let clientId = "<client-id>"
- ```
-
-Client secret - copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
- ```
-static let clientSecret = "<client-secret>"
- ```
-
-User identity - this should represent the subject for JWT token that could be an email or phone number in case of known user. In case of anonymous user, this can be a randomly generated unique id.
- ```
-static let identity = "<user@example.com>"
- ```
-
-Bot name - copy this value from Bot Builder -> Channels -> Web/Mobile SDK config  ex. "Demo Bot"
- ```
-static let chatBotName = "<bot-name>"
- ```
-
-Bot Id - copy this value from Bot Builder -> Channels -> Web/Mobile SDK config  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
- ```
-static let botId = "<bot-id>"
- ```
-
-WIDGET_SERVER URL- replace it with your server URL, if required
- ```
-static let WIDGET_SERVER = "https://bots.kore.ai";
- ```
-
-
-JWT_SERVER URL - specify the server URL for JWT token generation. This token is used to authorize the SDK client. Refer to documentation on how to setup the JWT server for token generation - e.g. https://jwt-token-server.example.com/
- ```
-static let JWT_SERVER = "<jwt-token-server-url>";
-```
-
 ## Running the Demo app
 #### a. Using Cocoa Pods
     * Download or clone the repository.
@@ -71,148 +30,88 @@ static let JWT_SERVER = "<jwt-token-server-url>";
     * Open Examples/CocoapodsDemo/KoreBotSDKDemo.xcworkspace in Xcode.
     * Run the KoreBotSDKDemo.app in xcode
 
+#### b. Using Carthage
+    * Download or clone the repository.
+    * Run "carthage update --platform iOS" in the Examples/CarthageDemo project folder.
+    * Open Examples/CarthageDemo/KoreBotSDKDemo.xcodeproj in Xcode.
+    * Run the KoreBotSDKDemo.app in Xcode
 
 ## Integrating into your app
-#### 1. Setup WidgetSDK
+#### 1. Setup KoreBotSDK
 ###### a. Using CocoaPods
     Add the following to your Podfile:
-    pod 'WidgetSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git’, :branch => 'WidgetSDK'
+    pod 'KoreBotSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git’, :branch => 'KoreLibrary'
     
     Run pod install in your project folder.
+###### b. Using Carthage
+    Add the following to your Cartfile:
+    github "Koredotcom/iOS-kore-sdk" "master"
     
-#### 2. Initializing the Widget SDK in your Viewcontroller
-    import WidgetSDK
+    Run "carthage update --platform iOS" in your project folder.
     
-    var panelCollectionViewContainerView: UIView!
-    public var sheetController: KABottomSheetController?
-    var insets: UIEdgeInsets = .zero
-    public var maxPanelHeight: CGFloat {
-        var maxHeight = UIScreen.main.bounds.height
-        let statusBarHeight = UIApplication.shared.statusBarFrame.height
-        let delta: CGFloat = 15.0
-        maxHeight -= statusBarHeight
-        maxHeight -= delta
-        return maxHeight
-    }
-    public var panelHeight: CGFloat {
-        var maxHeight = maxPanelHeight
-        maxHeight -= panelCollectionViewContainerView.bounds.height - insets.bottom - insets.top + 25.0
-        return maxHeight
-    }
-    let widgetConnect = WidgetConnect()
-    var widegtView: WidegtView!
-
-#### 3. Add WidgetSDKDelegate 
-
-    extension ViewController: WidgetViewDelegate{
-    func configureWidgetView(){
-        panelCollectionViewContainerView = UIView()
-        panelCollectionViewContainerView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(panelCollectionViewContainerView)
-        panelCollectionViewContainerView.backgroundColor = .lightGray
-        NSLayoutConstraint.activate([
-            panelCollectionViewContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            panelCollectionViewContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            panelCollectionViewContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            panelCollectionViewContainerView.heightAnchor.constraint(equalToConstant: 55.0)
-        ])
-        self.widegtView = WidegtView()
-        self.widegtView.translatesAutoresizingMaskIntoConstraints = false
-        self.widegtView.viewDelegate = self
-        self.panelCollectionViewContainerView.addSubview(self.widegtView)
-        self.panelCollectionViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[widegtView]|", options:[], metrics:nil, views:["widegtView" : widegtView!]))
-        self.panelCollectionViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[widegtView]|", options:[], metrics:nil, views:["widegtView" : widegtView!]))
-    }
-    public func didselectWidegtView(item: WidgetSDK.KREPanelItem?){
-        let weakSelf = self
-        switch item?.type {
-        case "action":
-            processActionPanelItem(item)
-        default:
-            if #available(iOS 11.0, *) {
-                self.insets = UIApplication.shared.delegate?.window??.safeAreaInsets ?? .zero
-            }
-            let keyWindow = UIApplication.shared.connectedScenes
-                .filter({$0.activationState == .foregroundActive})
-                .compactMap({$0 as? UIWindowScene})
-                .first?.windows
-                .filter({$0.isKeyWindow}).first
-            let safeAreaBottom =  CGFloat(keyWindow?.safeAreaInsets.bottom ?? 0.0)
-            var inputViewHeight = safeAreaBottom
-            inputViewHeight = inputViewHeight + (self.insets.bottom) + (self.panelCollectionViewContainerView.bounds.height)
-            let sizes: [SheetSize] = [.fixed(0.0), .fixed(weakSelf.panelHeight)]
-            if weakSelf.sheetController == nil {
-                let panelItemViewController = KAPanelItemViewController()
-                panelItemViewController.panelId = item?.id
-                panelItemViewController.dismissAction = { [weak self] in
-                    self?.sheetController = nil
-                }
-                self.view.endEditing(true)
-                
-                let bottomSheetController = KABottomSheetController(controller: panelItemViewController, sizes: sizes)
-                bottomSheetController.inputViewHeight = CGFloat(inputViewHeight)
-                bottomSheetController.willSheetSizeChange = { [weak self] (controller, newSize) in
-                    switch newSize {
-                    case .fixed(weakSelf.panelHeight):
-                        controller.overlayColor = .clear
-                        panelItemViewController.showPanelHeader(true)
-                    default:
-                        controller.overlayColor = .clear
-                        panelItemViewController.showPanelHeader(false)
-                        bottomSheetController.closeSheet(true)
-                        
-                        self?.sheetController = nil
-                    }
-                }
-                bottomSheetController.modalPresentationStyle = .overCurrentContext
-                weakSelf.present(bottomSheetController, animated: true, completion: nil)
-                weakSelf.sheetController = bottomSheetController
-            } else if let bottomSheetController = weakSelf.sheetController,
-                      let panelItemViewController = bottomSheetController.childViewController as? KAPanelItemViewController {
-                panelItemViewController.panelId = item?.id
-                
-                if bottomSheetController.presentingViewController == nil {
-                    weakSelf.present(bottomSheetController, animated: true, completion: nil)
-                } else {
-                    
-                }
-            }
-        }
-    }
-    func processActionPanelItem(_ item: KREPanelItem?) {
-        if let uriString = item?.action?.uri, let url = URL(string: uriString + "?teamId=59196d5a0dd8e3a07ff6362b") {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        }
-    }
-}
-
-#### 4. Configuration changes in your Viewcontroller
-
-        WidgetSDKConfiguration.widgetConfig.clientId =  "<client-id>"
-        WidgetSDKConfiguration.widgetConfig.clientSecret = "<client-secret>"
-        WidgetSDKConfiguration.widgetConfig.botId = "<bot-id>"
-        WidgetSDKConfiguration.widgetConfig.chatBotName = "<bot-name>"
-        WidgetSDKConfiguration.widgetConfig.identity = "<identity-email> or <random-id>"
-        WidgetSDKConfiguration.widgetConfig.isAnonymous = true
-        WidgetSDKConfiguration.serverConfig.JWT_SERVER = "http://<jwt-server-host>/"
-        WidgetSDKConfiguration.serverConfig.WIDGET_SERVER = "https://bots.kore.ai"
-
-#### 4. Connect with WidgetSDK
-
-    widgetConnect.show(WidgetSDKConfiguration.widgetConfig.clientId) { statusStr in
-            self.configureWidgetView()
-        } failure: { error in
-            print(error)
-            let title = "Widget SDK Demo"
-            let message = "YOU MUST SET WIDGET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation."
-            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(defaultAction)
-            self.present(alertController, animated: true, completion: nil)
-        }
-
-#### 
+#### 2. Initializing the Bot client
+    import KoreBotSDK
     
+    let botInfo: [String: Any] = ["chatBot": "<bot-name>", "taskBotId": "<bot-id>"]
+    let botClient: BotClient = BotClient()
+    botClient.initialize(botInfoParameters: botInfo, customData: [:])
+    
+    //Setting the server Url
+    let botServerUrl: String = "https://bots.kore.ai"
+    botClient.setKoreBotServerUrl(url: botServerUrl)
+
+#### 3. JWT generation
+    a. You need to have secure token service hosted in your environment which returns the JWT token.
+    b. Generate JWT in your enviornment.
+To integrate jwt signing in code refer to KoreBotSDKDemo App. - https://github.com/Koredotcom/iOS-kore-sdk/blob/master/Examples/Shared/Controllers/AppLaunch/AppLaunchViewController.swift
+
+NOTE: Please refer about JWT signing and verification at - https://developer.kore.com/docs/bots/kore-web-sdk/
+
+#### 4. Connect with JWT
+    self.botClient.connectWithJwToken(jwtToken, intermediary: { [weak self] (client) in
+            self?.botClient.connect(isReconnect: false)
+        }, success: { (client) in
+            print("\(String(describing: client))")
+        }, failure: { (error) in
+            print("\(String(describing: error))")
+        })
+
+#### 5. Send message
+    self.botClient.sendMessage("hello", options: [:])
+    
+#### 6. Listen to events
+    self.botClient.onMessage = {  (object) in
+        print("botResponse: \(object ?? [:])")
+    }
+    self.botClient.onMessageAck = { (ack) in
+        //"ack" type as "Ack"
+    }
+    self.botClient.connectionDidClose = { (code, reason) in
+        //"code" type as "Int", "reason" type as "String"
+    }
+    self.botClient.connectionDidFailWithError = { (error) in
+        //"error" type as "NSError"
+    }
+    
+#### 7. Subscribe to push notifications
+    self.botClient.subscribeToNotifications(deviceToken, success: { (staus) in
+        // do something
+    }, failure: { (error) in
+    })
+    
+#### 8. Unsubscribe to push notifications
+    self.botClient.unsubscribeToNotifications(deviceToken, success: { (staus) in
+        // do something
+    }, failure: { (error) in
+    })
+
+#### 9. getHistory - fetches all the history that the bot has previously based on last messageId whenever the bot is reconnected.
+    self.botClient.getHistory(offset: 0, success: { (responseObj) in
+        // do something
+    }, failure: { (error) in
+    })
+    
+
 License
 ----
 Copyright © Kore, Inc. MIT License; see LICENSE for further details.

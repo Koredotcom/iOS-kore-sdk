@@ -7,6 +7,6 @@ target 'KoreBotSDKDemo' do
     platform :ios, '11.0'
 
     use_frameworks!
-    pod 'WidgetSDK', :path => '../../'
+    pod 'KoreBotSDK', :path => '../../'
     project 'KoreBotSDKDemo.xcodeproj'
 end

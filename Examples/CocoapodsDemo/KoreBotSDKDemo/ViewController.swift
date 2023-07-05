@@ -1,129 +1,72 @@
 //
 //  ViewController.swift
-//  WidgetDemoSDk
+//  KoreBotSDKDemo
 //
-//  Created by Kartheek Pagidimarri on 27/06/23.
+//  Created by Kartheek Pagidimarri on 08/06/23.
+//  Copyright © 2023 Kore. All rights reserved.
 //
 
 import UIKit
-import AVFoundation
-import WidgetSDK
+import KoreBotSDK
 
 class ViewController: UIViewController {
-    var panelCollectionViewContainerView: UIView!
-    public var sheetController: KABottomSheetController?
-    var insets: UIEdgeInsets = .zero
-    public var maxPanelHeight: CGFloat {
-        var maxHeight = UIScreen.main.bounds.height
-        let statusBarHeight = UIApplication.shared.statusBarFrame.height
-        let delta: CGFloat = 15.0
-        maxHeight -= statusBarHeight
-        maxHeight -= delta
-        return maxHeight
-    }
     
-    let widgetPanelTopSpace = UIApplication.shared.windows[0].safeAreaInsets.top
-    public var panelHeight: CGFloat {
-        var maxHeight = maxPanelHeight
-        maxHeight -= panelCollectionViewContainerView.bounds.height - insets.bottom + widgetPanelTopSpace
-        return maxHeight
-    }
+    let botClient: BotClient = BotClient()
     
-    let widgetConnect = WidgetConnect()
-    var widegtView: WidegtView!
-    
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
+
         // Do any additional setup after loading the view.
+        let botInfo: [String: Any] = ["chatBot": "<bot-name>", "taskBotId": "<bot-id>"]
         
-        widgetConnect.show(WidgetSDKConfiguration.widgetConfig.clientId) { statusStr in
-            self.configureWidgetView()
-        } failure: { error in
-            print(error)
-            let title = "Widget SDK Demo"
-            let message = "YOU MUST SET WIDGET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation."
-            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(defaultAction)
-            self.present(alertController, animated: true, completion: nil)
-        }
+        botClient.initialize(botInfoParameters: botInfo, customData: [:])
+        //Setting the server Url
+        let botServerUrl: String = "https://bots.kore.ai"
+        botClient.setKoreBotServerUrl(url: botServerUrl)
+        
+        let jwtToken = "<jwt-token>"
+        self.botClient.connectWithJwToken(jwtToken, intermediary: { [weak self] (client) in
+            self?.botClient.connect(isReconnect: false)
+        }, success: { (client) in
+            print("\(String(describing: client))")
+        }, failure: { (error) in
+            print("\(String(describing: error))")
+        })
+        
+        configureBotClient()
     }
     
-}
-extension ViewController: WidgetViewDelegate{
-    func configureWidgetView(){
-        panelCollectionViewContainerView = UIView()
-        panelCollectionViewContainerView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(panelCollectionViewContainerView)
-        panelCollectionViewContainerView.backgroundColor = .lightGray
+    func configureBotClient() {
         
-        NSLayoutConstraint.activate([
-            panelCollectionViewContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            panelCollectionViewContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            panelCollectionViewContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            panelCollectionViewContainerView.heightAnchor.constraint(equalToConstant: 55.0)
-        ])
-        
-        self.widegtView = WidegtView()
-        self.widegtView.translatesAutoresizingMaskIntoConstraints = false
-        self.widegtView.viewDelegate = self
-        self.panelCollectionViewContainerView.addSubview(self.widegtView)
-        self.panelCollectionViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[widegtView]|", options:[], metrics:nil, views:["widegtView" : widegtView!]))
-        self.panelCollectionViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[widegtView]|", options:[], metrics:nil, views:["widegtView" : widegtView!]))
-    }
-    public func didselectWidegtView(item: WidgetSDK.KREPanelItem?){
-        let weakSelf = self
-        switch item?.type {
-        case "action":
-            processActionPanelItem(item)
-        default:
-            if #available(iOS 11.0, *) {
-                self.insets = UIApplication.shared.delegate?.window??.safeAreaInsets ?? .zero
-            }
-            var inputViewHeight = 0.0
-            inputViewHeight = inputViewHeight + (self.insets.bottom) + (self.panelCollectionViewContainerView.bounds.height)
-            let sizes: [SheetSize] = [.fixed(0.0), .fixed(weakSelf.panelHeight)]
-            if weakSelf.sheetController == nil {
-                let panelItemViewController = KAPanelItemViewController()
-                panelItemViewController.panelId = item?.id
-                panelItemViewController.dismissAction = { [weak self] in
-                    self?.sheetController = nil
-                }
-                self.view.endEditing(true)
-                
-                let bottomSheetController = KABottomSheetController(controller: panelItemViewController, sizes: sizes)
-                bottomSheetController.inputViewHeight = CGFloat(inputViewHeight)
-                bottomSheetController.willSheetSizeChange = { [weak self] (controller, newSize) in
-                    switch newSize {
-                    case .fixed(weakSelf.panelHeight):
-                        controller.overlayColor = .clear
-                        panelItemViewController.showPanelHeader(true)
-                    default:
-                        controller.overlayColor = .clear
-                        panelItemViewController.showPanelHeader(false)
-                        bottomSheetController.closeSheet(true)
-                        
-                        self?.sheetController = nil
-                    }
-                }
-                bottomSheetController.modalPresentationStyle = .overCurrentContext
-                weakSelf.present(bottomSheetController, animated: true, completion: nil)
-                weakSelf.sheetController = bottomSheetController
-            } else if let bottomSheetController = weakSelf.sheetController,
-                      let panelItemViewController = bottomSheetController.childViewController as? KAPanelItemViewController {
-                panelItemViewController.panelId = item?.id
-                
-                if bottomSheetController.presentingViewController == nil {
-                    weakSelf.present(bottomSheetController, animated: true, completion: nil)
-                } else {
-                    
-                }
-            }
+        self.botClient.onMessage = { (object) in
+            print("botResponse: \(object ?? [:])")
+        }
+        self.botClient.onMessageAck = { (ack) in
+            //"ack" type as "Ack"
+        }
+        self.botClient.connectionDidClose = { (code, reason) in
+            //"code" type as "Int", "reason" type as "String"
+            print("Close \(String(describing: reason))")
+        }
+        self.botClient.connectionDidFailWithError = { (error) in
+            //"error" type as "NSError"
+            print("error \(String(describing: error))")
         }
     }
-    func processActionPanelItem(_ item: KREPanelItem?) {
-        if let uriString = item?.action?.uri, let url = URL(string: uriString + "?teamId=59196d5a0dd8e3a07ff6362b") {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        }
+
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
     }
+    */
+    
+    @IBAction func connectBtn(_ sender: Any) {
+        self.botClient.sendMessage("hello", options: [:])
+    }
+    
 }
