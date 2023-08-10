@@ -126,6 +126,15 @@ class BubbleView: UIView {
         case .custom_table:
             bubbleView = CustomTableBubbleView()
             break
+        case .advancedListTemplate:
+            bubbleView = AdvanceListBubbleView()
+            break
+        case .cardTemplate:
+            bubbleView = CardTemplateBubbleView()
+            break
+        case .linkDownload:
+             bubbleView = PDFBubbleView()
+             break
         }
         bubbleView.bubbleType = bubbleType
         

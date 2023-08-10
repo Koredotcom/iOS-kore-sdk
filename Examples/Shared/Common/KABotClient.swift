@@ -212,6 +212,7 @@ open class KABotClient: NSObject {
         }
         
         botClient.onMessage = { [weak self] (object) in
+            history = false
             let message = self?.onReceiveMessage(object: object)
             self?.addMessages(message?.0, message?.1)
         }
@@ -324,6 +325,12 @@ open class KABotClient: NSObject {
         }else if (templateType == "custom_table")
         {
             return .custom_table
+        }else if (templateType == "advancedListTemplate"){
+            return .advancedListTemplate
+        }else if (templateType == "cardTemplate"){
+            return .cardTemplate
+        }else if (templateType == "cardTemplate"){
+            return .cardTemplate
         }
         return .text
     }
@@ -354,6 +361,20 @@ open class KABotClient: NSObject {
             message.iconUrl = botHistoryIcon
         }
         
+        if !history{
+            if SDKConfiguration.botConfig.enableAckDelivery{
+                let key = object?.botkey
+                let timeStamp = object?.timestamp
+                let ackDic:[String: Any] = [
+                    "clientMessageId": timeStamp as Any,
+                    "type": "ack",
+                    "replyto": timeStamp as Any,
+                    "status": "delivered",
+                    "key": key as Any,
+                    "id": timeStamp as Any]
+                botClient.sendACK(ackDic: ackDic)
+            }
+        }
         guard let messages = object?.messages, messages.count > 0 else {
             return (nil, ttsBody)
         }
@@ -452,6 +473,14 @@ open class KABotClient: NSObject {
                     case "audio":
                         if let dictionary = payload["payload"] as? [String: Any] {
                             let  componentType = Component(.audio)
+                            let optionsComponent: Component = componentType
+                            optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                            message.sentDate = object?.createdOn
+                            message.addComponent(optionsComponent)
+                        }
+                    case "link":
+                        if let dictionary = payload["payload"] as? [String: Any] {
+                            let  componentType = Component(.linkDownload)
                             let optionsComponent: Component = componentType
                             optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                             message.sentDate = object?.createdOn
@@ -689,9 +718,11 @@ open class KABotClient: NSObject {
     
     // MARK: - insert or update messages
     func insertOrUpdateHistoryMessages(_ messages: Array<[String: Any]>) {
+        history = true
 //        guard let models = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages], let botMessages = models, botMessages.count > 0 else {
 //            return
 //        }
+        
         let models = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages]
         guard  let botMessages = models, botMessages.count > 0 else{
             return

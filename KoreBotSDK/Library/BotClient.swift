@@ -263,6 +263,34 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         }
     }
     
+    open func sendACK(ackDic: [String: Any]?) {
+        guard let connection = connection else {
+            NSLog("WebSocket connection not available")
+            return
+        }
+        guard let readyState = connection.websocket?.readyState else {
+            NSLog("WebSocket connection not available")
+            return
+        }
+        
+        switch readyState {
+        case .OPEN:
+            var parameters = customData ?? [:]
+            if let botToken = authInfoModel?.accessToken {
+                parameters["botToken"] = botToken
+            }
+            //dictionary?.forEach { (key, value) in parameters[key] = value }
+            connection.sendACK(ackDic: ackDic)
+            break
+        case .CLOSED:
+            break
+        case .CLOSING:
+            break
+        case .CONNECTING:
+            break
+        }
+    }
+    
     // MARK: subscribe/unsubscribe to push notifications
     open func subscribeToNotifications(_ deviceToken: Data!, success:((Bool) -> Void)?, failure:((NSError) -> Void)?) {
         let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager

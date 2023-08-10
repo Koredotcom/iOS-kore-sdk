@@ -297,7 +297,7 @@ class CustomTableBubbleView: BubbleView, UICollectionViewDataSource, UICollectio
                     let btnActions = self.data.btnActions
                     let btnAction = btnActions[sec]
                     let action = btnAction[indexPath.row]
-                    print("\(action)")
+                    
                     if action["type"] as? String == "web_url"{
                         cell.textLabel.attributedText = NSAttributedString(string: row[indexPath.row], attributes:
                                                                             [.underlineStyle: NSUnderlineStyle.single.rawValue])
@@ -377,9 +377,9 @@ class CustomTableBubbleView: BubbleView, UICollectionViewDataSource, UICollectio
                     let btnActions = self.data.btnActions
                     let btnAction = btnActions[sec]
                     let action = btnAction[indexPath.row]
-                    print("\(action)")
+                   
                     if action["type"] as? String == "web_url"{
-                        print("\(action["url"] ?? "")")
+                       
                         self.linkAction(action["url"] as? String)
                     }else if action["type"] as? String == "postback"{
                         self.optionsAction(row[indexPath.row] ,action["payload"] as? String)
