@@ -352,7 +352,6 @@ class AdvanceListBubbleView: BubbleView {
     */
     
     @objc fileprivate func headerOptionsBtnAction(_ sender: UIButton!) {
-        print("heloo\(sender.tag)")
         let elementDetails = arrayOfElements[sender.tag]
         if let headerOptions = elementDetails.headerOptions, headerOptions.count > 0{
             let options = headerOptions[0]
@@ -903,15 +902,11 @@ extension AdvanceListBubbleView: UITableViewDelegate, UITableViewDataSource{
     }
     
     @objc fileprivate func headerDropDownBtnAction(_ sender: UIButton!) {
-        print(sender.tag)
         if isCollapsedArray[sender.tag] == "Expand"{
-            //isCollapsedArray.replaceObject(at: sender.tag, with: "Collapse")
             isCollapsedArray[sender.tag] = "Collapse"
         }else if isCollapsedArray[sender.tag] == "Collapse"{
-            //isCollapsedArray.replaceObject(at: sender.tag, with: "Expand")
             isCollapsedArray[sender.tag] = "Expand"
         }
-        //tableView.reloadData()
         NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
     }
 }
@@ -1068,10 +1063,10 @@ extension AdvanceListBubbleView: UICollectionViewDelegate, UICollectionViewDataS
                         guard let window = UIApplication.shared.keyWindow else { return }
 
                     let touchedLocationInWindow = collectionView.convert(cell.center, to: window)
-                    print("TomerBu's version: \(touchedLocationInWindow.y)")
+                    
                     let cellRectt = layoutAttributes.frame
                     let cellFrameInSupervieww = collectionView.convert(cellRectt, to: collectionView.superview)
-                    print("cellFrameInSuperview: \(cellFrameInSupervieww.origin.y)")
+                    
                     setupDropDown(with: buttons, dropDownPosition: Float(touchedLocationInWindow.y - cellFrameInSupervieww.origin.y), dropDownXPosition: 0.0)
                     colorDropDown.show()
                 }else{

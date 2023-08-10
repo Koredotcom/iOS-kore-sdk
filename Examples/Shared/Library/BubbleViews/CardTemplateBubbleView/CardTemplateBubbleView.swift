@@ -174,7 +174,7 @@ class CardTemplateBubbleView: BubbleView {
     */
     
     @objc fileprivate func headerOptionsBtnAction(_ sender: UIButton!) {
-        print("heloo\(sender.tag)")
+        
     }
 
 }
