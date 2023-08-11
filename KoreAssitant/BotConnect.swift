@@ -49,17 +49,7 @@ open class BotConnect: NSObject {
         }
         filesUpload()
         
-        let clientIdForWidget: String = SDKConfiguration.widgetConfig.clientId
-        let clientSecretForWidget: String = SDKConfiguration.widgetConfig.clientSecret
-        let isAnonymousForWidget: Bool = SDKConfiguration.widgetConfig.isAnonymous
-        let chatBotNameForWidget: String = SDKConfiguration.widgetConfig.chatBotName
-        let botIdForWidget: String = SDKConfiguration.widgetConfig.botId
-        var identityForWidget: String! = nil
-        if (isAnonymousForWidget) {
-            identityForWidget = self.getUUID()
-        } else {
-            identityForWidget = SDKConfiguration.widgetConfig.identity
-        }
+        
         
         let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
         dataStoreManager.deleteThreadIfRequired(with: botId, completionBlock: { (success) in
@@ -70,27 +60,8 @@ open class BotConnect: NSObject {
             
             self.showLoader()
             kaBotClient.connect(block: { [weak self] (client, thread) in
-                
-                if !SDKConfiguration.widgetConfig.isPanelView {
-                    self?.navigateToChatViewController(client: client, thread: thread)
-                }else{
-                    if !clientIdForWidget.hasPrefix("<") && !clientSecretForWidget.hasPrefix("<") && !chatBotNameForWidget.hasPrefix("<") && !botIdForWidget.hasPrefix("<") && !identityForWidget.hasPrefix("<") {
-                        
-                        self?.getWidgetJwTokenWithClientId(clientIdForWidget, clientSecret: clientSecretForWidget, identity: identityForWidget, isAnonymous: isAnonymousForWidget, success: { [weak self] (jwToken) in
-                            
-                            self?.navigateToChatViewController(client: client, thread: thread)
-                            
-                        }, failure: { (error) in
-                            print(error)
-                            self!.stopLoader()
-                        })
-                        
-                    }else{
-                        self!.stopLoader()
-                        self!.showAlert(title: "Kore.ai", message: "YOU MUST SET WIDGET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
-                    }
-                }
-                
+                self?.navigateToChatViewController(client: client, thread: thread)
+    
             }) { (error) in
                 self.stopLoader()
                 self.showAlert(title: "Kore.ai", message: "Please try again")
@@ -99,7 +70,6 @@ open class BotConnect: NSObject {
         } else {
             self.stopLoader()
             self.showAlert(title: "Kore.ai", message: "YOU MUST SET BOT 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
-            
         }
     }
     
@@ -126,17 +96,17 @@ open class BotConnect: NSObject {
 //        let botViewController = ChatMessagesViewController(thread: thread)
 //        botViewController.botClient = client
 //        botViewController.title = SDKConfiguration.botConfig.chatBotName
-//        
-//        
+//
+//
 //        //Addition fade in animation
 //        let transition = CATransition()
 //        transition.duration = 0.5
 //        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
 //        transition.type = CATransitionType.fade
 //        self.navigationController?.view.layer.add(transition, forKey: nil)
-//        
+//
 //        self.navigationController?.pushViewController(botViewController, animated: false)
-//        
+//
         
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {
             return
@@ -231,7 +201,7 @@ open class BotConnect: NSObject {
             if (responseObject is NSDictionary) {
                 let dictionary: NSDictionary = responseObject as! NSDictionary
                 let jwToken: String = dictionary["jwt"] as! String
-                self.initializeWidgetManager(widgetJWTToken: jwToken)
+                //self.initializeWidgetManager(widgetJWTToken: jwToken)
                 success?(jwToken)
                 
             } else {
@@ -242,25 +212,6 @@ open class BotConnect: NSObject {
             failure?(error)
         }
         
-    }
-    
-    func initializeWidgetManager(widgetJWTToken: String) {
-        let widgetManager = KREWidgetManager.shared
-        let user = KREUser()
-        user.userId = SDKConfiguration.widgetConfig.botId //userId
-        user.accessToken = widgetJWTToken
-        user.server = "\(SDKConfiguration.serverConfig.WIDGET_SERVER)/"
-        user.tokenType = "bearer"
-        user.userEmail = SDKConfiguration.widgetConfig.identity
-        user.headers = ["X-KORA-Client": KoraAssistant.shared.applicationHeader]
-        widgetManager.initialize(with: user)
-        self.user = user
-        
-        widgetManager.sessionExpiredAction = { (error) in
-            DispatchQueue.main.async {
-                // NotificationCenter.default.post(name: NSNotification.Name(rawValue: KoraNotification.EnforcementNotification), object: ["type": KoraNotification.EnforcementType.userSessionDidBecomeInvalid])
-            }
-        }
     }
 }
 

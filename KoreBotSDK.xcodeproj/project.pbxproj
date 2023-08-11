@@ -1043,7 +1043,7 @@
 				D1200F231CC9F721009BBB1A /* KoreBotSDKTests */,
 				D1200F161CC9F721009BBB1A /* Products */,
 				9527C8812A370A1700178277 /* KoreAssitant */,
-				D1F337892201CD25005BE5F1 /* Widgets */,
+				D1F337892201CD25005BE5F1 /* KreFiles */,
 				D1F338542201D666005BE5F1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -1126,7 +1126,7 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		D1F337892201CD25005BE5F1 /* Widgets */ = {
+		D1F337892201CD25005BE5F1 /* KreFiles */ = {
 			isa = PBXGroup;
 			children = (
 				D1F3378A2201CD25005BE5F1 /* Options */,
@@ -1135,7 +1135,7 @@
 				D1F337982201CD25005BE5F1 /* Carousel */,
 				D1F3379B2201CD25005BE5F1 /* GrowingTextView */,
 			);
-			path = Widgets;
+			path = KreFiles;
 			sourceTree = "<group>";
 		};
 		D1F3378A2201CD25005BE5F1 /* Options */ = {

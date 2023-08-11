@@ -25,22 +25,19 @@ Pod::Spec.new do |s|
 
     s.subspec 'UIKit' do |ss|
         ss.ios.deployment_target = '10.0'
-        ss.source_files = ['Widgets/**/*.{h,m,txt,swift,xib}','KoreAssitant/**/*.{h,m,txt,swift,xib}']
+        ss.source_files = ['KreFiles/**/*.{h,m,txt,swift,xib}','KoreAssitant/**/*.{h,m,txt,swift,xib}']
         ss.resource_bundles = {
-            'Templates' => ['Widgets/**/*.xib'],
-            'Widgets' => ['Widgets/Widgets/**/**/*.xib'],
-            'Lato' => ['Widgets/Resources/Fonts/Lato/*.ttf'],
-            'BebasNeue' => ['Widgets/Resources/Fonts/BebasNeue/*.ttf'],
-            'Symbols' => ['Widgets/Resources/Fonts/AppSymbols/*.ttf'],
+            'Template' => ['KreFiles/**/*.xib'],
+            'KreFiles' => ['KreFiles/Widgets/**/**/*.xib']
         }
-        ss.resources = ['KoreAssitant/**/*.{xcdatamodeld}', 'Widgets/Resources/*.{xcassets}']
+        ss.resources = ['KoreAssitant/**/*.{xcdatamodeld}', 'KreFiles/Resources/*.{xcassets}']
         ss.dependency 'AFNetworking', '4.0.1'
         ss.dependency 'GhostTypewriter'
         ss.dependency 'MarkdownKit'
         ss.dependency 'Charts', '~> 3.2.2'
     ss.dependency 'AssetsPickerViewController'
     ss.dependency 'SwiftUTI'
-    ss.dependency 'emojione-ios'
+    #ss.dependency 'emojione-ios'
     ss.ios.frameworks = 'SystemConfiguration'
     end
 end
