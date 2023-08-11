@@ -221,6 +221,7 @@ class ComposeBarView: UIView {
         let hasText = self.growingTextView.textView.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).count > 0
         self.sendButton.isEnabled = hasText
         if self.isKeyboardEnabled {
+            self.attachmentButton.isHidden = false
             if attachmentKeybord{
                 self.sendButton.isHidden = false
                 self.sendButton.isEnabled = true
@@ -234,6 +235,7 @@ class ComposeBarView: UIView {
             self.sendButton.isHidden = true
             self.speechToTextButton.isHidden = true
             self.menuButton.isHidden = true
+            self.attachmentButton.isHidden = true
         }
     }
     

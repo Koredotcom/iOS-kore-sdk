@@ -70,11 +70,6 @@
 		CD05640125247F1900E75768 /* FeedbackBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0563F325247F1900E75768 /* FeedbackBubbleView.swift */; };
 		CD05640225247F1900E75768 /* FeedbackSliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0563F425247F1900E75768 /* FeedbackSliderViewController.swift */; };
 		CD05640325247F1900E75768 /* FeedbackCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD0563F525247F1900E75768 /* FeedbackCell.xib */; };
-		CD05640425247F1900E75768 /* ratingselect_4.gif in Resources */ = {isa = PBXBuildFile; fileRef = CD0563F725247F1900E75768 /* ratingselect_4.gif */; };
-		CD05640525247F1900E75768 /* ratingselect_5.gif in Resources */ = {isa = PBXBuildFile; fileRef = CD0563F825247F1900E75768 /* ratingselect_5.gif */; };
-		CD05640625247F1900E75768 /* ratingselect_1.gif in Resources */ = {isa = PBXBuildFile; fileRef = CD0563F925247F1900E75768 /* ratingselect_1.gif */; };
-		CD05640725247F1900E75768 /* ratingselect_2.gif in Resources */ = {isa = PBXBuildFile; fileRef = CD0563FA25247F1900E75768 /* ratingselect_2.gif */; };
-		CD05640825247F1900E75768 /* ratingselect_3.gif in Resources */ = {isa = PBXBuildFile; fileRef = CD0563FB25247F1900E75768 /* ratingselect_3.gif */; };
 		CD05640925247F1900E75768 /* iOSDevCenters+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0563FC25247F1900E75768 /* iOSDevCenters+GIF.swift */; };
 		CD05640A25247F1900E75768 /* FeedbackSliderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD0563FD25247F1900E75768 /* FeedbackSliderViewController.xib */; };
 		CD05640B25247F1900E75768 /* FeedbackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0563FE25247F1900E75768 /* FeedbackCell.swift */; };
@@ -264,11 +259,6 @@
 		CD0563F325247F1900E75768 /* FeedbackBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackBubbleView.swift; sourceTree = "<group>"; };
 		CD0563F425247F1900E75768 /* FeedbackSliderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackSliderViewController.swift; sourceTree = "<group>"; };
 		CD0563F525247F1900E75768 /* FeedbackCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedbackCell.xib; sourceTree = "<group>"; };
-		CD0563F725247F1900E75768 /* ratingselect_4.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_4.gif; sourceTree = "<group>"; };
-		CD0563F825247F1900E75768 /* ratingselect_5.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_5.gif; sourceTree = "<group>"; };
-		CD0563F925247F1900E75768 /* ratingselect_1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_1.gif; sourceTree = "<group>"; };
-		CD0563FA25247F1900E75768 /* ratingselect_2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_2.gif; sourceTree = "<group>"; };
-		CD0563FB25247F1900E75768 /* ratingselect_3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_3.gif; sourceTree = "<group>"; };
 		CD0563FC25247F1900E75768 /* iOSDevCenters+GIF.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "iOSDevCenters+GIF.swift"; sourceTree = "<group>"; };
 		CD0563FD25247F1900E75768 /* FeedbackSliderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedbackSliderViewController.xib; sourceTree = "<group>"; };
 		CD0563FE25247F1900E75768 /* FeedbackCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackCell.swift; sourceTree = "<group>"; };
@@ -594,11 +584,6 @@
 		CD0563F625247F1900E75768 /* gifs */ = {
 			isa = PBXGroup;
 			children = (
-				CD0563F725247F1900E75768 /* ratingselect_4.gif */,
-				CD0563F825247F1900E75768 /* ratingselect_5.gif */,
-				CD0563F925247F1900E75768 /* ratingselect_1.gif */,
-				CD0563FA25247F1900E75768 /* ratingselect_2.gif */,
-				CD0563FB25247F1900E75768 /* ratingselect_3.gif */,
 			);
 			path = gifs;
 			sourceTree = "<group>";
@@ -1213,12 +1198,10 @@
 				9504E8AF2A84F47900862E98 /* PdfDownloadCell.xib in Resources */,
 				CD4BFFFC24D160CA008E08CE /* NotificationCustomView.xib in Resources */,
 				9504E8A62A84F46500862E98 /* CardTemplateCell.xib in Resources */,
-				CD05640725247F1900E75768 /* ratingselect_2.gif in Resources */,
 				9504E88F2A84F45100862E98 /* AdvancedTextCell.xib in Resources */,
 				CD05640325247F1900E75768 /* FeedbackCell.xib in Resources */,
 				95A5F8E32785B35F00F7BEEE /* CustomTableViewCell.xib in Resources */,
 				9504E8912A84F45100862E98 /* AdvancedListHeaderView.xib in Resources */,
-				CD05640625247F1900E75768 /* ratingselect_1.gif in Resources */,
 				950AF58A2696C6AC003B4D58 /* AudioBubbleView.xib in Resources */,
 				D101F92A24E163F800D47DB8 /* ChatMessagesViewController.xib in Resources */,
 				D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */,
@@ -1235,10 +1218,8 @@
 				9504E89E2A84F46500862E98 /* CardTemplateCollectionVCell.xib in Resources */,
 				CD89236924C55BAC006F71DE /* CalenderViewController.xib in Resources */,
 				D1F338FB2201D99A005BE5F1 /* KRETypingCollectionViewCell.xib in Resources */,
-				CD05640425247F1900E75768 /* ratingselect_4.gif in Resources */,
 				D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */,
 				9504E8752A84F43400862E98 /* ButtonLinkCell.xib in Resources */,
-				CD05640525247F1900E75768 /* ratingselect_5.gif in Resources */,
 				CDB86A0A24C00CD000D1CCC7 /* TaskMenu.json in Resources */,
 				9504E8922A84F45100862E98 /* AdvanceListGridCell.xib in Resources */,
 				CD63DA4C24EAB9A700DCCCCE /* MultiSelectCell.xib in Resources */,
@@ -1252,7 +1233,6 @@
 				CD842D4524EFBD980053710B /* DropDownCell.xib in Resources */,
 				D1F338EC2201D99A005BE5F1 /* CustomCollectionViewCell.xib in Resources */,
 				9504E8B02A84F47900862E98 /* PdfShowViewController.xib in Resources */,
-				CD05640825247F1900E75768 /* ratingselect_3.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
