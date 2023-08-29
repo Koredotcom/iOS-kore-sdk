@@ -1268,7 +1268,7 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/AssetsPickerViewController/AssetsPickerViewController.framework",
-				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${BUILT_PRODUCTS_DIR}/DGCharts/DGCharts.framework",
 				"${BUILT_PRODUCTS_DIR}/GhostTypewriter/GhostTypewriter.framework",
 				"${BUILT_PRODUCTS_DIR}/KoreBotSDK/KoreBotSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/MarkdownKit/MarkdownKit.framework",
@@ -1283,7 +1283,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AssetsPickerViewController.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DGCharts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GhostTypewriter.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KoreBotSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarkdownKit.framework",
@@ -1585,7 +1585,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = TUE6KHKZ4Z;
 				INFOPLIST_FILE = KoreBotSDKDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.rtc;
@@ -1610,7 +1610,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = TUE6KHKZ4Z;
 				INFOPLIST_FILE = KoreBotSDKDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.rtc;

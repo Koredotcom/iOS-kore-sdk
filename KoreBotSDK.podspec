@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
     s.swift_version = '4.2'
 
     s.subspec 'Library' do |ss|
-        ss.ios.deployment_target = '10.0'
+        ss.ios.deployment_target = '12.0'
         ss.source_files = 'KoreBotSDK/**/*.{h,m,swift}'
         
         ss.dependency 'Starscream'
@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
     end
 
     s.subspec 'UIKit' do |ss|
-        ss.ios.deployment_target = '10.0'
+        ss.ios.deployment_target = '12.0'
         ss.source_files = 'Widgets/**/*.{h,m,txt,swift,xib}'
         ss.resource_bundles = {
             'Templates' => ['Widgets/**/*.xib'],
@@ -38,7 +38,8 @@ Pod::Spec.new do |s|
         ss.dependency 'AlamofireImage'
         ss.dependency 'GhostTypewriter'
         ss.dependency 'MarkdownKit'
-        ss.dependency 'Charts', '~> 3.2.2'
+        #ss.dependency 'Charts', '~> 3.2.2'
+        ss.dependency 'DGCharts'
         ss.dependency 'ObjectMapper'
 	ss.dependency 'AssetsPickerViewController'
 	ss.dependency 'SwiftUTI'
