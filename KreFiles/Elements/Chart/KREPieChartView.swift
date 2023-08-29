@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Charts
+import DGCharts
 
 public class KREPieChartView: UIView {
     // MARK: - properties
@@ -58,7 +58,7 @@ public class KREPieChartView: UIView {
             legend.font = UIFont.textFont(ofSize: 14.0, weight: .medium)
             legend.form = .circle
             
-            pieChartView.chartDescription?.enabled = false
+            pieChartView.chartDescription.enabled = false
             pieChartView.drawHoleEnabled = false
             pieChartView.drawEntryLabelsEnabled = false
             pieChartView.extraRightOffset = 0.0
@@ -72,7 +72,7 @@ public class KREPieChartView: UIView {
             legend.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
             legend.font = UIFont.textFont(ofSize: 14.0, weight: .medium)
             
-            pieChartView.chartDescription?.enabled = false
+            pieChartView.chartDescription.enabled = false
             pieChartView.drawHoleEnabled = true
             pieChartView.drawEntryLabelsEnabled = false
             pieChartView.extraRightOffset = 0.0
@@ -88,7 +88,7 @@ public class KREPieChartView: UIView {
             legend.font = UIFont.textFont(ofSize: 14.0, weight: .medium)
             legend.form = .circle
             
-            pieChartView.chartDescription?.enabled = false
+            pieChartView.chartDescription.enabled = false
             pieChartView.drawHoleEnabled = true
             pieChartView.drawEntryLabelsEnabled = false
             pieChartView.extraRightOffset = 5.0
@@ -142,7 +142,7 @@ public class KREPieChartView: UIView {
             rightOffset = CGFloat.maximum(rightOffset, (title as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.textFont(ofSize: 14.0, weight: .medium)]).width)
         }
         
-        let pieChartDataSet = PieChartDataSet(values: values, label: "")
+        let pieChartDataSet = PieChartDataSet(entries: values, label: "")
         pieChartDataSet.colors = colorsPalet()
         pieChartDataSet.sliceSpace = 2.0
         
@@ -163,7 +163,7 @@ public class KREPieChartView: UIView {
             pieChartView.highlightValues(nil)
             pieChartView.animate(yAxisDuration: 1.4, easingOption: ChartEasingOption.easeInOutBack)
         case "donut":
-            pieChartDataSet.selectionShift = 7            
+            pieChartDataSet.selectionShift = 7
             let pieChartData = PieChartData(dataSet: pieChartDataSet)
             pieChartData.setValueFont(UIFont.textFont(ofSize: 12.0, weight: .medium))
             pieChartData.setValueTextColor(UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1))

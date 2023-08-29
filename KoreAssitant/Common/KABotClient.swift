@@ -323,6 +323,10 @@ open class KABotClient: NSObject {
         }else if (templateType == "custom_table")
         {
             return .custom_table
+        }else if (templateType == "advancedListTemplate"){
+            return .advancedListTemplate
+        }else if (templateType == "cardTemplate"){
+            return .cardTemplate
         }
         return .text
     }

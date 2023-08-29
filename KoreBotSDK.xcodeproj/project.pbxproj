@@ -7,6 +7,39 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9519B6192A9D97EB0045660C /* AdvanceListBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5FB2A9D97EB0045660C /* AdvanceListBubbleView.swift */; };
+		9519B61A2A9D97EB0045660C /* AdvancedListTempData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5FC2A9D97EB0045660C /* AdvancedListTempData.swift */; };
+		9519B61B2A9D97EB0045660C /* AdvancedListDefaultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B5FE2A9D97EB0045660C /* AdvancedListDefaultCell.xib */; };
+		9519B61C2A9D97EB0045660C /* AdvancedTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5FF2A9D97EB0045660C /* AdvancedTextCell.swift */; };
+		9519B61D2A9D97EB0045660C /* AdvancedListOptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B6002A9D97EB0045660C /* AdvancedListOptionsCell.swift */; };
+		9519B61E2A9D97EB0045660C /* AdvanceListGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B6012A9D97EB0045660C /* AdvanceListGridCell.xib */; };
+		9519B61F2A9D97EB0045660C /* AdvancedTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B6022A9D97EB0045660C /* AdvancedTextCell.xib */; };
+		9519B6202A9D97EB0045660C /* AdvanceListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B6032A9D97EB0045660C /* AdvanceListCollectionViewCell.xib */; };
+		9519B6212A9D97EB0045660C /* AdvanceListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B6042A9D97EB0045660C /* AdvanceListCollectionViewCell.swift */; };
+		9519B6222A9D97EB0045660C /* AdvanceListGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B6052A9D97EB0045660C /* AdvanceListGridCell.swift */; };
+		9519B6232A9D97EB0045660C /* AdvancedListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B6062A9D97EB0045660C /* AdvancedListHeaderView.swift */; };
+		9519B6242A9D97EB0045660C /* AdvancedListBtnCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B6072A9D97EB0045660C /* AdvancedListBtnCell.xib */; };
+		9519B6252A9D97EB0045660C /* AdvancedListDefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B6082A9D97EB0045660C /* AdvancedListDefaultCell.swift */; };
+		9519B6262A9D97EB0045660C /* AdvancedListBtnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B6092A9D97EB0045660C /* AdvancedListBtnCell.swift */; };
+		9519B6272A9D97EB0045660C /* AdvancedListOptionsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B60A2A9D97EB0045660C /* AdvancedListOptionsCell.xib */; };
+		9519B6282A9D97EB0045660C /* AdvancedListHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B60B2A9D97EB0045660C /* AdvancedListHeaderView.xib */; };
+		9519B6292A9D97EB0045660C /* ButtonLinkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B60C2A9D97EB0045660C /* ButtonLinkCell.swift */; };
+		9519B62A2A9D97EB0045660C /* ButtonLinkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B60D2A9D97EB0045660C /* ButtonLinkCell.xib */; };
+		9519B62B2A9D97EB0045660C /* CardTemplateListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B60F2A9D97EB0045660C /* CardTemplateListCell.xib */; };
+		9519B62C2A9D97EB0045660C /* CardTemplateBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B6102A9D97EB0045660C /* CardTemplateBubbleView.swift */; };
+		9519B62D2A9D97EB0045660C /* CardTemplateData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B6112A9D97EB0045660C /* CardTemplateData.swift */; };
+		9519B62E2A9D97EB0045660C /* CardTemplateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B6122A9D97EB0045660C /* CardTemplateCell.swift */; };
+		9519B62F2A9D97EB0045660C /* CardTemplateHedaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B6132A9D97EB0045660C /* CardTemplateHedaderView.swift */; };
+		9519B6302A9D97EB0045660C /* CardTemplateCollectionVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B6142A9D97EB0045660C /* CardTemplateCollectionVCell.swift */; };
+		9519B6312A9D97EB0045660C /* CardTemplateListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B6152A9D97EB0045660C /* CardTemplateListCell.swift */; };
+		9519B6322A9D97EB0045660C /* CardTemplateCollectionVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B6162A9D97EB0045660C /* CardTemplateCollectionVCell.xib */; };
+		9519B6332A9D97EB0045660C /* CardTemplateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B6172A9D97EB0045660C /* CardTemplateCell.xib */; };
+		9519B6342A9D97EB0045660C /* CardTemplateHedaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B6182A9D97EB0045660C /* CardTemplateHedaderView.xib */; };
+		9519B63B2A9D97F60045660C /* PDFBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B6362A9D97F60045660C /* PDFBubbleView.swift */; };
+		9519B63C2A9D97F60045660C /* PdfShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B6372A9D97F60045660C /* PdfShowViewController.swift */; };
+		9519B63D2A9D97F60045660C /* PdfShowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B6382A9D97F60045660C /* PdfShowViewController.xib */; };
+		9519B63E2A9D97F60045660C /* PdfDownloadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B6392A9D97F60045660C /* PdfDownloadCell.swift */; };
+		9519B63F2A9D97F60045660C /* PdfDownloadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B63A2A9D97F60045660C /* PdfDownloadCell.xib */; };
 		9527C95A2A370A1700178277 /* SDKConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C8822A370A1700178277 /* SDKConfiguration.swift */; };
 		9527C95B2A370A1700178277 /* Messages.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9527C8872A370A1700178277 /* Messages.plist */; };
 		9527C95C2A370A1700178277 /* BotConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9527C8882A370A1700178277 /* BotConfiguration.plist */; };
@@ -208,6 +241,39 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9519B5FB2A9D97EB0045660C /* AdvanceListBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvanceListBubbleView.swift; sourceTree = "<group>"; };
+		9519B5FC2A9D97EB0045660C /* AdvancedListTempData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedListTempData.swift; sourceTree = "<group>"; };
+		9519B5FE2A9D97EB0045660C /* AdvancedListDefaultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedListDefaultCell.xib; sourceTree = "<group>"; };
+		9519B5FF2A9D97EB0045660C /* AdvancedTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedTextCell.swift; sourceTree = "<group>"; };
+		9519B6002A9D97EB0045660C /* AdvancedListOptionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedListOptionsCell.swift; sourceTree = "<group>"; };
+		9519B6012A9D97EB0045660C /* AdvanceListGridCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvanceListGridCell.xib; sourceTree = "<group>"; };
+		9519B6022A9D97EB0045660C /* AdvancedTextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedTextCell.xib; sourceTree = "<group>"; };
+		9519B6032A9D97EB0045660C /* AdvanceListCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvanceListCollectionViewCell.xib; sourceTree = "<group>"; };
+		9519B6042A9D97EB0045660C /* AdvanceListCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvanceListCollectionViewCell.swift; sourceTree = "<group>"; };
+		9519B6052A9D97EB0045660C /* AdvanceListGridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvanceListGridCell.swift; sourceTree = "<group>"; };
+		9519B6062A9D97EB0045660C /* AdvancedListHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedListHeaderView.swift; sourceTree = "<group>"; };
+		9519B6072A9D97EB0045660C /* AdvancedListBtnCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedListBtnCell.xib; sourceTree = "<group>"; };
+		9519B6082A9D97EB0045660C /* AdvancedListDefaultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedListDefaultCell.swift; sourceTree = "<group>"; };
+		9519B6092A9D97EB0045660C /* AdvancedListBtnCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedListBtnCell.swift; sourceTree = "<group>"; };
+		9519B60A2A9D97EB0045660C /* AdvancedListOptionsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedListOptionsCell.xib; sourceTree = "<group>"; };
+		9519B60B2A9D97EB0045660C /* AdvancedListHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedListHeaderView.xib; sourceTree = "<group>"; };
+		9519B60C2A9D97EB0045660C /* ButtonLinkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonLinkCell.swift; sourceTree = "<group>"; };
+		9519B60D2A9D97EB0045660C /* ButtonLinkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ButtonLinkCell.xib; sourceTree = "<group>"; };
+		9519B60F2A9D97EB0045660C /* CardTemplateListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardTemplateListCell.xib; sourceTree = "<group>"; };
+		9519B6102A9D97EB0045660C /* CardTemplateBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateBubbleView.swift; sourceTree = "<group>"; };
+		9519B6112A9D97EB0045660C /* CardTemplateData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateData.swift; sourceTree = "<group>"; };
+		9519B6122A9D97EB0045660C /* CardTemplateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateCell.swift; sourceTree = "<group>"; };
+		9519B6132A9D97EB0045660C /* CardTemplateHedaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateHedaderView.swift; sourceTree = "<group>"; };
+		9519B6142A9D97EB0045660C /* CardTemplateCollectionVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateCollectionVCell.swift; sourceTree = "<group>"; };
+		9519B6152A9D97EB0045660C /* CardTemplateListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateListCell.swift; sourceTree = "<group>"; };
+		9519B6162A9D97EB0045660C /* CardTemplateCollectionVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardTemplateCollectionVCell.xib; sourceTree = "<group>"; };
+		9519B6172A9D97EB0045660C /* CardTemplateCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardTemplateCell.xib; sourceTree = "<group>"; };
+		9519B6182A9D97EB0045660C /* CardTemplateHedaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardTemplateHedaderView.xib; sourceTree = "<group>"; };
+		9519B6362A9D97F60045660C /* PDFBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFBubbleView.swift; sourceTree = "<group>"; };
+		9519B6372A9D97F60045660C /* PdfShowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PdfShowViewController.swift; sourceTree = "<group>"; };
+		9519B6382A9D97F60045660C /* PdfShowViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PdfShowViewController.xib; sourceTree = "<group>"; };
+		9519B6392A9D97F60045660C /* PdfDownloadCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PdfDownloadCell.swift; sourceTree = "<group>"; };
+		9519B63A2A9D97F60045660C /* PdfDownloadCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PdfDownloadCell.xib; sourceTree = "<group>"; };
 		9527C8822A370A1700178277 /* SDKConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDKConfiguration.swift; sourceTree = "<group>"; };
 		9527C8872A370A1700178277 /* Messages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Messages.plist; sourceTree = "<group>"; };
 		9527C8882A370A1700178277 /* BotConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BotConfiguration.plist; sourceTree = "<group>"; };
@@ -423,6 +489,68 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9519B5FA2A9D97EB0045660C /* AdvanceListViewTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				9519B5FB2A9D97EB0045660C /* AdvanceListBubbleView.swift */,
+				9519B5FC2A9D97EB0045660C /* AdvancedListTempData.swift */,
+				9519B5FD2A9D97EB0045660C /* AdvanceListCells */,
+				9519B60C2A9D97EB0045660C /* ButtonLinkCell.swift */,
+				9519B60D2A9D97EB0045660C /* ButtonLinkCell.xib */,
+			);
+			path = AdvanceListViewTemplate;
+			sourceTree = "<group>";
+		};
+		9519B5FD2A9D97EB0045660C /* AdvanceListCells */ = {
+			isa = PBXGroup;
+			children = (
+				9519B5FE2A9D97EB0045660C /* AdvancedListDefaultCell.xib */,
+				9519B5FF2A9D97EB0045660C /* AdvancedTextCell.swift */,
+				9519B6002A9D97EB0045660C /* AdvancedListOptionsCell.swift */,
+				9519B6012A9D97EB0045660C /* AdvanceListGridCell.xib */,
+				9519B6022A9D97EB0045660C /* AdvancedTextCell.xib */,
+				9519B6032A9D97EB0045660C /* AdvanceListCollectionViewCell.xib */,
+				9519B6042A9D97EB0045660C /* AdvanceListCollectionViewCell.swift */,
+				9519B6052A9D97EB0045660C /* AdvanceListGridCell.swift */,
+				9519B6062A9D97EB0045660C /* AdvancedListHeaderView.swift */,
+				9519B6072A9D97EB0045660C /* AdvancedListBtnCell.xib */,
+				9519B6082A9D97EB0045660C /* AdvancedListDefaultCell.swift */,
+				9519B6092A9D97EB0045660C /* AdvancedListBtnCell.swift */,
+				9519B60A2A9D97EB0045660C /* AdvancedListOptionsCell.xib */,
+				9519B60B2A9D97EB0045660C /* AdvancedListHeaderView.xib */,
+			);
+			path = AdvanceListCells;
+			sourceTree = "<group>";
+		};
+		9519B60E2A9D97EB0045660C /* CardTemplateBubbleView */ = {
+			isa = PBXGroup;
+			children = (
+				9519B60F2A9D97EB0045660C /* CardTemplateListCell.xib */,
+				9519B6102A9D97EB0045660C /* CardTemplateBubbleView.swift */,
+				9519B6112A9D97EB0045660C /* CardTemplateData.swift */,
+				9519B6122A9D97EB0045660C /* CardTemplateCell.swift */,
+				9519B6132A9D97EB0045660C /* CardTemplateHedaderView.swift */,
+				9519B6142A9D97EB0045660C /* CardTemplateCollectionVCell.swift */,
+				9519B6152A9D97EB0045660C /* CardTemplateListCell.swift */,
+				9519B6162A9D97EB0045660C /* CardTemplateCollectionVCell.xib */,
+				9519B6172A9D97EB0045660C /* CardTemplateCell.xib */,
+				9519B6182A9D97EB0045660C /* CardTemplateHedaderView.xib */,
+			);
+			path = CardTemplateBubbleView;
+			sourceTree = "<group>";
+		};
+		9519B6352A9D97F60045660C /* LinkDownload */ = {
+			isa = PBXGroup;
+			children = (
+				9519B6362A9D97F60045660C /* PDFBubbleView.swift */,
+				9519B6372A9D97F60045660C /* PdfShowViewController.swift */,
+				9519B6382A9D97F60045660C /* PdfShowViewController.xib */,
+				9519B6392A9D97F60045660C /* PdfDownloadCell.swift */,
+				9519B63A2A9D97F60045660C /* PdfDownloadCell.xib */,
+			);
+			path = LinkDownload;
+			sourceTree = "<group>";
+		};
 		9527C8812A370A1700178277 /* KoreAssitant */ = {
 			isa = PBXGroup;
 			children = (
@@ -592,6 +720,9 @@
 		9527C8B52A370A1700178277 /* BubbleViews */ = {
 			isa = PBXGroup;
 			children = (
+				9519B6352A9D97F60045660C /* LinkDownload */,
+				9519B5FA2A9D97EB0045660C /* AdvanceListViewTemplate */,
+				9519B60E2A9D97EB0045660C /* CardTemplateBubbleView */,
 				9527C8B62A370A1700178277 /* Options */,
 				9527C8B82A370A1700178277 /* TableList */,
 				9527C8BB2A370A1700178277 /* List Widget */,
@@ -1303,34 +1434,48 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9519B61F2A9D97EB0045660C /* AdvancedTextCell.xib in Resources */,
 				9527C9B82A370A1700178277 /* CustomTableViewCell.xib in Resources */,
 				9527C99B2A370A1700178277 /* ratingselect_2.gif in Resources */,
+				9519B6202A9D97EB0045660C /* AdvanceListCollectionViewCell.xib in Resources */,
 				9527C95B2A370A1700178277 /* Messages.plist in Resources */,
 				9527C95C2A370A1700178277 /* BotConfiguration.plist in Resources */,
 				9527C9BD2A370A1700178277 /* CalenderViewController.xib in Resources */,
+				9519B62A2A9D97EB0045660C /* ButtonLinkCell.xib in Resources */,
 				9527C9982A370A1700178277 /* ratingselect_4.gif in Resources */,
 				9527C9BA2A370A1700178277 /* CustomTableTemplateVC.xib in Resources */,
+				9519B6282A9D97EB0045660C /* AdvancedListHeaderView.xib in Resources */,
 				9527C9722A370A1700178277 /* TaskMenuViewController.xib in Resources */,
 				D1200F321CC9F797009BBB1A /* KoreBotSDK.podspec in Resources */,
+				9519B61B2A9D97EB0045660C /* AdvancedListDefaultCell.xib in Resources */,
 				D1F337A12201CD25005BE5F1 /* KREOptionsTableViewCell.xib in Resources */,
+				9519B63F2A9D97F60045660C /* PdfDownloadCell.xib in Resources */,
+				9519B6332A9D97EB0045660C /* CardTemplateCell.xib in Resources */,
 				9527C9AB2A370A1700178277 /* CustomCollectionViewCell.xib in Resources */,
 				9527C9932A370A1700178277 /* MultiImageBubbleView.xib in Resources */,
 				9527C99C2A370A1700178277 /* ratingselect_3.gif in Resources */,
 				9527C9CC2A370A1700178277 /* DropDownCell.xib in Resources */,
 				9527C9972A370A1700178277 /* FeedbackCell.xib in Resources */,
+				9519B6242A9D97EB0045660C /* AdvancedListBtnCell.xib in Resources */,
+				9519B63D2A9D97F60045660C /* PdfShowViewController.xib in Resources */,
 				D1F337A22201CD25005BE5F1 /* KREListTableViewCell.xib in Resources */,
 				9527C9812A370A1700178277 /* InlineFormTableViewCell.xib in Resources */,
 				9527C9E02A370A1700178277 /* AttachmentCell.xib in Resources */,
+				9519B61E2A9D97EB0045660C /* AdvanceListGridCell.xib in Resources */,
+				9519B62B2A9D97EB0045660C /* CardTemplateListCell.xib in Resources */,
+				9519B6322A9D97EB0045660C /* CardTemplateCollectionVCell.xib in Resources */,
 				9527C97F2A370A1700178277 /* ListWidgetDetailsViewController.xib in Resources */,
 				9527C9DE2A370A1700178277 /* ChatMessagesViewController.xib in Resources */,
 				9527C9E32A370A1700178277 /* KRETypingCollectionViewCell.xib in Resources */,
 				9527C9912A370A1700178277 /* ImageComponentCollectionViewCell.xib in Resources */,
+				9519B6342A9D97EB0045660C /* CardTemplateHedaderView.xib in Resources */,
 				9527C9ED2A370A1700178277 /* AppLaunchViewController.xib in Resources */,
 				9527C9B42A370A1700178277 /* MultiSelectCell.xib in Resources */,
 				9527C99A2A370A1700178277 /* ratingselect_1.gif in Resources */,
 				9527C96F2A370A1700178277 /* TaskMenuTablViewCell.xib in Resources */,
 				9527C9862A370A1700178277 /* NotificationCustomView.xib in Resources */,
 				9527C98B2A370A1700178277 /* ListViewDetailsViewController.xib in Resources */,
+				9519B6272A9D97EB0045660C /* AdvancedListOptionsCell.xib in Resources */,
 				9527C9A42A370A1700178277 /* AudioBubbleView.xib in Resources */,
 				9527C9992A370A1700178277 /* ratingselect_5.gif in Resources */,
 				9527C9882A370A1700178277 /* NewListTableViewCell.xib in Resources */,
@@ -1353,6 +1498,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9519B62F2A9D97EB0045660C /* CardTemplateHedaderView.swift in Sources */,
 				9527C9622A370A1700178277 /* TSMarkdownParser.m in Sources */,
 				9527C9AA2A370A1700178277 /* CustomCollectionViewCell.swift in Sources */,
 				9527C9BB2A370A1700178277 /* CustomTableViewCell.swift in Sources */,
@@ -1366,8 +1512,11 @@
 				9527C9BE2A370A1700178277 /* CalenderBubbleView.swift in Sources */,
 				D1F337A52201CD26005BE5F1 /* KRETokenCollectionViewCell.swift in Sources */,
 				9527C9CD2A370A1700178277 /* DPDKeyboardListener.swift in Sources */,
+				9519B6232A9D97EB0045660C /* AdvancedListHeaderView.swift in Sources */,
 				D1F337A82201CD26005BE5F1 /* KREImagesCollectionView.swift in Sources */,
 				9527C9802A370A1700178277 /* ListWidgetDetailsViewController.swift in Sources */,
+				9519B62C2A9D97EB0045660C /* CardTemplateBubbleView.swift in Sources */,
+				9519B62E2A9D97EB0045660C /* CardTemplateCell.swift in Sources */,
 				9527C96A2A370A1700178277 /* Component.swift in Sources */,
 				9527C9C82A370A1700178277 /* KAComponentOperation.swift in Sources */,
 				9527C9C72A370A1700178277 /* KAHTTPRequestManager.swift in Sources */,
@@ -1382,6 +1531,7 @@
 				9527C9902A370A1700178277 /* MultiImageBubbleView.swift in Sources */,
 				9527C9CA2A370A1700178277 /* KAFileUtilities.swift in Sources */,
 				9527C9EE2A370A1700178277 /* KREMessage+CoreDataProperties.swift in Sources */,
+				9519B6262A9D97EB0045660C /* AdvancedListBtnCell.swift in Sources */,
 				9527C9B62A370A1700178277 /* MultiSelectNewBubbleView.swift in Sources */,
 				9527C9D72A370A1700178277 /* KAPanelWindowManager.swift in Sources */,
 				9527C9A12A370A1700178277 /* QuickReplyCollectionViewFlowLayout.swift in Sources */,
@@ -1392,6 +1542,7 @@
 				9527C9A82A370A1700178277 /* MiniTableBubbleView.swift in Sources */,
 				9527C9B72A370A1700178277 /* TextBubbleView.swift in Sources */,
 				9527C97B2A370A1700178277 /* KREUtilities.m in Sources */,
+				9519B6302A9D97EB0045660C /* CardTemplateCollectionVCell.swift in Sources */,
 				9527C9F32A370A1700178277 /* KREContact+CoreDataProperties.swift in Sources */,
 				9527C9962A370A1700178277 /* FeedbackSliderViewController.swift in Sources */,
 				9527C9672A370A1700178277 /* Identity.swift in Sources */,
@@ -1406,6 +1557,7 @@
 				9527C9D22A370A1700178277 /* DropDown+Appearance.swift in Sources */,
 				9527C9DF2A370A1700178277 /* AttachmentCell.swift in Sources */,
 				D1F337A42201CD25005BE5F1 /* KREOptionsView.swift in Sources */,
+				9519B6192A9D97EB0045660C /* AdvanceListBubbleView.swift in Sources */,
 				9527C9EC2A370A1700178277 /* AppLaunchViewController.swift in Sources */,
 				D14AACAA1CFD897300AEF5FD /* JwtModel.swift in Sources */,
 				D14AACA91CFD897300AEF5FD /* ComponentModel.swift in Sources */,
@@ -1426,17 +1578,23 @@
 				9527C9A52A370A1700178277 /* AudioBubbleView.swift in Sources */,
 				9527C9D42A370A1700178277 /* KABottomSheetViewController.swift in Sources */,
 				D14AACAB1CFD897300AEF5FD /* MessageModel.swift in Sources */,
+				9519B6292A9D97EB0045660C /* ButtonLinkCell.swift in Sources */,
 				9527C95A2A370A1700178277 /* SDKConfiguration.swift in Sources */,
 				9527C98A2A370A1700178277 /* NewListBubbleView.swift in Sources */,
+				9519B6222A9D97EB0045660C /* AdvanceListGridCell.swift in Sources */,
+				9519B61C2A9D97EB0045660C /* AdvancedTextCell.swift in Sources */,
+				9519B6312A9D97EB0045660C /* CardTemplateListCell.swift in Sources */,
 				9527C9AF2A370A1700178277 /* ResponsiveCustonCell.swift in Sources */,
 				9527C9872A370A1700178277 /* NewListData.swift in Sources */,
 				9527C9B22A370A1700178277 /* ListWidgetBubbleView.swift in Sources */,
 				9527C9D62A370A1700178277 /* KoraAssistant.swift in Sources */,
 				9527C9F22A370A1700178277 /* KREMessage+CoreDataClass.swift in Sources */,
 				9527C9652A370A1700178277 /* CALayer+MBAnimationPersistence.m in Sources */,
+				9519B6212A9D97EB0045660C /* AdvanceListCollectionViewCell.swift in Sources */,
 				9527C9E72A370A1700178277 /* KRETypingCollectionViewCell.m in Sources */,
 				D1F337A72201CD26005BE5F1 /* KRECollectionView.swift in Sources */,
 				9527C9E12A370A1700178277 /* InputTOWebViewController.swift in Sources */,
+				9519B6252A9D97EB0045660C /* AdvancedListDefaultCell.swift in Sources */,
 				9527C98D2A370A1700178277 /* ChartBubbleView.swift in Sources */,
 				D14AACA81CFD897300AEF5FD /* BotInfoModel.swift in Sources */,
 				9527C9682A370A1700178277 /* Message.swift in Sources */,
@@ -1459,6 +1617,8 @@
 				9527C9C32A370A1700178277 /* KAHTTPSessionManager.swift in Sources */,
 				9527C9E22A370A1700178277 /* KRETypingActivityIndicator.m in Sources */,
 				9527C9A72A370A1700178277 /* ResponsiveTableBubbleView.swift in Sources */,
+				9519B61D2A9D97EB0045660C /* AdvancedListOptionsCell.swift in Sources */,
+				9519B63C2A9D97F60045660C /* PdfShowViewController.swift in Sources */,
 				9527C9782A370A1700178277 /* KRELayoutManager.m in Sources */,
 				D1F337A92201CD26005BE5F1 /* KRECardView.swift in Sources */,
 				9527C9832A370A1700178277 /* InLineFormBubbleView.swift in Sources */,
@@ -1472,7 +1632,10 @@
 				D1F337A62201CD26005BE5F1 /* KREQuickSelectView.swift in Sources */,
 				9527C9D92A370A1700178277 /* ApplicationManager.swift in Sources */,
 				9527C9F42A370A1700178277 /* KREContact+CoreDataClass.swift in Sources */,
+				9519B63E2A9D97F60045660C /* PdfDownloadCell.swift in Sources */,
+				9519B63B2A9D97F60045660C /* PDFBubbleView.swift in Sources */,
 				9527C9EA2A370A1700178277 /* KREFetchedResultsController.swift in Sources */,
+				9519B62D2A9D97EB0045660C /* CardTemplateData.swift in Sources */,
 				9527C9852A370A1700178277 /* NotificationCustomView.swift in Sources */,
 				9527C9C62A370A1700178277 /* KAAssetManager.swift in Sources */,
 				D14AACAC1CFD897300AEF5FD /* UserModel.swift in Sources */,
@@ -1481,6 +1644,7 @@
 				9527C9BC2A370A1700178277 /* CustomTableBubbleView.swift in Sources */,
 				D14AACA51CFD897300AEF5FD /* HTTPRequestManager.swift in Sources */,
 				9527C9B52A370A1700178277 /* MultiSelectCell.swift in Sources */,
+				9519B61A2A9D97EB0045660C /* AdvancedListTempData.swift in Sources */,
 				9527C9D82A370A1700178277 /* KAPanelCollectionView.swift in Sources */,
 				9527C97C2A370A1700178277 /* OptionsBubbleView.swift in Sources */,
 				9527C9F02A370A1700178277 /* DataModel.xcdatamodeld in Sources */,

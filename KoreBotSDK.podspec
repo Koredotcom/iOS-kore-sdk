@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
     s.swift_version = '4.2'
 
     s.subspec 'Library' do |ss|
-        ss.ios.deployment_target = '10.0'
+        ss.ios.deployment_target = '12.0'
         ss.source_files = 'KoreBotSDK/**/*.{h,m,swift}'
         ss.dependency 'Mantle', '2.1.0'
         ss.dependency 'AFNetworking', '4.0.1'
@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
     end
 
     s.subspec 'UIKit' do |ss|
-        ss.ios.deployment_target = '10.0'
+        ss.ios.deployment_target = '12.0'
         ss.source_files = ['KreFiles/**/*.{h,m,txt,swift,xib}','KoreAssitant/**/*.{h,m,txt,swift,xib}']
         ss.resource_bundles = {
             'Template' => ['KreFiles/**/*.xib'],
@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
         ss.dependency 'AFNetworking', '4.0.1'
         ss.dependency 'GhostTypewriter'
         ss.dependency 'MarkdownKit'
-        ss.dependency 'Charts', '~> 3.2.2'
+        ss.dependency 'DGCharts'
     ss.dependency 'AssetsPickerViewController'
     ss.dependency 'SwiftUTI'
     #ss.dependency 'emojione-ios'

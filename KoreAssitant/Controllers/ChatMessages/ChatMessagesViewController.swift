@@ -445,6 +445,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }else if (templateType == "custom_table")
         {
             return .custom_table
+        }else if (templateType == "advancedListTemplate"){
+            return .advancedListTemplate
+        }else if (templateType == "cardTemplate"){
+            return .cardTemplate
         }
         return .text
     }
@@ -743,6 +747,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         
         NotificationCenter.default.addObserver(self, selector: #selector(showCustomTableTemplateView), name: NSNotification.Name(rawValue: showCustomTableTemplateNotification), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(showPDFViewController), name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showPDFErrorMeesage), name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -771,7 +778,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showCustomTableTemplateNotification), object: nil)
 
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: reloadVideoCellNotification), object: nil)
-
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
         
     }
     
@@ -1468,6 +1476,28 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let customTableTemplateViewController = CustomTableTemplateVC(dataString: dataString)
         customTableTemplateViewController.viewDelegate = self
         self.navigationController?.present(customTableTemplateViewController, animated: true, completion: nil)
+    }
+    
+    @objc func showPDFErrorMeesage(notification:Notification){
+        let dataString: String = notification.object as? String ?? ""
+        self.toastMessage(dataString)
+    }
+    
+    @objc func showPDFViewController(notification:Notification){
+        let dataString: String = notification.object as? String ?? ""
+        if dataString == "Show"{
+            self.toastMessage("Statement saved successfully under Files")
+        }else{
+            if #available(iOS 11.0, *) {
+                let vc = PdfShowViewController(dataString: dataString)
+                vc.pdfUrl = URL(string: dataString)
+                vc.modalPresentationStyle = .overFullScreen
+                self.navigationController?.present(vc, animated: true, completion: nil)
+            } else {
+                // Fallback on earlier versions
+            }
+            
+        }
     }
     
     @objc func reloadTable(notification:Notification){
@@ -2246,3 +2276,34 @@ extension ChatMessagesViewController: UICollectionViewDataSource, UICollectionVi
     
     
 }
+
+extension ChatMessagesViewController {
+    func toastMessage(_ message: String){
+        guard let window = UIApplication.shared.keyWindow else {return}
+        let messageLbl = UILabel()
+        messageLbl.text = message
+        messageLbl.textAlignment = .center
+        messageLbl.font = UIFont.systemFont(ofSize: 12)
+        messageLbl.textColor = .white
+        messageLbl.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        
+        let textSize:CGSize = messageLbl.intrinsicContentSize
+        let labelWidth = min(textSize.width, window.frame.width - 40)
+        //window.frame.height - 80
+        let yaxis = self.composeBarContainerView.frame.origin.y + 10
+        messageLbl.frame = CGRect(x: 20, y: yaxis, width: labelWidth + 30, height: textSize.height + 20)
+        messageLbl.center.x = window.center.x
+        messageLbl.layer.cornerRadius = messageLbl.frame.height/2
+        messageLbl.layer.masksToBounds = true
+        window.addSubview(messageLbl)
+        self.view.bringSubviewToFront(messageLbl)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            
+            UIView.animate(withDuration: 2.5, animations: {
+                messageLbl.alpha = 0
+            }) { (_) in
+                messageLbl.removeFromSuperview()
+            }
+        }
+    }}

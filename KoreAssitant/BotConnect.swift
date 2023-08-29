@@ -28,8 +28,21 @@ open class BotConnect: NSObject {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func show(){
+    public func initialize(_ clientId: String, clientSecret: String, botId: String, chatBotName: String, identity: String, isAnonymous: Bool, isWebhookEnabled: Bool, JWTServerUrl: String, BOTServerUrl: String){
         
+        SDKConfiguration.botConfig.clientId = clientId as String
+        SDKConfiguration.botConfig.clientSecret = clientSecret as String
+        SDKConfiguration.botConfig.botId = botId as String
+        SDKConfiguration.botConfig.chatBotName = chatBotName as String
+        SDKConfiguration.botConfig.identity = identity as String
+        SDKConfiguration.botConfig.isAnonymous =  isAnonymous as Bool
+        SDKConfiguration.botConfig.isWebhookEnabled =  isWebhookEnabled as Bool
+        SDKConfiguration.serverConfig.JWT_SERVER = JWTServerUrl as String
+        SDKConfiguration.serverConfig.BOT_SERVER = BOTServerUrl as String
+    }
+    
+    
+    public func show(){
         let clientId: String = SDKConfiguration.botConfig.clientId
         let clientSecret: String = SDKConfiguration.botConfig.clientSecret
         let isAnonymous: Bool = SDKConfiguration.botConfig.isAnonymous
@@ -93,21 +106,6 @@ open class BotConnect: NSObject {
     // MARK: Navigate Kore Chat Window
     func navigateToChatViewController(client: BotClient?, thread: KREThread?){
         self.stopLoader()
-//        let botViewController = ChatMessagesViewController(thread: thread)
-//        botViewController.botClient = client
-//        botViewController.title = SDKConfiguration.botConfig.chatBotName
-//
-//
-//        //Addition fade in animation
-//        let transition = CATransition()
-//        transition.duration = 0.5
-//        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
-//        transition.type = CATransitionType.fade
-//        self.navigationController?.view.layer.add(transition, forKey: nil)
-//
-//        self.navigationController?.pushViewController(botViewController, animated: false)
-//
-        
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {
             return
         }

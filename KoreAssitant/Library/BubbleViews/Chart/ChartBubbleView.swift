@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import Charts
+import DGCharts
 
-class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
+class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
     var pcView: PieChartView!
     var lcView: LineChartView!
     var bcView: BarChartView!
@@ -48,7 +48,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         super.initialize()
     }
     
-    func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+    @objc func stringForValue(_ value: Double, axis: AxisBase?) -> String {
         let index = Int(value)
         if xAxisValues.count > index {
             return xAxisValues[index]
@@ -56,7 +56,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         return "\(value)"
     }
     
-    func stringForValue(_ value: Double, entry: ChartDataEntry, dataSetIndex: Int, viewPortHandler: ViewPortHandler?) -> String {
+    @objc func stringForValue(_ value: Double, entry: ChartDataEntry, dataSetIndex: Int, viewPortHandler: ViewPortHandler?) -> String {
         if let dictionary = entry.data as? NSDictionary, let keys = dictionary.allKeys as? [String] {
             for i in 0..<keys.count {
                 if keys[i] == "displayValue", let value = dictionary["displayValue"] as? String {
@@ -170,7 +170,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
             l.form = .circle
             
-            self.pcView.chartDescription?.enabled = false
+            self.pcView.chartDescription.enabled = false
             self.pcView.drawHoleEnabled = false
             self.pcView.drawEntryLabelsEnabled = false
             self.pcView.extraRightOffset = 0.0
@@ -183,7 +183,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
             l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
             
-            self.pcView.chartDescription?.enabled = false
+            self.pcView.chartDescription.enabled = false
             self.pcView.drawHoleEnabled = true
             self.pcView.drawEntryLabelsEnabled = false
             self.pcView.extraRightOffset = 0.0
@@ -198,7 +198,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             l.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
             l.form = .circle
             
-            self.pcView.chartDescription?.enabled = false
+            self.pcView.chartDescription.enabled = false
             self.pcView.drawHoleEnabled = true
             self.pcView.drawEntryLabelsEnabled = false
             self.pcView.extraRightOffset = 5.0
@@ -221,7 +221,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[lcView]-15-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[lcView]-15-|", options: [], metrics: nil, views: views))
         
-        self.lcView.chartDescription?.enabled = false
+        self.lcView.chartDescription.enabled = false
         self.lcView.isUserInteractionEnabled = true
         
         self.lcView.leftAxis.enabled = true
@@ -275,7 +275,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[bcView]-15-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-30-[bcView]-15-|", options: [], metrics: nil, views: views))
         
-        self.bcView.chartDescription?.enabled = false
+        self.bcView.chartDescription.enabled = false
         if(direction == "horizontal"){
             self.bcView.leftAxis.enabled = false
             self.bcView.rightAxis.enabled = true
@@ -370,7 +370,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
             }
             
         }
-        let pieChartDataSet = PieChartDataSet(values: values, label: "")
+        let pieChartDataSet = PieChartDataSet(entries: values, label: "")
         pieChartDataSet.colors = colorsPalet()
         pieChartDataSet.sliceSpace = 2.0
         
@@ -467,7 +467,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         
         var dataSets: Array<LineChartDataSet> = Array<LineChartDataSet>()
         for i in 0..<titles.count {
-            let dataSet = LineChartDataSet(values: dataValues[i], label: titles[i])
+            let dataSet = LineChartDataSet(entries: dataValues[i], label: titles[i])
             dataSet.mode = .cubicBezier
             dataSet.lineWidth = 2.0
             dataSet.setColor(colors[i])
@@ -512,7 +512,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         
         var dataSets: Array<BarChartDataSet> = Array<BarChartDataSet>()
         for i in 0..<titles.count {
-            let dataSet = BarChartDataSet(values: dataValues[i], label: titles[i])
+            let dataSet = BarChartDataSet(entries: dataValues[i], label: titles[i])
             dataSet.setColor(colors[i])
             dataSets.append(dataSet)
         }
@@ -574,7 +574,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         
         var dataSets: Array<BarChartDataSet> = Array<BarChartDataSet>()
         for _ in 0..<1 {
-            let dataSet = BarChartDataSet(values: subDataValues, label:"")
+            let dataSet = BarChartDataSet(entries: subDataValues, label:"")
             dataSet.stackLabels = titles
             let n = titles.count
             let colorsArr:[NSUIColor] = Array(colors.prefix(n))
@@ -633,8 +633,7 @@ class ChartBubbleView: BubbleView, IAxisValueFormatter, IValueFormatter {
         }
         
         self.titleLbl?.text = jsonObject["text"] as? String
-        let bundle = KREResourceLoader.shared.resourceBundle()
-        let placeHolderIcon = UIImage(named: "kora", in: bundle, compatibleWith: nil) ?? UIImage.init(named: "")!
+        let placeHolderIcon : UIImage = UIImage(named:"kora")!
         self.senderImageView.image = placeHolderIcon
         if (botHistoryIcon != nil) {
             if let fileUrl = URL(string: botHistoryIcon!) {
