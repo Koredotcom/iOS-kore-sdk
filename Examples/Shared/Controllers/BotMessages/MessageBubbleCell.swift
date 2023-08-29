@@ -534,4 +534,41 @@ class CustomTableCell : MessageBubbleCell {
 }
 
 
+class AdvancedListTemplateCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .advancedListTemplate
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 20
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
+class CardTemplateBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .cardTemplate
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 20
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
+
+class PDFDownloadCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .linkDownload
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 150
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
 

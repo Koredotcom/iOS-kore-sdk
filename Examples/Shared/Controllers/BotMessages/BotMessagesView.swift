@@ -89,6 +89,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(DropDownell.self, forCellReuseIdentifier:"DropDownell")
         self.tableView.register(AudioBubbleCell.self, forCellReuseIdentifier:"AudioBubbleCell")
         self.tableView.register(CustomTableCell.self, forCellReuseIdentifier:"CustomTableCell")
+        self.tableView.register(AdvancedListTemplateCell.self, forCellReuseIdentifier:"AdvancedListTemplateCell")
+        self.tableView.register(CardTemplateBubbleCell.self, forCellReuseIdentifier:"CardTemplateBubbleCell")
+        self.tableView.register(PDFDownloadCell.self, forCellReuseIdentifier:"PDFDownloadCell")
         
     }
     
@@ -208,6 +211,13 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .custom_table:
                cellIdentifier = "CustomTableCell"
             break
+            case .advancedListTemplate:
+                cellIdentifier = "AdvancedListTemplateCell"
+                break
+            case .cardTemplate:
+                cellIdentifier = "CardTemplateBubbleCell"
+            case .linkDownload:
+                cellIdentifier = "PDFDownloadCell"
             }
             
         }
@@ -389,6 +399,37 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
             }
             cell.bubbleView.drawBorder = true
+            break
+        case .advancedListTemplate:
+            let bubbleView: AdvanceListBubbleView = cell.bubbleView as! AdvanceListBubbleView
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+            }
+            bubbleView.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
+            let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+            if firstIndexPath.isEqual(indexPath) {
+                bubbleView.maskview.isHidden = true
+            }else{
+                bubbleView.maskview.isHidden = false
+            }
+            break
+        case .cardTemplate:
+            let bubbleView: CardTemplateBubbleView = cell.bubbleView as! CardTemplateBubbleView
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+            }
+            bubbleView.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
+            break
+        case .linkDownload:
+            let bubbleView: PDFBubbleView = cell.bubbleView as! PDFBubbleView
+            cell.bubbleView.drawBorder = true
+            bubbleView.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
             break
         }
         let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)

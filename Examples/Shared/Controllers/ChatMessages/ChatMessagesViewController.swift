@@ -11,11 +11,10 @@ import AVFoundation
 import SafariServices
 import KoreBotSDK
 import CoreData
-//import Mantle
 import AssetsPickerViewController
 import Photos
 import MobileCoreServices
-import emojione_ios
+
 import Alamofire
 import AlamofireImage
 import ObjectMapper
@@ -28,7 +27,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var botClient: BotClient!
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
     var kaBotClient: KABotClient!
-    let emojiClient: ClientInterface = Client()
     
     @IBOutlet weak var threadContainerView: UIView!
     @IBOutlet weak var quickSelectContainerView: UIView!
@@ -134,15 +132,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
         
         
-        isSpeakingEnabled = true 
+        isSpeakingEnabled = true
         self.speechSynthesizer = AVSpeechSynthesizer()
         
         if SDKConfiguration.botConfig.isWebhookEnabled{
             NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
-            self.kaBotClient.webhookBotMetaApi(success: { [weak self] (dictionary) in
-                print(dictionary)
-                if let dic = dictionary as? [String: Any],
-                    let userIcon: String = dic["icon"] as? String  {
+            self.kaBotClient.webhookBotMetaApi(success: { (dictionary) in
+                if let userIcon: String = dictionary["icon"] as? String  {
                     botHistoryIcon = userIcon
                 }
                  
@@ -188,12 +184,12 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let font:UIFont? = UIFont(name: "Helvetica-Bold", size:17)
         let attString:NSMutableAttributedString = NSMutableAttributedString(string: headerTitle, attributes: [.font:font!])
         let titleLabel = UILabel()
-        titleLabel.textColor = .white
+        titleLabel.textColor = .black
         titleLabel.attributedText = attString
         self.navigationItem.titleView = titleLabel
         
         navigationController?.navigationBar.barTintColor = themeColor
-        navigationController?.navigationBar.tintColor = UIColor.white
+        navigationController?.navigationBar.tintColor = UIColor.black
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         self.view.backgroundColor = UIColor.init(hexString: "#f3f3f5")
         
@@ -314,11 +310,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.composeBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[composeView]|", options:[], metrics:nil, views:["composeView" : self.composeView!]))
         self.composeBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[composeView]", options:[], metrics:nil, views:["composeView" : self.composeView!]))
         
-        self.composeViewBottomConstraint = NSLayoutConstraint.init(item: self.composeBarContainerView, attribute: .bottom, relatedBy: .equal, toItem: self.composeView, attribute: .bottom, multiplier: 1.0, constant: 0.0)
+        self.composeViewBottomConstraint = NSLayoutConstraint.init(item: self.composeBarContainerView as Any, attribute: .bottom, relatedBy: .equal, toItem: self.composeView, attribute: .bottom, multiplier: 1.0, constant: 0.0)
         self.composeBarContainerView.addConstraint(self.composeViewBottomConstraint)
         self.composeViewBottomConstraint.isActive = false
         
-        self.composeBarContainerHeightConstraint = NSLayoutConstraint.init(item: self.composeBarContainerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.0)
+        self.composeBarContainerHeightConstraint = NSLayoutConstraint.init(item: self.composeBarContainerView as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.0)
         self.view.addConstraint(self.composeBarContainerHeightConstraint)
     }
     
@@ -357,8 +353,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.quickReplyView.translatesAutoresizingMaskIntoConstraints = false
         self.quickSelectContainerView.addSubview(self.quickReplyView)
         
-        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[quickReplyView]|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
-        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[quickReplyView]|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
         
         self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
             if let text = text, let payload = payload {
@@ -512,6 +508,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }else if (templateType == "custom_table")
         {
             return .custom_table
+        }else if (templateType == "advancedListTemplate"){
+            return .advancedListTemplate
+        }else if (templateType == "cardTemplate"){
+            return .cardTemplate
         }
         return .text
     }
@@ -594,12 +594,72 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         textComponent.payload = tText
                         textMessage?.addComponent(textComponent)
                     }
+                    if templateType == "SYSTEM" || templateType == "live_agent"{
+                        let textComponent = Component(.text)
+                        let text = dictionary["text"] as? String ?? ""
+                        textComponent.payload = text
+                        ttsBody = text
+                        message.addComponent(textComponent)
+                    }else{
+                        let optionsComponent: Component = Component(componentType)
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
                     
-                    let optionsComponent: Component = Component(componentType)
-                    optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                    message.sentDate = object?.createdOn
-                    message.addComponent(optionsComponent)
-                } else if (type == "error") {
+                }else if (type == "image"){
+                    
+                    if let dictionary = payload["payload"] as? [String: Any] {
+                        let optionsComponent: Component = Component(.image)
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
+                }
+                else if (type == "message"){
+                    
+                    if let dictionary = payload["payload"] as? [String: Any] {
+                        let  componentType = dictionary["audioUrl"] != nil ? Component(.audio) : Component(.video)
+                        let optionsComponent: Component = componentType
+                        if let speechText = dictionary["text"] as? String{
+                            ttsBody = speechText
+                        }
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
+                }
+                else if (type == "video"){
+                    
+                    if let _ = payload["payload"] as? [String: Any] {
+                        let  componentType = Component(.video)
+                        let optionsComponent: Component = componentType
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: payload)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
+                }
+                else if (type == "audio"){
+                    
+                    if let dictionary = payload["payload"] as? [String: Any] {
+                        let  componentType = Component(.audio)
+                        let optionsComponent: Component = componentType
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
+                }
+                else if (type == "link"){
+                    
+                    if let dictionary = payload["payload"] as? [String: Any] {
+                        let  componentType = Component(.linkDownload)
+                        let optionsComponent: Component = componentType
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
+                    
+                }else if (type == "error") {
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
                     let errorComponent: Component = Component(.error)
                     errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
@@ -811,6 +871,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         
         NotificationCenter.default.addObserver(self, selector: #selector(showCustomTableTemplateView), name: NSNotification.Name(rawValue: showCustomTableTemplateNotification), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(showPDFViewController), name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showPDFErrorMeesage), name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -840,7 +903,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
 
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: reloadVideoCellNotification), object: nil)
 
-        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -1226,14 +1290,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 }
             }
             else{
-                let stringToEmoji = emojiClient.shortnameToUnicode(string: jsonString ?? "")
-                let emojiToString = emojiClient.toShort(string: stringToEmoji)
+                //let stringToEmoji = emojiClient.shortnameToUnicode(string: jsonString ?? "")
+                //let emojiToString = emojiClient.toShort(string: stringToEmoji)
                 templateType = valData["type"] as? String ?? ""
-                textComponent.payload = stringToEmoji //kkkkk
+                textComponent.payload = jsonString
                 if lastMessageID == valData["messageId"] as? String{
                     ttsBody = ""
                 }else{
-                    ttsBody = emojiToString
+                    ttsBody = jsonString
                 }
                 
                 message.addComponent(textComponent)
@@ -1244,10 +1308,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
     }
 }
-    
-    
-    
-    
+
     func sendTextMessage(_ text: String, dictionary: [String: Any]? = nil, options: [String: Any]?) {
         if attachmentArray.count>0 {
             closeAndOpenAttachment(imageAttached: nil, height: 0.0)
@@ -1542,6 +1603,28 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let customTableTemplateViewController = CustomTableTemplateVC(dataString: dataString)
         customTableTemplateViewController.viewDelegate = self
         self.navigationController?.present(customTableTemplateViewController, animated: true, completion: nil)
+    }
+    
+    @objc func showPDFErrorMeesage(notification:Notification){
+        let dataString: String = notification.object as? String ?? ""
+        self.toastMessage(dataString)
+    }
+    
+    @objc func showPDFViewController(notification:Notification){
+        let dataString: String = notification.object as? String ?? ""
+        if dataString == "Show"{
+            self.toastMessage("Statement saved successfully under Files")
+        }else{
+            if #available(iOS 11.0, *) {
+                let vc = PdfShowViewController(dataString: dataString)
+                vc.pdfUrl = URL(string: dataString)
+                vc.modalPresentationStyle = .overFullScreen
+                self.navigationController?.present(vc, animated: true, completion: nil)
+            } else {
+                // Fallback on earlier versions
+            }
+            
+        }
     }
     
     @objc func reloadTable(notification:Notification){
@@ -2430,3 +2513,34 @@ extension ChatMessagesViewController: UICollectionViewDataSource, UICollectionVi
     
     
 }
+
+extension ChatMessagesViewController {
+    func toastMessage(_ message: String){
+        guard let window = UIApplication.shared.keyWindow else {return}
+        let messageLbl = UILabel()
+        messageLbl.text = message
+        messageLbl.textAlignment = .center
+        messageLbl.font = UIFont.systemFont(ofSize: 12)
+        messageLbl.textColor = .white
+        messageLbl.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        
+        let textSize:CGSize = messageLbl.intrinsicContentSize
+        let labelWidth = min(textSize.width, window.frame.width - 40)
+        //window.frame.height - 80
+        let yaxis = self.composeBarContainerView.frame.origin.y + 10
+        messageLbl.frame = CGRect(x: 20, y: yaxis, width: labelWidth + 30, height: textSize.height + 20)
+        messageLbl.center.x = window.center.x
+        messageLbl.layer.cornerRadius = messageLbl.frame.height/2
+        messageLbl.layer.masksToBounds = true
+        window.addSubview(messageLbl)
+        self.view.bringSubviewToFront(messageLbl)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            
+            UIView.animate(withDuration: 2.5, animations: {
+                messageLbl.alpha = 0
+            }) { (_) in
+                messageLbl.removeFromSuperview()
+            }
+        }
+    }}

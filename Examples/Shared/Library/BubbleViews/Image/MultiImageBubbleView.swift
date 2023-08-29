@@ -170,25 +170,31 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
                 if let payload = imageDataDic["payload"] as? [String: Any]{
                     let url = URL(string: ( payload["url"] as? String ?? ""))
                     if url != nil{
-                        cell.imageComponent.af.setImage(withURL: url!, placeholderImage: UIImage(named: "placeholder_image"))
+                        cell.imageComponent.af.setImage(withURL: url!, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
                     }else{
                         cell.imageComponent.image = UIImage(named: "placeholder_image")
                     }
                 }else{
                     cell.imageComponent.image = UIImage(named: "placeholder_image")
                 }
+                
+                if let gifImageUrl = imageDataDic["url"] as? String, gifImageUrl.contains(".gif"){
+                    UIImage.gifImageWithURL(gifImageUrl, completion: { gifImage in
+                        DispatchQueue.main.async {
+                            cell.imageComponent.image = gifImage
+                            cell.imageComponent.contentMode = .scaleAspectFill
+                        }
+                        
+                    })
+                    
+                }
+                
                 if cell.playerViewController != nil{
                     cell.videoPlayerView.willRemoveSubview(cell.playerViewController.view)
                 }
             }
         }
            
-        
-        //
-        
-       // cell.component = self.components.object(at: (indexPath as NSIndexPath).row) as! Component //kk
-        //        cell.index = [indexPath.row]
-        
         if (((indexPath as NSIndexPath).row == 4) && (self.components.count > MAX_CELLS)) {
             cell.plusCountLabel.isHidden = false
             //            cell.plusCountLabel.text = [NSString stringWithFormat:@"+%lu", (long)self.components.count - MAX_CELLS]
@@ -201,7 +207,7 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
         if (self.viewingIndex == NSNotFound) {
             cell.isViewing = false
         } else {
-            //            cell.isViewing = indexPath.row == MIN(_viewingIndex, MAX_CELLS - 1)
+        
         }
         
         return cell
@@ -265,7 +271,7 @@ extension MultiImageBubbleView{
     @objc fileprivate func menuButtonAction(_ sender: UIButton!) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             let action1 = UIAlertAction(title: "Download", style: .default) { (action) in
-                print("Download is pressed.....")
+                
                 self.loadFileAsync(url: URL(string: self.componentItems.videoUrl!)!) { (isSaved) in
                     if isSaved{
                         print("Video is saved!")
@@ -301,8 +307,6 @@ extension MultiImageBubbleView{
 
         // your destination file url
         let destination = documentsUrl.appendingPathComponent(url.lastPathComponent)
-
-        print("downloading file from URL: \(url.absoluteString)")
         if FileManager().fileExists(atPath: destination.path) {
             print("The file already exists at path, deleting and replacing with latest")
 

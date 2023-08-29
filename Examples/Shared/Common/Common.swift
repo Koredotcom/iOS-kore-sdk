@@ -21,6 +21,9 @@ var showAttachmentSendButtonNotification = "ShowAttachmentSendButton"
 var dropDownTemplateNotification = "DropDownTemplateNotificationName"
 
 var showCustomTableTemplateNotification = "ShowCustomTableTemplateNotificationName"
+var pdfcTemplateViewNotification = "pdfShowViewNotification"
+var pdfcTemplateViewErrorNotification = "pdfShowErrorNotification"
+
 
 var reloadVideoCellNotification = "ReloadVideoCellNotification"
 
@@ -42,6 +45,10 @@ var jwtToken:String?
 var botHistoryIcon:String?
 var lastMessageID:String?
 
+var frameworkBundle:Bundle? {
+    let bundleId = "com.kore.rtc"
+    return Bundle(identifier: bundleId)
+}
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
@@ -103,4 +110,16 @@ open class Utilities: NSObject {
         }
         return nil
     }
+    
+    public static func base64ToImage(base64String: String?) -> UIImage{
+           if (base64String?.isEmpty)! {
+               return #imageLiteral(resourceName: "no_image_found")
+           }else {
+               // Separation part is optional, depends on your Base64String !
+               let tempImage = base64String?.components(separatedBy: ",")
+               let dataDecoded : Data = Data(base64Encoded: tempImage![1], options: .ignoreUnknownCharacters)!
+               let decodedimage = UIImage(data: dataDecoded)
+               return decodedimage!
+           }
+       }
 }

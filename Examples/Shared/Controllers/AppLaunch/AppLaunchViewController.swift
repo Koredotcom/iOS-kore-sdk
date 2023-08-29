@@ -288,7 +288,7 @@ extension AppLaunchViewController{
         let user = KREUser()
         user.userId = SDKConfiguration.widgetConfig.botId //userId
         user.accessToken = widgetJWTToken
-        user.server = SDKConfiguration.serverConfig.KORE_SERVER
+        user.server = "\(SDKConfiguration.serverConfig.WIDGET_SERVER)/"
         user.tokenType = "bearer"
         user.userEmail = SDKConfiguration.widgetConfig.identity
         user.headers = ["X-KORA-Client": KoraAssistant.shared.applicationHeader]

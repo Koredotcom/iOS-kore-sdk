@@ -330,6 +330,10 @@ open class KABotClient: NSObject {
         }else if (templateType == "custom_table")
         {
             return .custom_table
+        }else if (templateType == "advancedListTemplate"){
+            return .advancedListTemplate
+        }else if (templateType == "cardTemplate"){
+            return .cardTemplate
         }
         return .text
     }
@@ -444,6 +448,14 @@ open class KABotClient: NSObject {
                     case "audio":
                         if let dictionary = payload["payload"] as? [String: Any] {
                             let  componentType = Component(.audio)
+                            let optionsComponent: Component = componentType
+                            optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                            message.sentDate = object?.createdOn
+                            message.addComponent(optionsComponent)
+                        }
+                    case "link":
+                        if let dictionary = payload["payload"] as? [String: Any] {
+                            let  componentType = Component(.linkDownload)
                             let optionsComponent: Component = componentType
                             optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                             message.sentDate = object?.createdOn

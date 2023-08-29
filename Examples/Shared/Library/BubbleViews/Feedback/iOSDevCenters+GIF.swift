@@ -21,7 +21,15 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-
+func getImage(url: URL, completion: @escaping (Data?) -> Void) {
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let data = data{
+                completion(data)
+            } else {
+                completion(nil)
+            }
+        }.resume()
+    }
 
 extension UIImage {
     
@@ -34,19 +42,21 @@ extension UIImage {
         return UIImage.animatedImageWithSource(source)
     }
     
-    public class func gifImageWithURL(_ gifUrl:String) -> UIImage? {
-        guard let bundleURL:URL? = URL(string: gifUrl)
-            else {
-                print("image named \"\(gifUrl)\" doesn't exist")
-                return nil
+
+    public class func gifImageWithURL(_ gifUrl:String, completion: @escaping (UIImage?) -> Void) {
+        if let bundleURL:URL = URL(string: gifUrl){
+            getImage(url: bundleURL) { imageData in
+                if let imageData = imageData{
+                    completion(gifImageWithData(imageData))
+                }else{
+                    completion(nil)
+                }
+                
+            }
+            
         }
-        guard let imageData = try? Data(contentsOf: bundleURL!) else {
-            print("image named \"\(gifUrl)\" into NSData")
-            return nil
-        }
-        
-        return gifImageWithData(imageData)
     }
+    
     
     public class func gifImageWithName(_ name: String) -> UIImage? {
         guard let bundleURL = Bundle.main
