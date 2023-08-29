@@ -141,7 +141,7 @@ class KREWidgetRequestOperation: KREOperation {
         let headers = widgetManager.getRequestHeaders()
         let method = HTTPMethod(rawValue: httpMethod.uppercased())
         
-        let dataRequest = sessionManager.request(urlString, method: method, parameters: body, headers: headers)
+        let dataRequest = sessionManager.request(urlString, method: method, parameters: body, encoding: JSONEncoding.default, headers: headers)
         dataRequest.validate().responseJSON { [weak self] (response) in
             var success: Bool = false
             if let error = response.error {

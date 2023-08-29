@@ -62,7 +62,10 @@ public class KREAction: NSObject, Decodable, Encodable {
         
         
         if let valueInteger = try? values.decodeIfPresent(Int.self, forKey: .payload) {
-               payload = String(valueInteger!)
+               payload = String(valueInteger ?? -00)
+            if payload == "-00"{
+                payload = ""
+            }
         } else if let valueString = try? values.decodeIfPresent(String.self, forKey: .payload) {
                payload = valueString
         }
@@ -316,7 +319,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
                 var fittingSize = UIView.layoutFittingCompressedSize
                 fittingSize.width = width
                 let size = cell.systemLayoutSizeFitting(fittingSize, withHorizontalFittingPriority: UILayoutPriority(rawValue: 1000), verticalFittingPriority: UILayoutPriority(rawValue: 250))
-                height += size.height
+                height += size.height + 5.0 //kk 
             }
         }
         return height

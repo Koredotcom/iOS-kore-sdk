@@ -9,17 +9,15 @@
 import UIKit
 import CoreData
 import CoreLocation
-//import AFNetworking
-//import Mantle
 import KoreBotSDK
 import Intents
+import Alamofire
 
 public class KAAccount: NSObject {
     // MARK: - properties
     public var adminAccount: KAAdminAccount?
     public var currentSkill: KASkillMessage? {
         didSet {
-            //currentSkillChanged.value += 1
         }
     }
     var recentSkillsArr: [KASkillMessage]?
@@ -42,17 +40,40 @@ public class KAAccount: NSObject {
     var isContactSyncInProgress = false
     var jwtToken: String?
   
-   // var networkReachabilityStatus = AFNetworkReachabilityStatus.notReachable
+    //var networkReachabilityStatus = AFNetworkReachabilityStatus.notReachable
     
-//    var requestSessionManager: KAHTTPSessionManager = {
-//        let sessionManager = KAHTTPSessionManager(baseURL: URL(string: SDKConfiguration.serverConfig.JWT_SERVER))
-//        return sessionManager
-//    }()
-//
-//    var sessionManager: KAHTTPSessionManager = {
-//        let sessionManager = KAHTTPSessionManager(baseURL: URL(string: SDKConfiguration.serverConfig.JWT_SERVER))
-//        return sessionManager
-//    }()
+    static let APIManager: Session = {
+          let configuration = URLSessionConfiguration.default
+          configuration.timeoutIntervalForRequest = 20
+          let delegate = Session.default.delegate
+          let manager = Session.init(configuration: configuration,
+                                     delegate: delegate,
+                                     startRequestsImmediately: true,
+                                     cachedResponseHandler: nil)
+          return manager
+      }()
+    
+    var requestSessionManager: Session = {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 60
+        let delegate = Session.default.delegate
+        let sessionManager = Session.init(configuration: configuration,
+                                   delegate: delegate,
+                                   startRequestsImmediately: true,
+                                   cachedResponseHandler: nil)
+        return sessionManager
+    }()
+    
+    var sessionManager: Session = {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 60
+        let delegate = Session.default.delegate
+        let sessionManager = Session.init(configuration: configuration,
+                                   delegate: delegate,
+                                   startRequestsImmediately: true,
+                                   cachedResponseHandler: nil)
+        return sessionManager
+    }()
     
     var operationQueue = OperationQueue()
     
@@ -80,7 +101,7 @@ public class KAAccount: NSObject {
     }
 
     // MARK: - upload component
-    public func uploadComponent(_ component: Component, progress: ((_ progress: Double) -> Void)?, success: ((_ component: Component) -> Void)?, failure: ((_ error: Error?) -> Void)?) {        
+    public func uploadComponent(_ component: Component, progress: ((_ progress: Double) -> Void)?, success: ((_ component: Component) -> Void)?, failure: ((_ error: Error?) -> Void)?) {
         let componentOperation: KAComponentOperation = KAComponentOperation(component: component)
         componentOperation.account = self
         componentOperation.setCompletionBlock(progress: { (value) in
@@ -117,21 +138,21 @@ public class KAAccount: NSObject {
         downloadOperationQueue.cancelAllOperations()
     }
     
-    // MARK: - cancel all tasks
-    func suspendAllTasks() {
+//    // MARK: - cancel all tasks
+//    func suspendAllTasks() {
 //        requestSessionManager.suspendAllTasks()
 //        sessionManager.suspendAllTasks()
-    }
-    
-    func resumeAllTasks() {
-        for dataTask in pendingTasks {
-            dataTask.resume()
-        }
-        pendingTasks.removeAll()
-    }
-    
-    func cancelAllTasks() {
+//    }
+//
+//    func resumeAllTasks() {
+//        for dataTask in pendingTasks {
+//            dataTask.resume()
+//        }
+//        pendingTasks.removeAll()
+//    }
+//
+//    func cancelAllTasks() {
 //        requestSessionManager.cancelAllTasks()
 //        sessionManager.cancelAllTasks()
-    }
+//    }
 }

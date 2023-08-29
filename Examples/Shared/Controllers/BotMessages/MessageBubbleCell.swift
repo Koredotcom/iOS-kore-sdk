@@ -25,7 +25,7 @@ class MessageBubbleCell : UITableViewCell {
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.font = UIFont(name: "HelveticaNeue", size: 10.0)
         dateLabel.textColor = .lightGray
-        dateLabel.isHidden = false
+        dateLabel.isHidden = true
         return dateLabel
     }()
     
@@ -114,11 +114,11 @@ class MessageBubbleCell : UITableViewCell {
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[userImageView(30)]-8-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[userImageView(30)]-4-|", options:[], metrics:nil, views:views))
        // self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[bubbleContainerView]", options:[], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[dateLabel(21)]-0-[bubbleContainerView]", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[dateLabel(0)]-0-[bubbleContainerView]", options:[], metrics:nil, views:views))
 
         self.bubbleBottomConstraint = NSLayoutConstraint(item:self.contentView, attribute:.bottom, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.bottom, multiplier:1.0, constant:4.0)
         self.bubbleBottomConstraint.priority = UILayoutPriority.defaultHigh
-        self.bubbleLeadingConstraint = NSLayoutConstraint(item:self.bubbleContainerView, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier:1.0, constant:45.0)
+        self.bubbleLeadingConstraint = NSLayoutConstraint(item:self.bubbleContainerView as Any, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier:1.0, constant:45.0)
         self.bubbleLeadingConstraint.priority = UILayoutPriority.defaultHigh
         self.bubbleTrailingConstraint = NSLayoutConstraint(item:self.contentView, attribute:.trailing, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.trailing, multiplier:1.0, constant:16.0)
         self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultLow
@@ -147,8 +147,8 @@ class MessageBubbleCell : UITableViewCell {
             self.bubbleView = BubbleView.bubbleWithType(bubbleType())
             self.bubbleContainerView.addSubview(self.bubbleView)
             
-            self.bubbleContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": self.bubbleView]))
-            self.bubbleContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": self.bubbleView]))
+            self.bubbleContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": self.bubbleView as Any]))
+            self.bubbleContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": self.bubbleView as Any]))
         }
         
         MessageBubbleCell.setComponents(components, bubbleView:self.bubbleView)
@@ -219,7 +219,14 @@ class TextBubbleCell : MessageBubbleCell {
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
             self.bubbleTrailingConstraint.constant = 45
-            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            if (tailPosition == .left) {
+                self.bubbleLeadingConstraint.priority = UILayoutPriority.defaultHigh
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultLow
+            } else {
+                self.bubbleLeadingConstraint.priority = UILayoutPriority.defaultLow
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+                
+            }
         }
     }
 }

@@ -44,6 +44,7 @@ var attachmentKeybord = false
 var jwtToken:String?
 var botHistoryIcon:String?
 var lastMessageID:String?
+var history = true
 
 var frameworkBundle:Bundle? {
     let bundleId = "com.kore.rtc"

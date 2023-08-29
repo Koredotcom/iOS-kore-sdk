@@ -218,6 +218,7 @@ open class KABotClient: NSObject {
         }
         
         botClient.onMessage = { [weak self] (object) in
+            history = false
             let message = self?.onReceiveMessage(object: object)
             self?.addMessages(message?.0, message?.1)
         }
@@ -356,6 +357,21 @@ open class KABotClient: NSObject {
             message.iconUrl = iconUrl
         }else{
             message.iconUrl = botHistoryIcon
+        }
+        
+        if !history{
+            if SDKConfiguration.botConfig.enableAckDelivery{
+                let key = object?.botkey
+                let timeStamp = object?.timestamp
+                let ackDic:[String: Any] = [
+                    "clientMessageId": timeStamp as Any,
+                    "type": "ack",
+                    "replyto": timeStamp as Any,
+                    "status": "delivered",
+                    "key": key as Any,
+                    "id": timeStamp as Any]
+                botClient.sendACK(ackDic: ackDic)
+            }
         }
         
         guard let messages = object?.messages, messages.count > 0 else {
@@ -688,7 +704,7 @@ open class KABotClient: NSObject {
     
     // MARK: - insert or update messages
     func insertOrUpdateHistoryMessages(_ messages: Array<[String: Any]>) {
-        
+        history = true
         let botMessages = Mapper<BotMessages>().mapArray(JSONArray: messages)
         guard botMessages.count > 0 else {
             return

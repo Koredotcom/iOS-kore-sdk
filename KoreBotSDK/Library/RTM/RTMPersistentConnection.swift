@@ -252,6 +252,20 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
         }
     }
     
+    // MARK: sending ACK
+    open func sendACK(ackDic: [String: Any]?) {
+        if (isConnected) {
+            print("Socket is in OPEN state")
+            var dictionary: NSMutableDictionary = NSMutableDictionary()
+            dictionary =  NSMutableDictionary(dictionary: ackDic ?? [:])
+            debugPrint("send ACK: \(dictionary)")
+            let jsonData = try! JSONSerialization.data(withJSONObject: dictionary, options: JSONSerialization.WritingOptions.prettyPrinted)
+            self.websocket?.write(data: jsonData)
+        } else {
+            print("Socket is in CONNECTING / CLOSING / CLOSED state")
+        }
+    }
+    
     // MARK: helpers
     func convertStringToDictionary(_ text: String) -> [String:AnyObject]? {
         if let data = text.data(using: String.Encoding.utf8) {

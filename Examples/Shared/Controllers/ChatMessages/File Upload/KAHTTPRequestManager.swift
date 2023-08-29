@@ -7,9 +7,8 @@
 //
 
 import UIKit
-//import AFNetworking
-//import Mantle
 import KoreBotSDK
+import Alamofire
 
 open class KAHTTPRequestManager: NSObject {
     static var instance: KAHTTPRequestManager!
@@ -26,38 +25,43 @@ open class KAHTTPRequestManager: NSObject {
 // MARK: - requests
 extension KAAccount {
     // MARK: - check networkReachability
-//    public func networkReachability(shouldTriggerNotificaiton: Bool = true) -> Bool {
-//        return networkReachability(with: "", shouldTriggerNotificaiton: shouldTriggerNotificaiton)
-//    }
-    /*
+    public func networkReachability(shouldTriggerNotificaiton: Bool = true) -> Bool {
+        return networkReachability(with: "", shouldTriggerNotificaiton: shouldTriggerNotificaiton)
+    }
+    
     func networkReachability(with message: String?, shouldTriggerNotificaiton: Bool) -> Bool {
         var isReachable = true
-        let reachabilityStatus = AFNetworkReachabilityManager.shared().networkReachabilityStatus
-        switch reachabilityStatus {
-        case AFNetworkReachabilityStatus.notReachable:
-            isReachable = false
-        default:
-            break
-        }
+        let networkReachabilityManager = NetworkReachabilityManager.default
+        networkReachabilityManager?.startListening(onUpdatePerforming: { (status) in
+            print("Network reachability: \(status)")
+            switch status {
+            case .notReachable:
+                isReachable = false
+            default:
+                break
+            }
+            
+            KABotClient.shared.setReachabilityStatusChange(status)
+        })
+        
         if isReachable == false && shouldTriggerNotificaiton {
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: Notification.Name("KANetworkNotReachableNotification"), object: nil, userInfo: ["message": message ?? ""])
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: Notification.Name("KANetworkNotReachableNotification"), object: nil, userInfo: ["message": message ?? ""])
             }
         }
         return isReachable
     }
 
     // MARK: - upload components
-    func requestSerializer() -> AFJSONRequestSerializer {
-        let requestSerializer = AFJSONRequestSerializer()
-        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-        requestSerializer.setValue(KoraAssistant.shared.applicationHeader, forHTTPHeaderField: "X-KORA-Client")
+    func requestSerializerHeaders() -> HTTPHeaders {
         let tokenType = "bearer"
-        if let accessToken = AcccesssTokenn { //authInfo?.tokenType authInfo?.accessToken
-            requestSerializer.setValue("\(tokenType) \(accessToken)", forHTTPHeaderField: "Authorization")
-        }
-        return requestSerializer
+        let authorizationStr = "\(tokenType) \(accessToken)"
+        let headers: HTTPHeaders = [
+            "Connection": "Keep-Alive",
+            "X-KORA-Client": KoraAssistant.shared.applicationHeader,
+            "Authorization": authorizationStr
+        ]
+        return headers
     }
     
     // MARK: Add Query Params
@@ -75,6 +79,6 @@ extension KAAccount {
         })
         
         return urlComponents.string ?? urlString
-    }*/
+    }
 }
  

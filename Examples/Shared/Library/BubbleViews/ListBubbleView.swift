@@ -16,7 +16,7 @@ class ListBubbleView: BubbleView {
     var reloadTable = false
     public var optionsAction: ((_ text: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
-    var spaceing = 10.0
+    var spaceing = 0.0
     
     override func initialize() {
         super.initialize()

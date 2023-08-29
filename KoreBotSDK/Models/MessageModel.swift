@@ -40,6 +40,8 @@ open class BotMessageModel: Mappable {
     open var messages: Array<MessageModel> = [MessageModel]()
     open var createdOn: Date?
     open var messageId: String?
+    open var botkey: String?
+    open var timestamp: NSNumber?
     
     // MARK: -
     public init() {
@@ -55,6 +57,8 @@ open class BotMessageModel: Mappable {
         iconUrl <- map["icon"]
         messages <- map["message"]
         messageId <- map["messageId"]
+        botkey <- map["key"]
+        timestamp <- map["timestamp"]
         
         let dateFormatter: DateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
