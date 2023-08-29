@@ -44,6 +44,6 @@ Pod::Spec.new do |s|
 	ss.dependency 'AssetsPickerViewController'
 	ss.dependency 'SwiftUTI'
 	ss.dependency 'emojione-ios'
-        ss.ios.frameworks = 'SystemConfiguration'
+    ss.ios.frameworks = 'SystemConfiguration'
     end
 end
