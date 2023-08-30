@@ -95,7 +95,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             self.colorDropDown
         ]
     }()
-    
+    var loaderImageUrl = ""
+    var loaderImage:UIImage!
     
     let bundleImage = Bundle(for: KREWidgetsViewController.self)
     var phassetToUpload: PHAsset?
@@ -1592,7 +1593,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         info.setValue(botId, forKey: "botId");
         info.setValue("kora", forKey: "imageName");
         
-        self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 2.0)
+        self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 2.0, loaderImage: nil)
     }
     
     // MARK: show TableTemplateView
@@ -1801,7 +1802,7 @@ extension ChatMessagesViewController {
 extension ChatMessagesViewController: KABotClientDelegate {
     func showTypingStatusForBot() {
         self.typingStatusView?.isHidden = true
-        self.typingStatusView?.addTypingStatus(forContact: [:], forTimeInterval: 0.5)
+        self.typingStatusView?.addTypingStatus(forContact: [:], forTimeInterval: 0.5, loaderImage: nil)
     }
     
     func hideTypingStatusForBot(){
@@ -1828,7 +1829,29 @@ extension ChatMessagesViewController: KABotClientDelegate {
         }
         
         info.setValue(urlString ?? "kora", forKey: "imageName");
-        self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5)
+        //self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5)
+        if let icon = botHistoryIcon{
+                    if self.loaderImage == nil{
+                        account?.sessionManager.request(icon, method: .get).response{ response in
+                           switch response.result {
+                            case .success(let responseData):
+                               if let data = responseData{
+                                   self.loaderImage = UIImage(data: data, scale:1)!
+                                   self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5, loaderImage: self.loaderImage)
+                               }else{
+                                   self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5, loaderImage: nil)
+                               }
+                            case .failure(let error):
+                                print("error--->",error)
+                               self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5, loaderImage: nil)
+                            }
+                        }
+                    }else{
+                        self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5, loaderImage: self.loaderImage)
+                    }
+                }else{
+                    self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5, loaderImage: nil)
+                }
     }
     
     @objc func stopTypingStatusForBot(){

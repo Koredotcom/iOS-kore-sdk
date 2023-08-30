@@ -355,6 +355,7 @@ open class KABotClient: NSObject {
         
         if let iconUrl = object?.iconUrl {
             message.iconUrl = iconUrl
+            botHistoryIcon = iconUrl
         }else{
             message.iconUrl = botHistoryIcon
         }

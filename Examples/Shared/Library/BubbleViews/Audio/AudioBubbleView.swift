@@ -100,15 +100,21 @@ class AudioBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         
         
         cell.videoPlayerView.isHidden = false
-        let url =  imageDataDic["url"] as? String //componentItems.audioUrl
-        let playerURL = URL(string:url ?? "")
-        cell.player = AVPlayer(url: playerURL!)
-        cell.playerViewController = AVPlayerViewController()
-        cell.playerViewController.player = cell.player
-        cell.playerViewController.view.frame = cell.videoPlayerView.frame
-        cell.playerViewController.player?.pause()
-        cell.videoPlayerView.addSubview(cell.playerViewController.view)
-        cell.playerViewController.view.backgroundColor = .clear
+                var audioUrl = ""
+                if let url =  imageDataDic["url"] {
+                    audioUrl = url as! String
+                }
+                if let url =  imageDataDic["audioUrl"] {
+                    audioUrl = url as! String
+                }//componentItems.audioUrl
+                let playerURL = URL(string: audioUrl)
+                cell.player = AVPlayer(url: playerURL!)
+                cell.playerViewController = AVPlayerViewController()
+                cell.playerViewController.player = cell.player
+                cell.playerViewController.view.frame = cell.videoPlayerView.frame
+                cell.playerViewController.player?.pause()
+                cell.videoPlayerView.addSubview(cell.playerViewController.view)
+                cell.playerViewController.view.backgroundColor = .lightGray
     
     
         // cell.component = self.components.object(at: (indexPath as NSIndexPath).row) as! Component //kk

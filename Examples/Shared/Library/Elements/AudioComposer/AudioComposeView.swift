@@ -64,19 +64,19 @@ class AudioComposeView: UIView {
         self.audiolabel = UILabel()
         self.audiolabel.text = "Tap to speak"
         self.audiolabel.font = UIFont(name: "HelveticaNeue", size: 11.0)!
-        self.audiolabel.textColor = .white
+        self.audiolabel.textColor = .black
         self.audiolabel.textAlignment = .center
         self.audiolabel.translatesAutoresizingMaskIntoConstraints = false
         self.animateBGView.addSubview(self.audiolabel)
         
-        self.animateBGView.addConstraint(NSLayoutConstraint.init(item: self.audioImageView, attribute: .centerY, relatedBy: .equal, toItem: self.animateBGView, attribute: .centerY, multiplier: 1.0, constant: 0.0))
-        self.animateBGView.addConstraint(NSLayoutConstraint.init(item: self.audioImageView, attribute: .centerX, relatedBy: .equal, toItem: self.animateBGView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-        self.animateBGView.addConstraint(NSLayoutConstraint.init(item: self.audioImageView, attribute: .width, relatedBy: .equal, toItem: self.audioImageView, attribute: .height, multiplier: 1.0, constant: 0.0))
-        self.audioImageWidthConstraint = NSLayoutConstraint.init(item: self.audioImageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40.0)
+        self.animateBGView.addConstraint(NSLayoutConstraint.init(item: self.audioImageView as Any, attribute: .centerY, relatedBy: .equal, toItem: self.animateBGView, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        self.animateBGView.addConstraint(NSLayoutConstraint.init(item: self.audioImageView as Any, attribute: .centerX, relatedBy: .equal, toItem: self.animateBGView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
+        self.animateBGView.addConstraint(NSLayoutConstraint.init(item: self.audioImageView as Any, attribute: .width, relatedBy: .equal, toItem: self.audioImageView, attribute: .height, multiplier: 1.0, constant: 0.0))
+        self.audioImageWidthConstraint = NSLayoutConstraint.init(item: self.audioImageView as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40.0)
         self.animateBGView.addConstraint(self.audioImageWidthConstraint)
         
-        self.animateBGView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[audiolabel]-|", options:[], metrics:nil, views:["audiolabel": self.audiolabel]))
-        self.animateBGView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[audiolabel]|", options:[], metrics:nil, views:["audiolabel": self.audiolabel]))
+        self.animateBGView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[audiolabel]-|", options:[], metrics:nil, views:["audiolabel": self.audiolabel as Any]))
+        self.animateBGView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[audiolabel]|", options:[], metrics:nil, views:["audiolabel": self.audiolabel as Any]))
         
         self.keyboardButton = UIButton.init(frame: CGRect.zero)
         self.keyboardButton.setTitle("", for: .normal)
@@ -98,28 +98,28 @@ class AudioComposeView: UIView {
         self.playbackButton.clipsToBounds = true
         self.addSubview(self.playbackButton)
         
-        let views: [String : Any] = ["animateBGView": self.animateBGView, "audioActionView": self.audioActionView, "keyboardButton": self.keyboardButton, "playbackButton": self.playbackButton]
+        let views: [String : Any] = ["animateBGView": self.animateBGView as Any, "audioActionView": self.audioActionView as Any, "keyboardButton": self.keyboardButton as Any, "playbackButton": self.playbackButton as Any]
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[animateBGView(100)]", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[animateBGView(70)]", options:[], metrics:nil, views:views))
-        self.addConstraint(NSLayoutConstraint.init(item: self.animateBGView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-        self.addConstraint(NSLayoutConstraint.init(item: self.animateBGView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint.init(item: self.animateBGView as Any, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint.init(item: self.animateBGView as Any, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[audioActionView(100)]", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[audioActionView(70)]", options:[], metrics:nil, views:views))
-        self.addConstraint(NSLayoutConstraint.init(item: self.audioActionView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-        self.addConstraint(NSLayoutConstraint.init(item: self.audioActionView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint.init(item: self.audioActionView as Any, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint.init(item: self.audioActionView as Any, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         
         let audioGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(self.audioButtonAction))
         self.audioActionView.addGestureRecognizer(audioGestureRecognizer)
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[keyboardButton(50)]", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[keyboardButton(50)]", options:[], metrics:nil, views:views))
-        self.addConstraint(NSLayoutConstraint.init(item: self.keyboardButton, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint.init(item: self.keyboardButton as Any, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[playbackButton(60)]-10-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[playbackButton(60)]", options:[], metrics:nil, views:views))
-        self.addConstraint(NSLayoutConstraint.init(item: self.playbackButton, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint.init(item: self.playbackButton as Any, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
     }
     
     override var intrinsicContentSize: CGSize {
