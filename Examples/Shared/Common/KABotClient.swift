@@ -636,7 +636,7 @@ open class KABotClient: NSObject {
     open func datastorePath() -> URL {
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let url = urls[urls.count-1] as NSURL
-        return url.appendingPathComponent("Bots.sqlite")!
+        return url.appendingPathComponent(".Bots.sqlite")!
     }
     
     // MARK: - set hash tags
