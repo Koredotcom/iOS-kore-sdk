@@ -138,21 +138,4 @@ public class KAAccount: NSObject {
         downloadOperationQueue.cancelAllOperations()
     }
     
-//    // MARK: - cancel all tasks
-//    func suspendAllTasks() {
-//        requestSessionManager.suspendAllTasks()
-//        sessionManager.suspendAllTasks()
-//    }
-//
-//    func resumeAllTasks() {
-//        for dataTask in pendingTasks {
-//            dataTask.resume()
-//        }
-//        pendingTasks.removeAll()
-//    }
-//
-//    func cancelAllTasks() {
-//        requestSessionManager.cancelAllTasks()
-//        sessionManager.cancelAllTasks()
-//    }
 }

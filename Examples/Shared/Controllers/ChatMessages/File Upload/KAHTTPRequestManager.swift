@@ -64,7 +64,6 @@ extension KAAccount {
         return headers
     }
     
-    // MARK: Add Query Params
     // MARK: add query parameters
     func addQueryString(to urlString: String, with parameters: [String: Any]?) -> String {
         guard var urlComponents = URLComponents(string: urlString), let parameters = parameters, !parameters.isEmpty else {

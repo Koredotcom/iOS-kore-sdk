@@ -13,7 +13,7 @@ import ObjectMapper
 import Alamofire
 
 
-public protocol KABotClientDelegate: class {
+public protocol KABotClientDelegate: AnyObject {
     func botConnection(with connectionState: BotClientConnectionState)
     func showTypingStatusForBot()
     func hideTypingStatusForBot()

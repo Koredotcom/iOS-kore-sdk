@@ -197,7 +197,7 @@ class MessageBubbleCell : UITableViewCell {
         return height + 12.0
     }
     @objc func updateImage(notification:Notification){
-        self.userImageView.image = UIImage(named:"john")!
+        self.userImageView.image = UIImage(named:"john")
     }
     
     // MARK:- deinit

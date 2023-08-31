@@ -168,69 +168,6 @@ class KAComponentOperation: KAOperation {
         }
     }
     
-    //    func chunkRequest(chunk: Chunk, block: ((_ status: Bool) -> Void)?) {
-    //        guard let account = account, let fileToken = component.fileMeta.fileToken else {
-    //            block?(false)
-    //            return
-    //        }
-    //        let authorization = "bearer \(AcccesssTokenn ?? "")"
-    //        _ = ["Authorization": authorization]
-    //
-    //        let fileName = component.fileMeta.fileName
-    //        let fileType = component.templateType
-    //        let fileExtension = component.fileMeta.fileExtn!
-    //        let filePath = "\(KAFileUtilities.shared.path(for: fileName!, of: fileType!, with: fileExtension))"
-    //        let fileHandle: FileHandle! = FileHandle(forReadingAtPath: filePath)
-    //        if fileHandle == nil {
-    //            print("KAComponentOperation :: chunkUploadOperationWithChunkInfo :: File doesnt exist at path : \(filePath)")
-    //            fileHandle.closeFile()
-    //            block?(false)
-    //            return
-    //        }
-    //
-    //        fileHandle.seek(toFileOffset: UInt64(chunk.offset))
-    //        let chunkedData = fileHandle.readData(ofLength: chunk.size)
-    //        //let parameters: [String: Any] = ["fileToken": fileToken, "chunkNo": chunk.number]
-    //        let parameters: [String: Any] = ["fileExtension": fileExtension, "fileContext": "workflows","thumbnailUpload": false, "filename": fileName!]
-    //
-    //        let requestSerializer = account.requestSerializer()
-    //        if checkBotUpload() {
-    //            requestSerializer.setValue(authorization, forHTTPHeaderField: "Authorization")
-    //        }
-    //
-    //        let requestUrl = fileUploadUrl()
-    //
-    //        let request = requestSerializer.multipartFormRequest(withMethod: "POST", urlString: requestUrl, parameters: parameters, constructingBodyWith: { [unowned self] (formData) in
-    //            formData.appendPart(withFileData: chunkedData, name: "file", fileName: self.component.fileMeta.fileName!, mimeType: "application/octet-stream")
-    //        }, error: nil)
-    //        let sessionManager = account.sessionManager
-    //        sessionManager.requestSerializer = requestSerializer
-    //        sessionManager.responseSerializer = AFJSONResponseSerializer.init()
-    //
-    //        let uploadTask = sessionManager.uploadTask(withStreamedRequest: request as URLRequest, progress: { [unowned self] (progress) in
-    //            chunk.uploadProgress = progress.fractionCompleted
-    //            self.updateProgress()
-    //        }) { [unowned self] (response, responseObject, error) in
-    //            self.error = error
-    //            let success = (error == nil) ? true : false
-    //            chunk.uploaded = success
-    //            //kk
-    //            if success == true, let dictionary = responseObject as? [String: Any] {
-    //                if let fileId = dictionary["fileId"] {
-    //                    self.component.componentFileId = fileId as? String
-    //                }
-    //                if let hash = dictionary["hash"] {
-    //                    self.component.componentHash = hash as? String
-    //                }
-    //            }
-    //            self.mergeResponseProgress = 1.0
-    //            self.updateProgress()//kk
-    //            block?(success)
-    //        }
-    //        uploadTask.resume()
-    //    }
-    //
-    
     func chunkRequest(chunk: Chunk, block: ((_ status: Bool) -> Void)?){
         
         let authorization = "bearer \(AcccesssTokenn ?? "")"

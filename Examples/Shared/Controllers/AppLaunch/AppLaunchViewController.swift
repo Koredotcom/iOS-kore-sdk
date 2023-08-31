@@ -176,50 +176,6 @@ class AppLaunchViewController: UIViewController {
         self.navigationController?.pushViewController(botViewController, animated: false)
     }
     
-    // MARK: get JWT token request
-    // NOTE: Invokes a webservice and gets the JWT token.
-    //       Developer has to host a webservice, which generates the JWT and that should be called from this method.
-    func getJwTokenWithClientId(_ clientId: String!, clientSecret: String!, identity: String!, isAnonymous: Bool!, success:((_ jwToken: String?) -> Void)?, failure:((_ error: Error) -> Void)?) {
-        
-        // Session Configuration
-       /* let configuration = URLSessionConfiguration.default
-        
-        //Manager
-        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-        
-        // NOTE: You must set your URL to generate JWT.
-        let urlString: String = SDKConfiguration.serverConfig.koreJwtUrl()
-        let requestSerializer = AFJSONRequestSerializer()
-        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-        
-        // Headers: {"alg": "RS256","typ": "JWT"}
-        requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
-        requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
-        
-        let parameters: NSDictionary = ["clientId": clientId as String,
-                                        "clientSecret": clientSecret as String,
-                                        "identity": identity as String,
-                                        "aud": "https://idproxy.kore.com/authorize",
-                                        "isAnonymous": isAnonymous as Bool]
-        
-        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
-        sessionManager?.requestSerializer = requestSerializer
-        sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-            if (responseObject is NSDictionary) {
-                let dictionary: NSDictionary = responseObject as! NSDictionary
-                let jwToken: String = dictionary["jwt"] as! String
-                success?(jwToken)
-            } else {
-                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
-                failure?(error)
-            }
-        }) { (sessionDataTask, error) in
-            failure?(error)
-        }*/
-        
-    }
-    
     func showAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -246,6 +202,10 @@ class AppLaunchViewController: UIViewController {
     }
 }
 extension AppLaunchViewController{
+    // MARK: get JWT token request
+    // NOTE: Invokes a webservice and gets the JWT token.
+    //       Developer has to host a webservice, which generates the JWT and that should be called from this method.
+    
     func getWidgetJwTokenWithClientId(_ clientId: String!, clientSecret: String!, identity: String!, isAnonymous: Bool!, success:((_ jwToken: String?) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
         let urlString = SDKConfiguration.serverConfig.koreJwtUrl()

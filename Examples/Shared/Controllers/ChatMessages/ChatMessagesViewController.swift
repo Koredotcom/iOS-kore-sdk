@@ -132,7 +132,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             panelCollectionViewContainerHeightConstraint.constant = 0
         }
         
-        
         isSpeakingEnabled = true
         self.speechSynthesizer = AVSpeechSynthesizer()
         
@@ -327,7 +326,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.audioComposeContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[audioComposeView]|", options:[], metrics:nil, views:["audioComposeView" : self.audioComposeView!]))
         self.audioComposeContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[audioComposeView]|", options:[], metrics:nil, views:["audioComposeView" : self.audioComposeView!]))
         
-        self.audioComposeContainerHeightConstraint = NSLayoutConstraint.init(item: self.audioComposeContainerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.0)
+        self.audioComposeContainerHeightConstraint = NSLayoutConstraint.init(item: self.audioComposeContainerView as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.0)
         self.view.addConstraint(self.audioComposeContainerHeightConstraint)
         self.audioComposeContainerHeightConstraint.isActive = false
         
@@ -448,7 +447,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.typingStatusView?.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.typingStatusView!)
         
-        let views: [String: Any] = ["typingStatusView" : self.typingStatusView, "composeBarContainerView" : self.composeBarContainerView]
+        let views: [String: Any] = ["typingStatusView" : self.typingStatusView as Any, "composeBarContainerView" : self.composeBarContainerView as Any]
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(40)-[typingStatusView]", options:[], metrics:nil, views: views)) //-20
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[typingStatusView(40)][composeBarContainerView]", options:[], metrics:nil, views: views))
         
@@ -1481,16 +1480,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func populateFeedbackSliderView(with message: KREMessage?) {
-        var messageId = ""
         if message?.templateType == (ComponentType.feedbackTemplate.rawValue as NSNumber) {
             let component: KREComponent = message!.components![0] as! KREComponent
             print(component)
             if (!component.isKind(of: KREComponent.self)) {
                 return;
             }
-            if (component.message != nil) {
-                messageId = component.message!.messageId!
-            }
+            
             if ((component.componentDesc) != nil) {
                 let jsonString = component.componentDesc
                 let feedbackViewController = FeedbackSliderViewController(dataString: jsonString!)
@@ -1810,7 +1806,7 @@ extension ChatMessagesViewController: KABotClientDelegate {
     }
     
     // MARK: - KABotlientDelegate methods
-    open func botConnection(with connectionState: BotClientConnectionState) {
+    public func botConnection(with connectionState: BotClientConnectionState) {
         updateNavBarPrompt()
         
     }
@@ -1829,7 +1825,6 @@ extension ChatMessagesViewController: KABotClientDelegate {
         }
         
         info.setValue(urlString ?? "kora", forKey: "imageName");
-        //self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5)
         if let icon = botHistoryIcon{
                     if self.loaderImage == nil{
                         account?.sessionManager.request(icon, method: .get).response{ response in
@@ -1960,7 +1955,7 @@ extension ChatMessagesViewController {
         panelItemViewController.updatePanel(with: panelItem)
     }
     // MARK: - tryout
-    open func startTryOut() {
+    public func startTryOut() {
         
     }
     // MARK: -
@@ -2164,71 +2159,7 @@ extension ChatMessagesViewController: AssetsPickerViewControllerDelegate {
             }
         }
     }
-    
-    /*
-     func sizeLimitCheck(bytes: Int64) -> Bool {
-     guard let usage = account?.usageLimit else {
-     return false
-     }
-     let limit = usage.filter {$0.type == "attachment"}
-     let kbSize = bytes / (1000 * 1000)
-     if kbSize > (limit.first)?.size ?? 0 {
-     return false
-     } else {
-     return true
-     }
-     }
-     
-     func addFreemium() {
-     guard let usage = account?.usageLimit,
-     let type = account?.userInfo?.accountType?.intValue else {
-     return
-     }
-     
-     let accountType = UserAccountType(rawValue: type)
-     let limit = usage.filter {$0.type == "attachment"}
-     let fremmium = KREFremimumAlertViewController()
-     switch accountType {
-     case .personal:
-     fremmium.feedbackContainerView.titleLabel.text = "File uploads are limited to \((limit.first)?.size ?? 0) MB under the free plan. Try using your Enterprise account with a paid version for enhanced limits."
-     fremmium.feedbackContainerView.bottomCollectionView.utterances = ["Continue", "Learn More"]
-     default:
-     fremmium.feedbackContainerView.titleLabel.text = "File uploads are limited to \((limit.first)?.size ?? 0) MB under the free plan"
-     if let roles = account?.userInfo?.roles, roles.count > 0 {
-     fremmium.feedbackContainerView.bottomCollectionView.utterances = ["Upgrade", "Learn More"]
-     } else {
-     fremmium.feedbackContainerView.bottomCollectionView.utterances = ["Request for upgrade", "Learn More"]
-     }
-     }
-     fremmium.feedbackContainerView.bottomCollectionView.actionHandler = { [weak self] (button) in
-     fremmium.dismissAction = nil
-     switch button {
-     case "Learn More":
-     let urlString = SDKConfiguration.serverConfig.learnMoreUrl
-     self?.openLimitAction(urlString: urlString)
-     case "Request for upgrade":
-     self?.openRequestToProgrssAction()
-     case "Upgrade":
-     fremmium.dismissAction = nil
-     self?.showAlertToAdmin()
-     case "Continue":
-     let urlString = SDKConfiguration.serverConfig.tryKoraUrl
-     self?.openLimitAction(urlString: urlString)
-     default:
-     break
-     }
-     }
-     if limit.first?.isEnterprise(usageLimits: usage) ?? false {
-     fremmium.feedbackContainerView.bottomCollectionView.isHidden = true
-     fremmium.feedbackContainerView.titleLabel.text = "File uploads are limited to \((limit.first)?.size ?? 0) MB under the Enterprise Plan"
-     }
-     fremmium.modalPresentationStyle = .overCurrentContext
-     self.present(fremmium, animated: true, completion: nil)
-     }
-     
-     */
-    
-    
+
     func uploadAttachment(text: String) {
         // do your job with selected assets
         
