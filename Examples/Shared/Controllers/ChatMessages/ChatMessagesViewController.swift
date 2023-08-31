@@ -517,6 +517,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }else if (templateType == "custom_table")
         {
             return .custom_table
+        }else if (templateType == "advancedListTemplate"){
+            return .advancedListTemplate
+        }else if (templateType == "cardTemplate"){
+            return .cardTemplate
         }
         return .text
     }
@@ -599,12 +603,72 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         textComponent.payload = tText
                         textMessage?.addComponent(textComponent)
                     }
+                    if templateType == "SYSTEM" || templateType == "live_agent"{
+                        let textComponent = Component(.text)
+                        let text = dictionary["text"] as? String ?? ""
+                        textComponent.payload = text
+                        ttsBody = text
+                        message.addComponent(textComponent)
+                    }else{
+                        let optionsComponent: Component = Component(componentType)
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
                     
-                    let optionsComponent: Component = Component(componentType)
-                    optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                    message.sentDate = object?.createdOn
-                    message.addComponent(optionsComponent)
-                } else if (type == "error") {
+                }else if (type == "image"){
+                    
+                    if let dictionary = payload["payload"] as? [String: Any] {
+                        let optionsComponent: Component = Component(.image)
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
+                }
+                else if (type == "message"){
+                    
+                    if let dictionary = payload["payload"] as? [String: Any] {
+                        let  componentType = dictionary["audioUrl"] != nil ? Component(.audio) : Component(.video)
+                        let optionsComponent: Component = componentType
+                        if let speechText = dictionary["text"] as? String{
+                            ttsBody = speechText
+                        }
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
+                }
+                else if (type == "video"){
+                    
+                    if let _ = payload["payload"] as? [String: Any] {
+                        let  componentType = Component(.video)
+                        let optionsComponent: Component = componentType
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: payload)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
+                }
+                else if (type == "audio"){
+                    
+                    if let dictionary = payload["payload"] as? [String: Any] {
+                        let  componentType = Component(.audio)
+                        let optionsComponent: Component = componentType
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
+                }
+                else if (type == "link"){
+                    
+                    if let dictionary = payload["payload"] as? [String: Any] {
+                        let  componentType = Component(.linkDownload)
+                        let optionsComponent: Component = componentType
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
+                    
+                }else if (type == "error") {
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
                     let errorComponent: Component = Component(.error)
                     errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
@@ -816,6 +880,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         
         NotificationCenter.default.addObserver(self, selector: #selector(showCustomTableTemplateView), name: NSNotification.Name(rawValue: showCustomTableTemplateNotification), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(showPDFViewController), name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showPDFErrorMeesage), name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -844,8 +911,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showCustomTableTemplateNotification), object: nil)
 
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: reloadVideoCellNotification), object: nil)
-
-        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -1350,13 +1417,18 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             }
             if ((component.componentDesc) != nil) {
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
-                let quickReplies: Array<Dictionary<String, String>> = jsonObject["quick_replies"] as! Array<Dictionary<String, String>>
+                let quickReplies: Array<Dictionary<String, Any>> = jsonObject["quick_replies"] as? Array<Dictionary<String, Any>> ?? []
                 var words: Array<Word> = Array<Word>()
                 
                 for dictionary in quickReplies {
-                    let title: String = dictionary["title"] != nil ? dictionary["title"]! : ""
-                    let payload: String = dictionary["payload"] != nil ? dictionary["payload"]! : ""
-                    let imageURL: String = dictionary["image_url"] != nil ? dictionary["image_url"]! : ""
+                    let title: String = dictionary["title"] as? String ?? ""
+                    var payload = ""
+                    if let payloadStr = dictionary["payload"] as? [String: Any]{
+                        payload = payloadStr["name"] as? String ?? ""
+                    }else{
+                        payload = dictionary["payload"] as? String ?? ""
+                    }
+                    let imageURL: String = dictionary["image_url"] as? String ?? ""
                     
                     let word: Word = Word(title: title, payload: payload, imageURL: imageURL)
                     words.append(word)
@@ -1548,6 +1620,28 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let customTableTemplateViewController = CustomTableTemplateVC(dataString: dataString)
         customTableTemplateViewController.viewDelegate = self
         self.navigationController?.present(customTableTemplateViewController, animated: true, completion: nil)
+    }
+    
+    @objc func showPDFErrorMeesage(notification:Notification){
+        let dataString: String = notification.object as? String ?? ""
+        self.toastMessage(dataString)
+    }
+    
+    @objc func showPDFViewController(notification:Notification){
+        let dataString: String = notification.object as? String ?? ""
+        if dataString == "Show"{
+            self.toastMessage("Statement saved successfully under Files")
+        }else{
+            if #available(iOS 11.0, *) {
+                let vc = PdfShowViewController(dataString: dataString)
+                vc.pdfUrl = URL(string: dataString)
+                vc.modalPresentationStyle = .overFullScreen
+                self.navigationController?.present(vc, animated: true, completion: nil)
+            } else {
+                // Fallback on earlier versions
+            }
+            
+        }
     }
     
     @objc func reloadTable(notification:Notification){
@@ -2436,3 +2530,34 @@ extension ChatMessagesViewController: UICollectionViewDataSource, UICollectionVi
     
     
 }
+
+extension ChatMessagesViewController {
+    func toastMessage(_ message: String){
+        guard let window = UIApplication.shared.keyWindow else {return}
+        let messageLbl = UILabel()
+        messageLbl.text = message
+        messageLbl.textAlignment = .center
+        messageLbl.font = UIFont.systemFont(ofSize: 12)
+        messageLbl.textColor = .white
+        messageLbl.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        
+        let textSize:CGSize = messageLbl.intrinsicContentSize
+        let labelWidth = min(textSize.width, window.frame.width - 40)
+        //window.frame.height - 80
+        let yaxis = self.composeBarContainerView.frame.origin.y + 10
+        messageLbl.frame = CGRect(x: 20, y: yaxis, width: labelWidth + 30, height: textSize.height + 20)
+        messageLbl.center.x = window.center.x
+        messageLbl.layer.cornerRadius = messageLbl.frame.height/2
+        messageLbl.layer.masksToBounds = true
+        window.addSubview(messageLbl)
+        self.view.bringSubviewToFront(messageLbl)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            
+            UIView.animate(withDuration: 2.5, animations: {
+                messageLbl.alpha = 0
+            }) { (_) in
+                messageLbl.removeFromSuperview()
+            }
+        }
+    }}

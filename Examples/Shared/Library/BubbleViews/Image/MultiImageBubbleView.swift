@@ -271,7 +271,7 @@ extension MultiImageBubbleView{
     @objc fileprivate func menuButtonAction(_ sender: UIButton!) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             let action1 = UIAlertAction(title: "Download", style: .default) { (action) in
-                print("Download is pressed.....")
+                
                 self.loadFileAsync(url: URL(string: self.componentItems.videoUrl!)!) { (isSaved) in
                     if isSaved{
                         print("Video is saved!")
@@ -307,8 +307,6 @@ extension MultiImageBubbleView{
 
         // your destination file url
         let destination = documentsUrl.appendingPathComponent(url.lastPathComponent)
-
-        print("downloading file from URL: \(url.absoluteString)")
         if FileManager().fileExists(atPath: destination.path) {
             print("The file already exists at path, deleting and replacing with latest")
 

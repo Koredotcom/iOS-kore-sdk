@@ -247,7 +247,7 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
             showMoreButton.layer.cornerRadius = 5
             showMoreButton.setTitleColor(.blue, for: .normal)
             showMoreButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-            showMoreButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
+            showMoreButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)
             view.addSubview(showMoreButton)
             showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.right
             showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)

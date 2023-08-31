@@ -130,7 +130,7 @@
                                                                                        forIndexPath:indexPath];
     NSDictionary *dict = [self.dataSource objectAtIndex:indexPath.row];
     NSString *url = dict[@"imageName"];
-    [cell.customImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@""]];
+    [cell.customImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"kora"]];
     return cell;
 }
 

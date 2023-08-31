@@ -35,13 +35,17 @@ open class BotMessageModel: MTLModel, MTLJSONSerializing {
     @objc open var messages: Array<MessageModel> = [MessageModel]()
     @objc open var createdOn: Date?
     @objc open var messageId: String?
+    @objc open var botkey: String?
+    @objc open var timestamp: NSNumber?
     // MARK: MTLJSONSerializing methods
     public static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
         return ["type":"type",
                 "iconUrl":"icon",
                 "messages":"message",
                 "messageId":"messageId",
-                "createdOn":"createdOn"]
+                "createdOn":"createdOn",
+                "botkey":"key",
+                "timestamp": "timestamp"]
     }
     
     @objc public static func messagesJSONTransformer() -> ValueTransformer {
