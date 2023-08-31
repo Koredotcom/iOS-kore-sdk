@@ -311,7 +311,7 @@ public class KREListItemView: UIView {
             switch imageType {
             case "image":
                 if let urlString = imageTemplate.source, let url = URL(string: urlString) {
-                    imageView.setImageWith(url, placeholderImage: UIImage(named: "placeholder_image"))
+                    imageView.af.setImage(withURL: url, placeholderImage: UIImage(named: "placeholder_image"))
                     canShowImage = true
                 }
                 if let cornerRadius = imageTemplate.radius {
@@ -395,7 +395,7 @@ public class KREListItemView: UIView {
                 switch imageType {
                 case "image":
                     if let urlString = imageTemplate.source, let url = URL(string: urlString) {
-                        detailView.iconImageView.setImageWith(url, placeholderImage: UIImage(named: "placeholder_image"))
+                        detailView.iconImageView.af.setImage(withURL: url, placeholderImage: UIImage(named: "placeholder_image"))
                         isHidden = false
                     }
                 default:

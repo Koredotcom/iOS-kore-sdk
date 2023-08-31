@@ -9,9 +9,6 @@
 #ifndef KoreBotSDKDemo_Bridging_Header_h
 #define KoreBotSDKDemo_Bridging_Header_h
 
-#import <AFNetworking/AFNetworking.h>
-#import <AFNetworking/UIImageView+AFNetworking.h>
-
 #import "KREAttributedLabel.h"
 #import "KRELayoutManager.h"
 #import "KREUtilities.h"

@@ -141,7 +141,7 @@ public class KAPanelItemViewController: UIViewController {
 //
 //            }
             panelHeader.iconImageView.contentMode = .scaleAspectFit
-            panelHeader.iconImageView.setImageWith(url, placeholderImage: UIImage(named: "done_icon", in: bundle, compatibleWith: nil))
+            panelHeader.iconImageView.af.setImage(withURL: url, placeholderImage: UIImage(named: "done_icon", in: bundle, compatibleWith: nil))
         }
 
         if let color = panelItem?.theme {

@@ -92,6 +92,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(AdvancedListTemplateCell.self, forCellReuseIdentifier:"AdvancedListTemplateCell")
         self.tableView.register(CardTemplateBubbleCell.self, forCellReuseIdentifier:"CardTemplateBubbleCell")
         self.tableView.register(PDFDownloadCell.self, forCellReuseIdentifier:"PDFDownloadCell")
+        
     }
     
     override func layoutSubviews() {

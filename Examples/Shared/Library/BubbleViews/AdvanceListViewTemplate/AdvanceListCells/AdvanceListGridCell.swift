@@ -48,7 +48,7 @@ extension AdvanceListGridCell: UICollectionViewDataSource, UICollectionViewDeleg
                 cell.imagV.image = image
             }else{
                 if let url = URL(string: iconImg){
-                    cell.imagV.setImageWith(url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
+                    cell.imagV.af.setImage(withURL: url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
                 }
             }
             

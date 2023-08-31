@@ -11,42 +11,42 @@
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		1D9FA1702AE04EE1A8F6AF2C /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */; };
-		9504E8702A84F42B00862E98 /* AdvancedListTempData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E86E2A84F42B00862E98 /* AdvancedListTempData.swift */; };
-		9504E8712A84F42B00862E98 /* AdvanceListBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E86F2A84F42B00862E98 /* AdvanceListBubbleView.swift */; };
-		9504E8742A84F43400862E98 /* ButtonLinkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E8722A84F43400862E98 /* ButtonLinkCell.swift */; };
-		9504E8752A84F43400862E98 /* ButtonLinkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9504E8732A84F43400862E98 /* ButtonLinkCell.xib */; };
-		9504E8852A84F45100862E98 /* AdvancedListDefaultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9504E8772A84F45000862E98 /* AdvancedListDefaultCell.xib */; };
-		9504E8862A84F45100862E98 /* AdvancedListDefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E8782A84F45000862E98 /* AdvancedListDefaultCell.swift */; };
-		9504E8872A84F45100862E98 /* AdvanceListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9504E8792A84F45000862E98 /* AdvanceListCollectionViewCell.xib */; };
-		9504E8882A84F45100862E98 /* AdvancedListOptionsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9504E87A2A84F45000862E98 /* AdvancedListOptionsCell.xib */; };
-		9504E8892A84F45100862E98 /* AdvancedListBtnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E87B2A84F45000862E98 /* AdvancedListBtnCell.swift */; };
-		9504E88A2A84F45100862E98 /* AdvanceListGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E87C2A84F45000862E98 /* AdvanceListGridCell.swift */; };
-		9504E88B2A84F45100862E98 /* AdvancedListBtnCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9504E87D2A84F45000862E98 /* AdvancedListBtnCell.xib */; };
-		9504E88C2A84F45100862E98 /* AdvancedTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E87E2A84F45100862E98 /* AdvancedTextCell.swift */; };
-		9504E88D2A84F45100862E98 /* AdvancedListOptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E87F2A84F45100862E98 /* AdvancedListOptionsCell.swift */; };
-		9504E88E2A84F45100862E98 /* AdvancedListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E8802A84F45100862E98 /* AdvancedListHeaderView.swift */; };
-		9504E88F2A84F45100862E98 /* AdvancedTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9504E8812A84F45100862E98 /* AdvancedTextCell.xib */; };
-		9504E8902A84F45100862E98 /* AdvanceListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E8822A84F45100862E98 /* AdvanceListCollectionViewCell.swift */; };
-		9504E8912A84F45100862E98 /* AdvancedListHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9504E8832A84F45100862E98 /* AdvancedListHeaderView.xib */; };
-		9504E8922A84F45100862E98 /* AdvanceListGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9504E8842A84F45100862E98 /* AdvanceListGridCell.xib */; };
-		9504E89D2A84F46500862E98 /* CardTemplateBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E8932A84F46500862E98 /* CardTemplateBubbleView.swift */; };
-		9504E89E2A84F46500862E98 /* CardTemplateCollectionVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9504E8942A84F46500862E98 /* CardTemplateCollectionVCell.xib */; };
-		9504E89F2A84F46500862E98 /* CardTemplateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E8952A84F46500862E98 /* CardTemplateCell.swift */; };
-		9504E8A02A84F46500862E98 /* CardTemplateData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E8962A84F46500862E98 /* CardTemplateData.swift */; };
-		9504E8A12A84F46500862E98 /* CardTemplateCollectionVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E8972A84F46500862E98 /* CardTemplateCollectionVCell.swift */; };
-		9504E8A22A84F46500862E98 /* CardTemplateHedaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E8982A84F46500862E98 /* CardTemplateHedaderView.swift */; };
-		9504E8A32A84F46500862E98 /* CardTemplateHedaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9504E8992A84F46500862E98 /* CardTemplateHedaderView.xib */; };
-		9504E8A42A84F46500862E98 /* CardTemplateListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9504E89A2A84F46500862E98 /* CardTemplateListCell.xib */; };
-		9504E8A52A84F46500862E98 /* CardTemplateListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E89B2A84F46500862E98 /* CardTemplateListCell.swift */; };
-		9504E8A62A84F46500862E98 /* CardTemplateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9504E89C2A84F46500862E98 /* CardTemplateCell.xib */; };
-		9504E8AC2A84F47900862E98 /* PdfDownloadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E8A72A84F47900862E98 /* PdfDownloadCell.swift */; };
-		9504E8AD2A84F47900862E98 /* PdfShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E8A82A84F47900862E98 /* PdfShowViewController.swift */; };
-		9504E8AE2A84F47900862E98 /* PDFBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9504E8A92A84F47900862E98 /* PDFBubbleView.swift */; };
-		9504E8AF2A84F47900862E98 /* PdfDownloadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9504E8AA2A84F47900862E98 /* PdfDownloadCell.xib */; };
-		9504E8B02A84F47900862E98 /* PdfShowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9504E8AB2A84F47900862E98 /* PdfShowViewController.xib */; };
 		950AF5892696C6AC003B4D58 /* AudioBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950AF5872696C6AC003B4D58 /* AudioBubbleView.swift */; };
 		950AF58A2696C6AC003B4D58 /* AudioBubbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 950AF5882696C6AC003B4D58 /* AudioBubbleView.xib */; };
 		9518C069255A8D5900741731 /* DropDownBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9518C068255A8D5900741731 /* DropDownBubbleView.swift */; };
+		9519B58D2A9D81860045660C /* AdvanceListBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B56F2A9D81860045660C /* AdvanceListBubbleView.swift */; };
+		9519B58E2A9D81860045660C /* AdvancedListTempData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5702A9D81860045660C /* AdvancedListTempData.swift */; };
+		9519B58F2A9D81860045660C /* AdvancedListDefaultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B5722A9D81860045660C /* AdvancedListDefaultCell.xib */; };
+		9519B5902A9D81860045660C /* AdvancedTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5732A9D81860045660C /* AdvancedTextCell.swift */; };
+		9519B5912A9D81860045660C /* AdvancedListOptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5742A9D81860045660C /* AdvancedListOptionsCell.swift */; };
+		9519B5922A9D81860045660C /* AdvanceListGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B5752A9D81860045660C /* AdvanceListGridCell.xib */; };
+		9519B5932A9D81860045660C /* AdvancedTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B5762A9D81860045660C /* AdvancedTextCell.xib */; };
+		9519B5942A9D81860045660C /* AdvanceListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B5772A9D81860045660C /* AdvanceListCollectionViewCell.xib */; };
+		9519B5952A9D81860045660C /* AdvanceListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5782A9D81860045660C /* AdvanceListCollectionViewCell.swift */; };
+		9519B5962A9D81860045660C /* AdvanceListGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5792A9D81860045660C /* AdvanceListGridCell.swift */; };
+		9519B5972A9D81860045660C /* AdvancedListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B57A2A9D81860045660C /* AdvancedListHeaderView.swift */; };
+		9519B5982A9D81860045660C /* AdvancedListBtnCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B57B2A9D81860045660C /* AdvancedListBtnCell.xib */; };
+		9519B5992A9D81860045660C /* AdvancedListDefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B57C2A9D81860045660C /* AdvancedListDefaultCell.swift */; };
+		9519B59A2A9D81860045660C /* AdvancedListBtnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B57D2A9D81860045660C /* AdvancedListBtnCell.swift */; };
+		9519B59B2A9D81860045660C /* AdvancedListOptionsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B57E2A9D81860045660C /* AdvancedListOptionsCell.xib */; };
+		9519B59C2A9D81860045660C /* AdvancedListHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B57F2A9D81860045660C /* AdvancedListHeaderView.xib */; };
+		9519B59D2A9D81860045660C /* ButtonLinkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5802A9D81860045660C /* ButtonLinkCell.swift */; };
+		9519B59E2A9D81860045660C /* ButtonLinkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B5812A9D81860045660C /* ButtonLinkCell.xib */; };
+		9519B59F2A9D81860045660C /* CardTemplateListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B5832A9D81860045660C /* CardTemplateListCell.xib */; };
+		9519B5A02A9D81860045660C /* CardTemplateBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5842A9D81860045660C /* CardTemplateBubbleView.swift */; };
+		9519B5A12A9D81860045660C /* CardTemplateData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5852A9D81860045660C /* CardTemplateData.swift */; };
+		9519B5A22A9D81860045660C /* CardTemplateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5862A9D81860045660C /* CardTemplateCell.swift */; };
+		9519B5A32A9D81860045660C /* CardTemplateHedaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5872A9D81860045660C /* CardTemplateHedaderView.swift */; };
+		9519B5A42A9D81860045660C /* CardTemplateCollectionVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5882A9D81860045660C /* CardTemplateCollectionVCell.swift */; };
+		9519B5A52A9D81860045660C /* CardTemplateListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5892A9D81860045660C /* CardTemplateListCell.swift */; };
+		9519B5A62A9D81860045660C /* CardTemplateCollectionVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B58A2A9D81860045660C /* CardTemplateCollectionVCell.xib */; };
+		9519B5A72A9D81860045660C /* CardTemplateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B58B2A9D81860045660C /* CardTemplateCell.xib */; };
+		9519B5A82A9D81860045660C /* CardTemplateHedaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B58C2A9D81860045660C /* CardTemplateHedaderView.xib */; };
+		9519B5AF2A9D81930045660C /* PDFBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5AA2A9D81930045660C /* PDFBubbleView.swift */; };
+		9519B5B02A9D81930045660C /* PdfShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5AB2A9D81930045660C /* PdfShowViewController.swift */; };
+		9519B5B12A9D81930045660C /* PdfShowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B5AC2A9D81930045660C /* PdfShowViewController.xib */; };
+		9519B5B22A9D81930045660C /* PdfDownloadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B5AD2A9D81930045660C /* PdfDownloadCell.swift */; };
+		9519B5B32A9D81930045660C /* PdfDownloadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B5AE2A9D81930045660C /* PdfDownloadCell.xib */; };
 		951EA67B261EDC1900EE565D /* InlineFormTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951EA679261EDC1800EE565D /* InlineFormTableViewCell.swift */; };
 		951EA67C261EDC1900EE565D /* InlineFormTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 951EA67A261EDC1900EE565D /* InlineFormTableViewCell.xib */; };
 		953FA4C625527790006EA311 /* KoraApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953FA4C52552778F006EA311 /* KoraApplication.swift */; };
@@ -64,7 +64,6 @@
 		95A5F8E32785B35F00F7BEEE /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A5F8E12785B35F00F7BEEE /* CustomTableViewCell.xib */; };
 		95A5F8E72785C4B700F7BEEE /* CustomTableTemplateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A5F8E52785C4B700F7BEEE /* CustomTableTemplateVC.swift */; };
 		95A5F8E82785C4B700F7BEEE /* CustomTableTemplateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A5F8E62785C4B700F7BEEE /* CustomTableTemplateVC.xib */; };
-		95E52A6A29F90BC5003C8532 /* BotConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E52A6929F90BC5003C8532 /* BotConnect.swift */; };
 		CD0563FF25247F1900E75768 /* InLineFormBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0563EF25247F1800E75768 /* InLineFormBubbleView.swift */; };
 		CD05640025247F1900E75768 /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0563F225247F1900E75768 /* FloatRatingView.swift */; };
 		CD05640125247F1900E75768 /* FeedbackBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0563F325247F1900E75768 /* FeedbackBubbleView.swift */; };
@@ -200,42 +199,42 @@
 		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		5706261067051636CFAC9AFC /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		72429688E34420AAB8AF9E01 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9504E86E2A84F42B00862E98 /* AdvancedListTempData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedListTempData.swift; sourceTree = "<group>"; };
-		9504E86F2A84F42B00862E98 /* AdvanceListBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvanceListBubbleView.swift; sourceTree = "<group>"; };
-		9504E8722A84F43400862E98 /* ButtonLinkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonLinkCell.swift; sourceTree = "<group>"; };
-		9504E8732A84F43400862E98 /* ButtonLinkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ButtonLinkCell.xib; sourceTree = "<group>"; };
-		9504E8772A84F45000862E98 /* AdvancedListDefaultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedListDefaultCell.xib; sourceTree = "<group>"; };
-		9504E8782A84F45000862E98 /* AdvancedListDefaultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedListDefaultCell.swift; sourceTree = "<group>"; };
-		9504E8792A84F45000862E98 /* AdvanceListCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvanceListCollectionViewCell.xib; sourceTree = "<group>"; };
-		9504E87A2A84F45000862E98 /* AdvancedListOptionsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedListOptionsCell.xib; sourceTree = "<group>"; };
-		9504E87B2A84F45000862E98 /* AdvancedListBtnCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedListBtnCell.swift; sourceTree = "<group>"; };
-		9504E87C2A84F45000862E98 /* AdvanceListGridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvanceListGridCell.swift; sourceTree = "<group>"; };
-		9504E87D2A84F45000862E98 /* AdvancedListBtnCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedListBtnCell.xib; sourceTree = "<group>"; };
-		9504E87E2A84F45100862E98 /* AdvancedTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedTextCell.swift; sourceTree = "<group>"; };
-		9504E87F2A84F45100862E98 /* AdvancedListOptionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedListOptionsCell.swift; sourceTree = "<group>"; };
-		9504E8802A84F45100862E98 /* AdvancedListHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedListHeaderView.swift; sourceTree = "<group>"; };
-		9504E8812A84F45100862E98 /* AdvancedTextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedTextCell.xib; sourceTree = "<group>"; };
-		9504E8822A84F45100862E98 /* AdvanceListCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvanceListCollectionViewCell.swift; sourceTree = "<group>"; };
-		9504E8832A84F45100862E98 /* AdvancedListHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedListHeaderView.xib; sourceTree = "<group>"; };
-		9504E8842A84F45100862E98 /* AdvanceListGridCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvanceListGridCell.xib; sourceTree = "<group>"; };
-		9504E8932A84F46500862E98 /* CardTemplateBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateBubbleView.swift; sourceTree = "<group>"; };
-		9504E8942A84F46500862E98 /* CardTemplateCollectionVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardTemplateCollectionVCell.xib; sourceTree = "<group>"; };
-		9504E8952A84F46500862E98 /* CardTemplateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateCell.swift; sourceTree = "<group>"; };
-		9504E8962A84F46500862E98 /* CardTemplateData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateData.swift; sourceTree = "<group>"; };
-		9504E8972A84F46500862E98 /* CardTemplateCollectionVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateCollectionVCell.swift; sourceTree = "<group>"; };
-		9504E8982A84F46500862E98 /* CardTemplateHedaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateHedaderView.swift; sourceTree = "<group>"; };
-		9504E8992A84F46500862E98 /* CardTemplateHedaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardTemplateHedaderView.xib; sourceTree = "<group>"; };
-		9504E89A2A84F46500862E98 /* CardTemplateListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardTemplateListCell.xib; sourceTree = "<group>"; };
-		9504E89B2A84F46500862E98 /* CardTemplateListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateListCell.swift; sourceTree = "<group>"; };
-		9504E89C2A84F46500862E98 /* CardTemplateCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardTemplateCell.xib; sourceTree = "<group>"; };
-		9504E8A72A84F47900862E98 /* PdfDownloadCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PdfDownloadCell.swift; sourceTree = "<group>"; };
-		9504E8A82A84F47900862E98 /* PdfShowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PdfShowViewController.swift; sourceTree = "<group>"; };
-		9504E8A92A84F47900862E98 /* PDFBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFBubbleView.swift; sourceTree = "<group>"; };
-		9504E8AA2A84F47900862E98 /* PdfDownloadCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PdfDownloadCell.xib; sourceTree = "<group>"; };
-		9504E8AB2A84F47900862E98 /* PdfShowViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PdfShowViewController.xib; sourceTree = "<group>"; };
 		950AF5872696C6AC003B4D58 /* AudioBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioBubbleView.swift; sourceTree = "<group>"; };
 		950AF5882696C6AC003B4D58 /* AudioBubbleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AudioBubbleView.xib; sourceTree = "<group>"; };
 		9518C068255A8D5900741731 /* DropDownBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownBubbleView.swift; sourceTree = "<group>"; };
+		9519B56F2A9D81860045660C /* AdvanceListBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvanceListBubbleView.swift; sourceTree = "<group>"; };
+		9519B5702A9D81860045660C /* AdvancedListTempData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedListTempData.swift; sourceTree = "<group>"; };
+		9519B5722A9D81860045660C /* AdvancedListDefaultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedListDefaultCell.xib; sourceTree = "<group>"; };
+		9519B5732A9D81860045660C /* AdvancedTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedTextCell.swift; sourceTree = "<group>"; };
+		9519B5742A9D81860045660C /* AdvancedListOptionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedListOptionsCell.swift; sourceTree = "<group>"; };
+		9519B5752A9D81860045660C /* AdvanceListGridCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvanceListGridCell.xib; sourceTree = "<group>"; };
+		9519B5762A9D81860045660C /* AdvancedTextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedTextCell.xib; sourceTree = "<group>"; };
+		9519B5772A9D81860045660C /* AdvanceListCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvanceListCollectionViewCell.xib; sourceTree = "<group>"; };
+		9519B5782A9D81860045660C /* AdvanceListCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvanceListCollectionViewCell.swift; sourceTree = "<group>"; };
+		9519B5792A9D81860045660C /* AdvanceListGridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvanceListGridCell.swift; sourceTree = "<group>"; };
+		9519B57A2A9D81860045660C /* AdvancedListHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedListHeaderView.swift; sourceTree = "<group>"; };
+		9519B57B2A9D81860045660C /* AdvancedListBtnCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedListBtnCell.xib; sourceTree = "<group>"; };
+		9519B57C2A9D81860045660C /* AdvancedListDefaultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedListDefaultCell.swift; sourceTree = "<group>"; };
+		9519B57D2A9D81860045660C /* AdvancedListBtnCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedListBtnCell.swift; sourceTree = "<group>"; };
+		9519B57E2A9D81860045660C /* AdvancedListOptionsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedListOptionsCell.xib; sourceTree = "<group>"; };
+		9519B57F2A9D81860045660C /* AdvancedListHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedListHeaderView.xib; sourceTree = "<group>"; };
+		9519B5802A9D81860045660C /* ButtonLinkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonLinkCell.swift; sourceTree = "<group>"; };
+		9519B5812A9D81860045660C /* ButtonLinkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ButtonLinkCell.xib; sourceTree = "<group>"; };
+		9519B5832A9D81860045660C /* CardTemplateListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardTemplateListCell.xib; sourceTree = "<group>"; };
+		9519B5842A9D81860045660C /* CardTemplateBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateBubbleView.swift; sourceTree = "<group>"; };
+		9519B5852A9D81860045660C /* CardTemplateData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateData.swift; sourceTree = "<group>"; };
+		9519B5862A9D81860045660C /* CardTemplateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateCell.swift; sourceTree = "<group>"; };
+		9519B5872A9D81860045660C /* CardTemplateHedaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateHedaderView.swift; sourceTree = "<group>"; };
+		9519B5882A9D81860045660C /* CardTemplateCollectionVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateCollectionVCell.swift; sourceTree = "<group>"; };
+		9519B5892A9D81860045660C /* CardTemplateListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTemplateListCell.swift; sourceTree = "<group>"; };
+		9519B58A2A9D81860045660C /* CardTemplateCollectionVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardTemplateCollectionVCell.xib; sourceTree = "<group>"; };
+		9519B58B2A9D81860045660C /* CardTemplateCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardTemplateCell.xib; sourceTree = "<group>"; };
+		9519B58C2A9D81860045660C /* CardTemplateHedaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardTemplateHedaderView.xib; sourceTree = "<group>"; };
+		9519B5AA2A9D81930045660C /* PDFBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFBubbleView.swift; sourceTree = "<group>"; };
+		9519B5AB2A9D81930045660C /* PdfShowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PdfShowViewController.swift; sourceTree = "<group>"; };
+		9519B5AC2A9D81930045660C /* PdfShowViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PdfShowViewController.xib; sourceTree = "<group>"; };
+		9519B5AD2A9D81930045660C /* PdfDownloadCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PdfDownloadCell.swift; sourceTree = "<group>"; };
+		9519B5AE2A9D81930045660C /* PdfDownloadCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PdfDownloadCell.xib; sourceTree = "<group>"; };
 		951EA679261EDC1800EE565D /* InlineFormTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineFormTableViewCell.swift; sourceTree = "<group>"; };
 		951EA67A261EDC1900EE565D /* InlineFormTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InlineFormTableViewCell.xib; sourceTree = "<group>"; };
 		953FA4C52552778F006EA311 /* KoraApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraApplication.swift; sourceTree = "<group>"; };
@@ -253,7 +252,6 @@
 		95A5F8E12785B35F00F7BEEE /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
 		95A5F8E52785C4B700F7BEEE /* CustomTableTemplateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableTemplateVC.swift; sourceTree = "<group>"; };
 		95A5F8E62785C4B700F7BEEE /* CustomTableTemplateVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableTemplateVC.xib; sourceTree = "<group>"; };
-		95E52A6929F90BC5003C8532 /* BotConnect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotConnect.swift; sourceTree = "<group>"; };
 		CD0563EF25247F1800E75768 /* InLineFormBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InLineFormBubbleView.swift; sourceTree = "<group>"; };
 		CD0563F225247F1900E75768 /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
 		CD0563F325247F1900E75768 /* FeedbackBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackBubbleView.swift; sourceTree = "<group>"; };
@@ -420,68 +418,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		9504E86B2A84F40400862E98 /* AdvanceListViewTemplate */ = {
-			isa = PBXGroup;
-			children = (
-				9504E86E2A84F42B00862E98 /* AdvancedListTempData.swift */,
-				9504E86F2A84F42B00862E98 /* AdvanceListBubbleView.swift */,
-				9504E8722A84F43400862E98 /* ButtonLinkCell.swift */,
-				9504E8732A84F43400862E98 /* ButtonLinkCell.xib */,
-				9504E8762A84F43F00862E98 /* AdvanceListCells */,
-			);
-			path = AdvanceListViewTemplate;
-			sourceTree = "<group>";
-		};
-		9504E86C2A84F40D00862E98 /* CardTemplateBubbleView */ = {
-			isa = PBXGroup;
-			children = (
-				9504E8932A84F46500862E98 /* CardTemplateBubbleView.swift */,
-				9504E8952A84F46500862E98 /* CardTemplateCell.swift */,
-				9504E89C2A84F46500862E98 /* CardTemplateCell.xib */,
-				9504E8972A84F46500862E98 /* CardTemplateCollectionVCell.swift */,
-				9504E8942A84F46500862E98 /* CardTemplateCollectionVCell.xib */,
-				9504E8962A84F46500862E98 /* CardTemplateData.swift */,
-				9504E8982A84F46500862E98 /* CardTemplateHedaderView.swift */,
-				9504E8992A84F46500862E98 /* CardTemplateHedaderView.xib */,
-				9504E89B2A84F46500862E98 /* CardTemplateListCell.swift */,
-				9504E89A2A84F46500862E98 /* CardTemplateListCell.xib */,
-			);
-			path = CardTemplateBubbleView;
-			sourceTree = "<group>";
-		};
-		9504E86D2A84F41500862E98 /* LinkDownload */ = {
-			isa = PBXGroup;
-			children = (
-				9504E8A92A84F47900862E98 /* PDFBubbleView.swift */,
-				9504E8A72A84F47900862E98 /* PdfDownloadCell.swift */,
-				9504E8AA2A84F47900862E98 /* PdfDownloadCell.xib */,
-				9504E8A82A84F47900862E98 /* PdfShowViewController.swift */,
-				9504E8AB2A84F47900862E98 /* PdfShowViewController.xib */,
-			);
-			path = LinkDownload;
-			sourceTree = "<group>";
-		};
-		9504E8762A84F43F00862E98 /* AdvanceListCells */ = {
-			isa = PBXGroup;
-			children = (
-				9504E87B2A84F45000862E98 /* AdvancedListBtnCell.swift */,
-				9504E87D2A84F45000862E98 /* AdvancedListBtnCell.xib */,
-				9504E8782A84F45000862E98 /* AdvancedListDefaultCell.swift */,
-				9504E8772A84F45000862E98 /* AdvancedListDefaultCell.xib */,
-				9504E8802A84F45100862E98 /* AdvancedListHeaderView.swift */,
-				9504E8832A84F45100862E98 /* AdvancedListHeaderView.xib */,
-				9504E87F2A84F45100862E98 /* AdvancedListOptionsCell.swift */,
-				9504E87A2A84F45000862E98 /* AdvancedListOptionsCell.xib */,
-				9504E87E2A84F45100862E98 /* AdvancedTextCell.swift */,
-				9504E8812A84F45100862E98 /* AdvancedTextCell.xib */,
-				9504E8822A84F45100862E98 /* AdvanceListCollectionViewCell.swift */,
-				9504E8792A84F45000862E98 /* AdvanceListCollectionViewCell.xib */,
-				9504E87C2A84F45000862E98 /* AdvanceListGridCell.swift */,
-				9504E8842A84F45100862E98 /* AdvanceListGridCell.xib */,
-			);
-			path = AdvanceListCells;
-			sourceTree = "<group>";
-		};
 		950AF57F2696C41B003B4D58 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
@@ -497,6 +433,68 @@
 				9518C068255A8D5900741731 /* DropDownBubbleView.swift */,
 			);
 			path = DropDownBubbleView;
+			sourceTree = "<group>";
+		};
+		9519B56E2A9D81860045660C /* AdvanceListViewTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				9519B56F2A9D81860045660C /* AdvanceListBubbleView.swift */,
+				9519B5702A9D81860045660C /* AdvancedListTempData.swift */,
+				9519B5712A9D81860045660C /* AdvanceListCells */,
+				9519B5802A9D81860045660C /* ButtonLinkCell.swift */,
+				9519B5812A9D81860045660C /* ButtonLinkCell.xib */,
+			);
+			path = AdvanceListViewTemplate;
+			sourceTree = "<group>";
+		};
+		9519B5712A9D81860045660C /* AdvanceListCells */ = {
+			isa = PBXGroup;
+			children = (
+				9519B5722A9D81860045660C /* AdvancedListDefaultCell.xib */,
+				9519B5732A9D81860045660C /* AdvancedTextCell.swift */,
+				9519B5742A9D81860045660C /* AdvancedListOptionsCell.swift */,
+				9519B5752A9D81860045660C /* AdvanceListGridCell.xib */,
+				9519B5762A9D81860045660C /* AdvancedTextCell.xib */,
+				9519B5772A9D81860045660C /* AdvanceListCollectionViewCell.xib */,
+				9519B5782A9D81860045660C /* AdvanceListCollectionViewCell.swift */,
+				9519B5792A9D81860045660C /* AdvanceListGridCell.swift */,
+				9519B57A2A9D81860045660C /* AdvancedListHeaderView.swift */,
+				9519B57B2A9D81860045660C /* AdvancedListBtnCell.xib */,
+				9519B57C2A9D81860045660C /* AdvancedListDefaultCell.swift */,
+				9519B57D2A9D81860045660C /* AdvancedListBtnCell.swift */,
+				9519B57E2A9D81860045660C /* AdvancedListOptionsCell.xib */,
+				9519B57F2A9D81860045660C /* AdvancedListHeaderView.xib */,
+			);
+			path = AdvanceListCells;
+			sourceTree = "<group>";
+		};
+		9519B5822A9D81860045660C /* CardTemplateBubbleView */ = {
+			isa = PBXGroup;
+			children = (
+				9519B5832A9D81860045660C /* CardTemplateListCell.xib */,
+				9519B5842A9D81860045660C /* CardTemplateBubbleView.swift */,
+				9519B5852A9D81860045660C /* CardTemplateData.swift */,
+				9519B5862A9D81860045660C /* CardTemplateCell.swift */,
+				9519B5872A9D81860045660C /* CardTemplateHedaderView.swift */,
+				9519B5882A9D81860045660C /* CardTemplateCollectionVCell.swift */,
+				9519B5892A9D81860045660C /* CardTemplateListCell.swift */,
+				9519B58A2A9D81860045660C /* CardTemplateCollectionVCell.xib */,
+				9519B58B2A9D81860045660C /* CardTemplateCell.xib */,
+				9519B58C2A9D81860045660C /* CardTemplateHedaderView.xib */,
+			);
+			path = CardTemplateBubbleView;
+			sourceTree = "<group>";
+		};
+		9519B5A92A9D81930045660C /* LinkDownload */ = {
+			isa = PBXGroup;
+			children = (
+				9519B5AA2A9D81930045660C /* PDFBubbleView.swift */,
+				9519B5AB2A9D81930045660C /* PdfShowViewController.swift */,
+				9519B5AC2A9D81930045660C /* PdfShowViewController.xib */,
+				9519B5AD2A9D81930045660C /* PdfDownloadCell.swift */,
+				9519B5AE2A9D81930045660C /* PdfDownloadCell.xib */,
+			);
+			path = LinkDownload;
 			sourceTree = "<group>";
 		};
 		953FA4C9255286A3006EA311 /* Attachment Cell */ = {
@@ -771,7 +769,6 @@
 			isa = PBXGroup;
 			children = (
 				D1A12B6D1E84DD3500F4E2B4 /* SDKConfiguration.swift */,
-				95E52A6929F90BC5003C8532 /* BotConnect.swift */,
 				D175AD4C1CEF0CD500BB9442 /* KoreBotSDKDemo */,
 				D175AD4B1CEF0CD500BB9442 /* Products */,
 				A851461715333BEDEFC8310F /* Frameworks */,
@@ -966,17 +963,17 @@
 		D1F3388D2201D99A005BE5F1 /* BubbleViews */ = {
 			isa = PBXGroup;
 			children = (
-				9504E86B2A84F40400862E98 /* AdvanceListViewTemplate */,
-				9504E86C2A84F40D00862E98 /* CardTemplateBubbleView */,
 				D1F3388E2201D99A005BE5F1 /* Options */,
 				D1F338902201D99A005BE5F1 /* Chart */,
 				D1F338932201D99A005BE5F1 /* Carousel */,
 				D1F338952201D99A005BE5F1 /* Image */,
 				D1F3389A2201D99A005BE5F1 /* BubbleView.swift */,
+				9519B5A92A9D81930045660C /* LinkDownload */,
+				9519B56E2A9D81860045660C /* AdvanceListViewTemplate */,
+				9519B5822A9D81860045660C /* CardTemplateBubbleView */,
 				D1F3389B2201D99A005BE5F1 /* Table */,
 				D1F338A72201D99A005BE5F1 /* Menu */,
 				D1F338A92201D99A005BE5F1 /* ListBubbleView.swift */,
-				9504E86D2A84F41500862E98 /* LinkDownload */,
 				95A5F8BA2785A95700F7BEEE /* CustomTable */,
 				950AF57F2696C41B003B4D58 /* Audio */,
 				9518C067255A8D4000741731 /* DropDownBubbleView */,
@@ -1191,48 +1188,48 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9519B5932A9D81860045660C /* AdvancedTextCell.xib in Resources */,
 				D1F339022201D99A005BE5F1 /* AppLaunchViewController.xib in Resources */,
 				CDB86A0824C00CD000D1CCC7 /* TaskMenuTablViewCell.xib in Resources */,
+				9519B5942A9D81860045660C /* AdvanceListCollectionViewCell.xib in Resources */,
 				95A5F8E82785C4B700F7BEEE /* CustomTableTemplateVC.xib in Resources */,
 				D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */,
-				9504E8AF2A84F47900862E98 /* PdfDownloadCell.xib in Resources */,
 				CD4BFFFC24D160CA008E08CE /* NotificationCustomView.xib in Resources */,
-				9504E8A62A84F46500862E98 /* CardTemplateCell.xib in Resources */,
-				9504E88F2A84F45100862E98 /* AdvancedTextCell.xib in Resources */,
+				9519B59E2A9D81860045660C /* ButtonLinkCell.xib in Resources */,
 				CD05640325247F1900E75768 /* FeedbackCell.xib in Resources */,
+				9519B59C2A9D81860045660C /* AdvancedListHeaderView.xib in Resources */,
 				95A5F8E32785B35F00F7BEEE /* CustomTableViewCell.xib in Resources */,
-				9504E8912A84F45100862E98 /* AdvancedListHeaderView.xib in Resources */,
+				9519B58F2A9D81860045660C /* AdvancedListDefaultCell.xib in Resources */,
 				950AF58A2696C6AC003B4D58 /* AudioBubbleView.xib in Resources */,
+				9519B5B32A9D81930045660C /* PdfDownloadCell.xib in Resources */,
+				9519B5A72A9D81860045660C /* CardTemplateCell.xib in Resources */,
 				D101F92A24E163F800D47DB8 /* ChatMessagesViewController.xib in Resources */,
 				D1CAF21A1CF0AEA3001BCAEF /* Assets.xcassets in Resources */,
-				9504E8882A84F45100862E98 /* AdvancedListOptionsCell.xib in Resources */,
 				D1F338E62201D99A005BE5F1 /* MultiImageBubbleView.xib in Resources */,
 				D1F338F82201D99A005BE5F1 /* TableTemplateViewController.xib in Resources */,
 				D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */,
+				9519B5982A9D81860045660C /* AdvancedListBtnCell.xib in Resources */,
+				9519B5B12A9D81930045660C /* PdfShowViewController.xib in Resources */,
 				CD05640A25247F1900E75768 /* FeedbackSliderViewController.xib in Resources */,
 				D1F338E42201D99A005BE5F1 /* ImageComponentCollectionViewCell.xib in Resources */,
-				9504E88B2A84F45100862E98 /* AdvancedListBtnCell.xib in Resources */,
-				9504E8A32A84F46500862E98 /* CardTemplateHedaderView.xib in Resources */,
-				9504E8872A84F45100862E98 /* AdvanceListCollectionViewCell.xib in Resources */,
-				9504E8A42A84F46500862E98 /* CardTemplateListCell.xib in Resources */,
-				9504E89E2A84F46500862E98 /* CardTemplateCollectionVCell.xib in Resources */,
 				CD89236924C55BAC006F71DE /* CalenderViewController.xib in Resources */,
+				9519B5922A9D81860045660C /* AdvanceListGridCell.xib in Resources */,
+				9519B59F2A9D81860045660C /* CardTemplateListCell.xib in Resources */,
+				9519B5A62A9D81860045660C /* CardTemplateCollectionVCell.xib in Resources */,
 				D1F338FB2201D99A005BE5F1 /* KRETypingCollectionViewCell.xib in Resources */,
 				D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */,
-				9504E8752A84F43400862E98 /* ButtonLinkCell.xib in Resources */,
+				9519B5A82A9D81860045660C /* CardTemplateHedaderView.xib in Resources */,
 				CDB86A0A24C00CD000D1CCC7 /* TaskMenu.json in Resources */,
-				9504E8922A84F45100862E98 /* AdvanceListGridCell.xib in Resources */,
 				CD63DA4C24EAB9A700DCCCCE /* MultiSelectCell.xib in Resources */,
 				CDC5E789250A29420064DB9B /* ListWidgetDetailsViewController.xib in Resources */,
-				9504E8852A84F45100862E98 /* AdvancedListDefaultCell.xib in Resources */,
 				953FA4CD255286C9006EA311 /* AttachmentCell.xib in Resources */,
 				CD4B000224D164CB008E08CE /* TaskMenuViewController.xib in Resources */,
 				CDB86A0124C0099300D1CCC7 /* ListViewDetailsViewController.xib in Resources */,
+				9519B59B2A9D81860045660C /* AdvancedListOptionsCell.xib in Resources */,
 				CDB869FC24C0093A00D1CCC7 /* NewListTableViewCell.xib in Resources */,
 				951EA67C261EDC1900EE565D /* InlineFormTableViewCell.xib in Resources */,
 				CD842D4524EFBD980053710B /* DropDownCell.xib in Resources */,
 				D1F338EC2201D99A005BE5F1 /* CustomCollectionViewCell.xib in Resources */,
-				9504E8B02A84F47900862E98 /* PdfShowViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1268,29 +1265,31 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/AssetsPickerViewController/AssetsPickerViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/DGCharts/DGCharts.framework",
 				"${BUILT_PRODUCTS_DIR}/GhostTypewriter/GhostTypewriter.framework",
 				"${BUILT_PRODUCTS_DIR}/KoreBotSDK/KoreBotSDK.framework",
-				"${BUILT_PRODUCTS_DIR}/Mantle/Mantle.framework",
 				"${BUILT_PRODUCTS_DIR}/MarkdownKit/MarkdownKit.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-				"${BUILT_PRODUCTS_DIR}/SocketRocket/SocketRocket.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftUTI/SwiftUTI.framework",
 				"${BUILT_PRODUCTS_DIR}/emojione-ios/emojione_ios.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AssetsPickerViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DGCharts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GhostTypewriter.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KoreBotSDK.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mantle.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarkdownKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftUTI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/emojione_ios.framework",
 			);
@@ -1306,37 +1305,38 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9504E8A12A84F46500862E98 /* CardTemplateCollectionVCell.swift in Sources */,
+				9519B5A42A9D81860045660C /* CardTemplateCollectionVCell.swift in Sources */,
 				D101F92824E163F800D47DB8 /* ChatMessagesViewController+Widgets.swift in Sources */,
 				D1EBD067227C5ECF0004C349 /* KABotClient.swift in Sources */,
 				D1F338C82201D99A005BE5F1 /* DataModel.xcdatamodeld in Sources */,
 				D1F338C52201D99A005BE5F1 /* Common.swift in Sources */,
+				9519B5B02A9D81930045660C /* PdfShowViewController.swift in Sources */,
 				CDB869FB24C0093A00D1CCC7 /* NewListData.swift in Sources */,
+				9519B5A52A9D81860045660C /* CardTemplateListCell.swift in Sources */,
 				CD89236E24C5614E006F71DE /* QuickReplyWelcomeBubbleView.swift in Sources */,
 				D1F338DC2201D99A005BE5F1 /* KRELayoutManager.m in Sources */,
 				D1F338E12201D99A005BE5F1 /* BalloonMarker.swift in Sources */,
 				D1F338C32201D99A005BE5F1 /* CoreDataManager.swift in Sources */,
 				D1F338CF2201D99A005BE5F1 /* TSBaseParser.m in Sources */,
 				D101F92524E163F800D47DB8 /* UIViewController+Kora.swift in Sources */,
-				9504E8902A84F45100862E98 /* AdvanceListCollectionViewCell.swift in Sources */,
 				D1F338DF2201D99A005BE5F1 /* OptionsBubbleView.swift in Sources */,
 				959BBC2425519AF800557811 /* KAAssetManager.swift in Sources */,
 				D1F338CB2201D99A005BE5F1 /* KREContact+CoreDataProperties.swift in Sources */,
 				D1F338E92201D99A005BE5F1 /* MiniTableBubbleView.swift in Sources */,
 				D1F338E72201D99A005BE5F1 /* BubbleView.swift in Sources */,
 				CD89236D24C5614E006F71DE /* QuickRepliesData.swift in Sources */,
+				9519B5A12A9D81860045660C /* CardTemplateData.swift in Sources */,
 				953FA4C625527790006EA311 /* KoraApplication.swift in Sources */,
 				D1F338EA2201D99A005BE5F1 /* CustomCollectionViewLayout.swift in Sources */,
 				D1F338FA2201D99A005BE5F1 /* KRETypingActivityIndicator.m in Sources */,
+				9519B5A02A9D81860045660C /* CardTemplateBubbleView.swift in Sources */,
 				D101F92924E163F800D47DB8 /* KAPanelHeaderView.swift in Sources */,
-				9504E8A02A84F46500862E98 /* CardTemplateData.swift in Sources */,
 				CD63DA4B24EAB9A700DCCCCE /* MultiSelectCell.swift in Sources */,
 				D101F92124E163F700D47DB8 /* KoraAssistant.swift in Sources */,
 				D101F92024E163F700D47DB8 /* KoraNotification.swift in Sources */,
 				CD842D4A24EFBD980053710B /* DropDown.swift in Sources */,
 				D1F338DD2201D99A005BE5F1 /* KREAttributedLabel.m in Sources */,
 				D1F338C92201D99A005BE5F1 /* KREThread+CoreDataProperties.swift in Sources */,
-				9504E8862A84F45100862E98 /* AdvancedListDefaultCell.swift in Sources */,
 				D1F338D92201D99A005BE5F1 /* ComposeBarView.swift in Sources */,
 				D1F338CD2201D99A005BE5F1 /* KREComponent+CoreDataClass.swift in Sources */,
 				D1F338D12201D99A005BE5F1 /* AudioController.swift in Sources */,
@@ -1344,25 +1344,27 @@
 				CDB86A0F24C0127C00D1CCC7 /* TableListData.swift in Sources */,
 				D1F338D62201D99A005BE5F1 /* Thread.swift in Sources */,
 				CD842D4624EFBD980053710B /* DPDKeyboardListener.swift in Sources */,
+				9519B5992A9D81860045660C /* AdvancedListDefaultCell.swift in Sources */,
 				D1F338F92201D99A005BE5F1 /* InputTOWebViewController.swift in Sources */,
-				9504E8712A84F42B00862E98 /* AdvanceListBubbleView.swift in Sources */,
 				D1F338C42201D99A005BE5F1 /* DataStoreManager.swift in Sources */,
-				95E52A6A29F90BC5003C8532 /* BotConnect.swift in Sources */,
+				9519B5902A9D81860045660C /* AdvancedTextCell.swift in Sources */,
 				CDB869FD24C0093A00D1CCC7 /* NewListBubbleView.swift in Sources */,
-				9504E88A2A84F45100862E98 /* AdvanceListGridCell.swift in Sources */,
 				D1F338D32201D99A005BE5F1 /* CALayer+MBAnimationPersistence.m in Sources */,
 				D1A12B6E1E84DD3500F4E2B4 /* SDKConfiguration.swift in Sources */,
 				CDC5E788250A29420064DB9B /* ListWidgetDetailsViewController.swift in Sources */,
 				D1F338C62201D99A005BE5F1 /* KREMessage+CoreDataProperties.swift in Sources */,
-				9504E8AD2A84F47900862E98 /* PdfShowViewController.swift in Sources */,
 				D1F338E32201D99A005BE5F1 /* MultiImageBubbleView.swift in Sources */,
 				958D27212553CC920099674B /* KAComponentOperation.swift in Sources */,
+				9519B5B22A9D81930045660C /* PdfDownloadCell.swift in Sources */,
 				CD05640225247F1900E75768 /* FeedbackSliderViewController.swift in Sources */,
 				CD0563FF25247F1900E75768 /* InLineFormBubbleView.swift in Sources */,
+				9519B5AF2A9D81930045660C /* PDFBubbleView.swift in Sources */,
 				D1F338C72201D99A005BE5F1 /* KREThread+CoreDataClass.swift in Sources */,
+				9519B59D2A9D81860045660C /* ButtonLinkCell.swift in Sources */,
 				CD05640125247F1900E75768 /* FeedbackBubbleView.swift in Sources */,
 				D1F338CC2201D99A005BE5F1 /* KREContact+CoreDataClass.swift in Sources */,
 				D101F92424E163F800D47DB8 /* ApplicationManager.swift in Sources */,
+				9519B5A32A9D81860045660C /* CardTemplateHedaderView.swift in Sources */,
 				D101F92624E163F800D47DB8 /* KAPanelItemViewController.swift in Sources */,
 				D1F339002201D99A005BE5F1 /* MessageBubbleCell.swift in Sources */,
 				CD4BFFF924D16091008E08CE /* NotificationBubbleView.swift in Sources */,
@@ -1370,45 +1372,45 @@
 				D1F338CA2201D99A005BE5F1 /* KREMessage+CoreDataClass.swift in Sources */,
 				D101F92324E163F800D47DB8 /* KAPanelCollectionView.swift in Sources */,
 				958D272B2553D6360099674B /* KAHTTPRequestManager.swift in Sources */,
+				9519B5962A9D81860045660C /* AdvanceListGridCell.swift in Sources */,
 				958D27232553CF040099674B /* UsageLimits.swift in Sources */,
 				D1F338FC2201D99A005BE5F1 /* KRETypingStatusView.m in Sources */,
-				9504E8A52A84F46500862E98 /* CardTemplateListCell.swift in Sources */,
 				D101F91E24E163F700D47DB8 /* ChatMessagesViewController.swift in Sources */,
 				D1F338D72201D99A005BE5F1 /* Component.swift in Sources */,
 				CDB86A1124C0128F00D1CCC7 /* TableListBubbleView.swift in Sources */,
 				D101F92224E163F800D47DB8 /* KAPanelWindowManager.swift in Sources */,
-				9504E88C2A84F45100862E98 /* AdvancedTextCell.swift in Sources */,
 				D101F91F24E163F700D47DB8 /* KABottomSheetViewController.swift in Sources */,
 				CD842D4824EFBD980053710B /* DPDUIView+Extension.swift in Sources */,
-				9504E88E2A84F45100862E98 /* AdvancedListHeaderView.swift in Sources */,
 				D1F338E22201D99A005BE5F1 /* CarouselBubbleView.swift in Sources */,
 				D1F338F02201D99A005BE5F1 /* ResponsiveCustonCell.swift in Sources */,
 				D1F338DA2201D99A005BE5F1 /* AudioComposeView.swift in Sources */,
 				D1F338FE2201D99A005BE5F1 /* BotMessagesView.swift in Sources */,
+				9519B5952A9D81860045660C /* AdvanceListCollectionViewCell.swift in Sources */,
 				CD4BFFFD24D160CA008E08CE /* NotificationCustomView.swift in Sources */,
 				950AF5892696C6AC003B4D58 /* AudioBubbleView.swift in Sources */,
 				CD05640925247F1900E75768 /* iOSDevCenters+GIF.swift in Sources */,
 				D1F338F32201D99A005BE5F1 /* ListBubbleView.swift in Sources */,
 				D1F338E52201D99A005BE5F1 /* ImageComponentCollectionViewCell.swift in Sources */,
 				CD63DA4824EAB98B00DCCCCE /* MultiSelectNewBubbleView.swift in Sources */,
+				9519B5972A9D81860045660C /* AdvancedListHeaderView.swift in Sources */,
 				958D27292553D3940099674B /* KAHTTPSessionManager.swift in Sources */,
 				D1F338E02201D99A005BE5F1 /* ChartBubbleView.swift in Sources */,
 				D1F338ED2201D99A005BE5F1 /* TableBubbleView.swift in Sources */,
-				9504E8AE2A84F47900862E98 /* PDFBubbleView.swift in Sources */,
+				9519B58D2A9D81860045660C /* AdvanceListBubbleView.swift in Sources */,
 				D1F338CE2201D99A005BE5F1 /* KREComponent+CoreDataProperties.swift in Sources */,
 				959BBC2625519C7E00557811 /* KAFileUtilities.swift in Sources */,
 				CDB869FE24C0093A00D1CCC7 /* ListViewDetailsViewController.swift in Sources */,
+				9519B5912A9D81860045660C /* AdvancedListOptionsCell.swift in Sources */,
 				CD4B000124D164CB008E08CE /* TaskMenuViewController.swift in Sources */,
-				9504E8892A84F45100862E98 /* AdvancedListBtnCell.swift in Sources */,
 				CD842D4C24EFBD980053710B /* DropDown+Appearance.swift in Sources */,
 				958D27272553D0190099674B /* KAAccount.swift in Sources */,
 				951EA67B261EDC1900EE565D /* InlineFormTableViewCell.swift in Sources */,
 				D1F338F12201D99A005BE5F1 /* MiniTableViewCell.swift in Sources */,
 				CD05640025247F1900E75768 /* FloatRatingView.swift in Sources */,
 				95A5F8E22785B35F00F7BEEE /* CustomTableViewCell.swift in Sources */,
+				9519B5A22A9D81860045660C /* CardTemplateCell.swift in Sources */,
 				CD8C5FD62509E4E800E5EB7D /* ListWidgetBubbleView.swift in Sources */,
-				9504E8702A84F42B00862E98 /* AdvancedListTempData.swift in Sources */,
-				9504E89F2A84F46500862E98 /* CardTemplateCell.swift in Sources */,
+				9519B58E2A9D81860045660C /* AdvancedListTempData.swift in Sources */,
 				953FA4CC255286C9006EA311 /* AttachmentCell.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
 				9518C069255A8D5900741731 /* DropDownBubbleView.swift in Sources */,
@@ -1424,16 +1426,13 @@
 				D1F338F72201D99A005BE5F1 /* TableTemplateViewController.swift in Sources */,
 				CD89236724C55BAC006F71DE /* CalenderBubbleView.swift in Sources */,
 				CD89237024C562A2006F71DE /* QuickReplyCollectionViewFlowLayout.swift in Sources */,
-				9504E8742A84F43400862E98 /* ButtonLinkCell.swift in Sources */,
-				9504E8A22A84F46500862E98 /* CardTemplateHedaderView.swift in Sources */,
 				D1F338D52201D99A005BE5F1 /* Message.swift in Sources */,
 				CD842D4724EFBD980053710B /* DPDConstants.swift in Sources */,
 				D1F338EF2201D99A005BE5F1 /* ExpandedTableViewCell.swift in Sources */,
-				9504E88D2A84F45100862E98 /* AdvancedListOptionsCell.swift in Sources */,
+				9519B59A2A9D81860045660C /* AdvancedListBtnCell.swift in Sources */,
 				D1F338D42201D99A005BE5F1 /* Identity.swift in Sources */,
 				D1F338D22201D99A005BE5F1 /* KoraASRService.swift in Sources */,
 				D1F338D82201D99A005BE5F1 /* SectionedThread.swift in Sources */,
-				9504E89D2A84F46500862E98 /* CardTemplateBubbleView.swift in Sources */,
 				D1F338EE2201D99A005BE5F1 /* SubTableViewCell.swift in Sources */,
 				D1F338FF2201D99A005BE5F1 /* KREFetchedResultsController.swift in Sources */,
 				D1F338EB2201D99A005BE5F1 /* CustomCollectionViewCell.swift in Sources */,
@@ -1442,7 +1441,6 @@
 				CD89236824C55BAC006F71DE /* CalenderViewController.swift in Sources */,
 				CD842D4B24EFBD980053710B /* DropDownCell.swift in Sources */,
 				D1F339012201D99A005BE5F1 /* AppLaunchViewController.swift in Sources */,
-				9504E8AC2A84F47900862E98 /* PdfDownloadCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1511,8 +1509,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1566,8 +1563,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1587,18 +1583,17 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.0;
 				DEVELOPMENT_TEAM = TUE6KHKZ4Z;
-				GENERATE_INFOPLIST_FILE = YES;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TUE6KHKZ4Z;
 				INFOPLIST_FILE = KoreBotSDKDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kore.rtc;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk;
 				PRODUCT_NAME = "Barry Bot";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = com.kore.rtc;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Kore sdk";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/KoreBotSDKDemo/Resources/KoreBotSDKDemo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1615,18 +1610,17 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.0;
 				DEVELOPMENT_TEAM = TUE6KHKZ4Z;
-				GENERATE_INFOPLIST_FILE = YES;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TUE6KHKZ4Z;
 				INFOPLIST_FILE = KoreBotSDKDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kore.rtc;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk;
 				PRODUCT_NAME = "Barry Bot";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = com.kore.rtc;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Kore sdk";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/KoreBotSDKDemo/Resources/KoreBotSDKDemo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import AFNetworking
 
 public class KREActivityWidgetView: KREWidgetView {
     // MARK: - properites

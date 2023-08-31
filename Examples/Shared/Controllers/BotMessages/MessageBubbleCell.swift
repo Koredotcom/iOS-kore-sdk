@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import AFNetworking
+import AlamofireImage
 
 class MessageBubbleCell : UITableViewCell {
     var bubbleContainerView: UIView!
@@ -18,6 +18,16 @@ class MessageBubbleCell : UITableViewCell {
     var bubbleLeadingConstraint: NSLayoutConstraint!
     var bubbleTrailingConstraint: NSLayoutConstraint!
     var bubbleBottomConstraint: NSLayoutConstraint!
+    
+    lazy var dateLabel: UILabel = {
+        let dateLabel = UILabel(frame: .zero)
+        dateLabel.numberOfLines = 0
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        dateLabel.font = UIFont(name: "HelveticaNeue", size: 10.0)
+        dateLabel.textColor = .lightGray
+        dateLabel.isHidden = true
+        return dateLabel
+    }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -92,19 +102,23 @@ class MessageBubbleCell : UITableViewCell {
         self.bubbleContainerView.backgroundColor = UIColor.clear
         self.bubbleContainerView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(self.bubbleContainerView)
+        //dateLabel
+        self.contentView.addSubview(dateLabel)
         
         // Setting Constraints
-        let views: [String: UIView] = ["senderImageView": senderImageView, "bubbleContainerView": bubbleContainerView, "userImageView": userImageView]
+        let views: [String: UIView] = ["senderImageView": senderImageView, "bubbleContainerView": bubbleContainerView, "userImageView": userImageView, "dateLabel":dateLabel]
         
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[dateLabel]-20-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(30)]", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[senderImageView(30)]-4-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[userImageView(30)]-8-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[userImageView(30)]-4-|", options:[], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[bubbleContainerView]", options:[], metrics:nil, views:views))
+       // self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[bubbleContainerView]", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[dateLabel(0)]-0-[bubbleContainerView]", options:[], metrics:nil, views:views))
 
         self.bubbleBottomConstraint = NSLayoutConstraint(item:self.contentView, attribute:.bottom, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.bottom, multiplier:1.0, constant:4.0)
         self.bubbleBottomConstraint.priority = UILayoutPriority.defaultHigh
-        self.bubbleLeadingConstraint = NSLayoutConstraint(item:self.bubbleContainerView, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier:1.0, constant:45.0)
+        self.bubbleLeadingConstraint = NSLayoutConstraint(item:self.bubbleContainerView as Any, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier:1.0, constant:45.0)
         self.bubbleLeadingConstraint.priority = UILayoutPriority.defaultHigh
         self.bubbleTrailingConstraint = NSLayoutConstraint(item:self.contentView, attribute:.trailing, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.trailing, multiplier:1.0, constant:16.0)
         self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultLow
@@ -133,8 +147,8 @@ class MessageBubbleCell : UITableViewCell {
             self.bubbleView = BubbleView.bubbleWithType(bubbleType())
             self.bubbleContainerView.addSubview(self.bubbleView)
             
-            self.bubbleContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": self.bubbleView]))
-            self.bubbleContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": self.bubbleView]))
+            self.bubbleContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": self.bubbleView as Any]))
+            self.bubbleContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": self.bubbleView as Any]))
         }
         
         MessageBubbleCell.setComponents(components, bubbleView:self.bubbleView)
@@ -143,7 +157,21 @@ class MessageBubbleCell : UITableViewCell {
         let component: KREComponent = components.first!
         let message: KREMessage = component.message!
         
-        let placeHolderIcon : UIImage = UIImage(named:"kora")!
+       
+       //DateLabel
+        if let sentOn = message.sentOn as Date? {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
+                dateLabel.text = dateFormatter.string(from: sentOn)
+        }
+        if self.tailPosition == .left{
+            dateLabel.textAlignment = .left
+        }else{
+            dateLabel.textAlignment = .right
+        }
+        
+        
+        let placeHolderIcon = UIImage(named:"kora")
         self.senderImageView.image = placeHolderIcon
         if(self.userImageView.image == nil){
             self.userImageView.image = UIImage(named:"faceIcon")!
@@ -151,7 +179,7 @@ class MessageBubbleCell : UITableViewCell {
         
         if (message.iconUrl != nil) {
             if let fileUrl = URL(string: message.iconUrl!) {
-                self.senderImageView.setImageWith(fileUrl, placeholderImage: placeHolderIcon)
+                self.senderImageView.af.setImage(withURL: fileUrl, placeholderImage: placeHolderIcon)
             }
         }
         NotificationCenter.default.addObserver(self, selector: #selector(MessageBubbleCell.updateImage(notification:)), name: NSNotification.Name(rawValue: updateUserImageNotification), object: nil)
@@ -169,7 +197,7 @@ class MessageBubbleCell : UITableViewCell {
         return height + 12.0
     }
     @objc func updateImage(notification:Notification){
-        self.userImageView.image = UIImage(named:"john")!
+        self.userImageView.image = UIImage(named:"john")
     }
     
     // MARK:- deinit
@@ -550,3 +578,4 @@ class PDFDownloadCell : MessageBubbleCell {
         }
     }
 }
+

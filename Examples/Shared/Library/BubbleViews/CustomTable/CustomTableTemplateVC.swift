@@ -170,7 +170,7 @@ class CustomTableTemplateVC: UIViewController, UICollectionViewDataSource, UICol
                     let btnActions = self.data.btnActions
                     let btnAction = btnActions[sec]
                     let action = btnAction[indexPath.row]
-                    
+                    print("\(action)")
                     if action["type"] as? String == "web_url"{
                         cell.textLabel.attributedText = NSAttributedString(string: row[indexPath.row], attributes:
                                                                             [.underlineStyle: NSUnderlineStyle.single.rawValue])
@@ -251,7 +251,7 @@ class CustomTableTemplateVC: UIViewController, UICollectionViewDataSource, UICol
                     let btnActions = self.data.btnActions
                     let btnAction = btnActions[sec]
                     let action = btnAction[indexPath.row]
-                    
+                    print("\(action)")
                     if action["type"] as? String == "web_url"{
                         self.movetoWebViewController(urlString: action["url"] as? String ?? "")
                     }else if action["type"] as? String == "postback"{

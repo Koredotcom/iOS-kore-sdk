@@ -11,11 +11,13 @@ import AVFoundation
 import SafariServices
 import KoreBotSDK
 import CoreData
-import Mantle
 import AssetsPickerViewController
 import Photos
 import MobileCoreServices
-import emojione_ios
+
+import Alamofire
+import AlamofireImage
+import ObjectMapper
 
 class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate {
     // MARK: properties
@@ -25,7 +27,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var botClient: BotClient!
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
     var kaBotClient: KABotClient!
-    let emojiClient: ClientInterface = Client()
     
     @IBOutlet weak var threadContainerView: UIView!
     @IBOutlet weak var quickSelectContainerView: UIView!
@@ -94,7 +95,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             self.colorDropDown
         ]
     }()
-    
+    var loaderImageUrl = ""
+    var loaderImage:UIImage!
     
     let bundleImage = Bundle(for: KREWidgetsViewController.self)
     var phassetToUpload: PHAsset?
@@ -113,14 +115,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if #available(iOS 15, *) {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = themeColor
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
-        }
-        
         //Initialize elements
         self.configureThreadView()
         self.configureComposeBar()
@@ -138,16 +132,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             panelCollectionViewContainerHeightConstraint.constant = 0
         }
         
-        
-        isSpeakingEnabled = true 
+        isSpeakingEnabled = true
         self.speechSynthesizer = AVSpeechSynthesizer()
         
         if SDKConfiguration.botConfig.isWebhookEnabled{
             NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
-            self.kaBotClient.webhookBotMetaApi(success: { [weak self] (dictionary) in
-                print(dictionary)
-                if let dic = dictionary as? [String: Any],
-                    let userIcon: String = dic["icon"] as? String  {
+            self.kaBotClient.webhookBotMetaApi(success: { (dictionary) in
+                if let userIcon: String = dictionary["icon"] as? String  {
                     botHistoryIcon = userIcon
                 }
                  
@@ -193,12 +184,12 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let font:UIFont? = UIFont(name: "Helvetica-Bold", size:17)
         let attString:NSMutableAttributedString = NSMutableAttributedString(string: headerTitle, attributes: [.font:font!])
         let titleLabel = UILabel()
-        titleLabel.textColor = .white
+        titleLabel.textColor = .black
         titleLabel.attributedText = attString
         self.navigationItem.titleView = titleLabel
         
         navigationController?.navigationBar.barTintColor = themeColor
-        navigationController?.navigationBar.tintColor = UIColor.white
+        navigationController?.navigationBar.tintColor = UIColor.black
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         self.view.backgroundColor = UIColor.init(hexString: "#f3f3f5")
         
@@ -319,11 +310,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.composeBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[composeView]|", options:[], metrics:nil, views:["composeView" : self.composeView!]))
         self.composeBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[composeView]", options:[], metrics:nil, views:["composeView" : self.composeView!]))
         
-        self.composeViewBottomConstraint = NSLayoutConstraint.init(item: self.composeBarContainerView, attribute: .bottom, relatedBy: .equal, toItem: self.composeView, attribute: .bottom, multiplier: 1.0, constant: 0.0)
+        self.composeViewBottomConstraint = NSLayoutConstraint.init(item: self.composeBarContainerView as Any, attribute: .bottom, relatedBy: .equal, toItem: self.composeView, attribute: .bottom, multiplier: 1.0, constant: 0.0)
         self.composeBarContainerView.addConstraint(self.composeViewBottomConstraint)
         self.composeViewBottomConstraint.isActive = false
         
-        self.composeBarContainerHeightConstraint = NSLayoutConstraint.init(item: self.composeBarContainerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.0)
+        self.composeBarContainerHeightConstraint = NSLayoutConstraint.init(item: self.composeBarContainerView as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.0)
         self.view.addConstraint(self.composeBarContainerHeightConstraint)
     }
     
@@ -335,7 +326,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.audioComposeContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[audioComposeView]|", options:[], metrics:nil, views:["audioComposeView" : self.audioComposeView!]))
         self.audioComposeContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[audioComposeView]|", options:[], metrics:nil, views:["audioComposeView" : self.audioComposeView!]))
         
-        self.audioComposeContainerHeightConstraint = NSLayoutConstraint.init(item: self.audioComposeContainerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.0)
+        self.audioComposeContainerHeightConstraint = NSLayoutConstraint.init(item: self.audioComposeContainerView as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.0)
         self.view.addConstraint(self.audioComposeContainerHeightConstraint)
         self.audioComposeContainerHeightConstraint.isActive = false
         
@@ -362,8 +353,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.quickReplyView.translatesAutoresizingMaskIntoConstraints = false
         self.quickSelectContainerView.addSubview(self.quickReplyView)
         
-        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[quickReplyView]|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
-        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView]))
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[quickReplyView]|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
         
         self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
             if let text = text, let payload = payload {
@@ -456,7 +447,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.typingStatusView?.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.typingStatusView!)
         
-        let views: [String: Any] = ["typingStatusView" : self.typingStatusView, "composeBarContainerView" : self.composeBarContainerView]
+        let views: [String: Any] = ["typingStatusView" : self.typingStatusView as Any, "composeBarContainerView" : self.composeBarContainerView as Any]
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(40)-[typingStatusView]", options:[], metrics:nil, views: views)) //-20
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[typingStatusView(40)][composeBarContainerView]", options:[], metrics:nil, views: views))
         
@@ -782,7 +773,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         let url = URL(string: urlString!)
         if url != nil{
-            backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
+            backgroungImageView.af.setImage(withURL: url!, placeholderImage: UIImage(named: ""))
             backgroungImageView.contentMode = .scaleAspectFit
         }
         setupColorDropDown()
@@ -810,7 +801,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
                 let url = URL(string: urlString!)
                 if url != nil{
-                    self!.backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
+                    self!.backgroungImageView.af.setImage(withURL: url!, placeholderImage: UIImage(named: ""))
                 }else{
                     self!.backgroungImageView.image = UIImage.init(named: "")
                 }
@@ -911,6 +902,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showCustomTableTemplateNotification), object: nil)
 
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: reloadVideoCellNotification), object: nil)
+
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
     }
@@ -965,14 +957,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @objc func startMonitoringForReachability() {
-        let networkReachabilityManager = AFNetworkReachabilityManager.shared()
-        networkReachabilityManager.setReachabilityStatusChange({ (status) in
-            print("Network reachability: \(AFNetworkReachabilityManager.shared().localizedNetworkReachabilityStatusString())")
+        let networkReachabilityManager = NetworkReachabilityManager.default
+        networkReachabilityManager?.startListening(onUpdatePerforming: { (status) in
+            print("Network reachability: \(status)")
             switch status {
-            case AFNetworkReachabilityStatus.reachableViaWWAN, AFNetworkReachabilityStatus.reachableViaWiFi:
-                //self.establishBotConnection()
+            case .reachable(.ethernetOrWiFi), .reachable(.cellular):
+               // self.establishBotConnection() //kk
                 break
-            case AFNetworkReachabilityStatus.notReachable:
+            case .notReachable:
                 fallthrough
             default:
                 break
@@ -980,11 +972,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             
             KABotClient.shared.setReachabilityStatusChange(status)
         })
-        networkReachabilityManager.startMonitoring()
     }
     
     @objc func stopMonitoringForReachability() {
-        AFNetworkReachabilityManager.shared().stopMonitoring()
+        NetworkReachabilityManager.default?.stopListening()
     }
     
     @objc func navigateToComposeBar(_ notification: Notification) {
@@ -1299,14 +1290,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 }
             }
             else{
-                let stringToEmoji = emojiClient.shortnameToUnicode(string: jsonString ?? "")
-                let emojiToString = emojiClient.toShort(string: stringToEmoji)
+                //let stringToEmoji = emojiClient.shortnameToUnicode(string: jsonString ?? "")
+                //let emojiToString = emojiClient.toShort(string: stringToEmoji)
                 templateType = valData["type"] as? String ?? ""
-                textComponent.payload = stringToEmoji //kkkkk
+                textComponent.payload = jsonString
                 if lastMessageID == valData["messageId"] as? String{
                     ttsBody = ""
                 }else{
-                    ttsBody = emojiToString
+                    ttsBody = jsonString
                 }
                 
                 message.addComponent(textComponent)
@@ -1317,10 +1308,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
     }
 }
-    
-    
-    
-    
+
     func sendTextMessage(_ text: String, dictionary: [String: Any]? = nil, options: [String: Any]?) {
         if attachmentArray.count>0 {
             closeAndOpenAttachment(imageAttached: nil, height: 0.0)
@@ -1492,16 +1480,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func populateFeedbackSliderView(with message: KREMessage?) {
-        var messageId = ""
         if message?.templateType == (ComponentType.feedbackTemplate.rawValue as NSNumber) {
             let component: KREComponent = message!.components![0] as! KREComponent
             print(component)
             if (!component.isKind(of: KREComponent.self)) {
                 return;
             }
-            if (component.message != nil) {
-                messageId = component.message!.messageId!
-            }
+            
             if ((component.componentDesc) != nil) {
                 let jsonString = component.componentDesc
                 let feedbackViewController = FeedbackSliderViewController(dataString: jsonString!)
@@ -1604,7 +1589,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         info.setValue(botId, forKey: "botId");
         info.setValue("kora", forKey: "imageName");
         
-        self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 2.0)
+        self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 2.0, loaderImage: nil)
     }
     
     // MARK: show TableTemplateView
@@ -1746,7 +1731,7 @@ extension ChatMessagesViewController {
     
     // MARK: - insert or update messages
     func insertOrUpdateHistoryMessages(_ messages: Array<[String: Any]>) {
-        guard let botMessages = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages], botMessages.count > 0 else {
+        guard let botMessages = Mapper<BotMessages>().mapArray(JSONArray: messages) as? [BotMessages], botMessages.count > 0 else {
             return
         }
         
@@ -1813,7 +1798,7 @@ extension ChatMessagesViewController {
 extension ChatMessagesViewController: KABotClientDelegate {
     func showTypingStatusForBot() {
         self.typingStatusView?.isHidden = true
-        self.typingStatusView?.addTypingStatus(forContact: [:], forTimeInterval: 0.5)
+        self.typingStatusView?.addTypingStatus(forContact: [:], forTimeInterval: 0.5, loaderImage: nil)
     }
     
     func hideTypingStatusForBot(){
@@ -1821,7 +1806,7 @@ extension ChatMessagesViewController: KABotClientDelegate {
     }
     
     // MARK: - KABotlientDelegate methods
-    open func botConnection(with connectionState: BotClientConnectionState) {
+    public func botConnection(with connectionState: BotClientConnectionState) {
         updateNavBarPrompt()
         
     }
@@ -1840,7 +1825,28 @@ extension ChatMessagesViewController: KABotClientDelegate {
         }
         
         info.setValue(urlString ?? "kora", forKey: "imageName");
-        self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5)
+        if let icon = botHistoryIcon{
+                    if self.loaderImage == nil{
+                        account?.sessionManager.request(icon, method: .get).response{ response in
+                           switch response.result {
+                            case .success(let responseData):
+                               if let data = responseData{
+                                   self.loaderImage = UIImage(data: data, scale:1)!
+                                   self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5, loaderImage: self.loaderImage)
+                               }else{
+                                   self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5, loaderImage: nil)
+                               }
+                            case .failure(let error):
+                                print("error--->",error)
+                               self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5, loaderImage: nil)
+                            }
+                        }
+                    }else{
+                        self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5, loaderImage: self.loaderImage)
+                    }
+                }else{
+                    self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5, loaderImage: nil)
+                }
     }
     
     @objc func stopTypingStatusForBot(){
@@ -1949,7 +1955,7 @@ extension ChatMessagesViewController {
         panelItemViewController.updatePanel(with: panelItem)
     }
     // MARK: - tryout
-    open func startTryOut() {
+    public func startTryOut() {
         
     }
     // MARK: -
@@ -2153,71 +2159,7 @@ extension ChatMessagesViewController: AssetsPickerViewControllerDelegate {
             }
         }
     }
-    
-    /*
-     func sizeLimitCheck(bytes: Int64) -> Bool {
-     guard let usage = account?.usageLimit else {
-     return false
-     }
-     let limit = usage.filter {$0.type == "attachment"}
-     let kbSize = bytes / (1000 * 1000)
-     if kbSize > (limit.first)?.size ?? 0 {
-     return false
-     } else {
-     return true
-     }
-     }
-     
-     func addFreemium() {
-     guard let usage = account?.usageLimit,
-     let type = account?.userInfo?.accountType?.intValue else {
-     return
-     }
-     
-     let accountType = UserAccountType(rawValue: type)
-     let limit = usage.filter {$0.type == "attachment"}
-     let fremmium = KREFremimumAlertViewController()
-     switch accountType {
-     case .personal:
-     fremmium.feedbackContainerView.titleLabel.text = "File uploads are limited to \((limit.first)?.size ?? 0) MB under the free plan. Try using your Enterprise account with a paid version for enhanced limits."
-     fremmium.feedbackContainerView.bottomCollectionView.utterances = ["Continue", "Learn More"]
-     default:
-     fremmium.feedbackContainerView.titleLabel.text = "File uploads are limited to \((limit.first)?.size ?? 0) MB under the free plan"
-     if let roles = account?.userInfo?.roles, roles.count > 0 {
-     fremmium.feedbackContainerView.bottomCollectionView.utterances = ["Upgrade", "Learn More"]
-     } else {
-     fremmium.feedbackContainerView.bottomCollectionView.utterances = ["Request for upgrade", "Learn More"]
-     }
-     }
-     fremmium.feedbackContainerView.bottomCollectionView.actionHandler = { [weak self] (button) in
-     fremmium.dismissAction = nil
-     switch button {
-     case "Learn More":
-     let urlString = SDKConfiguration.serverConfig.learnMoreUrl
-     self?.openLimitAction(urlString: urlString)
-     case "Request for upgrade":
-     self?.openRequestToProgrssAction()
-     case "Upgrade":
-     fremmium.dismissAction = nil
-     self?.showAlertToAdmin()
-     case "Continue":
-     let urlString = SDKConfiguration.serverConfig.tryKoraUrl
-     self?.openLimitAction(urlString: urlString)
-     default:
-     break
-     }
-     }
-     if limit.first?.isEnterprise(usageLimits: usage) ?? false {
-     fremmium.feedbackContainerView.bottomCollectionView.isHidden = true
-     fremmium.feedbackContainerView.titleLabel.text = "File uploads are limited to \((limit.first)?.size ?? 0) MB under the Enterprise Plan"
-     }
-     fremmium.modalPresentationStyle = .overCurrentContext
-     self.present(fremmium, animated: true, completion: nil)
-     }
-     
-     */
-    
-    
+
     func uploadAttachment(text: String) {
         // do your job with selected assets
         

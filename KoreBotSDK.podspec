@@ -17,10 +17,10 @@ Pod::Spec.new do |s|
         ss.ios.deployment_target = '12.0'
         ss.source_files = 'KoreBotSDK/**/*.{h,m,swift}'
         
-        ss.dependency 'Mantle', '2.1.0'
-        ss.dependency 'AFNetworking', '4.0.1'
-        ss.dependency 'SocketRocket'
-        
+        ss.dependency 'Starscream'
+        ss.dependency 'ObjectMapper'
+        ss.dependency 'AlamofireImage'
+        ss.dependency 'Alamofire'
         ss.ios.frameworks = 'SystemConfiguration'
     end
 
@@ -35,13 +35,15 @@ Pod::Spec.new do |s|
             'Symbols' => ['Widgets/Resources/Fonts/AppSymbols/*.ttf'],
         }
         ss.resources = ['Widgets/Widgets/**/*.{xcdatamodeld}', 'Widgets/Resources/*.{xcassets}']
-        ss.dependency 'AFNetworking', '4.0.1'
+        ss.dependency 'AlamofireImage'
         ss.dependency 'GhostTypewriter'
         ss.dependency 'MarkdownKit'
+        #ss.dependency 'Charts', '~> 3.2.2'
         ss.dependency 'DGCharts'
-	    ss.dependency 'AssetsPickerViewController'
-	    ss.dependency 'SwiftUTI'
-	    ss.dependency 'emojione-ios'
-        ss.ios.frameworks = 'SystemConfiguration'
+        ss.dependency 'ObjectMapper'
+	ss.dependency 'AssetsPickerViewController'
+	ss.dependency 'SwiftUTI'
+	ss.dependency 'emojione-ios'
+    ss.ios.frameworks = 'SystemConfiguration'
     end
 end

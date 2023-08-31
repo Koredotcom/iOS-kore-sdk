@@ -157,7 +157,7 @@ extension KREQuickSelectView: UICollectionViewDelegate, UICollectionViewDataSour
             cell.labelText = word.title
             cell.imageURL = word.imageURL
             let bgColor =  UserDefaults.standard.value(forKey: "ThemeColor") as? String
-            cell.layer.borderColor = UIColor.init(hexString: bgColor ?? "#2881DF").cgColor
+            cell.layer.borderColor = UIColor.init(hexString: bgColor!).cgColor
             cell.layer.borderWidth = 1.5
             cell.layer.cornerRadius = 15
             cell.krefocused = false

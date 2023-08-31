@@ -633,11 +633,11 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         }
         
         self.titleLbl?.text = jsonObject["text"] as? String
-        let placeHolderIcon : UIImage = UIImage(named:"kora")!
+        let placeHolderIcon = UIImage(named:"kora")
         self.senderImageView.image = placeHolderIcon
         if (botHistoryIcon != nil) {
             if let fileUrl = URL(string: botHistoryIcon!) {
-                self.senderImageView.setImageWith(fileUrl, placeholderImage: placeHolderIcon)
+                self.senderImageView.af.setImage(withURL: fileUrl, placeholderImage: placeHolderIcon)
             }
        }
     }

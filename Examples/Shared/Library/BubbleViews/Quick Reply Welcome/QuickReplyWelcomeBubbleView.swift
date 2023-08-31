@@ -197,6 +197,8 @@ class QuickReplyWelcomeBubbleView: BubbleView {
             return cell
         }
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            print("self.collectionView.contentSize.height...\(self.collectionView.contentSize.height)")
+            
             let elements = arrayOfElements[indexPath.row]
             self.optionsAction(elements.title, elements.payload)
         }

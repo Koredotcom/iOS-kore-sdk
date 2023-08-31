@@ -460,7 +460,7 @@ extension AdvanceListBubbleView: UITableViewDelegate, UITableViewDataSource{
                     cell.imagV.image = image
                 }else{
                     if let url = URL(string: iconImg){
-                        cell.imagV.setImageWith(url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
+                        cell.imagV.af.setImage(withURL: url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
                     }
                 }
             }
@@ -515,7 +515,7 @@ extension AdvanceListBubbleView: UITableViewDelegate, UITableViewDataSource{
                         cell.descriptionRightIcon.image = image
                     }else{
                         if let url = URL(string: descIcon){
-                            cell.descriptionRightIcon.setImageWith(url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
+                            cell.desciptionIcon.af.setImage(withURL: url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
                         }
                     }
                 }else{
@@ -527,7 +527,7 @@ extension AdvanceListBubbleView: UITableViewDelegate, UITableViewDataSource{
                         cell.descLblLeadingConstraint.constant = 8.0
                     }else{
                         if let url = URL(string: descIcon){
-                            cell.desciptionIcon.setImageWith(url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
+                            cell.desciptionIcon.af.setImage(withURL: url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
                             cell.desciptionIcon.isHidden = false
                             cell.descIconWidthConstaint.constant = 15.0
                             cell.descLblLeadingConstraint.constant = 8.0
@@ -546,7 +546,7 @@ extension AdvanceListBubbleView: UITableViewDelegate, UITableViewDataSource{
                     cell.titlLblLedingConstraint.constant = 8.0
                 }else{
                     if let url = URL(string: iconImg){
-                        cell.imagV.setImageWith(url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
+                        cell.imagV.af.setImage(withURL: url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
                         cell.imagV.isHidden = false
                         cell.imagVwidthConstraint.constant = 40.0
                         cell.descLblLeadingConstraint.constant = 48.0
@@ -826,7 +826,7 @@ extension AdvanceListBubbleView: UITableViewDelegate, UITableViewDataSource{
                 headerView.imagView.image = image
             }else{
                 if let url = URL(string: descIcon){
-                    headerView.imagView.setImageWith(url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
+                    headerView.imagView.af.setImage(withURL: url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
                 }
             }
         }

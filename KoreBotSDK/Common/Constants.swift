@@ -23,6 +23,12 @@ open class Constants: NSObject {
         }
     }
     
+    public static var WB_BOT_SERVER = String(format: "https://pilot-bots.kore.com")
+    struct WB_URL {
+           static let baseUrl = WB_BOT_SERVER
+           static let jwtAuthorizationUrl = String(format: "%@/oAuth/token/jwtgrant", WB_BOT_SERVER)
+       }
+    
     public static func getUUID() -> String {
         let uuid = UUID().uuidString
         let date: Date = Date()
