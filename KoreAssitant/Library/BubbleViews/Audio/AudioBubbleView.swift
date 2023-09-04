@@ -100,8 +100,14 @@ class AudioBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         
         
         cell.videoPlayerView.isHidden = false
-        let url =  imageDataDic["url"] as? String //componentItems.audioUrl
-        let playerURL = URL(string:url ?? "")
+        var audioUrl = ""
+        if let url =  imageDataDic["url"] {
+            audioUrl = url as! String
+        }
+        if let url =  imageDataDic["audioUrl"] {
+            audioUrl = url as! String
+        }//componentItems.audioUrl
+        let playerURL = URL(string: audioUrl)
         cell.player = AVPlayer(url: playerURL!)
         cell.playerViewController = AVPlayerViewController()
         cell.playerViewController.player = cell.player

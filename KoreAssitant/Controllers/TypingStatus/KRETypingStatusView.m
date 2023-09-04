@@ -9,8 +9,6 @@
 #import "KRETypingStatusView.h"
 #import "KRETypingCollectionViewCell.h"
 #import "KRETypingActivityIndicator.h"
-#import <AFNetworking/AFNetworking.h>
-#import "UIImageView+AFNetworking.h"
 #import "KREUtilities.h"
 
 @interface KRETypingStatusView () <UICollectionViewDataSource>
@@ -19,6 +17,7 @@
 @property (nonatomic, strong) UILabel *statusLabel;
 @property (nonatomic, strong) KRETypingActivityIndicator *dancingDots;
 @property (nonatomic, strong) NSMutableArray *dataSource;
+@property (nonatomic, strong) UIImage *loaderImage;
 
 @end
 
@@ -58,7 +57,7 @@
     return self;
 }
 
-- (void)addTypingStatusForContact:(NSMutableDictionary *)contactInfo forTimeInterval:(NSTimeInterval)timeInterval{
+- (void)addTypingStatusForContact:(NSMutableDictionary *)contactInfo  forTimeInterval:(NSTimeInterval)timeInterval loaderImage:(UIImage *)loaderImage{
     
     NSDate *fireDate = [NSDate dateWithTimeInterval:timeInterval sinceDate:[NSDate date]];
     NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
@@ -67,8 +66,8 @@
                                               selector:@selector(timerFiredToRemoveTypingStatus:)
                                               userInfo:@""
                                                repeats:NO];
-   // [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
-
+    //[[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+    self.loaderImage = loaderImage;
     if(![self.dataSource containsObject:contactInfo]){
         [contactInfo setValue:timer forKey:@"timer"];
         [self.dataSource addObject:contactInfo];
@@ -130,9 +129,32 @@
 {
     KRETypingCollectionViewCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:@"TypingCell"
                                                                                        forIndexPath:indexPath];
-    NSDictionary *dict = [self.dataSource objectAtIndex:indexPath.row];
-    NSString *url = dict[@"imageName"];
-    [cell.customImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@""]];
+    
+    NSString *bundle = [NSBundle bundleForClass: [KRETypingStatusView self]];
+//    NSDictionary *dict = [self.dataSource objectAtIndex:indexPath.row];
+//    NSString *url = dict[@"imageName"];
+    //[cell.customImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@""]];
+    
+//    NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: url]];
+//    if ( data == nil ){
+//        NSString *bundle = [NSBundle bundleForClass: [KRETypingStatusView self]];
+//        cell.customImageView.image = [UIImage imageNamed:@"kora" inBundle:[bundle self] withConfiguration:nil];
+//    }else{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            cell.customImageView.image = [UIImage imageWithData: data];
+//        });
+//    }
+    
+    if (_loaderImage != nil){
+        cell.customImageView.image = self.loaderImage;
+    }else{
+        if (@available(iOS 13.0, *)) {
+            cell.customImageView.image = [UIImage imageNamed:@"kora" inBundle:[bundle self] withConfiguration: nil];
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    cell.layer.cornerRadius = cell.frame.size.height/2;
     return cell;
 }
 

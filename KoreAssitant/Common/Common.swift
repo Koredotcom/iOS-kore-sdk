@@ -20,9 +20,10 @@ var showListWidgetViewTemplateNotification = "ListWidgetViewTemplateNotification
 var showAttachmentSendButtonNotification = "ShowAttachmentSendButton"
 var dropDownTemplateNotification = "DropDownTemplateNotificationName"
 
+var showCustomTableTemplateNotification = "ShowCustomTableTemplateNotificationName"
 var pdfcTemplateViewNotification = "pdfShowViewNotification"
 var pdfcTemplateViewErrorNotification = "pdfShowErrorNotification"
-var showCustomTableTemplateNotification = "ShowCustomTableTemplateNotificationName"
+
 
 var reloadVideoCellNotification = "ReloadVideoCellNotification"
 
@@ -43,7 +44,12 @@ var attachmentKeybord = false
 var jwtToken:String?
 var botHistoryIcon:String?
 var lastMessageID:String?
+var history = true
 
+var frameworkBundle:Bundle? {
+    let bundleId = "com.kore.rtc"
+    return Bundle(identifier: bundleId)
+}
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
@@ -95,7 +101,7 @@ open class Utilities: NSObject {
             let url: String = actionInfo["url"] != nil ? actionInfo["url"] as! String : ""
             return KREAction(actionType: .webURL, title: title, payload: url)
         case "postback":
-            let payload: String = (actionInfo["payload"] != nil ? actionInfo["payload"] as? String : "") ?? String(actionInfo["payload"] as! Int) 
+            let payload: String = (actionInfo["payload"] != nil ? actionInfo["payload"] as? String : "") ?? String(actionInfo["payload"] as! Int)
             return KREAction(actionType: .postback, title: title, payload: payload)
         case "postback_disp_payload":
             let payload: String = actionInfo["payload"] != nil ? actionInfo["payload"] as! String : ""
@@ -105,6 +111,7 @@ open class Utilities: NSObject {
         }
         return nil
     }
+    
     public static func base64ToImage(base64String: String?) -> UIImage{
            if (base64String?.isEmpty)! {
                return #imageLiteral(resourceName: "no_image_found")

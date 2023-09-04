@@ -170,7 +170,7 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
                 if let payload = imageDataDic["payload"] as? [String: Any]{
                     let url = URL(string: ( payload["url"] as? String ?? ""))
                     if url != nil{
-                        cell.imageComponent.setImageWith(url!, placeholderImage: UIImage(named: "placeholder_image"))
+                        cell.imageComponent.af.setImage(withURL: url!, placeholderImage: UIImage(named: "placeholder_image"))
                     }else{
                         cell.imageComponent.image = UIImage(named: "placeholder_image")
                     }

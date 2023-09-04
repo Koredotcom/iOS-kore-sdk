@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import AFNetworking
+import AlamofireImage
 
 public enum KREActionType : Int {
     case none = 0, webURL = 1, postback = 2, user_intent = 3, postback_disp_payload = 4
@@ -53,7 +53,24 @@ public class KREAction: NSObject, Decodable, Encodable {
     required public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         title = try? values.decode(String.self, forKey: .title)
-        payload = try? values.decode(String.self, forKey: .payload)
+//        do {
+//            let val = try values.decode(Int.self, forKey: .payload)
+//            payload = String(val)
+//        } catch DecodingError.typeMismatch {
+//            payload = try? values.decode(String.self, forKey: .payload)
+//        }
+        
+        
+        if let valueInteger = try? values.decodeIfPresent(Int.self, forKey: .payload) {
+               payload = String(valueInteger ?? -00)
+            if payload == "-00"{
+                payload = ""
+            }
+        } else if let valueString = try? values.decodeIfPresent(String.self, forKey: .payload) {
+               payload = valueString
+        }
+        
+        
         type = try? values.decode(String.self, forKey: .type)
         utterance = try? values.decode(String.self, forKey: .utterance)
         url = try? values.decode(String.self, forKey: .url)
@@ -163,7 +180,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
         optionsView.separatorColor = UIColor.paleLilacFour
         optionsView.setNeedsLayout()
         optionsView.layoutIfNeeded()
-
+        optionsView.separatorColor = .white
         return optionsView
     }()
     
@@ -200,13 +217,12 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             
             cell.textLabel?.text = option.title
-            cell.textLabel?.numberOfLines = 0
             cell.textLabel?.textAlignment = .center
-            cell.textLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)!
-            let bgColor =  UserDefaults.standard.value(forKey: "ThemeColor") as? String
-            cell.textLabel?.textColor = UIColor.init(hexString: bgColor ?? "#2881DF")
+            //cell.textLabel?.textColor = UIColor.lightRoyalBlue
+            cell.textLabel?.textColor = UIColor.init(hexString: "#1565C0")
+            cell.backgroundColor = UIColor.init(hexString: "#E3F2FD")
             if #available(iOS 8.2, *) {
-                cell.textLabel?.font = UIFont.textFont(ofSize: 15.0, weight: .medium)
+                cell.textLabel?.font = UIFont.textFont(ofSize: 14.0, weight: .medium)
             } else {
                 // Fallback on earlier versions
             }
@@ -219,13 +235,8 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             cell.titleLabel.text = option.title
             cell.subTitleLabel.text = option.subTitle
             
-            if option.imageURL != "" {
-                if verifyUrl(urlString: option.imageURL!){
-                    cell.imgView.setImageWith(NSURL(string: option.imageURL!) as URL!,placeholderImage: UIImage.init(named: "placeholder_image"))
-                }else{
-                    cell.imgView.image = UIImage.init(named: "placeholder_image")
-                }
-                
+            if let urlString = option.imageURL, let url = URL(string: urlString) {
+                cell.imgView.af.setImage(withURL: url, placeholderImage: UIImage(named: "placeholder_image"))
                 cell.imgViewWidthConstraint.constant = 60.0
             } else {
                 cell.imageView?.image = nil
@@ -255,15 +266,6 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             return cell
         }
         return UITableViewCell.init()
-    }
-    
-    func verifyUrl(urlString: String?) -> Bool {
-        if let urlString = urlString {
-            if let url = URL(string: urlString) {
-                return UIApplication.shared.canOpenURL(url)
-            }
-        }
-        return false
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -309,13 +311,13 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
         var height: CGFloat = 0.0
         for option in options  {
             if(option.optionType == KREOptionType.button){
-                height = optionsTableView.contentSize.height
+                height += kMaxRowHeight
             }else if(option.optionType == KREOptionType.list){
                 let cell:KREListTableViewCell = self.tableView(optionsTableView, cellForRowAt: IndexPath(row: options.index(of: option)!, section: 0)) as! KREListTableViewCell
                 var fittingSize = UIView.layoutFittingCompressedSize
                 fittingSize.width = width
                 let size = cell.systemLayoutSizeFitting(fittingSize, withHorizontalFittingPriority: UILayoutPriority(rawValue: 1000), verticalFittingPriority: UILayoutPriority(rawValue: 250))
-                height += size.height
+                height += size.height + 5.0 //kk
             }
         }
         return height

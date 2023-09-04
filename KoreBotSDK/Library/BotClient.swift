@@ -7,8 +7,7 @@
 //
 
 import UIKit
-import SocketRocket
-import AFNetworking
+import Alamofire
 
 public enum BotClientConnectionState : Int {
     case NONE
@@ -24,6 +23,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     // MARK: properties
     fileprivate var connection: RTMPersistentConnection?
     public var jwToken: String?
+    public var authorizationXAuthInfo: [String: Any]?
     fileprivate var clientId: String?
     fileprivate var botInfoParameters: [String: Any]?
     fileprivate var customData: [String: Any]?
@@ -36,19 +36,25 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             if let isNetworkAvailable = isNetworkAvailable, isNetworkAvailable == false {
                 return .NO_NETWORK
             }
-            guard let readyState = connection?.websocket?.readyState else {
+            
+            guard let connection = connection else {
                 return .NONE
             }
-            switch readyState {
-            case .OPEN:
+            
+            let isConnecting = connection.isConnecting
+            let isConnected = connection.isConnected
+            
+            if (isConnected) {
                 return .CONNECTED
-            case .CLOSED:
+            }
+            if (!isConnecting && !isConnected) {
                 return.CLOSED
-            case .CLOSING:
-                return .CLOSING
-            case .CONNECTING:
+            }
+            if (isConnecting && !isConnected) {
                 return .CONNECTING
             }
+            
+            return .NONE
         }
     }
     fileprivate var reconnects = false
@@ -56,8 +62,8 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     open var connectionWillOpen: (() -> Void)?
     open var connectionDidOpen: (() -> Void)?
     open var connectionReady: (() -> Void)?
-    open var connectionDidClose: ((Int?, String?) -> Void)?
-    open var connectionDidFailWithError: ((NSError?) -> Void)?
+   open var connectionDidClose: ((UInt16?, String?) -> Void)?
+    open var connectionDidFailWithError: ((Error?) -> Void)?
     open var onMessage: ((BotMessageModel?) -> Void)?
     open var onMessageAck: ((Ack?) -> Void)?
     open var onUserMessageReceived:(([String:Any])-> Void)?
@@ -91,29 +97,19 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     }
     
     // MARK: - start network monitoring
-    public func setReachabilityStatusChange(_ status: AFNetworkReachabilityStatus) {
-        if status == .reachableViaWiFi || status == .reachableViaWWAN {
+        public func setReachabilityStatusChange(_ status: NetworkReachabilityManager.NetworkReachabilityStatus) {
+        if status == .reachable(.ethernetOrWiFi) || status == .reachable(.cellular) {
             self.isNetworkAvailable = true
             guard let connection = self.connection else {
                 // webSocket connection not available
                 self.connectionWillOpen?()
                 return
             }
-            guard let readyState = connection.websocket?.readyState else {
-                return
-            }
-            switch readyState {
-            case .OPEN:
-                break
-            case .CLOSED:
+            let isConnected = connection.isConnected
+            if isConnected {
                 self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: nil))
-                break
-            case .CLOSING:
-                self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: nil))
-                break
-            case .CONNECTING:
+            } else {
                 self.connectionWillOpen?()
-                break
             }
         } else {
             self.isNetworkAvailable = false
@@ -127,9 +123,13 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         Constants.KORE_BOT_SERVER = url
     }
     
+    open func setWBKoreBotServerUrl(url: String) {
+        Constants.WB_BOT_SERVER = url
+    }
+    
     // MARK: make connection
     open func connectWithJwToken(_ jwtToken: String?, intermediary:((BotClient?) -> Void)?,  success:((BotClient?) -> Void)?, failure:((Error?) -> Void)?)  {
-        guard let jwtToken = jwtToken else {
+       guard let jwtToken = jwtToken else {
             failure?(nil)
             return
         }
@@ -195,7 +195,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         connectionReady?()
     }
     
-    open func rtmConnectionDidClose(_ code: Int, reason: String?) {
+    open func rtmConnectionDidClose(_ code: UInt16, reason: String?) {
         switch code {
         case 1000:
             connectionDidClose?(code, reason)
@@ -206,7 +206,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         }
     }
     
-    open func rtmConnectionDidFailWithError(_ error: NSError) {
+    open func rtmConnectionDidFailWithError(_ error: Error?) {
         connectionDidFailWithError?(error)
     }
     open func didReceivedUserMessage(_ usrMessage:[String:Any]) {
@@ -222,7 +222,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     
     // MARK: functions
     fileprivate func rtmConnectionWithBotInfoModel(_ botInfo: BotInfoModel, isReconnect: Bool) -> RTMPersistentConnection? {
-        if let connection = connection, (connection.websocket?.readyState == .OPEN || connection.websocket?.readyState == .CONNECTING) {
+        if let connection = connection, (connection.isConnected || connection.isConnecting) {
             return connection
         } else if let botInfoParameters = botInfoParameters {
             if connection == nil {
@@ -240,26 +240,31 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             NSLog("WebSocket connection not available")
             return
         }
-        guard let readyState = connection.websocket?.readyState else {
-            NSLog("WebSocket connection not available")
-            return
-        }
         
-        switch readyState {
-        case .OPEN:
+        let isConnected = connection.isConnected
+        if isConnected {
             var parameters = customData ?? [:]
             if let botToken = authInfoModel?.accessToken {
                 parameters["botToken"] = botToken
             }
             dictionary?.forEach { (key, value) in parameters[key] = value }
             connection.sendMessage(message, parameters: parameters, options: options)
-            break
-        case .CLOSED:
-            break
-        case .CLOSING:
-            break
-        case .CONNECTING:
-            break
+        }
+    }
+    
+    open func sendACK(ackDic: [String: Any]?) {
+        guard let connection = connection else {
+            NSLog("WebSocket connection not available")
+            return
+        }
+        
+        let isConnected = connection.isConnected
+        if isConnected {
+            var parameters = customData ?? [:]
+            if let botToken = authInfoModel?.accessToken {
+                parameters["botToken"] = botToken
+            }
+            connection.sendACK(ackDic: ackDic)
         }
     }
     

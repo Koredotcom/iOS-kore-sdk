@@ -67,7 +67,7 @@ class PDFBubbleView: BubbleView {
         
         imageV = UIImageView(frame: CGRect.zero)
         imageV.translatesAutoresizingMaskIntoConstraints = false
-        imageV.image = UIImage(named: "pdfICon")
+        imageV.image = UIImage(named: "pdfICon", in: bundle, compatibleWith: nil)
         cardView.addSubview(self.imageV)
         
         downloadBtn = UIButton(frame: CGRect.zero)

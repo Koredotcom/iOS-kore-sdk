@@ -23,7 +23,7 @@ class PdfShowViewController: UIViewController {
         self.view.addSubview(pdfView)
         //print("pdf url \(pdfUrl!)")
         
-        let bundle = Bundle(for: PdfShowViewController.self)
+        //let bundle = Bundle(for: PdfShowViewController.self)
         let menuImage = UIImage(named: "ic24Close", in: bundle, compatibleWith: nil)
         let tintedMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
         self.closeBtn.setImage(tintedMenuImage, for: .normal)

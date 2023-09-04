@@ -258,7 +258,7 @@ extension CardTemplateBubbleView: UITableViewDelegate, UITableViewDataSource{
                     cell.imagV.image = image
                 }else{
                     if let url = URL(string: iconImg){
-                        cell.imagV.setImageWith(url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
+                        cell.imagV.af.setImage(withURL: url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
                     }
                 }
             }
@@ -471,7 +471,7 @@ extension CardTemplateBubbleView: UITableViewDelegate, UITableViewDataSource{
                     cardHView.imagView.image = image
                 }else{
                     if let url = URL(string: descIcon){
-                        cardHView.imagView.setImageWith(url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
+                        cardHView.imagView.af.setImage(withURL: url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
                     }
                 }
             }

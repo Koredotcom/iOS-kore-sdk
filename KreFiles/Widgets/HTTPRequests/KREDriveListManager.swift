@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import AFNetworking
+import Alamofire
 
 public class KREDriveListManager: NSObject {
     let sessionManager = KREWidgetManager.shared.sessionManager
@@ -16,15 +16,18 @@ public class KREDriveListManager: NSObject {
         if let baseUrl = KREWidgetManager.shared.user?.server {
             
             var urlApi = baseUrl + urlString
-            let requestSerializer = KREWidgetManager.shared.requestSerializer()
+            let headers = KREWidgetManager.shared.getRequestHeaders()
             
-            let dataTask = sessionManager?.get(urlApi, parameters: parameters, headers: nil, progress: { (progress) in
-                
-            }, success: { (dataTask, responseObject) in
+            let dataRequest = sessionManager.request(urlApi, method: .get, headers: headers)
+            dataRequest.validate().responseJSON { [weak self] (response) in
                 var success: Bool = false
                 var componentElements: [Any] = [Any]()
+                if let error = response.error {
+                    block?(success, componentElements)
+                    return
+                }
                 
-                guard let dictionary = responseObject as? [String: Any] else {
+                guard let dictionary = response.value as? [String: Any] else {
                     block?(success, componentElements)
                     return
                 }
@@ -59,11 +62,7 @@ public class KREDriveListManager: NSObject {
                     }
                 }
                 block?(success, componentElements)
-            }, failure: { (dataTask, error) in
-                block?(false, nil)
-                
-            })
-            dataTask?.resume()
+            }
         }
     }
     
@@ -73,16 +72,20 @@ public class KREDriveListManager: NSObject {
                 return
             }
             let urlApi = baseUrl + String(format:"api/1.1/ka/users/%@/calendar/updateEvent", userId)
-            let dataTask = sessionManager?.post(urlApi, parameters: parameters, headers: nil, progress: { (progress) in
-                
-            }, success: { (dataTask, responseObject) in
+            let headers = KREWidgetManager.shared.getRequestHeaders()
+            
+            let dataRequest = sessionManager.request(urlApi, method: .post, parameters: parameters, headers: headers)
+            dataRequest.validate().responseJSON { [weak self] (response) in
                 //self?.error = error
                 var success: Bool = false
                 var componentElements: [Any] = [Any]()
+                if let _ = response.error {
+                    block?(false, nil)
+                    return
+                }
                 
-                guard let dictionary = responseObject as? [String: Any] else {
+                guard let dictionary = response.value as? [String: Any] else {
                     block?(success, componentElements)
-                    
                     return
                 }
                 
@@ -90,10 +93,7 @@ public class KREDriveListManager: NSObject {
                 let jsonDecoder = JSONDecoder()
                 
                 block?(success, componentElements)
-            }, failure: { (dataTask, error) in
-                block?(false, nil)
-            })
-            dataTask?.resume()
+            }
         }
     }
     
@@ -103,14 +103,19 @@ public class KREDriveListManager: NSObject {
                 return
             }
             var urlApi = baseUrl + String(format:"api/1.1/ka/users/%@/widgets/layout", userId)
-            let requestSerializer = KREWidgetManager.shared.requestSerializer()
+            let headers = KREWidgetManager.shared.getRequestHeaders()
             
-            let dataTask = sessionManager?.put(urlApi, parameters: parameters, headers: nil, success: { (dataTask, responseObject) in
+            let dataRequest = sessionManager.request(urlApi, method: .put, parameters: parameters, headers: headers)
+            dataRequest.validate().responseJSON { [weak self] (response) in
                 //self?.error = error
                 var success: Bool = false
                 var componentElements: [Any] = [Any]()
+                if let _ = response.error {
+                    block?(false, nil)
+                    return
+                }
                 
-                guard let dictionary = responseObject as? [String: Any] else {
+                guard let dictionary = response.value as? [String: Any] else {
                     block?(success, componentElements)
                     return
                 }
@@ -118,10 +123,7 @@ public class KREDriveListManager: NSObject {
                 success = true
                 let jsonDecoder = JSONDecoder()
                 block?(success, componentElements)
-            }, failure: { (dataTask, error) in
-                block?(false, nil)
-            })
-            dataTask?.resume()
+            }
         }
     }
 
@@ -131,11 +133,17 @@ public class KREDriveListManager: NSObject {
                 return
             }
             var urlApi = baseUrl + String(format:"api/1.1/ka/users/%@/panels/%@/layout",userId, panelId)
-            let dataTask = sessionManager?.post(urlApi, parameters: parameters, headers: nil, progress: nil, success: { (dataTask, responseObject) in
+            let headers = KREWidgetManager.shared.getRequestHeaders()
+            
+            let dataRequest = sessionManager.request(urlApi, method: .post, parameters: parameters, headers: headers)
+            dataRequest.validate().responseJSON { [weak self] (response) in
                 var success: Bool = false
                 var componentElements: [Any] = [Any]()
-                
-                guard let dictionary = responseObject as? [String: Any] else {
+                if let _ = response.error {
+                    block?(false, nil)
+                    return
+                }
+                guard let dictionary = response.value as? [String: Any] else {
                     block?(success, componentElements)
                     
                     return
@@ -143,10 +151,7 @@ public class KREDriveListManager: NSObject {
                 
                 success = true
                 block?(success, componentElements)
-            }, failure: { (dataTask, error) in
-                block?(false, nil)
-            })
-            dataTask?.resume()
+            }
         }
     }
     
@@ -158,12 +163,15 @@ public class KREDriveListManager: NSObject {
             
             let urlApi = baseUrl + String(format:"api/1.1/ka/users/%@/calendar/getSpecificEvent", userId)
             let parameters = ["eventId": eventId]
-            let dataTask = sessionManager?.post(urlApi, parameters: parameters, headers: nil, progress: nil, success: { (dataTask, responseObject) in
-                block?(true, responseObject)
-            }, failure: { (dataTask, error) in
-                block?(false, nil)
-            })
-            dataTask?.resume()
+            
+            let dataRequest = sessionManager.request(urlApi, method: .post, parameters: parameters)
+            dataRequest.validate().responseJSON { [weak self] (response) in
+                if let responseObject = response.value {
+                    block?(true, responseObject)
+                } else {
+                    block?(false, nil)
+                }
+            }
         }
     }
     
@@ -173,36 +181,32 @@ public class KREDriveListManager: NSObject {
                 return
             }
             var urlApi = baseUrl + (hookParams?.api ?? "")
-            let requestSerializer = KREWidgetManager.shared.requestSerializer()
+            let headers = KREWidgetManager.shared.getRequestHeaders()
             urlApi = addQueryString(to: urlApi, with: hookParams?.params)
             debugPrint("Api string \(urlApi)")
             let body = inputs(in: hookParams)
-            guard let urlRequest = try? requestSerializer.request(withMethod: hookParams?.method ?? "", urlString: urlApi, parameters: body) as URLRequest else {
-                block?(false, [:])
-                return
-            }
+            let method = HTTPMethod(rawValue: (hookParams?.method ?? "GET").uppercased())
             
-            let dataTask = sessionManager?.dataTask(with: urlRequest, uploadProgress: { (progress) in
-                
-            }, downloadProgress: { (progress) in
-                
-            }, completionHandler: { [weak self] (response, responseObject, error) in
+            let dataRequest = sessionManager.request(urlApi, method: method, parameters: body, headers: headers)
+            dataRequest.validate().responseJSON { [weak self] (response) in
                 //self?.error = error
                 var success: Bool = false
                 var componentElements: [Any] = [Any]()
-                
-                guard error == nil, let dictionary = responseObject as? [String: Any] else {
-                    block?(success, [:])
-                    
+
+                if let error = response.error {
+                    self?.error = error
+                    block?(false, [:])
                     return
                 }
-                
+                guard let dictionary = response.value as? [String: Any] else {
+                    block?(success, [:])
+                    return
+                }
+
                 success = true
                 let jsonDecoder = JSONDecoder()
-                
                 block?(success, dictionary)
-            })
-            dataTask?.resume()
+            }
         }
     }
     
@@ -227,14 +231,19 @@ public class KREDriveListManager: NSObject {
         if let baseUrl = KREWidgetManager.shared.user?.server {
             
             var urlApi = baseUrl + urlString
-            let dataTask = sessionManager?.get(urlApi, parameters: parameters, headers: nil, progress: { (progress) in
-                
-            }, success: { (dataTask, responseObject) in
+            let headers = KREWidgetManager.shared.getRequestHeaders()
+
+            let dataRequest = sessionManager.request(urlApi, method: .get, parameters: parameters, headers: headers)
+            dataRequest.validate().responseJSON { [weak self] (response) in
                 //self?.error = error
+                if let _ = response.error {
+                    block?(false, [])
+                    return
+                }
                 var success: Bool = false
                 var componentElements: [Any] = [Any]()
                 
-                guard let dictionary = responseObject as? [String: Any] else {
+                guard let dictionary = response.value as? [String: Any] else {
                     block?(success, componentElements)
                     return
                 }
@@ -246,11 +255,7 @@ public class KREDriveListManager: NSObject {
                     componentElements.append(taskElement)
                 }
                 block?(success, componentElements)
-            }, failure: { [weak self] (dataTask, error) in
-                //                self?.error = error
-                block?(false, [])
-            })
-            dataTask?.resume()
+            }
         }
     }
     

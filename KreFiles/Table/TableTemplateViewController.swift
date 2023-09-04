@@ -9,7 +9,7 @@
 import UIKit
 
 class TableTemplateViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDelegate, UITableViewDataSource {
-    let bundle = KREResourceLoader.shared.resourceBundle()
+    let bundle = Bundle(for: TableTemplateViewController.self)
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var closeButton: UIButton!

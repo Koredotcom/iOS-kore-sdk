@@ -207,7 +207,7 @@ class NotificationBubbleView: BubbleView {
                
                 if allItems.image_url != nil {
                     let imageurl = URL.init(string: allItems.image_url!)
-                    self.notificationView.profileImageView.setImageWith(imageurl!)
+                    self.notificationView.profileImageView.af.setImage(withURL: imageurl!)
                 }
                 self.notificationView.titleLabel.text = allItems.title ?? ""
                 self.notificationView.subTilteLabel.text = allItems.subtitle ?? ""

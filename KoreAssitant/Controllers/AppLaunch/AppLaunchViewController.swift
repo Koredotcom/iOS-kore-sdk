@@ -7,10 +7,10 @@
 //
 
 import UIKit
-import AFNetworking
 import KoreBotSDK
 import CoreData
 import Foundation
+import Alamofire
 
 class AppLaunchViewController: UIViewController {
     
@@ -19,7 +19,11 @@ class AppLaunchViewController: UIViewController {
     @IBOutlet weak var chatButton: UIButton!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
-    var sessionManager: AFHTTPSessionManager?
+    let sessionManager: Session = {
+        let configuration = URLSessionConfiguration.af.default
+        configuration.timeoutIntervalForRequest = 30
+        return Session(configuration: configuration)
+    }()
     var kaBotClient = KABotClient()
     let botClient = BotClient()
     var user: KREUser?
@@ -142,41 +146,35 @@ class AppLaunchViewController: UIViewController {
     //       Developer has to host a webservice, which generates the JWT and that should be called from this method.
     func getJwTokenWithClientId(_ clientId: String!, clientSecret: String!, identity: String!, isAnonymous: Bool!, success:((_ jwToken: String?) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
-        // Session Configuration
-        let configuration = URLSessionConfiguration.default
+        let urlString = SDKConfiguration.serverConfig.koreJwtUrl()
+        let headers: HTTPHeaders = [
+            "Keep-Alive": "Connection",
+            "Accept": "application/json",
+            "alg": "RS256",
+            "typ": "JWT"
+        ]
         
-        //Manager
-        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-        
-        // NOTE: You must set your URL to generate JWT.
-        let urlString: String = SDKConfiguration.serverConfig.koreJwtUrl()
-        let requestSerializer = AFJSONRequestSerializer()
-        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-        
-        // Headers: {"alg": "RS256","typ": "JWT"}
-        requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
-        requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
-        
-        let parameters: NSDictionary = ["clientId": clientId as String,
-                                        "clientSecret": clientSecret as String,
-                                        "identity": identity as String,
-                                        "aud": "https://idproxy.kore.com/authorize",
-                                        "isAnonymous": isAnonymous as Bool]
-        
-        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
-        sessionManager?.requestSerializer = requestSerializer
-        sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-            if (responseObject is NSDictionary) {
-                let dictionary: NSDictionary = responseObject as! NSDictionary
-                let jwToken: String = dictionary["jwt"] as! String
+        let parameters: [String: Any] = ["clientId": clientId as String,
+                                         "clientSecret": clientSecret as String,
+                                         "identity": identity as String,
+                                         "aud": "https://idproxy.kore.com/authorize",
+                                         "isAnonymous": isAnonymous as Bool]
+        let dataRequest = sessionManager.request(urlString, method: .post, parameters: parameters, headers: headers)
+        dataRequest.validate().responseJSON { (response) in
+            if let _ = response.error {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                failure?(error)
+                return
+            }
+            
+            if let dictionary = response.value as? [String: Any],
+               let jwToken = dictionary["jwt"] as? String {
                 success?(jwToken)
             } else {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
             }
-        }) { (sessionDataTask, error) in
-            failure?(error)
+            
         }
         
     }
@@ -209,44 +207,35 @@ class AppLaunchViewController: UIViewController {
 extension AppLaunchViewController{
     func getWidgetJwTokenWithClientId(_ clientId: String!, clientSecret: String!, identity: String!, isAnonymous: Bool!, success:((_ jwToken: String?) -> Void)?, failure:((_ error: Error) -> Void)?) {
         
-        // Session Configuration
-        let configuration = URLSessionConfiguration.default
+        let urlString = SDKConfiguration.serverConfig.koreJwtUrl()
+        let headers: HTTPHeaders = [
+            "Keep-Alive": "Connection",
+            "Accept": "application/json",
+            "alg": "RS256",
+            "typ": "JWT"
+        ]
         
-        //Manager
-        sessionManager = AFHTTPSessionManager.init(baseURL: URL.init(string: SDKConfiguration.serverConfig.JWT_SERVER) as URL?, sessionConfiguration: configuration)
-        
-        // NOTE: You must set your URL to generate JWT.
-        let urlString: String = SDKConfiguration.serverConfig.koreJwtUrl()
-        let requestSerializer = AFJSONRequestSerializer()
-        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
-        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
-        
-        // Headers: {"alg": "RS256","typ": "JWT"}
-        requestSerializer.setValue("RS256", forHTTPHeaderField:"alg")
-        requestSerializer.setValue("JWT", forHTTPHeaderField:"typ")
-        
-        let parameters: NSDictionary = ["clientId": clientId as String,
-                                        "clientSecret": clientSecret as String,
-                                        "identity": identity as String,
-                                        "aud": "https://idproxy.kore.com/authorize",
-                                        "isAnonymous": isAnonymous as Bool]
-        
-        
-        sessionManager?.responseSerializer = AFJSONResponseSerializer.init()
-        sessionManager?.requestSerializer = requestSerializer
-        sessionManager?.post(urlString, parameters: parameters, headers: nil, progress: nil, success: { (sessionDataTask, responseObject) in
-            if (responseObject is NSDictionary) {
-                let dictionary: NSDictionary = responseObject as! NSDictionary
-                let jwToken: String = dictionary["jwt"] as! String
-               // self.initializeWidgetManager(widgetJWTToken: jwToken)
+        let parameters: [String: Any] = ["clientId": clientId as String,
+                                         "clientSecret": clientSecret as String,
+                                         "identity": identity as String,
+                                         "aud": "https://idproxy.kore.com/authorize",
+                                         "isAnonymous": isAnonymous as Bool]
+        let dataRequest = sessionManager.request(urlString, method: .post, parameters: parameters, headers: headers)
+        dataRequest.validate().responseJSON { (response) in
+            if let _ = response.error {
+                let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
+                failure?(error)
+                return
+            }
+            
+            if let dictionary = response.value as? [String: Any],
+               let jwToken = dictionary["jwt"] as? String {
                 success?(jwToken)
-                
             } else {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
             }
-        }) { (sessionDataTask, error) in
-            failure?(error)
+            
         }
         
     }

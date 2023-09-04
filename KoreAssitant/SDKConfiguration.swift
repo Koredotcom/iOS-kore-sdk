@@ -29,6 +29,7 @@ class SDKConfiguration: NSObject {
         public static var isAnonymous = false // This should be either true (in case of known-user) or false (in-case of anonymous user).
 
         public static var isWebhookEnabled = false // This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
+        public static var enableAckDelivery = false // Set true to send acknowledgment to server on receiving response from bot
     }
     
     struct serverConfig {

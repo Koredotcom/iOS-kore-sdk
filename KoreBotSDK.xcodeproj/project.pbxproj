@@ -102,11 +102,6 @@
 		9527C9952A370A1700178277 /* FeedbackBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C8DC2A370A1700178277 /* FeedbackBubbleView.swift */; };
 		9527C9962A370A1700178277 /* FeedbackSliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C8DD2A370A1700178277 /* FeedbackSliderViewController.swift */; };
 		9527C9972A370A1700178277 /* FeedbackCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9527C8DE2A370A1700178277 /* FeedbackCell.xib */; };
-		9527C9982A370A1700178277 /* ratingselect_4.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9527C8E02A370A1700178277 /* ratingselect_4.gif */; };
-		9527C9992A370A1700178277 /* ratingselect_5.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9527C8E12A370A1700178277 /* ratingselect_5.gif */; };
-		9527C99A2A370A1700178277 /* ratingselect_1.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9527C8E22A370A1700178277 /* ratingselect_1.gif */; };
-		9527C99B2A370A1700178277 /* ratingselect_2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9527C8E32A370A1700178277 /* ratingselect_2.gif */; };
-		9527C99C2A370A1700178277 /* ratingselect_3.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9527C8E42A370A1700178277 /* ratingselect_3.gif */; };
 		9527C99D2A370A1700178277 /* iOSDevCenters+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C8E52A370A1700178277 /* iOSDevCenters+GIF.swift */; };
 		9527C99E2A370A1700178277 /* FeedbackSliderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9527C8E62A370A1700178277 /* FeedbackSliderViewController.xib */; };
 		9527C99F2A370A1700178277 /* FeedbackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C8E72A370A1700178277 /* FeedbackCell.swift */; };
@@ -162,16 +157,6 @@
 		9527C9D12A370A1700178277 /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C92C2A370A1700178277 /* DropDownCell.swift */; };
 		9527C9D22A370A1700178277 /* DropDown+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C92D2A370A1700178277 /* DropDown+Appearance.swift */; };
 		9527C9D32A370A1700178277 /* ChatMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C92E2A370A1700178277 /* ChatMessagesViewController.swift */; };
-		9527C9D42A370A1700178277 /* KABottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C9302A370A1700178277 /* KABottomSheetViewController.swift */; };
-		9527C9D52A370A1700178277 /* KoraNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C9312A370A1700178277 /* KoraNotification.swift */; };
-		9527C9D62A370A1700178277 /* KoraAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C9322A370A1700178277 /* KoraAssistant.swift */; };
-		9527C9D72A370A1700178277 /* KAPanelWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C9332A370A1700178277 /* KAPanelWindowManager.swift */; };
-		9527C9D82A370A1700178277 /* KAPanelCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C9342A370A1700178277 /* KAPanelCollectionView.swift */; };
-		9527C9D92A370A1700178277 /* ApplicationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C9352A370A1700178277 /* ApplicationManager.swift */; };
-		9527C9DA2A370A1700178277 /* UIViewController+Kora.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C9362A370A1700178277 /* UIViewController+Kora.swift */; };
-		9527C9DB2A370A1700178277 /* KAPanelItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C9372A370A1700178277 /* KAPanelItemViewController.swift */; };
-		9527C9DC2A370A1700178277 /* ChatMessagesViewController+Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C9382A370A1700178277 /* ChatMessagesViewController+Widgets.swift */; };
-		9527C9DD2A370A1700178277 /* KAPanelHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C9392A370A1700178277 /* KAPanelHeaderView.swift */; };
 		9527C9DE2A370A1700178277 /* ChatMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9527C93A2A370A1700178277 /* ChatMessagesViewController.xib */; };
 		9527C9DF2A370A1700178277 /* AttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C93C2A370A1700178277 /* AttachmentCell.swift */; };
 		9527C9E02A370A1700178277 /* AttachmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9527C93D2A370A1700178277 /* AttachmentCell.xib */; };
@@ -336,11 +321,6 @@
 		9527C8DC2A370A1700178277 /* FeedbackBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackBubbleView.swift; sourceTree = "<group>"; };
 		9527C8DD2A370A1700178277 /* FeedbackSliderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackSliderViewController.swift; sourceTree = "<group>"; };
 		9527C8DE2A370A1700178277 /* FeedbackCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedbackCell.xib; sourceTree = "<group>"; };
-		9527C8E02A370A1700178277 /* ratingselect_4.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_4.gif; sourceTree = "<group>"; };
-		9527C8E12A370A1700178277 /* ratingselect_5.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_5.gif; sourceTree = "<group>"; };
-		9527C8E22A370A1700178277 /* ratingselect_1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_1.gif; sourceTree = "<group>"; };
-		9527C8E32A370A1700178277 /* ratingselect_2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_2.gif; sourceTree = "<group>"; };
-		9527C8E42A370A1700178277 /* ratingselect_3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ratingselect_3.gif; sourceTree = "<group>"; };
 		9527C8E52A370A1700178277 /* iOSDevCenters+GIF.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "iOSDevCenters+GIF.swift"; sourceTree = "<group>"; };
 		9527C8E62A370A1700178277 /* FeedbackSliderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedbackSliderViewController.xib; sourceTree = "<group>"; };
 		9527C8E72A370A1700178277 /* FeedbackCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackCell.swift; sourceTree = "<group>"; };
@@ -396,16 +376,6 @@
 		9527C92C2A370A1700178277 /* DropDownCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownCell.swift; sourceTree = "<group>"; };
 		9527C92D2A370A1700178277 /* DropDown+Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DropDown+Appearance.swift"; sourceTree = "<group>"; };
 		9527C92E2A370A1700178277 /* ChatMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessagesViewController.swift; sourceTree = "<group>"; };
-		9527C9302A370A1700178277 /* KABottomSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KABottomSheetViewController.swift; sourceTree = "<group>"; };
-		9527C9312A370A1700178277 /* KoraNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraNotification.swift; sourceTree = "<group>"; };
-		9527C9322A370A1700178277 /* KoraAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraAssistant.swift; sourceTree = "<group>"; };
-		9527C9332A370A1700178277 /* KAPanelWindowManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelWindowManager.swift; sourceTree = "<group>"; };
-		9527C9342A370A1700178277 /* KAPanelCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelCollectionView.swift; sourceTree = "<group>"; };
-		9527C9352A370A1700178277 /* ApplicationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationManager.swift; sourceTree = "<group>"; };
-		9527C9362A370A1700178277 /* UIViewController+Kora.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Kora.swift"; sourceTree = "<group>"; };
-		9527C9372A370A1700178277 /* KAPanelItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelItemViewController.swift; sourceTree = "<group>"; };
-		9527C9382A370A1700178277 /* ChatMessagesViewController+Widgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChatMessagesViewController+Widgets.swift"; sourceTree = "<group>"; };
-		9527C9392A370A1700178277 /* KAPanelHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelHeaderView.swift; sourceTree = "<group>"; };
 		9527C93A2A370A1700178277 /* ChatMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatMessagesViewController.xib; sourceTree = "<group>"; };
 		9527C93C2A370A1700178277 /* AttachmentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentCell.swift; sourceTree = "<group>"; };
 		9527C93D2A370A1700178277 /* AttachmentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AttachmentCell.xib; sourceTree = "<group>"; };
@@ -859,7 +829,6 @@
 				9527C8DC2A370A1700178277 /* FeedbackBubbleView.swift */,
 				9527C8DD2A370A1700178277 /* FeedbackSliderViewController.swift */,
 				9527C8DE2A370A1700178277 /* FeedbackCell.xib */,
-				9527C8DF2A370A1700178277 /* gifs */,
 				9527C8E52A370A1700178277 /* iOSDevCenters+GIF.swift */,
 				9527C8E62A370A1700178277 /* FeedbackSliderViewController.xib */,
 				9527C8E72A370A1700178277 /* FeedbackCell.swift */,
@@ -873,18 +842,6 @@
 				9527C8DB2A370A1700178277 /* FloatRatingView.swift */,
 			);
 			path = RatingView;
-			sourceTree = "<group>";
-		};
-		9527C8DF2A370A1700178277 /* gifs */ = {
-			isa = PBXGroup;
-			children = (
-				9527C8E02A370A1700178277 /* ratingselect_4.gif */,
-				9527C8E12A370A1700178277 /* ratingselect_5.gif */,
-				9527C8E22A370A1700178277 /* ratingselect_1.gif */,
-				9527C8E32A370A1700178277 /* ratingselect_2.gif */,
-				9527C8E42A370A1700178277 /* ratingselect_3.gif */,
-			);
-			path = gifs;
 			sourceTree = "<group>";
 		};
 		9527C8E82A370A1700178277 /* DropDownBubbleView */ = {
@@ -1022,7 +979,6 @@
 				9527C9192A370A1700178277 /* File Upload */,
 				9527C9222A370A1700178277 /* DropDown */,
 				9527C92E2A370A1700178277 /* ChatMessagesViewController.swift */,
-				9527C92F2A370A1700178277 /* PanelView */,
 				9527C93A2A370A1700178277 /* ChatMessagesViewController.xib */,
 				9527C93B2A370A1700178277 /* Attachment Cell */,
 			);
@@ -1081,23 +1037,6 @@
 				9527C92D2A370A1700178277 /* DropDown+Appearance.swift */,
 			);
 			path = src;
-			sourceTree = "<group>";
-		};
-		9527C92F2A370A1700178277 /* PanelView */ = {
-			isa = PBXGroup;
-			children = (
-				9527C9302A370A1700178277 /* KABottomSheetViewController.swift */,
-				9527C9312A370A1700178277 /* KoraNotification.swift */,
-				9527C9322A370A1700178277 /* KoraAssistant.swift */,
-				9527C9332A370A1700178277 /* KAPanelWindowManager.swift */,
-				9527C9342A370A1700178277 /* KAPanelCollectionView.swift */,
-				9527C9352A370A1700178277 /* ApplicationManager.swift */,
-				9527C9362A370A1700178277 /* UIViewController+Kora.swift */,
-				9527C9372A370A1700178277 /* KAPanelItemViewController.swift */,
-				9527C9382A370A1700178277 /* ChatMessagesViewController+Widgets.swift */,
-				9527C9392A370A1700178277 /* KAPanelHeaderView.swift */,
-			);
-			path = PanelView;
 			sourceTree = "<group>";
 		};
 		9527C93B2A370A1700178277 /* Attachment Cell */ = {
@@ -1436,13 +1375,11 @@
 			files = (
 				9519B61F2A9D97EB0045660C /* AdvancedTextCell.xib in Resources */,
 				9527C9B82A370A1700178277 /* CustomTableViewCell.xib in Resources */,
-				9527C99B2A370A1700178277 /* ratingselect_2.gif in Resources */,
 				9519B6202A9D97EB0045660C /* AdvanceListCollectionViewCell.xib in Resources */,
 				9527C95B2A370A1700178277 /* Messages.plist in Resources */,
 				9527C95C2A370A1700178277 /* BotConfiguration.plist in Resources */,
 				9527C9BD2A370A1700178277 /* CalenderViewController.xib in Resources */,
 				9519B62A2A9D97EB0045660C /* ButtonLinkCell.xib in Resources */,
-				9527C9982A370A1700178277 /* ratingselect_4.gif in Resources */,
 				9527C9BA2A370A1700178277 /* CustomTableTemplateVC.xib in Resources */,
 				9519B6282A9D97EB0045660C /* AdvancedListHeaderView.xib in Resources */,
 				9527C9722A370A1700178277 /* TaskMenuViewController.xib in Resources */,
@@ -1453,7 +1390,6 @@
 				9519B6332A9D97EB0045660C /* CardTemplateCell.xib in Resources */,
 				9527C9AB2A370A1700178277 /* CustomCollectionViewCell.xib in Resources */,
 				9527C9932A370A1700178277 /* MultiImageBubbleView.xib in Resources */,
-				9527C99C2A370A1700178277 /* ratingselect_3.gif in Resources */,
 				9527C9CC2A370A1700178277 /* DropDownCell.xib in Resources */,
 				9527C9972A370A1700178277 /* FeedbackCell.xib in Resources */,
 				9519B6242A9D97EB0045660C /* AdvancedListBtnCell.xib in Resources */,
@@ -1471,13 +1407,11 @@
 				9519B6342A9D97EB0045660C /* CardTemplateHedaderView.xib in Resources */,
 				9527C9ED2A370A1700178277 /* AppLaunchViewController.xib in Resources */,
 				9527C9B42A370A1700178277 /* MultiSelectCell.xib in Resources */,
-				9527C99A2A370A1700178277 /* ratingselect_1.gif in Resources */,
 				9527C96F2A370A1700178277 /* TaskMenuTablViewCell.xib in Resources */,
 				9527C9862A370A1700178277 /* NotificationCustomView.xib in Resources */,
 				9527C98B2A370A1700178277 /* ListViewDetailsViewController.xib in Resources */,
 				9519B6272A9D97EB0045660C /* AdvancedListOptionsCell.xib in Resources */,
 				9527C9A42A370A1700178277 /* AudioBubbleView.xib in Resources */,
-				9527C9992A370A1700178277 /* ratingselect_5.gif in Resources */,
 				9527C9882A370A1700178277 /* NewListTableViewCell.xib in Resources */,
 				9527C99E2A370A1700178277 /* FeedbackSliderViewController.xib in Resources */,
 				9527C9712A370A1700178277 /* TaskMenu.json in Resources */,
@@ -1503,7 +1437,6 @@
 				9527C9AA2A370A1700178277 /* CustomCollectionViewCell.swift in Sources */,
 				9527C9BB2A370A1700178277 /* CustomTableViewCell.swift in Sources */,
 				9527C9B02A370A1700178277 /* MiniTableViewCell.swift in Sources */,
-				9527C9DC2A370A1700178277 /* ChatMessagesViewController+Widgets.swift in Sources */,
 				9527C9D02A370A1700178277 /* DropDown.swift in Sources */,
 				9527C9892A370A1700178277 /* NewListTableViewCell.swift in Sources */,
 				9527C9702A370A1700178277 /* TaskMenuData.swift in Sources */,
@@ -1526,14 +1459,12 @@
 				D1F3379E2201CD25005BE5F1 /* KREOptionsTableViewCell.swift in Sources */,
 				9527C9B92A370A1700178277 /* CustomTableTemplateVC.swift in Sources */,
 				9527C9B32A370A1700178277 /* ListBubbleView.swift in Sources */,
-				9527C9DD2A370A1700178277 /* KAPanelHeaderView.swift in Sources */,
 				9527C9A22A370A1700178277 /* QuickReplyWelcomeBubbleView.swift in Sources */,
 				9527C9902A370A1700178277 /* MultiImageBubbleView.swift in Sources */,
 				9527C9CA2A370A1700178277 /* KAFileUtilities.swift in Sources */,
 				9527C9EE2A370A1700178277 /* KREMessage+CoreDataProperties.swift in Sources */,
 				9519B6262A9D97EB0045660C /* AdvancedListBtnCell.swift in Sources */,
 				9527C9B62A370A1700178277 /* MultiSelectNewBubbleView.swift in Sources */,
-				9527C9D72A370A1700178277 /* KAPanelWindowManager.swift in Sources */,
 				9527C9A12A370A1700178277 /* QuickReplyCollectionViewFlowLayout.swift in Sources */,
 				D1F337AC2201CD26005BE5F1 /* KREGrowingTextView.swift in Sources */,
 				9527C96B2A370A1700178277 /* SectionedThread.swift in Sources */,
@@ -1568,7 +1499,6 @@
 				9527C9AE2A370A1700178277 /* ExpandedTableViewCell.swift in Sources */,
 				D1F337A32201CD25005BE5F1 /* KREListTableViewCell.swift in Sources */,
 				9527C96C2A370A1700178277 /* ComposeBarView.swift in Sources */,
-				9527C9D52A370A1700178277 /* KoraNotification.swift in Sources */,
 				9527C9B12A370A1700178277 /* MenuBubbleView.swift in Sources */,
 				9527C9E62A370A1700178277 /* KRETypingStatusView.m in Sources */,
 				9527C95E2A370A1700178277 /* DataStoreManager.swift in Sources */,
@@ -1576,7 +1506,6 @@
 				9527C9C52A370A1700178277 /* KoraApplication.swift in Sources */,
 				9527C98F2A370A1700178277 /* CarouselBubbleView.swift in Sources */,
 				9527C9A52A370A1700178277 /* AudioBubbleView.swift in Sources */,
-				9527C9D42A370A1700178277 /* KABottomSheetViewController.swift in Sources */,
 				D14AACAB1CFD897300AEF5FD /* MessageModel.swift in Sources */,
 				9519B6292A9D97EB0045660C /* ButtonLinkCell.swift in Sources */,
 				9527C95A2A370A1700178277 /* SDKConfiguration.swift in Sources */,
@@ -1587,7 +1516,6 @@
 				9527C9AF2A370A1700178277 /* ResponsiveCustonCell.swift in Sources */,
 				9527C9872A370A1700178277 /* NewListData.swift in Sources */,
 				9527C9B22A370A1700178277 /* ListWidgetBubbleView.swift in Sources */,
-				9527C9D62A370A1700178277 /* KoraAssistant.swift in Sources */,
 				9527C9F22A370A1700178277 /* KREMessage+CoreDataClass.swift in Sources */,
 				9527C9652A370A1700178277 /* CALayer+MBAnimationPersistence.m in Sources */,
 				9519B6212A9D97EB0045660C /* AdvanceListCollectionViewCell.swift in Sources */,
@@ -1630,7 +1558,6 @@
 				9527C9AD2A370A1700178277 /* SubTableViewCell.swift in Sources */,
 				9527C9A92A370A1700178277 /* CustomCollectionViewLayout.swift in Sources */,
 				D1F337A62201CD26005BE5F1 /* KREQuickSelectView.swift in Sources */,
-				9527C9D92A370A1700178277 /* ApplicationManager.swift in Sources */,
 				9527C9F42A370A1700178277 /* KREContact+CoreDataClass.swift in Sources */,
 				9519B63E2A9D97F60045660C /* PdfDownloadCell.swift in Sources */,
 				9519B63B2A9D97F60045660C /* PDFBubbleView.swift in Sources */,
@@ -1640,12 +1567,10 @@
 				9527C9C62A370A1700178277 /* KAAssetManager.swift in Sources */,
 				D14AACAC1CFD897300AEF5FD /* UserModel.swift in Sources */,
 				9527C98C2A370A1700178277 /* ListViewDetailsViewController.swift in Sources */,
-				9527C9DA2A370A1700178277 /* UIViewController+Kora.swift in Sources */,
 				9527C9BC2A370A1700178277 /* CustomTableBubbleView.swift in Sources */,
 				D14AACA51CFD897300AEF5FD /* HTTPRequestManager.swift in Sources */,
 				9527C9B52A370A1700178277 /* MultiSelectCell.swift in Sources */,
 				9519B61A2A9D97EB0045660C /* AdvancedListTempData.swift in Sources */,
-				9527C9D82A370A1700178277 /* KAPanelCollectionView.swift in Sources */,
 				9527C97C2A370A1700178277 /* OptionsBubbleView.swift in Sources */,
 				9527C9F02A370A1700178277 /* DataModel.xcdatamodeld in Sources */,
 				9527C9642A370A1700178277 /* KoraASRService.swift in Sources */,
@@ -1653,7 +1578,6 @@
 				9527C9692A370A1700178277 /* Thread.swift in Sources */,
 				9527C9F62A370A1700178277 /* KREComponent+CoreDataProperties.swift in Sources */,
 				9527C9EF2A370A1700178277 /* KREThread+CoreDataClass.swift in Sources */,
-				9527C9DB2A370A1700178277 /* KAPanelItemViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

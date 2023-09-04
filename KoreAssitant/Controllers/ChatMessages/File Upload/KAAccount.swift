@@ -9,17 +9,15 @@
 import UIKit
 import CoreData
 import CoreLocation
-import AFNetworking
-import Mantle
 import KoreBotSDK
 import Intents
+import Alamofire
 
 public class KAAccount: NSObject {
     // MARK: - properties
     public var adminAccount: KAAdminAccount?
     public var currentSkill: KASkillMessage? {
         didSet {
-            //currentSkillChanged.value += 1
         }
     }
     var recentSkillsArr: [KASkillMessage]?
@@ -42,16 +40,25 @@ public class KAAccount: NSObject {
     var isContactSyncInProgress = false
     var jwtToken: String?
   
-    var networkReachabilityStatus = AFNetworkReachabilityStatus.notReachable
+    //var networkReachabilityStatus = AFNetworkReachabilityStatus.notReachable
     
-    var requestSessionManager: KAHTTPSessionManager = {
-        let sessionManager = KAHTTPSessionManager(baseURL: URL(string: SDKConfiguration.serverConfig.JWT_SERVER))
-        return sessionManager
+    static let APIManager: Session = {
+        let configuration = URLSessionConfiguration.af.default
+                configuration.timeoutIntervalForRequest = 90
+                //return Session(configuration: configuration)
+        return Session(configuration: configuration)
     }()
     
-    var sessionManager: KAHTTPSessionManager = {
-        let sessionManager = KAHTTPSessionManager(baseURL: URL(string: SDKConfiguration.serverConfig.JWT_SERVER))
-        return sessionManager
+    var requestSessionManager: Session = {
+        let configuration = URLSessionConfiguration.af.default
+            configuration.timeoutIntervalForRequest = 90
+        return Session(configuration: configuration)
+    }()
+    
+    var sessionManager: Session = {
+        let configuration = URLSessionConfiguration.af.default
+            configuration.timeoutIntervalForRequest = 90
+        return Session(configuration: configuration)
     }()
     
     var operationQueue = OperationQueue()
@@ -117,21 +124,21 @@ public class KAAccount: NSObject {
         downloadOperationQueue.cancelAllOperations()
     }
     
-    // MARK: - cancel all tasks
-    func suspendAllTasks() {
-        requestSessionManager.suspendAllTasks()
-        sessionManager.suspendAllTasks()
-    }
-    
-    func resumeAllTasks() {
-        for dataTask in pendingTasks {
-            dataTask.resume()
-        }
-        pendingTasks.removeAll()
-    }
-    
-    func cancelAllTasks() {
-        requestSessionManager.cancelAllTasks()
-        sessionManager.cancelAllTasks()
-    }
+//    // MARK: - cancel all tasks
+//    func suspendAllTasks() {
+//        requestSessionManager.suspendAllTasks()
+//        sessionManager.suspendAllTasks()
+//    }
+//
+//    func resumeAllTasks() {
+//        for dataTask in pendingTasks {
+//            dataTask.resume()
+//        }
+//        pendingTasks.removeAll()
+//    }
+//
+//    func cancelAllTasks() {
+//        requestSessionManager.cancelAllTasks()
+//        sessionManager.cancelAllTasks()
+//    }
 }

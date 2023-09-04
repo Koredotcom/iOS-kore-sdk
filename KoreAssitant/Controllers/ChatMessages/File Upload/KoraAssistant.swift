@@ -13,9 +13,7 @@ public class KoraAssistant: NSObject {
     // MARK: - properties
     public static var shared = KoraAssistant()
     
-    public var theme: Theme = .kora
-    public var trait: Trait = .kora
-    
+   
     public var version: String?
     
     public var applicationHeader: String {

@@ -7,7 +7,6 @@
 
 import UIKit
 import KoreBotSDK
-import Mantle
 
 public enum KREMeetingStatus: String {
     case accepted = "accepted", declined = "declined", tentative = "tentative", needsAction = "needsAction"

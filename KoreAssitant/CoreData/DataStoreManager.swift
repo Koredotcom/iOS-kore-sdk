@@ -209,6 +209,21 @@ class DataStoreManager: NSObject {
         }
     }
     
+    func removeAllCoreData() {
+        let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
+        let managedContext: NSManagedObjectContext = dataStoreManager.coreDataManager.workerContext
+        //let managedContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "KREThread") // Find this name in your .xcdatamodeld file
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try managedContext.execute(deleteRequest)
+        } catch let error as NSError {
+            // TODO: handle the error
+            print(error.localizedDescription)
+        }
+    }
+    
     // data management
     public func insertMessages(_ messages: [Message], in thread: KREThread!, completion block: (() -> Void)?) {
         let context = coreDataManager.workerContext

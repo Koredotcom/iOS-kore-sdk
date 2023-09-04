@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Mantle
 
 public class BotInfoModel: NSObject, Decodable {
     // MARK: - properties

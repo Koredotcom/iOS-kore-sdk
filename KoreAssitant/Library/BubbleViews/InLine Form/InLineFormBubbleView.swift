@@ -26,7 +26,7 @@ class InLineFormBubbleView: BubbleView {
     public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
-    NSAttributedString.Key.font : UIFont(name: "Gilroy-Medium", size: 15.0) as Any,
+    NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Medium", size: 15.0) as Any,
     NSAttributedString.Key.foregroundColor : UIColor.lightGray]
     var arrayOfTextFieldsText = NSMutableArray()
     
@@ -210,7 +210,7 @@ extension InLineFormBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.textFeildName.translatesAutoresizingMaskIntoConstraints = false
         let attributes = [
             NSAttributedString.Key.foregroundColor: UIColor.clear,
-            NSAttributedString.Key.font : UIFont(name: "Gilroy-Medium", size: 15)!
+            NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-Medium", size: 15)
         ]
         cell.textFeildName.attributedPlaceholder = NSAttributedString(string: "", attributes:attributes)
         return cell
@@ -228,7 +228,7 @@ extension InLineFormBubbleView: UITableViewDelegate,UITableViewDataSource{
         sendButton.clipsToBounds = true
         sendButton.layer.cornerRadius = 5
         sendButton.setTitleColor(UIColor.white, for: .normal)
-        sendButton.titleLabel?.font = UIFont(name: "Gilroy-Bold", size: 14.0)!
+        sendButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)
         view.addSubview(sendButton)
         sendButton.addTarget(self, action: #selector(self.tapsOnInlineFormBtn(_:)), for: .touchUpInside)
         sendButton.tag = section

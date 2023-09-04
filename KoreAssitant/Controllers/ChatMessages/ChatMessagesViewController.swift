@@ -11,10 +11,14 @@ import AVFoundation
 import SafariServices
 import KoreBotSDK
 import CoreData
-import Mantle
 import AssetsPickerViewController
 import Photos
 import MobileCoreServices
+
+import Alamofire
+import AlamofireImage
+import ObjectMapper
+
 
 
 class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate {
@@ -102,6 +106,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var phassetToUpload: PHAsset?
     var componentSelectedToupload: Component?
     public weak var account = KoraApplication.sharedInstance.account
+    
+    var loaderImageUrl = ""
+    var loaderImage:UIImage!
+    
     // MARK: init
     init(thread: KREThread?) {
         super.init(nibName: "ChatMessagesViewController", bundle: bundle)
@@ -114,15 +122,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        titleLbl.text = SDKConfiguration.botConfig.chatBotName
-        if #available(iOS 15, *) {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = themeColor
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
-        }
-        
         //Initialize elements
         self.configureThreadView()
         self.configureComposeBar()
@@ -131,7 +130,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.configureTypingStatusView()
         self.configureSTTClient()
         self.configureMoreOption()
-        // self.configureViewForKeyboard(true)
+        self.configureViewForKeyboard(true)
         configAttachmentCollectionView()
         
         panelCollectionViewContainerHeightConstraint.constant = 0
@@ -169,6 +168,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addNotifications()
+        titleLbl.text = SDKConfiguration.botConfig.chatBotName
+        if #available(iOS 15, *) {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = themeColor
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        }
         
         let urlString = leftImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         let url = URL(string: urlString!)
@@ -531,12 +538,72 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         textComponent.payload = tText
                         textMessage?.addComponent(textComponent)
                     }
+                    if templateType == "SYSTEM" || templateType == "live_agent"{
+                        let textComponent = Component(.text)
+                        let text = dictionary["text"] as? String ?? ""
+                        textComponent.payload = text
+                        ttsBody = text
+                        message.addComponent(textComponent)
+                    }else{
+                        let optionsComponent: Component = Component(componentType)
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
                     
-                    let optionsComponent: Component = Component(componentType)
-                    optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                    message.sentDate = object?.createdOn
-                    message.addComponent(optionsComponent)
-                } else if (type == "error") {
+                }else if (type == "image"){
+                    
+                    if let dictionary = payload["payload"] as? [String: Any] {
+                        let optionsComponent: Component = Component(.image)
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
+                }
+                else if (type == "message"){
+                    
+                    if let dictionary = payload["payload"] as? [String: Any] {
+                        let  componentType = dictionary["audioUrl"] != nil ? Component(.audio) : Component(.video)
+                        let optionsComponent: Component = componentType
+                        if let speechText = dictionary["text"] as? String{
+                            ttsBody = speechText
+                        }
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
+                }
+                else if (type == "video"){
+                    
+                    if let _ = payload["payload"] as? [String: Any] {
+                        let  componentType = Component(.video)
+                        let optionsComponent: Component = componentType
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: payload)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
+                }
+                else if (type == "audio"){
+                    
+                    if let dictionary = payload["payload"] as? [String: Any] {
+                        let  componentType = Component(.audio)
+                        let optionsComponent: Component = componentType
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
+                }
+                else if (type == "link"){
+                    
+                    if let dictionary = payload["payload"] as? [String: Any] {
+                        let  componentType = Component(.linkDownload)
+                        let optionsComponent: Component = componentType
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                    }
+                    
+                }else if (type == "error") {
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
                     let errorComponent: Component = Component(.error)
                     errorComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
@@ -650,7 +717,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         let url = URL(string: urlString!)
         if url != nil{
-            backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
+            backgroungImageView.af.setImage(withURL: url!, placeholderImage: UIImage(named: ""))
             backgroungImageView.contentMode = .scaleAspectFit
         }
         setupColorDropDown()
@@ -678,7 +745,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 let urlString = backgroudImage.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
                 let url = URL(string: urlString!)
                 if url != nil{
-                    self!.backgroungImageView.setImageWith(url!, placeholderImage: UIImage(named: ""))
+                    self!.backgroungImageView.af.setImage(withURL: url!, placeholderImage: UIImage(named: ""))
                 }else{
                     self!.backgroungImageView.image = UIImage.init(named: "")
                 }
@@ -833,14 +900,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @objc func startMonitoringForReachability() {
-        let networkReachabilityManager = AFNetworkReachabilityManager.shared()
-        networkReachabilityManager.setReachabilityStatusChange({ (status) in
-            print("Network reachability: \(AFNetworkReachabilityManager.shared().localizedNetworkReachabilityStatusString())")
+        let networkReachabilityManager = NetworkReachabilityManager.default
+        networkReachabilityManager?.startListening(onUpdatePerforming: { (status) in
+            print("Network reachability: \(status)")
             switch status {
-            case AFNetworkReachabilityStatus.reachableViaWWAN, AFNetworkReachabilityStatus.reachableViaWiFi:
-                //self.establishBotConnection()
+            case .reachable(.ethernetOrWiFi), .reachable(.cellular):
+               // self.establishBotConnection() //kk
                 break
-            case AFNetworkReachabilityStatus.notReachable:
+            case .notReachable:
                 fallthrough
             default:
                 break
@@ -848,11 +915,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             
             KABotClient.shared.setReachabilityStatusChange(status)
         })
-        networkReachabilityManager.startMonitoring()
     }
     
     @objc func stopMonitoringForReachability() {
-        AFNetworkReachabilityManager.shared().stopMonitoring()
+        NetworkReachabilityManager.default?.stopListening()
     }
     
     @objc func navigateToComposeBar(_ notification: Notification) {
@@ -1277,13 +1343,18 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             }
             if ((component.componentDesc) != nil) {
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
-                let quickReplies: Array<Dictionary<String, String>> = jsonObject["quick_replies"] as! Array<Dictionary<String, String>>
+                let quickReplies: Array<Dictionary<String, Any>> = jsonObject["quick_replies"] as? Array<Dictionary<String, Any>> ?? []
                 var words: Array<Word> = Array<Word>()
                 
                 for dictionary in quickReplies {
-                    let title: String = dictionary["title"] != nil ? dictionary["title"]! : ""
-                    let payload: String = dictionary["payload"] != nil ? dictionary["payload"]! : ""
-                    let imageURL: String = dictionary["image_url"] != nil ? dictionary["image_url"]! : ""
+                    let title: String = dictionary["title"] as? String ?? ""
+                    var payload = ""
+                    if let payloadStr = dictionary["payload"] as? [String: Any]{
+                        payload = payloadStr["name"] as? String ?? ""
+                    }else{
+                        payload = dictionary["payload"] as? String ?? ""
+                    }
+                    let imageURL: String = dictionary["image_url"] as? String ?? ""
                     
                     let word: Word = Word(title: title, payload: payload, imageURL: imageURL)
                     words.append(word)
@@ -1458,8 +1529,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let info:NSMutableDictionary = NSMutableDictionary.init()
         info.setValue(botId, forKey: "botId");
         info.setValue("kora", forKey: "imageName");
-        
-        self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 2.0)
+        self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 2.0, loaderImage: nil)
     }
     
     // MARK: show TableTemplateView
@@ -1595,15 +1665,9 @@ extension ChatMessagesViewController {
     
     // MARK: - insert or update messages
     func insertOrUpdateHistoryMessages(_ messages: Array<[String: Any]>) {
-        
-        guard let models = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages], let botMessages = models, botMessages.count > 0 else {
+        guard let botMessages = Mapper<BotMessages>().mapArray(JSONArray: messages) as? [BotMessages], botMessages.count > 0 else {
             return
         }
-        
-//        guard let botMessages = try? MTLJSONAdapter.models(of: BotMessages.self, fromJSONArray: messages) as? [BotMessages], botMessages.count > 0 else {
-//            return
-//        }
-        
         
         var allMessages: [Message] = [Message]()
         for message in botMessages {
@@ -1668,7 +1732,7 @@ extension ChatMessagesViewController {
 extension ChatMessagesViewController: KABotClientDelegate {
     func showTypingStatusForBot() {
         self.typingStatusView?.isHidden = true
-        self.typingStatusView?.addTypingStatus(forContact: [:], forTimeInterval: 0.5)
+        self.typingStatusView?.addTypingStatus(forContact: [:], forTimeInterval: 0.5, loaderImage: nil)
     }
     
     func hideTypingStatusForBot(){
@@ -1695,7 +1759,30 @@ extension ChatMessagesViewController: KABotClientDelegate {
         }
         
         info.setValue(urlString ?? "kora", forKey: "imageName");
-        self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5)
+        //self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5)
+        
+        if let icon = botHistoryIcon{
+                    if self.loaderImage == nil{
+                        account?.sessionManager.request(icon, method: .get).response{ response in
+                           switch response.result {
+                            case .success(let responseData):
+                               if let data = responseData{
+                                   self.loaderImage = UIImage(data: data, scale:1)!
+                                   self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5, loaderImage: self.loaderImage)
+                               }else{
+                                   self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5, loaderImage: nil)
+                               }
+                            case .failure(let error):
+                                print("error--->",error)
+                               self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5, loaderImage: nil)
+                            }
+                        }
+                    }else{
+                        self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5, loaderImage: self.loaderImage)
+                    }
+                }else{
+                    self.typingStatusView?.addTypingStatus(forContact: info, forTimeInterval: 0.5, loaderImage: nil)
+                }
     }
     
     @objc func stopTypingStatusForBot(){

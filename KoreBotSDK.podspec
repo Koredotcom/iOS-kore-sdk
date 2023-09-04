@@ -16,10 +16,11 @@ Pod::Spec.new do |s|
     s.subspec 'Library' do |ss|
         ss.ios.deployment_target = '12.0'
         ss.source_files = 'KoreBotSDK/**/*.{h,m,swift}'
-        ss.dependency 'Mantle', '2.1.0'
-        ss.dependency 'AFNetworking', '4.0.1'
-        ss.dependency 'SocketRocket'
         
+        ss.dependency 'Starscream'
+        ss.dependency 'ObjectMapper'
+        ss.dependency 'AlamofireImage'
+        ss.dependency 'Alamofire'
         ss.ios.frameworks = 'SystemConfiguration'
     end
 
@@ -31,10 +32,11 @@ Pod::Spec.new do |s|
             'KreFiles' => ['KreFiles/Widgets/**/**/*.xib']
         }
         ss.resources = ['KoreAssitant/**/*.{xcdatamodeld}', 'KreFiles/Resources/*.{xcassets}']
-        ss.dependency 'AFNetworking', '4.0.1'
+        ss.dependency 'AlamofireImage'
         ss.dependency 'GhostTypewriter'
         ss.dependency 'MarkdownKit'
         ss.dependency 'DGCharts'
+        ss.dependency 'ObjectMapper'
     ss.dependency 'AssetsPickerViewController'
     ss.dependency 'SwiftUTI'
     #ss.dependency 'emojione-ios'

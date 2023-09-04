@@ -10,6 +10,7 @@ import UIKit
 import DGCharts
 
 class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
+    let bundle = Bundle(for: ChartBubbleView.self)
     var pcView: PieChartView!
     var lcView: LineChartView!
     var bcView: BarChartView!
@@ -633,11 +634,11 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         }
         
         self.titleLbl?.text = jsonObject["text"] as? String
-        let placeHolderIcon : UIImage = UIImage(named:"kora")!
+        let placeHolderIcon = UIImage(named: "kora", in: bundle, compatibleWith: nil)
         self.senderImageView.image = placeHolderIcon
         if (botHistoryIcon != nil) {
             if let fileUrl = URL(string: botHistoryIcon!) {
-                self.senderImageView.setImageWith(fileUrl, placeholderImage: placeHolderIcon)
+                self.senderImageView.af.setImage(withURL: fileUrl, placeholderImage: placeHolderIcon)
             }
        }
     }

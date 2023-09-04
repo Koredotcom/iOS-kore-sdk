@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             let appLaunchViewController: ViewController = ViewController(nibName: "ViewController", bundle: nil)
             let navigationController: UINavigationController = UINavigationController(rootViewController: appLaunchViewController)
-
+            
             window.rootViewController = navigationController
             window.makeKeyAndVisible()
         }

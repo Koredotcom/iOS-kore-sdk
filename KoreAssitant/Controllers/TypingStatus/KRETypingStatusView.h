@@ -10,7 +10,6 @@
 
 @interface KRETypingStatusView : UIView
 
-- (void)addTypingStatusForContact:(NSMutableDictionary *)contactInfo forTimeInterval:(NSTimeInterval)timeInterval;
+- (void)addTypingStatusForContact:(NSMutableDictionary *)contactInfo forTimeInterval:(NSTimeInterval)timeInterval loaderImage:(UIImage *)loaderImage;
 -(void)timerFiredToRemoveTypingStatus:(NSTimer*)timer;
-
 @end
