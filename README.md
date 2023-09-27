@@ -7,6 +7,12 @@ With just few lines of code, you can embed our Kore chat widget into your applic
 
 Kore Bot SDK for iOS enables you to talk to Kore bots over a web socket. This repo also comes with the code for sample application that developers can modify according to their Bot configuration.
 
+# Requirements
+
+* Mac OS (12.0 or later)
+* Minimum Xcode version 13.3.1
+* iOS 12.0+
+
 # Setting up
 ### Prerequisites
 * Service to generate JWT (JSON Web Tokens)- SDK uses this to send the user identity to Kore Platform.
