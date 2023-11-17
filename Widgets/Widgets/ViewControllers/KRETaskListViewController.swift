@@ -454,7 +454,7 @@ extension KRETaskListViewController: UITableViewDataSource, UITableViewDelegate 
     
     // MARK: - table view delegate methods
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        return 
+        //return 
         if showButton {
             let widgetActionViewController = KREWidgetActionViewController()
             widgetActionViewController.modalPresentationStyle = .fullScreen
