@@ -123,7 +123,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.configureTypingStatusView()
         self.configureSTTClient()
         self.configureMoreOption()
-        // self.configureViewForKeyboard(true)
+        self.configureViewForKeyboard(true)
         configAttachmentCollectionView()
         
         if SDKConfiguration.widgetConfig.isPanelView {
@@ -132,7 +132,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             panelCollectionViewContainerHeightConstraint.constant = 0
         }
         
-        isSpeakingEnabled = true
+        isSpeakingEnabled = false
         self.speechSynthesizer = AVSpeechSynthesizer()
         
         if SDKConfiguration.botConfig.isWebhookEnabled{
@@ -456,7 +456,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func getComponentType(_ templateType: String,_ tabledesign: String) -> ComponentType {
         if (templateType == "quick_replies") {
             return .quickReply
-        } else if (templateType == "button") {
+        } else if (templateType == "buttonn") {
             return .options
         }else if (templateType == "list") {
             return .list
@@ -485,7 +485,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         else if (templateType == "daterange" || templateType == "dateTemplate") {
             return .calendarView
         }
-        else if (templateType == "quick_replies_welcome"){
+        else if (templateType == "quick_replies_welcome" || templateType == "button"){
             return .quick_replies_welcome
         }
         else if (templateType == "Notification") {

@@ -45,6 +45,7 @@ var jwtToken:String?
 var botHistoryIcon:String?
 var lastMessageID:String?
 var history = true
+var isShowWelcomeMsg = true
 
 var frameworkBundle:Bundle? {
     let bundleId = "com.kore.rtc"

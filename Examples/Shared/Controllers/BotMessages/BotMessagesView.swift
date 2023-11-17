@@ -346,6 +346,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             bubbleView.optionsAction = {[weak self] (text, payload) in
                 self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
             }
+            bubbleView.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
             cell.bubbleView.drawBorder = true
             break
         case .notification:

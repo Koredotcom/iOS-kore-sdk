@@ -109,6 +109,8 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
         }
         if tryReconnect == true {
             urlString.append("&isReconnect=true")
+        }else{
+            urlString.append("&isReconnect=false")
         }
         
         var urlComponents = URLComponents(string: urlString)

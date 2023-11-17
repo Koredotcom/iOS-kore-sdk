@@ -13,11 +13,19 @@ public class QuickRepliesWelcomeData: NSObject, Decodable {
     public var content_type: String?
     public var payload: String?
     public var title: String?
+    
+    public var showMoreMessages: String?
+    public var type: String?
+    public var url: String?
 
     enum ColorCodeKeys: String, CodingKey {
         case content_type = "content_type"
         case payload = "payload"
         case title = "title"
+        
+        case showMoreMessages = "showMoreMessages"
+        case type = "type"
+        case url = "url"
     }
     
     // MARK: - init
@@ -30,5 +38,9 @@ public class QuickRepliesWelcomeData: NSObject, Decodable {
         content_type = try? container.decode(String.self, forKey: .content_type)
         payload = try? container.decode(String.self, forKey: .payload)
         title = try? container.decode(String.self, forKey: .title)
+        
+        showMoreMessages = try? container.decode(String.self, forKey: .showMoreMessages)
+        type = try? container.decode(String.self, forKey: .type)
+        url = try? container.decode(String.self, forKey: .url)
     }
 }

@@ -175,7 +175,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
             requestManager.getRtmUrlWithAuthInfoModel(authInfoModel, botInfo: botInfoParameters, success: { [weak self] (botInfo) in
                 self?.connection = self?.rtmConnectionWithBotInfoModel(botInfo!, isReconnect: self?.reconnects ?? false)
-                if self?.reconnects == false {
+                if self?.reconnects == false ||  self?.reconnects == true {
                     self?.successClosure?(self)
                 }
                 }, failure: { [weak self] (error) in

@@ -181,8 +181,8 @@ open class KABotClient: NSObject {
             self?.isConnected = true
             self?.isConnecting = false
             if !SDKConfiguration.botConfig.isWebhookEnabled{
-                self?.sendMessage("Welpro", options: nil)
-                NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
+                //self?.sendMessage("Welpro", options: nil)
+                //NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
             }
             
         }
@@ -219,6 +219,7 @@ open class KABotClient: NSObject {
         
         botClient.onMessage = { [weak self] (object) in
             history = false
+            isShowWelcomeMsg = false
             let message = self?.onReceiveMessage(object: object)
             self?.addMessages(message?.0, message?.1)
         }
@@ -279,7 +280,7 @@ open class KABotClient: NSObject {
     func getComponentType(_ templateType: String,_ tabledesign:String) -> ComponentType {
         if (templateType == "quick_replies") {
             return .quickReply
-        } else if (templateType == "button") {
+        } else if (templateType == "buttonn") {
             return .options
         }else if (templateType == "list") {
             return .list
@@ -308,7 +309,7 @@ open class KABotClient: NSObject {
         else if (templateType == "daterange" || templateType == "dateTemplate") {
             return .calendarView
         }
-        else if (templateType == "quick_replies_welcome"){
+        else if (templateType == "quick_replies_welcome" || templateType == "button"){
             return .quick_replies_welcome
         }
         else if (templateType == "Notification") {
@@ -541,7 +542,11 @@ open class KABotClient: NSObject {
                         }
                         self?.botClient.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
                             self?.fetchMessages(completion: { (reconnects) in
-                                self?.botClient.connect(isReconnect: reconnects)
+                                if isShowWelcomeMsg{
+                                    self?.botClient.connect(isReconnect: reconnects)
+                                }else{
+                                    self?.botClient.connect(isReconnect: true)
+                                }
                                 
                             })
                         }, success: { (client) in
