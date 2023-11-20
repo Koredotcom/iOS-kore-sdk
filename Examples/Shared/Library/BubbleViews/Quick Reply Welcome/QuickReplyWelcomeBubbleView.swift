@@ -256,7 +256,7 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
         cell.bgV.backgroundColor = .clear
         
         cell.textlabel.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)
-        cell.textlabel.textAlignment = .center
+        cell.textlabel.textAlignment = .left
         cell.textlabel.textColor = themeColor
         cell.textlabel.numberOfLines = 2
         cell.imagvWidthConstraint.constant = 0.0
@@ -269,7 +269,7 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as! ButtonLinkCell
+
         if isQuickReplies{
             let elements = arrayOfElements[indexPath.row]
             if elements.type == "web_url" || elements.type == "url"{
@@ -285,7 +285,7 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
                 self.optionsAction(elements.title, elements.payload)
             }
         }
-        self.maskview.isHidden = false
+        
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

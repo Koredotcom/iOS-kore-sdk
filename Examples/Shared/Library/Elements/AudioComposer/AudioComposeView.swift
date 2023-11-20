@@ -91,7 +91,7 @@ class AudioComposeView: UIView {
         self.playbackButton = UIButton.init(frame: CGRect.zero)
         self.playbackButton.setTitle("", for: .normal)
         self.playbackButton.translatesAutoresizingMaskIntoConstraints = false
-        self.playbackButton.setImage(UIImage(named: "unmute"), for: .normal)
+        self.playbackButton.setImage(UIImage(named: "mute"), for: .normal)
         self.playbackButton.imageView?.contentMode = .scaleAspectFit
         self.playbackButton.addTarget(self, action: #selector(self.playbackButtonAction), for: .touchUpInside)
 //        self.playbackButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)

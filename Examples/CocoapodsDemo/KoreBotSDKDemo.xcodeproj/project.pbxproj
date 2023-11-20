@@ -52,6 +52,7 @@
 		953FA4C625527790006EA311 /* KoraApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953FA4C52552778F006EA311 /* KoraApplication.swift */; };
 		953FA4CC255286C9006EA311 /* AttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953FA4CA255286C9006EA311 /* AttachmentCell.swift */; };
 		953FA4CD255286C9006EA311 /* AttachmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 953FA4CB255286C9006EA311 /* AttachmentCell.xib */; };
+		955ECD1E2B0B6643008ED54E /* KRETypingStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955ECD1D2B0B6643008ED54E /* KRETypingStatusView.swift */; };
 		958D27212553CC920099674B /* KAComponentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958D27202553CC920099674B /* KAComponentOperation.swift */; };
 		958D27232553CF040099674B /* UsageLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958D27222553CF040099674B /* UsageLimits.swift */; };
 		958D27272553D0190099674B /* KAAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958D27262553D0190099674B /* KAAccount.swift */; };
@@ -64,6 +65,8 @@
 		95A5F8E32785B35F00F7BEEE /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A5F8E12785B35F00F7BEEE /* CustomTableViewCell.xib */; };
 		95A5F8E72785C4B700F7BEEE /* CustomTableTemplateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A5F8E52785C4B700F7BEEE /* CustomTableTemplateVC.swift */; };
 		95A5F8E82785C4B700F7BEEE /* CustomTableTemplateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A5F8E62785C4B700F7BEEE /* CustomTableTemplateVC.xib */; };
+		95D7C1AE2B0B3CE200715E46 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D7C1AC2B0B3CE200715E46 /* CustomCollectionViewCell.swift */; };
+		95D7C1AF2B0B3CE200715E46 /* CustomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95D7C1AD2B0B3CE200715E46 /* CustomCollectionViewCell.xib */; };
 		CD0563FF25247F1900E75768 /* InLineFormBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0563EF25247F1800E75768 /* InLineFormBubbleView.swift */; };
 		CD05640025247F1900E75768 /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0563F225247F1900E75768 /* FloatRatingView.swift */; };
 		CD05640125247F1900E75768 /* FeedbackBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0563F325247F1900E75768 /* FeedbackBubbleView.swift */; };
@@ -167,8 +170,6 @@
 		D1F338E82201D99A005BE5F1 /* ResponsiveTableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3389C2201D99A005BE5F1 /* ResponsiveTableBubbleView.swift */; };
 		D1F338E92201D99A005BE5F1 /* MiniTableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3389D2201D99A005BE5F1 /* MiniTableBubbleView.swift */; };
 		D1F338EA2201D99A005BE5F1 /* CustomCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F3389F2201D99A005BE5F1 /* CustomCollectionViewLayout.swift */; };
-		D1F338EB2201D99A005BE5F1 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338A02201D99A005BE5F1 /* CustomCollectionViewCell.swift */; };
-		D1F338EC2201D99A005BE5F1 /* CustomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338A12201D99A005BE5F1 /* CustomCollectionViewCell.xib */; };
 		D1F338ED2201D99A005BE5F1 /* TableBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338A22201D99A005BE5F1 /* TableBubbleView.swift */; };
 		D1F338EE2201D99A005BE5F1 /* SubTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338A32201D99A005BE5F1 /* SubTableViewCell.swift */; };
 		D1F338EF2201D99A005BE5F1 /* ExpandedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338A42201D99A005BE5F1 /* ExpandedTableViewCell.swift */; };
@@ -180,10 +181,6 @@
 		D1F338F72201D99A005BE5F1 /* TableTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338B12201D99A005BE5F1 /* TableTemplateViewController.swift */; };
 		D1F338F82201D99A005BE5F1 /* TableTemplateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338B22201D99A005BE5F1 /* TableTemplateViewController.xib */; };
 		D1F338F92201D99A005BE5F1 /* InputTOWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338B32201D99A005BE5F1 /* InputTOWebViewController.swift */; };
-		D1F338FA2201D99A005BE5F1 /* KRETypingActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F338B52201D99A005BE5F1 /* KRETypingActivityIndicator.m */; };
-		D1F338FB2201D99A005BE5F1 /* KRETypingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1F338B62201D99A005BE5F1 /* KRETypingCollectionViewCell.xib */; };
-		D1F338FC2201D99A005BE5F1 /* KRETypingStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F338B92201D99A005BE5F1 /* KRETypingStatusView.m */; };
-		D1F338FD2201D99A005BE5F1 /* KRETypingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F338BA2201D99A005BE5F1 /* KRETypingCollectionViewCell.m */; };
 		D1F338FE2201D99A005BE5F1 /* BotMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338BD2201D99A005BE5F1 /* BotMessagesView.swift */; };
 		D1F338FF2201D99A005BE5F1 /* KREFetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338BE2201D99A005BE5F1 /* KREFetchedResultsController.swift */; };
 		D1F339002201D99A005BE5F1 /* MessageBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F338BF2201D99A005BE5F1 /* MessageBubbleCell.swift */; };
@@ -240,6 +237,7 @@
 		953FA4C52552778F006EA311 /* KoraApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraApplication.swift; sourceTree = "<group>"; };
 		953FA4CA255286C9006EA311 /* AttachmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentCell.swift; sourceTree = "<group>"; };
 		953FA4CB255286C9006EA311 /* AttachmentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentCell.xib; sourceTree = "<group>"; };
+		955ECD1D2B0B6643008ED54E /* KRETypingStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRETypingStatusView.swift; sourceTree = "<group>"; };
 		958D27202553CC920099674B /* KAComponentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAComponentOperation.swift; sourceTree = "<group>"; };
 		958D27222553CF040099674B /* UsageLimits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsageLimits.swift; sourceTree = "<group>"; };
 		958D27262553D0190099674B /* KAAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAAccount.swift; sourceTree = "<group>"; };
@@ -252,6 +250,8 @@
 		95A5F8E12785B35F00F7BEEE /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
 		95A5F8E52785C4B700F7BEEE /* CustomTableTemplateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableTemplateVC.swift; sourceTree = "<group>"; };
 		95A5F8E62785C4B700F7BEEE /* CustomTableTemplateVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableTemplateVC.xib; sourceTree = "<group>"; };
+		95D7C1AC2B0B3CE200715E46 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
+		95D7C1AD2B0B3CE200715E46 /* CustomCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCollectionViewCell.xib; sourceTree = "<group>"; };
 		CD0563EF25247F1800E75768 /* InLineFormBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InLineFormBubbleView.swift; sourceTree = "<group>"; };
 		CD0563F225247F1900E75768 /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
 		CD0563F325247F1900E75768 /* FeedbackBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackBubbleView.swift; sourceTree = "<group>"; };
@@ -367,8 +367,6 @@
 		D1F3389C2201D99A005BE5F1 /* ResponsiveTableBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsiveTableBubbleView.swift; sourceTree = "<group>"; };
 		D1F3389D2201D99A005BE5F1 /* MiniTableBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniTableBubbleView.swift; sourceTree = "<group>"; };
 		D1F3389F2201D99A005BE5F1 /* CustomCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewLayout.swift; sourceTree = "<group>"; };
-		D1F338A02201D99A005BE5F1 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
-		D1F338A12201D99A005BE5F1 /* CustomCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCollectionViewCell.xib; sourceTree = "<group>"; };
 		D1F338A22201D99A005BE5F1 /* TableBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableBubbleView.swift; sourceTree = "<group>"; };
 		D1F338A32201D99A005BE5F1 /* SubTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubTableViewCell.swift; sourceTree = "<group>"; };
 		D1F338A42201D99A005BE5F1 /* ExpandedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandedTableViewCell.swift; sourceTree = "<group>"; };
@@ -380,13 +378,6 @@
 		D1F338B12201D99A005BE5F1 /* TableTemplateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableTemplateViewController.swift; sourceTree = "<group>"; };
 		D1F338B22201D99A005BE5F1 /* TableTemplateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableTemplateViewController.xib; sourceTree = "<group>"; };
 		D1F338B32201D99A005BE5F1 /* InputTOWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTOWebViewController.swift; sourceTree = "<group>"; };
-		D1F338B52201D99A005BE5F1 /* KRETypingActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingActivityIndicator.m; sourceTree = "<group>"; };
-		D1F338B62201D99A005BE5F1 /* KRETypingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KRETypingCollectionViewCell.xib; sourceTree = "<group>"; };
-		D1F338B72201D99A005BE5F1 /* KRETypingCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingCollectionViewCell.h; sourceTree = "<group>"; };
-		D1F338B82201D99A005BE5F1 /* KRETypingStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingStatusView.h; sourceTree = "<group>"; };
-		D1F338B92201D99A005BE5F1 /* KRETypingStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingStatusView.m; sourceTree = "<group>"; };
-		D1F338BA2201D99A005BE5F1 /* KRETypingCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KRETypingCollectionViewCell.m; sourceTree = "<group>"; };
-		D1F338BB2201D99A005BE5F1 /* KRETypingActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRETypingActivityIndicator.h; sourceTree = "<group>"; };
 		D1F338BD2201D99A005BE5F1 /* BotMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotMessagesView.swift; sourceTree = "<group>"; };
 		D1F338BE2201D99A005BE5F1 /* KREFetchedResultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KREFetchedResultsController.swift; sourceTree = "<group>"; };
 		D1F338BF2201D99A005BE5F1 /* MessageBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleCell.swift; sourceTree = "<group>"; };
@@ -1046,8 +1037,8 @@
 			isa = PBXGroup;
 			children = (
 				D1F3389F2201D99A005BE5F1 /* CustomCollectionViewLayout.swift */,
-				D1F338A02201D99A005BE5F1 /* CustomCollectionViewCell.swift */,
-				D1F338A12201D99A005BE5F1 /* CustomCollectionViewCell.xib */,
+				95D7C1AC2B0B3CE200715E46 /* CustomCollectionViewCell.swift */,
+				95D7C1AD2B0B3CE200715E46 /* CustomCollectionViewCell.xib */,
 			);
 			path = CollectionView;
 			sourceTree = "<group>";
@@ -1094,13 +1085,7 @@
 		D1F338B42201D99A005BE5F1 /* TypingStatus */ = {
 			isa = PBXGroup;
 			children = (
-				D1F338B52201D99A005BE5F1 /* KRETypingActivityIndicator.m */,
-				D1F338B62201D99A005BE5F1 /* KRETypingCollectionViewCell.xib */,
-				D1F338B72201D99A005BE5F1 /* KRETypingCollectionViewCell.h */,
-				D1F338B82201D99A005BE5F1 /* KRETypingStatusView.h */,
-				D1F338B92201D99A005BE5F1 /* KRETypingStatusView.m */,
-				D1F338BA2201D99A005BE5F1 /* KRETypingCollectionViewCell.m */,
-				D1F338BB2201D99A005BE5F1 /* KRETypingActivityIndicator.h */,
+				955ECD1D2B0B6643008ED54E /* KRETypingStatusView.swift */,
 			);
 			path = TypingStatus;
 			sourceTree = "<group>";
@@ -1201,6 +1186,7 @@
 				95A5F8E32785B35F00F7BEEE /* CustomTableViewCell.xib in Resources */,
 				9519B58F2A9D81860045660C /* AdvancedListDefaultCell.xib in Resources */,
 				950AF58A2696C6AC003B4D58 /* AudioBubbleView.xib in Resources */,
+				95D7C1AF2B0B3CE200715E46 /* CustomCollectionViewCell.xib in Resources */,
 				9519B5B32A9D81930045660C /* PdfDownloadCell.xib in Resources */,
 				9519B5A72A9D81860045660C /* CardTemplateCell.xib in Resources */,
 				D101F92A24E163F800D47DB8 /* ChatMessagesViewController.xib in Resources */,
@@ -1216,7 +1202,6 @@
 				9519B5922A9D81860045660C /* AdvanceListGridCell.xib in Resources */,
 				9519B59F2A9D81860045660C /* CardTemplateListCell.xib in Resources */,
 				9519B5A62A9D81860045660C /* CardTemplateCollectionVCell.xib in Resources */,
-				D1F338FB2201D99A005BE5F1 /* KRETypingCollectionViewCell.xib in Resources */,
 				D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */,
 				9519B5A82A9D81860045660C /* CardTemplateHedaderView.xib in Resources */,
 				CDB86A0A24C00CD000D1CCC7 /* TaskMenu.json in Resources */,
@@ -1229,7 +1214,6 @@
 				CDB869FC24C0093A00D1CCC7 /* NewListTableViewCell.xib in Resources */,
 				951EA67C261EDC1900EE565D /* InlineFormTableViewCell.xib in Resources */,
 				CD842D4524EFBD980053710B /* DropDownCell.xib in Resources */,
-				D1F338EC2201D99A005BE5F1 /* CustomCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1328,7 +1312,6 @@
 				9519B5A12A9D81860045660C /* CardTemplateData.swift in Sources */,
 				953FA4C625527790006EA311 /* KoraApplication.swift in Sources */,
 				D1F338EA2201D99A005BE5F1 /* CustomCollectionViewLayout.swift in Sources */,
-				D1F338FA2201D99A005BE5F1 /* KRETypingActivityIndicator.m in Sources */,
 				9519B5A02A9D81860045660C /* CardTemplateBubbleView.swift in Sources */,
 				D101F92924E163F800D47DB8 /* KAPanelHeaderView.swift in Sources */,
 				CD63DA4B24EAB9A700DCCCCE /* MultiSelectCell.swift in Sources */,
@@ -1364,17 +1347,17 @@
 				CD05640125247F1900E75768 /* FeedbackBubbleView.swift in Sources */,
 				D1F338CC2201D99A005BE5F1 /* KREContact+CoreDataClass.swift in Sources */,
 				D101F92424E163F800D47DB8 /* ApplicationManager.swift in Sources */,
+				95D7C1AE2B0B3CE200715E46 /* CustomCollectionViewCell.swift in Sources */,
 				9519B5A32A9D81860045660C /* CardTemplateHedaderView.swift in Sources */,
 				D101F92624E163F800D47DB8 /* KAPanelItemViewController.swift in Sources */,
 				D1F339002201D99A005BE5F1 /* MessageBubbleCell.swift in Sources */,
 				CD4BFFF924D16091008E08CE /* NotificationBubbleView.swift in Sources */,
-				D1F338FD2201D99A005BE5F1 /* KRETypingCollectionViewCell.m in Sources */,
 				D1F338CA2201D99A005BE5F1 /* KREMessage+CoreDataClass.swift in Sources */,
 				D101F92324E163F800D47DB8 /* KAPanelCollectionView.swift in Sources */,
 				958D272B2553D6360099674B /* KAHTTPRequestManager.swift in Sources */,
 				9519B5962A9D81860045660C /* AdvanceListGridCell.swift in Sources */,
 				958D27232553CF040099674B /* UsageLimits.swift in Sources */,
-				D1F338FC2201D99A005BE5F1 /* KRETypingStatusView.m in Sources */,
+				955ECD1E2B0B6643008ED54E /* KRETypingStatusView.swift in Sources */,
 				D101F91E24E163F700D47DB8 /* ChatMessagesViewController.swift in Sources */,
 				D1F338D72201D99A005BE5F1 /* Component.swift in Sources */,
 				CDB86A1124C0128F00D1CCC7 /* TableListBubbleView.swift in Sources */,
@@ -1435,7 +1418,6 @@
 				D1F338D82201D99A005BE5F1 /* SectionedThread.swift in Sources */,
 				D1F338EE2201D99A005BE5F1 /* SubTableViewCell.swift in Sources */,
 				D1F338FF2201D99A005BE5F1 /* KREFetchedResultsController.swift in Sources */,
-				D1F338EB2201D99A005BE5F1 /* CustomCollectionViewCell.swift in Sources */,
 				D1F338F42201D99A005BE5F1 /* TextBubbleView.swift in Sources */,
 				CDB869FF24C0093A00D1CCC7 /* NewListTableViewCell.swift in Sources */,
 				CD89236824C55BAC006F71DE /* CalenderViewController.swift in Sources */,
@@ -1580,10 +1562,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = TUE6KHKZ4Z;
+				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TUE6KHKZ4Z;
 				INFOPLIST_FILE = KoreBotSDKDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1592,7 +1574,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk;
 				PRODUCT_NAME = "Barry Bot";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = com.kore.rtc;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Kore sdk";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/KoreBotSDKDemo/Resources/KoreBotSDKDemo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1607,10 +1589,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = TUE6KHKZ4Z;
+				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TUE6KHKZ4Z;
 				INFOPLIST_FILE = KoreBotSDKDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1619,7 +1601,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk;
 				PRODUCT_NAME = "Barry Bot";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = com.kore.rtc;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Kore sdk";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/KoreBotSDKDemo/Resources/KoreBotSDKDemo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

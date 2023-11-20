@@ -17,7 +17,6 @@ class FeedbackBubbleView: BubbleView {
     let kMinTextWidth: CGFloat = 20.0
     let customCellIdentifier = "FeedbackCell"
     let arrayOfEmojis = ["rating_1","rating_2","rating_3","rating_4","rating_5"]
-    var selectedEmojiIndex = 10
     var arrayOfSmiley = [SmileyArraysAction]()
     var floatRatingView: FloatRatingView!
     
@@ -44,10 +43,9 @@ class FeedbackBubbleView: BubbleView {
        // UserDefaults.standard.set(false, forKey: "SliderKey")
         intializeCardLayout()
         
-        selectedEmojiIndex = 10
         self.titleLbl = UILabel(frame: CGRect.zero)
         self.titleLbl.textColor = Common.UIColorRGB(0x484848)
-        self.titleLbl.font = UIFont(name: "HelveticaNeue-Bold", size: 16.0)
+        self.titleLbl.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
         self.titleLbl.numberOfLines = 0
         self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
         self.titleLbl.isUserInteractionEnabled = true
@@ -101,7 +99,10 @@ class FeedbackBubbleView: BubbleView {
         self.cardView = UIView(frame:.zero)
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
-        cardView.backgroundColor =  UIColor.clear
+        cardView.backgroundColor =  UIColor.white
+        if #available(iOS 11.0, *) {
+            self.cardView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.clear, borderWidth: 1.5)
+        }
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
@@ -126,10 +127,13 @@ class FeedbackBubbleView: BubbleView {
                     collectionView.isHidden = false
                     floatRatingView.isHidden = true
                     arrayOfSmiley = allItems.smileyArrays ?? []
-                }else{
+                }else if allItems.feedbackView! == "star"{
                     collectionView.isHidden = true
                     floatRatingView.isHidden = false
                     arrayOfSmiley = allItems.starArrays?.reversed() ?? []
+                }else{
+                    collectionView.isHidden = false
+                    floatRatingView.isHidden = true
                 }
                 collectionView.reloadData()
             }
@@ -155,27 +159,28 @@ extension FeedbackBubbleView : UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrayOfSmiley.count
+        if arrayOfSmiley.count > 0{
+            return  arrayOfSmiley.count
+        }
+        return  arrayOfEmojis.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! FeedbackCell
         cell.backgroundColor = .clear
-        if indexPath.item == selectedEmojiIndex{
-            let jeremyGif = UIImage.gifImageWithName("ratingselect_\(indexPath.item+1)")
-            cell.imageView.image = jeremyGif
-        }else{
-            cell.imageView.image = UIImage(named: "rating_\(indexPath.item+1)")
-        }
+        cell.imageView.image = UIImage(named: "rating_\(indexPath.item+1)")
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if arrayOfSmiley.count > 0{
+            let elements = arrayOfSmiley[indexPath.item]
+            self.optionsAction(String(elements.smileyId ?? indexPath.item+1),String(elements.value ?? indexPath.item+1))
+            collectionView.reloadData()
+        }else{
+            self.optionsAction(String(indexPath.item+1),String(indexPath.item+1))
+            collectionView.reloadData()
+        }
         
-        let elements = arrayOfSmiley[indexPath.item]
-        self.optionsAction(String(elements.smileyId!),String(elements.value!))
-        
-        selectedEmojiIndex = indexPath.item
-        collectionView.reloadData()
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
@@ -189,8 +194,12 @@ extension FeedbackBubbleView: FloatRatingViewDelegate {
     }
     func floatRatingView(_ ratingView: FloatRatingView, didUpdate rating: Double) {
         let index = Int(floatRatingView.rating) - 1
-        let elements = arrayOfSmiley[index]
-        self.optionsAction(String(elements.starId!),String(elements.value!))
+        if arrayOfSmiley.count > 0{
+            let elements = arrayOfSmiley[index]
+            self.optionsAction(String(elements.starId ?? 0),String(elements.value ?? 0))
+        }else{
+            self.optionsAction(String(index+1),String(index+1))
+        }
     }
     
 }

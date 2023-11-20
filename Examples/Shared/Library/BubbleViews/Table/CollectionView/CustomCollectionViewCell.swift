@@ -11,6 +11,8 @@ import UIKit
 class CustomCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var textLabel: UILabel!
+    @IBOutlet weak var bgView: UIView!
+    @IBOutlet weak var underLineLbl: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
