@@ -874,9 +874,9 @@
 		D1F3386E2201D99A005BE5F1 /* TSMarkdownParser */ = {
 			isa = PBXGroup;
 			children = (
+				D1F338712201D99A005BE5F1 /* TSBaseParser.h */,
 				D1F3386F2201D99A005BE5F1 /* TSBaseParser.m */,
 				D1F338702201D99A005BE5F1 /* TSMarkdownParser.h */,
-				D1F338712201D99A005BE5F1 /* TSBaseParser.h */,
 				D1F338722201D99A005BE5F1 /* TSMarkdownParser.m */,
 			);
 			path = TSMarkdownParser;

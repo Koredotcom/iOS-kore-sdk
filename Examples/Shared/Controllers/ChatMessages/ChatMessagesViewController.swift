@@ -58,7 +58,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     @IBOutlet weak var taskMenuContainerView: UIView!
     @IBOutlet weak var taskMenuContainerHeightConstant: NSLayoutConstraint!
     var taskMenuHeight = 0
-    
+    var offSet = 0
     var panelCollectionView: KAPanelCollectionView!
     var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     
@@ -253,6 +253,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     // MARK: cancel
     @objc func cancel(_ sender: Any) {
+        isShowWelcomeMsg = true
         prepareForDeinit()
         NotificationCenter.default.post(name: Notification.Name(reloadVideoCellNotification), object: nil)
         navigationController?.setNavigationBarHidden(true, animated: false)
@@ -561,7 +562,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 }
                 message.addComponent(textComponent)
                 return (message, ttsBody)
-            } else if (componentModel.type == "template") {
+            } else if (componentModel.type == "image") {
+                if let payload = componentModel.payload as? [String: Any] {
+                    if let dictionary = payload["payload"] as? [String: Any] {
+                        let optionsComponent: Component = Component(.image)
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                        return (message, ttsBody)
+                    }
+                }
+            }else if (componentModel.type == "template") {
                 let payload: NSDictionary = componentModel.payload! as! NSDictionary
                 let text: String = payload["text"] != nil ? payload["text"] as! String : ""
                 let type: String = payload["type"] != nil ? payload["type"] as! String : ""
@@ -1791,8 +1802,16 @@ extension ChatMessagesViewController {
         dataStoreManager.getMessagesCount(completion: { [weak self] (count) in
             if count == 0 {
                 self?.getMessages(offset: 0)
+            }else{
+                self?.offSet =  count
+                if (self?.botMessagesView.spinner.isHidden)!{
+                    self?.getMessages(offset: self!.offSet)
+                }
             }
         })
+    }
+    func tableviewScrollDidEnd(){
+        fetchMessages()
     }
 }
 extension ChatMessagesViewController: KABotClientDelegate {

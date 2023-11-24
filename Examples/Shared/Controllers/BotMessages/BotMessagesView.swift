@@ -17,6 +17,7 @@ protocol BotMessagesViewDelegate {
     func optionsButtonTapNewAction(text:String, payload:String)
     func populateCalenderView(with message: KREMessage?)
     func populateFeedbackSliderView(with message: KREMessage?)
+    func tableviewScrollDidEnd()
 }
 
 class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFetchedResultsControllerDelegate {
@@ -27,7 +28,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     var shouldScrollToBottom: Bool = false
     var clearBackground = false
     var userActive = false
-    
+    public let spinner = UIActivityIndicatorView(style: .gray)
     weak var thread: KREThread! {
         didSet{
             self.initializeFetchedResultsController()
@@ -57,6 +58,10 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.addSubview(self.tableView)
+        
+        spinner.color = UIColor.darkGray
+        spinner.hidesWhenStopped = true
+        tableView.tableFooterView = spinner
         
         self.tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
         
@@ -570,5 +575,22 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
 extension String {
     func regEx() -> String {
         return self.replacingOccurrences(of: "[A-Za-z0-9 !\"#$%&'()*+,-./:;<=>?@\\[\\\\\\]^_`{|}~]", with: "•", options: .regularExpression, range: nil)
+    }
+}
+extension BotMessagesView: UIScrollViewDelegate{
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if scrollView.isEqual(tableView){
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveLinear], animations: {
+               
+            }, completion: { _ in
+                
+                let height = scrollView.frame.size.height
+                let contentYoffset = scrollView.contentOffset.y
+                let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+                if distanceFromBottom < height || Int(distanceFromBottom) == Int(height) {
+                   self.viewDelegate?.tableviewScrollDidEnd()
+                }
+            })
+        }
     }
 }

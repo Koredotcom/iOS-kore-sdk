@@ -26,7 +26,7 @@ class SDKConfiguration: NSObject {
         
         static let identity = "rajasekhar.balla@kore.com"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
         
-        static let isAnonymous = false // This should be either true (in case of known-user) or false (in-case of anonymous user).
+        static let isAnonymous = true // This should be either true (in case of known-user) or false (in-case of anonymous user).
 
         static let isWebhookEnabled = false // This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
         

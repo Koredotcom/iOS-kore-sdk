@@ -25,7 +25,7 @@ open class KABotClient: NSObject {
         didSet {
             if isConnected {
                 //whenever is connected is true it fetches the history if any
-                getRecentHistory()
+                //getRecentHistory()
                 fetchMessages()
             }
         }
@@ -398,6 +398,17 @@ open class KABotClient: NSObject {
                     message.addComponent(textComponent)
                     return (message, ttsBody)
                 }
+            case "image":
+                if let payload = componentModel.payload as? [String: Any] {
+                    if let dictionary = payload["payload"] as? [String: Any] {
+                        let optionsComponent: Component = Component(.image)
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                        return (message, ttsBody)
+                    }
+                }
+                
             case "template":
                 if let payload = componentModel.payload as? [String: Any] {
                     let type = payload["type"] as? String ?? ""
@@ -492,6 +503,13 @@ open class KABotClient: NSObject {
                             textComponent.payload = text
                             message.addComponent(textComponent)
                         }
+                    }
+                }else{
+                    if let payload = componentModel.payload as? String{
+                        let textComponent = Component()
+                        textComponent.payload = payload
+                        ttsBody = payload
+                        message.addComponent(textComponent)
                     }
                 }
                 return (message, ttsBody)
