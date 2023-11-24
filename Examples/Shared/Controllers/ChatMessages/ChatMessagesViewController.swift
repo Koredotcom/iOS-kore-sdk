@@ -1811,7 +1811,9 @@ extension ChatMessagesViewController {
         })
     }
     func tableviewScrollDidEnd(){
-        fetchMessages()
+        if SDKConfiguration.botConfig.isShowChatHistory{
+            fetchMessages()
+        }
     }
 }
 extension ChatMessagesViewController: KABotClientDelegate {

@@ -31,6 +31,8 @@ class SDKConfiguration: NSObject {
         static let isWebhookEnabled = false // This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
         
         static let enableAckDelivery = false // Set true to send acknowledgment to server on receiving response from bot
+        
+        static let isShowChatHistory = true // Set true to Show chat history or false hide chat history.
     }
     
     struct serverConfig {
