@@ -1013,6 +1013,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             self.taskMenuContainerHeightConstant.constant = 0
             self.tapToDismissGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(ChatMessagesViewController.dismissKeyboard(_:)))
             self.botMessagesView.addGestureRecognizer(tapToDismissGestureRecognizer)
+            self.tapToDismissGestureRecognizer.delegate = self
+            self.navigationController?.view.addGestureRecognizer(tapToDismissGestureRecognizer)
         }
     }
     
@@ -2503,3 +2505,12 @@ extension ChatMessagesViewController {
             }
         }
     }}
+
+extension ChatMessagesViewController: UIGestureRecognizerDelegate{
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view?.isDescendant(of: botMessagesView.tableView) == true || touch.view?.isDescendant(of: quickReplyView) == true{
+            return false
+        }
+        return true
+    }
+}
