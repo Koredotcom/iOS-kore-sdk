@@ -2,8 +2,8 @@
 //  ContentView.swift
 //  KoreSDKSampleApp
 //
-//  Created by Abdulrahman Alsammahi on 23/10/2023.
-//
+//  Created by Kartheek Pagidimarri on 23/10/2023.
+// Copyright © 2023 Kore. All rights reserved.
 
 import SwiftUI
 
