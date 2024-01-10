@@ -95,7 +95,7 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
 #### 1. Setup KoreBotSDK UI
 ###### a. Using SPM
         Add local Package(KoreSDKSampleAppPackage) from download project(Examples/SPM/KoreSDKSampleAppPackage) into your project.
-######  In your ViewController add below lines
+###### b. In your ViewController add below lines
         1. import KoreBotSDK 
         2. let botConnect = BotConnect() 
         3. Add below lines in button action method
@@ -117,6 +117,11 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
         
         // MARK: Bot Connect
         botConnect.show()
+###### c. Add below permissions in info.plist
+        Privacy - Camera Usage Description         ---      Allow access to camera.
+        Privacy - Microphone Usage Description     ---      Allow access to microphone.
+        Privacy - Photo Library Usage Description  ---      Allow access to photo library.
+        Privacy - Speech Recognition Usage Description  --- Speech recognition will be used to determine which words you speak into this device's microphone.
 
 #### 1. Setup KoreBotSDK
 ###### a. Using CocoaPods
