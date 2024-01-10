@@ -75,6 +75,91 @@ open class RTMTimer: NSObject {
 }
 
 open class RTMPersistentConnection : NSObject, WebSocketDelegate {
+    public func didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocketClient) {
+        
+        switch event {
+        case .connected(let headers):
+            connectionDelegate?.rtmConnectionDidOpen()
+            isConnected = true
+            isConnecting = false
+            print("websocket is connected: \(headers)")
+        case .disconnected(let reason, let code):
+            connectionDelegate?.rtmConnectionDidClose(code, reason: reason)
+            isConnected = false
+            isConnecting = false
+            print("websocket is disconnected: \(reason) with code: \(code)")
+        case .text(let message):
+            print("Received text: \(message)")
+            guard let message = message as? String,
+                  let responseObject = convertStringToDictionary(message),
+                  let type = responseObject["type"] as? String else {
+                return
+            }
+            switch type {
+            case "ready":
+                connectionDelegate?.rtmConnectionReady()
+            case "ok":
+                if let model = try? Ack(JSON: responseObject), let ack = model as? Ack {
+                    connectionDelegate?.didReceiveMessageAck(ack)
+                }
+            case "bot_response":
+                print("received: \(responseObject)")
+                guard let array = responseObject["message"] as? Array<[String: Any]>, array.count > 0 else {
+                    return
+                }
+                if let model = try? BotMessageModel(JSON: responseObject), let botMessageModel = model as? BotMessageModel {
+                    connectionDelegate?.didReceiveMessage(botMessageModel)
+                }
+            case "user_message":
+                connectionDelegate?.didReceivedUserMessage(responseObject)
+            default:
+                break
+            }
+        case .binary(let data):
+            print("Received data: \(data.count)")
+        case .ping(_):
+            break
+        case .pong(_):
+            receivedLastPong = true
+            break
+        case .viabilityChanged(_):
+            break
+        case .reconnectSuggested(_):
+            break
+        case .cancelled:
+            isConnected = false
+            isConnecting = false
+            break
+        case .error(let error):
+            isConnected = false
+            isConnecting = false
+            connectionDelegate?.rtmConnectionDidFailWithError(error)
+            break
+        case .peerClosed:
+            break
+        }
+        
+        timerSource.eventHandler = { [weak self] in
+            if self?.receivedLastPong == false {
+                // we did not receive the last pong
+                // abort the socket so that we can spin up a new connection
+                // self.websocket.close()
+                // self.timerSource.suspend()
+                // self.connectionDelegate?.rtmConnectionDidFailWithError(NSError())
+            } else if self?.isConnected == false {
+                self?.websocket?.disconnect()
+                self?.timerSource.suspend()
+            } else if self?.isConnected == true {
+                
+                // we got a pong recently
+                // send another ping
+                self?.receivedLastPong = false
+                _ = try? self?.websocket?.write(ping: Data())
+            }
+        }
+        timerSource.resume()
+    }
+    
     var botInfo: BotInfoModel!
     fileprivate var botInfoParameters: [String: Any]?
     fileprivate var reWriteOptions: [String: Any]?
@@ -196,6 +281,8 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
             isConnected = false
             isConnecting = false
             connectionDelegate?.rtmConnectionDidFailWithError(error)
+            break
+        case .peerClosed:
             break
         }
         
