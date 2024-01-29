@@ -2348,11 +2348,11 @@ extension ChatMessagesViewController{
                 
             }) { (error) in
                 self.stopLoader()
-                self.showAlert(title: "Baraq", message: "Please try again")
+                self.showAlert(title: "KoreBot SDK", message: "Please try again")
             }
         } else {
             self.stopLoader()
-            self.showAlert(title: "Baraq", message: "YOU MUST SET BOT 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
+            self.showAlert(title: "KoreBot SDK", message: "YOU MUST SET BOT 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
         }
     }
     
