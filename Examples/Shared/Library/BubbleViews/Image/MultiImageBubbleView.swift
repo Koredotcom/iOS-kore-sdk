@@ -175,7 +175,11 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
                         cell.imageComponent.image = UIImage(named: "placeholder_image")
                     }
                 }else{
-                    cell.imageComponent.image = UIImage(named: "placeholder_image")
+                    if let imageurlStr = imageDataDic["url"] as? String, let url = URL(string:imageurlStr){
+                        cell.imageComponent.af.setImage(withURL: url, placeholderImage: UIImage.init(named: "placeholder_image", in: frameworkBundle, compatibleWith: nil))
+                    }else{
+                        cell.imageComponent.image = UIImage(named: "placeholder_image")
+                    }
                 }
                 
                 if let gifImageUrl = imageDataDic["url"] as? String, gifImageUrl.contains(".gif"){

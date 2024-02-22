@@ -14,7 +14,7 @@ class ListBubbleView: BubbleView {
 
     var optionsView: KREOptionsView!
     var reloadTable = false
-    public var optionsAction: ((_ text: String?) -> Void)!
+    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
     public var linkAction: ((_ text: String?) -> Void)!
     var spaceing = 0.0
     
@@ -33,7 +33,7 @@ class ListBubbleView: BubbleView {
         // property blocks
         self.optionsView.optionsButtonAction = { [weak self] (text, payload) in
             if((self?.optionsAction) != nil){
-                self?.optionsAction(text)
+                self?.optionsAction(text,payload)
             }
         }
         self.optionsView.detailLinkAction = {[weak self] (text) in

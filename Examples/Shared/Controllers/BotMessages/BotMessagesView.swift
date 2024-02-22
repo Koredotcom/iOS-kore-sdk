@@ -271,8 +271,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             break
         case .list:
             let bubbleView: ListBubbleView = cell.bubbleView as! ListBubbleView
-            bubbleView.optionsAction = {[weak self] (text) in
-                self?.viewDelegate?.optionsButtonTapAction(text: text!)
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
             }
             bubbleView.linkAction = {[weak self] (text) in
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
