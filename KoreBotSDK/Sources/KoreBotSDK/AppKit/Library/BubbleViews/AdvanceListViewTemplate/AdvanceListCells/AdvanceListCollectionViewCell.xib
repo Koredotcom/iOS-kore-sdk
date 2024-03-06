@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="AdvanceListCollectionViewCell" id="gTV-IL-0wX" customClass="AdvanceListCollectionViewCell" customModule="KoreBotSDK">
+            <rect key="frame" x="0.0" y="0.0" width="174" height="80"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="174" height="80"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Wjh-dp-RhK">
+                        <rect key="frame" x="5" y="7.6666666666666643" width="65" height="65"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="65" id="eoB-gu-rgY"/>
+                            <constraint firstAttribute="width" constant="65" id="qge-06-X9x"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jg6-TW-gYI">
+                        <rect key="frame" x="78" y="13.666666666666664" width="88" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="mhS-y8-ltC"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kkq-FC-Z1K">
+                        <rect key="frame" x="78" y="45.666666666666664" width="88" height="20.999999999999993"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="FMd-XI-oWv"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="Jg6-TW-gYI" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" constant="-16" id="0GG-2m-FMw"/>
+                <constraint firstItem="Wjh-dp-RhK" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="IzN-oR-Wd3"/>
+                <constraint firstAttribute="trailing" secondItem="Kkq-FC-Z1K" secondAttribute="trailing" constant="8" id="LVQ-Ww-OON"/>
+                <constraint firstItem="Jg6-TW-gYI" firstAttribute="leading" secondItem="Wjh-dp-RhK" secondAttribute="trailing" constant="8" id="LmQ-Jt-mzf"/>
+                <constraint firstAttribute="trailing" secondItem="Jg6-TW-gYI" secondAttribute="trailing" constant="8" id="Mwk-9p-wrf"/>
+                <constraint firstItem="Wjh-dp-RhK" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="5" id="RAt-IZ-pnb"/>
+                <constraint firstItem="Kkq-FC-Z1K" firstAttribute="leading" secondItem="Wjh-dp-RhK" secondAttribute="trailing" constant="8" id="dd3-jG-C5G"/>
+                <constraint firstItem="Kkq-FC-Z1K" firstAttribute="top" secondItem="Jg6-TW-gYI" secondAttribute="bottom" constant="11" id="tBF-LX-owH"/>
+            </constraints>
+            <size key="customSize" width="174" height="93"/>
+            <connections>
+                <outlet property="imagV" destination="Wjh-dp-RhK" id="EVk-Lm-blk"/>
+                <outlet property="imagVHeightConstraint" destination="eoB-gu-rgY" id="XzE-sM-snd"/>
+                <outlet property="imagVwidthConstraint" destination="qge-06-X9x" id="or6-8b-ohj"/>
+                <outlet property="titleLbl" destination="Jg6-TW-gYI" id="NyM-ei-lEy"/>
+                <outlet property="valueLbl" destination="Kkq-FC-Z1K" id="XWl-xV-Qsj"/>
+            </connections>
+            <point key="canvasLocation" x="120.61068702290076" y="34.859154929577464"/>
+        </collectionViewCell>
+    </objects>
+</document>

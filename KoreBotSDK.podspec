@@ -28,22 +28,17 @@ Pod::Spec.new do |s|
         ss.ios.deployment_target = '12.0'
         ss.source_files = 'Widgets/**/*.{h,m,txt,swift,xib}'
         ss.resource_bundles = {
-            'Templates' => ['Widgets/**/*.xib'],
-            'Widgets' => ['Widgets/Widgets/**/**/*.xib'],
-            'Lato' => ['Widgets/Resources/Fonts/Lato/*.ttf'],
-            'BebasNeue' => ['Widgets/Resources/Fonts/BebasNeue/*.ttf'],
-            'Symbols' => ['Widgets/Resources/Fonts/AppSymbols/*.ttf'],
+            
         }
-        ss.resources = ['Widgets/Widgets/**/*.{xcdatamodeld}', 'Widgets/Resources/*.{xcassets}']
+        ss.resources = ['KoreBotSDK/**/*.{xcdatamodeld}', 'KoreBotSDK/**/*.{xcassets}','KoreBotSDK/**/*.xib','KoreBotSDK/Widgets/**/**/*.xib','KoreBotSDK/**/*.json']
         ss.dependency 'AlamofireImage'
         ss.dependency 'GhostTypewriter'
         ss.dependency 'MarkdownKit'
-        #ss.dependency 'Charts', '~> 3.2.2'
         ss.dependency 'DGCharts'
         ss.dependency 'ObjectMapper'
-	ss.dependency 'AssetsPickerViewController'
-	ss.dependency 'SwiftUTI'
-	ss.dependency 'emojione-ios'
+        ss.dependency 'FMPhotoPicker'
+        ss.dependency 'SwiftUTI'
+        ss.dependency 'Emoji-swift'
     ss.ios.frameworks = 'SystemConfiguration'
     end
 end

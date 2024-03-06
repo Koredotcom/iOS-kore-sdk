@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D175AD491CEF0CD500BB9442"
-               BuildableName = "Barry Bot.app"
+               BuildableName = "Kore Bot.app"
                BlueprintName = "KoreBotSDKDemo"
                ReferencedContainer = "container:KoreBotSDKDemo.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D175AD491CEF0CD500BB9442"
-            BuildableName = "Barry Bot.app"
+            BuildableName = "Kore Bot.app"
             BlueprintName = "KoreBotSDKDemo"
             ReferencedContainer = "container:KoreBotSDKDemo.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D175AD491CEF0CD500BB9442"
-            BuildableName = "Barry Bot.app"
+            BuildableName = "Kore Bot.app"
             BlueprintName = "KoreBotSDKDemo"
             ReferencedContainer = "container:KoreBotSDKDemo.xcodeproj">
          </BuildableReference>
