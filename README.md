@@ -90,6 +90,9 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
     * Run "carthage update --platform iOS" in the Examples/CarthageDemo project folder.
     * Open Examples/CarthageDemo/KoreBotSDKDemo.xcodeproj in Xcode.
     * Run the KoreBotSDKDemo.app in Xcode
+    
+## Swift Package Manager
+   * Use this branch https://github.com/Koredotcom/iOS-kore-sdk/tree/Appkit
 
 ## Integrating into your app
 #### 1. Setup KoreBotSDK
