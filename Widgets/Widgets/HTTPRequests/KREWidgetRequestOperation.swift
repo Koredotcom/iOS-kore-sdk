@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Alamofire
+import AFNetworking
 
 // MARK: - KREWidgetRequestOperation
 class KREWidgetRequestOperation: KREOperation {
@@ -138,20 +138,24 @@ class KREWidgetRequestOperation: KREOperation {
         
         urlString = widgetsUrl(with: userId, server: urlString, widgetId: widgetId)
 
-        let headers = widgetManager.getRequestHeaders()
-        let method = HTTPMethod(rawValue: httpMethod.uppercased())
+        let requestSerializer = widgetManager.requestSerializer()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.responseSerializer = AFJSONResponseSerializer()
         
-        let dataRequest = sessionManager.request(urlString, method: method, parameters: body, encoding: JSONEncoding.default, headers: headers)
-        dataRequest.validate().responseJSON { [weak self] (response) in
-            var success: Bool = false
-            if let error = response.error {
-                block?(false)
-                self?.error = error
-                widgetFilter?.baseHook?.error = error
-                return
-            }
+        guard let urlRequest = try? requestSerializer.request(withMethod: httpMethod, urlString: urlString, parameters: body) as URLRequest else {
+            block?(false)
+            return
+        }
+        
+        let dataTask = sessionManager?.dataTask(with: urlRequest, uploadProgress: { (progress) in
             
-            guard let dictionary = response.value as? [String: Any] else {
+        }, downloadProgress: { (progress) in
+            
+        }, completionHandler: { [weak self] (response, responseObject, error) in
+            self?.error = error
+            var success: Bool = false
+            widgetFilter?.baseHook?.error = error
+            guard error == nil, let dictionary = responseObject as? [String: Any] else {
                 block?(success)
                 return
             }
@@ -165,7 +169,8 @@ class KREWidgetRequestOperation: KREOperation {
                 manager.insertOrUpdateWidgetComponent(for: widgetFilter, in: self?.widget, with: dictionary)
             }
             block?(success)
-        }
+        })
+        dataTask?.resume()
     }
     
     // MARK: -

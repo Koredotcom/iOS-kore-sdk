@@ -4,8 +4,7 @@
 //
 //  Created by Sukhmeet Singh on 17/10/19.
 //
-
-import Foundation
+import AFNetworking
 
 class KREPanelRequestOperation: KREOperation {
     // MARK: -
@@ -58,26 +57,23 @@ class KREPanelRequestOperation: KREOperation {
             return
         }
         KRELocationManager.shared.setupLocationManager()
-        let urlString = panelsUrl(with: userId, server: server, email: email)
-        let accessToken = String(format: "bearer %@", jwtAccessToken)
+        let urlString: String?
+        urlString = panelsUrl(with: userId, server: server, email: email)
+        let accessToken: String = String(format: "bearer %@", jwtAccessToken)
+        sessionManager?.requestSerializer.setValue(accessToken, forHTTPHeaderField:"Authorization")
        
-        var headers = widgetManager.getRequestHeaders()
-        headers["Authorization"] = accessToken
-        let dataRequest = sessionManager.request(urlString, method: .get, headers: headers)
-        dataRequest.validate().responseJSON { [weak self] (response) in
-            if let error = response.error {
-                self?.error = error
-                block?(false)
-                return
-            }
-
+        let requestSerializer = widgetManager.requestSerializer()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.responseSerializer = AFJSONResponseSerializer()
+        
+        let dataTask = sessionManager?.get(urlString!, parameters: nil, headers: nil, progress: { (progress) in
+            
+        }, success: { [weak self] (dataTask, responseObject) in
             var success: Bool = false
-            var responseObj = [String: Any]()
-            if let responseObject = response.value {
-                responseObj["panels"] = responseObject
-            }
+            var responseObj =  NSMutableDictionary()
+            responseObj["panels"] = responseObject
             guard let dictionary = responseObj as? [String: Any],
-                   let panelsData = dictionary["panels"] as? Array<[String: Any]> else {
+                let panelsData = dictionary["panels"] as? Array<[String: Any]> else {
                     block?(false)
                     return
             }
@@ -86,7 +82,11 @@ class KREPanelRequestOperation: KREOperation {
             self?.panelItems = self?.widgetManager.panelItems
             success = true
             block?(success)
-        }
+        }, failure: { [weak self] (dataTask, error) in
+            self?.error = error
+            block?(false)
+        })
+        dataTask?.resume()
     }
     
     func panelsUrl(with userId: String, server: String, email: String) -> String {

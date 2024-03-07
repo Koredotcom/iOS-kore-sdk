@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFNetworking
 
 // MARK: - KRESummaryWidgetViewCell
 public class KRESummaryWidgetViewCell: KREWidgetViewCell {

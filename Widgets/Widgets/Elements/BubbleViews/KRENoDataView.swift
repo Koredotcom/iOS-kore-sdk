@@ -69,7 +69,7 @@ open class KRENoDataView: UIView {
         addConstraint(constraintCenterNoDataLabel)
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-30-[noDataImageView(115)]-2-[noDataLabel]", options:[], metrics:nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[noDataLabel]-16-|", options:[], metrics:nil, views: views))
-        //NotificationCenter.default.addObserver(self, selector: #selector(networkChanged(_:)), name: NSNotification.Name.AFNetworkingReachabilityDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(networkChanged(_:)), name: NSNotification.Name.AFNetworkingReachabilityDidChange, object: nil)
     }
     
     @objc func networkChanged(_ notification:Notification) {

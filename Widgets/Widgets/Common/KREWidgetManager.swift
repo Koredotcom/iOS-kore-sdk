@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Alamofire
+import AFNetworking
 
 public class KREWidgetManager: NSObject {
     // MARK: - properties
@@ -16,11 +16,7 @@ public class KREWidgetManager: NSObject {
     
     let operationQueue = OperationQueue()
     let timeDifference: Int = 10
-    let sessionManager: Session = {
-        let configuration = URLSessionConfiguration.af.default
-        configuration.timeoutIntervalForRequest = 30
-        return Session(configuration: configuration)
-    }()
+    var sessionManager: AFHTTPSessionManager?
     public var user: KREUser?
     public var panelItems: [KREPanelItem]?
     
@@ -31,27 +27,28 @@ public class KREWidgetManager: NSObject {
     
     public func initialize(with user: KREUser?) {
         self.user = user
+        if let server = user?.server, let baseUrl = URL(string: server) {
+            sessionManager = AFHTTPSessionManager(baseURL: baseUrl)
+        }
     }
     
     // MARK: - requestSerializer
-    func getRequestHeaders() -> HTTPHeaders {
-        var headers: HTTPHeaders = [
-            "bot-language": "en",
-            "Keep-Alive": "Connection",
-            "Content-Type": "application/json",
-        ]
-
+    func requestSerializer() -> AFJSONRequestSerializer {
+        let requestSerializer = AFJSONRequestSerializer()
         if let keys = user?.headers?.keys as? [String], keys.count > 0 {
             for key in keys {
                 if let value = user?.headers?[key] {
-                    headers[key] = value
+                    requestSerializer.setValue(value, forHTTPHeaderField: key)
                 }
             }
         }
+        requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
+        requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+        requestSerializer.setValue("en", forHTTPHeaderField: "bot-language")
         if let tokenType = user?.tokenType, let accessToken = user?.accessToken {
-            headers["Authorization"] = "\(tokenType) \(accessToken)"
+            requestSerializer.setValue("\(tokenType) \(accessToken)", forHTTPHeaderField: "Authorization")
         }
-        return headers
+        return requestSerializer
     }
     
     // MARK: -
@@ -138,26 +135,26 @@ public class KREWidgetManager: NSObject {
             
             // process error cases
             switch error.domain {
-//            case NSURLErrorDomain:
-//                switch error.code {
-//                case NSURLErrorCannotConnectToHost, NSURLErrorNotConnectedToInternet:
-//                    widget.widgetState = .noNetwork
-//                default:
-//                    widget.widgetState = .requestFailed
-//                }
-//            case AFURLResponseSerializationErrorDomain:
-//                if let response = error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey] as? HTTPURLResponse {
-//                    let statusCode = response.statusCode
-//                    switch statusCode {
-//                    case 410:
-//                        self?.cancelAllRequests()
-//                        self?.sessionExpiredAction?(error)
-//                        break
-//                    default:
-//                        break
-//                    }
-//                }
-//                widget.widgetState = .requestFailed
+            case NSURLErrorDomain:
+                switch error.code {
+                case NSURLErrorCannotConnectToHost, NSURLErrorNotConnectedToInternet:
+                    widget.widgetState = .noNetwork
+                default:
+                    widget.widgetState = .requestFailed
+                }
+            case AFURLResponseSerializationErrorDomain:
+                if let response = error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey] as? HTTPURLResponse {
+                    let statusCode = response.statusCode
+                    switch statusCode {
+                    case 410:
+                        self?.cancelAllRequests()
+                        self?.sessionExpiredAction?(error)
+                        break
+                    default:
+                        break
+                    }
+                }
+                widget.widgetState = .requestFailed
             default:
                 widget.widgetState = .requestFailed
             }
@@ -255,28 +252,25 @@ public class KREWidgetManager: NSObject {
             guard let userId = KREWidgetManager.shared.user?.userId else {
                 return
             }
-            var urlString = baseUrl + String(format:"api/1.1/ka/users/%@/layout", userId)
-            let headers = getRequestHeaders()
+            var urlApi = baseUrl + String(format:"api/1.1/ka/users/%@/layout", userId)
+            let requestSerializer = KREWidgetManager.shared.requestSerializer()
             
-            let dataRequest = sessionManager.request(urlString, method: .put, parameters: parameters, headers: headers)
-            dataRequest.validate().responseJSON { (response) in
+            let dataTask = sessionManager?.put(urlApi, parameters: parameters, headers: nil, success: { (dataTask, responseObject) in
                 var success: Bool = false
                 var componentElements: [Any] = [Any]()
-                if let _ = response.error {
-                    let error: NSError = NSError(domain: "", code: 0, userInfo: [:])
-                    block?(false, error)
-                    return
-                }
-                                
-                if let dictionary = response.value as? [String: Any] {
-                    success = true
-                    let jsonDecoder = JSONDecoder()
+                
+                guard let dictionary = responseObject as? [String: Any] else {
                     block?(success, componentElements)
                     return
-                } else {
-                    block?(false, nil)
                 }
-            }
+                
+                success = true
+                let jsonDecoder = JSONDecoder()
+                block?(success, componentElements)
+            }, failure: { (dataTask, error) in
+                block?(false, nil)
+            })
+            dataTask?.resume()
         }
     }
     

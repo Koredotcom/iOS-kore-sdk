@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import Alamofire
-import KoreBotSDK
+import AFNetworking
+//import KoreBotSDK
 
 // MARK: - KREOperation
 class KREOperation: Foundation.Operation {
@@ -180,25 +180,28 @@ class KRESummaryRequestOperation: KREOperation {
         parameters = summaryElement?.hook?.params
         urlString = addQueryString(to: urlString, with: parameters)
 
-        let headers = widgetManager.getRequestHeaders()
-        let method = HTTPMethod(rawValue: httpMethod.uppercased())
+        let requestSerializer = widgetManager.requestSerializer()
+        sessionManager?.requestSerializer = requestSerializer
+        sessionManager?.responseSerializer = AFJSONResponseSerializer()
         
-        let dataRequest = sessionManager.request(urlString, method: method, parameters: body, headers: headers)
-        dataRequest.validate().responseJSON { [weak self] (response) in
+        let dataTask = sessionManager?.dataTask(withHTTPMethod: httpMethod, urlString: urlString, parameters: body, headers: nil, uploadProgress: { (progress) in
+            
+        }, downloadProgress: { (progress) in
+            
+        }, success: { (dataTask, responseObject) in
             var success: Bool = false
-            if let error = response.error {
-                self?.error = error
-                block?(false)
-                return
-            }
-            guard let dictionary = response.value as? [String: Any] else {
+            guard let dictionary = responseObject as? [String: Any] else {
                 block?(success)
                 return
             }
             success = true
             summaryElement?.title = dictionary["title"] as? String
             block?(success)
-        }
+        }, failure: { [weak self] (dataTask, error) in
+            self?.error = error
+            block?(false)
+        })
+        dataTask?.resume()
     }
     
     // MARK: -

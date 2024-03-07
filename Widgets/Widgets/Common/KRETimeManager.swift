@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Alamofire
+import AFNetworking
 
 class KRETimeManager: NSObject {
     var isTrustWorthy = false
@@ -19,11 +19,6 @@ class KRETimeManager: NSObject {
     private var queue: DispatchQueue = DispatchQueue(label: "com.kora.networktime.queue")
     private var dateFormatter: DateFormatter = DateFormatter()
     private static var instance: KRETimeManager!
-    private let sessionManager: Session = {
-        let configuration = URLSessionConfiguration.af.default
-        configuration.timeoutIntervalForRequest = 30
-        return Session(configuration: configuration)
-    }()
     
     public static let sharedInstance: KRETimeManager = {
         if (instance == nil) {
@@ -89,33 +84,34 @@ class KRETimeManager: NSObject {
         guard let KORE_SERVER = KREWidgetManager.shared.user?.server else {
             return
         }
-        queue.async(execute: {  [weak self] in
-            let urlString = KORE_SERVER
-            var headers: HTTPHeaders = [
-                "Keep-Alive": "Connection",
-            ]
-
-            let dataRequest = self?.sessionManager.request(urlString, method: .head)
-            dataRequest?.validate().responseJSON { (response) in
-                if let _ = response.error {
-                    self?.isTrustWorthy = false
-                    return
+        queue.async(execute: {            
+            let urlString: String = KORE_SERVER
+            let requestSerializer = AFJSONRequestSerializer()
+            requestSerializer.httpMethodsEncodingParametersInURI = Set.init(["GET"]) as Set<String>
+            requestSerializer.setValue("Keep-Alive", forHTTPHeaderField:"Connection")
+            
+            let sessionManager: AFHTTPSessionManager = AFHTTPSessionManager(baseURL: URL(string: KORE_SERVER) as URL?)
+            sessionManager.completionGroup = DispatchGroup()
+            sessionManager.completionQueue = DispatchQueue(label: "com.kore.time.manager")
+            sessionManager.responseSerializer = AFJSONResponseSerializer.init()
+            sessionManager.requestSerializer = requestSerializer
+            sessionManager.head(urlString, parameters: nil, headers: nil, success: { [unowned self] (dataTask) in
+                if let response = dataTask.response as? HTTPURLResponse, let dateString = response.allHeaderFields["Date"] as? String {
+                    var date = dateString
+                    date = date.replacingOccurrences(of: "GMT", with: "+0000")
+                    self.systemTime = Date()
+                    self.networkTime = self.dateFormatter.date(from: date)
+                    if let networkTime = self.networkTime, let systemTime = self.systemTime {
+                        self.offset = networkTime.timeIntervalSince(systemTime)
+                    }
+                    print("------Network Time: \(self.networkTime?.description ?? "")------")
+                    print("------Device time: \(self.systemTime?.description ?? "")------")
+                    print("------Network ahead by: \(self.offset)------")
+                    self.isTrustWorthy = true
                 }
-                
-//                if let response = response.value as? HTTPURLResponse, let dateString = response.allHeaderFields["Date"] as? String {
-//                    var date = dateString
-//                    date = date.replacingOccurrences(of: "GMT", with: "+0000")
-//                    self.systemTime = Date()
-//                    self.networkTime = self.dateFormatter.date(from: date)
-//                    if let networkTime = self.networkTime, let systemTime = self.systemTime {
-//                        self.offset = networkTime.timeIntervalSince(systemTime)
-//                    }
-//                    print("------Network Time: \(self.networkTime?.description ?? "")------")
-//                    print("------Device time: \(self.systemTime?.description ?? "")------")
-//                    print("------Network ahead by: \(self.offset)------")
-//                    self.isTrustWorthy = true
-//                }
-            }
+                }, failure: { (dataTask, error) in
+                    self.isTrustWorthy = false
+            })
         })
     }
     

@@ -7,12 +7,6 @@ With just few lines of code, you can embed our Kore chat widget into your applic
 
 Kore Bot SDK for iOS enables you to talk to Kore bots over a web socket. This repo also comes with the code for sample application that developers can modify according to their Bot configuration.
 
-# Requirements
-
-* Mac OS (12.0 or later)
-* Minimum Xcode version 13.3.1
-* iOS 12.0+
-
 # Setting up
 ### Prerequisites
 * Service to generate JWT (JSON Web Tokens)- SDK uses this to send the user identity to Kore Platform.
@@ -31,7 +25,7 @@ Kore Bot SDK for iOS enables you to talk to Kore bots over a web socket. This re
 
 ### Configuration changes
 
-* Setting up clientId, clientSecret, botId, chatBotName and identity in KoreBotSDK/KoreBotSDKDemo/SDKConfiguration.swift
+* Setting up clientId, clientSecret, botId, chatBotName and identity in WidgetSDK/WidgetSDKConfiguration.swift
 ![SDKConfiguration setup](https://github.com/Koredotcom/iOS-kore-sdk/blob/master/sdk_configuration.png)
 
 Client id - Copy this id from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
@@ -59,25 +53,17 @@ Bot Id - copy this value from Bot Builder -> Channels -> Web/Mobile SDK config  
 static let botId = "<bot-id>"
  ```
 
-BOT_SERVER URL- replace it with your server URL, if required
+WIDGET_SERVER URL- replace it with your server URL, if required
  ```
-static let BOT_SERVER = "https://bots.kore.ai";
+static let WIDGET_SERVER = "https://bots.kore.ai";
  ```
 
-Anonymous user - if not anonymous, assign same identity (such as email or phone number) while making a connection
- ```
-static bool isAnonymous = false; 
- ```
 
 JWT_SERVER URL - specify the server URL for JWT token generation. This token is used to authorize the SDK client. Refer to documentation on how to setup the JWT server for token generation - e.g. https://jwt-token-server.example.com/
  ```
 static let JWT_SERVER = "<jwt-token-server-url>";
 ```
 
-Enable the webhook channel - This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
-  ```
- static bool isWebhookEnabled = false; 
-  ```
 ## Running the Demo app
 #### a. Using Cocoa Pods
     * Download or clone the repository.
@@ -85,120 +71,148 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
     * Open Examples/CocoapodsDemo/KoreBotSDKDemo.xcworkspace in Xcode.
     * Run the KoreBotSDKDemo.app in xcode
 
-#### b. Using Carthage
-    * Download or clone the repository.
-    * Run "carthage update --platform iOS" in the Examples/CarthageDemo project folder.
-    * Open Examples/CarthageDemo/KoreBotSDKDemo.xcodeproj in Xcode.
-    * Run the KoreBotSDKDemo.app in Xcode
-    
-## Swift Package Manager
-   * Use this branch https://github.com/Koredotcom/iOS-kore-sdk/tree/Appkit
 
 ## Integrating into your app
-#### 1. Setup KoreBotSDK
+#### 1. Setup WidgetSDK
 ###### a. Using CocoaPods
     Add the following to your Podfile:
-    pod 'KoreBotSDK'
-    
-    Or to get latest pod changes use:
-    pod 'KoreBotSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git’
+    pod 'WidgetSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git’, :branch => 'WidgetSDK'
     
     Run pod install in your project folder.
-###### b. Using Carthage
-    Add the following to your Cartfile:
-    github "Koredotcom/iOS-kore-sdk" "master"
     
-    Run "carthage update --platform iOS" in your project folder.
+#### 2. Initializing the Widget SDK in your Viewcontroller
+    import WidgetSDK
     
-#### 2. Initializing the Bot client
-    import KoreBotSDK
-    
-    let botInfo: NSDictionary = ["chatBot":"<bot-name>", "taskBotId":"<bot-identifier>"]
-    let botClient: BotClient = BotClient(botInfoParameters: botInfo)
-    
-    //Setting the server Url
-    let botServerUrl: String = "https://bots.kore.ai"
-    botClient.setKoreBotServerUrl(url: botServerUrl)
-
-#### 3. JWT generation
-    a. You need to have secure token service hosted in your environment which returns the JWT token.
-    b. Generate JWT in your enviornment.
-To integrate jwt signing in code refer to KoreBotSDKDemo App. - https://github.com/Koredotcom/iOS-kore-sdk/blob/master/Examples/Shared/Controllers/AppLaunch/AppLaunchViewController.swift
-
-NOTE: Please refer about JWT signing and verification at - https://developer.kore.com/docs/bots/kore-web-sdk/
-
-#### 4. Connect with JWT
-    botClient.connectWithJwToken(jwToken, success: { (client) in
-        // listen to RTM events
- 
-    }, failure: { (error) in
-        
-    })
-
-#### 5. Send message
-    botClient.sendMessage("Tweet hello", options: [] as AnyObject?)
-    
-#### 6. Listen to events
-    self.botClient.onMessage = { [weak self] (object) in
-        //"object" type as "BotMessageModel"
+    var panelCollectionViewContainerView: UIView!
+    public var sheetController: KABottomSheetController?
+    var insets: UIEdgeInsets = .zero
+    public var maxPanelHeight: CGFloat {
+        var maxHeight = UIScreen.main.bounds.height
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        let delta: CGFloat = 15.0
+        maxHeight -= statusBarHeight
+        maxHeight -= delta
+        return maxHeight
     }
-    self.botClient.onMessageAck = { (ack) in
-        //"ack" type as "Ack"
+    public var panelHeight: CGFloat {
+        var maxHeight = maxPanelHeight
+        maxHeight -= panelCollectionViewContainerView.bounds.height - insets.bottom - insets.top + 25.0
+        return maxHeight
     }
-    self.botClient.connectionDidClose = { (code, reason) in
-        //"code" type as "Int", "reason" type as "String"
-    }
-    self.botClient.connectionDidFailWithError = { (error) in
-        //"error" type as "NSError"
-    }
-    
-#### 7. Subscribe to push notifications
-    self.botClient.subscribeToNotifications(deviceToken, success: { (staus) in
-        // do something
-    }, failure: { (error) in
-    })
-    
-#### 8. Unsubscribe to push notifications
-    self.botClient.unsubscribeToNotifications(deviceToken, success: { (staus) in
-        // do something
-    }, failure: { (error) in
-    })
+    let widgetConnect = WidgetConnect()
+    var widegtView: WidegtView!
 
-#### 9. Example
-    self.botClient.connectWithJwToken(jwtToken, success: { (client) in
-        client.connectionDidOpen = { () in
-            
-        }
-        
-        client.connectionReady = { () in
-            
-        }
-        
-        client.connectionDidClose = { (code) in
-            
-        }
-        
-        client.connectionDidFailWithError = { (error) in
-            
-        }
-        
-        client.onMessage = { (object) in
-            
-        }
-        
-        client.onMessageAck = { (ack) in
-            
-        }
-    }, failure: { (error) in
-        
-    })
-#### 10. getHistory - fetches all the history that the bot has previously based on last messageId whenever the bot is reconnected.
-    self.botClient.getHistory(offset: 0, success: { (responseObj) in
-        // do something
-    }, failure: { (error) in
-    })
-    
+#### 3. Add WidgetSDKDelegate 
 
+    extension ViewController: WidgetViewDelegate{
+    func configureWidgetView(){
+        panelCollectionViewContainerView = UIView()
+        panelCollectionViewContainerView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(panelCollectionViewContainerView)
+        panelCollectionViewContainerView.backgroundColor = .lightGray
+        NSLayoutConstraint.activate([
+            panelCollectionViewContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            panelCollectionViewContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            panelCollectionViewContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            panelCollectionViewContainerView.heightAnchor.constraint(equalToConstant: 55.0)
+        ])
+        self.widegtView = WidegtView()
+        self.widegtView.translatesAutoresizingMaskIntoConstraints = false
+        self.widegtView.viewDelegate = self
+        self.panelCollectionViewContainerView.addSubview(self.widegtView)
+        self.panelCollectionViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[widegtView]|", options:[], metrics:nil, views:["widegtView" : widegtView!]))
+        self.panelCollectionViewContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[widegtView]|", options:[], metrics:nil, views:["widegtView" : widegtView!]))
+    }
+    public func didselectWidegtView(item: WidgetSDK.KREPanelItem?){
+        let weakSelf = self
+        switch item?.type {
+        case "action":
+            processActionPanelItem(item)
+        default:
+            if #available(iOS 11.0, *) {
+                self.insets = UIApplication.shared.delegate?.window??.safeAreaInsets ?? .zero
+            }
+            let keyWindow = UIApplication.shared.connectedScenes
+                .filter({$0.activationState == .foregroundActive})
+                .compactMap({$0 as? UIWindowScene})
+                .first?.windows
+                .filter({$0.isKeyWindow}).first
+            let safeAreaBottom =  CGFloat(keyWindow?.safeAreaInsets.bottom ?? 0.0)
+            var inputViewHeight = safeAreaBottom
+            inputViewHeight = inputViewHeight + (self.insets.bottom) + (self.panelCollectionViewContainerView.bounds.height)
+            let sizes: [SheetSize] = [.fixed(0.0), .fixed(weakSelf.panelHeight)]
+            if weakSelf.sheetController == nil {
+                let panelItemViewController = KAPanelItemViewController()
+                panelItemViewController.panelId = item?.id
+                panelItemViewController.dismissAction = { [weak self] in
+                    self?.sheetController = nil
+                }
+                self.view.endEditing(true)
+                
+                let bottomSheetController = KABottomSheetController(controller: panelItemViewController, sizes: sizes)
+                bottomSheetController.inputViewHeight = CGFloat(inputViewHeight)
+                bottomSheetController.willSheetSizeChange = { [weak self] (controller, newSize) in
+                    switch newSize {
+                    case .fixed(weakSelf.panelHeight):
+                        controller.overlayColor = .clear
+                        panelItemViewController.showPanelHeader(true)
+                    default:
+                        controller.overlayColor = .clear
+                        panelItemViewController.showPanelHeader(false)
+                        bottomSheetController.closeSheet(true)
+                        
+                        self?.sheetController = nil
+                    }
+                }
+                bottomSheetController.modalPresentationStyle = .overCurrentContext
+                weakSelf.present(bottomSheetController, animated: true, completion: nil)
+                weakSelf.sheetController = bottomSheetController
+            } else if let bottomSheetController = weakSelf.sheetController,
+                      let panelItemViewController = bottomSheetController.childViewController as? KAPanelItemViewController {
+                panelItemViewController.panelId = item?.id
+                
+                if bottomSheetController.presentingViewController == nil {
+                    weakSelf.present(bottomSheetController, animated: true, completion: nil)
+                } else {
+                    
+                }
+            }
+        }
+    }
+    func processActionPanelItem(_ item: KREPanelItem?) {
+        if let uriString = item?.action?.uri, let url = URL(string: uriString + "?teamId=59196d5a0dd8e3a07ff6362b") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+}
+
+#### 4. Configuration changes in your Viewcontroller
+
+        WidgetSDKConfiguration.widgetConfig.clientId =  "<client-id>"
+        WidgetSDKConfiguration.widgetConfig.clientSecret = "<client-secret>"
+        WidgetSDKConfiguration.widgetConfig.botId = "<bot-id>"
+        WidgetSDKConfiguration.widgetConfig.chatBotName = "<bot-name>"
+        WidgetSDKConfiguration.widgetConfig.identity = "<identity-email> or <random-id>"
+        WidgetSDKConfiguration.widgetConfig.isAnonymous = true
+        WidgetSDKConfiguration.serverConfig.JWT_SERVER = "http://<jwt-server-host>/"
+        WidgetSDKConfiguration.serverConfig.WIDGET_SERVER = "https://bots.kore.ai"
+
+#### 4. Connect with WidgetSDK
+
+    widgetConnect.show(WidgetSDKConfiguration.widgetConfig.clientId) { statusStr in
+            self.configureWidgetView()
+        } failure: { error in
+            print(error)
+            let title = "Widget SDK Demo"
+            let message = "YOU MUST SET WIDGET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation."
+            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(defaultAction)
+            self.present(alertController, animated: true, completion: nil)
+        }
+
+#### 
+    
 License
 ----
 Copyright © Kore, Inc. MIT License; see LICENSE for further details.

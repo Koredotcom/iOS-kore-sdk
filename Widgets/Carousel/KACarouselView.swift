@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import KoreBotSDK
+//import KoreBotSDK
 
 public class KAOptionsView: KREOptionsView {
     public var userIntent:((_ action: Any?) -> Void)?

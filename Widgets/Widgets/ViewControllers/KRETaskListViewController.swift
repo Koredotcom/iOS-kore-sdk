@@ -7,7 +7,7 @@
 
 import UIKit
 import Foundation
-import KoreBotSDK
+//import KoreBotSDK
 
 public class KRETaskListViewController: UIViewController {
     let bundle = Bundle(for: KRETaskListViewController.self)
@@ -454,7 +454,7 @@ extension KRETaskListViewController: UITableViewDataSource, UITableViewDelegate 
     
     // MARK: - table view delegate methods
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //return 
+        return 
         if showButton {
             let widgetActionViewController = KREWidgetActionViewController()
             widgetActionViewController.modalPresentationStyle = .fullScreen
@@ -526,7 +526,7 @@ extension KRETaskListViewController: UITableViewDataSource, UITableViewDelegate 
             actions.append((utterance, UIAlertAction.Style.default))
         }
         actions.append(("Cancel", UIAlertAction.Style.cancel))
-        Alerts.showActionsheet(viewController: self, title: title, message: "", actions: actions) { [weak self] (index) in
+        Alertss.showActionsheet(viewController: self, title: title, message: "", actions: actions) { [weak self] (index) in
             if index == actionString.count {
                 debugPrint("Cancel")
             } else {
@@ -613,7 +613,7 @@ extension UITableView {
     
 }
 
-class Alerts {
+class Alertss {
     static func showActionsheet(viewController: UIViewController, title: String, message: String, actions: [(String, UIAlertAction.Style)], completion: @escaping (_ index: Int) -> Void) {
         let alertViewController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         for (index, (title, style)) in actions.enumerated() {

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import DGCharts
+import Charts
 
 public class KRELineChartView: UIView {
     // MARK: - properties
@@ -47,7 +47,7 @@ public class KRELineChartView: UIView {
     
     // MARK: initialize line chart view
     func intializeLineChartView() {
-        lineChartView.chartDescription.enabled = false
+        lineChartView.chartDescription?.enabled = false
         lineChartView.isUserInteractionEnabled = false
         
         lineChartView.leftAxis.enabled = true
@@ -61,7 +61,7 @@ public class KRELineChartView: UIView {
         lineChartView.xAxis.drawAxisLineEnabled = true
         lineChartView.xAxis.drawGridLinesEnabled = false
         lineChartView.xAxis.granularity = 1.0
-        //lineChartView.xAxis.valueFormatter = self
+        lineChartView.xAxis.valueFormatter = self
         lineChartView.xAxis.avoidFirstLastClippingEnabled = true
         
         lineChartView.drawGridBackgroundEnabled = false
@@ -130,7 +130,7 @@ public class KRELineChartView: UIView {
         let colors = colorsPalet()
         var dataSets: Array<LineChartDataSet> = Array<LineChartDataSet>()
         for i in 0..<titles.count {
-            let dataSet = LineChartDataSet(entries: dataValues[i], label: titles[i])
+            let dataSet = LineChartDataSet(values: dataValues[i], label: titles[i])
             dataSet.mode = .cubicBezier
             dataSet.lineWidth = 2.0
             dataSet.setColor(colors[i])
@@ -140,10 +140,7 @@ public class KRELineChartView: UIView {
         }
         
         let lineChartData = LineChartData(dataSets: dataSets)
-        let formatter = NumberFormatter()
-        //formatter.maximumFractionDigits = 1
-        lineChartData.setValueFormatter(DefaultValueFormatter(formatter: formatter))
-        //lineChartData.setValueFormatter(self)
+        lineChartData.setValueFormatter(self)
         
         xAxisValues = headers
         lineChartView.data = lineChartData
@@ -159,7 +156,7 @@ public class KRELineChartView: UIView {
 }
 
 // MARK: -
-extension KRELineChartView {
+extension KRELineChartView: IAxisValueFormatter, IValueFormatter {
     public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
         let index = Int(value)
         if xAxisValues.count > index {

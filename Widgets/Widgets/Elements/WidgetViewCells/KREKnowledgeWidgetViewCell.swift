@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFNetworking
 
 public class KREKnowledgeWidgetViewCell: KREWidgetViewCell {
     // MARK: - properties

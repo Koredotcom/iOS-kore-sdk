@@ -145,7 +145,7 @@ public class KRECarouselCardView: UIView, UIGestureRecognizerDelegate {
     public func configureForCardInfo(cardInfo: KRECardInfo) {
         isImagePresent = cardInfo.isImagePresent
         if let imageUrlString = cardInfo.imageURL, let url = URL(string: imageUrlString) {
-            imageView.af.setImage(withURL: url, placeholderImage: UIImage(named: "placeholder_image"))
+            imageView.setImageWith(url, placeholderImage: UIImage(named: "placeholder_image"))
         }
         self.textLabel.attributedText = KRECardView.getAttributedString(cardInfo: cardInfo)
         self.optionsView.options.removeAll()

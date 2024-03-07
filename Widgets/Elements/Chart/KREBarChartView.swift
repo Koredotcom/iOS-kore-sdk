@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import DGCharts
+import Charts
 
 public class KREBarChartView: UIView {
     // MARK: - properties
@@ -62,7 +62,7 @@ public class KREBarChartView: UIView {
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[bcView]-15-|", options: [], metrics: nil, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-30-[bcView]-15-|", options: [], metrics: nil, views: views))
         
-        bcView.chartDescription.enabled = false
+        bcView.chartDescription?.enabled = false
         if direction == "horizontal" {
             bcView.leftAxis.enabled = false
         } else {
@@ -78,7 +78,7 @@ public class KREBarChartView: UIView {
         bcView.xAxis.drawAxisLineEnabled = true
         bcView.xAxis.drawGridLinesEnabled = false
         bcView.xAxis.granularity = 1.0
-        //bcView.xAxis.valueFormatter = self
+        bcView.xAxis.valueFormatter = self
         
         bcView.drawGridBackgroundEnabled = false
         bcView.drawBordersEnabled = false
@@ -94,7 +94,7 @@ public class KREBarChartView: UIView {
         legend.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
         legend.font = UIFont(name: "HelveticaNeue-Medium", size: 12.0)!
         
-        let marker = BalloonMarker(color: UIColor.white.withAlphaComponent(0.9), font: UIFont(name: "HelveticaNeue-Bold", size: 12.0)!, textColor: .black, insets: UIEdgeInsets(top: 8.0, left: 8.0, bottom: 20.0, right: 8.0))
+        let marker = BalloonMarkerWidget(color: UIColor.white.withAlphaComponent(0.9), font: UIFont(name: "HelveticaNeue-Bold", size: 12.0)!, textColor: .black, insets: UIEdgeInsets(top: 8.0, left: 8.0, bottom: 20.0, right: 8.0))
         bcView.marker = marker
     }
     
@@ -143,7 +143,7 @@ public class KREBarChartView: UIView {
         let colors = colorsPalet()
         var dataSets: Array<BarChartDataSet> = Array<BarChartDataSet>()
         for i in 0..<titles.count {
-            let dataSet = BarChartDataSet(entries: dataValues[i], label: titles[i])
+            let dataSet = BarChartDataSet(values: dataValues[i], label: titles[i])
             dataSet.setColor(colors[i])
             dataSets.append(dataSet)
         }
@@ -152,7 +152,7 @@ public class KREBarChartView: UIView {
         barChartData.setValueTextColor(UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1))
         barChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 8.0) ?? UIFont.systemFont(ofSize: 8.0, weight: .medium))
         barChartData.setDrawValues(false)
-        //barChartData.setValueFormatter(self)
+        barChartData.setValueFormatter(self)
         
         let groupSpace = 0.30
         let barSpace = 0.01
@@ -196,7 +196,7 @@ public class KREBarChartView: UIView {
         let colors = colorsPalet()
         var dataSets: Array<BarChartDataSet> = Array<BarChartDataSet>()
         for _ in 0..<1 {
-            let dataSet = BarChartDataSet(entries: subDataValues, label:"")
+            let dataSet = BarChartDataSet(values: subDataValues, label:"")
             dataSet.stackLabels = titles
             let n = titles.count
             let colorsArr:[NSUIColor] = Array(colors.prefix(n))
@@ -208,7 +208,7 @@ public class KREBarChartView: UIView {
         barChartData.setValueTextColor(UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1))
         barChartData.setValueFont(UIFont(name: "HelveticaNeue-Medium", size: 8.0) ?? UIFont.systemFont(ofSize: 8.0, weight: .medium))
         barChartData.setDrawValues(false)
-        //barChartData.setValueFormatter(self)
+        barChartData.setValueFormatter(self)
 
         let groupSpace = 0.30
         let barSpace = 0.01
@@ -246,7 +246,7 @@ public class KREBarChartView: UIView {
 }
 
 // MARK: - IAxisValueFormatter, IValueFormatter
-extension KREBarChartView {
+extension KREBarChartView: IAxisValueFormatter, IValueFormatter {
     public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
         let index = Int(value)
         if xAxisValues.count > index {

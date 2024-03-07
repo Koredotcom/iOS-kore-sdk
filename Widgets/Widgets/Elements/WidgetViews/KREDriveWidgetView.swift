@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFNetworking
 
 // MARK: - KREDriveWidgetView
 public class KREDriveWidgetView: KREWidgetView {

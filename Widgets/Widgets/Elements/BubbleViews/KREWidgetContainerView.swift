@@ -155,7 +155,7 @@ public class KREWidgetContainerView: UIView {
         widgetView = view
         super.init(frame: .zero)
         setup()
-        //NotificationCenter.default.addObserver(self, selector: #selector(networkChanged(_:)), name: NSNotification.Name.AFNetworkingReachabilityDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(networkChanged(_:)), name: NSNotification.Name.AFNetworkingReachabilityDidChange, object: nil)
         layer.cornerRadius = 10
         clipsToBounds = true
     }

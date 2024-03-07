@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFNetworking
 
 // MARK: - KREWidgetViewDelegate
 public protocol KREGenericWidgetViewDelegate: class {
@@ -467,7 +468,7 @@ extension KRESummaryWidgetView {
             }
         default:
             break
-        }
+        } 
 
         isScrolling = false
     }

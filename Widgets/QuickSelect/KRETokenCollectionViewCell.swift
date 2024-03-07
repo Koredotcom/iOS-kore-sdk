@@ -19,7 +19,7 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
                 self.label.backgroundColor = UIColor(hex: 0x485260)
             } else {
                 let bgColor =  UserDefaults.standard.value(forKey: "ThemeColor") as? String
-                self.label.textColor = UIColor.init(hexString: bgColor!) //UIColor(hex: 0x485260)
+                self.label.textColor = UIColor.init(hexString: bgColor ?? "#2881DF") //UIColor(hex: 0x485260)
                 self.label.backgroundColor = UIColor(hex: 0xEDEDEF)
             }
         }
@@ -47,7 +47,7 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
     var imageURL: String? {
         didSet {
             if let urlString = imageURL, let url = URL(string: urlString) {
-                imageView.af.setImage(withURL: url, placeholderImage: UIImage(named: "placeholder_image"))
+                imageView.setImageWith(url, placeholderImage: UIImage(named: "placeholder_image"))
             }
         }
     }
