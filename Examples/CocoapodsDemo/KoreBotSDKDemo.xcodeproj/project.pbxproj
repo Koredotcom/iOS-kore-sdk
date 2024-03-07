@@ -49,6 +49,7 @@
 		9519B5B32A9D81930045660C /* PdfDownloadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9519B5AE2A9D81930045660C /* PdfDownloadCell.xib */; };
 		951EA67B261EDC1900EE565D /* InlineFormTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951EA679261EDC1800EE565D /* InlineFormTableViewCell.swift */; };
 		951EA67C261EDC1900EE565D /* InlineFormTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 951EA67A261EDC1900EE565D /* InlineFormTableViewCell.xib */; };
+		95210DEB2B99D2C6006149C6 /* KoraAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95210DE12B99D2C6006149C6 /* KoraAssistant.swift */; };
 		953FA4C625527790006EA311 /* KoraApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953FA4C52552778F006EA311 /* KoraApplication.swift */; };
 		953FA4CC255286C9006EA311 /* AttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953FA4CA255286C9006EA311 /* AttachmentCell.swift */; };
 		953FA4CD255286C9006EA311 /* AttachmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 953FA4CB255286C9006EA311 /* AttachmentCell.xib */; };
@@ -112,16 +113,6 @@
 		CDC5E788250A29420064DB9B /* ListWidgetDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC5E786250A29420064DB9B /* ListWidgetDetailsViewController.swift */; };
 		CDC5E789250A29420064DB9B /* ListWidgetDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDC5E787250A29420064DB9B /* ListWidgetDetailsViewController.xib */; };
 		D101F91E24E163F700D47DB8 /* ChatMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D101F91024E163F700D47DB8 /* ChatMessagesViewController.swift */; };
-		D101F91F24E163F700D47DB8 /* KABottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D101F91224E163F700D47DB8 /* KABottomSheetViewController.swift */; };
-		D101F92024E163F700D47DB8 /* KoraNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D101F91324E163F700D47DB8 /* KoraNotification.swift */; };
-		D101F92124E163F700D47DB8 /* KoraAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = D101F91424E163F700D47DB8 /* KoraAssistant.swift */; };
-		D101F92224E163F800D47DB8 /* KAPanelWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D101F91524E163F700D47DB8 /* KAPanelWindowManager.swift */; };
-		D101F92324E163F800D47DB8 /* KAPanelCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D101F91624E163F700D47DB8 /* KAPanelCollectionView.swift */; };
-		D101F92424E163F800D47DB8 /* ApplicationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D101F91724E163F700D47DB8 /* ApplicationManager.swift */; };
-		D101F92524E163F800D47DB8 /* UIViewController+Kora.swift in Sources */ = {isa = PBXBuildFile; fileRef = D101F91824E163F700D47DB8 /* UIViewController+Kora.swift */; };
-		D101F92624E163F800D47DB8 /* KAPanelItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D101F91924E163F700D47DB8 /* KAPanelItemViewController.swift */; };
-		D101F92824E163F800D47DB8 /* ChatMessagesViewController+Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D101F91B24E163F700D47DB8 /* ChatMessagesViewController+Widgets.swift */; };
-		D101F92924E163F800D47DB8 /* KAPanelHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D101F91C24E163F700D47DB8 /* KAPanelHeaderView.swift */; };
 		D101F92A24E163F800D47DB8 /* ChatMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D101F91D24E163F700D47DB8 /* ChatMessagesViewController.xib */; };
 		D15041091DE2C4BC00F2F92E /* Messages.plist in Resources */ = {isa = PBXBuildFile; fileRef = D15041081DE2C4BC00F2F92E /* Messages.plist */; };
 		D15045D51DE422CB008DE46E /* BotConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = D15045D41DE422CB008DE46E /* BotConfiguration.plist */; };
@@ -234,6 +225,7 @@
 		9519B5AE2A9D81930045660C /* PdfDownloadCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PdfDownloadCell.xib; sourceTree = "<group>"; };
 		951EA679261EDC1800EE565D /* InlineFormTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineFormTableViewCell.swift; sourceTree = "<group>"; };
 		951EA67A261EDC1900EE565D /* InlineFormTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InlineFormTableViewCell.xib; sourceTree = "<group>"; };
+		95210DE12B99D2C6006149C6 /* KoraAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraAssistant.swift; sourceTree = "<group>"; };
 		953FA4C52552778F006EA311 /* KoraApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraApplication.swift; sourceTree = "<group>"; };
 		953FA4CA255286C9006EA311 /* AttachmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentCell.swift; sourceTree = "<group>"; };
 		953FA4CB255286C9006EA311 /* AttachmentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentCell.xib; sourceTree = "<group>"; };
@@ -299,16 +291,6 @@
 		CDC5E786250A29420064DB9B /* ListWidgetDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListWidgetDetailsViewController.swift; sourceTree = "<group>"; };
 		CDC5E787250A29420064DB9B /* ListWidgetDetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListWidgetDetailsViewController.xib; sourceTree = "<group>"; };
 		D101F91024E163F700D47DB8 /* ChatMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessagesViewController.swift; sourceTree = "<group>"; };
-		D101F91224E163F700D47DB8 /* KABottomSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KABottomSheetViewController.swift; sourceTree = "<group>"; };
-		D101F91324E163F700D47DB8 /* KoraNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraNotification.swift; sourceTree = "<group>"; };
-		D101F91424E163F700D47DB8 /* KoraAssistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoraAssistant.swift; sourceTree = "<group>"; };
-		D101F91524E163F700D47DB8 /* KAPanelWindowManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelWindowManager.swift; sourceTree = "<group>"; };
-		D101F91624E163F700D47DB8 /* KAPanelCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelCollectionView.swift; sourceTree = "<group>"; };
-		D101F91724E163F700D47DB8 /* ApplicationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationManager.swift; sourceTree = "<group>"; };
-		D101F91824E163F700D47DB8 /* UIViewController+Kora.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Kora.swift"; sourceTree = "<group>"; };
-		D101F91924E163F700D47DB8 /* KAPanelItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelItemViewController.swift; sourceTree = "<group>"; };
-		D101F91B24E163F700D47DB8 /* ChatMessagesViewController+Widgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChatMessagesViewController+Widgets.swift"; sourceTree = "<group>"; };
-		D101F91C24E163F700D47DB8 /* KAPanelHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAPanelHeaderView.swift; sourceTree = "<group>"; };
 		D101F91D24E163F700D47DB8 /* ChatMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatMessagesViewController.xib; sourceTree = "<group>"; };
 		D15041081DE2C4BC00F2F92E /* Messages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Messages.plist; sourceTree = "<group>"; };
 		D15045D41DE422CB008DE46E /* BotConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BotConfiguration.plist; sourceTree = "<group>"; };
@@ -733,16 +715,7 @@
 		D101F91124E163F700D47DB8 /* PanelView */ = {
 			isa = PBXGroup;
 			children = (
-				D101F91724E163F700D47DB8 /* ApplicationManager.swift */,
-				D101F91B24E163F700D47DB8 /* ChatMessagesViewController+Widgets.swift */,
-				D101F91224E163F700D47DB8 /* KABottomSheetViewController.swift */,
-				D101F91624E163F700D47DB8 /* KAPanelCollectionView.swift */,
-				D101F91324E163F700D47DB8 /* KoraNotification.swift */,
-				D101F91C24E163F700D47DB8 /* KAPanelHeaderView.swift */,
-				D101F91924E163F700D47DB8 /* KAPanelItemViewController.swift */,
-				D101F91524E163F700D47DB8 /* KAPanelWindowManager.swift */,
-				D101F91424E163F700D47DB8 /* KoraAssistant.swift */,
-				D101F91824E163F700D47DB8 /* UIViewController+Kora.swift */,
+				95210DE12B99D2C6006149C6 /* KoraAssistant.swift */,
 			);
 			path = PanelView;
 			sourceTree = "<group>";
@@ -1290,7 +1263,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9519B5A42A9D81860045660C /* CardTemplateCollectionVCell.swift in Sources */,
-				D101F92824E163F800D47DB8 /* ChatMessagesViewController+Widgets.swift in Sources */,
 				D1EBD067227C5ECF0004C349 /* KABotClient.swift in Sources */,
 				D1F338C82201D99A005BE5F1 /* DataModel.xcdatamodeld in Sources */,
 				D1F338C52201D99A005BE5F1 /* Common.swift in Sources */,
@@ -1302,7 +1274,6 @@
 				D1F338E12201D99A005BE5F1 /* BalloonMarker.swift in Sources */,
 				D1F338C32201D99A005BE5F1 /* CoreDataManager.swift in Sources */,
 				D1F338CF2201D99A005BE5F1 /* TSBaseParser.m in Sources */,
-				D101F92524E163F800D47DB8 /* UIViewController+Kora.swift in Sources */,
 				D1F338DF2201D99A005BE5F1 /* OptionsBubbleView.swift in Sources */,
 				959BBC2425519AF800557811 /* KAAssetManager.swift in Sources */,
 				D1F338CB2201D99A005BE5F1 /* KREContact+CoreDataProperties.swift in Sources */,
@@ -1313,10 +1284,7 @@
 				953FA4C625527790006EA311 /* KoraApplication.swift in Sources */,
 				D1F338EA2201D99A005BE5F1 /* CustomCollectionViewLayout.swift in Sources */,
 				9519B5A02A9D81860045660C /* CardTemplateBubbleView.swift in Sources */,
-				D101F92924E163F800D47DB8 /* KAPanelHeaderView.swift in Sources */,
 				CD63DA4B24EAB9A700DCCCCE /* MultiSelectCell.swift in Sources */,
-				D101F92124E163F700D47DB8 /* KoraAssistant.swift in Sources */,
-				D101F92024E163F700D47DB8 /* KoraNotification.swift in Sources */,
 				CD842D4A24EFBD980053710B /* DropDown.swift in Sources */,
 				D1F338DD2201D99A005BE5F1 /* KREAttributedLabel.m in Sources */,
 				D1F338C92201D99A005BE5F1 /* KREThread+CoreDataProperties.swift in Sources */,
@@ -1346,14 +1314,11 @@
 				9519B59D2A9D81860045660C /* ButtonLinkCell.swift in Sources */,
 				CD05640125247F1900E75768 /* FeedbackBubbleView.swift in Sources */,
 				D1F338CC2201D99A005BE5F1 /* KREContact+CoreDataClass.swift in Sources */,
-				D101F92424E163F800D47DB8 /* ApplicationManager.swift in Sources */,
 				95D7C1AE2B0B3CE200715E46 /* CustomCollectionViewCell.swift in Sources */,
 				9519B5A32A9D81860045660C /* CardTemplateHedaderView.swift in Sources */,
-				D101F92624E163F800D47DB8 /* KAPanelItemViewController.swift in Sources */,
 				D1F339002201D99A005BE5F1 /* MessageBubbleCell.swift in Sources */,
 				CD4BFFF924D16091008E08CE /* NotificationBubbleView.swift in Sources */,
 				D1F338CA2201D99A005BE5F1 /* KREMessage+CoreDataClass.swift in Sources */,
-				D101F92324E163F800D47DB8 /* KAPanelCollectionView.swift in Sources */,
 				958D272B2553D6360099674B /* KAHTTPRequestManager.swift in Sources */,
 				9519B5962A9D81860045660C /* AdvanceListGridCell.swift in Sources */,
 				958D27232553CF040099674B /* UsageLimits.swift in Sources */,
@@ -1361,8 +1326,6 @@
 				D101F91E24E163F700D47DB8 /* ChatMessagesViewController.swift in Sources */,
 				D1F338D72201D99A005BE5F1 /* Component.swift in Sources */,
 				CDB86A1124C0128F00D1CCC7 /* TableListBubbleView.swift in Sources */,
-				D101F92224E163F800D47DB8 /* KAPanelWindowManager.swift in Sources */,
-				D101F91F24E163F700D47DB8 /* KABottomSheetViewController.swift in Sources */,
 				CD842D4824EFBD980053710B /* DPDUIView+Extension.swift in Sources */,
 				D1F338E22201D99A005BE5F1 /* CarouselBubbleView.swift in Sources */,
 				D1F338F02201D99A005BE5F1 /* ResponsiveCustonCell.swift in Sources */,
@@ -1402,6 +1365,7 @@
 				95A5F8BC2785A97400F7BEEE /* CustomTableBubbleView.swift in Sources */,
 				CDB86A0C24C00CD000D1CCC7 /* TaskMenuTablViewCell.swift in Sources */,
 				D1F338D02201D99A005BE5F1 /* TSMarkdownParser.m in Sources */,
+				95210DEB2B99D2C6006149C6 /* KoraAssistant.swift in Sources */,
 				D1F338F22201D99A005BE5F1 /* MenuBubbleView.swift in Sources */,
 				CD05640B25247F1900E75768 /* FeedbackCell.swift in Sources */,
 				D1F338DB2201D99A005BE5F1 /* NSMutableAttributedString+KREUtils.m in Sources */,

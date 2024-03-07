@@ -100,19 +100,6 @@ class AppLaunchViewController: UIViewController {
             identity = SDKConfiguration.botConfig.identity
         }
         
-        
-        let clientIdForWidget: String = SDKConfiguration.widgetConfig.clientId
-        let clientSecretForWidget: String = SDKConfiguration.widgetConfig.clientSecret
-        let isAnonymousForWidget: Bool = SDKConfiguration.widgetConfig.isAnonymous
-        let chatBotNameForWidget: String = SDKConfiguration.widgetConfig.chatBotName
-        let botIdForWidget: String = SDKConfiguration.widgetConfig.botId
-        var identityForWidget: String! = nil
-        if (isAnonymousForWidget) {
-            identityForWidget = self.getUUID()
-        } else {
-            identityForWidget = SDKConfiguration.widgetConfig.identity
-        }
-        
         let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
         dataStoreManager.deleteThreadIfRequired(with: botId, completionBlock: { (success) in
             
@@ -125,28 +112,7 @@ class AppLaunchViewController: UIViewController {
             activityIndicatorView.startAnimating()
             //             kaBotClient.tryConnect()
             kaBotClient.connect(block: { [weak self] (client, thread) in
-                
-                if !SDKConfiguration.widgetConfig.isPanelView {
                     self?.navigateToChatViewController(client: client, thread: thread)
-                }else{
-                    if !clientIdForWidget.hasPrefix("<") && !clientSecretForWidget.hasPrefix("<") && !chatBotNameForWidget.hasPrefix("<") && !botIdForWidget.hasPrefix("<") && !identityForWidget.hasPrefix("<") {
-                        
-                        self?.getWidgetJwTokenWithClientId(clientIdForWidget, clientSecret: clientSecretForWidget, identity: identityForWidget, isAnonymous: isAnonymousForWidget, success: { [weak self] (jwToken) in
-                            
-                            self?.navigateToChatViewController(client: client, thread: thread)
-                            
-                        }, failure: { (error) in
-                            print(error)
-                            self?.activityIndicatorView.stopAnimating()
-                            self?.chatButton.isUserInteractionEnabled = true
-                        })
-                        
-                    }else{
-                        self!.showAlert(title: "Bot SDK Demo", message: "YOU MUST SET WIDGET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
-                        self?.activityIndicatorView.stopAnimating()
-                        self?.chatButton.isUserInteractionEnabled = true
-                    }
-                }
                 
             }) { (error) in
                 self.activityIndicatorView.stopAnimating()
@@ -231,7 +197,6 @@ extension AppLaunchViewController{
             
             if let dictionary = response.value as? [String: Any],
                let jwToken = dictionary["jwt"] as? String {
-                self.initializeWidgetManager(widgetJWTToken: jwToken)
                 success?(jwToken)
             } else {
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
@@ -240,26 +205,6 @@ extension AppLaunchViewController{
             
         }
         
-    }
-    
-    func initializeWidgetManager(widgetJWTToken: String) {
-        
-        let widgetManager = KREWidgetManager.shared
-        let user = KREUser()
-        user.userId = SDKConfiguration.widgetConfig.botId //userId
-        user.accessToken = widgetJWTToken
-        user.server = "\(SDKConfiguration.serverConfig.WIDGET_SERVER)/"
-        user.tokenType = "bearer"
-        user.userEmail = SDKConfiguration.widgetConfig.identity
-        user.headers = ["X-KORA-Client": KoraAssistant.shared.applicationHeader]
-        widgetManager.initialize(with: user)
-        self.user = user
-        
-        widgetManager.sessionExpiredAction = { (error) in
-            DispatchQueue.main.async {
-                
-            }
-        }
     }
     
     func getThemeColor(){
