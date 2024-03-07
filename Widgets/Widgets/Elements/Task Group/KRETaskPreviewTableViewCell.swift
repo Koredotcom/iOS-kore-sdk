@@ -1,4 +1,4 @@
-//import KoreBotSDK
+import KoreBotSDK
 
 open class KRETaskPreviewTableViewCell: UITableViewCell {
     // MARK: - properties

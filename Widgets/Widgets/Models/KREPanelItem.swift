@@ -8,7 +8,7 @@
 import UIKit
 
 // MARK: - KREPanelItem
-@objc public class KREPanelItem: NSObject, Decodable {
+public class KREPanelItem: NSObject, Decodable {
     public var icon: String?
     public var iconId: String?
     public var name: String?

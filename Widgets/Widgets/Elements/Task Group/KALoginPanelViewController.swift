@@ -9,7 +9,7 @@ import UIKit
 import WebKit
 import SafariServices
 import MessageUI
-//import KoreBotSDK
+import KoreBotSDK
 
 open class KALoginPanelViewController: UIViewController {
     // MARK: - properties

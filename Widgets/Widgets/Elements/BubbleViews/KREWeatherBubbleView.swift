@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import AFNetworking
+import AlamofireImage
 
 public class KREWeatherBubbleView: KREBubbleView {
     // MARK: - properties
@@ -320,7 +320,7 @@ class KREWeatherHeaderFooterView: UITableViewHeaderFooterView {
             }
             
             if let value = weather.icon, let imageUrl = URL(string: value) {
-                weatherImageView.setImageWith(imageUrl)
+                weatherImageView.af.setImage(withURL: imageUrl)
             }
             temperatureTextView.text = weather.temp
         }

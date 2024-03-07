@@ -7,8 +7,7 @@
 //
 
 import UIKit
-//import KoreBotSDK
-import AFNetworking
+import KoreBotSDK
 
 // MARK: -
 public class KRESearchResultsViewController: UIViewController {

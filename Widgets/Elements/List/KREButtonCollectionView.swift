@@ -95,7 +95,7 @@ public class KREButtonCollectionView: UIView {
             switch imageType {
             case "image":
                 if let urlString = imageTemplate.source, let url = URL(string: urlString) {
-                    cell.imageView.setImageWith(url, placeholderImage: UIImage(named: "placeholder_image"))
+                    cell.imageView.af.setImage(withURL: url, placeholderImage: UIImage(named: "placeholder_image"))
                     canShowImage = true
                 }
             default:

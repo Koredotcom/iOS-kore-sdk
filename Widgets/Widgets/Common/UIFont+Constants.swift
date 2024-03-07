@@ -201,23 +201,3 @@ public extension String {
         return self.substring(from: start, to: to)
     }
 }
-
-@objc public class KREResourceLoader: NSObject {
-    public static let shared = KREResourceLoader()
-    
-    // MARK: - init
-    override init() {
-        super.init()
-    }
-    
-    @objc func resourceBundle() -> Bundle {
-        let bundleName = "KoreBotSDK"
-        let appBundle = Bundle(for: KREResourceLoader.self)
-        if let bundleUrl = appBundle.url(forResource: bundleName, withExtension: "bundle"),
-           let bundle = Bundle(url: bundleUrl) {
-            return bundle
-        } else {
-            return appBundle
-        }
-    }
-}
