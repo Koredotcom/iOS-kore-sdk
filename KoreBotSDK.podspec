@@ -12,33 +12,19 @@ Pod::Spec.new do |s|
     s.source_files = 'KoreBotSDK/KoreBotSDK.h'
 
     s.swift_version = '4.2'
-
-    s.subspec 'Library' do |ss|
-        ss.ios.deployment_target = '12.0'
-        ss.source_files = 'KoreBotSDK/**/*.{h,m,swift}'
-        
-        ss.dependency 'Starscream'
-        ss.dependency 'ObjectMapper'
-        ss.dependency 'AlamofireImage'
-        ss.dependency 'Alamofire'
-        ss.ios.frameworks = 'SystemConfiguration'
-    end
-
-    s.subspec 'UIKit' do |ss|
-        ss.ios.deployment_target = '12.0'
-        ss.source_files = 'Widgets/**/*.{h,m,txt,swift,xib}'
-        ss.resource_bundles = {
-            
-        }
-        ss.resources = ['KoreBotSDK/**/*.{xcdatamodeld}', 'KoreBotSDK/**/*.{xcassets}','KoreBotSDK/**/*.xib','KoreBotSDK/Widgets/**/**/*.xib','KoreBotSDK/**/*.json']
-        ss.dependency 'AlamofireImage'
-        ss.dependency 'GhostTypewriter'
-        ss.dependency 'MarkdownKit'
-        ss.dependency 'DGCharts'
-        ss.dependency 'ObjectMapper'
-        ss.dependency 'FMPhotoPicker'
-        ss.dependency 'SwiftUTI'
-        ss.dependency 'Emoji-swift'
-    ss.ios.frameworks = 'SystemConfiguration'
-    end
+    s.ios.deployment_target = '12.0'
+    s.source_files = 'KoreBotSDK/**/*.{h,m,swift}'
+    s.resources = ['KoreBotSDK/**/*.{xcdatamodeld}', 'KoreBotSDK/**/*.{xcassets}','KoreBotSDK/**/*.xib','KoreBotSDK/Widgets/**/**/*.xib','KoreBotSDK/**/*.json']
+    s.dependency 'Alamofire'
+    s.dependency 'AlamofireImage'
+    s.dependency 'Starscream'
+    s.dependency 'ObjectMapper'
+    s.dependency 'GhostTypewriter'
+    s.dependency 'MarkdownKit'
+    s.dependency 'DGCharts'
+    s.dependency 'ObjectMapper'
+    s.dependency 'FMPhotoPicker'
+    s.dependency 'SwiftUTI'
+    s.dependency 'Emoji-swift'
+    s.ios.frameworks = 'SystemConfiguration'
 end
