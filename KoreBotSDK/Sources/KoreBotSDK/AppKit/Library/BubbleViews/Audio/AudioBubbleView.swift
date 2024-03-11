@@ -62,7 +62,7 @@ class AudioBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
     
     
     override var intrinsicContentSize : CGSize {
-        return CGSize(width: BubbleViewMaxWidth, height: 44)
+        return CGSize(width: BubbleViewMaxWidth, height: 200)
     }
     
     func visibleCells() -> NSArray {
@@ -117,7 +117,7 @@ class AudioBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
                 cell.playerViewController.view.frame = cell.videoPlayerView.frame
                 cell.playerViewController.player?.pause()
                 cell.videoPlayerView.addSubview(cell.playerViewController.view)
-                cell.playerViewController.view.backgroundColor = .lightGray
+                cell.playerViewController.view.backgroundColor = .white
     
     
         // cell.component = self.components.object(at: (indexPath as NSIndexPath).row) as! Component //kk
