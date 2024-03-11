@@ -32,11 +32,13 @@ Kore Bot SDK for iOS enables you to talk to Kore bots over a web socket. This re
 ### Configuration changes
 
 * If you are using Cocoapods project Setting up clientId, clientSecret, botId, chatBotName and identity in Examples/CocoapodsDemo/KoreBotSDKDemo/ViewController.swift
+
 ![SDKConfiguration setup](https://github.com/Koredotcom/iOS-kore-sdk/blob/Appkit/sdk_configuration.png)
 
 (or)
 
 If you are using SPM project Setting up clientId, clientSecret, botId, chatBotName and identity in Examples/SwiftPackageManagerDemo/KoreBotSDKDemo/ViewController.swift
+
 ![SDKConfiguration setup](https://github.com/Koredotcom/iOS-kore-sdk/blob/Appkit/sdk_configuration.png)
 
 Client id - Copy this id from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
@@ -128,21 +130,21 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
         Privacy - Photo Library Usage Description  ---      Allow access to photo library.
         Privacy - Speech Recognition Usage Description  --- Speech recognition will be used to determine which words you speak into this device's microphone.
 
-###### b. Using CocoaPods
-    Add the following to your Podfile:
-    pod 'KoreBotSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git’, :branch => 'Appkit'
+###### a. Using CocoaPods
+         Add the following to your Podfile:
+         pod 'KoreBotSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git’, :branch => 'Appkit'
     
-    post_install do |installer|
-    installer.pods_project.targets.each do |target|
-        target.build_configurations.each do |config|
+         post_install do |installer|
+         installer.pods_project.targets.each do |target|
+         target.build_configurations.each do |config|
             config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
-        end
-    end
-end
+               end
+            end
+         end
+
+        Run "pod install" in your project folder.
     
-    Run pod install in your project folder.
-    
-   ###### a. In your ViewController add below lines
+###### b. In your ViewController add below lines
         1. import KoreBotSDK 
         2. let botConnect = BotConnect() 
         3. Add below lines in button action method
@@ -165,7 +167,7 @@ end
         // MARK: Show Bot window
         botConnect.show()
         
-  ###### b. Add below permissions in info.plist
+  ###### c. Add below permissions in info.plist
         Privacy - Camera Usage Description         ---      Allow access to camera.
         Privacy - Microphone Usage Description     ---      Allow access to microphone.
         Privacy - Photo Library Usage Description  ---      Allow access to photo library.
