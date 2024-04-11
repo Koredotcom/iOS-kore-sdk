@@ -132,7 +132,7 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
 
 ###### a. Using CocoaPods
          Add the following to your Podfile:
-         pod 'KoreBotSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git’, :branch => 'Appkit'
+         pod 'KoreBotSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git’, :branch => 'SDKV3'
     
          post_install do |installer|
          installer.pods_project.targets.each do |target|

@@ -48,7 +48,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
         cardView.layer.shadowColor = UIColor.clear.cgColor
         cardView.layer.cornerRadius = 4.0
         cardView.layer.borderWidth = 1.0
-        cardView.layer.borderColor = UIColor.lightGray.cgColor
+        cardView.layer.borderColor = UIColor.init(hexString: templateBoarderColor).cgColor
         cardView.clipsToBounds = true
         cardView.layer.shouldRasterize = true
         cardView.backgroundColor =  UIColor.white

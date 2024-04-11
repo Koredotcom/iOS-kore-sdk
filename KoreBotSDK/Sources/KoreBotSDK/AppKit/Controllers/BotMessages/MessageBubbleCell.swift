@@ -19,7 +19,10 @@ class MessageBubbleCell : UITableViewCell {
     var bubbleLeadingConstraint: NSLayoutConstraint!
     var bubbleTrailingConstraint: NSLayoutConstraint!
     var bubbleBottomConstraint: NSLayoutConstraint!
-    
+    var bubbleTrailingConstant = 45.0
+    var bubbleLeadingConstant = 45.0
+    var dateLblTextColor = UIColor(hexString: "#4B4EDE")
+    var dateLabelLeadingConstraint: NSLayoutConstraint!
     lazy var dateLabel: UILabel = {
         let dateLabel = UILabel(frame: .zero)
         dateLabel.numberOfLines = 0
@@ -109,22 +112,69 @@ class MessageBubbleCell : UITableViewCell {
         // Setting Constraints
         let views: [String: UIView] = ["senderImageView": senderImageView, "bubbleContainerView": bubbleContainerView, "userImageView": userImageView, "dateLabel":dateLabel]
         
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[dateLabel]-20-|", options:[], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(30)]", options:[], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[senderImageView(30)]-4-|", options:[], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[userImageView(30)]-8-|", options:[], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[userImageView(30)]-4-|", options:[], metrics:nil, views:views))
-       // self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[bubbleContainerView]", options:[], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[dateLabel(0)]-0-[bubbleContainerView]", options:[], metrics:nil, views:views))
+//        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[senderImageView(30)]-22-|", options:[], metrics:nil, views:views))
+//        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[userImageView(30)]-22-|", options:[], metrics:nil, views:views))
+        
+        var senderImageViewWidth = 00
+        bubbleLeadingConstant = 20.0
+        var userImageViewWidth = 00
+        bubbleTrailingConstant = 20.0
+        if let icons = brandingBodyDic.icon{
+            if let userIcon = icons.user_icon, userIcon == true{
+                userImageViewWidth = 30
+                bubbleTrailingConstant = 45.0
+            }
+            if let botIcon = icons.bot_icon, botIcon == true{
+                senderImageViewWidth = 30
+                bubbleLeadingConstant = 45.0
+            }
+           
+        }
+        
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(bubbleLeadingConstant + 3.0)-[dateLabel]-\(bubbleTrailingConstant + 3.0)-|", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(\(senderImageViewWidth))]", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[userImageView(\(userImageViewWidth))]-8-|", options:[], metrics:nil, views:views))
+        
+        var senderOrUserimageViewBottomVal = 4.0
+        
+        if let timestamp = brandingBodyDic.time_stamp{
+            if let timeStampShow = timestamp.show, timeStampShow == true{
+                dateLabel.isHidden = false
+                dateLblTextColor = UIColor(hexString: timestamp.color ?? "#4B4EDE")
+                dateLabel.textColor = dateLblTextColor
+                
+                if let position = timestamp.position, position == "top"{
+                    self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[dateLabel(21)]-0-[bubbleContainerView]", options:[], metrics:nil, views:views))
+                    
+                }else{
+                    self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[bubbleContainerView]-0-[dateLabel(21)]|", options:[], metrics:nil, views:views))
+                    senderOrUserimageViewBottomVal = 22.0
+                }
+                
+            }else{
+                self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[dateLabel(0)]-0-[bubbleContainerView]", options:[], metrics:nil, views:views))
+            }
+        }else{
+            self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[dateLabel(0)]-0-[bubbleContainerView]", options:[], metrics:nil, views:views))
+        }
+        
+//        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[senderImageView(30)]-\(senderOrUserimageViewBottomVal)-|", options:[], metrics:nil, views:views))
+//        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[userImageView(30)]-\(senderOrUserimageViewBottomVal)-|", options:[], metrics:nil, views:views))
+        
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-\(30)-[senderImageView(30)]", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-\(30)-[userImageView(30)]", options:[], metrics:nil, views:views))
 
         self.bubbleBottomConstraint = NSLayoutConstraint(item:self.contentView, attribute:.bottom, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.bottom, multiplier:1.0, constant:4.0)
         self.bubbleBottomConstraint.priority = UILayoutPriority.defaultHigh
-        self.bubbleLeadingConstraint = NSLayoutConstraint(item:self.bubbleContainerView as Any, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier:1.0, constant:45.0)
+        self.bubbleLeadingConstraint = NSLayoutConstraint(item:self.bubbleContainerView as Any, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier:1.0, constant:bubbleLeadingConstant)
         self.bubbleLeadingConstraint.priority = UILayoutPriority.defaultHigh
         self.bubbleTrailingConstraint = NSLayoutConstraint(item:self.contentView, attribute:.trailing, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.trailing, multiplier:1.0, constant:16.0)
         self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultLow
         
-        self.contentView.addConstraints([self.bubbleTrailingConstraint, self.bubbleLeadingConstraint, self.bubbleBottomConstraint])
+        self.dateLabelLeadingConstraint = NSLayoutConstraint(item:self.dateLabel as Any, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier:1.0, constant:20.0) //change here
+        self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+        
+        self.contentView.addConstraints([self.bubbleTrailingConstraint, self.bubbleLeadingConstraint, self.bubbleBottomConstraint, self.dateLabelLeadingConstraint])
     }
 
     func bubbleType() -> ComponentType {
@@ -161,9 +211,42 @@ class MessageBubbleCell : UITableViewCell {
        
        //DateLabel
         if let sentOn = message.sentOn as Date? {
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
-                dateLabel.text = dateFormatter.string(from: sentOn)
+//                let dateFormatter = DateFormatter()
+//                dateFormatter.dateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
+//            dateLabel.text = "\(SDKConfiguration.botConfig.chatBotName) \(dateFormatter.string(from: sentOn))"
+            
+            let now = NSDate()
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium
+            dateFormatter.doesRelativeDateFormatting = true
+
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h:mm a"
+
+            let time = "\(timeFormatter.string(from: sentOn)), \(dateFormatter.string(from: sentOn))"
+            dateLabel.text = "\(headerTxt) \(time)"
+            
+            if self.tailPosition == .left{
+                let finalStr = "\(headerTxt) \(time)"
+                let attrStri = NSMutableAttributedString.init(string: finalStr)
+                let nsRange = NSString(string: finalStr)
+                        .range(of: "\(headerTxt)", options: String.CompareOptions.caseInsensitive)
+                attrStri.addAttributes([
+                    NSAttributedString.Key.foregroundColor : dateLblTextColor,
+                    NSAttributedString.Key.font: UIFont.init(name: boldCustomFont, size: 10.0) as Any
+                ], range: nsRange)
+                dateLabel.attributedText = attrStri
+            }else{
+                let finalStr = "\(time) You"
+                let attrStri = NSMutableAttributedString.init(string: finalStr)
+                let nsRange = NSString(string: finalStr)
+                        .range(of: "You", options: String.CompareOptions.caseInsensitive)
+                attrStri.addAttributes([
+                    NSAttributedString.Key.foregroundColor : dateLblTextColor,
+                    NSAttributedString.Key.font: UIFont.init(name: boldCustomFont, size: 10.0) as Any
+                ], range: nsRange)
+                dateLabel.attributedText = attrStri
+            }
         }
         if self.tailPosition == .left{
             dateLabel.textAlignment = .left
@@ -171,15 +254,16 @@ class MessageBubbleCell : UITableViewCell {
             dateLabel.textAlignment = .right
         }
         
-        let placeHolderIcon = UIImage(named: "kore", in: bundle, compatibleWith: nil)
-        self.senderImageView.image = placeHolderIcon
-        if(self.userImageView.image == nil){
-            
-            self.userImageView.image = UIImage(named: "faceIcon", in: bundle, compatibleWith: nil)
-        }
         
-        if let iconurl = message.iconUrl {
-            if let fileUrl = URL(string: iconurl) {
+        let placeHolderIcon = UIImage(named: "kore", in: bundle, compatibleWith: nil)
+               self.senderImageView.image = placeHolderIcon
+               if(self.userImageView.image == nil){
+                   
+                   self.userImageView.image = UIImage(named: "faceIcon", in: bundle, compatibleWith: nil)
+               }
+        
+        if (message.iconUrl != nil) {
+            if let fileUrl = URL(string: message.iconUrl!) {
                 self.senderImageView.af.setImage(withURL: fileUrl, placeholderImage: placeHolderIcon)
             }
         }
@@ -219,7 +303,8 @@ class TextBubbleCell : MessageBubbleCell {
     }
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
             if (tailPosition == .left) {
                 self.bubbleLeadingConstraint.priority = UILayoutPriority.defaultHigh
                 self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultLow
@@ -236,11 +321,21 @@ class QuickReplyBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .quickReply
     }
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+        }
+    }
 }
 
 class ErrorBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .error
+    }
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+        }
     }
 }
 
@@ -248,11 +343,22 @@ class ImageBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .image
     }
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+        }
+    }
 }
 
 class AudioBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .audio
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+        }
     }
 }
 
@@ -265,8 +371,9 @@ class OptionsBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -278,8 +385,9 @@ class ListBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -294,6 +402,7 @@ class CarouselBubbleCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -308,6 +417,7 @@ class PiechartBubbleCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
     
@@ -327,6 +437,7 @@ class TableBubbleCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
     
@@ -346,6 +457,7 @@ class MiniTableBubbleCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
     
@@ -361,7 +473,7 @@ class MenuBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleLeadingConstraint.constant = 45
+            self.bubbleLeadingConstraint.constant = bubbleLeadingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
@@ -378,6 +490,9 @@ class ResponsiveTableBubbleCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            
+            //self.dateLabelLeadingConstraint.constant = 20.0
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
     
@@ -395,8 +510,9 @@ class NewListBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -407,8 +523,9 @@ class TableListBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -420,8 +537,9 @@ class CalendarBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -433,8 +551,9 @@ class QuickRepliesWelcomeCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -449,6 +568,7 @@ class NotificationBubbleCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
     
@@ -465,8 +585,14 @@ class MultiSelectBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+            
+//            self.bubbleTrailingConstraint.constant = 10
+//            self.bubbleLeadingConstraint.constant = 10
+//            self.senderImageView.isHidden = true
+//            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
 }
@@ -478,8 +604,9 @@ class ListWidgetBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -490,8 +617,9 @@ class FeedbackBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -503,8 +631,9 @@ class InLineFormCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -516,8 +645,9 @@ class DropDownell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -532,6 +662,7 @@ class CustomTableCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
     
@@ -549,8 +680,9 @@ class AdvancedListTemplateCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 20
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -561,8 +693,9 @@ class CardTemplateBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 20
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -576,6 +709,56 @@ class PDFDownloadCell : MessageBubbleCell {
         didSet {
             self.bubbleTrailingConstraint.constant = 150
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+        }
+    }
+}
+
+
+class StackedCarosuelCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .stackedCarousel
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleLeadingConstraint.constant = bubbleLeadingConstant
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+        }
+    }
+}
+class AdvancedMultiCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .advanced_multi_select
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleLeadingConstraint.constant = bubbleLeadingConstant
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+
+//                self.bubbleTrailingConstraint.constant = 10
+//                self.bubbleLeadingConstraint.constant = 10
+//                self.senderImageView.isHidden = true
+//                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
+class RadioOptionTemplateCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .radioOptionTemplate
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleLeadingConstraint.constant = bubbleLeadingConstant
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }

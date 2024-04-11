@@ -99,7 +99,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(AdvancedListTemplateCell.self, forCellReuseIdentifier:"AdvancedListTemplateCell")
         self.tableView.register(CardTemplateBubbleCell.self, forCellReuseIdentifier:"CardTemplateBubbleCell")
         self.tableView.register(PDFDownloadCell.self, forCellReuseIdentifier:"PDFDownloadCell")
-        
+        self.tableView.register(StackedCarosuelCell.self, forCellReuseIdentifier:"StackedCarosuelCell")
+        self.tableView.register(AdvancedMultiCell.self, forCellReuseIdentifier:"AdvancedMultiCell")
+        self.tableView.register(RadioOptionTemplateCell.self, forCellReuseIdentifier: "RadioOptionTemplateCell")
     }
     
     override func layoutSubviews() {
@@ -225,6 +227,12 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 cellIdentifier = "CardTemplateBubbleCell"
             case .linkDownload:
                 cellIdentifier = "PDFDownloadCell"
+            case .stackedCarousel:
+                cellIdentifier = "StackedCarosuelCell"
+            case .advanced_multi_select:
+                cellIdentifier = "AdvancedMultiCell"
+            case .radioOptionTemplate:
+                cellIdentifier = "RadioOptionTemplateCell"
             }
             
         }
@@ -273,8 +281,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             break
         case .list:
             let bubbleView: ListBubbleView = cell.bubbleView as! ListBubbleView
-            bubbleView.optionsAction = {[weak self] (text, payload) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
+            bubbleView.optionsAction = {[weak self] (text) in
+                self?.viewDelegate?.optionsButtonTapAction(text: text!)
             }
             bubbleView.linkAction = {[weak self] (text) in
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
@@ -441,6 +449,35 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
             }
             break
+        case .stackedCarousel:
+            let bubbleView: StackedCarouselBubbleView = cell.bubbleView as! StackedCarouselBubbleView
+            cell.bubbleView.drawBorder = true
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+            }
+            bubbleView.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
+            break
+        case .advanced_multi_select:
+            let bubbleView: AdvancedMultiSelectBubbleView = cell.bubbleView as! AdvancedMultiSelectBubbleView
+            cell.bubbleView.drawBorder = true
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+            }
+            bubbleView.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
+            break
+        case .radioOptionTemplate:
+            let bubbleView: RadioOptionBubbleView = cell.bubbleView as! RadioOptionBubbleView
+            cell.bubbleView.drawBorder = true
+            bubbleView.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+            }
+            bubbleView.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
         }
         let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
         if firstIndexPath.isEqual(indexPath) {

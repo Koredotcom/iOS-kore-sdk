@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="66" id="KGk-i7-Jjw" customClass="WelcomeVListLinksCarouselCell" customModule="KoreBotSDK">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="ekf-Un-0Tv">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="G0d-JL-zd3">
+                            <size key="itemSize" width="128" height="128"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <connections>
+                            <outlet property="dataSource" destination="KGk-i7-Jjw" id="NPs-hR-7gW"/>
+                            <outlet property="delegate" destination="KGk-i7-Jjw" id="qwi-rn-Zuu"/>
+                        </connections>
+                    </collectionView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hX1-Uv-ptY">
+                        <rect key="frame" x="0.0" y="0.0" width="1" height="66"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="1" id="yMW-j3-ptR"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4KA-I4-aMR">
+                        <rect key="frame" x="0.0" y="65" width="320" height="1"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="BE7-f8-G6K"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J5D-TW-WUx">
+                        <rect key="frame" x="319" y="0.0" width="1" height="66"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="1" id="GwW-KH-Vcj"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="4KA-I4-aMR" secondAttribute="bottom" id="68E-iU-5qU"/>
+                    <constraint firstItem="J5D-TW-WUx" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="AyY-bd-6Hb"/>
+                    <constraint firstItem="ekf-Un-0Tv" firstAttribute="leading" secondItem="hX1-Uv-ptY" secondAttribute="trailing" constant="-1" id="D4b-d2-bo9"/>
+                    <constraint firstItem="4KA-I4-aMR" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="P6n-k1-atU"/>
+                    <constraint firstAttribute="bottom" secondItem="J5D-TW-WUx" secondAttribute="bottom" id="SeH-w8-BAh"/>
+                    <constraint firstItem="hX1-Uv-ptY" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="TmT-j3-Dvq"/>
+                    <constraint firstItem="ekf-Un-0Tv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="YqQ-4J-y1M"/>
+                    <constraint firstItem="hX1-Uv-ptY" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="avw-zN-ufs"/>
+                    <constraint firstAttribute="trailing" secondItem="J5D-TW-WUx" secondAttribute="trailing" id="cG2-Xk-dKT"/>
+                    <constraint firstAttribute="trailing" secondItem="ekf-Un-0Tv" secondAttribute="trailing" id="dEj-xR-D1c"/>
+                    <constraint firstAttribute="bottom" secondItem="ekf-Un-0Tv" secondAttribute="bottom" id="heD-9x-zVi"/>
+                    <constraint firstAttribute="bottom" secondItem="hX1-Uv-ptY" secondAttribute="bottom" id="iXX-kh-HW0"/>
+                    <constraint firstAttribute="trailing" secondItem="4KA-I4-aMR" secondAttribute="trailing" id="wBj-Kj-uhU"/>
+                    <constraint firstItem="ekf-Un-0Tv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="ya9-Jh-vz6"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="collectionV" destination="ekf-Un-0Tv" id="KaN-fz-Y8T"/>
+                <outlet property="leftLineLbl" destination="hX1-Uv-ptY" id="ZKU-wE-ys9"/>
+                <outlet property="rightLineLbl" destination="J5D-TW-WUx" id="Ei6-jT-fnf"/>
+                <outlet property="underLineLbl" destination="4KA-I4-aMR" id="Ine-UZ-olR"/>
+            </connections>
+            <point key="canvasLocation" x="138.93129770992365" y="27.464788732394368"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

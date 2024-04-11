@@ -100,11 +100,10 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
         cardView.layer.rasterizationScale =  UIScreen.main.scale
-        cardView.layer.shadowColor = UIColor(red: 232/255, green: 232/255, blue: 230/255, alpha: 1).cgColor
-        cardView.layer.shadowOpacity = 1
-        cardView.layer.shadowOffset =  CGSize(width: 0.0, height: -3.0)
-        cardView.layer.shadowRadius = 6.0
-        cardView.layer.shouldRasterize = true
+        cardView.layer.cornerRadius = 4.0
+        cardView.layer.borderWidth = 1.0
+        cardView.layer.borderColor = UIColor.init(hexString: templateBoarderColor).cgColor
+        cardView.clipsToBounds = true
         cardView.backgroundColor =  UIColor.white
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
@@ -164,6 +163,24 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         let subView: [String: UIView] = ["titleLbl": titleLbl]
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
+        setCornerRadiousToTitleView()
+    }
+    
+    func setCornerRadiousToTitleView(){
+        let bubbleStyle = brandingBodyDic.bubble_style
+        let radius = 10.0
+        let borderWidth = 0.0
+        let borderColor = UIColor.clear
+        if #available(iOS 11.0, *) {
+            if bubbleStyle == "balloon"{
+                self.tileBgv.roundCorners([.layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+            }else if bubbleStyle == "rounded"{
+                self.tileBgv.roundCorners([.layerMaxXMinYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+                
+        }else if bubbleStyle == "rectangle"{
+                self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+            }
+        }
     }
     
     override func populateComponents() {

@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "In_Call_Swap_Up.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "In_Call_Swap_Up@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "In_Call_Swap_Up@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -76,7 +76,7 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         cardView.layer.rasterizationScale =  UIScreen.main.scale
         cardView.layer.cornerRadius = 4.0
         cardView.layer.borderWidth = 1.0
-        cardView.layer.borderColor = UIColor.lightGray.cgColor
+        cardView.layer.borderColor = UIColor.init(hexString: templateBoarderColor).cgColor
         cardView.clipsToBounds = true
         cardView.layer.shouldRasterize = true
         cardView.backgroundColor =  UIColor.white
@@ -88,7 +88,7 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         self.tileBgv.layer.shouldRasterize = true
         self.tileBgv.layer.cornerRadius = 2.0
         self.tileBgv.clipsToBounds = true
-        self.tileBgv.backgroundColor =  .white
+        self.tileBgv.backgroundColor =  BubbleViewLeftTint
         if #available(iOS 11.0, *) {
             self.tileBgv.roundCorners([.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.clear, borderWidth: 1.5)
         } else {
@@ -107,12 +107,12 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[senderImageView(30)]", options: [], metrics: nil, views: cardViews))
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(30)]-10-[tileBgv]", options: [], metrics: nil, views: cardViews))
-        //self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[senderImageView(00)]-15-[tileBgv]", options: [], metrics: nil, views: cardViews))
+        //self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(30)]-10-[tileBgv]", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[senderImageView(00)]-15-[tileBgv]", options: [], metrics: nil, views: cardViews))
         
         
         self.titleLbl = KREAttributedLabel(frame: CGRect.zero)
-        self.titleLbl.textColor = Common.UIColorRGB(0x484848)
+        self.titleLbl.textColor = BubbleViewBotChatTextColor
         self.titleLbl.font = UIFont(name: mediumCustomFont, size: 16.0)
         self.titleLbl.numberOfLines = 0
         self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -132,6 +132,24 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[titleLbl(>=textLabelMinWidth,<=textLabelMaxWidth)]-16-|", options: [], metrics: metrics, views: subView))
         
+        setCornerRadiousToTitleView()
+    }
+    
+    func setCornerRadiousToTitleView(){
+        let bubbleStyle = brandingBodyDic.bubble_style
+        let radius = 10.0
+        let borderWidth = 0.0
+        let borderColor = UIColor.clear
+        if #available(iOS 11.0, *) {
+            if bubbleStyle == "balloon"{
+                self.tileBgv.roundCorners([.layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+            }else if bubbleStyle == "rounded"{
+                self.tileBgv.roundCorners([.layerMaxXMinYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+                
+        }else if bubbleStyle == "rectangle"{
+                self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+            }
+        }
     }
     
     // MARK: initialize chart views
@@ -640,7 +658,7 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
             self.titleLbl?.text = ""
         }
         
-        let placeHolderIcon = UIImage(named: "kora", in: Bundle.sdkModule, compatibleWith: nil)
+        let placeHolderIcon = UIImage(named:"kora")
         self.senderImageView.image = placeHolderIcon
         if (botHistoryIcon != nil) {
             if let fileUrl = URL(string: botHistoryIcon!) {

@@ -102,6 +102,24 @@ class NewListBubbleView: BubbleView {
         let subView: [String: UIView] = ["titleLbl": titleLbl]
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
+        setCornerRadiousToTitleView()
+    }
+    
+    func setCornerRadiousToTitleView(){
+        let bubbleStyle = brandingBodyDic.bubble_style
+        let radius = 10.0
+        let borderWidth = 0.0
+        let borderColor = UIColor.clear
+        if #available(iOS 11.0, *) {
+            if bubbleStyle == "balloon"{
+                self.tileBgv.roundCorners([.layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+            }else if bubbleStyle == "rounded"{
+                self.tileBgv.roundCorners([.layerMaxXMinYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+                
+        }else if bubbleStyle == "rectangle"{
+                self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+            }
+        }
     }
     
     func intializeCardLayout(){

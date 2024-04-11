@@ -31,6 +31,9 @@ open class KREGrowingTextView: UIScrollView {
     open var textView: UITextView {
         return _textView
     }
+    open var placeholderLabel: UILabel {
+        return _placeholderLabel
+    }
     
     open var font: UIFont {
         get {

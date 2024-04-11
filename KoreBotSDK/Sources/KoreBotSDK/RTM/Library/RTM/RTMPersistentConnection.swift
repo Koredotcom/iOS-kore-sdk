@@ -114,6 +114,8 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
                 }
             case "user_message":
                 connectionDelegate?.didReceivedUserMessage(responseObject)
+            case "events":
+                connectionDelegate?.didReceivedUserMessage(responseObject)
             default:
                 break
             }
@@ -260,6 +262,8 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
                     connectionDelegate?.didReceiveMessage(botMessageModel)
                 }
             case "user_message":
+                connectionDelegate?.didReceivedUserMessage(responseObject)
+            case "events":
                 connectionDelegate?.didReceivedUserMessage(responseObject)
             default:
                 break

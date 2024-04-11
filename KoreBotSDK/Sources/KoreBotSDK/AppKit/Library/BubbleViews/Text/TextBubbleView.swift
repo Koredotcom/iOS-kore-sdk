@@ -69,9 +69,11 @@ class TextBubbleView : BubbleView {
                 let string: String = component.componentDesc! as String
                 let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
                 if let parsedString = KREUtilities.formatHTMLEscapedString(htmlStrippedString) {
-                    self.textLabel.setHTMLString(parsedString, withWidth: kMaxTextWidth)
+                    let replaceStr = parsedString.replacingOccurrences(of: ":)", with: "😊")
+                    self.textLabel.setHTMLString(replaceStr, withWidth: kMaxTextWidth)
                 }else{
-                    self.textLabel.text = string
+                    let replaceStr = string.replacingOccurrences(of: ":)", with: "😊")
+                    self.textLabel.text = replaceStr
                 }
             }
         }

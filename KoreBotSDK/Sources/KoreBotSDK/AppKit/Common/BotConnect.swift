@@ -26,6 +26,7 @@ open class BotConnect: NSObject {
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {
             return
         }
+        
         loadCustomFonts()
         if !isIntialiseFileUpload{
             isIntialiseFileUpload = true

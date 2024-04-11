@@ -9,6 +9,7 @@
 import UIKit
 
 class MultiSelectNewBubbleView: BubbleView {
+    let bundle = Bundle.sdkModule
     var titleLbl: UILabel!
     var tableView: UITableView!
     var cardView: UIView!
@@ -78,7 +79,11 @@ class MultiSelectNewBubbleView: BubbleView {
         self.cardView = UIView(frame:.zero)
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
-        cardView.backgroundColor =  UIColor.clear
+        cardView.backgroundColor =  UIColor.white
+        cardView.layer.cornerRadius = 4.0
+        cardView.layer.borderWidth = 0.0
+        cardView.layer.borderColor = UIColor.init(hexString: templateBoarderColor).cgColor
+        cardView.clipsToBounds = true
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
@@ -152,9 +157,9 @@ extension MultiSelectNewBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.titleLabel.text = elements.title
         
         if checkboxIndexPath.contains(indexPath) {
-            cell.checkImage.image = UIImage(named:"check")
+            cell.checkImage.image =  UIImage(named: "check", in: bundle, compatibleWith: nil)
         }else{
-             cell.checkImage.image = UIImage(named:"uncheck")
+             cell.checkImage.image =  UIImage(named: "uncheck", in: bundle, compatibleWith: nil)
         }
         return cell
         

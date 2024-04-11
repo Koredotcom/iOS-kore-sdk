@@ -9,14 +9,14 @@
 import UIKit
 protocol LeftMenuViewDelegate {
     func leftMenuSelectedText(text:String, payload:String)
+    func leftMenulinkAction(urlString: String)
 }
 class LeftMenuView: UIView {
-    let bundle = Bundle(for: LeftMenuView.self)
+    let bundle = Bundle.sdkModule
     var viewDelegate: LeftMenuViewDelegate?
     var tableView: UITableView!
     var headersArray = [String]()
-    var arrayOftasks = [Task]()
-    
+    var arrayOftasks = [Actions]()
     convenience init() {
         self.init(frame: CGRect.zero)
     }
@@ -39,7 +39,7 @@ class LeftMenuView: UIView {
     }
     
     fileprivate func setupViews() {
-        self.backgroundColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetBodyColor) ?? "#f3f3f5")
+        //self.backgroundColor = UIColor.init(hexString: "#f8f9fc")
         self.tableView = UITableView(frame: CGRect.zero,style:.plain)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.backgroundColor = .clear
@@ -53,7 +53,7 @@ class LeftMenuView: UIView {
         self.tableView.separatorStyle = .none
         self.addSubview(self.tableView)
         self.tableView.tableFooterView = UIView()
-        let bundle = Bundle.sdkModule
+        
         self.tableView.register(UINib(nibName: "LeftMenuCell", bundle: bundle), forCellReuseIdentifier: "LeftMenuCell")
         
         let views: [String: UIView] = ["tableView": tableView]
@@ -65,12 +65,24 @@ class LeftMenuView: UIView {
     }
     
     func getData(){
-        let jsonDic = brandingShared.hamburgerOptions
-        if let jsonResult = jsonDic as Dictionary<String, AnyObject>? {
-            let jsonData = try? DictionaryDecoder().decode(TaskMenu.self, from: jsonResult as [String : Any])
-            self.arrayOftasks = jsonData!.tasks
-            leftMenuTableviewReload()
+        if let footerViewLeftMenu = brandingValues.footer?.buttons?.menu{
+            
+            self.arrayOftasks = footerViewLeftMenu.actions ?? []
+        }else{
+            if let path = Bundle.main.path(forResource: "TaskMenu", ofType: "json") {
+                do {
+                    let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                    let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+                    if let jsonResult = jsonResult as? Dictionary<String, AnyObject> {
+                        let jsonData = try DictionaryDecoder().decode(TaskMenu.self, from: jsonResult as [String : Any])
+                        leftMenuTableviewReload()
+                    }
+                } catch {
+                    // handle error
+                }
+            }
         }
+        
     }
     
     func leftMenuTableviewReload(){
@@ -98,19 +110,26 @@ extension LeftMenuView: UITableViewDelegate,UITableViewDataSource{
         let cell : LeftMenuCell = self.tableView.dequeueReusableCell(withIdentifier: "LeftMenuCell") as! LeftMenuCell
         cell.backgroundColor = UIColor.clear
         cell.selectionStyle = .none
-//        let imgV = UIImage.init(named: "", in: bundle, compatibleWith: nil)
-//        cell.imgView.image = imgV?.withRenderingMode(.alwaysTemplate)
-//        cell.imgView.tintColor = BubbleViewLeftTint
+        let imgV = UIImage.init(named: "leftMBG", in: bundle, compatibleWith: nil)
+        cell.imgView.image = imgV?.withRenderingMode(.alwaysTemplate)
+        cell.imgView.tintColor = BubbleViewRightTint
         
         cell.iconImageV.contentMode = .scaleAspectFit
         cell.iconImageV.tintColor = themeColor
         
         let tasks =  self.arrayOftasks[indexPath.row]
         cell.titleLabel.text = tasks.title
-        cell.titleLabel.textColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetTextColor) ?? "#000000")
-        let image = Utilities.base64ToImage(base64String: tasks.icon)
-        cell.iconImageV.image = image.withRenderingMode(.alwaysTemplate)
         
+        if let iconImg = tasks.icon{
+            if iconImg.contains("base64"){
+                let image = Utilities.base64ToImage(base64String: tasks.icon)
+                cell.iconImageV.image = image.withRenderingMode(.alwaysTemplate)
+            }else{
+                if let url = URL(string: iconImg){
+                    cell.iconImageV.af.setImage(withURL: url, placeholderImage: UIImage.init(named: "placeholder_image", in: bundle, compatibleWith: nil))
+                }
+            }
+        }
         cell.bgView.backgroundColor = .white
         cell.titleLabel.textColor = .black
         cell.bgView.semanticContentAttribute = .forceLeftToRight
@@ -119,7 +138,16 @@ extension LeftMenuView: UITableViewDelegate,UITableViewDataSource{
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let elements = arrayOftasks[indexPath.row]
-        self.viewDelegate?.leftMenuSelectedText(text: (elements.postback.title), payload: (elements.postback.value))
+        if let type = elements.type, type == "postback"{
+            if let titile = elements.title{
+                self.viewDelegate?.leftMenuSelectedText(text: titile, payload: (elements.value ?? titile))
+            }
+        }else if let type = elements.type, type == "url"{
+            if let urlstr = elements.value{
+                self.viewDelegate?.leftMenulinkAction(urlString: urlstr)
+            }
+        }
+        
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
@@ -141,12 +169,10 @@ extension LeftMenuView: UITableViewDelegate,UITableViewDataSource{
         headerLabel.text = headersArray[section]
         subView.addSubview(headerLabel)
         headerLabel.textAlignment = .left
-       
-        
+    
         let views: [String: UIView] = ["headerLabel": headerLabel]
         subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[headerLabel]-16-|", options:[], metrics:nil, views:views))
         subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[headerLabel]-0-|", options:[], metrics:nil, views:views))
-        
         
         let subViews: [String: UIView] = ["subView": subView]
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[subView]-0-|", options:[], metrics:nil, views:subViews))

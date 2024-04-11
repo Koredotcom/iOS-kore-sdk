@@ -44,7 +44,7 @@ class FeedbackBubbleView: BubbleView {
         intializeCardLayout()
         
         self.titleLbl = UILabel(frame: CGRect.zero)
-        self.titleLbl.textColor = Common.UIColorRGB(0x484848)
+        self.titleLbl.textColor = BubbleViewBotChatTextColor
         self.titleLbl.font = UIFont(name: mediumCustomFont, size: 16.0)
         self.titleLbl.numberOfLines = 0
         self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -70,9 +70,10 @@ class FeedbackBubbleView: BubbleView {
         self.collectionView.showsVerticalScrollIndicator = false
         self.collectionView.bounces = false
         self.cardView.addSubview(self.collectionView)
-        self.collectionView.register(UINib(nibName: customCellIdentifier, bundle: bundle),
-        forCellWithReuseIdentifier: customCellIdentifier)
-        
+
+        if let xib = Bundle.xib(named: "FeedbackCell") {
+            self.collectionView.register(xib, forCellWithReuseIdentifier: "FeedbackCell")
+        }
         floatRatingView = FloatRatingView(frame: CGRect.zero)
         floatRatingView.translatesAutoresizingMaskIntoConstraints = false
         floatRatingView.delegate = self
@@ -91,15 +92,32 @@ class FeedbackBubbleView: BubbleView {
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[collectionView]-10-|", options: [], metrics: nil, views: views))
          self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[floatRatingView]-10-|", options: [], metrics: nil, views: views))
-     
-       
+
+        setCornerRadiousToTitleView()
+    }
+    
+    func setCornerRadiousToTitleView(){
+        let bubbleStyle = brandingBodyDic.bubble_style
+        let radius = 4.0
+        let borderWidth = 1.0
+        let borderColor = UIColor.init(hexString: templateBoarderColor)
+        if #available(iOS 11.0, *) {
+            if bubbleStyle == "balloon"{
+                self.cardView.roundCorners([.layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+            }else if bubbleStyle == "rounded"{
+                self.cardView.roundCorners([.layerMaxXMinYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+                
+        }else if bubbleStyle == "rectangle"{
+                self.cardView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+            }
+        }
     }
     
     func intializeCardLayout(){
         self.cardView = UIView(frame:.zero)
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
-        cardView.backgroundColor =  UIColor.white
+        cardView.backgroundColor =  BubbleViewLeftTint
         if #available(iOS 11.0, *) {
             self.cardView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.clear, borderWidth: 1.5)
         }

@@ -164,6 +164,7 @@ open class KABotClient: NSObject {
     public func sendMessage(_ message: String, options: [String: Any]?) {
         botClient.sendMessage(message, options: options)
     }
+    //NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
     // methods
     func configureBotClient() {
         // events
@@ -225,8 +226,24 @@ open class KABotClient: NSObject {
         botClient.onMessageAck = { (ack) in
             
         }
+        botClient.onUserMessageReceived = {  (object) in
+            if let message = object["message"] as? [String:Any]{
+                if let type = message["type"] as? String{
+                    if type == "typing"{
+                        NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
+                    }else if type == "call_agent_webrtc"{
+                        //callFromAgentData = message
+                        let jsonStr = Utilities.stringFromJSONObject(object: message)
+                        NotificationCenter.default.post(name: Notification.Name(callFromAgentNotification), object: jsonStr)
+                    } else{
+                        NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+                    }
+                }
+            }
+        }
     }
     func addMessages(_ message: Message?, _ ttsBody: String?) {
+       // NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil) //showTypingStatusForBot()
         if let m = message, m.components.count > 0 {
             let delayInMilliSeconds = 500
             DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(delayInMilliSeconds)) {
@@ -333,6 +350,12 @@ open class KABotClient: NSObject {
             return .advancedListTemplate
         }else if (templateType == "cardTemplate"){
             return .cardTemplate
+        }else if (templateType == "stacked"){
+            return .stackedCarousel
+        }else if templateType == "advanced_multi_select"{
+            return .advanced_multi_select
+        }else if templateType == "radioOptionTemplate"{
+            return .radioOptionTemplate
         }
         return .text
     }
@@ -414,7 +437,13 @@ open class KABotClient: NSObject {
                     switch type {
                     case "template":
                         if let dictionary = payload["payload"] as? [String: Any] {
-                            let templateType = dictionary["template_type"] as? String ?? ""
+                            var templateType = dictionary["template_type"] as? String ?? ""
+                            
+                            if templateType == "carousel"{
+                                if dictionary["carousel_type"] as? String ?? ""  == "stacked"{
+                                    templateType = "stacked"
+                                }
+                            }
                             var tabledesign = "responsive"
                             if let value = dictionary["table_design"] as? String {
                                 tabledesign = value
@@ -538,14 +567,9 @@ open class KABotClient: NSObject {
         } else {
             identity = SDKConfiguration.botConfig.identity
         }
-        var botInfo: [String: Any] = [:]
-        if SDKConfiguration.botConfig.customData.isEmpty{
-            botInfo = ["chatBot": chatBotName, "taskBotId": botId]
-        }else{
-            let customData: [String: Any] = SDKConfiguration.botConfig.customData
-            botInfo = ["chatBot": chatBotName, "taskBotId": botId,"customData": customData]
-        }
-         
+        
+        let botInfo: [String: Any] = ["chatBot": chatBotName, "taskBotId": botId]
+        
         self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: isAnonymous, success: { [weak self] (jwToken) in
             
             let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
@@ -889,6 +913,7 @@ open class KABotClient: NSObject {
     
     // MARK:
     func webhookHistoryApi(_ limit: Int!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+        
         let urlString: String = "\(SDKConfiguration.serverConfig.BOT_SERVER)/api/chathistory/\(SDKConfiguration.botConfig.botId)/ivr?botId=\(SDKConfiguration.botConfig.botId)&limit=\(limit!)"
        
         let authorizationStr = "bearer \(jwtToken ?? "")"
@@ -945,17 +970,13 @@ open class KABotClient: NSObject {
     }
     
     // MARK: get Branding Values request
-    func brandingApiRequest(_ accessToken: String!, success:((_ brandingArray: NSArray) -> Void)?, failure:((_ error: Error) -> Void)?) {
-        let urlString: String =  "\(SDKConfiguration.serverConfig.Branding_SERVER)/workbench/api/workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop"
-        let authorizationStr = "bearer \(accessToken ?? "")"
+    func brandingApiRequest(_ accessToken: String!, success:((_ brandingDic: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+        let urlString: String =  "\(SDKConfiguration.serverConfig.Branding_SERVER)/api/websdkthemes/\(SDKConfiguration.botConfig.botId)/activetheme"
+        let authorizationStr = "bearer \(accessToken!)"
         let headers : HTTPHeaders = [
-            "Connection":"Keep-Alive",
-            "Accept-Language": "en_US",
-            "Authorization": authorizationStr,
-            "tenantId": SDKConfiguration.botConfig.tenantId,
-            "Accepts-version": "1",
-            "botid": SDKConfiguration.botConfig.botId,
-            "state": "published"
+            "Keep-Alive": "Connection",
+            "Content-Type": "application/json",
+            "Authorization": authorizationStr
         ]
         
         let dataRequest = sessionManager.request(urlString, method: .get, parameters: [:], headers: headers)
@@ -966,7 +987,7 @@ open class KABotClient: NSObject {
                 return
             }
             
-            if let responseObject = response.value as? NSArray {
+            if let responseObject = response.value as? [String:Any] {
                 success?(responseObject)
             } else {
                 failure?(NSError(domain: "", code: 0, userInfo: [:]))

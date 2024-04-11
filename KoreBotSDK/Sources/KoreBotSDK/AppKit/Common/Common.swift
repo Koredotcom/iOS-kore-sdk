@@ -22,7 +22,7 @@ var showCustomTableTemplateNotification = "ShowCustomTableTemplateNotificationNa
 var pdfcTemplateViewNotification = "pdfShowViewNotification"
 var pdfcTemplateViewErrorNotification = "pdfShowErrorNotification"
 var reloadVideoCellNotification = "ReloadVideoCellNotification"
-
+var callFromAgentNotification = "callFromAgentNotification"
 
 var isSpeakingEnabled = false
 
@@ -36,16 +36,33 @@ var attachmentKeybord = false
 var jwtToken:String?
 var botHistoryIcon:String?
 var lastMessageID:String?
+var isIntialiseFileUpload = false
 var history = true
 var isShowWelcomeMsg = true
 
 var isShowComposeMenuBtn = false
-var isIntialiseFileUpload = false
+var isShowComposeAttachmentBtn = true
+
 var regularCustomFont = "HelveticaNeue"
 var mediumCustomFont = "HelveticaNeue-Medium"
 var boldCustomFont = "HelveticaNeue-Bold"
 var semiBoldCustomFont = "HelveticaNeue-Semibold"
 var italicCustomFont =  "HelveticaNeue-Italic"
+
+//SDKV3
+var brandingValues = BrandingModel()
+var brandingBodyDic = Body()
+var btnBgColor = "#4B4EDE"
+var btnTextColor = "#FFFFFF"
+var btnBoarderColor = "#4B4EDE"
+var templateBoarderColor = "#E4E5E7"
+
+var genaralPrimaryColor = "#D38A17"
+var genaralSecondaryColor = "#101828"
+var genaralPrimary_textColor = "#C1EDB9"
+var genaralSecondary_textColor = "#000000"
+var useColorPaletteOnly = false
+var headerTxt = SDKConfiguration.botConfig.chatBotName
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
@@ -109,16 +126,17 @@ open class Utilities: NSObject {
     }
     
     public static func base64ToImage(base64String: String?) -> UIImage{
-           if (base64String?.isEmpty)! {
-               return #imageLiteral(resourceName: "no_image_found")
-           }else {
-               // Separation part is optional, depends on your Base64String !
-               let tempImage = base64String?.components(separatedBy: ",")
-               let dataDecoded : Data = Data(base64Encoded: tempImage![1], options: .ignoreUnknownCharacters)!
-               let decodedimage = UIImage(data: dataDecoded)
-               return decodedimage!
-           }
-       }
+        if (base64String?.isEmpty)! {
+            return #imageLiteral(resourceName: "no_image_found")
+        }else {
+            // Separation part is optional, depends on your Base64String !
+            let tempImage = base64String?.components(separatedBy: ",")
+            let dataDecoded : Data = Data(base64Encoded: tempImage![1], options: .ignoreUnknownCharacters)!
+            let decodedimage = UIImage(data: dataDecoded)
+            let pngImage = UIImage(named: "faceIcon", in: Bundle.sdkModule, compatibleWith: nil)
+            return decodedimage ?? UIImage(data: (pngImage?.pngData())!)!
+        }
+    }
     
     public static func isValidJson(check jsonString:String) -> Bool{
         if let jsonDataToVerify = jsonString.data(using: .utf8)

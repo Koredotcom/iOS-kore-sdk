@@ -26,6 +26,7 @@ public class Componentss: NSObject, Decodable {
       public var image_url: String?
       public var subtitle: String?
       public var smileyArrays: [SmileyArraysAction]?
+      public var numbersArrays: [SmileyArraysAction]?
       public var messageTodisplay: String?
       public var starArrays: [SmileyArraysAction]?
       public var feedbackView: String?
@@ -33,6 +34,8 @@ public class Componentss: NSObject, Decodable {
       public var videoUrl: String?
       public var audioUrl: String?
     
+      public var limit: Int?
+      public var radioOptions: [RadioOptions]?
     
     enum ColorCodeKeys: String, CodingKey {
             case template_type = "template_type"
@@ -52,12 +55,15 @@ public class Componentss: NSObject, Decodable {
             case image_url = "image_url"
             case subtitle = "subtitle"
             case smileyArrays = "smileyArrays"
+            case numbersArrays = "numbersArrays"
             case messageTodisplay = "messageTodisplay"
             case starArrays = "starArrays"
             case feedbackView = "view"
             case url = "url"
             case videoUrl = "videoUrl"
             case audioUrl = "audioUrl"
+            case limit = "limit"
+            case radioOptions = "radioOptions"
        }
        
        // MARK: - init
@@ -84,12 +90,15 @@ public class Componentss: NSObject, Decodable {
            image_url = try? container.decode(String.self, forKey: .image_url)
            subtitle = try? container.decode(String.self, forKey: .subtitle)
            smileyArrays = try? container.decode([SmileyArraysAction].self, forKey: .smileyArrays)
+           numbersArrays = try? container.decode([SmileyArraysAction].self, forKey: .numbersArrays)
            messageTodisplay = try? container.decode(String.self, forKey: .messageTodisplay)
            starArrays = try? container.decode([SmileyArraysAction].self, forKey: .starArrays)
            feedbackView = try? container.decode(String.self, forKey: .feedbackView)
            url = try? container.decode(String.self, forKey: .url)
            videoUrl = try? container.decode(String.self, forKey: .videoUrl)
            audioUrl = try? container.decode(String.self, forKey: .audioUrl)
+           limit = try? container.decode(Int.self, forKey: .limit)
+           radioOptions = try? container.decode([RadioOptions].self, forKey: .radioOptions)
        }
 }
 // MARK: - Elements
@@ -101,6 +110,12 @@ public class ComponentElements: NSObject, Decodable {
     public var imageURL: String?
     public var action: ComponentItemAction?
     
+    public var topSection: AllSections?
+    public var middleSection: AllSections?
+    public var bottomSection: AllSections?
+    public var buttons: [ComponentItemAction]?
+    public var collectionTitle: String?
+    public var collection: [AdvancedMultiSelectCollection]?
     enum ColorCodeKeys: String, CodingKey {
         case color = "color"
         case subtitle = "subtitle"
@@ -108,6 +123,13 @@ public class ComponentElements: NSObject, Decodable {
         case value = "value"
         case imageURL = "imageURL"
         case action = "default_action"
+        
+        case topSection = "topSection"
+        case middleSection = "middleSection"
+        case bottomSection = "bottomSection"
+        case buttons = "buttons"
+        case collectionTitle = "collectionTitle"
+        case collection = "collection"
     }
     
     // MARK: - init
@@ -120,12 +142,46 @@ public class ComponentElements: NSObject, Decodable {
         color = try? container.decode(String.self, forKey: .color)
         subtitle = try? container.decode(String.self, forKey: .subtitle)
         title = try? container.decode(String.self, forKey: .title)
-        value = try? container.decode(String.self, forKey: .value)
+        if let valueInteger = try? container.decodeIfPresent(Int.self, forKey: .value) {
+            value = "\(valueInteger)"
+            if value == "-00"{
+                value = ""
+            }
+        } else if let valueString = try? container.decodeIfPresent(String.self, forKey: .value) {
+            value = valueString
+        }
         imageURL = try? container.decode(String.self, forKey: .imageURL)
         action = try? container.decode(ComponentItemAction.self, forKey: .action)
+        topSection = try? container.decode(AllSections.self, forKey: .topSection)
+        middleSection = try? container.decode(AllSections.self, forKey: .middleSection)
+        bottomSection = try? container.decode(AllSections.self, forKey: .bottomSection)
+        buttons = try? container.decode([ComponentItemAction].self, forKey: .buttons)
+        collectionTitle = try? container.decode(String.self, forKey: .collectionTitle)
+        collection = try? container.decode([AdvancedMultiSelectCollection].self, forKey: .collection)
     }
 }
 
+// MARK: - Smileys Array
+public class AllSections: NSObject, Decodable {
+    public var title: String?
+    public var descrip: String?
+    
+    enum ColorCodeKeys: String, CodingKey {
+        case title = "title"
+        case descrip = "description"
+    }
+    
+    // MARK: - init
+    public override init() {
+        super.init()
+    }
+    
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: ColorCodeKeys.self)
+        title = try? container.decode(String.self, forKey: .title)
+        descrip = try? container.decode(String.self, forKey: .descrip)
+    }
+}
 
 // MARK: - ItemAction
 public class ComponentItemAction: NSObject, Decodable {
@@ -246,11 +302,15 @@ public class SmileyArraysAction: NSObject, Decodable {
     public var value: Int?
     public var smileyId: Int?
     public var starId: Int?
+    public var colorFeedback: String?
+    public var numberId: Int?
     
     enum ColorCodeKeys: String, CodingKey {
         case value = "value"
         case smileyId = "smileyId"
         case starId = "starId"
+        case colorFeedback = "color"
+        case numberId = "numberId"
     }
     
     // MARK: - init
@@ -263,5 +323,53 @@ public class SmileyArraysAction: NSObject, Decodable {
         value = try? container.decode(Int.self, forKey: .value)
         smileyId = try? container.decode(Int.self, forKey: .smileyId)
         starId = try? container.decode(Int.self, forKey: .starId)
+        colorFeedback = try? container.decode(String.self, forKey: .colorFeedback)
+        numberId = try? container.decode(Int.self, forKey: .numberId)
     }
 }
+
+public class RadioOptions: NSObject, Decodable {
+    public var title: String?
+    public var value: String?
+    public var postback: RadioPostBack?
+    
+    enum ColorCodeKeys: String, CodingKey {
+        case title = "title"
+        case value = "value"
+        case postback = "postback"
+    }
+    
+    // MARK: - init
+    public override init() {
+        super.init()
+    }
+    
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: ColorCodeKeys.self)
+        title = try? container.decode(String.self, forKey: .title)
+        value = try? container.decode(String.self, forKey: .value)
+        postback = try? container.decode(RadioPostBack.self, forKey: .postback)
+    }
+}
+public class RadioPostBack: NSObject, Decodable {
+    public var title: String?
+    public var value: String?
+
+    
+    enum ColorCodeKeys: String, CodingKey {
+        case title = "title"
+        case value = "value"
+    }
+    
+    // MARK: - init
+    public override init() {
+        super.init()
+    }
+    
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: ColorCodeKeys.self)
+        title = try? container.decode(String.self, forKey: .title)
+        value = try? container.decode(String.self, forKey: .value)
+    }
+}
+

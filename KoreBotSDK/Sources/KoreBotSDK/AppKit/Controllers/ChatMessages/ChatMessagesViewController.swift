@@ -13,16 +13,16 @@ import CoreData
 import FMPhotoPicker
 import Photos
 import MobileCoreServices
-
 import Alamofire
 import AlamofireImage
 import ObjectMapper
 
 #if SWIFT_PACKAGE
+//import KoreBotSDKAgent
 import ObjcSupport
 #endif
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate {
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate, WelcomeScreenViewDelegate {
     // MARK: properties
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
@@ -110,44 +110,49 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     @IBOutlet weak var dropDownBtn: UIButton!
     
-    
     let bundleImage = Bundle.sdkModule
     var phassetToUpload: PHAsset?
     var componentSelectedToupload: Component?
     public weak var account = KoraApplication.sharedInstance.account
+    var isShowWelcomeScreen = false
+    @IBOutlet weak var statusBarView: UIView!
+    var welcomeScreenView: WelcomeScreenView!
+    @IBOutlet weak var chatWelcomeScreenContainerView: UIView!
+    @IBOutlet weak var headerTitleLbl: UILabel!
+    var headerDic = HeaderModel()
+    @IBOutlet weak var headerViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var incomingCallContainerView: UIView!
+    var inComingCallView: InComingCallView!
+    var callFromAgentData: [String: Any]? = [:]
     
+#if SWIFT_PACKAGE
+    //let agentConnect = AgentConnect()
+#endif
     // MARK: init
     init() {
         super.init(nibName: "ChatMessagesViewController", bundle: .sdkModule)
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        linerProgressBar.frame = CGRect(x: 0, y: 0 , width: UIScreen.main.bounds.size.width, height:1)
-        headerView.addSubview(linerProgressBar)
         if #available(iOS 13.0, *) {
             overrideUserInterfaceStyle = .light
         }
+        self.incomingCallContainerView.isHidden = true
+        linerProgressBar.frame = CGRect(x: 0, y: 0 , width: UIScreen.main.bounds.size.width, height:1)
+        headerView.addSubview(linerProgressBar)
         //Initialize elements
-        self.configureComposeBar()
-        self.configureAudioComposer()
         self.configureQuickReplyView()
         self.configureTypingStatusView()
         self.configureSTTClient()
-        self.configureViewForKeyboard(true)
         self.configAttachmentCollectionView()
         self.botConnectingMethod()
         panelCollectionViewContainerHeightConstraint.constant = 0
         isSpeakingEnabled = false
         self.speechSynthesizer = AVSpeechSynthesizer()
-        headerView.backgroundColor = UIColor.init(hexString: "#FFFFFF")
-        composeView.backgroundColor = UIColor.init(hexString: "#eaeaea")
-        self.view.backgroundColor = UIColor.init(hexString: "#f3f3f5")
         self.view.bringSubviewToFront(chatMaskview)
     }
     
@@ -201,14 +206,22 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         KABotClient.shared.deConfigureBotClient()
         self.deConfigureSTTClient()
         self.stopTTS()
-        self.composeView.growingTextView.viewDelegate = nil
-        self.composeView.delegate = nil
-        self.audioComposeView.prepareForDeinit()
+        if composeView != nil{
+            self.composeView.growingTextView.viewDelegate = nil
+            self.composeView.delegate = nil
+        }
+        if audioComposeView != nil{
+            self.audioComposeView.prepareForDeinit()
+        }
+        
         if botMessagesView != nil{
             self.botMessagesView.prepareForDeinit()
             self.botMessagesView.viewDelegate = nil
         }
-        self.quickReplyView.sendQuickReplyAction = nil
+        if quickReplyView != nil{
+            self.quickReplyView.sendQuickReplyAction = nil
+        }
+        
     }
     
     // MARK: cancel
@@ -219,16 +232,16 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     func botClosed(){
         isShowWelcomeMsg = true // Set fasle here.. when you go back and come chat sceen new welcome message not displied.
         prepareForDeinit()
-        //NotificationCenter.default.post(name: Notification.Name(reloadVideoCellNotification), object: nil)
-        //navigationController?.popViewController(animated: true)
         navigationController?.dismiss(animated: false)
     }
-    
     @IBAction func tapsOnBackBtnAct(_ sender: Any) {
-        botClosed()
+        if self.isShowWelcomeScreen{
+            view.endEditing(true)
+            chatWelcomeScreenContainerView.isHidden = false
+        }else{
+            botClosed()
+        }
     }
-    
-    
     //MARK: Menu Button Action
     @IBAction func menuButtonAction(_ sender: Any) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -297,7 +310,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         self.audioComposeView.voiceRecordingStarted = { [weak self] (composeBar) in
             self?.stopTTS()
-            //self?.composeView.isHidden = true
+            self?.composeView.changeBgColorForAudioComposeBar()
         }
         self.audioComposeView.voiceRecordingStopped = { [weak self] (composeBar) in
             self?.sttClient.stopRecording()
@@ -306,10 +319,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             return 0.0
         }
         self.audioComposeView.onKeyboardButtonAction = { [weak self] () in
-            self?.closeWidgetPanelView()
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ClosePanel"), object: nil)
+            self?.composeView.changeBgColorForComposeBar()
             self?.isShowAudioComposeView = false
             _ = self?.composeView.becomeFirstResponder()
             self?.configureViewForKeyboard(true)
+        }
+        self.audioComposeView.audioComposeBarTaskMenuButtonAction = { [weak self] () in
+            self?.audioComposeBarTaskMenuButtonAction()
+        }
+        self.audioComposeView.audioComposeBarAttachmentButtonAction = { [weak self] () in
+            self?.openAcionSheet()
         }
     }
     
@@ -317,12 +337,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.quickReplyView = KREQuickSelectView()
         self.quickReplyView.translatesAutoresizingMaskIntoConstraints = false
         self.quickSelectContainerView.addSubview(self.quickReplyView)
-        let bgColor = (brandingShared.brandingInfoModel?.buttonActiveBgColor) ?? "#f3f3f5"
-        let textColor = (brandingShared.brandingInfoModel?.buttonActiveTextColor) ?? "#2881DF"
-        self.quickReplyView.bgColor = bgColor
-        self.quickReplyView.textColor = textColor
-        self.quickReplyView.boarderColor = textColor
-        self.quickReplyView.fontName = mediumCustomFont
+        self.quickReplyView.bgColor = btnBgColor
+        self.quickReplyView.textColor = btnTextColor
+        self.quickReplyView.boarderColor = btnBoarderColor
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[quickReplyView]|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
         
@@ -482,6 +499,12 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             return .advancedListTemplate
         }else if (templateType == "cardTemplate"){
             return .cardTemplate
+        }else if (templateType == "stacked"){
+            return .stackedCarousel
+        }else if templateType == "advanced_multi_select"{
+            return .advanced_multi_select
+        }else if templateType == "radioOptionTemplate"{
+            return .radioOptionTemplate
         }
         return .text
     }
@@ -499,6 +522,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         if (object?.iconUrl != nil) {
             message.iconUrl = object?.iconUrl
+        }else{
+            message.iconUrl = botHistoryIcon
         }
         
         if (webViewController != nil) {
@@ -794,6 +819,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         NotificationCenter.default.addObserver(self, selector: #selector(showPDFViewController), name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showPDFErrorMeesage), name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(callFromAgent), name: NSNotification.Name(rawValue: callFromAgentNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -801,30 +827,22 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
-        
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: startSpeakingNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: stopSpeakingNotification), object: nil)
-        
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showTableTemplateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: reloadTableNotification), object: nil)
-        
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showListViewTemplateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showListWidgetViewTemplateNotification), object: nil)
-        
         NotificationCenter.default.removeObserver(self, name: KREMessageAction.navigateToComposeBar.notification, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showAttachmentSendButtonNotification), object: nil)
-        
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StartTyping"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "StopTyping"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: dropDownTemplateNotification), object: nil)
-        
-        
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showCustomTableTemplateNotification), object: nil)
-        
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: reloadVideoCellNotification), object: nil)
-        
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: callFromAgentNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -839,7 +857,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if #available(iOS 11.0, *) {
             keyboardHeight -= self.view.safeAreaInsets.bottom
         } else {
-            // Fallback on earlier versions
+            
         };
         self.bottomConstraint.constant = keyboardHeight
         taskMenuHeight = Int(keyboardHeight)
@@ -882,7 +900,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             print("Network reachability: \(status)")
             switch status {
             case .reachable(.ethernetOrWiFi), .reachable(.cellular):
-                // self.establishBotConnection() //kk
+               // self.establishBotConnection() //kk
                 break
             case .notReachable:
                 fallthrough
@@ -948,8 +966,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     // MARK: Helper functions
     func sendMessage(_ message: Message, dictionary: [String: Any]? = nil, options: [String: Any]?) {
-        
-        NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil) // self.showTypingStatusForBot()
+        NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
         NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
         let composedMessage: Message = message
         if (composedMessage.components.count > 0) {
@@ -980,8 +997,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 self?.callPollApi(pollID: dictionary["pollId"] as! NSString)
             }
             
-        }, failure: { (error) in
-            print(error)
+            }, failure: { (error) in
+                print(error)
         })
     }
     func callPollApi(pollID: NSString){
@@ -993,17 +1010,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             }else{
                 self?.receviceMessage(dictionary: dictionary)
             }
-        }, failure: { (error) in
-            print(error)
+            }, failure: { (error) in
+                print(error)
         })
     }
     
     func verifyIsObjectOfAnArray<T>(_ object: T) -> Bool {
-        if let _ = object as? [T] {
-            return true
-        }
-        
-        return false
+       if let _ = object as? [T] {
+          return true
+       }
+
+       return false
     }
     
     func dateFormatter() -> DateFormatter {
@@ -1014,8 +1031,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func receviceMessage(dictionary:[String: Any]){
-        
-        
         let data: Array = dictionary["data"] != nil ? dictionary["data"] as! Array : []
         for i in 0..<data.count{
             
@@ -1024,8 +1039,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             let textComponent: Component = Component()
             var templateType = ""
             var ttsBody: String?
-            
-            
+
             let valData: Dictionary<String, Any> = data[i] as! Dictionary<String, Any>
             var textMessage: Message! = nil
             message.sentDate = self.dateFormatter().date(from: valData["createdOn"] as? String ?? "")
@@ -1041,25 +1055,25 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             
             let jsonString = valData["val"] as? String
             if ((jsonString?.contains("payload")) != nil), let jsonObject: [String: Any] = Utilities.jsonObjectFromString(jsonString: jsonString ?? "") as? [String : Any] {
-                
-                
                 let type = jsonObject["type"] as? String ?? ""
                 let text = jsonObject["text"] as? String
                 ttsBody = jsonObject["speech_hint"] as? String
                 switch type {
                 case "template":
                     if let dictionary = jsonObject["payload"] as? [String: Any] {
-                        let templateType = dictionary["template_type"] as? String ?? ""
+                        var templateType = dictionary["template_type"] as? String ?? ""
+                        if templateType == "carousel"{
+                            if dictionary["carousel_type"] as? String ?? ""  == "stacked"{
+                                templateType = "stacked"
+                            }
+                        }
                         var tabledesign = "responsive"
                         if let value = dictionary["table_design"] as? String {
                             tabledesign = value
                         }
-                        
                         let componentType = getComponentType(templateType, tabledesign)
                         if componentType != .quickReply {
-                            
                         }
-                        
                         ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
                         if let tText = dictionary["text"] as? String, tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable) {
                             textMessage = Message()
@@ -1138,7 +1152,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         if let value = dictionary["table_design"] as? String {
                             tabledesign = value
                         }
-                        
+
                         let componentType = getComponentType(templateType, tabledesign)
                         if componentType != .quickReply {
                             
@@ -1222,17 +1236,16 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 message.addComponent(textComponent)
                 lastMessageID = valData["messageId"] as? String
             }
-            addMessages(message, ttsBody)
-            NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
-        }
+        addMessages(message, ttsBody)
+        NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
     }
-    
+}
+
     func sendTextMessage(_ text: String, dictionary: [String: Any]? = nil, options: [String: Any]?) {
         if attachmentArray.count>0 {
             closeAndOpenAttachment(imageAttached: nil, height: 0.0)
             self.uploadAttachment(text: text)
         }else{
-            //closeAndOpenAttachment(imageAttached: nil, height: 0.0)
             let message: Message = Message()
             message.messageType = .default
             message.sentDate = Date()
@@ -1351,13 +1364,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             self.closeQuickSelectViewConstraints()
         }
     }
-    
     func closeQuickReplyCards(){
         self.closeQuickSelectViewConstraints()
     }
-    
     func updateQuickSelectViewConstraints() {
-        //        self.closeAndOpenAttachment(imageAttached: nil, height: 0.0)
         if self.quickSelectContainerHeightConstraint.constant == 60.0 {return}
         
         self.quickSelectContainerHeightConstraint.constant = 60.0
@@ -1448,17 +1458,16 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let zero = CGAffineTransform(translationX: 0.0, y: 0.0)
         self.leftMenuContainerView.transform = zero
         
-        leftMenuContainerView.semanticContentAttribute = .forceLeftToRight
-        leftMenuContainerSubView.semanticContentAttribute = .forceLeftToRight
-        let transition = CATransition()
-        transition.type = .push
-        transition.subtype = .fromLeft
-        self.leftMenuContainerView.layer.add(CATransition().segueFromLeft(), forKey: nil)
-        self.leftMenuView.leftMenuTableviewReload()
-        leftMenuTitleLbl.text = "Menu"
+            leftMenuContainerView.semanticContentAttribute = .forceLeftToRight
+            leftMenuContainerSubView.semanticContentAttribute = .forceLeftToRight
+            let transition = CATransition()
+            transition.type = .push
+            transition.subtype = .fromLeft
+            self.leftMenuContainerView.layer.add(CATransition().segueFromLeft(), forKey: nil)
+            self.leftMenuView.leftMenuTableviewReload()
+            leftMenuTitleLbl.text = "Menu"
     }
     func composeBarAttachmentButtonAction(_: ComposeBarView) {
-        print("Attachment")
         self.openAcionSheet()
     }
     
@@ -1581,7 +1590,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @objc func dropDownTemplateActtion(notification:Notification){
-        let dataString: String = notification.object as! String
+         let dataString: String = notification.object as! String
         composeView.setText(dataString)
     }
     
@@ -1697,13 +1706,13 @@ extension ChatMessagesViewController {
                     componentModel.payload = payloadObj
                     
                     if Utilities.isValidJson(check: jsonString) == true{
-                        if let jsonDicc: [String: Any] = Utilities.jsonObjectFromString(jsonString: jsonString) as? [String : Any]{
-                            if let textStr = jsonDicc["text"] as? String{
-                                payloadObj["text"] = textStr
-                                componentModel.payload = payloadObj
-                            }
-                        }
-                    }
+                       if let jsonDicc: [String: Any] = Utilities.jsonObjectFromString(jsonString: jsonString) as? [String : Any]{
+                           if let textStr = jsonDicc["text"] as? String{
+                               payloadObj["text"] = textStr
+                               componentModel.payload = payloadObj
+                           }
+                       }
+                   }
                 }
                 
                 messageModel.type = "text"
@@ -1769,7 +1778,7 @@ extension ChatMessagesViewController: KABotClientDelegate {
         if SDKConfiguration.botConfig.isWebhookEnabled{
             urlString = botHistoryIcon?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         }else{
-            urlString = botHistoryIcon?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+             urlString = botHistoryIcon?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         }
         
         info.setValue(urlString ?? "kore", forKey: "imageName");
@@ -1961,11 +1970,11 @@ extension ChatMessagesViewController: FMPhotoPickerViewControllerDelegate {
                 
                 var totalFileSize = 0
                 let size =
-                KAFileUtilities.shared.sizeForItem(at: mediaAsset.filePath)
+                    KAFileUtilities.shared.sizeForItem(at: mediaAsset.filePath)
                 totalFileSize = totalFileSize + Int(size)
                 self?.componentSelectedToupload = component
                 self?.closeAndOpenAttachment(imageAttached: imageAttached, height: 90.0)
-                
+               
             }
         }
     }
@@ -1996,13 +2005,13 @@ extension ChatMessagesViewController: FMPhotoPickerViewControllerDelegate {
                     }else if component.templateType == "video" {
                         textTo = "\(text)\n 🎥 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
                     } else {
-                        if component.fileMeta.fileExtn == "pdf"{
+                         if component.fileMeta.fileExtn == "pdf"{
                             textTo = "\(text)\n 📄 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
-                        }else if component.fileMeta.fileExtn == "mp3"{
+                         }else if component.fileMeta.fileExtn == "mp3"{
                             textTo = "\(text)\n 🎵 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
-                        }else{
+                         }else{
                             textTo = "\(text)\n 📁 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
-                        }
+                         }
                         
                     }
                     self.removeActivityIndicator(spinner: activityIndicator)
@@ -2294,32 +2303,30 @@ extension ChatMessagesViewController{
                 
             }) { (error) in
                 self.stopLoader()
-                self.showAlert(title: "KoreBot SDK", message: "Please try again")
+                self.showAlert(title: "Kore Bot SDK", message: "Please try again")
             }
         } else {
             self.stopLoader()
-            self.showAlert(title: "KoreBot SDK", message: "YOU MUST SET BOT 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
+            self.showAlert(title: "Kore Bot SDK", message: "YOU MUST SET BOT 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
         }
     }
     
     func brandingApis(client: BotClient?, thread: KREThread?){
         let brandingShared = BrandingSingleton.shared
-        self.kaBotClient.brandingApiRequest(AcccesssTokenn,success: { [weak self] (brandingArray) in
-            print("brandingArray : \(brandingArray)")
-            if brandingArray.count > 0{
-                brandingShared.hamburgerOptions = (((brandingArray as AnyObject).object(at: 0) as AnyObject).object(forKey: "hamburgermenu") as Any) as? Dictionary<String, Any>
-            }
-            if brandingArray.count>1{
-                let brandingDic = (((brandingArray as AnyObject).object(at: 1) as AnyObject).object(forKey: "brandingwidgetdesktop") as Any)
+        self.kaBotClient.brandingApiRequest(AcccesssTokenn,success: { [weak self] (jsonResult) in
+            print("brandingDic : \(jsonResult)")
+            if let v3Dic = jsonResult["v3"]{
                 let jsonDecoder = JSONDecoder()
-                guard let jsonData = try? JSONSerialization.data(withJSONObject: brandingDic as Any , options: .prettyPrinted),
-                      let brandingValues = try? jsonDecoder.decode(BrandingModel.self, from: jsonData) else {
+                guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonResult["v3"] as Any , options: .prettyPrinted),
+                let brandingDic = try? jsonDecoder.decode(BrandingModel.self, from: jsonData) else {
                     return
                 }
-                brandingShared.brandingInfoModel = brandingValues
+                brandingValues = brandingDic
                 self?.sucessMethod(client: client, thread: thread)
-                
+            }else{
+                self?.getOfflineBrandingData(client: client, thread: thread)
             }
+            
         }, failure: { (error) in
             self.getOfflineBrandingData(client: client, thread: thread)
         })
@@ -2332,80 +2339,57 @@ extension ChatMessagesViewController{
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
                 let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
-                if let brandingArray = jsonResult as? NSArray {
-                    if brandingArray.count > 0{
-                        brandingShared.hamburgerOptions = (((brandingArray as AnyObject).object(at: 0) as AnyObject).object(forKey: "hamburgermenu") as Any) as? Dictionary<String, Any>
-                    }
-                    if brandingArray.count>1{
-                        let brandingDic = (((brandingArray as AnyObject).object(at: 1) as AnyObject).object(forKey: "brandingwidgetdesktop") as Any)
-                        let jsonDecoder = JSONDecoder()
-                        guard let jsonData = try? JSONSerialization.data(withJSONObject: brandingDic as Any , options: .prettyPrinted),
-                              let brandingValues = try? jsonDecoder.decode(BrandingModel.self, from: jsonData) else {
-                            return
-                        }
-                        
-                        brandingShared.brandingInfoModel = brandingValues
-                        self.sucessMethod(client: client, thread: thread)
-                    }
-                    
+                if let jsonResult = jsonResult as? Dictionary<String, AnyObject> {
+                    let brandingDic = try DictionaryDecoder().decode(BrandingModel.self, from: jsonResult as [String : Any])
+                    brandingValues = brandingDic
+                    self.sucessMethod(client: client, thread: thread)
                 }
             } catch {
+                // handle error
             }
         }else{
             if let url = bundleImage.url(forResource: "branding", withExtension: "json", subdirectory: "BrandindFiles"){
                 if let data = try? Data(contentsOf:url, options: .mappedIfSafe){
                     let jsonResult = try? JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
-                    if let brandingArray = jsonResult as? NSArray {
-                        if brandingArray.count > 0{
-                            brandingShared.hamburgerOptions = (((brandingArray as AnyObject).object(at: 0) as AnyObject).object(forKey: "hamburgermenu") as Any) as? Dictionary<String, Any>
-                        }
-                        if brandingArray.count>1{
-                            let brandingDic = (((brandingArray as AnyObject).object(at: 1) as AnyObject).object(forKey: "brandingwidgetdesktop") as Any)
-                            let jsonDecoder = JSONDecoder()
-                            guard let jsonData = try? JSONSerialization.data(withJSONObject: brandingDic as Any , options: .prettyPrinted),
-                                  let brandingValues = try? jsonDecoder.decode(BrandingModel.self, from: jsonData) else {
-                                return
-                            }
-                            brandingShared.brandingInfoModel = brandingValues
-                            self.sucessMethod(client: client, thread: thread)
-                        }
+                    if let jsonResult = jsonResult as? Dictionary<String, AnyObject> {
+                        let brandingDic = try? DictionaryDecoder().decode(BrandingModel.self, from: jsonResult as [String : Any])
+                        brandingValues = brandingDic ?? BrandingModel()
+                        self.sucessMethod(client: client, thread: thread)
+                    }else{
+                        self.sucessMethod(client: client, thread: thread)
                     }
-                }
-            }else{
-                self.sucessMethod(client: client, thread: thread)
-            }
-        }
-    }
-    func fetachBrandingDataFromStr(client: BotClient?, thread: KREThread?){
-        let jsonStr = brandingShared.brandingjsonStr
-        let jsonResult = Utilities.jsonObjectFromString(jsonString: jsonStr)
-        if let brandingArray = jsonResult as? NSArray {
-            if brandingArray.count > 0{
-                brandingShared.hamburgerOptions = (((brandingArray as AnyObject).object(at: 0) as AnyObject).object(forKey: "hamburgermenu") as Any) as? Dictionary<String, Any>
-            }
-            if brandingArray.count>1{
-                let brandingDic = (((brandingArray as AnyObject).object(at: 1) as AnyObject).object(forKey: "brandingwidgetdesktop") as Any)
-                let jsonDecoder = JSONDecoder()
-                guard let jsonData = try? JSONSerialization.data(withJSONObject: brandingDic as Any , options: .prettyPrinted),
-                      let brandingValues = try? jsonDecoder.decode(BrandingModel.self, from: jsonData) else {
-                    return
+                }else{
+                    self.sucessMethod(client: client, thread: thread)
                 }
                 
-                brandingShared.brandingInfoModel = brandingValues
+            }else{
                 self.sucessMethod(client: client, thread: thread)
             }
             
         }
     }
-    
     func sucessMethod(client: BotClient?, thread: KREThread?){
+        chatMaskview.isHidden = true
         self.stopLoader()
         self.thread = thread
         self.botClient = client
-        self.configureThreadView()
         self.brandingValuesChanges()
         self.configureleftMenu()
-        chatMaskview.isHidden = true
+        self.configureWelcomeScreenView()
+        
+        self.configureThreadView()
+        self.configureComposeBar()
+        self.configureAudioComposer()
+        self.configureIncomingCallView()
+        if let footerDic = brandingValues.footer{
+            if let layout = footerDic.layout, layout == "keypad"{
+                self.configureViewForKeyboard(true)
+            }else{
+                self.configureViewForKeyboard(false)
+            }
+        }else{
+            self.configureViewForKeyboard(true)
+        }
         
         if SDKConfiguration.botConfig.isWebhookEnabled{
             NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
@@ -2414,9 +2398,9 @@ extension ChatMessagesViewController{
                 if let userIcon: String = dictionary["icon"] as? String  {
                     botHistoryIcon = userIcon
                 }
-                
-            }, failure: { (error) in
-                print(error)
+                 
+                }, failure: { (error) in
+                    print(error)
             })
             
             self.kaBotClient.webhookSendMessage("ON_CONNECT", "event",[:], success: { [weak self] (dictionary) in
@@ -2428,8 +2412,8 @@ extension ChatMessagesViewController{
                     self?.callPollApi(pollID: dictionary["pollId"] as! NSString)
                 }
                 
-            }, failure: { (error) in
-                print(error)
+                }, failure: { (error) in
+                    print(error)
             })
         }
         
@@ -2464,11 +2448,24 @@ extension ChatMessagesViewController{
             }else{
                 self.showAlert(title: "Bot SDK Demo", message: "YOU MUST SET WIDGET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
             }
-            
+
         } else {
             panelCollectionViewContainerHeightConstraint.constant = 0
         }
     }
+    
+    func showdDynamicError(messageString:String){
+        let payloadStr = ["text":messageString,"color": "#fc0307"]
+        let message: Message = Message()
+        message.messageType = .reply
+        message.sentDate = Date()
+        message.messageId = UUID().uuidString
+        let textComponent: Component = Component(.error)
+        textComponent.payload = Utilities.stringFromJSONObject(object: payloadStr)
+        message.addComponent(textComponent)
+        addMessages(message, "")
+    }
+
     
     func showAlert(title: String, message: String) {
         
@@ -2516,38 +2513,63 @@ extension ChatMessagesViewController{
     
     func brandingValuesChanges(){
         let font:UIFont? = UIFont(name: boldCustomFont, size:16)
-        let titleStr = brandingShared.brandingInfoModel?.botName
+        let titleStr = SDKConfiguration.botConfig.chatBotName
         headerTitileLbl.text = titleStr
         headerTitileLbl.font = font
-        headerTitileLbl.textColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetTextColor) ?? "#000000")
+        headerTitileLbl.textColor = UIColor.init(hexString: "#000000")
         
-        if let bgUrlString = brandingShared.brandingInfoModel?.widgetBgImage!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed){
-            let bgUrl = URL(string: bgUrlString)
-            if bgUrl != nil{
-                backgroungImageView.af.setImage(withURL: bgUrl!, placeholderImage: UIImage(named: ""))
-                backgroungImageView.contentMode = .scaleAspectFit
-            }else{
-                self.view.backgroundColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetBodyColor) ?? "#f3f3f5")
-            }
-        }
-        composeView.backgroundColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetFooterColor) ?? "#eaeaea")
-        
-        BubbleViewRightTint = UIColor.init(hexString: (brandingShared.brandingInfoModel?.userchatBgColor) ?? "#2881DF")
-        BubbleViewLeftTint = UIColor.init(hexString: (brandingShared.brandingInfoModel?.botchatBgColor) ?? "#FFFFFF")
-        BubbleViewUserChatTextColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.userchatTextColor) ?? "#FFFFFF")
-        BubbleViewBotChatTextColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.botchatTextColor) ?? "#000000")
-        
-        //bubbleViewBotChatButtonTextColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.buttonActiveTextColor) ?? "#ffffff")
-        
-        bubbleViewBotChatButtonBgColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.buttonActiveBgColor) ?? "#f3f3f5")
-        bubbleViewBotChatButtonTextColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.buttonActiveTextColor) ?? "#2881DF")
-        themeColor = bubbleViewBotChatButtonTextColor
-        headerView.backgroundColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetHeaderColor) ?? "#FFFFFF")
+//        if let bgUrlString = brandingShared.brandingInfoModel?.widgetBgImage!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed){
+//            let bgUrl = URL(string: bgUrlString)
+//            if bgUrl != nil{
+//                backgroungImageView.af.setImage(withURL: bgUrl!, placeholderImage: UIImage(named: ""))
+//                backgroungImageView.contentMode = .scaleAspectFit
+//            }else{
+//                self.view.backgroundColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetBodyColor) ?? "#f3f3f5")
+//            }
+//        }
+        self.view.backgroundColor = UIColor.init(hexString: "#F8FAFC")
+        BubbleViewRightTint = UIColor.init(hexString: "#2881DF")
+        themeColor = BubbleViewRightTint
+        BubbleViewLeftTint = UIColor.init(hexString: "#F0F1F2")
+        BubbleViewUserChatTextColor = UIColor.init(hexString: "#FFFFFF")
+        BubbleViewBotChatTextColor = UIColor.init(hexString: "#000000")
+        headerView.backgroundColor = UIColor.init(hexString: "#FFFFFF")
         
     }
 }
 // MARK: - LeftMenu
 extension ChatMessagesViewController: LeftMenuViewDelegate{
+    func leftMenuSelectedText(text: String, payload: String) {
+        leftMenuBackBtnAct(self as Any)
+        Timer.scheduledTimer(withTimeInterval: 0.6, repeats: false) { (_) in
+            self.optionsButtonTapNewAction(text: text, payload: payload)
+        }
+    }
+    func leftMenulinkAction(urlString: String) {
+        if verifyUrl(urlString: urlString){
+            if (urlString.count > 0) {
+                NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
+                leftMenuBackBtnAct(self as Any)
+                Timer.scheduledTimer(withTimeInterval: 0.6, repeats: false) { (_) in
+                    let url: URL = URL(string: urlString)!
+                    let webViewController = SFSafariViewController(url: url)
+                    self.present(webViewController, animated: true, completion:nil)
+                }
+            }
+        }
+        
+    }
+    
+    @IBAction func leftMenuBackBtnAct(_ sender: Any) {
+        let frame = UIScreen.main.bounds.size
+            UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+                let moveLeft = CGAffineTransform(translationX: frame.width * -1, y: 0.0)
+                self.leftMenuContainerView.transform = moveLeft
+            }) { (finished) in
+                self.leftMenuContainerView.isHidden = true
+            }
+    }
+    
     func configureleftMenu(){
         leftMenuContainerView.isHidden = true
         self.view.bringSubviewToFront(leftMenuContainerView)
@@ -2562,21 +2584,8 @@ extension ChatMessagesViewController: LeftMenuViewDelegate{
         self.leftMenuContainerSubView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-70-[leftMenuView]|", options:[], metrics:nil, views:["leftMenuView" : self.leftMenuView!]))
         
     }
-    func leftMenuSelectedText(text: String, payload: String) {
-        leftMenuBackBtnAct(self as Any)
-        Timer.scheduledTimer(withTimeInterval: 0.6, repeats: false) { (_) in
-            self.optionsButtonTapNewAction(text: text, payload: payload)
-        }
-    }
-    @IBAction func leftMenuBackBtnAct(_ sender: Any) {
-        let frame = UIScreen.main.bounds.size
-        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-            let moveLeft = CGAffineTransform(translationX: frame.width * -1, y: 0.0)
-            self.leftMenuContainerView.transform = moveLeft
-        }) { (finished) in
-            self.leftMenuContainerView.isHidden = true
-        }
-    }
+    
+    
 }
 
 // MARK: - Widgets
@@ -2642,7 +2651,7 @@ extension ChatMessagesViewController {
             break
         }
     }
-    
+
     public func showHomePanel(_ isOnboardingInProgress: Bool = false, completion block:(()->Void)? = nil) {
         let panelItems = KREWidgetManager.shared.panelItems
         guard launchOptions == nil else {
@@ -2742,5 +2751,289 @@ extension ChatMessagesViewController: UIGestureRecognizerDelegate{
             return false
         }
         return true
+    }
+}
+//SDK V3
+extension ChatMessagesViewController{
+    func audioComposeBarTaskMenuButtonAction() {
+        self.bottomConstraint.constant = 0
+        self.taskMenuContainerHeightConstant.constant = 0
+        if (self.composeView.isFirstResponder) {
+            _ = self.composeView.resignFirstResponder()
+        }
+        leftMenuContainerView.isHidden = false
+        let zero = CGAffineTransform(translationX: 0.0, y: 0.0)
+        self.leftMenuContainerView.transform = zero
+        
+            leftMenuContainerView.semanticContentAttribute = .forceLeftToRight
+            leftMenuContainerSubView.semanticContentAttribute = .forceLeftToRight
+            let transition = CATransition()
+            transition.type = .push
+            transition.subtype = .fromLeft
+            self.leftMenuContainerView.layer.add(CATransition().segueFromLeft(), forKey: nil)
+            self.leftMenuView.leftMenuTableviewReload()
+            leftMenuTitleLbl.text = "Menu"
+    }
+    
+    func configureWelcomeScreenView() {
+        
+//        if let path = Bundle.main.path(forResource: "Branding", ofType: "json") {
+//            do {
+//                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+//                let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+//                if let jsonResult = jsonResult as? Dictionary<String, AnyObject> {
+//                    let brandingDic = try DictionaryDecoder().decode(BrandingModel.self, from: jsonResult as [String : Any])
+//                    brandingValues = brandingDic
+//                }
+//            } catch {
+//                // handle error
+//            }
+//        }
+        
+        if let genaralDic = brandingValues.general{
+            if let generalColors = genaralDic.generalColors, generalColors.useColorPaletteOnly == true{
+                 useColorPaletteOnly = true
+                 genaralPrimaryColor = generalColors.primaryColor ?? "#D38A17"
+                 genaralSecondaryColor = generalColors.secondaryColor ?? "#101828"
+                 genaralPrimary_textColor = generalColors.primary_text ?? "#C1EDB9"
+                 genaralSecondary_textColor = generalColors.secondary_text ?? "#000000"
+            }
+        }
+        
+        if let bodyDic = brandingValues.body{
+            brandingBodyDic = bodyDic
+            if let background = bodyDic.background{
+                if background.type == "image"{
+                    if let img = background.img, let url = URL(string: img){
+                        backgroungImageView.af.setImage(withURL: url, placeholderImage: UIImage(named: "", in: bundleImage, compatibleWith: nil))
+                    }
+                }else{
+                    if let color = bodyDic.background?.color{
+                        self.view.backgroundColor = UIColor.init(hexString: color)
+                    }
+                }
+            }
+            
+            if let userMessage = bodyDic.user_message{
+                if let bg_color =  userMessage.bg_color{
+                    themeColor  = UIColor.init(hexString: bg_color)
+                    statusBarView.backgroundColor = UIColor.init(hexString: bg_color)
+                    statusBarView.isHidden = true
+                    BubbleViewRightTint = UIColor.init(hexString: bg_color)
+                }
+                if let textColor = userMessage.color{
+                    BubbleViewUserChatTextColor  = UIColor.init(hexString: textColor)
+                }
+            }
+            
+            if let botMessage = bodyDic.bot_message{
+                if let bg_color =  botMessage.bg_color{
+                    BubbleViewLeftTint = UIColor.init(hexString: bg_color)
+                }
+                if let textColor = botMessage.color{
+                    BubbleViewBotChatTextColor = UIColor.init(hexString: textColor)
+                }
+            }
+            
+            if  useColorPaletteOnly == true{
+                BubbleViewRightTint = UIColor.init(hexString:genaralPrimaryColor)
+                BubbleViewUserChatTextColor = UIColor.init(hexString:genaralSecondary_textColor)
+                BubbleViewLeftTint = UIColor.init(hexString:genaralSecondaryColor)
+                BubbleViewBotChatTextColor = UIColor.init(hexString:genaralPrimary_textColor)
+            }
+            
+        }
+        
+        
+        chatWelcomeScreenContainerView.isHidden = true
+        if let welcomeScreenDic = brandingValues.welcome_screen{
+            if let isShowWelcomeScreen = welcomeScreenDic.show, isShowWelcomeScreen == true{
+                self.view.bringSubviewToFront(chatWelcomeScreenContainerView)
+                chatWelcomeScreenContainerView.isHidden = false
+                self.isShowWelcomeScreen = isShowWelcomeScreen
+                 
+                self.welcomeScreenView = WelcomeScreenView()
+                self.welcomeScreenView.viewDelegate = self
+                self.welcomeScreenView.translatesAutoresizingMaskIntoConstraints = false
+                self.welcomeScreenView.configure(with: welcomeScreenDic, generalDic: brandingValues.general)
+                self.welcomeScreenView.backgroundColor = UIColor(hexString: "#F8FAFC")
+                self.chatWelcomeScreenContainerView.addSubview(self.welcomeScreenView!)
+                
+                self.chatWelcomeScreenContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[welcomeScreenView]|", options:[], metrics:nil, views:["welcomeScreenView" : self.welcomeScreenView!]))
+                self.chatWelcomeScreenContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[welcomeScreenView]|", options:[], metrics:nil, views:["welcomeScreenView" : self.welcomeScreenView!]))
+            }
+        }
+        
+        if let headerDic = brandingValues.header{
+            configureHeaderView(headerDic: headerDic)
+        }
+    }
+    
+    func configureHeaderView(headerDic: HeaderModel){
+        self.headerDic = headerDic
+        let titleTxt = headerDic.title?.name
+        let titleTxtColor = headerDic.title?.color
+        let titleFont = UIFont(name: "HelveticaNeue-Bold", size: 16.0)
+        let subTitleTxt = headerDic.sub_title?.name
+        let subTitleTxtColor = headerDic.sub_title?.color
+        let subTitleFont = UIFont(name: "HelveticaNeue", size: 14.0)
+        let deafaultColor = "#ffffff"
+        let bgColor = headerDic.bg_color
+        let size = headerDic.size
+        let showIcon  = headerDic.icon?.show ?? true
+        let iconUrl  = headerDic.icon?.icon_url
+        
+        //RegulartHeaderView.isHidden = true
+        //largeHeaderView.isHidden = true
+        var headerVHeight = 0.0
+        if size == "compact"{
+            headerVHeight = 70.0
+            self.headerViewHeightConstraint.constant = headerVHeight
+        }else if size == "regular"{
+            headerVHeight  = 112.0
+            self.headerViewHeightConstraint.constant = headerVHeight
+        }
+        else if size == "large"{
+            headerVHeight  = 170.0
+            self.headerViewHeightConstraint.constant = headerVHeight
+        }
+        
+        let chatVCHeaderView = ChatVCHeaderView()
+        chatVCHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        chatVCHeaderView.configure(headerDic: self.headerDic,headerHeight: Float(headerVHeight))
+        headerView.addSubview(chatVCHeaderView)
+        if useColorPaletteOnly == true{
+            headerView.backgroundColor = UIColor.init(hexString: genaralSecondaryColor)
+        }
+        
+        chatVCHeaderView.chatHeaderVBackBtnAct = { [weak self] (text) in
+            self?.tapsOnBackBtnAct((Any).self)
+        }
+        chatVCHeaderView.chatHeaderVHelpBtnAct = { [weak self] (text) in
+            self?.tapsOnHelpBtnAct((Any).self)
+        }
+        chatVCHeaderView.chatHeaderVSupportBtnAct = { [weak self] (text) in
+            self?.tapsOnSupportBtnAct((Any).self)
+        }
+        chatVCHeaderView.chatHeaderVCloseBtnAct = { [weak self] (text) in
+            self?.tapsOnCloseBtnAct((Any).self)
+        }
+        self.headerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[chatVCHeaderView]|", options:[], metrics:nil, views:["chatVCHeaderView" : chatVCHeaderView]))
+        self.headerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[chatVCHeaderView]|", options:[], metrics:nil, views:["chatVCHeaderView" : chatVCHeaderView]))
+    }
+    
+    func welcomeScreenBtnsAction(text:String, payload:String){
+        chatWelcomeScreenContainerView.isHidden = true
+        self.sendTextMessage(text, options: ["body": payload])
+    }
+    func hidewelcomeScreenView(){
+        chatWelcomeScreenContainerView.isHidden = true
+    }
+    
+    @IBAction func tapsOnSupportBtnAct(_ sender: Any) {
+        if let liveAgent = headerDic.buttons?.live_agent{
+            if let actionType = liveAgent.action?.type, actionType == "postback"{
+                if let value = liveAgent.action?.value{
+                    optionsButtonTapNewAction(text: value, payload: value)
+                }
+            }else if let actionType = liveAgent.action?.type, actionType == "url"{
+                if let value = liveAgent.action?.value{
+                    linkButtonTapAction(urlString: value)
+                }
+            }
+            else if let actionType = liveAgent.action?.type, actionType == "postback|url"{
+                if let value = liveAgent.action?.value{
+                    optionsButtonTapNewAction(text: value, payload: value)
+                }
+            }
+        }
+        
+    }
+    @IBAction func tapsOnHelpBtnAct(_ sender: Any) {
+        if let help = headerDic.buttons?.help{
+            if let actionType = help.action?.type, actionType == "postback"{
+                if let value = help.action?.value{
+                    optionsButtonTapNewAction(text: value, payload: value)
+                }
+            }else if let actionType = help.action?.type, actionType == "url"{
+                if let value = help.action?.value{
+                    linkButtonTapAction(urlString: value)
+                }
+            }else if let actionType = help.action?.type, actionType == "postback|url"{
+                if let value = help.action?.value{
+                    linkButtonTapAction(urlString: value)
+                }
+            }
+        }
+        
+    }
+    @IBAction func tapsOnCloseBtnAct(_ sender: Any) {
+        botClosed()
+    }
+}
+
+extension ChatMessagesViewController: inComingCallDelegate{
+    func configureIncomingCallView(){
+        self.incomingCallContainerView.isHidden = true
+        self.inComingCallView = InComingCallView()
+        self.inComingCallView.viewDelegate = self
+        self.inComingCallView.translatesAutoresizingMaskIntoConstraints = false
+        self.incomingCallContainerView.addSubview(self.inComingCallView)
+        self.view.bringSubviewToFront(incomingCallContainerView)
+        self.incomingCallContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[inComingCallView]-10-|", options:[], metrics:nil, views:["inComingCallView" : self.inComingCallView!]))
+        let inComingCallViewHeight = 120.0
+        let screenTopConstraint = UIScreen.main.bounds.height/2 - inComingCallViewHeight
+        self.incomingCallContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-\(screenTopConstraint)-[inComingCallView]|", options:[], metrics:nil, views:["inComingCallView" : self.inComingCallView!]))
+    }
+    
+    func acceptCallIncomingCall() {
+        guard let window = UIApplication.shared.keyWindow else {
+            return
+        }
+        incomingCallContainerView.isHidden = true
+        if let domain = callFromAgentData?["domain"] as? String{
+            let dynamicRemotePort = 5080
+            guard let sipUser = callFromAgentData?["sipUser"] as? String else {
+               return
+            }
+            guard let videoCall = callFromAgentData?["videoCall"] as? Bool else{
+                return
+            }
+            #if SWIFT_PACKAGE
+            //agentConnect.showAgentWindow(window:window, domain: domain, dynamicRemoteHost: domain, port: dynamicRemotePort, sipUser: sipUser, isVideoCall: videoCall)
+            #endif
+           
+        }
+        
+    }
+    
+    func rejectIncomingCall() {
+        incomingCallContainerView.isHidden = true
+        var typeDic = callFromAgentData
+        typeDic?["type"] = "call_agent_webrtc_rejected"
+        self.botClient.sendMessage("", options: ["body": typeDic ?? [:]])
+    }
+    
+    @objc func callFromAgent(notification:Notification){
+        view.endEditing(true) //KeyBoard Hide
+        
+        let dataString: String = notification.object as! String
+        if let agentCallData = Utilities.jsonObjectFromString(jsonString: dataString){
+            callFromAgentData = agentCallData as? [String : Any]
+        }
+        incomingCallContainerView.isHidden = false
+        var imageStr = ""
+        var nameStr = ""
+        var isVideoCall = false
+        if let imgStr = callFromAgentData?["profileIcon"] as? String{
+            imageStr = imgStr
+        }
+        if let firstName = callFromAgentData?["firstName"] as? String{
+            nameStr = firstName
+        }
+        if let videoCall = callFromAgentData?["videoCall"] as? Bool{
+            isVideoCall = videoCall
+        }
+        self.inComingCallView.configure(imageUrlStr: imageStr, nameStr: nameStr, isVideoCall: isVideoCall)
     }
 }

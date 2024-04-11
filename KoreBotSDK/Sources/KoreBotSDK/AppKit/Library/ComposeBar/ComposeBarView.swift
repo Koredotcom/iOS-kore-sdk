@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import KoreBotSDK
 
 protocol ComposeBarViewDelegate {
     func composeBarView(_: ComposeBarView, sendButtonAction text: String)
@@ -19,7 +20,6 @@ protocol ComposeBarViewDelegate {
 class ComposeBarView: UIView {
     let bundle = Bundle.sdkModule
     public var delegate: ComposeBarViewDelegate?
-    
     fileprivate var topLineView: UIView!
     fileprivate var bottomLineView: UIView!
     public var growingTextView: KREGrowingTextView!
@@ -27,10 +27,14 @@ class ComposeBarView: UIView {
     fileprivate var menuButton: UIButton!
     fileprivate var attachmentButton: UIButton!
     fileprivate var speechToTextButton: UIButton!
-
     fileprivate var textViewTrailingConstraint: NSLayoutConstraint!
     fileprivate(set) public var isKeyboardEnabled: Bool = false
-    
+    var isHideSpeeachToTextBtn = false
+    var footerDic = FooterModel()
+    var bgColor: String?
+    var txtViewBgColor: String?
+    var txtViewBorderColor: String?
+    var txtViewPlaceHolderTxt: String?
     convenience init() {
         self.init(frame: CGRect.zero)
     }
@@ -46,27 +50,41 @@ class ComposeBarView: UIView {
     }
     
     fileprivate func setupViews() {
-        //self.backgroundColor = UIColor.init(hexString: "#eaeaea")
         
+        if let footerDic = brandingValues.footer{
+            self.footerDic = footerDic
+        }
+        bgColor = footerDic.bg_color
+        self.backgroundColor = UIColor.init(hexString: bgColor ?? "#EEF2F6")
+        txtViewBgColor = footerDic.compose_bar?.bg_color
+        txtViewBorderColor = footerDic.compose_bar?.outline_color
+        txtViewPlaceHolderTxt = footerDic.compose_bar?.placeholder
+        let menuBtnWidth = footerDic.buttons?.menu?.show == true ? 30 : 00
+        let attachmentBtnWidth = footerDic.buttons?.attachment?.show == true ? 25 : 00
+        let speeachToTextBtnWidth = footerDic.buttons?.microphone?.show == true ? 30 : 00
+        isHideSpeeachToTextBtn = footerDic.buttons?.microphone?.show == true ? true : false
+
         self.growingTextView = KREGrowingTextView(frame: CGRect.zero)
         self.growingTextView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.growingTextView)
         self.growingTextView.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .horizontal)
         
         self.growingTextView.textView.tintColor = .black
-        self.growingTextView.textView.textColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetTextColor) ?? "#26344A")
+        self.growingTextView.textView.textColor = .black
         self.growingTextView.textView.textAlignment = .right
         self.growingTextView.maxNumberOfLines = 10
         self.growingTextView.font = UIFont(name: regularCustomFont, size: 14.0) ?? UIFont.systemFont(ofSize: 14.0)
         self.growingTextView.textContainerInset = UIEdgeInsets(top: 7, left: 0, bottom: 7, right: 0)
         self.growingTextView.animateHeightChange = true
-        self.growingTextView.backgroundColor = .white
-        self.growingTextView.layer.cornerRadius = 10.0
+        self.growingTextView.backgroundColor = UIColor.init(hexString: txtViewBgColor ?? "#ffffff")
+        self.growingTextView.layer.borderWidth = 1.0
+        self.growingTextView.layer.borderColor = UIColor.init(hexString: txtViewBorderColor ?? "#EEF2F6").cgColor
+        self.growingTextView.layer.cornerRadius = 4.0
         self.growingTextView.isUserInteractionEnabled = false
-        //self.growingTextView.textView.text = "text Template with video attachment"//"Pie Chart"//"Quick Replies"
+        
         
         let attributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: UIFont(name: regularCustomFont, size: 14.0) ?? UIFont.systemFont(ofSize: 14.0), NSAttributedString.Key.foregroundColor: Common.UIColorRGB(0xB5B9BA)]
-        self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Message...", attributes:attributes)
+        self.growingTextView.placeholderAttributedText = NSAttributedString(string: txtViewPlaceHolderTxt ?? "Type a message", attributes:attributes)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidBeginEditingNotification(_ :)), name: UITextView.textDidBeginEditingNotification, object: self.growingTextView.textView)
         NotificationCenter.default.addObserver(self, selector: #selector(self.textDidChangeNotification(_ :)), name: UITextView.textDidChangeNotification, object: self.growingTextView.textView)
@@ -78,7 +96,7 @@ class ComposeBarView: UIView {
         self.menuButton.setTitleColor(Common.UIColorRGB(0xFFFFFF), for: .normal)
         self.menuButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
         self.menuButton.setImage(UIImage(named: "Menu", in: bundle, compatibleWith: nil), for: .normal)
-        self.menuButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0) ?? UIFont.boldSystemFont(ofSize: 14.0)
+        self.menuButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0)
         self.menuButton.addTarget(self, action: #selector(self.taskMenuButtonAction(_:)), for: .touchUpInside)
         self.menuButton.isHidden = false
         self.menuButton.contentEdgeInsets = UIEdgeInsets(top: 9.0, left: 3.0, bottom: 7.0, right: 3.0)
@@ -86,13 +104,14 @@ class ComposeBarView: UIView {
         self.addSubview(self.menuButton)
         
         self.sendButton = UIButton.init(frame: CGRect.zero)
-        self.sendButton.setImage(UIImage(named: "send", in: bundle, compatibleWith: nil), for: .normal)
+        //self.sendButton.setTitle("Send", for: .normal)
+        self.sendButton.setImage(UIImage(named: "SendW", in: bundle, compatibleWith: nil), for: .normal)
         self.sendButton.translatesAutoresizingMaskIntoConstraints = false
-        self.sendButton.backgroundColor = .clear
+        self.sendButton.backgroundColor = themeColor
         self.sendButton.layer.cornerRadius = 5
         self.sendButton.setTitleColor(Common.UIColorRGB(0xFFFFFF), for: .normal)
         self.sendButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-        //self.sendButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0)
+        self.sendButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0)
         self.sendButton.addTarget(self, action: #selector(self.sendButtonAction(_:)), for: .touchUpInside)
         self.sendButton.isHidden = true
         self.sendButton.contentEdgeInsets = UIEdgeInsets(top: 9.0, left: 3.0, bottom: 7.0, right: 3.0)
@@ -102,10 +121,10 @@ class ComposeBarView: UIView {
         self.speechToTextButton = UIButton.init(frame: CGRect.zero)
         self.speechToTextButton.setTitle("", for: .normal)
         self.speechToTextButton.translatesAutoresizingMaskIntoConstraints = false
+        self.speechToTextButton.setImage(UIImage(named: "audio_icon_1", in: bundle, compatibleWith: nil), for: .normal)
         self.speechToTextButton.layer.cornerRadius = 5.0
         self.speechToTextButton.backgroundColor = .clear
         self.speechToTextButton.imageView?.contentMode = .scaleAspectFit
-        self.speechToTextButton.setImage(UIImage(named: "audio_icon-1", in: bundle, compatibleWith: nil), for: .normal)
         self.speechToTextButton.addTarget(self, action: #selector(self.speechToTextButtonAction(_:)), for: .touchUpInside)
         self.speechToTextButton.isHidden = true
         self.speechToTextButton.contentEdgeInsets = UIEdgeInsets(top: 6.0, left: 3.0, bottom: 5.0, right: 3.0)
@@ -117,9 +136,9 @@ class ComposeBarView: UIView {
         self.attachmentButton.layer.cornerRadius = 5
         self.attachmentButton.setTitleColor(Common.UIColorRGB(0xFFFFFF), for: .normal)
         self.attachmentButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-        self.attachmentButton.setBackgroundImage (UIImage(named: "attach", in: bundle, compatibleWith: nil), for: .normal)
+        self.attachmentButton.setBackgroundImage(UIImage(named: "attach", in: bundle, compatibleWith: nil), for: .normal)
         self.attachmentButton.imageView?.contentMode = .scaleAspectFill
-        //self.attachmentButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0)
+        self.attachmentButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0)
         self.attachmentButton.addTarget(self, action: #selector(self.composeBarAttachmentButtonAction(_:)), for: .touchUpInside)
         
         self.attachmentButton.contentEdgeInsets = UIEdgeInsets(top: 9.0, left: 3.0, bottom: 7.0, right: 3.0)
@@ -136,30 +155,61 @@ class ComposeBarView: UIView {
         self.bottomLineView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.bottomLineView)
         
-        let views: [String : Any] = ["topLineView": self.topLineView, "bottomLineView": self.bottomLineView,"menuButton": self.menuButton, "growingTextView": self.growingTextView, "sendButton": self.sendButton, "speechToTextButton": self.speechToTextButton, "attachmentButton": attachmentButton]
+        let views: [String : Any] = ["topLineView": self.topLineView as Any, "bottomLineView": self.bottomLineView as Any,"menuButton": self.menuButton as Any, "growingTextView": self.growingTextView as Any, "sendButton": self.sendButton as Any, "speechToTextButton": self.speechToTextButton as Any, "attachmentButton": attachmentButton as Any]
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[topLineView]|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[topLineView(0.5)]", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[bottomLineView]|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[bottomLineView(0.5)]|", options:[], metrics:nil, views:views))
         
-        var menuBtnWidth = 0
-        menuBtnWidth = isShowComposeMenuBtn == true ? 30 : 0
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[menuButton(\(menuBtnWidth))]-5-[growingTextView]-5-[sendButton(30)]-5-[attachmentButton(25)]-10-|", options:[], metrics:nil, views:views))
-       self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[growingTextView]-5-[speechToTextButton]-5-[attachmentButton]-10-|", options:[], metrics:nil, views:views))
-       self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-7-[growingTextView]-7-|", options:[], metrics:nil, views:views))
-       self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=3-[sendButton]-3-|", options:[], metrics:nil, views:views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[menuButton]-6-|", options:[], metrics:nil, views:views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=3-[attachmentButton(25)]-8-|", options:[], metrics:nil, views:views))
-       self.addConstraint(NSLayoutConstraint.init(item: self.sendButton as Any, attribute: .centerY, relatedBy: .equal, toItem: self.speechToTextButton, attribute: .centerY, multiplier: 1.0, constant: 0.0))
-       self.addConstraint(NSLayoutConstraint.init(item: self.sendButton as Any, attribute: .height, relatedBy: .equal, toItem: self.speechToTextButton, attribute: .height, multiplier: 1.0, constant: 0.0))
-       self.speechToTextButton.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .horizontal)
-       self.speechToTextButton.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .vertical)
-       self.speechToTextButton.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .horizontal)
-       self.speechToTextButton.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .vertical)
-       
-       self.textViewTrailingConstraint = NSLayoutConstraint.init(item: self, attribute: .trailing, relatedBy: .equal, toItem: self.growingTextView, attribute: .trailing, multiplier: 1.0, constant: 15.0)
-       self.addConstraint(self.textViewTrailingConstraint)
+
+         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[menuButton(\(menuBtnWidth))]-2-[attachmentButton(\(attachmentBtnWidth))]-5-[growingTextView]-8-[sendButton(35)]-8-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[attachmentButton]-5-[growingTextView]-8-[speechToTextButton(\(speeachToTextBtnWidth))]-13-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-7-[growingTextView]-7-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[sendButton]-6-|", options:[], metrics:nil, views:views))
+         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[menuButton]-6-|", options:[], metrics:nil, views:views))
+         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[attachmentButton(25)]-10-|", options:[], metrics:nil, views:views))
+        self.addConstraint(NSLayoutConstraint.init(item: self.sendButton as Any, attribute: .centerY, relatedBy: .equal, toItem: self.speechToTextButton as Any, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint.init(item: self.sendButton as Any, attribute: .height, relatedBy: .equal, toItem: self.speechToTextButton as Any, attribute: .height, multiplier: 1.0, constant: 0.0))
+        self.speechToTextButton.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .horizontal)
+        self.speechToTextButton.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .vertical)
+        self.speechToTextButton.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .horizontal)
+        self.speechToTextButton.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .vertical)
+        
+        self.textViewTrailingConstraint = NSLayoutConstraint.init(item: self, attribute: .trailing, relatedBy: .equal, toItem: self.growingTextView, attribute: .trailing, multiplier: 1.0, constant: 15.0)
+        self.addConstraint(self.textViewTrailingConstraint)
+        
+        self.setButtonIconColor()
+    }
+    
+    func setButtonIconColor(){
+        var footerIconColor = "#000000"
+        
+        if useColorPaletteOnly == true{
+            footerIconColor =  genaralPrimaryColor
+            self.backgroundColor = UIColor.init(hexString: genaralSecondaryColor)
+            self.growingTextView.layer.borderColor = UIColor.init(hexString: genaralPrimaryColor).cgColor
+        }else{
+            footerIconColor =  footerDic.icons_color ?? "#000000"
+        }
+        self.growingTextView.placeholderLabel.textColor = BubbleViewRightTint
+        
+        let attachmentImage = UIImage(named: "attach", in: bundle, compatibleWith: nil)
+        let tintedAttachmentImage = attachmentImage?.withRenderingMode(.alwaysTemplate)
+        attachmentButton.setBackgroundImage(tintedAttachmentImage, for: .normal)
+        attachmentButton.tintColor = UIColor.init(hexString: footerIconColor)
+        
+        let speachTxtImage = UIImage(named: "audio_icon_1", in: bundle, compatibleWith: nil)
+        let tintedSpeachTxtImageImage = speachTxtImage?.withRenderingMode(.alwaysTemplate)
+        speechToTextButton.setImage(tintedSpeachTxtImageImage, for: .normal)
+        speechToTextButton.tintColor = UIColor.init(hexString: footerIconColor)
+        
+        
+        let menuImage = UIImage(named: "Menu", in: bundle, compatibleWith: nil)
+        let tintedMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
+        menuButton.setImage(tintedMenuImage, for: .normal)
+        menuButton.tintColor = UIColor.init(hexString: footerIconColor)
+        
     }
     
     //MARK: Public methods
@@ -203,7 +253,7 @@ class ComposeBarView: UIView {
     }
     @objc fileprivate func taskMenuButtonAction(_ sender: UIButton!) {
         self.delegate?.composeBarTaskMenuButtonAction(self)
-        self.menuButton.setImage(UIImage(named: "Menu", in: bundle, compatibleWith: nil), for: .normal)
+        //self.menuButton.setImage(UIImage(named: "Menu", in: bundle, compatibleWith: nil), for: .normal)
         self.growingTextView.isUserInteractionEnabled = true
         self.sendButton.isUserInteractionEnabled = true
         self.speechToTextButton.isUserInteractionEnabled = true
@@ -227,8 +277,13 @@ class ComposeBarView: UIView {
                 self.sendButton.isEnabled = true
                 self.speechToTextButton.isHidden = true
             }else{
-                self.sendButton.isHidden = !hasText
-                self.speechToTextButton.isHidden = hasText
+                if isHideSpeeachToTextBtn{
+                    self.sendButton.isHidden = !hasText
+                    self.speechToTextButton.isHidden = hasText
+                }else{
+                    self.sendButton.isHidden = false
+                    self.speechToTextButton.isHidden = true
+                }
             }
             self.menuButton.isHidden = false
         }else{
@@ -248,6 +303,29 @@ class ComposeBarView: UIView {
         self.valueChanged()
     }
 
+    open func changeBgColorForAudioComposeBar(){
+        self.backgroundColor = .clear
+        self.growingTextView.backgroundColor = UIColor.init(hexString: bgColor ?? "#EEF2F6")
+        self.growingTextView.textView.textColor = BubbleViewRightTint
+        if #available(iOS 11.0, *) {
+            self.growingTextView.roundCorners([ .layerMaxXMaxYCorner, .layerMinXMaxYCorner, .layerMinXMinYCorner], radius: 15.0, borderColor:  BubbleViewRightTint, borderWidth: 1.0)
+        }
+    }
+    open func changeBgColorForComposeBar(){
+        bgColor = footerDic.bg_color
+        self.backgroundColor = UIColor.init(hexString: bgColor ?? "#EEF2F6")
+        txtViewBgColor = footerDic.compose_bar?.bg_color
+        txtViewBorderColor = footerDic.compose_bar?.outline_color
+        txtViewPlaceHolderTxt = footerDic.compose_bar?.placeholder
+        self.growingTextView.backgroundColor = UIColor.init(hexString: txtViewBgColor ?? "#ffffff")
+        self.growingTextView.layer.borderColor = UIColor.init(hexString: txtViewBorderColor ?? "#EEF2F6").cgColor
+        self.growingTextView.textView.textColor = .black
+        self.growingTextView.layer.cornerRadius = 4.0
+        if useColorPaletteOnly == true{
+            self.backgroundColor = UIColor.init(hexString: genaralSecondaryColor)
+            self.growingTextView.layer.borderColor = UIColor.init(hexString: genaralPrimaryColor).cgColor
+        }
+    }
     // MARK: UIResponder Methods
     
     open override var isFirstResponder: Bool {
@@ -274,4 +352,6 @@ class ComposeBarView: UIView {
         self.speechToTextButton = nil
         self.textViewTrailingConstraint = nil
     }
+    
+    
 }

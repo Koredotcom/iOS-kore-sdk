@@ -46,9 +46,7 @@ class FeedbackSliderViewController: UIViewController, UITextViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 13.0, *) {
-            overrideUserInterfaceStyle = .light
-        }
+        
         // Do any additional setup after loading the view.
         descriptionLabel.isHidden = true
         descriptionTextView.isHidden = true

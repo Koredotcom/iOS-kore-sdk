@@ -216,12 +216,16 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCell(withIdentifier: optionCellIdentifier, for: indexPath)
             if let cell = cell as? KREOptionsTableViewCell {
                 cell.selectionStyle = UITableViewCell.SelectionStyle.none
+                
                 cell.textLabel?.text = option.title
                 cell.textLabel?.textAlignment = .center
+                //cell.textLabel?.textColor = UIColor.lightRoyalBlue
+                //cell.textLabel?.font = UIFont(name: "Gilroy-Regular", size: 16.0)
                 cell.textLabel?.textColor = UIColor.init(hexString: "#1565C0")
                 cell.backgroundColor = UIColor.init(hexString: "#E3F2FD")
                 if #available(iOS 8.2, *) {
-                    cell.textLabel?.font = UIFont.textFont(ofSize: 16.0, weight: .regular)
+                    //cell.textLabel?.font = UIFont.textFont(ofSize: 14.0, weight: .medium)
+                    cell.textLabel?.font = UIFont(name: "Gilroy-Regular", size: 16.0)
                 } else {
                     // Fallback on earlier versions
                 }

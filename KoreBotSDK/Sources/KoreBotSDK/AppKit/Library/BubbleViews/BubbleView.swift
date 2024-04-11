@@ -12,20 +12,16 @@ enum BubbleMaskTailPosition : Int {
     case none = 1, left = 2, right = 3
 }
 
-let brandingShared = BrandingSingleton.shared
-var BubbleViewRightTint: UIColor = themeColor
+var BubbleViewRightTint: UIColor =  UIColor.init(hexString: "#4B4EDE")
 let BubbleViewRightContrastTint: UIColor = Common.UIColorRGB(0xFFFFFF)
-var BubbleViewLeftTint: UIColor = .white
+var BubbleViewLeftTint: UIColor = UIColor.init(hexString: "#F0F1F2")
 let BubbleViewLeftContrastTint: UIColor = Common.UIColorRGB(0xBCBCBC)
-
-let BubbleViewCurveRadius: CGFloat = 20.0
-let BubbleViewMaxWidth: CGFloat = (UIScreen.main.bounds.size.width - 90.0)
 
 var BubbleViewUserChatTextColor: UIColor = UIColor.init(hexString: "#FFFFFF")
 var BubbleViewBotChatTextColor: UIColor = UIColor.init(hexString: "#000000")
 
-var bubbleViewBotChatButtonBgColor: UIColor = UIColor.init(hexString: "#f3f3f5")
-var bubbleViewBotChatButtonTextColor: UIColor = UIColor.init(hexString: "#2881DF")
+let BubbleViewCurveRadius: CGFloat = 20.0
+let BubbleViewMaxWidth: CGFloat = (UIScreen.main.bounds.size.width - 90.0)
 
 class BubbleView: UIView {
     var tailPosition: BubbleMaskTailPosition! {
@@ -37,7 +33,7 @@ class BubbleView: UIView {
     var didSelectComponentAtIndex:((Int) -> Void)!
     var maskLayer: CAShapeLayer!
     var borderLayer: CAShapeLayer!
-
+    
     var components:NSArray! {
         didSet(c) {
             self.populateComponents()
@@ -61,38 +57,38 @@ class BubbleView: UIView {
         var bubbleView: BubbleView!
         
         switch (bubbleType) {
-            case .text:
-                bubbleView = TextBubbleView()
-                break
-            case .image, .video:
+        case .text:
+            bubbleView = TextBubbleView()
+            break
+        case .image, .video:
             //.sdkModule
-                //bubbleView = Bundle.main.loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as? BubbleView
+            //bubbleView = Bundle.main.loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as? BubbleView
             bubbleView = Bundle.sdkModule.loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as? BubbleView
-                break
-            case .audio:
-                bubbleView = Bundle.sdkModule.loadNibNamed("AudioBubbleView", owner: self, options: nil)![0] as? BubbleView
-                break
-            case .options:
-                bubbleView = OptionsBubbleView()
-                break
-            case .quickReply:
-                bubbleView = QuickReplyBubbleView()
-                break
-            case .list:
-                bubbleView = ListBubbleView()
-                break
-            case .carousel:
-                bubbleView = CarouselBubbleView()
-                break
-            case .error:
-                bubbleView = ErrorBubbleView()
-                break
-            case .chart:
-                bubbleView = ChartBubbleView()
-                break
-            case .table:
-                bubbleView = TableBubbleView()
-                break
+            break
+        case .audio:
+            bubbleView = Bundle.sdkModule.loadNibNamed("AudioBubbleView", owner: self, options: nil)![0] as? BubbleView
+            break
+        case .options:
+            bubbleView = OptionsBubbleView()
+            break
+        case .quickReply:
+            bubbleView = QuickReplyBubbleView()
+            break
+        case .list:
+            bubbleView = ListBubbleView()
+            break
+        case .carousel:
+            bubbleView = CarouselBubbleView()
+            break
+        case .error:
+            bubbleView = ErrorBubbleView()
+            break
+        case .chart:
+            bubbleView = ChartBubbleView()
+            break
+        case .table:
+            bubbleView = TableBubbleView()
+            break
         case .minitable:
             bubbleView = MiniTableBubbleView()
             break
@@ -106,29 +102,29 @@ class BubbleView: UIView {
             bubbleView = NewListBubbleView()
             break
         case .tableList:
-                bubbleView = TableListBubbleView()
+            bubbleView = TableListBubbleView()
             break
         case .calendarView:
-                bubbleView = CalenderBubbleView()
+            bubbleView = CalenderBubbleView()
             break
         case .quick_replies_welcome:
-                bubbleView = QuickReplyWelcomeBubbleView()
+            bubbleView = QuickReplyWelcomeBubbleView()
             break
         case .notification:
-                bubbleView = NotificationBubbleView()
+            bubbleView = NotificationBubbleView()
             break
         case .multiSelect:
-                bubbleView = MultiSelectNewBubbleView()
+            bubbleView = MultiSelectNewBubbleView()
             break
         case .list_widget:
-                bubbleView = ListWidgetBubbleView()
-        break
+            bubbleView = ListWidgetBubbleView()
+            break
         case .feedbackTemplate:
             bubbleView = FeedbackBubbleView()
-        break
+            break
         case .inlineForm:
             bubbleView = InLineFormBubbleView()
-        break
+            break
         case .dropdown_template:
             bubbleView = DropDownBubbleView()
             break
@@ -142,8 +138,17 @@ class BubbleView: UIView {
             bubbleView = CardTemplateBubbleView()
             break
         case .linkDownload:
-             bubbleView = PDFBubbleView()
-             break
+            bubbleView = PDFBubbleView()
+            break
+        case .stackedCarousel:
+            bubbleView = StackedCarouselBubbleView()
+            break
+        case .advanced_multi_select:
+            bubbleView =  AdvancedMultiSelectBubbleView()
+            break
+        case .radioOptionTemplate:
+            bubbleView =  RadioOptionBubbleView()
+            break
         }
         bubbleView.bubbleType = bubbleType
         
@@ -219,29 +224,53 @@ class BubbleView: UIView {
     func createBezierPath() -> UIBezierPath {
         // Drawing code
         let cornerRadius: CGFloat = BubbleViewCurveRadius
-        let aPath = UIBezierPath()
-        
+        var aPath = UIBezierPath()
+        let bubbleStyle = brandingBodyDic.bubble_style
         if(self.tailPosition == .left){
-            aPath.move(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.origin.y + cornerRadius)))
-            aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x + cornerRadius), y: CGFloat(frame.origin.y)), controlPoint: CGPoint(x:frame.origin.x, y:frame.origin.y))
-            aPath.addLine(to: CGPoint(x: CGFloat(frame.maxX - cornerRadius), y: CGFloat(frame.origin.y)))
-            aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.origin.y + cornerRadius)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.origin.y)))
-            aPath.addLine(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY - cornerRadius)))
-            aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX - cornerRadius), y: CGFloat(frame.maxY)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY)))
-            aPath.addLine(to: CGPoint(x: CGFloat(0.0), y: CGFloat(frame.maxY)))
-            aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY)), controlPoint: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY)))
-            aPath.addLine(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.origin.y + cornerRadius)))
+            if bubbleStyle == "balloon"{
+                aPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: [.topRight, .bottomLeft,.bottomRight],
+                                     cornerRadii: CGSize(width: 10.0, height: 0.0))
+            }else if bubbleStyle == "rounded"{
+                aPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: [.topLeft, .topRight, .bottomLeft,.bottomRight],
+                                     cornerRadii: CGSize(width: 15.0, height: 0.0))
+            }else if bubbleStyle == "rectangle"{
+                aPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: [.topLeft, .topRight, .bottomRight],
+                                     cornerRadii: CGSize(width: 10.0, height: 0.0))
+            }else{
+                aPath.move(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.origin.y + cornerRadius)))
+                aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x + cornerRadius), y: CGFloat(frame.origin.y)), controlPoint: CGPoint(x:frame.origin.x, y:frame.origin.y))
+                aPath.addLine(to: CGPoint(x: CGFloat(frame.maxX - cornerRadius), y: CGFloat(frame.origin.y)))
+                aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.origin.y + cornerRadius)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.origin.y)))
+                aPath.addLine(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY - cornerRadius)))
+                aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX - cornerRadius), y: CGFloat(frame.maxY)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY)))
+                aPath.addLine(to: CGPoint(x: CGFloat(0.0), y: CGFloat(frame.maxY)))
+                aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY)), controlPoint: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY)))
+                aPath.addLine(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.origin.y + cornerRadius)))
+            }
+            
             
         }else{
-            aPath.move(to: CGPoint(x: CGFloat(frame.origin.x + cornerRadius), y: CGFloat(frame.origin.y)))
-            aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.origin.y + cornerRadius)), controlPoint: frame.origin)
-            aPath.addLine(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY - cornerRadius)))
-            aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x + cornerRadius), y: CGFloat(frame.maxY)), controlPoint: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY)))
-            aPath.addLine(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY)))
-            aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY)))
-            aPath.addLine(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.origin.y + cornerRadius)))
-            aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX - cornerRadius), y: CGFloat(frame.origin.y)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.origin.y)))
-            aPath.addLine(to: CGPoint(x: CGFloat(frame.origin.x + cornerRadius), y: CGFloat(frame.origin.y)))
+            if bubbleStyle == "balloon"{
+                aPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: [.topLeft, .bottomLeft,.bottomRight],
+                                     cornerRadii: CGSize(width: 10.0, height: 0.0))
+            }else if bubbleStyle == "rounded"{
+                aPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: [.topLeft, .topRight, .bottomLeft,.bottomRight],
+                                     cornerRadii: CGSize(width: 15.0, height: 0.0))
+            }else if bubbleStyle == "rectangle"{
+                aPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: [.topLeft, .topRight, .bottomLeft],
+                                     cornerRadii: CGSize(width: 10.0, height: 0.0))
+            }else{
+                aPath.move(to: CGPoint(x: CGFloat(frame.origin.x + cornerRadius), y: CGFloat(frame.origin.y)))
+                aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.origin.y + cornerRadius)), controlPoint: frame.origin)
+                aPath.addLine(to: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY - cornerRadius)))
+                aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.origin.x + cornerRadius), y: CGFloat(frame.maxY)), controlPoint: CGPoint(x: CGFloat(frame.origin.x), y: CGFloat(frame.maxY)))
+                aPath.addLine(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY)))
+                aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.maxY)))
+                aPath.addLine(to: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.origin.y + cornerRadius)))
+                aPath.addQuadCurve(to: CGPoint(x: CGFloat(frame.maxX - cornerRadius), y: CGFloat(frame.origin.y)), controlPoint: CGPoint(x: CGFloat(frame.maxX), y: CGFloat(frame.origin.y)))
+                aPath.addLine(to: CGPoint(x: CGFloat(frame.origin.x + cornerRadius), y: CGFloat(frame.origin.y)))
+            }
+            
             
         }
         aPath.close()

@@ -11,6 +11,7 @@ import UIKit
 import ObjcSupport
 #endif
 class DropDownBubbleView: BubbleView {
+    let bundle = Bundle.sdkModule
     static let buttonsLimit: Int = 3
     static let headerTextLimit: Int = 640
     
@@ -82,7 +83,8 @@ class DropDownBubbleView: BubbleView {
         self.inlineButton = UIButton(frame: CGRect.zero)
         self.inlineButton.translatesAutoresizingMaskIntoConstraints = false
         self.inlineButton.clipsToBounds = true
-        self.inlineButton.setImage(UIImage.init(named: "downarrow"), for: .normal)
+        let arrowimg = UIImage(named: "downarrow", in: bundle, compatibleWith: nil)
+        self.inlineButton.setImage(arrowimg, for: .normal)
         self.inlineButton.layer.cornerRadius = 5
         self.inlineButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0)
         self.textFBgV.addSubview(self.inlineButton)

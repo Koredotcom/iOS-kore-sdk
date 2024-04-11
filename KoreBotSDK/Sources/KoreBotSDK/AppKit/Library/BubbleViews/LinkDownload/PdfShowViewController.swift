@@ -20,10 +20,6 @@ class PdfShowViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        if #available(iOS 13.0, *) {
-            overrideUserInterfaceStyle = .light
-        }
-        
         self.view.addSubview(pdfView)
         //print("pdf url \(pdfUrl!)")
         

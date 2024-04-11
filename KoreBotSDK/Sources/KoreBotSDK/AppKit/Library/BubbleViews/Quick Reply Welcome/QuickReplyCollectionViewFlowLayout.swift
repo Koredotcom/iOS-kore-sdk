@@ -22,7 +22,7 @@ class Row {
     }
 
     func tagLayout(collectionViewWidth: CGFloat) {
-        let padding = 2
+        let padding = 10//2
         var offset = padding
         for attribute in attributes {
             attribute.frame.origin.x = CGFloat(offset)

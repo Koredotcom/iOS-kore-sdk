@@ -37,9 +37,6 @@ class ListViewDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        if #available(iOS 13.0, *) {
-            overrideUserInterfaceStyle = .light
-        }
         getData()
         self.tableview.tableFooterView = UIView(frame:.zero)
         self.tableview.register(Bundle.xib(named: listCellIdentifier), forCellReuseIdentifier: listCellIdentifier)
