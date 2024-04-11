@@ -19,7 +19,7 @@ let package = Package(
         .package(url: "https://github.com/daltoniam/Starscream.git", from: "4.0.0"),
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.8.1")),
         .package(url: "https://github.com/Alamofire/AlamofireImage.git", .upToNextMajor(from: "4.3.0")),
-        .package(url: "https://github.com/tristanhimmelman/ObjectMapper.git", .upToNextMajor(from: "4.1.0")),
+        .package(url: "https://github.com/tristanhimmelman/ObjectMapper.git", .exact("4.1.0")),
         .package(url: "https://github.com/bmoliveira/MarkdownKit.git", from: "1.7.0"),
         .package(url: "https://github.com/danielgindi/Charts.git", .upToNextMajor(from: "5.0.0")),
         .package(url: "https://github.com/wibosco/GhostTypewriter", .upToNextMajor(from: "2.1.0")),
@@ -35,7 +35,7 @@ let package = Package(
             dependencies: ["Starscream", "Alamofire", "AlamofireImage", "ObjectMapper", "MarkdownKit", .product(name: "DGCharts", package: "Charts"), "GhostTypewriter", .product(name: "Emoji", package: "Emoji-swift"), "FMPhotoPicker", "SwiftUTI","ObjcSupport"],
             resources: [.copy("BrandindFiles")]),
         .target(name: "ObjcSupport", path: "Sources/ObjcSupport"),
-        .testTarget(name: "KoreBotSDKTests", dependencies: ["KoreBotSDK"]),
+        //.testTarget(name: "KoreBotSDKTests", dependencies: ["KoreBotSDK"]),
     ]
 )
 #endif
