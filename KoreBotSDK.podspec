@@ -8,8 +8,8 @@ Pod::Spec.new do |s|
     s.source = {:git => 'https://github.com/Koredotcom/iOS-kore-sdk.git', :tag => s.version, :submodules => true }
     s.requires_arc = true
 
-    s.public_header_files = 'KoreBotSDK/**/*.swift'
-    s.source_files = 'KoreBotSDK/**/*.swift'
+    s.public_header_files = 'KoreBotSDK/KoreBotSDK.h'
+    s.source_files = 'KoreBotSDK/KoreBotSDK.h'
 
     s.swift_version = '4.2'
     s.ios.deployment_target = '12.0'
