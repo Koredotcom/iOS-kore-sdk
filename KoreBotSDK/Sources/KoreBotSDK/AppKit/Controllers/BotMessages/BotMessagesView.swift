@@ -488,7 +488,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             }
             
             if isCalenderView{
-                self.viewDelegate?.populateCalenderView(with: message)
+                if !calenderCloseTag{
+                    self.viewDelegate?.populateCalenderView(with: message)
+                }
             }
             
             if isFeedbackView{

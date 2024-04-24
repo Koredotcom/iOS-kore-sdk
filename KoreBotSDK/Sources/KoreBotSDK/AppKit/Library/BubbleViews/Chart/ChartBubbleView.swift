@@ -91,8 +91,6 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         self.tileBgv.backgroundColor =  BubbleViewLeftTint
         if #available(iOS 11.0, *) {
             self.tileBgv.roundCorners([.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.clear, borderWidth: 1.5)
-        } else {
-            
         }
         
         self.senderImageView = UIImageView()
@@ -104,11 +102,11 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         
         let cardViews: [String: UIView] = ["senderImageView": senderImageView, "tileBgv": tileBgv, "cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-15-[cardView]-2-|", options: [], metrics: nil, views: cardViews))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[senderImageView(30)]", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[senderImageView(30)]", options: [], metrics: nil, views: cardViews))
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
-        //self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(30)]-10-[tileBgv]", options: [], metrics: nil, views: cardViews))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[senderImageView(00)]-15-[tileBgv]", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(30)]-10-[tileBgv]", options: [], metrics: nil, views: cardViews))
+        //self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[senderImageView(00)]-15-[tileBgv]", options: [], metrics: nil, views: cardViews))
         
         
         self.titleLbl = KREAttributedLabel(frame: CGRect.zero)
@@ -131,7 +129,6 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLbl]-10-|", options: [], metrics: metrics, views: subView))
         
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[titleLbl(>=textLabelMinWidth,<=textLabelMaxWidth)]-16-|", options: [], metrics: metrics, views: subView))
-        
         setCornerRadiousToTitleView()
     }
     
@@ -652,13 +649,14 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
                 setDataForStackedBarChart(jsonObject)
             }
         }
+        self.titleLbl?.text = ""
         if let txt = jsonObject["text"] as? String{
             self.titleLbl?.setHTMLString(txt, withWidth: kMaxTextWidth)
         }else{
-            self.titleLbl?.text = ""
+            self.titleLbl?.text = "Report details"
         }
         
-        let placeHolderIcon = UIImage(named:"kora")
+        let placeHolderIcon = UIImage(named: "kora", in: Bundle.sdkModule, compatibleWith: nil)
         self.senderImageView.image = placeHolderIcon
         if (botHistoryIcon != nil) {
             if let fileUrl = URL(string: botHistoryIcon!) {

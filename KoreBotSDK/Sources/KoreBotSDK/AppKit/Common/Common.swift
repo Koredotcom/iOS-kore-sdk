@@ -39,6 +39,7 @@ var lastMessageID:String?
 var isIntialiseFileUpload = false
 var history = true
 var isShowWelcomeMsg = true
+var calenderCloseTag = true
 
 var isShowComposeMenuBtn = false
 var isShowComposeAttachmentBtn = true
@@ -146,7 +147,7 @@ open class Utilities: NSObject {
                 print("JSON is valid.")
                 return true
             } catch {
-                print("Error deserializing JSON: \(error.localizedDescription)")
+                //print("Error deserializing JSON: \(error.localizedDescription)")
                 return false
             }
         }

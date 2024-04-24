@@ -99,7 +99,7 @@ class QuickReplyBubbleView : TextBubbleView {
                 return;
             }
             
-            self.textLabel.textColor = self.kTextColor()
+            setTextColor()
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary

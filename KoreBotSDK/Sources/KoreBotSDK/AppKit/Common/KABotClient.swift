@@ -535,6 +535,14 @@ open class KABotClient: NSObject {
                             let textComponent: Component = Component()
                             textComponent.payload = text
                             message.addComponent(textComponent)
+                        }else{
+                            if let dictionary = payload["payload"] as? [String: Any],
+                               let text = dictionary["text"] as? String{
+                                let textComponent = Component()
+                                textComponent.payload = text
+                                ttsBody = text
+                                message.addComponent(textComponent)
+                            }
                         }
                     }
                 }else{

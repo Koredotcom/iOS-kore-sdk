@@ -127,6 +127,10 @@ class NewListBubbleView: BubbleView {
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
         cardView.backgroundColor =  UIColor.clear
+        cardView.layer.cornerRadius = 4.0
+        cardView.layer.borderWidth = 1.0
+        cardView.layer.borderColor = UIColor.init(hexString: templateBoarderColor).cgColor
+        cardView.clipsToBounds = true
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
@@ -253,7 +257,7 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
             showMoreButton.translatesAutoresizingMaskIntoConstraints = false
             showMoreButton.clipsToBounds = true
             showMoreButton.layer.cornerRadius = 5
-            showMoreButton.setTitleColor(.blue, for: .normal)
+            showMoreButton.setTitleColor(themeColor, for: .normal)
             showMoreButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
             showMoreButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0)
             view.addSubview(showMoreButton)
@@ -272,7 +276,7 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
             showMoreButton.setAttributedTitle(attributeString, for: .normal)
             let views: [String: UIView] = ["showMoreButton": showMoreButton]
             view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[showMoreButton(30)]-0-|", options:[], metrics:nil, views:views))
-            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[showMoreButton]-0-|", options:[], metrics:nil, views:views))
+            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[showMoreButton(100)]-5-|", options:[], metrics:nil, views:views))
         }
         return view
     }
