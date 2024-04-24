@@ -97,6 +97,10 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
     * Open Examples/SwiftPackageManagerDemo/KoreBotSDKDemo.xcodeproj in Xcode.
     * Run the KoreBotSDKDemo.app in Xcode
 
+## SDK V3
+   * Use this branch https://github.com/Koredotcom/iOS-kore-sdk/tree/SDKV3
+   
+   
 ## Integrating into your app
 #### 1. Setup KoreBotSDK
 ###### a. Using SPM

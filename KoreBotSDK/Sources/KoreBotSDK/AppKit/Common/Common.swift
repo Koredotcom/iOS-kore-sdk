@@ -128,7 +128,7 @@ open class Utilities: NSObject {
                 print("JSON is valid.")
                 return true
             } catch {
-                print("Error deserializing JSON: \(error.localizedDescription)")
+                //print("Error deserializing JSON: \(error.localizedDescription)")
                 return false
             }
         }

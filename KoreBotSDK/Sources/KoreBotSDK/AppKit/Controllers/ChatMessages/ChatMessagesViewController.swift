@@ -513,23 +513,32 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             let componentModel: ComponentModel = messageObject!.component!
             if (componentModel.type == "text") {
                 let payload: NSDictionary = componentModel.payload! as! NSDictionary
-                let text: NSString = payload["text"] as! NSString
-                let textComponent: Component = Component()
-                textComponent.payload = text as String
-                ttsBody = text as String
-                
-                if(text.contains("use a web form")){
-                    let range: NSRange = text.range(of: "use a web form - ")
-                    let urlString: String? = text.substring(with: NSMakeRange(range.location+range.length, 44))
-                    if (urlString != nil) {
-                        let url: URL = URL(string: urlString!)!
-                        webViewController = SFSafariViewController(url: url)
-                        webViewController.modalPresentationStyle = .custom
-                        present(webViewController, animated: true, completion:nil)
+                if let text: NSString = payload["text"] as? NSString{
+                    let textComponent: Component = Component()
+                    textComponent.payload = text as String
+                    ttsBody = text as String
+                    
+                    if(text.contains("use a web form")){
+                        let range: NSRange = text.range(of: "use a web form - ")
+                        let urlString: String? = text.substring(with: NSMakeRange(range.location+range.length, 44))
+                        if (urlString != nil) {
+                            let url: URL = URL(string: urlString!)!
+                            webViewController = SFSafariViewController(url: url)
+                            webViewController.modalPresentationStyle = .custom
+                            present(webViewController, animated: true, completion:nil)
+                        }
+                        ttsBody = "Ok, Please fill in the details and submit"
                     }
-                    ttsBody = "Ok, Please fill in the details and submit"
+                    message.addComponent(textComponent)
+                }else{
+                    if let dictionary = payload["payload"] as? [String: Any],
+                       let text = dictionary["text"] as? String{
+                        let textComponent = Component()
+                        textComponent.payload = text
+                        ttsBody = text
+                        message.addComponent(textComponent)
+                    }
                 }
-                message.addComponent(textComponent)
                 return (message, ttsBody)
             } else if (componentModel.type == "image") {
                 if let payload = componentModel.payload as? [String: Any] {
@@ -882,7 +891,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             print("Network reachability: \(status)")
             switch status {
             case .reachable(.ethernetOrWiFi), .reachable(.cellular):
-                // self.establishBotConnection() //kk
+                 self.establishBotConnection()
                 break
             case .notReachable:
                 fallthrough
