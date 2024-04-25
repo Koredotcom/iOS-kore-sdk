@@ -18,6 +18,7 @@ protocol BotMessagesViewDelegate {
     func closeQuickReplyCards()
     func optionsButtonTapNewAction(text:String, payload:String)
     func populateCalenderView(with message: KREMessage?)
+    func populateClockView(with message: KREMessage?)
     func populateFeedbackSliderView(with message: KREMessage?)
     func tableviewScrollDidEnd()
 }
@@ -489,7 +490,16 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             
             if isCalenderView{
                 if !calenderCloseTag{
-                    self.viewDelegate?.populateCalenderView(with: message)
+                    let component: KREComponent = message.components![0] as! KREComponent
+                    if ((component.componentDesc) != nil) {
+                        let jsonString = component.componentDesc
+                        let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
+                        if jsonObject["template_type"] as? String == "clockTemplate"{
+                            self.viewDelegate?.populateClockView(with: message)
+                        }else{
+                            self.viewDelegate?.populateCalenderView(with: message)
+                        }
+                    }
                 }
             }
             

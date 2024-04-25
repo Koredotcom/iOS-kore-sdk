@@ -469,7 +469,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         else if (templateType == "tableList") {
             return .tableList
         }
-        else if (templateType == "daterange" || templateType == "dateTemplate") {
+        else if (templateType == "daterange" || templateType == "dateTemplate" || templateType == "clockTemplate") {
             return .calendarView
         }
         else if (templateType == "quick_replies_welcome" || templateType == "button"){
@@ -1415,6 +1415,33 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 calenderViewController.viewDelegate = self
                 calenderViewController.modalPresentationStyle = .overFullScreen
                 self.navigationController?.present(calenderViewController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func populateClockView(with message: KREMessage?) {
+        var messageId = ""
+        if message?.templateType == (ComponentType.calendarView.rawValue as NSNumber) {
+            let component: KREComponent = message!.components![0] as! KREComponent
+            print(component)
+            if (!component.isKind(of: KREComponent.self)) {
+                return;
+            }
+            if (component.message != nil) {
+                messageId = component.message!.messageId!
+            }
+            if ((component.componentDesc) != nil) {
+                let jsonString = component.componentDesc
+                let clockViewController = ClockViewController(dataString: jsonString!)
+                //clockViewController.viewDelegate = self
+                clockViewController.modalPresentationStyle = .overFullScreen
+                self.navigationController?.present(clockViewController, animated: true, completion: nil)
+                
+                clockViewController.optionsButtonTapNewAction = { [weak self] (text, payload) in
+                    if let text = text, let payload = payload {
+                        self?.optionsButtonTapNewAction(text: text, payload: payload)
+                    }
+                }
             }
         }
     }

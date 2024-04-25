@@ -48,8 +48,8 @@ class CalenderViewController: UIViewController {
     var endDateString : String?
     let dateFormatter = DateFormatter()
     var compareEndDate : String?
-    let bundle = Bundle(for: CalenderViewController.self)
-      var isStartDateComing = false
+    let bundle = Bundle.sdkModule
+    var isStartDateComing = false
     
     // MARK: init
        init(dataString: String, chatId: String, kreMessage: KREMessage) {
@@ -75,7 +75,7 @@ class CalenderViewController: UIViewController {
         fromDateRangeLabel.font = UIFont(name: boldCustomFont, size: 14.0)
         toDateRangeLabel.font = UIFont(name: boldCustomFont, size: 14.0)
         
-        headingLabel.textColor =  .black
+        headingLabel.textColor =  BubbleViewBotChatTextColor
         confirmButton.backgroundColor = themeColor
        
         confirmButton.setTitleColor(UIColor.white, for: .normal)
