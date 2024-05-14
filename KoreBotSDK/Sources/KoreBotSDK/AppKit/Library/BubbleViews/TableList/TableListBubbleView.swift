@@ -55,6 +55,9 @@ class TableListBubbleView: BubbleView {
         self.tableView.isScrollEnabled = false
         self.tableView.register(Bundle.xib(named: listCellIdentifier), forCellReuseIdentifier: listCellIdentifier)
 
+        if #available(iOS 15.0, *){
+            self.tableView.sectionHeaderTopPadding = 0.0
+        }
         let views: [String: UIView] = ["tableView": tableView]
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[tableView]-10-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[tableView]-10-|", options: [], metrics: nil, views: views))
@@ -66,11 +69,10 @@ class TableListBubbleView: BubbleView {
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
         cardView.layer.rasterizationScale =  UIScreen.main.scale
-        cardView.layer.shadowColor = UIColor(red: 232/255, green: 232/255, blue: 230/255, alpha: 1).cgColor
-        cardView.layer.shadowOpacity = 1
-        cardView.layer.shadowOffset =  CGSize(width: 0.0, height: -3.0)
-        cardView.layer.shadowRadius = 6.0
-        cardView.layer.shouldRasterize = true
+        cardView.layer.cornerRadius = 4.0
+        cardView.layer.borderWidth = 1.0
+        cardView.layer.borderColor = UIColor.init(hexString: templateBoarderColor).cgColor
+        cardView.clipsToBounds = true
         cardView.backgroundColor =  UIColor.white
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
