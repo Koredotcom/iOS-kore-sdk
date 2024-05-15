@@ -29,8 +29,8 @@ class MultiSelectNewBubbleView: BubbleView {
     var arrayOfElements = [ComponentElements]()
     var arrayOfButtons = [ComponentItemAction]()
     var showMore = false
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var linkAction: ((_ text: String?) -> Void)!
     override func applyBubbleMask() {
         //nothing to put here
         if(self.maskLayer == nil){
@@ -213,7 +213,7 @@ extension MultiSelectNewBubbleView: UITableViewDelegate,UITableViewDataSource{
         if arrayOfSeletedValues.count > 0{
             let joined = arrayOfSeletedValues.joined(separator: ", ")
             print(joined)
-            self.optionsAction(joined,joined)
+            self.optionsAction?(joined,joined)
         }
     }
    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

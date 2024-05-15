@@ -210,6 +210,11 @@ class ComposeBarView: UIView {
         menuButton.setImage(tintedMenuImage, for: .normal)
         menuButton.tintColor = UIColor.init(hexString: footerIconColor)
         
+        let sendBtnImage = UIImage(named: "SendW", in: bundle, compatibleWith: nil)
+        let tintedsendImage = sendBtnImage?.withRenderingMode(.alwaysTemplate)
+        sendButton.setImage(tintedsendImage, for: .normal)
+        sendButton.tintColor = BubbleViewUserChatTextColor//UIColor.init(hexString: footerIconColor)
+        
     }
     
     //MARK: Public methods

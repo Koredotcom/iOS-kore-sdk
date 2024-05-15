@@ -763,3 +763,15 @@ class RadioOptionTemplateCell : MessageBubbleCell {
     }
 }
 
+class EmptyBubbleViewCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .noTemplate
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}

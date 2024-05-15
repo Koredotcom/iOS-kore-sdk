@@ -11,6 +11,8 @@
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		9541B52F2B0DE90100356AA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9541B52E2B0DE90100356AA7 /* Assets.xcassets */; };
+		9595416F2BF39905001B8D18 /* SampleView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595416D2BF39905001B8D18 /* SampleView1.swift */; };
+		959541702BF39905001B8D18 /* SearchGridTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595416E2BF39905001B8D18 /* SearchGridTemplate.swift */; };
 		95A34F4C2B511E1A0037D3A5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A34F4A2B511E1A0037D3A5 /* ViewController.swift */; };
 		95A34F4D2B511E1A0037D3A5 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A34F4B2B511E1A0037D3A5 /* ViewController.xib */; };
 		D12681AB2B064F42005DA94E /* KoreBotSDK in Frameworks */ = {isa = PBXBuildFile; productRef = D12681AA2B064F42005DA94E /* KoreBotSDK */; };
@@ -25,6 +27,8 @@
 		0590F8421DED7A1B00107721 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		9541B52E2B0DE90100356AA7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9595416D2BF39905001B8D18 /* SampleView1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleView1.swift; sourceTree = "<group>"; };
+		9595416E2BF39905001B8D18 /* SearchGridTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchGridTemplate.swift; sourceTree = "<group>"; };
 		95A34F4A2B511E1A0037D3A5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		95A34F4B2B511E1A0037D3A5 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		D175AD4A1CEF0CD500BB9442 /* Kore Bot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kore Bot.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,6 +52,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9595416C2BF39905001B8D18 /* SampleTemplates */ = {
+			isa = PBXGroup;
+			children = (
+				9595416D2BF39905001B8D18 /* SampleView1.swift */,
+				9595416E2BF39905001B8D18 /* SearchGridTemplate.swift */,
+			);
+			name = SampleTemplates;
+			path = ../../CocoapodsDemo/KoreBotSDKDemo/SampleTemplates;
+			sourceTree = "<group>";
+		};
 		A851461715333BEDEFC8310F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -86,6 +100,7 @@
 				D175AD561CEF0CD500BB9442 /* LaunchScreen.storyboard */,
 				9541B52E2B0DE90100356AA7 /* Assets.xcassets */,
 				D175AD591CEF0CD500BB9442 /* Info.plist */,
+				9595416C2BF39905001B8D18 /* SampleTemplates */,
 			);
 			path = KoreBotSDKDemo;
 			sourceTree = "<group>";
@@ -169,8 +184,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9595416F2BF39905001B8D18 /* SampleView1.swift in Sources */,
 				95A34F4C2B511E1A0037D3A5 /* ViewController.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
+				959541702BF39905001B8D18 /* SearchGridTemplate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

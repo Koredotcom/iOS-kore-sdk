@@ -18,8 +18,8 @@ class StackedCarouselBubbleView: BubbleView {
     let kMinTextWidth: CGFloat = 20.0
     var arrayOfCarousels = [ComponentElements]()
     
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var linkAction: ((_ text: String?) -> Void)!
     
     let xLoop = 50
     
@@ -197,6 +197,6 @@ extension StackedCarouselBubbleView : StackedCarouselCellDelegate{
         self.optionsAction?(text, payload)
     }
     func stackedButtonActionUrl(text: String) {
-        self.linkAction(text)
+        self.linkAction?(text)
     }
 }

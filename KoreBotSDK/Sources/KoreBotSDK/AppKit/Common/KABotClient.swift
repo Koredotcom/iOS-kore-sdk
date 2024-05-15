@@ -356,8 +356,10 @@ open class KABotClient: NSObject {
             return .advanced_multi_select
         }else if templateType == "radioOptionTemplate"{
             return .radioOptionTemplate
+        }else if templateType == "text"{
+            return .text
         }
-        return .text
+        return .noTemplate
     }
     
     

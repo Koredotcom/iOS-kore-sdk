@@ -26,8 +26,8 @@ class TableListBubbleView: BubbleView {
     var arrayOfButtons = [ComponentItemAction]()
     
     var showMore = false
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var linkAction: ((_ text: String?) -> Void)!
     override func applyBubbleMask() {
         //nothing to put here
     }
@@ -227,9 +227,9 @@ extension TableListBubbleView: UITableViewDelegate,UITableViewDataSource{
         let elements = arrayOfComponents[0].rowItems?[sender.view!.tag]
         if elements?.action == nil {
             if elements?.title?.type == "text"{
-                self.optionsAction(elements?.title?.text?.title,elements?.title?.text?.payload ?? elements?.title?.text?.title)
+                self.optionsAction?(elements?.title?.text?.title,elements?.title?.text?.payload ?? elements?.title?.text?.title)
             }else{
-                self.linkAction(elements?.title?.url?.link)
+                self.linkAction?(elements?.title?.url?.link)
             }
         }
     }
@@ -237,10 +237,10 @@ extension TableListBubbleView: UITableViewDelegate,UITableViewDataSource{
         let elements = arrayOfComponents[indexPath.section].rowItems?[indexPath.row]
         if elements?.action?.type != nil {
             if elements?.action?.type == "postback"{
-                self.optionsAction(elements?.action?.title,elements?.action?.payload ?? elements?.action?.title)
+                self.optionsAction?(elements?.action?.title,elements?.action?.payload ?? elements?.action?.title)
             }else{
                 if elements?.action?.url != nil {
-                    self.linkAction(elements?.action?.url)
+                    self.linkAction?(elements?.action?.url)
                 }
             }
         }

@@ -19,7 +19,7 @@ class DropDownBubbleView: BubbleView {
     var textFBgV: UIView!
     var inlineTextField: UITextField!
     var inlineButton: UIButton!
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
     
     let dropDown = DropDown()
           lazy var dropDowns: [DropDown] = {

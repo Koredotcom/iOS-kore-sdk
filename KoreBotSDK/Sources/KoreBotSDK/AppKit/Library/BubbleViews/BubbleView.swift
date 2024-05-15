@@ -23,7 +23,7 @@ var BubbleViewBotChatTextColor: UIColor = UIColor.init(hexString: "#000000")
 let BubbleViewCurveRadius: CGFloat = 20.0
 let BubbleViewMaxWidth: CGFloat = (UIScreen.main.bounds.size.width - 90.0)
 
-class BubbleView: UIView {
+open class BubbleView: UIView {
     var tailPosition: BubbleMaskTailPosition! {
         didSet {
             self.backgroundColor = self.borderColor()
@@ -34,7 +34,10 @@ class BubbleView: UIView {
     var maskLayer: CAShapeLayer!
     var borderLayer: CAShapeLayer!
     
-    var components:NSArray! {
+    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)?
+    public var linkAction: ((_ text: String?) -> Void)?
+    
+    public var components:NSArray! {
         didSet(c) {
             self.populateComponents()
         }
@@ -43,125 +46,146 @@ class BubbleView: UIView {
     var drawBorder: Bool = false
     
     // MARK: init
-    init() {
+    public init() {
         super.init(frame: CGRect.zero)
         self.initialize()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
     }
     
     // MARK: bubbleWithType
     static func bubbleWithType(_ bubbleType: ComponentType) -> BubbleView{
         var bubbleView: BubbleView!
-        
-        switch (bubbleType) {
-        case .text:
-            bubbleView = TextBubbleView()
-            break
-        case .image, .video:
-            //.sdkModule
-            //bubbleView = Bundle.main.loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as? BubbleView
-            bubbleView = Bundle.sdkModule.loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as? BubbleView
-            break
-        case .audio:
-            bubbleView = Bundle.sdkModule.loadNibNamed("AudioBubbleView", owner: self, options: nil)![0] as? BubbleView
-            break
-        case .options:
-            bubbleView = OptionsBubbleView()
-            break
-        case .quickReply:
-            bubbleView = QuickReplyBubbleView()
-            break
-        case .list:
-            bubbleView = ListBubbleView()
-            break
-        case .carousel:
-            bubbleView = CarouselBubbleView()
-            break
-        case .error:
-            bubbleView = ErrorBubbleView()
-            break
-        case .chart:
-            bubbleView = ChartBubbleView()
-            break
-        case .table:
-            bubbleView = TableBubbleView()
-            break
-        case .minitable:
-            bubbleView = MiniTableBubbleView()
-            break
-        case .responsiveTable:
-            bubbleView = ResponsiveTableBubbleView()
-            break
-        case .menu:
-            bubbleView = MenuBubbleView()
-            break
-        case .newList:
-            bubbleView = NewListBubbleView()
-            break
-        case .tableList:
-            bubbleView = TableListBubbleView()
-            break
-        case .calendarView:
-            bubbleView = CalenderBubbleView()
-            break
-        case .quick_replies_welcome:
-            bubbleView = QuickReplyWelcomeBubbleView()
-            break
-        case .notification:
-            bubbleView = NotificationBubbleView()
-            break
-        case .multiSelect:
-            bubbleView = MultiSelectNewBubbleView()
-            break
-        case .list_widget:
-            bubbleView = ListWidgetBubbleView()
-            break
-        case .feedbackTemplate:
-            bubbleView = FeedbackBubbleView()
-            break
-        case .inlineForm:
-            bubbleView = InLineFormBubbleView()
-            break
-        case .dropdown_template:
-            bubbleView = DropDownBubbleView()
-            break
-        case .custom_table:
-            bubbleView = CustomTableBubbleView()
-            break
-        case .advancedListTemplate:
-            bubbleView = AdvanceListBubbleView()
-            break
-        case .cardTemplate:
-            bubbleView = CardTemplateBubbleView()
-            break
-        case .linkDownload:
-            bubbleView = PDFBubbleView()
-            break
-        case .stackedCarousel:
-            bubbleView = StackedCarouselBubbleView()
-            break
-        case .advanced_multi_select:
-            bubbleView =  AdvancedMultiSelectBubbleView()
-            break
-        case .radioOptionTemplate:
-            bubbleView =  RadioOptionBubbleView()
-            break
+        var isClientCustomTemplate = false
+        var isClientTemplateIndex = 0
+        for i in 0..<arrayOfViews.count{
+            let cleintTemplateTypeStr = arrayOfTemplateTypes[i]
+            var tabledesign = "responsive"
+            let clientTempateType =  Utilities.getComponentTypes(cleintTemplateTypeStr, tabledesign)
+            if bubbleType == clientTempateType{
+                isClientTemplateIndex = i
+                isClientCustomTemplate = true
+            }
         }
+        if isClientCustomTemplate{
+            if arrayOfViews.count > 0{
+                let vieww = arrayOfViews[isClientTemplateIndex]
+                bubbleView = vieww as? BubbleView
+            }
+        }else{
+            switch (bubbleType) {
+            case .text:
+                bubbleView = TextBubbleView()
+                break
+            case .image, .video:
+                //.sdkModule
+                //bubbleView = Bundle.main.loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as? BubbleView
+                bubbleView = Bundle.sdkModule.loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as? BubbleView
+                break
+            case .audio:
+                bubbleView = Bundle.sdkModule.loadNibNamed("AudioBubbleView", owner: self, options: nil)![0] as? BubbleView
+                break
+            case .options:
+                bubbleView = OptionsBubbleView()
+                break
+            case .quickReply:
+                bubbleView = QuickReplyBubbleView()
+                break
+            case .list:
+                bubbleView = ListBubbleView()
+                break
+            case .carousel:
+                bubbleView = CarouselBubbleView()
+                break
+            case .error:
+                bubbleView = ErrorBubbleView()
+                break
+            case .chart:
+                bubbleView = ChartBubbleView()
+                break
+            case .table:
+                bubbleView = TableBubbleView()
+                break
+            case .minitable:
+                bubbleView = MiniTableBubbleView()
+                break
+            case .responsiveTable:
+                bubbleView = ResponsiveTableBubbleView()
+                break
+            case .menu:
+                bubbleView = MenuBubbleView()
+                break
+            case .newList:
+                bubbleView = NewListBubbleView()
+                break
+            case .tableList:
+                bubbleView = TableListBubbleView()
+                break
+            case .calendarView:
+                bubbleView = CalenderBubbleView()
+                break
+            case .quick_replies_welcome:
+                bubbleView = QuickReplyWelcomeBubbleView()
+                break
+            case .notification:
+                bubbleView = NotificationBubbleView()
+                break
+            case .multiSelect:
+                bubbleView = MultiSelectNewBubbleView()
+                break
+            case .list_widget:
+                bubbleView = ListWidgetBubbleView()
+                break
+            case .feedbackTemplate:
+                bubbleView = FeedbackBubbleView()
+                break
+            case .inlineForm:
+                bubbleView = InLineFormBubbleView()
+                break
+            case .dropdown_template:
+                bubbleView = DropDownBubbleView()
+                break
+            case .custom_table:
+                bubbleView = CustomTableBubbleView()
+                break
+            case .advancedListTemplate:
+                bubbleView = AdvanceListBubbleView()
+                break
+            case .cardTemplate:
+                bubbleView = CardTemplateBubbleView()
+                break
+            case .linkDownload:
+                bubbleView = PDFBubbleView()
+                break
+            case .stackedCarousel:
+                bubbleView = StackedCarouselBubbleView()
+                break
+            case .advanced_multi_select:
+                bubbleView =  AdvancedMultiSelectBubbleView()
+                break
+            case .radioOptionTemplate:
+                bubbleView =  RadioOptionBubbleView()
+                break
+            case .noTemplate:
+                bubbleView = EmptyBubbleView()
+                break
+            }
+        }
+        
         bubbleView.bubbleType = bubbleType
         
         return bubbleView
     }
     
     // MARK: 
-    func initialize() {
+    open func initialize() {
         
     }
     
     // MARK: populate components
-    func populateComponents() {
+    open func populateComponents() {
         
     }
     
@@ -174,7 +198,7 @@ class BubbleView: UIView {
         return UIImage()
     }
     
-    override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
         self.applyBubbleMask()
     }

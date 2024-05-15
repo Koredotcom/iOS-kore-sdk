@@ -506,7 +506,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }else if templateType == "radioOptionTemplate"{
             return .radioOptionTemplate
         }
-        return .text
+        else if templateType == "text"{
+            return .text
+        }
+        return .noTemplate
     }
     
     func onReceiveMessage(object: BotMessageModel?) -> (Message?, String?) {
@@ -909,7 +912,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             print("Network reachability: \(status)")
             switch status {
             case .reachable(.ethernetOrWiFi), .reachable(.cellular):
-               // self.establishBotConnection() //kk
+                self.establishBotConnection() //kk
                 break
             case .notReachable:
                 fallthrough

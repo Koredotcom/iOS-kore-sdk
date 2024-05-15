@@ -25,8 +25,8 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
     var senderImageView: UIImageView!
     
     
-    public var optionsAction: ((_ text: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+   // public var optionsAction: ((_ text: String?) -> Void)!
+    //public var linkAction: ((_ text: String?) -> Void)!
     var cellHeight: Double = 280.0
     var lengendsLimit = 5
     

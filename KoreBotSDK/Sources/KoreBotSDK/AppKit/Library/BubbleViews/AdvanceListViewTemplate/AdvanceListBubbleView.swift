@@ -25,8 +25,8 @@ class AdvanceListBubbleView: BubbleView {
     fileprivate let AdvancedListButtonCellIdentifier = "AdvancedListButtonCell"
 
     var arrayOfElements = [AdvancedListTempData]()
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var linkAction: ((_ text: String?) -> Void)!
     public var maskview: UIView!
     
     let tableOptionsCellHeight = 44.0
@@ -358,9 +358,9 @@ class AdvanceListBubbleView: BubbleView {
             let options = headerOptions[0]
             if options.contenttype == "button"{
                 if options.type == "postback"{
-                    self.optionsAction(options.title, options.payload)
+                    self.optionsAction?(options.title, options.payload)
                 }else if options.type == "url"{
-                    self.linkAction(options.headerurl)
+                    self.linkAction?(options.headerurl)
                 }
                 
             }
@@ -1008,19 +1008,19 @@ extension AdvanceListBubbleView: UICollectionViewDelegate, UICollectionViewDataS
                             appendedStr += "\(arrayOfCheckMarkSelected[i]),"
                         }
                         let payloadStr = String(appendedStr.dropLast())
-                        self.optionsAction(payloadStr, payloadStr)
+                        self.optionsAction?(payloadStr, payloadStr)
                         arrayOfCheckMarkSelected = []
                     }
                    
                 }else if optionsDetails?.type == "radio"{
                     if slectedRadioTitles != ""{
-                        self.optionsAction(slectedRadioTitles, slectedRadioValues)
+                        self.optionsAction?(slectedRadioTitles, slectedRadioValues)
                     }else{
-                        self.optionsAction(options?.title, options?.payload)
+                        self.optionsAction?(options?.title, options?.payload)
                     }
                     
                 }else{
-                    self.optionsAction(options?.title, options?.payload)
+                    self.optionsAction?(options?.title, options?.payload)
                 }
                 
             }else{
@@ -1062,16 +1062,16 @@ extension AdvanceListBubbleView: UICollectionViewDelegate, UICollectionViewDataS
                     colorDropDown.show()
                 }else{
                     if options?.type == "postback"{
-                        self.optionsAction(options?.title, options?.payload)
+                        self.optionsAction?(options?.title, options?.payload)
                     }else if options?.type == "url"{
-                            self.linkAction(options?.headerurl)
+                            self.linkAction?(options?.headerurl)
                     }
                 }
             }else{
                 if options?.type == "postback"{
-                    self.optionsAction(options?.title, options?.payload)
+                    self.optionsAction?(options?.title, options?.payload)
                 }else if options?.type == "url"{
-                        self.linkAction(options?.headerurl)
+                        self.linkAction?(options?.headerurl)
                 }
             }
             
@@ -1158,7 +1158,7 @@ extension AdvanceListBubbleView{
         // Action triggered on selection
         colorDropDown.selectionAction = { (index, item) in
             if let type = type[index] as? String, type == "postback"{
-                self.optionsAction(titles[index] as? String, payload[index] as? String )
+                self.optionsAction?(titles[index] as? String, payload[index] as? String )
             }else{
                 //self.linkAction()
             }

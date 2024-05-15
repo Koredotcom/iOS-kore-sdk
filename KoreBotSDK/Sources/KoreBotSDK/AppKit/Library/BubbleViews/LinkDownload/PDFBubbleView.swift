@@ -16,7 +16,7 @@ class PDFBubbleView: BubbleView {
     var cardView: UIView!
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 80.0
     let cellIdentifier = "PdfDownloadCell"
-    public var linkAction: ((_ text: String?) -> Void)!
+    //public var linkAction: ((_ text: String?) -> Void)!
     var imageV: UIImageView!
     var downloadBtn: UIButton!
     var activityView: UIActivityIndicatorView!

@@ -24,7 +24,7 @@ class InLineFormBubbleView: BubbleView {
     var textFBgV: UIView!
     var inlineTextField: UITextField!
     var inlineButton: UIButton!
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
     NSAttributedString.Key.font : UIFont(name: mediumCustomFont, size: 15.0) as Any,
@@ -150,9 +150,9 @@ class InLineFormBubbleView: BubbleView {
             }
             tableView.reloadData()
             if isSecure {
-                self.optionsAction(secureString, finalString)
+                self.optionsAction?(secureString, finalString)
             }else{
-                self.optionsAction(finalString, finalString)
+                self.optionsAction?(finalString, finalString)
             }
         }
            

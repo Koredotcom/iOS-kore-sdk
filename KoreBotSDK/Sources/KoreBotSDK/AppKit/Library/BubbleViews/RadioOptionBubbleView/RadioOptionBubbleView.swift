@@ -31,8 +31,8 @@ class RadioOptionBubbleView : BubbleView {
     var arrayOfButtons = [ComponentItemAction]()
     var arrayOfHeaderCheck = [String]()
     var showMore = false
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var linkAction: ((_ text: String?) -> Void)!
     override func applyBubbleMask() {
         //nothing to put here
         if(self.maskLayer == nil){
@@ -260,7 +260,7 @@ extension RadioOptionBubbleView: UITableViewDelegate,UITableViewDataSource{
     }
     @objc fileprivate func footerBtnAction(_ sender: AnyObject!) {
         if seletedValue != ""{
-            self.optionsAction(seletedTitle,seletedValue)
+            self.optionsAction?(seletedTitle,seletedValue)
         }
     }
 }

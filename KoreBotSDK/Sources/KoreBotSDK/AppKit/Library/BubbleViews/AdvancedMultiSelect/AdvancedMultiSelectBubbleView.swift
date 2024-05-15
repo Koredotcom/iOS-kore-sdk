@@ -30,8 +30,8 @@ class AdvancedMultiSelectBubbleView: BubbleView {
     var arrayOfElements = [ComponentElements]()
     var arrayOfButtons = [ComponentItemAction]()
     var showMore = false
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var linkAction: ((_ text: String?) -> Void)!
     
     override func applyBubbleMask() {
         //nothing to put here
@@ -422,7 +422,7 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
         if arrayOfSeletedValues.count > 0{
             let joined = arrayOfSeletedValues.joined(separator: ", ")
             print(joined)
-            self.optionsAction(joined,joined)
+            self.optionsAction?(joined,joined)
         }
     }
 }

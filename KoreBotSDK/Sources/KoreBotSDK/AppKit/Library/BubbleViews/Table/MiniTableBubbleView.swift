@@ -238,15 +238,15 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         if (rows.count > (indexPath.row * 2)){
             cell.headerLabel.text = rows[indexPath.row*2]
             cell.headerLabel.numberOfLines = 0
-            cell.headerLabel.font = UIFont(name: "Lato-Regular", size: 15.0)
-            cell.headerLabel.font = cell.headerLabel.font.withSize(15.0)
+            cell.headerLabel.font = UIFont(name: regularCustomFont, size: 16.0)
+            cell.headerLabel.font = cell.headerLabel.font.withSize(16.0)
             cell.headerLabel.textColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
         }
         if (rows.count > (indexPath.row * 2+1)){
             cell.secondLbl.text = rows[indexPath.row*2+1]
             cell.secondLbl.textAlignment = .right
-            cell.secondLbl.font = UIFont(name: "Lato-Regular", size: 15.0)
-            cell.secondLbl.font = cell.headerLabel.font.withSize(15.0)
+            cell.secondLbl.font = UIFont(name: regularCustomFont, size: 16.0)
+            cell.secondLbl.font = cell.headerLabel.font.withSize(16.0)
             
             cell.secondLbl.textColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
         }
@@ -261,7 +261,7 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         let headerLabel = UILabel(frame: .zero)
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.textAlignment = .left
-        headerLabel.font = UIFont(name: "Lato-Bold", size: 15.0)
+        headerLabel.font = UIFont(name: boldCustomFont, size: 15.0)
         headerLabel.font = headerLabel.font.withSize(15.0)
         
         headerLabel.textColor = UIColor(red: 38/255, green: 52/255, blue: 74/255, alpha: 1)
@@ -271,7 +271,7 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         let secondLbl = UILabel(frame: .zero)
         secondLbl.translatesAutoresizingMaskIntoConstraints = false
         secondLbl.textAlignment = .left
-        secondLbl.font = UIFont(name: "Lato-Bold", size: 15.0)
+        secondLbl.font = UIFont(name: boldCustomFont, size: 15.0)
         secondLbl.font = secondLbl.font.withSize(15.0)
         secondLbl.textColor = UIColor(red: 38/255, green: 52/255, blue: 74/255, alpha: 1)
         secondLbl.text =  data.headers[section*2+1].title

@@ -26,8 +26,8 @@ class CardTemplateBubbleView: BubbleView {
         NSAttributedString.Key.foregroundColor : UIColor.blue,
         NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue]
     
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var linkAction: ((_ text: String?) -> Void)!
     var arrayOfExpandViews = NSMutableArray()
     var arrayOfCollapse = NSMutableArray()
     
@@ -624,9 +624,9 @@ extension CardTemplateBubbleView: UITableViewDelegate, UITableViewDataSource{
         if let footerBtns = elements.buttons, footerBtns.count > 0 {
             let btns = footerBtns[0]
             if btns.type == "postback"{
-                self.optionsAction(btns.title, btns.payload ?? btns.title)
+                self.optionsAction?(btns.title, btns.payload ?? btns.title)
             }else if btns.type == "url"{
-                self.linkAction(btns.linkurl)
+                self.linkAction?(btns.linkurl)
             }
             
         }
@@ -678,7 +678,7 @@ extension CardTemplateBubbleView{
         // Action triggered on selection
         colorDropDown.selectionAction = { (index, item) in
             //if let type = type[index] as? String, type == "postback"{
-                self.optionsAction(titles[index] as? String, payload[index] as? String )
+                self.optionsAction?(titles[index] as? String, payload[index] as? String )
 //            }else{
 //                //self.linkAction()
 //            }

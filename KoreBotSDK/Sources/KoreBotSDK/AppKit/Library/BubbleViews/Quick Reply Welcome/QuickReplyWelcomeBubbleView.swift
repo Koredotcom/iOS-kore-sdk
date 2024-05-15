@@ -41,8 +41,8 @@ class QuickReplyWelcomeBubbleView: BubbleView {
     
     var quickReplyView: KREQuickSelectView!
     
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var linkAction: ((_ text: String?) -> Void)!
     public var selectBtnState: ((_ Index: Int?) -> Void)!
     override func applyBubbleMask() {
         //nothing to put here
@@ -289,14 +289,14 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
             if elements.type == "web_url" || elements.type == "url"{
                     self.linkAction?(elements.url)
             }else{
-                self.optionsAction(elements.title, elements.payload)
+                self.optionsAction?(elements.title, elements.payload)
             }
         }else{
             let elements = arrayOfButtons[indexPath.row]
             if elements.type == "web_url" || elements.type == "url"{
                 self.linkAction?(elements.url)
             }else{
-                self.optionsAction(elements.title, elements.payload)
+                self.optionsAction?(elements.title, elements.payload)
             }
         }
         

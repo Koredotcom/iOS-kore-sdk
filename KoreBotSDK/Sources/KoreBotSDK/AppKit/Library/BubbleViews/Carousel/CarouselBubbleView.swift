@@ -11,8 +11,8 @@ import UIKit
 class CarouselBubbleView: BubbleView {
     var carouselView: KRECarouselView!
     
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var linkAction: ((_ text: String?) -> Void)!
     
     override func applyBubbleMask() {
         //nothing to put here
@@ -43,7 +43,7 @@ class CarouselBubbleView: BubbleView {
         }
         self.carouselView.linkAction = {[weak self] (text) in
             if(self?.linkAction != nil){
-                self?.linkAction(text)
+                self?.linkAction?(text)
             }
         }
     }

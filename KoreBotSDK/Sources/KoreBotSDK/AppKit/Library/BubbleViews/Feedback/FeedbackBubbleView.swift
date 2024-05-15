@@ -25,7 +25,7 @@ class FeedbackBubbleView: BubbleView {
         NSAttributedString.Key.foregroundColor : UIColor.blue,
         NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue]
 
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
     
     override func applyBubbleMask() {
         //nothing to put here
@@ -192,10 +192,10 @@ extension FeedbackBubbleView : UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if arrayOfSmiley.count > 0{
             let elements = arrayOfSmiley[indexPath.item]
-            self.optionsAction(String(elements.smileyId ?? indexPath.item+1),String(elements.value ?? indexPath.item+1))
+            self.optionsAction?(String(elements.smileyId ?? indexPath.item+1),String(elements.value ?? indexPath.item+1))
             collectionView.reloadData()
         }else{
-            self.optionsAction(String(indexPath.item+1),String(indexPath.item+1))
+            self.optionsAction?(String(indexPath.item+1),String(indexPath.item+1))
             collectionView.reloadData()
         }
         
@@ -214,9 +214,9 @@ extension FeedbackBubbleView: FloatRatingViewDelegate {
         let index = Int(floatRatingView.rating) - 1
         if arrayOfSmiley.count > 0{
             let elements = arrayOfSmiley[index]
-            self.optionsAction(String(elements.starId ?? 0),String(elements.value ?? 0))
+            self.optionsAction?(String(elements.starId ?? 0),String(elements.value ?? 0))
         }else{
-            self.optionsAction(String(index+1),String(index+1))
+            self.optionsAction?(String(index+1),String(index+1))
         }
     }
     

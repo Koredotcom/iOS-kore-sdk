@@ -114,8 +114,8 @@ class CustomTableBubbleView: BubbleView, UICollectionViewDataSource, UICollectio
     
     var showMore = false
     
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var linkAction: ((_ text: String?) -> Void)!
     
     override func applyBubbleMask() {
         //nothing to put here
@@ -382,9 +382,9 @@ class CustomTableBubbleView: BubbleView, UICollectionViewDataSource, UICollectio
                     print("\(action)")
                     if action["type"] as? String == "web_url"{
                         print("\(action["url"] ?? "")")
-                        self.linkAction(action["url"] as? String)
+                        self.linkAction?(action["url"] as? String)
                     }else if action["type"] as? String == "postback"{
-                        self.optionsAction(row[indexPath.row] ,action["payload"] as? String)
+                        self.optionsAction?(row[indexPath.row] ,action["payload"] as? String)
                     }
                     
                 }
