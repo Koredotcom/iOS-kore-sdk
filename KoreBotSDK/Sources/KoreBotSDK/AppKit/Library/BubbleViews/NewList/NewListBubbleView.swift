@@ -9,6 +9,7 @@
 import UIKit
 
 class NewListBubbleView: BubbleView {
+    let bundle = Bundle.sdkModule
     var tileBgv: UIView!
     var titleLbl: UILabel!
     var tableView: UITableView!
@@ -224,8 +225,12 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
             cell.imageViewWidthConstraint.constant = 0.0
         }else{
             cell.imageViewWidthConstraint.constant = 50.0
-            let url = URL(string: elements.imageURL!)
-            cell.imgView.af.setImage(withURL: url!, placeholderImage: UIImage(named: "placeholder_image"))
+            if let urlstr = elements.imageURL, let url = URL(string: urlstr){
+                cell.imgView.af.setImage(withURL: url, placeholderImage:  UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil))
+            }else{
+                cell.imgView.image = UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil)
+            }
+            
         }
         cell.titleLabel.numberOfLines = 1
         cell.titleLabel.text = elements.title

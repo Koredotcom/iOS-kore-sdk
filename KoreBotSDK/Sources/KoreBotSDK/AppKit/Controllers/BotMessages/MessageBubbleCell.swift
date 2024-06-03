@@ -215,17 +215,7 @@ class MessageBubbleCell : UITableViewCell {
 //                dateFormatter.dateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
 //            dateLabel.text = "\(SDKConfiguration.botConfig.chatBotName) \(dateFormatter.string(from: sentOn))"
             
-            let now = NSDate()
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .medium
-            dateFormatter.doesRelativeDateFormatting = true
-
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
-
-            let time = "\(timeFormatter.string(from: sentOn)), \(dateFormatter.string(from: sentOn))"
-            dateLabel.text = "\(headerTxt) \(time)"
-            
+            var time = getTimeformater(sentOn: sentOn)
             if self.tailPosition == .left{
                 let finalStr = "\(headerTxt) \(time)"
                 let attrStri = NSMutableAttributedString.init(string: finalStr)
@@ -268,6 +258,71 @@ class MessageBubbleCell : UITableViewCell {
             }
         }
         NotificationCenter.default.addObserver(self, selector: #selector(MessageBubbleCell.updateImage(notification:)), name: NSNotification.Name(rawValue: updateUserImageNotification), object: nil)
+    }
+    
+    func getTimeformater(sentOn: Date) -> String{
+        var time = ""
+        let today = Date()
+        let yesterday = Date().yesterday
+        let dateFormt = DateFormatter()
+        dateFormt.dateFormat = "MMM dd yyyy"
+        
+        var todayOrYesterDay = Date()
+        var is12or24Format = false
+        if dateFormt.string(from: sentOn) == dateFormt.string(from: today){
+            todayOrYesterDay = today
+            is12or24Format = true
+        }else if dateFormt.string(from: sentOn) == dateFormt.string(from: yesterday){
+            todayOrYesterDay = yesterday
+            is12or24Format = true
+        }else{
+            is12or24Format = false
+            let dateFormatter = DateFormatter()
+            
+            var formatterStr = "\(brandingBodyDic.time_stamp?.date_format ?? "")"
+            if "dd/mm/yyyy" == formatterStr.lowercased(){
+                formatterStr = "dd/MM/yyyy"
+            }else if "mm/dd/yyyy" == formatterStr.lowercased(){
+                formatterStr = "MM/dd/yyyy"
+            }else if "mmm/dd/yyyy" == formatterStr.lowercased(){
+                formatterStr = "MMM/dd/yyyy"
+            }
+            
+            var formte = ""
+            formte = formatterStr.replacingOccurrences(of: "D", with: "d")
+            formte = formte.replacingOccurrences(of: "Y", with: "y")
+            dateFormatter.dateFormat = formte
+            let timeFormatter = DateFormatter()
+            if brandingBodyDic.time_stamp?.timeformat == "24"{
+                timeFormatter.dateFormat = "HH:mm"
+            }else{
+                timeFormatter.dateFormat = "h:mm a"
+            }
+            let date = dateFormatter.string(from: sentOn)
+            let timee = timeFormatter.string(from: sentOn)
+            time = "\(date) \(timee)"
+        }
+        
+        if is12or24Format{
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium
+            dateFormatter.doesRelativeDateFormatting = true
+            
+            if let time_format = brandingBodyDic.time_stamp?.timeformat, time_format == "24"{
+                let timeFormatter24 = DateFormatter()
+                timeFormatter24.dateFormat = "HH:mm"
+                time = "\(timeFormatter24.string(from: sentOn)), \(dateFormatter.string(from: todayOrYesterDay))"
+                
+            }else if let time_format = brandingBodyDic.time_stamp?.timeformat, time_format == "12"{
+                let timeFormatter12 = DateFormatter()
+                timeFormatter12.dateFormat = "h:mm a"
+                
+                time = "\(timeFormatter12.string(from: sentOn)), \(dateFormatter.string(from: todayOrYesterDay))"
+                
+            }
+        }
+        
+        return time
     }
 
     func components() -> NSArray {

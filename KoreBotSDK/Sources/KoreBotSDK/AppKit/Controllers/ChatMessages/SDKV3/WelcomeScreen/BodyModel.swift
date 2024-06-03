@@ -162,13 +162,17 @@ class Time_stamp : NSObject , Decodable {
     public var position : String?
     public var separator : String?
     public var color : String?
-
+    public var timeformat: String?
+    public var date_format: String?
+    
     enum CodingKeys: String, CodingKey {
         case show = "show"
         case show_type = "show_type"
         case position = "position"
         case separator = "separator"
         case color = "color"
+        case timeformat = "time_format"
+        case date_format = "date_format"
     }
     // MARK: - init
     public override init() {
@@ -181,6 +185,8 @@ class Time_stamp : NSObject , Decodable {
         position = try? container.decode(String.self, forKey: .position)
         separator = try? container.decode(String.self, forKey: .separator)
         color = try? container.decode(String.self, forKey: .color)
+        timeformat = try? container.decode(String.self, forKey: .timeformat)
+        date_format = try? container.decode(String.self, forKey: .date_format)
     }
 
 }
