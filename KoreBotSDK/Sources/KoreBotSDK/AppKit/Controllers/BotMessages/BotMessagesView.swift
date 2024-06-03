@@ -99,6 +99,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(AdvancedListTemplateCell.self, forCellReuseIdentifier:"AdvancedListTemplateCell")
         self.tableView.register(CardTemplateBubbleCell.self, forCellReuseIdentifier:"CardTemplateBubbleCell")
         self.tableView.register(PDFDownloadCell.self, forCellReuseIdentifier:"PDFDownloadCell")
+        self.tableView.register(EmptyBubbleViewCell.self, forCellReuseIdentifier:"EmptyBubbleViewCell")
         
     }
     
@@ -225,6 +226,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 cellIdentifier = "CardTemplateBubbleCell"
             case .linkDownload:
                 cellIdentifier = "PDFDownloadCell"
+            case .noTemplate:
+                cellIdentifier = "EmptyBubbleViewCell"
             }
             
         }
@@ -239,209 +242,235 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         var isCalenderView = false
         var isFeedbackView = false
         
-        switch (cell.bubbleView.bubbleType!) {
-        case .text:
-            
-            let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
-            
-            self.textLinkDetection(textLabel: bubbleView.textLabel)
-            if(bubbleView.textLabel.attributedText?.string == "Welcome John, You already hold a Savings account with Kore bank."){
-                userActive = true
+        var isClientCustomTemplate = false
+        var isClientTemplateIndex = 0
+        for i in 0..<arrayOfViews.count{
+            let cleintTemplateTypeStr = arrayOfTemplateTypes[i]
+            var tabledesign = "responsive"
+            let clientTempateType =  Utilities.getComponentTypes(cleintTemplateTypeStr, tabledesign)
+            if cell.bubbleView.bubbleType == clientTempateType{
+                isClientTemplateIndex = i
+                isClientCustomTemplate = true
             }
-            if(userActive){
-                self.updtaeUserImage()
-            }
-            
-            bubbleView.onChange = { [weak self](reload) in
-                self?.tableView.reloadRows(at: [indexPath], with: .none)
-            }
-            cell.bubbleView.drawBorder = true
-            break
-        case .image, .video, .audio:
-            break
-        case .options:
-            let bubbleView: OptionsBubbleView = cell.bubbleView as! OptionsBubbleView
-            self.textLinkDetection(textLabel: bubbleView.textLabel);
-            bubbleView.optionsAction = {[weak self] (text, payload) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
-            }
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
-            }
-            
-            cell.bubbleView.drawBorder = true
-            break
-        case .list:
-            let bubbleView: ListBubbleView = cell.bubbleView as! ListBubbleView
-            bubbleView.optionsAction = {[weak self] (text, payload) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
-            }
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
-            }
-            
-            cell.bubbleView.drawBorder = true
-            
-            break
-        case .quickReply:
-            isQuickReply = true
-            break
-        case .carousel:
-            let bubbleView: CarouselBubbleView = cell.bubbleView as! CarouselBubbleView
-            bubbleView.optionsAction = {[weak self] (text, payload) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
-            }
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
-            }
-            break
-        case .error:
-            let bubbleView: ErrorBubbleView = cell.bubbleView as! ErrorBubbleView
-            self.textLinkDetection(textLabel: bubbleView.textLabel)
-            break
-        case .chart:
-            
-            break
-        case .table:
-            
-            break
-        case .minitable:
-            
-            break
-        case .responsiveTable:
-            break
-        case .menu:
-            let bubbleView: MenuBubbleView = cell.bubbleView as! MenuBubbleView
-            bubbleView.optionsAction = {[weak self] (text) in
-                self?.viewDelegate?.optionsButtonTapAction(text: text!)
-            }
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
-            }
-            
-            cell.bubbleView.drawBorder = true
-            break
-        case .newList:
-            let bubbleView: NewListBubbleView = cell.bubbleView as! NewListBubbleView
-            bubbleView.optionsAction = {[weak self] (text, payload) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
-            }
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
-            }
-            
-            cell.bubbleView.drawBorder = true
-            break
-        case .tableList:
-            let bubbleView: TableListBubbleView = cell.bubbleView as! TableListBubbleView
-            bubbleView.optionsAction = {[weak self] (text, payload) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
-            }
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
-            }
-            
-            cell.bubbleView.drawBorder = true
-            break
-        case .calendarView:
-            //let bubbleView: CalenderBubbleView = cell.bubbleView as! CalenderBubbleView
-            isCalenderView = true
-            cell.bubbleView.drawBorder = true
-            break
-        case .quick_replies_welcome:
-            let bubbleView: QuickReplyWelcomeBubbleView = cell.bubbleView as! QuickReplyWelcomeBubbleView
-            bubbleView.optionsAction = {[weak self] (text, payload) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
-            }
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
-            }
-            cell.bubbleView.drawBorder = true
-            break
-        case .notification:
-            let bubbleView: NotificationBubbleView = cell.bubbleView as! NotificationBubbleView
-            bubbleView.optionsAction = {[weak self] (text, payload) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
-            }
-            break
-        case .multiSelect:
-            let bubbleView: MultiSelectNewBubbleView = cell.bubbleView as! MultiSelectNewBubbleView
-            bubbleView.optionsAction = {[weak self] (text, payload) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
-            }
-            cell.bubbleView.drawBorder = true
-            break
-        case .list_widget:
-            let bubbleView: ListWidgetBubbleView = cell.bubbleView as! ListWidgetBubbleView
-            bubbleView.optionsAction = {[weak self] (text, payload) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
-            }
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
-            }
-            cell.bubbleView.drawBorder = true
-            break
-        case .feedbackTemplate:
-            let bubbleView: FeedbackBubbleView = cell.bubbleView as! FeedbackBubbleView
-            bubbleView.optionsAction = {[weak self] (text, payload) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
-            }
-            isFeedbackView = true
-            cell.bubbleView.drawBorder = true
-            break
-        case .inlineForm:
-            let bubbleView: InLineFormBubbleView = cell.bubbleView as! InLineFormBubbleView
-            
-            bubbleView.optionsAction = {[weak self] (text, payload) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
-            }
-            cell.bubbleView.drawBorder = true
-            break
-        case .dropdown_template:
-            cell.bubbleView.drawBorder = true
-            break
-        case .custom_table:
-            let bubbleView: CustomTableBubbleView = cell.bubbleView as! CustomTableBubbleView
-            bubbleView.optionsAction = {[weak self] (text, payload) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
-            }
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
-            }
-            cell.bubbleView.drawBorder = true
-            break
-        case .advancedListTemplate:
-            let bubbleView: AdvanceListBubbleView = cell.bubbleView as! AdvanceListBubbleView
-            bubbleView.optionsAction = {[weak self] (text, payload) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
-            }
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
-            }
-            let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
-            if firstIndexPath.isEqual(indexPath) {
-                bubbleView.maskview.isHidden = true
-            }else{
-                bubbleView.maskview.isHidden = false
-            }
-            break
-        case .cardTemplate:
-            let bubbleView: CardTemplateBubbleView = cell.bubbleView as! CardTemplateBubbleView
-            bubbleView.optionsAction = {[weak self] (text, payload) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
-            }
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
-            }
-            break
-        case .linkDownload:
-            let bubbleView: PDFBubbleView = cell.bubbleView as! PDFBubbleView
-            cell.bubbleView.drawBorder = true
-            bubbleView.linkAction = {[weak self] (text) in
-                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
-            }
-            break
         }
+        if isClientCustomTemplate{
+            let clientCustomView = arrayOfViews[isClientTemplateIndex]
+            let bubbeView = clientCustomView
+            bubbeView?.optionsAction = {[weak self] (text, payload) in
+                self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+            }
+            bubbeView?.linkAction = {[weak self] (text) in
+                self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
+
+        }else{
+            switch (cell.bubbleView.bubbleType!) {
+            case .text:
+                
+                let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
+                
+                self.textLinkDetection(textLabel: bubbleView.textLabel)
+                if(bubbleView.textLabel.attributedText?.string == "Welcome John, You already hold a Savings account with Kore bank."){
+                    userActive = true
+                }
+                if(userActive){
+                    self.updtaeUserImage()
+                }
+                
+                bubbleView.onChange = { [weak self](reload) in
+                    self?.tableView.reloadRows(at: [indexPath], with: .none)
+                }
+                cell.bubbleView.drawBorder = true
+                break
+            case .image, .video, .audio:
+                break
+            case .options:
+                let bubbleView: OptionsBubbleView = cell.bubbleView as! OptionsBubbleView
+                self.textLinkDetection(textLabel: bubbleView.textLabel);
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                
+                cell.bubbleView.drawBorder = true
+                break
+            case .list:
+                let bubbleView: ListBubbleView = cell.bubbleView as! ListBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                
+                cell.bubbleView.drawBorder = true
+                
+                break
+            case .quickReply:
+                isQuickReply = true
+                break
+            case .carousel:
+                let bubbleView: CarouselBubbleView = cell.bubbleView as! CarouselBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                break
+            case .error:
+                let bubbleView: ErrorBubbleView = cell.bubbleView as! ErrorBubbleView
+                self.textLinkDetection(textLabel: bubbleView.textLabel)
+                break
+            case .chart:
+                
+                break
+            case .table:
+                
+                break
+            case .minitable:
+                
+                break
+            case .responsiveTable:
+                break
+            case .menu:
+                let bubbleView: MenuBubbleView = cell.bubbleView as! MenuBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                
+                cell.bubbleView.drawBorder = true
+                break
+            case .newList:
+                let bubbleView: NewListBubbleView = cell.bubbleView as! NewListBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                
+                cell.bubbleView.drawBorder = true
+                break
+            case .tableList:
+                let bubbleView: TableListBubbleView = cell.bubbleView as! TableListBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                
+                cell.bubbleView.drawBorder = true
+                break
+            case .calendarView:
+                //let bubbleView: CalenderBubbleView = cell.bubbleView as! CalenderBubbleView
+                isCalenderView = true
+                cell.bubbleView.drawBorder = true
+                break
+            case .quick_replies_welcome:
+                let bubbleView: QuickReplyWelcomeBubbleView = cell.bubbleView as! QuickReplyWelcomeBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                cell.bubbleView.drawBorder = true
+                break
+            case .notification:
+                let bubbleView: NotificationBubbleView = cell.bubbleView as! NotificationBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                }
+                break
+            case .multiSelect:
+                let bubbleView: MultiSelectNewBubbleView = cell.bubbleView as! MultiSelectNewBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                }
+                cell.bubbleView.drawBorder = true
+                break
+            case .list_widget:
+                let bubbleView: ListWidgetBubbleView = cell.bubbleView as! ListWidgetBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                cell.bubbleView.drawBorder = true
+                break
+            case .feedbackTemplate:
+                let bubbleView: FeedbackBubbleView = cell.bubbleView as! FeedbackBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                }
+                isFeedbackView = true
+                cell.bubbleView.drawBorder = true
+                break
+            case .inlineForm:
+                let bubbleView: InLineFormBubbleView = cell.bubbleView as! InLineFormBubbleView
+                
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                }
+                cell.bubbleView.drawBorder = true
+                break
+            case .dropdown_template:
+                cell.bubbleView.drawBorder = true
+                break
+            case .custom_table:
+                let bubbleView: CustomTableBubbleView = cell.bubbleView as! CustomTableBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                cell.bubbleView.drawBorder = true
+                break
+            case .advancedListTemplate:
+                let bubbleView: AdvanceListBubbleView = cell.bubbleView as! AdvanceListBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                if firstIndexPath.isEqual(indexPath) {
+                    bubbleView.maskview.isHidden = true
+                }else{
+                    bubbleView.maskview.isHidden = false
+                }
+                break
+            case .cardTemplate:
+                let bubbleView: CardTemplateBubbleView = cell.bubbleView as! CardTemplateBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                break
+            case .linkDownload:
+                let bubbleView: PDFBubbleView = cell.bubbleView as! PDFBubbleView
+                cell.bubbleView.drawBorder = true
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                break
+            case .noTemplate:
+                break
+            }
+        }
+        
         let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
         if firstIndexPath.isEqual(indexPath) {
             if isQuickReply {

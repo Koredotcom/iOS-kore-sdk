@@ -38,8 +38,8 @@ class ListWidgetBubbleView: BubbleView {
     var onChange: ((_ reload: Bool) -> ())!
     
     var showMore = false
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var linkAction: ((_ text: String?) -> Void)!
     
     override func applyBubbleMask() {
         //nothing to put here
@@ -183,7 +183,7 @@ extension ListWidgetBubbleView: UITableViewDataSource, UITableViewDelegate {
             let listView = cell.templateView
             listView.populateListItemView(listItem)
             listView.buttonActionHandler = { [weak self] (action) in
-                self?.optionsAction(action?.title ?? action?.payload, action?.payload)
+                self?.optionsAction?(action?.title ?? action?.payload, action?.payload)
             }
 //            listView.menuActionHandler = { [weak self] (actions) in
 //               // self?.delegate?.populateActions(actions, in: self?.widget, in: self?.panelItem)
@@ -299,7 +299,7 @@ extension ListWidgetBubbleView: UITableViewDataSource, UITableViewDelegate {
 
         if let action = listItem.defaultAction {
             if action.payload != nil{
-                self.optionsAction(action.title ?? action.payload, action.payload)
+                self.optionsAction?(action.title ?? action.payload, action.payload)
             }
         }
     }
@@ -316,7 +316,7 @@ extension ListWidgetBubbleView: UITableViewDataSource, UITableViewDelegate {
         textLabel.detectionBlock = {(hotword, string) in
             switch hotword {
             case KREAttributedHotWordLink:
-                self.linkAction(string!)
+                self.linkAction?(string!)
                 break
             default:
                 break

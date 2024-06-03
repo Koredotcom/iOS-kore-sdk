@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="Gilroy-Bold.otf">
-            <string>Gilroy-Bold</string>
-        </array>
-    </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PdfShowViewController" customModule="BankAssist_ai" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PdfShowViewController" customModule="KoreBotSDK" customModuleProvider="target">
             <connections>
                 <outlet property="closeBtn" destination="FI9-12-jjf" id="Odz-SU-um9"/>
                 <outlet property="titleLbl" destination="VSW-zd-0LD" id="oeR-9l-3D0"/>
@@ -25,7 +21,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FI9-12-jjf">
-                    <rect key="frame" x="370" y="44" width="44" height="44"/>
+                    <rect key="frame" x="370" y="48" width="44" height="44"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="44" id="0wp-EZ-0UW"/>
                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="cl9-qN-spa"/>
@@ -39,11 +35,11 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VSW-zd-0LD">
-                    <rect key="frame" x="10" y="44" width="322" height="40"/>
+                    <rect key="frame" x="10" y="48" width="322" height="40"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="hY9-FO-NKc"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Gilroy-Bold" family="Gilroy" pointSize="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>

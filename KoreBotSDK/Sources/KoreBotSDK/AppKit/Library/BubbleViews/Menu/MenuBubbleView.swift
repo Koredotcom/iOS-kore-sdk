@@ -21,8 +21,8 @@ class MenuBubbleView: BubbleView {
     var showMoreButton: UIButton!
     var showMore = false
     
-    public var optionsAction: ((_ text: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+   // public var optionsAction: ((_ text: String?) -> Void)!
+   // public var linkAction: ((_ text: String?) -> Void)!
     
     func intializeCardLayout(){
         self.cardView = UIView(frame:.zero)
@@ -82,12 +82,12 @@ class MenuBubbleView: BubbleView {
         
         self.optionsView.optionsButtonAction = { [weak self] (text, payload) in
             if((self?.optionsAction) != nil){
-                self?.optionsAction(text)
+                self?.optionsAction?(text, payload)
             }
         }
         self.optionsView.detailLinkAction = {[weak self] (text) in
             if((self?.linkAction) != nil){
-                self?.linkAction(text)
+                self?.linkAction?(text)
             }
         }
     }

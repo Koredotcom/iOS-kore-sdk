@@ -333,8 +333,10 @@ open class KABotClient: NSObject {
             return .advancedListTemplate
         }else if (templateType == "cardTemplate"){
             return .cardTemplate
+        }else if templateType == "text"{
+            return .text
         }
-        return .text
+        return .noTemplate
     }
     
     

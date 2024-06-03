@@ -23,8 +23,8 @@ class NotificationBubbleView: BubbleView {
     var collectionView: UICollectionView!
     let customCellIdentifier = "CustomCellIdentifier"
     
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var linkAction: ((_ text: String?) -> Void)!
     
     override func applyBubbleMask() {
         //nothing to put here
@@ -275,7 +275,7 @@ extension NotificationBubbleView : UICollectionViewDelegate, UICollectionViewDat
         let elements = arrayOfButtons[indexPath.row]
         if elements.type == "postback" {
             if elements.postback != nil{
-                self.optionsAction(elements.name, elements.postback?.value)
+                self.optionsAction?(elements.name, elements.postback?.value)
             }
         }
       

@@ -26,8 +26,8 @@ class TableListBubbleView: BubbleView {
     var arrayOfButtons = [ComponentItemAction]()
     
     var showMore = false
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var linkAction: ((_ text: String?) -> Void)!
     override func applyBubbleMask() {
         //nothing to put here
     }
@@ -55,6 +55,9 @@ class TableListBubbleView: BubbleView {
         self.tableView.isScrollEnabled = false
         self.tableView.register(Bundle.xib(named: listCellIdentifier), forCellReuseIdentifier: listCellIdentifier)
 
+        if #available(iOS 15.0, *){
+            self.tableView.sectionHeaderTopPadding = 0.0
+        }
         let views: [String: UIView] = ["tableView": tableView]
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[tableView]-10-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[tableView]-10-|", options: [], metrics: nil, views: views))
@@ -66,11 +69,10 @@ class TableListBubbleView: BubbleView {
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
         cardView.layer.rasterizationScale =  UIScreen.main.scale
-        cardView.layer.shadowColor = UIColor(red: 232/255, green: 232/255, blue: 230/255, alpha: 1).cgColor
-        cardView.layer.shadowOpacity = 1
-        cardView.layer.shadowOffset =  CGSize(width: 0.0, height: -3.0)
-        cardView.layer.shadowRadius = 6.0
-        cardView.layer.shouldRasterize = true
+        cardView.layer.cornerRadius = 4.0
+        cardView.layer.borderWidth = 1.0
+        cardView.layer.borderColor = UIColor.lightGray.cgColor
+        cardView.clipsToBounds = true
         cardView.backgroundColor =  UIColor.white
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
@@ -225,9 +227,9 @@ extension TableListBubbleView: UITableViewDelegate,UITableViewDataSource{
         let elements = arrayOfComponents[0].rowItems?[sender.view!.tag]
         if elements?.action == nil {
             if elements?.title?.type == "text"{
-                self.optionsAction(elements?.title?.text?.title,elements?.title?.text?.payload ?? elements?.title?.text?.title)
+                self.optionsAction?(elements?.title?.text?.title,elements?.title?.text?.payload ?? elements?.title?.text?.title)
             }else{
-                self.linkAction(elements?.title?.url?.link)
+                self.linkAction?(elements?.title?.url?.link)
             }
         }
     }
@@ -235,10 +237,10 @@ extension TableListBubbleView: UITableViewDelegate,UITableViewDataSource{
         let elements = arrayOfComponents[indexPath.section].rowItems?[indexPath.row]
         if elements?.action?.type != nil {
             if elements?.action?.type == "postback"{
-                self.optionsAction(elements?.action?.title,elements?.action?.payload ?? elements?.action?.title)
+                self.optionsAction?(elements?.action?.title,elements?.action?.payload ?? elements?.action?.title)
             }else{
                 if elements?.action?.url != nil {
-                    self.linkAction(elements?.action?.url)
+                    self.linkAction?(elements?.action?.url)
                 }
             }
         }

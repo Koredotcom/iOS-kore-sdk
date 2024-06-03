@@ -26,6 +26,8 @@ class ViewController: UIViewController {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
+     // MARK: Custom Template Injection
+     //botConnect.customTemplatesFromCustomer(numbersOfViews: [SampleView1(),SearchGridTemplate()],customerTemplaateTypes: ["advancedListTemplate","search_grid_template"])
     */
     
     @IBAction func connectBtnAction(_ sender: Any) {

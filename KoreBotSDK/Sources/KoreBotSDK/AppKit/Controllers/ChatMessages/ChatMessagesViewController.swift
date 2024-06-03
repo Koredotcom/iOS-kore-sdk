@@ -483,7 +483,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }else if (templateType == "cardTemplate"){
             return .cardTemplate
         }
-        return .text
+        else if templateType == "text"{
+            return .text
+        }
+        return .noTemplate
     }
     
     func onReceiveMessage(object: BotMessageModel?) -> (Message?, String?) {

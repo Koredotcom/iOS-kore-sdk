@@ -47,6 +47,9 @@ var boldCustomFont = "HelveticaNeue-Bold"
 var semiBoldCustomFont = "HelveticaNeue-Semibold"
 var italicCustomFont =  "HelveticaNeue-Italic"
 
+var arrayOfViews = [BubbleView?]()
+var arrayOfTemplateTypes = [String]()
+
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)
@@ -133,5 +136,70 @@ open class Utilities: NSObject {
             }
         }
         return false
+    }
+    
+    public static func getComponentTypes(_ templateType: String,_ tabledesign:String) -> ComponentType {
+        if (templateType == "quick_replies") {
+            return .quickReply
+        } else if (templateType == "buttonn") {
+            return .options
+        }else if (templateType == "list") {
+            return .list
+        }else if (templateType == "carousel") {
+            return .carousel
+        }else if (templateType == "piechart" || templateType == "linechart" || templateType == "barchart") {
+            return .chart
+        }else if (templateType == "table"  && tabledesign == "regular") {
+            return .table
+        }
+        else if (templateType == "table"  && tabledesign == "responsive") {
+            return .responsiveTable
+        }
+        else if (templateType == "mini_table") {
+            return .minitable
+        }
+        else if (templateType == "menu") {
+            return .menu
+        }
+        else if (templateType == "listView") {
+            return .newList
+        }
+        else if (templateType == "tableList") {
+            return .tableList
+        }
+        else if (templateType == "daterange" || templateType == "dateTemplate") {
+            return .calendarView
+        }
+        else if (templateType == "quick_replies_welcome" || templateType == "button"){
+            return .quick_replies_welcome
+        }
+        else if (templateType == "Notification") {
+            return .notification
+        }
+        else if (templateType == "multi_select") {
+            return .multiSelect
+        }
+        else if (templateType == "listWidget") {
+            return .list_widget
+        }
+        else if (templateType == "feedbackTemplate") {
+            return .feedbackTemplate
+        }
+        else if (templateType == "form_template") {
+            return .inlineForm
+        }
+        else if (templateType == "dropdown_template") {
+            return .dropdown_template
+        }else if (templateType == "custom_table")
+        {
+            return .custom_table
+        }else if (templateType == "advancedListTemplate"){
+            return .advancedListTemplate
+        }else if (templateType == "cardTemplate"){
+            return .cardTemplate
+        }else if templateType == "text"{
+            return .text
+        }
+        return .noTemplate
     }
 }

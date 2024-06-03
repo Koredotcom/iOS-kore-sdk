@@ -24,11 +24,11 @@ class InLineFormBubbleView: BubbleView {
     var textFBgV: UIView!
     var inlineTextField: UITextField!
     var inlineButton: UIButton!
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
-    NSAttributedString.Key.font : UIFont(name: "Gilroy-Medium", size: 15.0) as Any,
-    NSAttributedString.Key.foregroundColor : UIColor.lightGray]
+    NSAttributedString.Key.font : UIFont(name: mediumCustomFont, size: 15.0) as Any,
+    NSAttributedString.Key.foregroundColor : BubbleViewUserChatTextColor]
     var arrayOfTextFieldsText = NSMutableArray()
     
     override func prepareForReuse() {
@@ -39,7 +39,7 @@ class InLineFormBubbleView: BubbleView {
         super.initialize()
         
         self.headingLabel = KREAttributedLabel(frame: CGRect.zero)
-        self.headingLabel.textColor = Common.UIColorRGB(0x444444)
+        self.headingLabel.textColor = BubbleViewBotChatTextColor
         self.headingLabel.backgroundColor = UIColor.clear
         self.headingLabel.mentionTextColor = Common.UIColorRGB(0x8ac85a)
         self.headingLabel.hashtagTextColor = Common.UIColorRGB(0x8ac85a)
@@ -112,7 +112,7 @@ class InLineFormBubbleView: BubbleView {
         for _ in 0..<textfeilds.count{
             tableviewHeight += 70.0
         }
-        return CGSize(width: BubbleViewMaxWidth-60, height: headingLabelSize.height + tableviewHeight + 40)
+        return CGSize(width: BubbleViewMaxWidth-60, height: headingLabelSize.height + tableviewHeight + 60)
     }
     
     @objc func tapsOnInlineFormBtn(_ sender:UIButton) {
@@ -130,12 +130,13 @@ class InLineFormBubbleView: BubbleView {
                 let textStr = arrayOfTextFieldsText[i] as? String
                 if formFeildType == "password"{
                     let secureTxt = textStr?.regEx()
-                    finalString.append("\(formFeildType): \(textStr!) ")
-                    secureString.append("\(formFeildType): \(secureTxt!) ")
+                    finalString.append("\(textStr!) ")
+                    secureString.append("\(secureTxt!) ")
                     isSecure = true
                 }else{
-                    finalString.append("\(formFeildType): \(textStr!) ")
-                    secureString.append("\(formFeildType): \(textStr!) ")
+                    finalString.append("\(textStr!) ")
+                    secureString.append("\(textStr!) ")
+                    //secureString.append("\(formFeildType): \(textStr!) ")
                 }
             }
         }
@@ -149,9 +150,9 @@ class InLineFormBubbleView: BubbleView {
             }
             tableView.reloadData()
             if isSecure {
-                self.optionsAction(secureString, finalString)
+                self.optionsAction?(secureString, finalString)
             }else{
-                self.optionsAction(finalString, finalString)
+                self.optionsAction?(finalString, finalString)
             }
         }
            
@@ -198,7 +199,7 @@ extension InLineFormBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.tiltLbl.text = "\(title) :"
         cell.textFeildName.placeholder = placeHolder
         
-        cell.tiltLbl .textColor = Common.UIColorRGB(0x444444)
+        cell.tiltLbl .textColor = BubbleViewBotChatTextColor
         cell.textFeildName.borderStyle = .bezel
         if formFeildType == "password"{
             cell.textFeildName.isSecureTextEntry = true
@@ -213,7 +214,7 @@ extension InLineFormBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.textFeildName.translatesAutoresizingMaskIntoConstraints = false
         let attributes = [
             NSAttributedString.Key.foregroundColor: UIColor.clear,
-            NSAttributedString.Key.font : UIFont(name: "Gilroy-Medium", size: 15)!
+            NSAttributedString.Key.font : UIFont(name: mediumCustomFont, size: 15) ?? UIFont.systemFont(ofSize: 15)
         ]
         cell.textFeildName.attributedPlaceholder = NSAttributedString(string: "", attributes:attributes)
         return cell
@@ -231,11 +232,11 @@ extension InLineFormBubbleView: UITableViewDelegate,UITableViewDataSource{
         sendButton.clipsToBounds = true
         sendButton.layer.cornerRadius = 5
         sendButton.setTitleColor(UIColor.white, for: .normal)
-        sendButton.titleLabel?.font = UIFont(name: "Gilroy-Bold", size: 14.0)!
+        sendButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0)
         view.addSubview(sendButton)
         sendButton.addTarget(self, action: #selector(self.tapsOnInlineFormBtn(_:)), for: .touchUpInside)
         sendButton.tag = section
-        let attributeString = NSMutableAttributedString(string: (footerButtonTitle ?? "Send") as String,
+        let attributeString = NSMutableAttributedString(string: (footerButtonTitle ?? "Submit") as String,
                                                                    attributes: yourAttributes)
                    sendButton.setAttributedTitle(attributeString, for: .normal)
         

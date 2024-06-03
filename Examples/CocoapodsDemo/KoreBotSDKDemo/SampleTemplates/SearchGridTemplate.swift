@@ -17,7 +17,7 @@ class SearchGridTemplate: BubbleView {
         textLabel.font = UIFont.systemFont(ofSize: 14)
         textLabel.contentMode = .scaleAspectFit
         textLabel.isHidden = false
-        textLabel.textColor = .white
+        textLabel.textColor = .black
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         return textLabel
     }()

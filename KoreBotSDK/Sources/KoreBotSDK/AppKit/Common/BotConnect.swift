@@ -78,5 +78,11 @@ open class BotConnect: NSObject {
         SDKConfiguration.botConfig.customData = customData as [String: Any]
     }
     
+    public func customTemplatesFromCustomer(numbersOfViews:[BubbleView], customerTemplaateTypes:[String]){
+        arrayOfViews = numbersOfViews
+        arrayOfTemplateTypes = customerTemplaateTypes
+        print(arrayOfViews.count)
+    }
+    
 }
 

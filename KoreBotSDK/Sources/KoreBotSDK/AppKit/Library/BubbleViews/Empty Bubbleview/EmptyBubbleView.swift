@@ -113,8 +113,4 @@ class EmptyBubbleView: BubbleView{
             }
             return CGSize(width: 0.0, height: textSize.height+20)
         }
-        
-        @objc fileprivate func SelectAllButtonAction(_ sender: AnyObject!) {
-
-        }
     }

@@ -9,6 +9,7 @@
 import UIKit
 
 class NewListBubbleView: BubbleView {
+    let bundle = Bundle.sdkModule
     var tileBgv: UIView!
     var titleLbl: UILabel!
     var tableView: UITableView!
@@ -28,8 +29,8 @@ class NewListBubbleView: BubbleView {
     var arrayOfButtons = [ComponentItemAction]()
     
     var showMore = false
-    public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
-    public var linkAction: ((_ text: String?) -> Void)!
+   // public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+   // public var linkAction: ((_ text: String?) -> Void)!
     override func applyBubbleMask() {
         //nothing to put here
         if(self.maskLayer == nil){
@@ -202,8 +203,12 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
             cell.imageViewWidthConstraint.constant = 0.0
         }else{
             cell.imageViewWidthConstraint.constant = 50.0
-            let url = URL(string: elements.imageURL!)
-            cell.imgView.af.setImage(withURL: url!, placeholderImage: UIImage(named: "placeholder_image"))
+            if let urlstr = elements.imageURL, let url = URL(string: urlstr){
+                cell.imgView.af.setImage(withURL: url, placeholderImage:  UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil))
+            }else{
+                cell.imgView.image = UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil)
+            }
+            
         }
         cell.titleLabel.numberOfLines = 1
         cell.titleLabel.text = elements.title
@@ -217,10 +222,10 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
         let elements = arrayOfComponents[indexPath.row]
         if elements.action?.type != nil {
             if elements.action?.type == "postback"{
-                self.optionsAction(elements.action?.title,elements.action?.payload ?? elements.action?.title)
+                self.optionsAction?(elements.action?.title,elements.action?.payload ?? elements.action?.title)
             }else{
                 if elements.action?.fallback_url != nil {
-                    self.linkAction(elements.action?.fallback_url)
+                    self.linkAction?(elements.action?.fallback_url)
                 }
             }
         }
