@@ -27,9 +27,8 @@ class ListWidgetBubbleView: BubbleView {
     var headerUrl: String?
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
-        NSAttributedString.Key.font : UIFont(name: boldCustomFont, size: 15.0) as Any,
-        NSAttributedString.Key.foregroundColor : themeColor,
-        NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue]
+        NSAttributedString.Key.font : UIFont(name: mediumCustomFont, size: 12.0) as Any,
+        NSAttributedString.Key.foregroundColor : themeColor]
     
     var arrayOfElements = [KREListItem]()
     let listItemViewCellIdentifier = "KREListItemViewCell"
@@ -75,10 +74,16 @@ class ListWidgetBubbleView: BubbleView {
         self.tableView.isScrollEnabled = true
         self.tableView.register(KREListItemViewCell.self, forCellReuseIdentifier: listItemViewCellIdentifier)
         
+        if #available(iOS 15.0, *){
+            self.tableView.sectionHeaderTopPadding = 0.0
+        }
+        
         let views: [String: UIView] = ["tableView": tableView]
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[tableView]-5-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
-        NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+           NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+        }
         
     }
     
@@ -95,28 +100,26 @@ class ListWidgetBubbleView: BubbleView {
         cardView.layer.shouldRasterize = true
         cardView.backgroundColor =  UIColor.white
         
-        
         showMoreButton = UIButton(frame: CGRect.zero)
         showMoreButton.backgroundColor = .clear
         showMoreButton.translatesAutoresizingMaskIntoConstraints = false
-        showMoreButton.clipsToBounds = true
-        showMoreButton.layer.cornerRadius = 5
-        showMoreButton.setTitleColor(.blue, for: .normal)
-        showMoreButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-        showMoreButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0)
-        self.addSubview(showMoreButton)
-        showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.right
+        showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
         showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
         let btnTitle: String = "Show More"
         let attributeString = NSMutableAttributedString(string: btnTitle,
                                                         attributes: yourAttributes)
         showMoreButton.setAttributedTitle(attributeString, for: .normal)
+        showMoreButton.layer.cornerRadius = 5
+        showMoreButton.layer.borderWidth = 1
+        showMoreButton.layer.borderColor = themeColor.cgColor
+        showMoreButton.clipsToBounds = true
+        self.addSubview(showMoreButton)
         
         
         let cardViews: [String: UIView] = ["cardView": cardView, "showMoreButton":showMoreButton]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-[showMoreButton(30)]-0-|", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-10-[showMoreButton(30)]-0-|", options: [], metrics: nil, views: cardViews))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[showMoreButton]-0-|", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[showMoreButton(100)]-0-|", options: [], metrics: nil, views: cardViews))
         
     }
     
@@ -156,7 +159,7 @@ class ListWidgetBubbleView: BubbleView {
             finalHeight += cellHeight
         }
         moreButtonHeight = arrayOfElements.count > rowsDataLimit ? 30 : 0
-        return CGSize(width: 0.0, height: 10+tableView.contentSize.height+moreButtonHeight+headerHeight)
+        return CGSize(width: 0.0, height: 20+tableView.contentSize.height+moreButtonHeight+headerHeight)
     }
     
     // MARK: -

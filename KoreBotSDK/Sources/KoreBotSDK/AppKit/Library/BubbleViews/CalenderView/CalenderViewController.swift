@@ -136,10 +136,10 @@ class CalenderViewController: UIViewController {
         let dateFormatterGet = DateFormatter()
         dateFormatterGet.dateFormat = formte
         let fromDate: NSDate? = dateFormatterGet.date(from: startdateString!) as NSDate?
-        let startDateNew = (dateFormatterGet.string(from: fromDate! as Date))
+        let startDateNew = (dateFormatterGet.string(from: fromDate as? Date ?? Date()))
         print(startDateNew)
         let toDate: NSDate? = dateFormatterGet.date(from: endDateString!) as NSDate?
-        let toDateNew = (dateFormatterGet.string(from: toDate! as Date))
+        let toDateNew = (dateFormatterGet.string(from: toDate as? Date ?? Date()))
         print(toDateNew)
         
         

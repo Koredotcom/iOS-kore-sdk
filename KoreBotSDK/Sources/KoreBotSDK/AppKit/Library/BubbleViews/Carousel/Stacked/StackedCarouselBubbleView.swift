@@ -174,7 +174,7 @@ extension StackedCarouselBubbleView : UICollectionViewDelegate, UICollectionView
         
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
+        return UIEdgeInsets(top: 5.0, left: 15.0, bottom: 5.0, right: 5.0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

@@ -19,7 +19,7 @@ class FeedbackBubbleView: BubbleView {
     let arrayOfEmojis = ["rating_1","rating_2","rating_3","rating_4","rating_5"]
     var arrayOfSmiley = [SmileyArraysAction]()
     var floatRatingView: FloatRatingView!
-    
+    var feedBackView = "star"
     let yourAttributes : [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.font : UIFont(name: boldCustomFont, size: 15.0) as Any,
         NSAttributedString.Key.foregroundColor : UIColor.blue,
@@ -79,8 +79,8 @@ class FeedbackBubbleView: BubbleView {
         floatRatingView.delegate = self
         floatRatingView.contentMode = UIView.ContentMode.scaleAspectFit
         floatRatingView.type = .wholeRatings
-        floatRatingView.emptyImage = UIImage(named: "StarEmpty")
-        floatRatingView.fullImage = UIImage(named: "StarFull")
+        floatRatingView.emptyImage = UIImage(named: "StarEmpty", in: bundle, compatibleWith: nil)
+        floatRatingView.fullImage = UIImage(named: "StarFull", in: bundle, compatibleWith: nil)
         floatRatingView.minRating = 1
         floatRatingView.maxRating = 5
         floatRatingView.rating = 0
@@ -140,15 +140,16 @@ class FeedbackBubbleView: BubbleView {
                                                 return
                     }
                 self.titleLbl.text = allItems.text ?? ""
-                
-                if allItems.feedbackView! == "emojis"{
+                feedBackView = allItems.feedbackView ?? ""
+                if feedBackView == "emojis"{
                     collectionView.isHidden = false
                     floatRatingView.isHidden = true
                     arrayOfSmiley = allItems.smileyArrays ?? []
-                }else if allItems.feedbackView! == "star"{
+                }else if feedBackView == "star"{
                     collectionView.isHidden = true
                     floatRatingView.isHidden = false
                     arrayOfSmiley = allItems.starArrays?.reversed() ?? []
+                    floatRatingView.maxRating = arrayOfSmiley.count
                 }else{
                     collectionView.isHidden = false
                     floatRatingView.isHidden = true
@@ -177,23 +178,37 @@ extension FeedbackBubbleView : UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if arrayOfSmiley.count > 0{
+        if feedBackView == "emojis" || feedBackView == "star"{
             return  arrayOfSmiley.count
         }
         return  arrayOfEmojis.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! FeedbackCell
-        cell.backgroundColor = .clear
-        cell.imageView.image = UIImage(named: "rating_\(indexPath.item+1)", in: bundle, compatibleWith: nil)
-        return cell
+         if feedBackView == "star"{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! FeedbackCell
+            cell.backgroundColor = .clear
+            return cell
+         }else{
+             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! FeedbackCell
+             cell.backgroundColor = .clear
+             cell.imageView.image = UIImage(named: "rating_\(indexPath.item+1)", in: bundle, compatibleWith: nil)
+             return cell
+         }
+        
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if arrayOfSmiley.count > 0{
-            let elements = arrayOfSmiley[indexPath.item]
-            self.optionsAction?(String(elements.smileyId ?? indexPath.item+1),String(elements.value ?? indexPath.item+1))
-            collectionView.reloadData()
+            if feedBackView == "star"{
+                let elements = arrayOfSmiley[indexPath.item]
+                self.optionsAction?(String(elements.starId ?? indexPath.item+1),String(elements.value ?? indexPath.item+1))
+                collectionView.reloadData()
+            }else{
+                let elements = arrayOfSmiley[indexPath.item]
+                self.optionsAction?(String(elements.smileyId ?? indexPath.item+1),String(elements.value ?? indexPath.item+1))
+                collectionView.reloadData()
+            }
+            
         }else{
             self.optionsAction?(String(indexPath.item+1),String(indexPath.item+1))
             collectionView.reloadData()

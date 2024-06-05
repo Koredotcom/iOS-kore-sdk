@@ -136,6 +136,10 @@ class AdvanceListBubbleView: BubbleView {
         self.cardView = UIView(frame:.zero)
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
+        cardView.layer.cornerRadius = 4.0
+        cardView.layer.borderWidth = 1.0
+        cardView.layer.borderColor = UIColor.init(hexString: templateBoarderColor).cgColor
+        cardView.clipsToBounds = true
         cardView.backgroundColor =  UIColor.white
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))

@@ -23,6 +23,10 @@ class MessageBubbleCell : UITableViewCell {
     var bubbleLeadingConstant = 45.0
     var dateLblTextColor = UIColor(hexString: "#4B4EDE")
     var dateLabelLeadingConstraint: NSLayoutConstraint!
+    var dateLabelTrailingConstraint: NSLayoutConstraint!
+    
+    let defaultSpacing = 20.0
+    let defaultDateSpacing = 23.0
     lazy var dateLabel: UILabel = {
         let dateLabel = UILabel(frame: .zero)
         dateLabel.numberOfLines = 0
@@ -131,7 +135,7 @@ class MessageBubbleCell : UITableViewCell {
            
         }
         
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(bubbleLeadingConstant + 3.0)-[dateLabel]-\(bubbleTrailingConstant + 3.0)-|", options:[], metrics:nil, views:views))
+        //self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(bubbleLeadingConstant + 3.0)-[dateLabel]-\(bubbleTrailingConstant + 3.0)-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(\(senderImageViewWidth))]", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[userImageView(\(userImageViewWidth))]-8-|", options:[], metrics:nil, views:views))
         
@@ -168,13 +172,18 @@ class MessageBubbleCell : UITableViewCell {
         self.bubbleBottomConstraint.priority = UILayoutPriority.defaultHigh
         self.bubbleLeadingConstraint = NSLayoutConstraint(item:self.bubbleContainerView as Any, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier:1.0, constant:bubbleLeadingConstant)
         self.bubbleLeadingConstraint.priority = UILayoutPriority.defaultHigh
+        
         self.bubbleTrailingConstraint = NSLayoutConstraint(item:self.contentView, attribute:.trailing, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.trailing, multiplier:1.0, constant:16.0)
         self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultLow
         
-        self.dateLabelLeadingConstraint = NSLayoutConstraint(item:self.dateLabel as Any, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier:1.0, constant:20.0) //change here
-        self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+        self.dateLabelLeadingConstraint = NSLayoutConstraint(item:self.dateLabel as Any, attribute:.leading, relatedBy:.equal, toItem:self.contentView, attribute:.leading, multiplier:1.0, constant:bubbleLeadingConstant + 3.0) //change here
+        self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultHigh
         
-        self.contentView.addConstraints([self.bubbleTrailingConstraint, self.bubbleLeadingConstraint, self.bubbleBottomConstraint, self.dateLabelLeadingConstraint])
+        
+        self.dateLabelTrailingConstraint = NSLayoutConstraint(item:self.contentView as Any, attribute:.trailing, relatedBy:.equal, toItem:self.dateLabel, attribute:.trailing, multiplier:1.0, constant:(bubbleTrailingConstant + 3.0)) //change here
+        self.dateLabelTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        
+        self.contentView.addConstraints([self.bubbleTrailingConstraint, self.bubbleLeadingConstraint, self.bubbleBottomConstraint, self.dateLabelLeadingConstraint, self.dateLabelTrailingConstraint])
     }
 
     func bubbleType() -> ComponentType {
@@ -300,7 +309,7 @@ class MessageBubbleCell : UITableViewCell {
             }
             let date = dateFormatter.string(from: sentOn)
             let timee = timeFormatter.string(from: sentOn)
-            time = "\(date) \(timee)"
+            time = "\(timee), \(date)"
         }
         
         if is12or24Format{
@@ -349,6 +358,8 @@ class MessageBubbleCell : UITableViewCell {
         self.bubbleTrailingConstraint = nil
         self.bubbleBottomConstraint = nil
         self.bubbleView = nil
+        self.dateLabelTrailingConstraint = nil
+        self.dateLabelLeadingConstraint = nil
     }
 }
 
@@ -359,7 +370,6 @@ class TextBubbleCell : MessageBubbleCell {
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
             self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
             if (tailPosition == .left) {
                 self.bubbleLeadingConstraint.priority = UILayoutPriority.defaultHigh
                 self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultLow
@@ -378,7 +388,7 @@ class QuickReplyBubbleCell : MessageBubbleCell {
     }
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+            
         }
     }
 }
@@ -389,7 +399,7 @@ class ErrorBubbleCell : MessageBubbleCell {
     }
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+            
         }
     }
 }
@@ -400,7 +410,7 @@ class ImageBubbleCell : MessageBubbleCell {
     }
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+            
         }
     }
 }
@@ -412,7 +422,7 @@ class AudioBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+            
         }
     }
 }
@@ -428,7 +438,7 @@ class OptionsBubbleCell : MessageBubbleCell {
         didSet {
             self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+            
         }
     }
 }
@@ -442,7 +452,6 @@ class ListBubbleCell : MessageBubbleCell {
         didSet {
             self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -457,7 +466,6 @@ class CarouselBubbleCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -472,7 +480,7 @@ class PiechartBubbleCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+            
         }
     }
     
@@ -492,7 +500,6 @@ class TableBubbleCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
     
@@ -512,7 +519,7 @@ class MiniTableBubbleCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
         }
     }
     
@@ -546,8 +553,7 @@ class ResponsiveTableBubbleCell : MessageBubbleCell {
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
             
-            //self.dateLabelLeadingConstraint.constant = 20.0
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
         }
     }
     
@@ -565,10 +571,16 @@ class NewListBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+            self.bubbleLeadingConstraint.constant = defaultSpacing
+            self.bubbleTrailingConstraint.constant = defaultSpacing
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+            
+            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
         }
+    }
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        self.senderImageView.isHidden = true
     }
 }
 class TableListBubbleCell : MessageBubbleCell {
@@ -578,10 +590,17 @@ class TableListBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+            self.bubbleLeadingConstraint.constant = defaultSpacing
+            self.bubbleTrailingConstraint.constant = defaultSpacing
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+            
+            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
         }
+    }
+    
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        self.senderImageView.isHidden = true
     }
 }
 
@@ -594,7 +613,6 @@ class CalendarBubbleCell : MessageBubbleCell {
         didSet {
             self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -608,7 +626,6 @@ class QuickRepliesWelcomeCell : MessageBubbleCell {
         didSet {
             self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -623,7 +640,6 @@ class NotificationBubbleCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
     
@@ -642,7 +658,6 @@ class MultiSelectBubbleCell : MessageBubbleCell {
         didSet {
             self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
             
 //            self.bubbleTrailingConstraint.constant = 10
 //            self.bubbleLeadingConstraint.constant = 10
@@ -661,7 +676,6 @@ class ListWidgetBubbleCell : MessageBubbleCell {
         didSet {
             self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -674,7 +688,7 @@ class FeedbackBubbleCell : MessageBubbleCell {
         didSet {
             self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+           
         }
     }
 }
@@ -688,7 +702,7 @@ class InLineFormCell : MessageBubbleCell {
         didSet {
             self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+            
         }
     }
 }
@@ -702,7 +716,7 @@ class DropDownell : MessageBubbleCell {
         didSet {
             self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+            
         }
     }
 }
@@ -717,7 +731,6 @@ class CustomTableCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
     
@@ -735,10 +748,17 @@ class AdvancedListTemplateCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+            self.bubbleLeadingConstraint.constant = defaultSpacing
+            self.bubbleTrailingConstraint.constant = defaultSpacing
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+            
+            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
         }
+    }
+    
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        self.senderImageView.isHidden = true
     }
 }
 class CardTemplateBubbleCell : MessageBubbleCell {
@@ -750,7 +770,6 @@ class CardTemplateBubbleCell : MessageBubbleCell {
         didSet {
             self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -764,7 +783,6 @@ class PDFDownloadCell : MessageBubbleCell {
         didSet {
             self.bubbleTrailingConstraint.constant = 150
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }
@@ -780,7 +798,7 @@ class StackedCarosuelCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = bubbleLeadingConstant
             self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+            
         }
     }
 }
@@ -794,7 +812,7 @@ class AdvancedMultiCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = bubbleLeadingConstant
             self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
+            
 
 //                self.bubbleTrailingConstraint.constant = 10
 //                self.bubbleLeadingConstraint.constant = 10
@@ -813,7 +831,6 @@ class RadioOptionTemplateCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = bubbleLeadingConstant
             self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.priority = UILayoutPriority.defaultLow
         }
     }
 }

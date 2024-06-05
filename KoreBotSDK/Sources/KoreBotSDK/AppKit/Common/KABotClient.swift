@@ -578,7 +578,13 @@ open class KABotClient: NSObject {
             identity = SDKConfiguration.botConfig.identity
         }
         
-        let botInfo: [String: Any] = ["chatBot": chatBotName, "taskBotId": botId]
+        var botInfo: [String: Any] = [:]
+        if SDKConfiguration.botConfig.customData.isEmpty{
+            botInfo = ["chatBot": chatBotName, "taskBotId": botId]
+        }else{
+            let customData: [String: Any] = SDKConfiguration.botConfig.customData
+            botInfo = ["chatBot": chatBotName, "taskBotId": botId,"customData": customData]
+        }
         
         self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: isAnonymous, success: { [weak self] (jwToken) in
             

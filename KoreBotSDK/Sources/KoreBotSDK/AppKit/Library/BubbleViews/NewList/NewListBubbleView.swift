@@ -21,9 +21,8 @@ class NewListBubbleView: BubbleView {
     var isShowMore = false
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
-        NSAttributedString.Key.font : UIFont(name: boldCustomFont, size: 15.0) as Any,
-        NSAttributedString.Key.foregroundColor : themeColor,
-        NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue]
+        NSAttributedString.Key.font : UIFont(name: mediumCustomFont, size: 12.0) as Any,
+        NSAttributedString.Key.foregroundColor : themeColor]
  
     var arrayOfComponents = [ComponentElements]()
     var arrayOfButtons = [ComponentItemAction]()
@@ -60,11 +59,9 @@ class NewListBubbleView: BubbleView {
         self.tileBgv.clipsToBounds = true
         self.tileBgv.layer.borderWidth = 1.0
         self.cardView.addSubview(self.tileBgv)
-        self.tileBgv.backgroundColor = .white //Common.UIColorRGB(0xEDEFF2)
+        self.tileBgv.backgroundColor = BubbleViewLeftTint
         if #available(iOS 11.0, *) {
             self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
-        } else {
-            // Fallback on earlier versions
         }
         
         self.tableView = UITableView(frame: CGRect.zero,style:.plain)
@@ -79,9 +76,12 @@ class NewListBubbleView: BubbleView {
         self.cardView.addSubview(self.tableView)
         self.tableView.isScrollEnabled = false
         self.tableView.register(Bundle.xib(named: listCellIdentifier), forCellReuseIdentifier: listCellIdentifier)
+        if #available(iOS 15.0, *){
+            self.tableView.sectionHeaderTopPadding = 0.0
+        }
 
         let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView]
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
 
@@ -129,7 +129,7 @@ class NewListBubbleView: BubbleView {
         self.addSubview(self.cardView)
         cardView.backgroundColor =  UIColor.clear
         cardView.layer.cornerRadius = 4.0
-        cardView.layer.borderWidth = 1.0
+        cardView.layer.borderWidth = 0.0
         cardView.layer.borderColor = UIColor.init(hexString: templateBoarderColor).cgColor
         cardView.clipsToBounds = true
         let cardViews: [String: UIView] = ["cardView": cardView]
@@ -185,7 +185,7 @@ class NewListBubbleView: BubbleView {
         }else{
              moreButtonHeight = 0.0
         }
-        return CGSize(width: 0.0, height: textSize.height+40+finalHeight+moreButtonHeight)
+        return CGSize(width: 0.0, height: textSize.height+30+finalHeight+moreButtonHeight)
     }
     
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
@@ -260,13 +260,9 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
             let showMoreButton = UIButton(frame: CGRect.zero)
             showMoreButton.backgroundColor = .clear
             showMoreButton.translatesAutoresizingMaskIntoConstraints = false
-            showMoreButton.clipsToBounds = true
-            showMoreButton.layer.cornerRadius = 5
-            showMoreButton.setTitleColor(themeColor, for: .normal)
             showMoreButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-            showMoreButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0)
             view.addSubview(showMoreButton)
-            showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.right
+            showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
             showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
              var btnTitle: String?
             if self.isShowMore{
@@ -276,9 +272,14 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
                      btnTitle = "Show More"
                 }
             }
-           let attributeString = NSMutableAttributedString(string: btnTitle ?? "See More",
-                                                            attributes: yourAttributes)
+            let attributeString = NSMutableAttributedString(string: btnTitle ?? "See More",
+                                                             attributes: yourAttributes)
             showMoreButton.setAttributedTitle(attributeString, for: .normal)
+            showMoreButton.layer.cornerRadius = 5
+            showMoreButton.layer.borderWidth = 1
+            showMoreButton.layer.borderColor = themeColor.cgColor
+            showMoreButton.clipsToBounds = true
+            
             let views: [String: UIView] = ["showMoreButton": showMoreButton]
             view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[showMoreButton(30)]-0-|", options:[], metrics:nil, views:views))
             view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[showMoreButton(100)]-5-|", options:[], metrics:nil, views:views))

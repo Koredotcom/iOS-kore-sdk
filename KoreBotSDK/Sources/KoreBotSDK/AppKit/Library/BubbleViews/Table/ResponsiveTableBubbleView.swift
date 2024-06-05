@@ -28,7 +28,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
 
     var rows: Array<Array<String>> = Array<Array<String>>()
 
-    
+    let bundle = Bundle.sdkModule
     var showMore = false
     
     override func applyBubbleMask() {
@@ -83,7 +83,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
         self.showMoreButton.translatesAutoresizingMaskIntoConstraints = false
         self.showMoreButton.setTitleColor( UIColor(red: 95/255, green: 107/255, blue: 247/255, alpha: 1)
 , for: .normal)
-        self.showMoreButton.titleLabel?.font = UIFont(name: "Lato-Regular", size: 14.0)
+        self.showMoreButton.titleLabel?.font = UIFont(name: regularCustomFont, size: 14.0)
         self.showMoreButton.titleLabel?.font = self.showMoreButton.titleLabel?.font.withSize(14.0)
      
         self.showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
@@ -134,8 +134,8 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
             if indexPaths.contains(indexPath){
                 let subtableViewCell = SubTableViewCell(style: .default, reuseIdentifier: cellReuseIdentifier1)
                 subtableViewCell.backgroundColor = UIColor.white
-
-                subtableViewCell.accessoryView = UIImageView(image: UIImage(named: "arrowSelected"))
+                
+                subtableViewCell.accessoryView = UIImageView(image: UIImage(named: "arrowSelected", in: bundle, compatibleWith: nil))
                 subtableViewCell.rows = data.rows
                 subtableViewCell.headers = data.headers
                 subtableViewCell.sec = indexPath.section
@@ -152,7 +152,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
                 if(row.count > indexPath.row*2+1){
                     cell.secondLbl.text = row[indexPath.row*2+1]
                 }
-                cell.accessoryView = UIImageView(image: UIImage(named: "arrowUnselected"))
+                cell.accessoryView = UIImageView(image: UIImage(named: "arrowUnselected", in: bundle, compatibleWith: nil))
                 cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 22)
                 return cell
                 
@@ -167,7 +167,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
             if(row.count > indexPath.row*2+1){
                 cell.secondLbl.text = row[indexPath.row*2+1]
             }
-            cell.accessoryView = UIImageView(image: UIImage(named: "arrowUnselected"))
+            cell.accessoryView = UIImageView(image: UIImage(named: "arrowUnselected", in: bundle, compatibleWith: nil))
             cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 22)
 
             

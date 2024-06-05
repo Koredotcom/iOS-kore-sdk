@@ -106,7 +106,7 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         cardView.clipsToBounds = true
         cardView.backgroundColor =  UIColor.white
         let cardViews: [String: UIView] = ["cardView": cardView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-3-[cardView]-3-|", options: [], metrics: nil, views: cardViews))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
         NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
 
@@ -320,7 +320,7 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
             }
         }
         
-        return CGSize(width: 0.0, height: finalHeight + textSize.height)
+        return CGSize(width: 0.0, height: finalHeight + textSize.height - 24.0)
     }
     
 }

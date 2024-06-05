@@ -340,6 +340,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.quickReplyView.bgColor = btnBgColor
         self.quickReplyView.textColor = btnTextColor
         self.quickReplyView.boarderColor = btnBoarderColor
+        self.quickReplyView.fontName = mediumCustomFont
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[quickReplyView]|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
         
@@ -548,13 +549,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     
                     if(text.contains("use a web form")){
                         let range: NSRange = text.range(of: "use a web form - ")
-                        let urlString: String? = text.substring(with: NSMakeRange(range.location+range.length, 44))
-                        if (urlString != nil) {
-                            let url: URL = URL(string: urlString!)!
-                            webViewController = SFSafariViewController(url: url)
-                            webViewController.modalPresentationStyle = .custom
-                            present(webViewController, animated: true, completion:nil)
-                        }
+//                        let urlString: String? = text.substring(with: NSMakeRange(range.location+range.length, 44))
+//                        if (urlString != nil) {
+//                            let url: URL = URL(string: urlString!)!
+//                            webViewController = SFSafariViewController(url: url)
+//                            webViewController.modalPresentationStyle = .custom
+//                            present(webViewController, animated: true, completion:nil)
+//                        }
                         ttsBody = "Ok, Please fill in the details and submit"
                     }
                     message.addComponent(textComponent)
@@ -912,7 +913,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             print("Network reachability: \(status)")
             switch status {
             case .reachable(.ethernetOrWiFi), .reachable(.cellular):
-                self.establishBotConnection() //kk
+                self.establishBotConnection() 
                 break
             case .notReachable:
                 fallthrough

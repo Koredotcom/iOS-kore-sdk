@@ -50,7 +50,7 @@ class ExpandedTableViewCell: UITableViewCell {
         valueLbl = UILabel(frame: .zero)
         valueLbl.translatesAutoresizingMaskIntoConstraints = false
         valueLbl.textAlignment = .left
-        valueLbl.font = UIFont(name: "Lato-Regular", size: 16.0)
+        valueLbl.font = UIFont(name: regularCustomFont, size: 16.0)
         valueLbl.font = valueLbl.font.withSize(16.0)
         valueLbl.textColor =  UIColor(red: 38/255, green: 52/255, blue: 74/255, alpha: 1)
         contentView.addSubview(valueLbl)
@@ -66,7 +66,7 @@ class ExpandedTableViewCell: UITableViewCell {
         valueLbl1 = UILabel(frame: .zero)
         valueLbl1.translatesAutoresizingMaskIntoConstraints = false
         valueLbl1.textAlignment = .left
-        valueLbl1.font = UIFont(name: "Lato-Regular", size: 16.0)
+        valueLbl1.font = UIFont(name: regularCustomFont, size: 16.0)
         valueLbl1.font = valueLbl.font.withSize(16.0)
 
         valueLbl1.textColor =  UIColor(red: 38/255, green: 52/255, blue: 74/255, alpha: 1)

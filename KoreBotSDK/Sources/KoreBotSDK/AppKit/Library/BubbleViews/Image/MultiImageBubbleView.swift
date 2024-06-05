@@ -47,6 +47,7 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
                     textlabel.text = ""
                 }
             }
+            textlabel.textColor = BubbleViewBotChatTextColor
             self.collectionView.collectionViewLayout.invalidateLayout()
             self.collectionView.reloadData()
         }
