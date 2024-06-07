@@ -523,15 +523,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     ttsBody = text as String
                     
                     if(text.contains("use a web form")){
-                        let range: NSRange = text.range(of: "use a web form - ")
-                        let urlString: String? = text.substring(with: NSMakeRange(range.location+range.length, 44))
-                        if (urlString != nil) {
-                            let url: URL = URL(string: urlString!)!
-                            webViewController = SFSafariViewController(url: url)
-                            webViewController.modalPresentationStyle = .custom
-                            present(webViewController, animated: true, completion:nil)
-                        }
-                        ttsBody = "Ok, Please fill in the details and submit"
                     }
                     message.addComponent(textComponent)
                 }else{
