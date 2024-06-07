@@ -955,17 +955,13 @@ open class KABotClient: NSObject {
     }
     
     // MARK: get Branding Values request
-    func brandingApiRequest(_ accessToken: String!, success:((_ brandingArray: NSArray) -> Void)?, failure:((_ error: Error) -> Void)?) {
-        let urlString: String =  "\(SDKConfiguration.serverConfig.Branding_SERVER)/workbench/api/workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop"
+    func brandingApiRequest(_ accessToken: String!, success:((_ brandingDic: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+        let urlString: String =  "\(SDKConfiguration.serverConfig.BOT_SERVER)/api/websdkthemes/\(SDKConfiguration.botConfig.botId)/activetheme"
         let authorizationStr = "bearer \(accessToken ?? "")"
         let headers : HTTPHeaders = [
-            "Connection":"Keep-Alive",
-            "Accept-Language": "en_US",
-            "Authorization": authorizationStr,
-            "tenantId": SDKConfiguration.botConfig.tenantId,
-            "Accepts-version": "1",
-            "botid": SDKConfiguration.botConfig.botId,
-            "state": "published"
+            "Keep-Alive": "Connection",
+            "Content-Type": "application/json",
+            "Authorization": authorizationStr
         ]
         
         let dataRequest = sessionManager.request(urlString, method: .get, parameters: [:], headers: headers)
@@ -976,7 +972,7 @@ open class KABotClient: NSObject {
                 return
             }
             
-            if let responseObject = response.value as? NSArray {
+            if let responseObject = response.value as? [String: Any] {
                 success?(responseObject)
             } else {
                 failure?(NSError(domain: "", code: 0, userInfo: [:]))

@@ -256,7 +256,7 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
         cell.bgV.backgroundColor = .clear
         
         cell.textlabel.font = UIFont(name: mediumCustomFont, size: 12.0)
-        cell.textlabel.textAlignment = .left
+        cell.textlabel.textAlignment = .center
         cell.textlabel.textColor = themeColor
         cell.textlabel.numberOfLines = 2
         cell.imagvWidthConstraint.constant = 0.0

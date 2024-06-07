@@ -105,6 +105,9 @@ class AdvanceListBubbleView: BubbleView {
         self.tableView.register(UINib(nibName: AdvanceListGridCellIdentifier, bundle: bundle), forCellReuseIdentifier: AdvanceListGridCellIdentifier)
         self.tableView.register(UINib(nibName: AdvancedListButtonCellIdentifier, bundle: bundle), forCellReuseIdentifier: AdvancedListButtonCellIdentifier)
         
+        if #available(iOS 15.0, *){
+            self.tableView.sectionHeaderTopPadding = 0.0
+        }
 //        tableView.layer.cornerRadius = 5.0
 //        tableView.layer.borderWidth = 1.0
 //        tableView.layer.borderColor = UIColor.lightGray.cgColor
@@ -136,6 +139,9 @@ class AdvanceListBubbleView: BubbleView {
         self.cardView = UIView(frame:.zero)
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
+        cardView.layer.cornerRadius = 4.0
+        cardView.layer.borderWidth = 1.0
+        cardView.layer.borderColor = UIColor.lightGray.cgColor
         cardView.backgroundColor =  UIColor.white
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))

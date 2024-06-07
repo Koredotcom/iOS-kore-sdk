@@ -44,7 +44,7 @@ class EmptyBubbleView: BubbleView{
             self.tileBgv.clipsToBounds = true
             self.tileBgv.layer.borderWidth = 1.0
             self.cardView.addSubview(self.tileBgv)
-            self.tileBgv.backgroundColor = .white
+            self.tileBgv.backgroundColor = BubbleViewLeftTint
             if #available(iOS 11.0, *) {
                 self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
             }
@@ -98,7 +98,7 @@ class EmptyBubbleView: BubbleView{
                         let allItems = try? jsonDecoder.decode(Componentss.self, from: jsonData) else {
                                                     return
                         }
-                    self.titleLbl.text = allItems.text_message ?? "No template "
+                    self.titleLbl.text = allItems.text_message ?? "Template not available"
                 }
             }
         }

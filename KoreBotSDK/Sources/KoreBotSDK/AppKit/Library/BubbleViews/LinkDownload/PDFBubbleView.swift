@@ -84,13 +84,13 @@ class PDFBubbleView: BubbleView {
         let downloadImage = UIImage(named: "download", in: bundle, compatibleWith: nil)
         let tintedImage = downloadImage?.withRenderingMode(.alwaysTemplate)
         downloadBtn.setImage(tintedImage, for: .normal)
-        downloadBtn.tintColor = themeColor
+        downloadBtn.tintColor = BubbleViewBotChatTextColor
         
         activityView = UIActivityIndicatorView(frame: CGRect.zero)
         activityView.translatesAutoresizingMaskIntoConstraints = false
         cardView.addSubview(activityView)
         activityView.isHidden = true
-        activityView.color = themeColor
+        activityView.color = BubbleViewBotChatTextColor
         
        
         self.maskview = UIView(frame:.zero)

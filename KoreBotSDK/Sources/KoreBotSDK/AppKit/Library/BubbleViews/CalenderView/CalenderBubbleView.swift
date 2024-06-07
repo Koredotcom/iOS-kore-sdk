@@ -45,13 +45,10 @@ class CalenderBubbleView: BubbleView {
         self.tileBgv.clipsToBounds = true
         self.tileBgv.layer.borderWidth = 1.0
         self.cardView.addSubview(self.tileBgv)
-        self.tileBgv.backgroundColor = .white //Common.UIColorRGB(0xEDEFF2)
+        self.tileBgv.backgroundColor = BubbleViewLeftTint
         if #available(iOS 11.0, *) {
             self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
-        } else {
-            // Fallback on earlier versions
         }
-        
         let views: [String: UIView] = ["tileBgv": tileBgv]
                self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-5-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]", options: [], metrics: nil, views: views))

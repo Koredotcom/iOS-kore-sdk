@@ -88,7 +88,7 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         self.tileBgv.layer.shouldRasterize = true
         self.tileBgv.layer.cornerRadius = 2.0
         self.tileBgv.clipsToBounds = true
-        self.tileBgv.backgroundColor =  .white
+        self.tileBgv.backgroundColor =  BubbleViewLeftTint
         if #available(iOS 11.0, *) {
             self.tileBgv.roundCorners([.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.clear, borderWidth: 1.5)
         } else {
@@ -112,7 +112,7 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         
         
         self.titleLbl = KREAttributedLabel(frame: CGRect.zero)
-        self.titleLbl.textColor = Common.UIColorRGB(0x484848)
+        self.titleLbl.textColor = BubbleViewBotChatTextColor
         self.titleLbl.font = UIFont(name: mediumCustomFont, size: 16.0)
         self.titleLbl.numberOfLines = 0
         self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping

@@ -54,7 +54,7 @@ class ComposeBarView: UIView {
         self.growingTextView.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .horizontal)
         
         self.growingTextView.textView.tintColor = .black
-        self.growingTextView.textView.textColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetTextColor) ?? "#26344A")
+        self.growingTextView.textView.textColor = UIColor.init(hexString: (brandingShared.widgetFooterTextColor) ?? "#26344A")
         self.growingTextView.textView.textAlignment = .right
         self.growingTextView.maxNumberOfLines = 10
         self.growingTextView.font = UIFont(name: regularCustomFont, size: 14.0) ?? UIFont.systemFont(ofSize: 14.0)
@@ -63,7 +63,7 @@ class ComposeBarView: UIView {
         self.growingTextView.backgroundColor = .white
         self.growingTextView.layer.cornerRadius = 10.0
         self.growingTextView.isUserInteractionEnabled = false
-        //self.growingTextView.textView.text = "text Template with video attachment"//"Pie Chart"//"Quick Replies"
+        //self.growingTextView.textView.text = ""
         
         let attributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: UIFont(name: regularCustomFont, size: 14.0) ?? UIFont.systemFont(ofSize: 14.0), NSAttributedString.Key.foregroundColor: Common.UIColorRGB(0xB5B9BA)]
         self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Message...", attributes:attributes)
@@ -92,7 +92,6 @@ class ComposeBarView: UIView {
         self.sendButton.layer.cornerRadius = 5
         self.sendButton.setTitleColor(Common.UIColorRGB(0xFFFFFF), for: .normal)
         self.sendButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-        //self.sendButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0)
         self.sendButton.addTarget(self, action: #selector(self.sendButtonAction(_:)), for: .touchUpInside)
         self.sendButton.isHidden = true
         self.sendButton.contentEdgeInsets = UIEdgeInsets(top: 9.0, left: 3.0, bottom: 7.0, right: 3.0)
@@ -119,7 +118,6 @@ class ComposeBarView: UIView {
         self.attachmentButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
         self.attachmentButton.setBackgroundImage (UIImage(named: "attach", in: bundle, compatibleWith: nil), for: .normal)
         self.attachmentButton.imageView?.contentMode = .scaleAspectFill
-        //self.attachmentButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0)
         self.attachmentButton.addTarget(self, action: #selector(self.composeBarAttachmentButtonAction(_:)), for: .touchUpInside)
         
         self.attachmentButton.contentEdgeInsets = UIEdgeInsets(top: 9.0, left: 3.0, bottom: 7.0, right: 3.0)
@@ -160,6 +158,41 @@ class ComposeBarView: UIView {
        
        self.textViewTrailingConstraint = NSLayoutConstraint.init(item: self, attribute: .trailing, relatedBy: .equal, toItem: self.growingTextView, attribute: .trailing, multiplier: 1.0, constant: 15.0)
        self.addConstraint(self.textViewTrailingConstraint)
+    }
+    
+    func brandingChnages(){
+        
+        let attributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: UIFont(name: regularCustomFont, size: 14.0) ?? UIFont.systemFont(ofSize: 14.0), NSAttributedString.Key.foregroundColor: UIColor.init(hexString: (brandingShared.widgetFooterPlaceholderColor) ?? "#000000")]
+        self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Message...", attributes:attributes)
+        
+        self.growingTextView.textView.tintColor = UIColor.init(hexString: (brandingShared.widgetFooterTextColor) ?? "#26344A")
+        self.growingTextView.textView.textColor = UIColor.init(hexString: (brandingShared.widgetFooterTextColor) ?? "#26344A")
+        self.growingTextView.layer.borderColor =  UIColor.init(hexString: (brandingShared.widgetFooterBorderColor) ?? "#000000").cgColor
+        self.growingTextView.layer.borderWidth = 1.0
+        self.growingTextView.clipsToBounds = true
+        
+        let buttonBgColor = UIColor.init(hexString: "#a9acb0")
+        let attachmentImage = UIImage(named: "attach", in: bundle, compatibleWith: nil)
+        let tintedAttachmentImage = attachmentImage?.withRenderingMode(.alwaysTemplate)
+        attachmentButton.setBackgroundImage(tintedAttachmentImage, for: .normal)
+        attachmentButton.tintColor = buttonBgColor
+    
+        let speachTxtImage = UIImage(named: "audio_icon-1", in: bundle, compatibleWith: nil)
+        let tintedSpeachTxtImageImage = speachTxtImage?.withRenderingMode(.alwaysTemplate)
+        speechToTextButton.setImage(tintedSpeachTxtImageImage, for: .normal)
+        speechToTextButton.tintColor = buttonBgColor
+        
+        
+        let menuImage = UIImage(named: "Menu", in: bundle, compatibleWith: nil)
+        let tintedMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
+        menuButton.setImage(tintedMenuImage, for: .normal)
+        menuButton.tintColor = buttonBgColor
+        
+        let sendBtnImage = UIImage(named: "send", in: bundle, compatibleWith: nil)
+        let tintedsendImage = sendBtnImage?.withRenderingMode(.alwaysTemplate)
+        sendButton.setImage(tintedsendImage, for: .normal)
+        sendButton.tintColor = buttonBgColor
+        
     }
     
     //MARK: Public methods

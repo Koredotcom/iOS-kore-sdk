@@ -15,6 +15,7 @@
                 <outlet property="attachmentContainerHeightConstraint" destination="CQD-tV-mK8" id="Xo1-2q-uuZ"/>
                 <outlet property="attachmentContainerView" destination="IHl-t2-9Gj" id="dXK-nb-CQW"/>
                 <outlet property="audioComposeContainerView" destination="h7Y-kP-4Xx" id="SEi-cL-oTX"/>
+                <outlet property="backBtn" destination="ZaQ-rh-0bb" id="mP8-fP-WCA"/>
                 <outlet property="backgroungImageView" destination="ni7-ts-YyA" id="AfI-X9-IDG"/>
                 <outlet property="bottomConstraint" destination="l2o-ug-Hr8" id="NEt-NH-Siu"/>
                 <outlet property="chatMaskview" destination="NJH-pd-1Go" id="EbM-Mk-zpq"/>

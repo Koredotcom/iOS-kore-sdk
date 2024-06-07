@@ -39,7 +39,8 @@ class LeftMenuView: UIView {
     }
     
     fileprivate func setupViews() {
-        self.backgroundColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetBodyColor) ?? "#f3f3f5")
+        let brandingShared = BrandingSingleton.shared
+        self.backgroundColor = UIColor.init(hexString: (brandingShared.widgetBodyColor) ?? "#f3f3f5")
         self.tableView = UITableView(frame: CGRect.zero,style:.plain)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.backgroundColor = .clear
@@ -107,7 +108,7 @@ extension LeftMenuView: UITableViewDelegate,UITableViewDataSource{
         
         let tasks =  self.arrayOftasks[indexPath.row]
         cell.titleLabel.text = tasks.title
-        cell.titleLabel.textColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetTextColor) ?? "#000000")
+        cell.titleLabel.textColor = UIColor.init(hexString: (brandingShared.widgetTextColor) ?? "#000000")
         let image = Utilities.base64ToImage(base64String: tasks.icon)
         cell.iconImageV.image = image.withRenderingMode(.alwaysTemplate)
         

@@ -214,7 +214,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         
         
         self.titleLbl = UILabel(frame: CGRect.zero)
-        self.titleLbl.textColor = .black
+        self.titleLbl.textColor = BubbleViewBotChatTextColor
         self.titleLbl.font = UIFont(name: mediumCustomFont, size: 16.0)
         self.titleLbl.numberOfLines = 0
         self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping

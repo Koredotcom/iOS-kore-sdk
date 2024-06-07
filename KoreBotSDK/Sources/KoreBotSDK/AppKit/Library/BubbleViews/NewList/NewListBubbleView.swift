@@ -79,6 +79,9 @@ class NewListBubbleView: BubbleView {
         self.cardView.addSubview(self.tableView)
         self.tableView.isScrollEnabled = false
         self.tableView.register(Bundle.xib(named: listCellIdentifier), forCellReuseIdentifier: listCellIdentifier)
+        if #available(iOS 15.0, *){
+            self.tableView.sectionHeaderTopPadding = 0.0
+        }
 
         let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView]
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
