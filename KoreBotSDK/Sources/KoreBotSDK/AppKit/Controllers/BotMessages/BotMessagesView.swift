@@ -542,7 +542,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     }
     
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 20.0
+        return 0.0 //20
     }
     
     // MARK:- KREFetchedResultsControllerDelegate methods

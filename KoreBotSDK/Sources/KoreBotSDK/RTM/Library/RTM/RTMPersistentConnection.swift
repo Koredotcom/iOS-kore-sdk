@@ -114,6 +114,8 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
                 }
             case "user_message":
                 connectionDelegate?.didReceivedUserMessage(responseObject)
+            case "events":
+                connectionDelegate?.didReceivedUserMessage(responseObject)
             default:
                 break
             }
@@ -261,6 +263,8 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
                 }
             case "user_message":
                 connectionDelegate?.didReceivedUserMessage(responseObject)
+            case "events":
+                connectionDelegate?.didReceivedUserMessage(responseObject)
             default:
                 break
             }
@@ -335,6 +339,45 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
             dictionary.setValue(meta, forKey: "meta")
             
             debugPrint("send: \(dictionary)")
+            
+            let jsonData = try! JSONSerialization.data(withJSONObject: dictionary, options: JSONSerialization.WritingOptions.prettyPrinted)
+            self.websocket?.write(data: jsonData)
+        } else {
+            print("Socket is in CONNECTING / CLOSING / CLOSED state")
+        }
+    }
+    
+    // MARK: AgentChat Events
+    open func sendEventToAgentChat(_ message: String, parameters: [String: Any], options: [String: Any]?, eventName: String?, messageId: String?) {
+        if (isConnected) {
+            
+            print("Socket is in OPEN state")
+            let dictionary: NSMutableDictionary = NSMutableDictionary()
+            let messageObject: NSMutableDictionary = NSMutableDictionary()
+            messageObject.addEntries(from: ["body": message, "attachments":[], "customData": parameters] as [String : Any])
+            if let object = options {
+                messageObject.addEntries(from: object)
+            }
+            
+            dictionary.setObject(messageObject, forKey: "message" as NSCopying)
+            dictionary.setObject("/bot.message", forKey: "resourceid" as NSCopying)
+            if (self.botInfoParameters != nil) {
+                dictionary.setObject(self.botInfoParameters as Any, forKey: "botInfo" as NSCopying)
+            }
+            let uuid: String = Constants.getUUID()
+            if let id =  messageId, id != ""{
+                dictionary.setObject(id, forKey: "id" as NSCopying)
+            }else{
+                dictionary.setObject(uuid, forKey: "id" as NSCopying)
+            }
+            dictionary.setObject(uuid, forKey: "clientMessageId" as NSCopying)
+            dictionary.setObject("iOS", forKey: "client" as NSCopying)
+            dictionary.setObject(eventName ?? "", forKey: "event" as NSCopying)
+            
+            let meta = ["timezone": TimeZone.current.identifier, "locale": Locale.current.identifier]
+            dictionary.setValue(meta, forKey: "meta")
+            
+            debugPrint("Agent chat end: \(dictionary)")
             
             let jsonData = try! JSONSerialization.data(withJSONObject: dictionary, options: JSONSerialization.WritingOptions.prettyPrinted)
             self.websocket?.write(data: jsonData)

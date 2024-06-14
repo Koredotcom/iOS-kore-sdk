@@ -226,7 +226,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @IBAction func tapsOnBackBtnAct(_ sender: Any) {
-        botClosed()
+        if isAgentConnect{
+            self.botClient.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
+            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                self.botClosed()
+            }
+        }else{
+            self.botClosed()
+        }
     }
     
     
@@ -798,6 +805,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         NotificationCenter.default.addObserver(self, selector: #selector(showPDFViewController), name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showPDFErrorMeesage), name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willTerminate(_:)), name: UIApplication.willTerminateNotification, object: nil)
     }
     
     func removeNotifications() {
@@ -880,6 +888,23 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         stopMonitoringForReachability()
     }
     
+    @objc func willTerminate(_ notification: Notification) {
+        if isAgentConnect{
+            self.botClient.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
+            sleep(1)
+        }
+    }
+    func showTypingToAgent(_: ComposeBarView){
+        if isAgentConnect{
+            self.botClient.sendEventToAgentChat(eventName: "typing", messageId: "")
+        }
+    }
+    func stopTypingToAgent(_: ComposeBarView){
+        if isAgentConnect{
+            self.botClient.sendEventToAgentChat(eventName: "stop_typing", messageId: "")
+        }
+    }
+    
     @objc func startMonitoringForReachability() {
         let networkReachabilityManager = NetworkReachabilityManager.default
         networkReachabilityManager?.startListening(onUpdatePerforming: { (status) in
@@ -887,8 +912,16 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             switch status {
             case .reachable(.ethernetOrWiFi), .reachable(.cellular):
                  self.establishBotConnection()
+                if isAgentConnect{
+                    Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (_) in
+                        self.stopLoader()
+                    }
+                }
                 break
             case .notReachable:
+                if isAgentConnect{
+                    self.showLoader()
+                }
                 fallthrough
             default:
                 break
@@ -2608,7 +2641,7 @@ extension ChatMessagesViewController{
     
         bubbleViewBotChatButtonBgColor = UIColor.init(hexString: (brandingShared.buttonActiveBgColor) ?? "#f3f3f5")
         bubbleViewBotChatButtonTextColor = UIColor.init(hexString: (brandingShared.buttonActiveTextColor) ?? "#2881DF")
-        themeColor = BubbleViewLeftTint //bubbleViewBotChatButtonTextColor
+        themeColor = BubbleViewRightTint //bubbleViewBotChatButtonTextColor
         headerView.backgroundColor = UIColor.init(hexString: (brandingShared.widgetHeaderColor) ?? "#FFFFFF")
         
         let backImage = UIImage(named: "keyboard-arrow-left", in: bundleImage, compatibleWith: nil)

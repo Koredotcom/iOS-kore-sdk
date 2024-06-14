@@ -252,6 +252,17 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         }
     }
     
+    open func sendEventToAgentChat(eventName: String?, messageId: String?) {
+        guard let connection = connection else {
+            NSLog("WebSocket connection not available")
+            return
+        }
+        let isConnected = connection.isConnected
+        if isConnected {
+            connection.sendEventToAgentChat("", parameters: [:], options: [:], eventName: eventName, messageId: messageId)
+        }
+    }
+    
     open func sendACK(ackDic: [String: Any]?) {
         guard let connection = connection else {
             NSLog("WebSocket connection not available")

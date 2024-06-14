@@ -42,7 +42,7 @@ open class BotMessageModel: Mappable {
     open var messageId: String?
     open var botkey: String?
     open var timestamp: NSNumber?
-    
+    open var fromAgent: Bool?
     // MARK: -
     public init() {
         
@@ -65,6 +65,7 @@ open class BotMessageModel: Mappable {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         
         createdOn <- (map["createdOn"], DateFormatterTransform(dateFormatter: dateFormatter))
+        fromAgent <- map["fromAgent"]
     }
 }
 

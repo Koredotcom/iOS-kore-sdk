@@ -47,6 +47,8 @@ var boldCustomFont = "HelveticaNeue-Bold"
 var semiBoldCustomFont = "HelveticaNeue-Semibold"
 var italicCustomFont =  "HelveticaNeue-Italic"
 
+var isAgentConnect = false
+
 var arrayOfViews = [BubbleView?]()
 var arrayOfTemplateTypes = [String]()
 
