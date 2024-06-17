@@ -36,6 +36,8 @@ class SDKConfiguration: NSObject {
         
         public static var customData : [String: Any] = [:]
         
+        public static var queryParameters : [[String: Any]] = []
+        
         static let isShowChatHistory = true // Set true to Show chat history or false hide chat history.
     }
     

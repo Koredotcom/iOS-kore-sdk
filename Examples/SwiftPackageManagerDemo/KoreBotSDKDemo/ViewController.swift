@@ -37,12 +37,13 @@ class ViewController: UIViewController {
         let isAnonymous = true // This should be either true (in case of known-user) or false (in-case of anonymous user).
         let isWebhookEnabled = false // This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
         let customData : [String: Any] = [:]
+        let queryParameters: [[String: Any]] = [] //[["q1":true],["q2":"ios"],["q3":"1"]]
         let JWT_SERVER = String(format: "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
         let BOT_SERVER = String(format: "https://platform.kore.ai")
         let Branding_SERVER = String(format: "https://platform.kore.ai")
         
         // MARK: Set Bot Config
-        botConnect.initialize(clientId, clientSecret: clientSecret, botId: botId, chatBotName: chatBotName, identity: identity, isAnonymous: isAnonymous, isWebhookEnabled: isWebhookEnabled, JWTServerUrl: JWT_SERVER, BOTServerUrl: BOT_SERVER, BrandingUrl: Branding_SERVER, customData: customData)
+        botConnect.initialize(clientId, clientSecret: clientSecret, botId: botId, chatBotName: chatBotName, identity: identity, isAnonymous: isAnonymous, isWebhookEnabled: isWebhookEnabled, JWTServerUrl: JWT_SERVER, BOTServerUrl: BOT_SERVER, BrandingUrl: Branding_SERVER, customData: customData, queryParameters: queryParameters)
         
         // MARK: Show Bot window
         botConnect.show()

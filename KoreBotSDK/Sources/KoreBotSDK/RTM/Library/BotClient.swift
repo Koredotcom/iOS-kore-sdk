@@ -79,7 +79,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     fileprivate var successClosure: ((BotClient?) -> Void)?
     fileprivate var failureClosure: ((NSError) -> Void)?
     fileprivate var intermediaryClosure: ((BotClient?) -> Void)?
-
+    var queryParams: [[String: Any]] = []
     // MARK: - init
     public override init() {
         super.init()
@@ -125,6 +125,11 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     
     open func setWBKoreBotServerUrl(url: String) {
         Constants.WB_BOT_SERVER = url
+    }
+    
+    // MARK: set queryParameters
+    open func setqueryParameters(queryParameters: [[String: Any]]) {
+        queryParams = queryParameters
     }
     
     // MARK: make connection
@@ -228,6 +233,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             if connection == nil {
                 connection = RTMPersistentConnection()
             }
+            connection?.setqueryParameters(queryParameters: queryParams)
             connection?.connect(botInfo: botInfo, botInfoParameters: botInfoParameters, reWriteOptions: reWriteOptions, tryReconnect: isReconnect)
             connection?.connectionDelegate = self
             return connection
