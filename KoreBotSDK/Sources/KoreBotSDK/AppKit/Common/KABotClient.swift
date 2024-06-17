@@ -609,6 +609,7 @@ open class KABotClient: NSObject {
                         self?.botClient.initialize(botInfoParameters: botInfo, customData: [:])
                         if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
                             self?.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
+                            self?.botClient.setqueryParameters(queryParameters: SDKConfiguration.botConfig.queryParameters)
                         }
                         self?.botClient.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
                             self?.fetchMessages(completion: { (reconnects) in

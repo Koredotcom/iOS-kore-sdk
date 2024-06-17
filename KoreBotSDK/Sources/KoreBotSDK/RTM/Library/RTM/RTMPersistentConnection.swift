@@ -178,9 +178,16 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
     fileprivate var receivedLastPong = true
     open var tryReconnect = false
     
+    var queryParams: [[String: Any]] = []
+    
     // MARK: init
     override public init() {
         super.init()
+    }
+    
+    // MARK: set queryParameters
+    open func setqueryParameters(queryParameters: [[String: Any]]) {
+        queryParams = queryParameters
     }
     
     public func connect(botInfo: BotInfoModel, botInfoParameters: [String: Any]?, reWriteOptions: [String: Any]? = nil, tryReconnect: Bool) {
@@ -197,9 +204,16 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
             return
         }
         if tryReconnect == true {
-            urlString.append("&isReconnect=true")
+            urlString.append("&isReconnect=true&ConnectionMode=Reconnect")
         }else{
             urlString.append("&isReconnect=false")
+            for i in 0..<queryParams.count{
+                let params = queryParams[i]
+                let key = Array(params)[0].key
+                let value = Array(params)[0].value
+                print("\(key), \(value)")
+                urlString.append("&\(key)=\(value)")
+            }
         }
         
         var urlComponents = URLComponents(string: urlString)

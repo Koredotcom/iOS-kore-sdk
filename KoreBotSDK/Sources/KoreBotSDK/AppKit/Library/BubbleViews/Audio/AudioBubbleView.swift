@@ -47,7 +47,6 @@ class AudioBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        //self.collectionView.register(UINib.init(nibName: "ImageComponentCollectionViewCell", bundle:nil), forCellWithReuseIdentifier: "ImageComponentCollectionViewCell")
         if let xib = Bundle.xib(named: "ImageComponentCollectionViewCell") {
             self.collectionView.register(xib, forCellWithReuseIdentifier: "ImageComponentCollectionViewCell")
                 }

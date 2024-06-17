@@ -2623,8 +2623,8 @@ extension ChatMessagesViewController{
         
         if let bgUrlString = brandingShared.widgetBgImage!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed){
             let bgUrl = URL(string: bgUrlString)
-            if bgUrl != nil{
-                backgroungImageView.af.setImage(withURL: bgUrl!, placeholderImage: UIImage(named: ""))
+            if let imgUrl = bgUrl{
+                backgroungImageView.af.setImage(withURL: imgUrl, placeholderImage: UIImage(named: ""))
                 backgroungImageView.contentMode = .scaleAspectFit
             }else{
                 self.view.backgroundColor = UIColor.init(hexString: (brandingShared.widgetBodyColor) ?? "#f3f3f5")
