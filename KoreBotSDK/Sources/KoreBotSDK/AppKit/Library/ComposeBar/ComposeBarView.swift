@@ -15,6 +15,8 @@ protocol ComposeBarViewDelegate {
     func composeBarViewDidBecomeFirstResponder(_: ComposeBarView)
     func composeBarTaskMenuButtonAction(_: ComposeBarView)
     func composeBarAttachmentButtonAction(_: ComposeBarView)
+    func showTypingToAgent(_: ComposeBarView)
+    func stopTypingToAgent(_: ComposeBarView)
 }
 
 class ComposeBarView: UIView {
@@ -306,6 +308,15 @@ class ComposeBarView: UIView {
     
     @objc fileprivate func textDidChangeNotification(_ notification: Notification) {
         self.valueChanged()
+        if isAgentConnect{
+            var text = self.growingTextView.textView.text
+            text = text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            if text?.count == 0{
+                self.delegate?.stopTypingToAgent(self)
+            }else{
+                self.delegate?.showTypingToAgent(self)
+            }
+        }
     }
 
     open func changeBgColorForAudioComposeBar(){

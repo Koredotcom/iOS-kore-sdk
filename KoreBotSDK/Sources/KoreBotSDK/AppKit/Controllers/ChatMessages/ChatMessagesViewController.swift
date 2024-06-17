@@ -179,9 +179,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         super.viewWillLayoutSubviews()
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
+//    override var preferredStatusBarStyle: UIStatusBarStyle {
+//        return .lightContent
+//    }
     
     //MARK:- deinit
     deinit {
@@ -231,8 +231,18 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func botClosed(){
         isShowWelcomeMsg = true // Set fasle here.. when you go back and come chat sceen new welcome message not displied.
-        prepareForDeinit()
-        navigationController?.dismiss(animated: false)
+        if isAgentConnect{
+            self.botClient.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
+            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                self.prepareForDeinit()
+                self.navigationController?.dismiss(animated: false)
+            }
+        }else{
+            prepareForDeinit()
+            navigationController?.dismiss(animated: false)
+        }
+        
+        
     }
     @IBAction func tapsOnBackBtnAct(_ sender: Any) {
         if self.isShowWelcomeScreen{
@@ -833,6 +843,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.addObserver(self, selector: #selector(showPDFViewController), name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showPDFErrorMeesage), name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(callFromAgent), name: NSNotification.Name(rawValue: callFromAgentNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willTerminate(_:)), name: UIApplication.willTerminateNotification, object: nil)
     }
     
     func removeNotifications() {
@@ -914,8 +925,16 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             switch status {
             case .reachable(.ethernetOrWiFi), .reachable(.cellular):
                 self.establishBotConnection() 
+                if isAgentConnect{
+                    Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (_) in
+                        self.stopLoader()
+                    }
+                }
                 break
             case .notReachable:
+                if isAgentConnect{
+                    self.showLoader()
+                }
                 fallthrough
             default:
                 break
@@ -927,6 +946,23 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     @objc func stopMonitoringForReachability() {
         NetworkReachabilityManager.default?.stopListening()
+    }
+    
+    @objc func willTerminate(_ notification: Notification) {
+        if isAgentConnect{
+            self.botClient.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
+            sleep(1)
+        }
+    }
+    func showTypingToAgent(_: ComposeBarView){
+        if isAgentConnect{
+            self.botClient.sendEventToAgentChat(eventName: "typing", messageId: "")
+        }
+    }
+    func stopTypingToAgent(_: ComposeBarView){
+        if isAgentConnect{
+            self.botClient.sendEventToAgentChat(eventName: "stop_typing", messageId: "")
+        }
     }
     
     @objc func navigateToComposeBar(_ notification: Notification) {

@@ -30,6 +30,7 @@ let userColor: UIColor = UIColor(red: 38 / 255.0, green: 52 / 255.0, blue: 74 / 
 let botColor: UIColor = UIColor(red: 237 / 255.0, green: 238 / 255.0, blue: 241 / 255.0, alpha: 1)
 
 var themeColor: UIColor = UIColor.init(hexString: "#2881DF")
+var isAgentConnect = false
 
 var AcccesssTokenn:String?
 var attachmentKeybord = false

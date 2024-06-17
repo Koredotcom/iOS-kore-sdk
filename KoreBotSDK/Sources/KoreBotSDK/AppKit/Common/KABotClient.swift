@@ -69,7 +69,8 @@ open class KABotClient: NSObject {
         }
     }
     open weak var delegate: KABotClientDelegate?
-    
+    var lastReceivedMessageId: String  = ""
+    var isAgentHisotryApi = false
     // MARK: - init
     public override init() {
         super.init()
@@ -183,8 +184,11 @@ open class KABotClient: NSObject {
                 //self?.sendMessage("Welpro", options: nil)
                 //NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
             }
-            
+            DispatchQueue.main.async {
+                self?.getAgentRecentHistory()
+            }
         }
+       
         
         botClient.connectionReady = {
             
@@ -269,6 +273,7 @@ open class KABotClient: NSObject {
         botClient.connectionDidFailWithError = nil
         botClient.onMessage = nil
         botClient.onMessageAck = nil
+        botClient.onUserMessageReceived = nil
     }
     
     // MARK: -
@@ -383,6 +388,13 @@ open class KABotClient: NSObject {
             message.iconUrl = botHistoryIcon
         }
         
+        if let fromAgent = object?.fromAgent, fromAgent == true{
+            isAgentConnect = true
+        }else{
+            isAgentConnect = false
+        }
+        lastReceivedMessageId = object?.messageId ?? "No message id"
+        
         if !history{
             if SDKConfiguration.botConfig.enableAckDelivery{
                 let key = object?.botkey
@@ -395,6 +407,11 @@ open class KABotClient: NSObject {
                     "key": key as Any,
                     "id": timeStamp as Any]
                 botClient.sendACK(ackDic: ackDic)
+            }
+            
+            if !isAgentHisotryApi{
+                //self.botClient.sendEventToAgentChat(eventName: "message_delivered", messageId: message.messageId)
+                self.botClient.sendEventToAgentChat(eventName: "message_read", messageId: message.messageId)
             }
         }
         
@@ -475,6 +492,9 @@ open class KABotClient: NSObject {
                                let text = dictionary["text"] as? String ?? ""
                                textComponent.payload = text
                                ttsBody = text
+                                if templateType == "live_agent"{
+                                    isAgentConnect = true
+                                }
                                message.addComponent(textComponent)
                            }else{
                             let optionsComponent: Component = Component(componentType)
@@ -787,7 +807,9 @@ open class KABotClient: NSObject {
             return
         }
         var allMessages: [Message] = [Message]()
+        var removeTemplate = false
         for message in botMessages {
+            removeTemplate = false
             if message.type == "outgoing" || message.type == "incoming" {
                 guard let components = message.components, let data = components.first?.data else {
                     continue
@@ -828,12 +850,25 @@ open class KABotClient: NSObject {
                     }
                 }
                 
+                if isAgentHisotryApi{
+                    if isAgentConnect{
+                        if message.messageId != lastReceivedMessageId{
+                            self.botClient.sendEventToAgentChat(eventName: "message_read", messageId: message.messageId)
+                        }
+                    }
+                    if message.type == "incoming" {
+                        removeTemplate = true
+                    }
+                }
+                
                 messageModel.type = "text"
                 messageModel.component = componentModel
                 botMessage.messages = [messageModel]
                 let messageTuple = onReceiveMessage(object: botMessage)
                 if let object = messageTuple.0 {
-                    allMessages.append(object)
+                    if !removeTemplate{
+                        allMessages.append(object)
+                    }
                 }
             }
         }
@@ -1047,6 +1082,25 @@ open class KABotClient: NSObject {
             
         }
         
+    }
+    
+    func getAgentRecentHistory(){
+        if isAgentConnect{
+            isAgentHisotryApi = true
+            botClient.getHistory(offset: 0, success: { [weak self] (responseObj) in
+                if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
+                    print("Agent History messges \(messages.count) \(messages)")
+                    self?.insertOrUpdateHistoryMessages(messages)
+                    self?.isAgentHisotryApi = false
+                }
+                self?.historyRequestInProgress = false
+            }, failure: { [weak self] (error) in
+                self?.historyRequestInProgress = false
+                self?.isAgentHisotryApi = false
+                print("Unable to fetch messges \(error?.localizedDescription ?? "")")
+            })
+                
+        }
     }
 }
 
