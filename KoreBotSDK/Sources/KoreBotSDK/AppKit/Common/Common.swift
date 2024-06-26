@@ -22,7 +22,7 @@ var showCustomTableTemplateNotification = "ShowCustomTableTemplateNotificationNa
 var pdfcTemplateViewNotification = "pdfShowViewNotification"
 var pdfcTemplateViewErrorNotification = "pdfShowErrorNotification"
 var reloadVideoCellNotification = "ReloadVideoCellNotification"
-
+var tokenExipryNotification = "TokenExpiryNotification"
 
 var isSpeakingEnabled = false
 
@@ -48,6 +48,10 @@ var semiBoldCustomFont = "HelveticaNeue-Semibold"
 var italicCustomFont =  "HelveticaNeue-Italic"
 
 var isAgentConnect = false
+
+var isTryConnect = true
+var isInternetAvailable = true
+var isBotConnectSucessFully = false
 
 var arrayOfViews = [BubbleView?]()
 var arrayOfTemplateTypes = [String]()

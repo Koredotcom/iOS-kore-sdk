@@ -136,6 +136,7 @@ open class KABotClient: NSObject {
     // MARK: - connect/reconnect - tries to reconnect the bot when isConnected is false
     @objc func tryConnect() {
         let delayInMilliSeconds = 250
+        let delayInSeconds = 2
         botClientQueue.asyncAfter(deadline: .now() + .milliseconds(delayInMilliSeconds)) { [weak self] in
             if self?.isConnected == true {
                 self?.retryCount = 0
@@ -148,13 +149,21 @@ open class KABotClient: NSObject {
                         weakSelf.retryCount = 0
                     }
                     
-                    weakSelf.retryCount += 1
+                    if isInternetAvailable{
+                        weakSelf.retryCount += 1
+                    }
                     weakSelf.connect(block: {(client, thread) in
+                        //print("BotConnnect")
                     }, failure:{(error) in
                         self?.isConnecting = false
                         self?.isConnected = false
-                        
-                        self?.tryConnect()
+                        if weakSelf.retryCount <= 4{
+                            if isTryConnect{
+                                self?.tryConnect()
+                            }
+                        }else{
+                            NotificationCenter.default.post(name: Notification.Name(tokenExipryNotification), object: nil)
+                        }
                     })
                 }
             }

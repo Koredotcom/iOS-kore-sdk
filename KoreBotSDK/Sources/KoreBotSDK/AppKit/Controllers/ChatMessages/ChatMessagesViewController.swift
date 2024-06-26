@@ -134,6 +134,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if #available(iOS 13.0, *) {
             overrideUserInterfaceStyle = .light
         }
+        isTryConnect = true
+        isBotConnectSucessFully = false
+        networkMonitoringForReachability()
         //Initialize elements
         self.configureComposeBar()
         self.configureAudioComposer()
@@ -218,6 +221,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func botClosed(){
+        isTryConnect = false
         isShowWelcomeMsg = true // Set fasle here.. when you go back and come chat sceen new welcome message not displied.
         prepareForDeinit()
         //NotificationCenter.default.post(name: Notification.Name(reloadVideoCellNotification), object: nil)
@@ -806,6 +810,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.addObserver(self, selector: #selector(showPDFViewController), name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showPDFErrorMeesage), name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willTerminate(_:)), name: UIApplication.willTerminateNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(tokenExpiry), name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -837,6 +842,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -911,15 +917,21 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             print("Network reachability: \(status)")
             switch status {
             case .reachable(.ethernetOrWiFi), .reachable(.cellular):
-                 self.establishBotConnection()
-                if isAgentConnect{
-                    Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (_) in
+                if isTryConnect{
+                    isInternetAvailable = true
+                    self.establishBotConnection()
+                    if isAgentConnect{
+                        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (_) in
+                            self.stopLoader()
+                        }
+                    }else{
                         self.stopLoader()
                     }
                 }
                 break
             case .notReachable:
-                if isAgentConnect{
+                if isTryConnect{
+                    isInternetAvailable = false
                     self.showLoader()
                 }
                 fallthrough
@@ -933,6 +945,35 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     @objc func stopMonitoringForReachability() {
         NetworkReachabilityManager.default?.stopListening()
+    }
+    
+    @objc func networkMonitoringForReachability() {
+        let networkReachabilityManager = NetworkReachabilityManager.default
+        networkReachabilityManager?.startListening(onUpdatePerforming: { (status) in
+            print("Network reach \(status)")
+            switch status {
+            case .reachable(.ethernetOrWiFi), .reachable(.cellular):
+                if isTryConnect{
+                    isInternetAvailable = true
+                    if isBotConnectSucessFully{
+                        self.stopLoader()
+                    }
+                }
+                break
+            case .notReachable:
+                if isTryConnect{
+                    isInternetAvailable = false
+                    if isBotConnectSucessFully{
+                        self.showLoader()
+                    }
+                }
+                fallthrough
+            default:
+                break
+            }
+            
+            KABotClient.shared.setReachabilityStatusChange(status)
+        })
     }
     
     @objc func navigateToComposeBar(_ notification: Notification) {
@@ -1596,6 +1637,16 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             }
             
         }
+    }
+    @objc func tokenExpiry(notification:Notification){
+        let alertController = UIAlertController(title: "KoreBot SDK", message: "Your session has expired. Please re-login", preferredStyle: .alert)
+        // Create the actions
+        let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+            UIAlertAction in
+            self.botClosed()
+        }
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     @objc func reloadTable(notification:Notification){
@@ -2498,6 +2549,7 @@ extension ChatMessagesViewController{
     }
     
     func sucessMethod(client: BotClient?, thread: KREThread?){
+        isBotConnectSucessFully = true
         self.stopLoader()
         self.thread = thread
         self.botClient = client
