@@ -2404,8 +2404,145 @@ extension ChatMessagesViewController{
                   let activeTheme = try? jsonDecoder.decode(ActiveTheme.self, from: jsonData) else {
                 return
             }
-        self?.bradingValuesStoredInSingleton(activeTheme: activeTheme)
-        self?.sucessMethod(client: client, thread: thread)
+            if activeTheme.widgetHeader?.bordercolor != nil{ //V2 branding response
+                self?.bradingValuesStoredInSingleton(activeTheme: activeTheme)
+                self?.sucessMethod(client: client, thread: thread)
+            }else{ //V3 branding response
+                if let v3Branding = brandingDic["v3"] as? [String: Any]{
+                    let widgetBorderColor = "#000000"
+                    let buttonInactiveBgColor = "#FFFFFF"
+                    let buttonInactiveTextColor = "#ff5e00"
+                    var buttonActiveBgColor = "#f3f3f5"
+                    var buttonActiveTextColor = "#2881DF"
+                    let widgetBgColor = "#ffffff"
+                    let theme = ""
+                    let botName = SDKConfiguration.botConfig.chatBotName
+                    let widgetDividerColor = "#c9c7c9"
+                    let bankLogo = ""
+                    var widgetBgImage = ""
+                    var widgetBodyColor = "#FFFFFFF"
+                    var botchatBgColor  = ""
+                    var botchatTextColor = ""
+                    var userchatBgColor = ""
+                    var userchatTextColor = ""
+                    var widgetTextColor = ""
+                    var widgetHeaderColor = ""
+                    var widgetFooterColor = ""
+                    let widgetFooterTextColor = "#000000"
+                    let widgetFooterPlaceholderColor = "#9A9A9A"
+                    
+                    if let body = v3Branding["body"] as? [String: Any]{
+                        //print(body)
+                        if let bg = body["background"] as? [String: Any]{
+                            if let bgColor = bg["color"] as? String{
+                                widgetBodyColor = bgColor
+                            }
+                            if let bgImage = bg["img"] as? String{
+                                widgetBgImage =  bgImage
+                            }
+                            if let bgType = bg["type"] as? String,  bgType == "color"{
+                                widgetBgImage = ""
+                            }
+                        }
+                        
+                        if let bot_message = body["bot_message"] as? [String: Any]{
+                            if let bot_message_bg_color = bot_message["bg_color"] as? String{
+                                botchatBgColor = bot_message_bg_color
+                            }
+                            if let bot_message_Txt_color = bot_message["color"] as? String{
+                                botchatTextColor = bot_message_Txt_color
+                                
+                            }
+                        }
+                        
+                        if let user_message = body["user_message"] as? [String: Any]{
+                            if let user_message_bg_color = user_message["bg_color"] as? String{
+                                userchatBgColor = user_message_bg_color
+                                buttonActiveBgColor = userchatBgColor
+                            }
+                            if let user_message_Txt_color = user_message["color"] as? String{
+                                userchatTextColor = user_message_Txt_color
+                                buttonActiveTextColor = userchatTextColor
+                            }
+                        }
+                    }
+                    if let footer = v3Branding["footer"] as? [String: Any]{
+                        //print(footer)
+                        if let footerBg = footer["bg_color"] as? String{
+                            widgetFooterColor = footerBg
+                        }
+                    }
+                    if let header = v3Branding["header"] as? [String: Any]{
+                        //print(header)
+                        if let headerBg = header["bg_color"] as? String{
+                            widgetHeaderColor = headerBg
+                        }
+                        if let title = header["title"] as? [String: Any]{
+                            if let titleColor = title["color"] as? String{
+                                widgetTextColor = titleColor
+                            }
+                        }
+                        
+                    }
+                    if let general = v3Branding["general"] as? [String: Any], let generalColors = general["colors"] as? [String: Any] {
+                        //print(general)
+                        if let useColorPaletteOnly = generalColors["useColorPaletteOnly"] as? Bool, useColorPaletteOnly == true{
+                            var genaralPrimaryColor = "#D38A17"
+                            var genaralSecondaryColor = "#101828"
+                            var genaralPrimary_textColor = "#C1EDB9"
+                            var genaralSecondary_textColor = "#000000"
+                            
+                            if let primary = generalColors["primary"] as? String{
+                                genaralPrimaryColor = primary
+                            }
+                            if let primary_text = generalColors["primary_text"] as? String{
+                                genaralPrimary_textColor = primary_text
+                            }
+                            if let secondary = generalColors["secondary"] as? String{
+                                genaralSecondaryColor = secondary
+                            }
+                            if let secondary_text = generalColors["secondary_text"] as? String{
+                                genaralSecondary_textColor = secondary_text
+                            }
+                            userchatBgColor = genaralPrimaryColor
+                            userchatTextColor = genaralSecondary_textColor
+                            botchatBgColor = genaralSecondaryColor
+                            botchatTextColor = genaralPrimary_textColor
+                            //widgetFooterColor = genaralSecondaryColor
+                            //widgetHeaderColor = genaralSecondaryColor
+                            //widgetTextColor = genaralPrimary_textColor
+                            buttonActiveBgColor = genaralPrimaryColor
+                            buttonActiveTextColor = genaralSecondary_textColor
+                        }
+                    }
+                    
+                    brandingShared.widgetBorderColor = widgetBorderColor
+                    brandingShared.widgetTextColor = widgetTextColor
+                    brandingShared.buttonInactiveBgColor = buttonInactiveBgColor
+                    brandingShared.buttonInactiveTextColor = buttonInactiveTextColor
+                    brandingShared.widgetBgColor = widgetBgColor
+                    brandingShared.botchatTextColor = botchatTextColor
+                    brandingShared.buttonActiveBgColor = buttonActiveBgColor
+                    brandingShared.buttonActiveTextColor = buttonActiveTextColor
+                    brandingShared.userchatBgColor = userchatBgColor
+                    brandingShared.theme = theme
+                    brandingShared.botName = botName
+                    brandingShared.botchatBgColor = botchatBgColor
+                    brandingShared.userchatTextColor = userchatTextColor
+                    brandingShared.widgetDividerColor = widgetDividerColor
+                    brandingShared.bankLogo = bankLogo
+                    brandingShared.widgetBgImage = widgetBgImage
+                    brandingShared.widgetBodyColor = widgetBodyColor
+                    brandingShared.widgetFooterColor = widgetFooterColor
+                    brandingShared.widgetHeaderColor = widgetHeaderColor
+                    brandingShared.widgetFooterTextColor = widgetFooterTextColor
+                    brandingShared.widgetFooterPlaceholderColor = widgetFooterPlaceholderColor
+                    self?.sucessMethod(client: client, thread: thread)
+                }else{
+                    self?.getOfflineBrandingData(client: client, thread: thread)
+                }
+            }
+        
     }, failure: { (error) in
             self.getOfflineBrandingData(client: client, thread: thread)
         })
