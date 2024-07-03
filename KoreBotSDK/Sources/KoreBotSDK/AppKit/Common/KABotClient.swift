@@ -597,53 +597,93 @@ open class KABotClient: NSObject {
             let customData: [String: Any] = SDKConfiguration.botConfig.customData
             botInfo = ["chatBot": chatBotName, "taskBotId": botId,"customData": customData]
         }
-         
-        self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: isAnonymous, success: { [weak self] (jwToken) in
-            
+        
+        if let jwToken = SDKConfiguration.botConfig.customJWToken as? String, jwToken != ""{
             let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
             let context = dataStoreManager.coreDataManager.workerContext
             context.perform {
                 let resources: Dictionary<String, AnyObject> = ["threadId": botId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
                 
                 dataStoreManager.insertOrUpdateThread(dictionary: resources, with: {( thread1) in
-                    self?.thread = thread1
+                    self.thread = thread1
                     try? context.save()
                     dataStoreManager.coreDataManager.saveChanges()
                     
                     if SDKConfiguration.botConfig.isWebhookEnabled{
-                        self?.fetachWebhookHistory()
-                        block?(nil, self?.thread)
+                        self.fetachWebhookHistory()
+                        block?(nil, self.thread)
                         AcccesssTokenn = jwToken
                     }else{
-                        self?.botClient.initialize(botInfoParameters: botInfo, customData: [:])
+                        self.botClient.initialize(botInfoParameters: botInfo, customData: [:])
                         if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
-                            self?.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
-                            self?.botClient.setqueryParameters(queryParameters: SDKConfiguration.botConfig.queryParameters)
+                            self.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
+                            self.botClient.setqueryParameters(queryParameters: SDKConfiguration.botConfig.queryParameters)
                         }
-                        self?.botClient.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
+                        self.botClient.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
                             self?.fetchMessages(completion: { (reconnects) in
                                 if isShowWelcomeMsg{
                                     self?.botClient.connect(isReconnect: reconnects)
                                 }else{
                                     self?.botClient.connect(isReconnect: true)
                                 }
-                                
                             })
                         }, success: { (client) in
-                            self?.botClient = client!
+                            self.botClient = client!
                             AcccesssTokenn = client?.authInfoModel?.accessToken
-                            block?(self?.botClient, self?.thread)
+                            block?(self.botClient, self.thread)
                         }, failure: { (error) in
                             failure?(error!)
                         })
                     }
                 })
             }
-            }, failure: { (error) in
-                print(error)
-                failure?(error)
-        })
-        
+        }else{
+            self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: isAnonymous, success: { [weak self] (jwToken) in
+                
+                let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
+                let context = dataStoreManager.coreDataManager.workerContext
+                context.perform {
+                    let resources: Dictionary<String, AnyObject> = ["threadId": botId as AnyObject, "subject": chatBotName as AnyObject, "messages":[] as AnyObject]
+                    
+                    dataStoreManager.insertOrUpdateThread(dictionary: resources, with: {( thread1) in
+                        self?.thread = thread1
+                        try? context.save()
+                        dataStoreManager.coreDataManager.saveChanges()
+                        
+                        if SDKConfiguration.botConfig.isWebhookEnabled{
+                            self?.fetachWebhookHistory()
+                            block?(nil, self?.thread)
+                            AcccesssTokenn = jwToken
+                        }else{
+                            self?.botClient.initialize(botInfoParameters: botInfo, customData: [:])
+                            if (SDKConfiguration.serverConfig.BOT_SERVER.count > 0) {
+                                self?.botClient.setKoreBotServerUrl(url: SDKConfiguration.serverConfig.BOT_SERVER)
+                                self?.botClient.setqueryParameters(queryParameters: SDKConfiguration.botConfig.queryParameters)
+                            }
+                            self?.botClient.connectWithJwToken(jwToken, intermediary: { [weak self] (client) in
+                                self?.fetchMessages(completion: { (reconnects) in
+                                    if isShowWelcomeMsg{
+                                        self?.botClient.connect(isReconnect: reconnects)
+                                    }else{
+                                        self?.botClient.connect(isReconnect: true)
+                                    }
+                                    
+                                })
+                            }, success: { (client) in
+                                self?.botClient = client!
+                                AcccesssTokenn = client?.authInfoModel?.accessToken
+                                block?(self?.botClient, self?.thread)
+                            }, failure: { (error) in
+                                failure?(error!)
+                            })
+                        }
+                    })
+                }
+                }, failure: { (error) in
+                    print(error)
+                    failure?(error)
+            })
+        }
     }
     func getUUID() -> String {
         var id: String?

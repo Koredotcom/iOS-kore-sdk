@@ -38,6 +38,8 @@ class SDKConfiguration: NSObject {
         
         public static var queryParameters : [[String: Any]] = []
         
+        public static var customJWToken : String = "" //This should represent the subject for send own JWToken.
+        
         static let isShowChatHistory = true // Set true to Show chat history or false hide chat history.
     }
     
