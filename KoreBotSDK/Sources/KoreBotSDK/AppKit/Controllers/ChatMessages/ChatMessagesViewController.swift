@@ -2430,6 +2430,7 @@ extension ChatMessagesViewController{
                     var widgetFooterColor = ""
                     let widgetFooterTextColor = "#000000"
                     let widgetFooterPlaceholderColor = "#9A9A9A"
+                    var bubbleShape =  "square"
                     
                     if let body = v3Branding["body"] as? [String: Any]{
                         //print(body)
@@ -2465,6 +2466,10 @@ extension ChatMessagesViewController{
                                 buttonActiveTextColor = userchatTextColor
                             }
                         }
+                        if let bubble_style = body["bubble_style"] as? String{
+                            bubbleShape = bubble_style
+                        }
+                        
                     }
                     if let footer = v3Branding["footer"] as? [String: Any]{
                         //print(footer)
@@ -2537,6 +2542,7 @@ extension ChatMessagesViewController{
                     brandingShared.widgetHeaderColor = widgetHeaderColor
                     brandingShared.widgetFooterTextColor = widgetFooterTextColor
                     brandingShared.widgetFooterPlaceholderColor = widgetFooterPlaceholderColor
+                    brandingShared.bubbleShape = bubbleShape
                     self?.sucessMethod(client: client, thread: thread)
                 }else{
                     self?.getOfflineBrandingData(client: client, thread: thread)
@@ -2576,6 +2582,7 @@ extension ChatMessagesViewController{
         let widgetFooterTextColor = activeTheme.widgetFooter?.fontcolor
         let widgetFooterPlaceholderColor = activeTheme.widgetFooter?.placeHolder
         let widgetFooterBorderColor = activeTheme.widgetFooter?.bordercolor
+        let bubbleShape = activeTheme.generalAttributes?.bubbleShape
         
         brandingShared.widgetBorderColor = widgetBorderColor
         brandingShared.widgetTextColor = widgetTextColor
@@ -2599,6 +2606,7 @@ extension ChatMessagesViewController{
         brandingShared.widgetFooterTextColor = widgetFooterTextColor
         brandingShared.widgetFooterPlaceholderColor = widgetFooterPlaceholderColor
         brandingShared.widgetFooterBorderColor = widgetFooterBorderColor
+        brandingShared.bubbleShape = bubbleShape
     }
     
     func getOfflineBrandingData(client: BotClient?, thread: KREThread?){
@@ -2662,6 +2670,7 @@ extension ChatMessagesViewController{
         brandingShared.widgetFooterTextColor = brandingShared.brandingInfoModel?.widgetFooterColor
         brandingShared.widgetFooterPlaceholderColor = brandingShared.brandingInfoModel?.widgetHeaderColor
         brandingShared.widgetFooterBorderColor = brandingShared.brandingInfoModel?.widgetHeaderColor
+        brandingShared.bubbleShape = "square"
     }
     func fetachBrandingDataFromStr(client: BotClient?, thread: KREThread?){
         let jsonStr = brandingShared.brandingjsonStr

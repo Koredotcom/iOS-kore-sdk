@@ -37,6 +37,7 @@ class BrandingSingleton: NSObject {
     var widgetFooterTextColor: String?
     var widgetFooterPlaceholderColor: String?
     var widgetFooterBorderColor: String?
+    var bubbleShape: String?
     
     var hamburgerOptions: Dictionary<String, Any>?
     var brandingInfoModel: BrandingModel?

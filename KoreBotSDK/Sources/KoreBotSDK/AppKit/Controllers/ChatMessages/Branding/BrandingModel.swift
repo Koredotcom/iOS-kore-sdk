@@ -93,7 +93,7 @@ class ActiveTheme: NSObject , Decodable {
       public var widgetBody: WidgetBody?
       public var widgetFooter: WidgetFooter?
       public var widgetHeader: WidgetHeader?
-    
+    public var generalAttributes: GeneralAttributes?
     enum ColorCodeKeys: String, CodingKey {
             case botMessage = "botMessage"
             case buttons = "buttons"
@@ -101,6 +101,7 @@ class ActiveTheme: NSObject , Decodable {
             case widgetBody = "widgetBody"
             case widgetFooter = "widgetFooter"
             case widgetHeader = "widgetHeader"
+            case generalAttributes = "generalAttributes"
        }
        
        // MARK: - init
@@ -116,6 +117,7 @@ class ActiveTheme: NSObject , Decodable {
            widgetBody = try? container.decode(WidgetBody.self, forKey: .widgetBody)
            widgetFooter = try? container.decode(WidgetFooter.self, forKey: .widgetFooter)
            widgetHeader = try? container.decode(WidgetHeader.self, forKey: .widgetHeader)
+           generalAttributes = try? container.decode(GeneralAttributes.self, forKey: .generalAttributes)
        }
 }
 
@@ -251,3 +253,23 @@ class WidgetHeader: NSObject , Decodable {
        }
 }
 
+class GeneralAttributes: NSObject , Decodable {
+      public var bubbleShape: String?
+      public var bordercolor: String?
+    
+    enum ColorCodeKeys: String, CodingKey {
+            case bubbleShape = "bubbleShape"
+            case bordercolor = "borderColor"
+       }
+       
+       // MARK: - init
+       public override init() {
+           super.init()
+       }
+       
+       required public init(from decoder: Decoder) throws {
+           let container = try decoder.container(keyedBy: ColorCodeKeys.self)
+           bubbleShape = try? container.decode(String.self, forKey: .bubbleShape)
+           bordercolor = try? container.decode(String.self, forKey: .bordercolor)
+       }
+}
