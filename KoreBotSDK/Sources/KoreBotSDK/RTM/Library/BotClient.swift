@@ -286,14 +286,14 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     }
     
     // MARK: subscribe/unsubscribe to push notifications
-    open func subscribeToNotifications(_ deviceToken: Data!, success:((Bool) -> Void)?, failure:((NSError) -> Void)?) {
+    open func subscribeToNotifications(_ deviceToken: Data!, success:((Bool) -> Void)?, failure:((_ error: Error?) -> Void)?) {
         let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-        requestManager.subscribeToNotifications(deviceToken as Data?, userInfo: userInfoModel, authInfo: authInfoModel, success: success, failure: failure as! ((Error) -> Void)?)
+        requestManager.subscribeToNotifications(deviceToken as Data?, userInfo: userInfoModel, authInfo: authInfoModel, success: success, failure: failure)
     }
     
-    open func unsubscribeToNotifications(_ deviceToken: Data!, success:((Bool) -> Void)?, failure:((NSError) -> Void)?) {
+    open func unsubscribeToNotifications(_ deviceToken: Data!, success:((Bool) -> Void)?, failure:((_ error: Error?) -> Void)?) {
         let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-        requestManager.unsubscribeToNotifications(deviceToken as Data?, userInfo: userInfoModel, authInfo: authInfoModel, success: success, failure: failure as! ((Error) -> Void)?)
+        requestManager.unsubscribeToNotifications(deviceToken as Data?, userInfo: userInfoModel, authInfo: authInfoModel, success: success, failure: failure)
     }
     
     open func getHistory(offset: Int, success:((_ responseObject: Any?) -> Void)?, failure:((_ error: Error?) -> Void)?) {

@@ -514,6 +514,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         if (object?.iconUrl != nil) {
             message.iconUrl = object?.iconUrl
+        }else{
+            message.iconUrl = botHistoryIcon
         }
         
         if (webViewController != nil) {
