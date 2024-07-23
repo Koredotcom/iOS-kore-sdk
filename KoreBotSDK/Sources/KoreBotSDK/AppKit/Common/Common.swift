@@ -23,6 +23,7 @@ var pdfcTemplateViewNotification = "pdfShowViewNotification"
 var pdfcTemplateViewErrorNotification = "pdfShowErrorNotification"
 var reloadVideoCellNotification = "ReloadVideoCellNotification"
 var callFromAgentNotification = "callFromAgentNotification"
+var tokenExipryNotification = "TokenExpiryNotification"
 
 var isSpeakingEnabled = false
 
@@ -31,6 +32,10 @@ let botColor: UIColor = UIColor(red: 237 / 255.0, green: 238 / 255.0, blue: 241 
 
 var themeColor: UIColor = UIColor.init(hexString: "#2881DF")
 var isAgentConnect = false
+
+var isTryConnect = true
+var isInternetAvailable = true
+var isBotConnectSucessFully = false
 
 var AcccesssTokenn:String?
 var attachmentKeybord = false

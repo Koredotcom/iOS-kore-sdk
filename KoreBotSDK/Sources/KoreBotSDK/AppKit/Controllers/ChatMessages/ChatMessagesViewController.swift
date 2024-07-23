@@ -137,7 +137,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        isTryConnect = true
+        isBotConnectSucessFully = false
+        networkMonitoringForReachability()
         if #available(iOS 13.0, *) {
             overrideUserInterfaceStyle = .light
         }
@@ -230,6 +232,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func botClosed(){
+        isTryConnect = false
         isShowWelcomeMsg = true // Set fasle here.. when you go back and come chat sceen new welcome message not displied.
         if isAgentConnect{
             self.botClient.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
@@ -241,8 +244,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             prepareForDeinit()
             navigationController?.dismiss(animated: false)
         }
-        
-        
     }
     @IBAction func tapsOnBackBtnAct(_ sender: Any) {
         if self.isShowWelcomeScreen{
@@ -844,6 +845,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.addObserver(self, selector: #selector(showPDFErrorMeesage), name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(callFromAgent), name: NSNotification.Name(rawValue: callFromAgentNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willTerminate(_:)), name: UIApplication.willTerminateNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(tokenExpiry), name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -867,6 +869,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: callFromAgentNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -924,16 +927,51 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             print("Network reachability: \(status)")
             switch status {
             case .reachable(.ethernetOrWiFi), .reachable(.cellular):
-                self.establishBotConnection() 
-                if isAgentConnect{
-                    Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (_) in
+                if isTryConnect{
+                    isInternetAvailable = true
+                    self.establishBotConnection()
+                    if isAgentConnect{
+                        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (_) in
+                            self.stopLoader()
+                        }
+                    }else{
                         self.stopLoader()
                     }
                 }
                 break
             case .notReachable:
-                if isAgentConnect{
+                if isTryConnect{
+                    isInternetAvailable = false
                     self.showLoader()
+                }
+                fallthrough
+            default:
+                break
+            }
+            
+            KABotClient.shared.setReachabilityStatusChange(status)
+        })
+    }
+    
+    @objc func networkMonitoringForReachability() {
+        let networkReachabilityManager = NetworkReachabilityManager.default
+        networkReachabilityManager?.startListening(onUpdatePerforming: { (status) in
+            print("Network reach \(status)")
+            switch status {
+            case .reachable(.ethernetOrWiFi), .reachable(.cellular):
+                if isTryConnect{
+                    isInternetAvailable = true
+                    if isBotConnectSucessFully{
+                        self.stopLoader()
+                    }
+                }
+                break
+            case .notReachable:
+                if isTryConnect{
+                    isInternetAvailable = false
+                    if isBotConnectSucessFully{
+                        self.showLoader()
+                    }
                 }
                 fallthrough
             default:
@@ -981,7 +1019,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     // MARK: - establish BotSDK connection
     func establishBotConnection() {
-        KABotClient.shared.tryConnect()
+            KABotClient.shared.tryConnect()
     }
     
     @objc func keyboardDidShow(_ notification: Notification) {
@@ -1640,6 +1678,16 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             }
             
         }
+    }
+    @objc func tokenExpiry(notification:Notification){
+        let alertController = UIAlertController(title: "Kore Bot SDK", message: "Your session has expired. Please re-login", preferredStyle: .alert)
+        // Create the actions
+        let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+            UIAlertAction in
+            self.botClosed()
+        }
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     @objc func reloadTable(notification:Notification){
@@ -2446,6 +2494,7 @@ extension ChatMessagesViewController{
         }
     }
     func sucessMethod(client: BotClient?, thread: KREThread?){
+        isBotConnectSucessFully = true
         chatMaskview.isHidden = true
         self.stopLoader()
         self.thread = thread
@@ -2595,15 +2644,6 @@ extension ChatMessagesViewController{
         headerTitileLbl.font = font
         headerTitileLbl.textColor = UIColor.init(hexString: "#000000")
         
-//        if let bgUrlString = brandingShared.brandingInfoModel?.widgetBgImage!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed){
-//            let bgUrl = URL(string: bgUrlString)
-//            if bgUrl != nil{
-//                backgroungImageView.af.setImage(withURL: bgUrl!, placeholderImage: UIImage(named: ""))
-//                backgroungImageView.contentMode = .scaleAspectFit
-//            }else{
-//                self.view.backgroundColor = UIColor.init(hexString: (brandingShared.brandingInfoModel?.widgetBodyColor) ?? "#f3f3f5")
-//            }
-//        }
         self.view.backgroundColor = UIColor.init(hexString: "#F8FAFC")
         BubbleViewRightTint = UIColor.init(hexString: "#2881DF")
         themeColor = BubbleViewRightTint
@@ -2944,6 +2984,7 @@ extension ChatMessagesViewController{
         if let headerDic = brandingValues.header{
             configureHeaderView(headerDic: headerDic)
         }
+        headerView.bringSubviewToFront(linerProgressBar)
     }
     
     func configureHeaderView(headerDic: HeaderModel){
@@ -2960,8 +3001,6 @@ extension ChatMessagesViewController{
         let showIcon  = headerDic.icon?.show ?? true
         let iconUrl  = headerDic.icon?.icon_url
         
-        //RegulartHeaderView.isHidden = true
-        //largeHeaderView.isHidden = true
         var headerVHeight = 0.0
         if size == "compact"{
             headerVHeight = 70.0
