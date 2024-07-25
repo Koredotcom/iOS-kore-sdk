@@ -13,8 +13,8 @@ Pod::Spec.new do |s|
 
     s.swift_version = '4.2'
     s.ios.deployment_target = '12.0'
-    s.source_files = 'KoreBotSDK/**/*.{h,m,swift}'
-    s.resources = ['KoreBotSDK/**/*.{xcdatamodeld}', 'KoreBotSDK/**/*.{xcassets}','KoreBotSDK/**/*.xib','KoreBotSDK/Widgets/**/**/*.xib','KoreBotSDK/**/*.json']
+    s.source_files = 'Sources/**/*.{h,m,swift}'
+    s.resources = ['Sources/**/*.{xcdatamodeld}', 'Sources/**/*.{xcassets}','Sources/**/*.xib','Sources/Widgets/**/**/*.xib','Sources/**/*.json']
     s.dependency 'Alamofire'
     s.dependency 'AlamofireImage'
     s.dependency 'Starscream'
