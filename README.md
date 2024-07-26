@@ -92,11 +92,6 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
     * Open Examples/CocoapodsDemo/KoreBotSDKDemo.xcworkspace in Xcode.
     * Run the KoreBotSDKDemo.app in xcode
 
-#### b. Using SPM
-    * Download or clone the repository.
-    * Open Examples/SwiftPackageManagerDemo/KoreBotSDKDemo.xcodeproj in Xcode.
-    * Run the KoreBotSDKDemo.app in Xcode
-
 ## SDK V3
    * Use this branch https://github.com/Koredotcom/iOS-kore-sdk/tree/SDKV3
    
@@ -104,7 +99,9 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
 ## Integrating into your app
 #### 1. Setup KoreBotSDK
 ###### a. Using SPM
-        Add local Package(KoreBotSDK) from download project into your project.
+          dependencies: [
+              .package(url: "https://github.com/Koredotcom/iOS-kore-sdk", branch: "SPM")
+          ]
 ###### b. In your ViewController add below lines
         1. import KoreBotSDK 
         2. let botConnect = BotConnect() 
