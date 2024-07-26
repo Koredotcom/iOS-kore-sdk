@@ -100,7 +100,7 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
 #### 1. Setup KoreBotSDK
 ###### a. Using SPM
           dependencies: [
-              .package(url: "https://github.com/Koredotcom/iOS-kore-sdk", branch: "SPM")
+              .package(url: "https://github.com/Koredotcom/iOS-kore-sdk", branch: "master")
           ]
 ###### b. In your ViewController add below lines
         1. import KoreBotSDK 
