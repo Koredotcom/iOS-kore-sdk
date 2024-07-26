@@ -86,9 +86,9 @@
         "package": "SwiftUTI",
         "repositoryURL": "https://github.com/mkeiser/SwiftUTI",
         "state": {
-          "branch": "master",
+          "branch": null,
           "revision": "7a79af868845e6efe28ac7c628b952df8763e845",
-          "version": null
+          "version": "2.0.3"
         }
       }
     ]
