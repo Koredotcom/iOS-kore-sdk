@@ -35,11 +35,6 @@ Kore Bot SDK for iOS enables you to talk to Kore bots over a web socket. This re
 
 ![SDKConfiguration setup](https://github.com/Koredotcom/iOS-kore-sdk/blob/Appkit/sdk_configuration.png)
 
-(or)
-
-If you are using SPM project Setting up clientId, clientSecret, botId, chatBotName and identity in Examples/SwiftPackageManagerDemo/KoreBotSDKDemo/ViewController.swift
-
-![SDKConfiguration setup](https://github.com/Koredotcom/iOS-kore-sdk/blob/Appkit/sdk_configuration.png)
 
 Client id - Copy this id from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
  ```
@@ -100,7 +95,7 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
 #### 1. Setup KoreBotSDK
 ###### a. Using SPM
           dependencies: [
-              .package(url: "https://github.com/Koredotcom/iOS-kore-sdk", branch: "master")
+              .package(url: "https://github.com/Koredotcom/iOS-kore-sdk", .upToNextMajor(from: "1.0.1"))
           ]
 ###### b. In your ViewController add below lines
         1. import KoreBotSDK 

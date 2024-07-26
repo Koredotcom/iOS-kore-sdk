@@ -25,7 +25,7 @@ let package = Package(
         .package(url: "https://github.com/wibosco/GhostTypewriter", .upToNextMajor(from: "2.1.0")),
         .package(url: "https://github.com/safx/Emoji-Swift", .upToNextMajor(from: "0.4.0")),
         .package(url: "https://github.com/congnd/FMPhotoPicker.git", .upToNextMajor(from: "1.3.0")),
-        .package(url: "https://github.com/mkeiser/SwiftUTI", branch: "master")
+        .package(url: "https://github.com/mkeiser/SwiftUTI", .exact("2.0.3"))
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
