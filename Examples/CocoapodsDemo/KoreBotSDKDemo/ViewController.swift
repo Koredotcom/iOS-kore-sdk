@@ -46,8 +46,11 @@ class ViewController: UIViewController {
         let BOT_SERVER = String(format: "https://bots.kore.ai")
         let Branding_SERVER = String(format: "https://bots.kore.ai")
         
+
         // MARK: Set Bot Config
         botConnect.initialize(clientId, clientSecret: clientSecret, botId: botId, chatBotName: chatBotName, identity: identity, isAnonymous: isAnonymous, isWebhookEnabled: isWebhookEnabled, JWTServerUrl: JWT_SERVER, BOTServerUrl: BOT_SERVER, BrandingUrl: Branding_SERVER, customData: customData, queryParameters: queryParameters, customJWToken: customJWToken)
+        
+        botConnect.showOrHideFooterViewIcons(isShowSpeachToTextIcon: true, isShowAttachmentIcon: true)
         
         // MARK: Show Bot window
         botConnect.show()

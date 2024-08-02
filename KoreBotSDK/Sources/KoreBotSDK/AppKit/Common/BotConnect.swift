@@ -80,6 +80,11 @@ open class BotConnect: NSObject {
         SDKConfiguration.botConfig.customJWToken = customJWToken
     }
     
+    public func showOrHideFooterViewIcons(isShowSpeachToTextIcon:Bool, isShowAttachmentIcon:Bool){
+        SDKConfiguration.botConfig.isShowSpeachToTextIcon = isShowSpeachToTextIcon
+        SDKConfiguration.botConfig.isShowAttachmentIcon = isShowAttachmentIcon
+    }
+    
     public func customTemplatesFromCustomer(numbersOfViews:[BubbleView], customerTemplaateTypes:[String]){
         arrayOfViews = numbersOfViews
         arrayOfTemplateTypes = customerTemplaateTypes
