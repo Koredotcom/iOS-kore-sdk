@@ -145,7 +145,11 @@ class ComposeBarView: UIView {
         
         var menuBtnWidth = 0
         menuBtnWidth = isShowComposeMenuBtn == true ? 30 : 0
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[menuButton(\(menuBtnWidth))]-5-[growingTextView]-5-[sendButton(30)]-5-[attachmentButton(25)]-10-|", options:[], metrics:nil, views:views))
+        
+        var attachmentBtnWidth = 0
+        attachmentBtnWidth = SDKConfiguration.botConfig.isShowAttachmentIcon == true ? 25 : 0
+        
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[menuButton(\(menuBtnWidth))]-5-[growingTextView]-5-[sendButton(30)]-5-[attachmentButton(\(attachmentBtnWidth))]-10-|", options:[], metrics:nil, views:views))
        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[growingTextView]-5-[speechToTextButton]-5-[attachmentButton]-10-|", options:[], metrics:nil, views:views))
        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-7-[growingTextView]-7-|", options:[], metrics:nil, views:views))
        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=3-[sendButton]-3-|", options:[], metrics:nil, views:views))
@@ -262,8 +266,13 @@ class ComposeBarView: UIView {
                 self.sendButton.isEnabled = true
                 self.speechToTextButton.isHidden = true
             }else{
-                self.sendButton.isHidden = !hasText
-                self.speechToTextButton.isHidden = hasText
+                if SDKConfiguration.botConfig.isShowSpeachToTextIcon{
+                    self.sendButton.isHidden = !hasText
+                    self.speechToTextButton.isHidden = hasText
+                }else{
+                    self.sendButton.isHidden = false
+                    self.speechToTextButton.isHidden = true
+                }
             }
             self.menuButton.isHidden = false
         }else{
