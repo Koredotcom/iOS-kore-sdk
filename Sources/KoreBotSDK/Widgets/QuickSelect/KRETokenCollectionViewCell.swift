@@ -60,7 +60,7 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
         imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 16
+        imageView.layer.cornerRadius = 14
         imageView.contentMode = UIView.ContentMode.scaleAspectFill
         contentView.addSubview(imageView)
         

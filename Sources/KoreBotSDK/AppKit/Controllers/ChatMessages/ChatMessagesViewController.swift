@@ -140,7 +140,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         //Initialize elements
         self.configureComposeBar()
         self.configureAudioComposer()
-        self.configureQuickReplyView()
+        //self.configureQuickReplyView()
         self.configureTypingStatusView()
         self.configureSTTClient()
         self.configureViewForKeyboard(true)
@@ -212,7 +212,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             self.botMessagesView.prepareForDeinit()
             self.botMessagesView.viewDelegate = nil
         }
-        self.quickReplyView.sendQuickReplyAction = nil
+        if quickReplyView != nil{
+            self.quickReplyView.sendQuickReplyAction = nil
+        }
+        
     }
     
     // MARK: cancel
@@ -1917,6 +1920,8 @@ extension ChatMessagesViewController{
         var config = FMPhotoPickerConfig()
         config.selectMode = .single
         config.shouldReturnAsset = true
+        config.strings["permission_dialog_title"] = "KoreBot SDK"
+        config.strings["permission_dialog_message"] = "KoreBot SDK wants to access Photo Library"
         let picker = FMPhotoPickerViewController(config: config)
         picker.delegate = self
         present(picker, animated: true)
@@ -2704,6 +2709,7 @@ extension ChatMessagesViewController{
         self.configureThreadView()
         self.brandingValuesChanges()
         self.configureleftMenu()
+        self.configureQuickReplyView()
         chatMaskview.isHidden = true
         
         if SDKConfiguration.botConfig.isWebhookEnabled{
@@ -2841,7 +2847,7 @@ extension ChatMessagesViewController{
     
         bubbleViewBotChatButtonBgColor = UIColor.init(hexString: (brandingShared.buttonActiveBgColor) ?? "#f3f3f5")
         bubbleViewBotChatButtonTextColor = UIColor.init(hexString: (brandingShared.buttonActiveTextColor) ?? "#2881DF")
-        themeColor = BubbleViewRightTint //bubbleViewBotChatButtonTextColor
+        themeColor = UIColor.init(hexString: (brandingShared.buttonActiveBgColor) ?? "#f3f3f5") //BubbleViewRightTint //bubbleViewBotChatButtonTextColor
         headerView.backgroundColor = UIColor.init(hexString: (brandingShared.widgetHeaderColor) ?? "#FFFFFF")
         
         let backImage = UIImage(named: "keyboard-arrow-left", in: bundleImage, compatibleWith: nil)

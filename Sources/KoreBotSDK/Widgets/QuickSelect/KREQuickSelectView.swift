@@ -160,7 +160,7 @@ extension KREQuickSelectView: UICollectionViewDelegate, UICollectionViewDataSour
             let word = words?[indexPath.row] {
             cell.labelText = word.title
             cell.imageURL = word.imageURL
-            cell.layer.borderColor = UIColor.init(hexString: boarderColor).cgColor
+            cell.layer.borderColor = UIColor.init(hexString: bgColor).cgColor //boarderColor
             cell.backgroundColor = UIColor.init(hexString: bgColor)
             cell.textColor = textColor
             cell.fontName = fontName
