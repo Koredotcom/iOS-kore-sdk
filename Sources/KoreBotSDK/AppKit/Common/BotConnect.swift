@@ -27,6 +27,7 @@ open class BotConnect: NSObject {
             return
         }
         loadCustomFonts()
+        isCallingHistoryApi = true
         if !isIntialiseFileUpload{
             isIntialiseFileUpload = true
             filesUpload()

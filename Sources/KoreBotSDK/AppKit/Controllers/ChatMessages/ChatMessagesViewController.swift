@@ -225,7 +225,6 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func botClosed(){
         isTryConnect = false
-        isShowWelcomeMsg = true // Set fasle here.. when you go back and come chat sceen new welcome message not displied.
         prepareForDeinit()
         //NotificationCenter.default.post(name: Notification.Name(reloadVideoCellNotification), object: nil)
         //navigationController?.popViewController(animated: true)
@@ -233,13 +232,29 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @IBAction func tapsOnBackBtnAct(_ sender: Any) {
-        if isAgentConnect{
-            self.botClient.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
-            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
-                self.botClosed()
-            }
-        }else{
+        if !chatMaskview.isHidden{
             self.botClosed()
+        }else{
+            let alertController = UIAlertController(title: "", message: "Would you like to close the concersation or minimize.", preferredStyle:.alert)
+
+            alertController.addAction(UIAlertAction(title: "Close", style: .default)
+                      { action -> Void in
+                            isShowWelcomeMsg = true
+                           if isAgentConnect{
+                               self.botClient.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
+                               Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                                   self.botClosed()
+                               }
+                           }else{
+                               self.botClosed()
+                           }
+                            
+                      })
+            alertController.addAction(UIAlertAction(title: "Minimize", style: .default)
+                      { action -> Void in
+                            self.botClosed()
+                      })
+            self.present(alertController, animated: true, completion: nil)
         }
     }
     
@@ -1048,6 +1063,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         self.botClient.sendMessage(text, dictionary: dictionary, options: options)
                     }
                 }
+                historyLimit += 1
                 self.textMessageSent()
             })
         }
@@ -1705,7 +1721,7 @@ extension ChatMessagesViewController {
             return
         }
         
-        botClient.getHistory(offset: offset, success: { [weak self] (responseObj) in
+        botClient.getHistory(offset: offset,limit: 20, success: { [weak self] (responseObj) in
             if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
                 self?.insertOrUpdateHistoryMessages(messages)
             }
@@ -1763,7 +1779,9 @@ extension ChatMessagesViewController {
         }
         
         var allMessages: [Message] = [Message]()
+        var removeTemplate = false
         for message in botMessages {
+            removeTemplate = false
             if message.type == "outgoing" || message.type == "incoming" {
                 guard let components = message.components, let data = components.first?.data else {
                     continue
@@ -1802,6 +1820,10 @@ extension ChatMessagesViewController {
                             }
                         }
                     }
+                    if jsonString == "Welpro"{
+                        removeTemplate = true
+                        RemovedTemplateCount  += 1
+                    }
                 }
                 
                 messageModel.type = "text"
@@ -1809,7 +1831,9 @@ extension ChatMessagesViewController {
                 botMessage.messages = [messageModel]
                 let messageTuple = onReceiveMessage(object: botMessage)
                 if let object = messageTuple.0 {
-                    allMessages.append(object)
+                    if !removeTemplate{
+                        allMessages.append(object)
+                    }
                 }
             }
         }
@@ -1828,7 +1852,7 @@ extension ChatMessagesViewController {
             if count == 0 {
                 self?.getMessages(offset: 0)
             }else{
-                self?.offSet =  count
+                self?.offSet =  count + RemovedTemplateCount
                 if (self?.botMessagesView.spinner.isHidden)!{
                     self?.getMessages(offset: self!.offSet)
                 }
