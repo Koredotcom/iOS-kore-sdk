@@ -32,7 +32,7 @@ public class Componentss: NSObject, Decodable {
       public var url: String?
       public var videoUrl: String?
       public var audioUrl: String?
-    
+      public var thumpsUpDownArrays: [SmileyArraysAction]?
     
     enum ColorCodeKeys: String, CodingKey {
             case template_type = "template_type"
@@ -58,6 +58,7 @@ public class Componentss: NSObject, Decodable {
             case url = "url"
             case videoUrl = "videoUrl"
             case audioUrl = "audioUrl"
+            case thumpsUpDownArrays = "thumpsUpDownArrays"
        }
        
        // MARK: - init
@@ -90,6 +91,7 @@ public class Componentss: NSObject, Decodable {
            url = try? container.decode(String.self, forKey: .url)
            videoUrl = try? container.decode(String.self, forKey: .videoUrl)
            audioUrl = try? container.decode(String.self, forKey: .audioUrl)
+           thumpsUpDownArrays = try? container.decode([SmileyArraysAction].self, forKey: .thumpsUpDownArrays)
        }
 }
 // MARK: - Elements
@@ -120,7 +122,14 @@ public class ComponentElements: NSObject, Decodable {
         color = try? container.decode(String.self, forKey: .color)
         subtitle = try? container.decode(String.self, forKey: .subtitle)
         title = try? container.decode(String.self, forKey: .title)
-        value = try? container.decode(String.self, forKey: .value)
+        if let valueInteger = try? container.decodeIfPresent(Int.self, forKey: .value) {
+            value = String(valueInteger ?? -00)
+            if value == "-00"{
+                value = ""
+            }
+        } else if let valueString = try? container.decodeIfPresent(String.self, forKey: .value) {
+            value = valueString
+        }
         imageURL = try? container.decode(String.self, forKey: .imageURL)
         action = try? container.decode(ComponentItemAction.self, forKey: .action)
     }
@@ -215,7 +224,14 @@ public class Tabs: NSObject, Decodable {
         title = try? container.decode(String.self, forKey: .title)
         subtitle = try? container.decode(String.self, forKey: .subtitle)
         image_url = try? container.decode(String.self, forKey: .image_url)
-        value = try? container.decode(String.self, forKey: .value)
+        if let valueInteger = try? container.decodeIfPresent(Int.self, forKey: .value) {
+            value = String(valueInteger ?? -00)
+            if value == "-00"{
+                value = ""
+            }
+        } else if let valueString = try? container.decodeIfPresent(String.self, forKey: .value) {
+            value = valueString
+        }
         action = try? container.decode(ComponentItemAction.self, forKey: .action)
     }
 }
@@ -236,21 +252,32 @@ public class PostbackAction: NSObject, Decodable {
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
-        value = try? container.decode(String.self, forKey: .value)
+        if let valueInteger = try? container.decodeIfPresent(Int.self, forKey: .value) {
+            value = String(valueInteger ?? -00)
+            if value == "-00"{
+                value = ""
+            }
+        } else if let valueString = try? container.decodeIfPresent(String.self, forKey: .value) {
+            value = valueString
+        }
        
     }
 }
 
 // MARK: - Smileys Array
 public class SmileyArraysAction: NSObject, Decodable {
-    public var value: Int?
+    public var value: String?
     public var smileyId: Int?
     public var starId: Int?
+    public var thumpUpId:String?
+    public var reviewText:String?
     
     enum ColorCodeKeys: String, CodingKey {
         case value = "value"
         case smileyId = "smileyId"
         case starId = "starId"
+        case thumpUpId = "thumpUpId"
+        case reviewText = "reviewText"
     }
     
     // MARK: - init
@@ -260,8 +287,17 @@ public class SmileyArraysAction: NSObject, Decodable {
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
-        value = try? container.decode(Int.self, forKey: .value)
+        if let valueInteger = try? container.decodeIfPresent(Int.self, forKey: .value) {
+            value = String(valueInteger ?? -00)
+            if value == "-00"{
+                value = ""
+            }
+        } else if let valueString = try? container.decodeIfPresent(String.self, forKey: .value) {
+            value = valueString
+        }
         smileyId = try? container.decode(Int.self, forKey: .smileyId)
         starId = try? container.decode(Int.self, forKey: .starId)
+        thumpUpId = try? container.decode(String.self, forKey: .thumpUpId)
+        reviewText = try? container.decode(String.self, forKey: .reviewText)
     }
 }

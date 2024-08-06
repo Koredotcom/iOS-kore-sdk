@@ -479,6 +479,11 @@ open class KABotClient: NSObject {
                             if componentType != .quickReply {
                                 
                             }
+                            if templateType == "feedbackTemplate"{
+                                if !history{
+                                    feedBackTemplateSelectedValue = ""
+                                }
+                            }
                             
                             ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
                             if let tText = dictionary["text"] as? String, tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable) {

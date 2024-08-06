@@ -382,6 +382,13 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
                 }
                 cell.bubbleView.drawBorder = true
+                let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                let secondIndexPath:NSIndexPath = NSIndexPath.init(row: 1, section: 0)
+                if firstIndexPath.isEqual(indexPath) || secondIndexPath.isEqual(indexPath) {
+                    bubbleView.maskview.isHidden = true
+                }else{
+                    bubbleView.maskview.isHidden = false
+                }
                 break
             case .notification:
                 let bubbleView: NotificationBubbleView = cell.bubbleView as! NotificationBubbleView
@@ -413,6 +420,13 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 }
                 isFeedbackView = true
                 cell.bubbleView.drawBorder = true
+                let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                let secondIndexPath:NSIndexPath = NSIndexPath.init(row: 1, section: 0)
+                if firstIndexPath.isEqual(indexPath) || secondIndexPath.isEqual(indexPath) {
+                    bubbleView.maskview.isHidden = true
+                }else{
+                    bubbleView.maskview.isHidden = false
+                }
                 break
             case .inlineForm:
                 let bubbleView: InLineFormBubbleView = cell.bubbleView as! InLineFormBubbleView

@@ -217,7 +217,7 @@ extension FeedbackSliderViewController : UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let elements = arrayOfSmiley[indexPath.item]
-        selectedValue = elements.value!
+        selectedValue = Int(elements.value ?? "")!
         
         if elements.smileyId! == 5{
             subViewHeightConstraint.constant = 200
@@ -256,7 +256,7 @@ extension FeedbackSliderViewController: FloatRatingViewDelegate {
         //selectedValue = Int(floatRatingView.rating)
         let index = Int(floatRatingView.rating) - 1
         let elements = arrayOfSmiley[index]
-        selectedValue = elements.value!
+        selectedValue = Int(elements.value ?? "")!
         
         if selectedValue == 5{
             subViewHeightConstraint.constant = 200

@@ -60,6 +60,9 @@ var historyLimit = 0
 var RemovedTemplateCount = 0
 var isCallingHistoryApi = true
 
+var feedBackTemplateSelectedValue = ""
+var appDisplayName = "KoreBotSDK"
+
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)

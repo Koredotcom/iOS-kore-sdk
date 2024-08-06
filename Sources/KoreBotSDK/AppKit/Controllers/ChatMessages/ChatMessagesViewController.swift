@@ -129,7 +129,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let dispLayName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? ""
+        appDisplayName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? SDKConfiguration.botConfig.chatBotName
 
         linerProgressBar.frame = CGRect(x: 0, y: 0 , width: UIScreen.main.bounds.size.width, height:1)
         headerView.addSubview(linerProgressBar)
@@ -1670,7 +1670,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
     }
     @objc func tokenExpiry(notification:Notification){
-        let alertController = UIAlertController(title: "KoreBot SDK", message: "Your session has expired. Please re-login", preferredStyle: .alert)
+        let alertController = UIAlertController(title: appDisplayName, message: "Your session has expired. Please re-login", preferredStyle: .alert)
         // Create the actions
         let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
             UIAlertAction in
@@ -1954,8 +1954,8 @@ extension ChatMessagesViewController{
         var config = FMPhotoPickerConfig()
         config.selectMode = .single
         config.shouldReturnAsset = true
-        config.strings["permission_dialog_title"] = "KoreBot SDK"
-        config.strings["permission_dialog_message"] = "KoreBot SDK wants to access Photo Library"
+        config.strings["permission_dialog_title"] = appDisplayName
+        config.strings["permission_dialog_message"] = "\(appDisplayName) wants to access Photo Library"
         let picker = FMPhotoPickerViewController(config: config)
         picker.delegate = self
         present(picker, animated: true)
@@ -2428,11 +2428,11 @@ extension ChatMessagesViewController{
                 
             }) { (error) in
                 self.stopLoader()
-                self.showAlert(title: "KoreBot SDK", message: "Please try again")
+                self.showAlert(title: appDisplayName, message: "Please try again")
             }
         } else {
             self.stopLoader()
-            self.showAlert(title: "KoreBot SDK", message: "YOU MUST SET BOT 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
+            self.showAlert(title: appDisplayName, message: "YOU MUST SET BOT 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
         }
     }
     
@@ -2745,7 +2745,9 @@ extension ChatMessagesViewController{
         self.configureleftMenu()
         self.configureQuickReplyView()
         chatMaskview.isHidden = true
-        
+        if isShowWelcomeMsg{
+            NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
+        }
         if SDKConfiguration.botConfig.isWebhookEnabled{
             NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
             self.kaBotClient.webhookBotMetaApi(success: { (dictionary) in

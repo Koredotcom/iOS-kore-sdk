@@ -296,6 +296,7 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
                     self.linkAction?(elements.url)
             }else{
                 self.optionsAction?(elements.title, elements.payload)
+                self.maskview.isHidden = false
             }
         }else{
             let elements = arrayOfButtons[indexPath.row]
@@ -303,6 +304,7 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
                 self.linkAction?(elements.url)
             }else{
                 self.optionsAction?(elements.title, elements.payload)
+                self.maskview.isHidden = false
             }
         }
         
