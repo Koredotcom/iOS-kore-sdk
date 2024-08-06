@@ -129,6 +129,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let dispLayName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? ""
+
         linerProgressBar.frame = CGRect(x: 0, y: 0 , width: UIScreen.main.bounds.size.width, height:1)
         headerView.addSubview(linerProgressBar)
         if #available(iOS 13.0, *) {
@@ -353,8 +355,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.quickReplyView.textColor = textColor
         self.quickReplyView.boarderColor = textColor
         self.quickReplyView.fontName = mediumCustomFont
-        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[quickReplyView]|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
-        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-40-[quickReplyView]-15-|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView]-5-|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
         
         self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
             if let text = text, let payload = payload {
@@ -1462,9 +1464,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func updateQuickSelectViewConstraints() {
         //        self.closeAndOpenAttachment(imageAttached: nil, height: 0.0)
-        if self.quickSelectContainerHeightConstraint.constant == 60.0 {return}
+        let height = self.quickReplyView.collectionView.collectionViewLayout.collectionViewContentSize.height
+        let maxHeight = height > 198.0 ? 198.0 : height //248.0
+        self.quickReplyView.collectionView.isScrollEnabled = false
+        if  maxHeight >= 198.0{
+            self.quickReplyView.collectionView.isScrollEnabled = true
+        }
+        var quickSelectCollVheight = maxHeight > 60.0 ? maxHeight : 60.0
+        //quickSelectCollVheight += CGFloat(quickReplySuggesstionLblHeight)
+        if self.quickSelectContainerHeightConstraint.constant == quickSelectCollVheight {return}
         
-        self.quickSelectContainerHeightConstraint.constant = 60.0
+        self.quickSelectContainerHeightConstraint.constant = quickSelectCollVheight
         UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
             self.view.layoutIfNeeded()
         }) { (Bool) in
