@@ -802,7 +802,9 @@ open class KABotClient: NSObject {
                         botHistoryIcon = responseObject["icon"] as? String
                         if SDKConfiguration.botConfig.isShowChatHistory{
                             if !isShowWelcomeMsg{
-                                self?.insertOrUpdateHistoryMessages(messages)
+                                Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { (_) in
+                                    self?.insertOrUpdateHistoryMessages(messages)
+                                }
                             }
                            
                         }
