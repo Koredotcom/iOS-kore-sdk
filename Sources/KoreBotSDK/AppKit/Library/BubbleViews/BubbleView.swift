@@ -163,6 +163,9 @@ open class BubbleView: UIView {
             case .linkDownload:
                  bubbleView = PDFBubbleView()
                  break
+            case .quick_replies_top:
+                bubbleView = QuickReplyTopBubbleView()
+                break
             case .noTemplate:
                 bubbleView = EmptyBubbleView()
                 break

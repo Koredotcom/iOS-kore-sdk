@@ -62,6 +62,9 @@ var isCallingHistoryApi = true
 
 var feedBackTemplateSelectedValue = ""
 var appDisplayName = "KoreBotSDK"
+var isShowQuickRepliesBottom = true
+var isShowVideoOption = false
+var arrayOfSelectedBtnIndex:NSMutableArray = NSMutableArray()
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
@@ -210,7 +213,10 @@ open class Utilities: NSObject {
             return .advancedListTemplate
         }else if (templateType == "cardTemplate"){
             return .cardTemplate
-        }else if templateType == "text"{
+        }else if templateType == "quick_replies_top"{
+            return .quick_replies_top
+        }
+        else if templateType == "text"{
             return .text
         }
         return .noTemplate

@@ -1,19 +1,18 @@
 //
-//  QuickReplyWelcomeBubbleView.swift
-//  KoreBotSDKDemo
+//  QuickReplyTopBubbleView.swift
+//  KoreBotSDK
 //
-//  Created by Kartheek Pagidimarri on 7/17/20.
-//  Copyright © 2020 Kore. All rights reserved.
+//  Created by Pagidimarri Kartheek on 08/08/24.
 //
 
 import UIKit
-import KoreBotSDK
 
-class QuickReplyWelcomeBubbleView: BubbleView {
+class QuickReplyTopBubbleView: BubbleView {
     static let elementsLimit: Int = 4
     
     public var maskview: UIView!
     var tileBgv: UIView!
+    var viewTag:Int!
     var titleLbl: KREAttributedLabel!
     var tableView: UITableView!
     var cardView: UIView!
@@ -32,6 +31,9 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         
     var titleBgvHeightConstraint: NSLayoutConstraint!
     var collectionVTopConstraint: NSLayoutConstraint!
+    
+    var collectionVHeightConstraint: NSLayoutConstraint!
+    var collectionVBottomConstraint: NSLayoutConstraint!
     
     var arrayOfElements = [QuickRepliesWelcomeData]()
     var arrayOfButtons = [ComponentItemAction]()
@@ -102,7 +104,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         self.maskview.backgroundColor = .clear
         
         let views: [String: UIView] = ["tileBgv": tileBgv, "collectionView": collectionView, "maskview": maskview]
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-10-[collectionView]-5-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-15-[collectionView]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[maskview]|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[collectionView]-0-|", options: [], metrics: nil, views: views))
@@ -112,12 +114,19 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         self.cardView.addConstraint(self.titleBgvHeightConstraint)
         self.titleBgvHeightConstraint.isActive = false
         
-        self.collectionVTopConstraint = NSLayoutConstraint(item: collectionView as Any, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0.0)
+        self.collectionVTopConstraint = NSLayoutConstraint.init(item: self.collectionView as Any, attribute: .top, relatedBy: .equal, toItem: self.tileBgv as Any, attribute: .bottom, multiplier: 1.0, constant: 0.0)
         self.cardView.addConstraint(self.collectionVTopConstraint)
         self.collectionVTopConstraint.isActive = false
         
+        self.collectionVHeightConstraint = NSLayoutConstraint.init(item: self.collectionView as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.0)
+        self.cardView.addConstraint(self.collectionVHeightConstraint)
+        self.collectionVHeightConstraint.isActive = false
         
+        self.collectionVBottomConstraint = NSLayoutConstraint.init(item: self.cardView as Any, attribute: .bottom, relatedBy: .equal, toItem: self.collectionView as Any, attribute: .bottom, multiplier: 1.0, constant: 0.0)
+        self.cardView.addConstraint(self.collectionVBottomConstraint)
+        self.collectionVBottomConstraint.isActive = false
         
+    
         self.titleLbl = KREAttributedLabel(frame: CGRect.zero)
         self.titleLbl.textColor = BubbleViewBotChatTextColor
         self.titleLbl.mentionTextColor = Common.UIColorRGB(0x8ac85a)
@@ -188,17 +197,20 @@ class QuickReplyWelcomeBubbleView: BubbleView {
                 if ((component.componentDesc) != nil) {
                     let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
                     
-                    let titleStr = jsonObject["text"] as? String
-                    let newString = titleStr?.replacingOccurrences(of: ":)", with: "\u{1f642}")
-                    
-                    if let parsedString = KREUtilities.formatHTMLEscapedString(newString) {
-                        var replaceStr = parsedString.replacingOccurrences(of: ":)", with: "😊")
-                        replaceStr = replaceStr.replacingOccurrences(of: "&quot;", with: "\"")
-                        self.titleLbl.setHTMLString(replaceStr, withWidth: kMaxTextWidth)
+                    if let titleStr = jsonObject["text"] as? String{
+                        var newString = titleStr.replacingOccurrences(of: ":)", with: "\u{1f642}")
+                        
+                        if let parsedString = KREUtilities.formatHTMLEscapedString(newString) {
+                            var replaceStr = parsedString.replacingOccurrences(of: ":)", with: "😊")
+                            replaceStr = replaceStr.replacingOccurrences(of: "&quot;", with: "\"")
+                            self.titleLbl.setHTMLString(replaceStr, withWidth: kMaxTextWidth)
+                        }else{
+                            var replaceStr = newString.replacingOccurrences(of: ":)", with: "😊")
+                            replaceStr = replaceStr.replacingOccurrences(of: "&quot;", with: "\"")
+                            self.titleLbl.text = replaceStr
+                        }
                     }else{
-                        var replaceStr = newString?.replacingOccurrences(of: ":)", with: "😊")
-                        replaceStr = replaceStr?.replacingOccurrences(of: "&quot;", with: "\"")
-                        self.titleLbl.text = replaceStr
+                        self.titleLbl.text = ""
                     }
                     
                     let jsonDecoder = JSONDecoder()
@@ -246,14 +258,33 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         }else{
             self.titleBgvHeightConstraint.isActive = false
             self.collectionVTopConstraint.isActive = false
-            let collectionviewHeight  = Double(self.collectionView.collectionViewLayout.collectionViewContentSize.height)
-            return CGSize(width: 0.0, height: textSize.height + 47 + CGFloat(collectionviewHeight))
+            
+            self.collectionVHeightConstraint.isActive = false
+            self.collectionVBottomConstraint.isActive = false
+            
+            //print("selectItemselectItem \(arrayOfSelectedBtnIndex) \(viewTag)")
+            
+            let selectItem = arrayOfSelectedBtnIndex.object(at: viewTag ?? 0)
+            if selectItem as! Int == 1000 {
+                let collectionviewHeight  = Double(self.collectionView.collectionViewLayout.collectionViewContentSize.height)
+                return CGSize(width: 0.0, height: textSize.height + 47 + CGFloat(collectionviewHeight))
+            }
+            self.collectionVHeightConstraint.isActive = true
+            self.collectionVHeightConstraint.constant = 0
+            
+            self.collectionVBottomConstraint.isActive = true
+            self.collectionVBottomConstraint.constant = 0
+        
+            self.collectionVTopConstraint.isActive = true
+            self.collectionVTopConstraint.constant = 0.0
+            
+            let collectionviewHeight  = 0
+            return CGSize(width: 0.0, height: textSize.height + 32 + CGFloat(collectionviewHeight))
         }
     }
     
 }
-    
-extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+extension QuickReplyTopBubbleView : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     //MARK: collection view delegate methods
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -280,17 +311,19 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
             let elements = arrayOfButtons[indexPath.row]
             cell.textlabel.text = elements.title
         }
-        cell.bgV.backgroundColor = .clear
+        let bgColor = (brandingShared.buttonActiveBgColor) ?? "#f3f3f5"
+        let textColor = (brandingShared.buttonActiveTextColor) ?? "#2881DF"
+        cell.bgV.backgroundColor = UIColor.init(hexString: bgColor)
         
-        cell.textlabel.font = UIFont(name: mediumCustomFont, size: 12.0)
+        cell.textlabel.font = UIFont(name: mediumCustomFont, size: 14.0)
         cell.textlabel.textAlignment = .center
-        cell.textlabel.textColor = themeColor
+        cell.textlabel.textColor = UIColor.init(hexString: textColor)
         cell.textlabel.numberOfLines = 2
         cell.imagvWidthConstraint.constant = 0.0
         
-        cell.layer.borderColor = themeColor.cgColor
+        cell.layer.borderColor = UIColor.init(hexString: bgColor).cgColor
         cell.layer.borderWidth = 1.5
-        cell.layer.cornerRadius = 5
+        cell.layer.cornerRadius = 15
         cell.backgroundColor = .clear
         
         return cell
@@ -302,16 +335,24 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
             if elements.type == "web_url" || elements.type == "url"{
                     self.linkAction?(elements.url)
             }else{
-                self.optionsAction?(elements.title, elements.payload)
-                self.maskview.isHidden = false
+                arrayOfSelectedBtnIndex.replaceObject(at: viewTag ?? 0, with: indexPath.item)
+                NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+                Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (_) in
+                    self.optionsAction?(elements.title, elements.payload)
+                }
+                self.maskview.isHidden = true
             }
         }else{
             let elements = arrayOfButtons[indexPath.row]
             if elements.type == "web_url" || elements.type == "url"{
                 self.linkAction?(elements.url)
             }else{
-                self.optionsAction?(elements.title, elements.payload)
-                self.maskview.isHidden = false
+                arrayOfSelectedBtnIndex.replaceObject(at: viewTag ?? 0, with: indexPath.item)
+                NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+                Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (_) in
+                    self.optionsAction?(elements.title, elements.payload)
+                }
+                self.maskview.isHidden = true
             }
         }
         
@@ -327,7 +368,7 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
             text = elements.title
         }
         var textWidth = 10
-        let size = text?.size(withAttributes:[.font: UIFont(name: mediumCustomFont, size: 12.0) as Any])
+        let size = text?.size(withAttributes:[.font: UIFont(name: mediumCustomFont, size: 14.0) as Any])
         if text != nil {
             textWidth = Int(size!.width)
         }
@@ -354,16 +395,4 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
         return 10.0
     }
     
-}
-
-
-extension UIView {
-    @available(iOS 11.0, *)
-    func roundCorners(_ corners: CACornerMask, radius: CGFloat, borderColor: UIColor, borderWidth: CGFloat) {
-      self.layer.maskedCorners = corners
-      self.layer.cornerRadius = radius
-      self.layer.borderWidth = borderWidth
-      self.layer.borderColor = borderColor.cgColor
-    }
-
 }

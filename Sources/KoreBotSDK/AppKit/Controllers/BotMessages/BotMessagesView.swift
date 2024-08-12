@@ -99,6 +99,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(AdvancedListTemplateCell.self, forCellReuseIdentifier:"AdvancedListTemplateCell")
         self.tableView.register(CardTemplateBubbleCell.self, forCellReuseIdentifier:"CardTemplateBubbleCell")
         self.tableView.register(PDFDownloadCell.self, forCellReuseIdentifier:"PDFDownloadCell")
+        self.tableView.register(QuickReplyTopBubbleCell.self, forCellReuseIdentifier: "QuickReplyTopBubbleCell")
         self.tableView.register(EmptyBubbleViewCell.self, forCellReuseIdentifier:"EmptyBubbleViewCell")
         
     }
@@ -226,6 +227,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 cellIdentifier = "CardTemplateBubbleCell"
             case .linkDownload:
                 cellIdentifier = "PDFDownloadCell"
+            case .quick_replies_top:
+                cellIdentifier = "QuickReplyTopBubbleCell"
             case .noTemplate:
                 cellIdentifier = "EmptyBubbleViewCell"
             }
@@ -309,6 +312,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 
                 break
             case .quickReply:
+                let bubbleView: QuickReplyBubbleView = cell.bubbleView as! QuickReplyBubbleView
+                self.textLinkDetection(textLabel: bubbleView.textLabel)
                 isQuickReply = true
                 break
             case .carousel:
@@ -381,6 +386,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
                 }
+                self.textLinkDetection(textLabel: bubbleView.titleLbl)
                 cell.bubbleView.drawBorder = true
                 let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
                 let secondIndexPath:NSIndexPath = NSIndexPath.init(row: 1, section: 0)
@@ -479,6 +485,19 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
                 }
+                break
+            case .quick_replies_top:
+                let bubbleView: QuickReplyTopBubbleView = cell.bubbleView as! QuickReplyTopBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                self.textLinkDetection(textLabel: bubbleView.titleLbl)
+                cell.bubbleView.drawBorder = true
+                bubbleView.tag = indexPath.row
+                bubbleView.viewTag = indexPath.row
                 break
             case .noTemplate:
                 break

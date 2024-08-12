@@ -106,10 +106,10 @@ class MessageBubbleCell : UITableViewCell {
         //dateLabel
         self.contentView.addSubview(dateLabel)
         
-        var userImageViewWidth = 30
+        var userImageViewWidth = 28
         if isShowUserIcon{
             userImageViewTrialing = 45
-            userImageViewWidth = 30
+            userImageViewWidth = 28
         }else{
             userImageViewTrialing = 15
             userImageViewWidth = 0
@@ -119,10 +119,10 @@ class MessageBubbleCell : UITableViewCell {
         let views: [String: UIView] = ["senderImageView": senderImageView, "bubbleContainerView": bubbleContainerView, "userImageView": userImageView, "dateLabel":dateLabel]
         
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-45-[dateLabel]-\(userImageViewTrialing + 2)-|", options:[], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(30)]", options:[], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[senderImageView(30)]-4-|", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(28)]", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[senderImageView(28)]-4-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[userImageView(\(userImageViewWidth))]-8-|", options:[], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[userImageView(30)]-4-|", options:[], metrics:nil, views:views))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[userImageView(28)]-4-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[dateLabel(21)]-0-[bubbleContainerView]", options:[], metrics:nil, views:views))
 
         self.bubbleBottomConstraint = NSLayoutConstraint(item:self.contentView, attribute:.bottom, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.bottom, multiplier:1.0, constant:4.0)
@@ -591,6 +591,19 @@ class PDFDownloadCell : MessageBubbleCell {
 class EmptyBubbleViewCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .noTemplate
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
+
+class QuickReplyTopBubbleCell: MessageBubbleCell{
+    override func bubbleType() -> ComponentType {
+        return .quick_replies_top
     }
     
     override var tailPosition: BubbleMaskTailPosition {

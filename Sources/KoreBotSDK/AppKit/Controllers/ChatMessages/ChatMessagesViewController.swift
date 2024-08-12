@@ -514,6 +514,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             return .advancedListTemplate
         }else if (templateType == "cardTemplate"){
             return .cardTemplate
+        }else if templateType == "quick_replies_top"{
+            return .quick_replies_top
         }
         else if templateType == "text"{
             return .text
@@ -586,7 +588,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 
                 if (type == "template") {
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
-                    let templateType: String = dictionary["template_type"] as! String
+                    let templateType: String = dictionary["template_type"] as? String ?? ""
                     var tabledesign: String
                     
                     tabledesign  = (dictionary["table_design"] != nil ? dictionary["table_design"] as? String : "responsive")!
@@ -611,7 +613,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         textComponent.payload = tText
                         textMessage?.addComponent(textComponent)
                     }
-                    if templateType == "SYSTEM" || templateType == "live_agent"{
+                    if templateType == "SYSTEM" || templateType == "live_agent" || templateType == ""{
                         let textComponent = Component(.text)
                         let text = dictionary["text"] as? String ?? ""
                         textComponent.payload = text
@@ -1066,6 +1068,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     }
                 }
                 historyLimit += 1
+                arrayOfSelectedBtnIndex.insert(1000, at: 0)
                 self.textMessageSent()
             })
         }
@@ -1670,7 +1673,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
     }
     @objc func tokenExpiry(notification:Notification){
-        let alertController = UIAlertController(title: appDisplayName, message: "Your session has expired. Please re-login", preferredStyle: .alert)
+        let alertController = UIAlertController(title: appDisplayName, message: "Your session has expired. Please try again", preferredStyle: .alert)
         // Create the actions
         let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
             UIAlertAction in
@@ -1933,8 +1936,10 @@ extension ChatMessagesViewController{
         let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
             
         }
-        actionSheetController.addAction(photoAction)
-        actionSheetController.addAction(videoAction)
+        if isShowVideoOption{
+            actionSheetController.addAction(photoAction)
+            actionSheetController.addAction(videoAction)
+        }
         actionSheetController.addAction(cameraRollAction)
         actionSheetController.addAction(documentAction)
         actionSheetController.addAction(cancelAction)
@@ -2123,25 +2128,31 @@ extension ChatMessagesViewController: FMPhotoPickerViewControllerDelegate {
                     var attachment = [String: Any]()
                     var textTo = ""
                     attachment["fileId"] = fileId
-                    attachment["fileName"] = component.fileMeta.fileName
-                    attachment["fileType"] = component.templateType
+                    attachment["fileName"] = "\(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                    //attachment["fileType"] = component.templateType
+                    attachment["fileExtn"] = component.fileMeta.fileExtn
                     if component.templateType == "image" {
                         textTo = "\(text)\n \u{1F4F7} \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                        attachment["fileType"] = "image"
                     }else if component.templateType == "video" {
                         textTo = "\(text)\n 🎥 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                        attachment["fileType"] = "video"
                     } else {
                         if component.fileMeta.fileExtn == "pdf"{
                             textTo = "\(text)\n 📄 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                            attachment["fileType"] = "pdf"
                         }else if component.fileMeta.fileExtn == "mp3"{
                             textTo = "\(text)\n 🎵 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                            attachment["fileType"] = "mp3"
                         }else{
                             textTo = "\(text)\n 📁 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                            attachment["fileType"] = component.templateType
                         }
                         
                     }
                     self.removeActivityIndicator(spinner: activityIndicator)
                     
-                    self.sendTextMessage(textTo, dictionary: ["attachments": [attachment]], options: ["attachments": [attachment]])
+                    self.sendTextMessage(textTo, dictionary: [:], options: ["attachments": [attachment]])
                     
                 }
             }
@@ -2809,6 +2820,8 @@ extension ChatMessagesViewController{
         } else {
             panelCollectionViewContainerHeightConstraint.constant = 0
         }
+        
+        //self.composeView.becomeFirstResponder()
     }
     
     func showAlert(title: String, message: String) {

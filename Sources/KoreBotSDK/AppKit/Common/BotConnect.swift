@@ -13,6 +13,9 @@ import CoreData
 
 open class BotConnect: NSObject {
 
+    public var showQuickRepliesBottom = true
+    public var showVideoOption = false
+    
     // MARK: - init
     public override init() {
         super.init()
@@ -23,6 +26,8 @@ open class BotConnect: NSObject {
     }
     
     public func show(){
+        isShowQuickRepliesBottom = showQuickRepliesBottom
+        isShowVideoOption = showVideoOption
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {
             return
         }

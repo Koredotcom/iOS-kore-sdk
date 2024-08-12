@@ -373,7 +373,10 @@ open class KABotClient: NSObject {
             return .advancedListTemplate
         }else if (templateType == "cardTemplate"){
             return .cardTemplate
-        }else if templateType == "text"{
+        }else if templateType == "quick_replies_top"{
+            return .quick_replies_top
+        }
+        else if templateType == "text"{
             return .text
         }
         return .noTemplate
@@ -408,6 +411,7 @@ open class KABotClient: NSObject {
         lastReceivedMessageId = object?.messageId ?? "No message id"
         
         if !history{
+            arrayOfSelectedBtnIndex.insert(1000, at: 0)
             if SDKConfiguration.botConfig.enableAckDelivery{
                 let key = object?.botkey
                 let timeStamp = object?.timestamp
@@ -469,12 +473,18 @@ open class KABotClient: NSObject {
                     switch type {
                     case "template":
                         if let dictionary = payload["payload"] as? [String: Any] {
-                            let templateType = dictionary["template_type"] as? String ?? ""
+                            var templateType = dictionary["template_type"] as? String ?? ""
                             var tabledesign = "responsive"
                             if let value = dictionary["table_design"] as? String {
                                 tabledesign = value
                             }
 
+                            if !isShowQuickRepliesBottom{
+                                if templateType == "quick_replies"{
+                                    templateType = "quick_replies_top"
+                                }
+                            }
+                            
                             let componentType = getComponentType(templateType, tabledesign)
                             if componentType != .quickReply {
                                 
@@ -499,12 +509,12 @@ open class KABotClient: NSObject {
                                 textMessage?.addComponent(textComponent)
                             }
                             
-                            if templateType == "SYSTEM" || templateType == "live_agent"{
+                            if templateType == "SYSTEM" || templateType == "live_agent" || templateType == ""{
                                let textComponent = Component(.text)
                                let text = dictionary["text"] as? String ?? ""
                                textComponent.payload = text
                                ttsBody = text
-                                if templateType == "live_agent"{
+                                if templateType == "live_agent" || templateType == ""{
                                     isAgentConnect = true
                                 }
                                message.addComponent(textComponent)
@@ -800,6 +810,7 @@ open class KABotClient: NSObject {
                 botClient.getHistory(offset: offset, limit: limit, success: { [weak self] (responseObj) in
                     if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
                         botHistoryIcon = responseObject["icon"] as? String
+                        arrayOfSelectedBtnIndex = []
                         if SDKConfiguration.botConfig.isShowChatHistory{
                             if !isShowWelcomeMsg{
                                 Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { (_) in
@@ -928,6 +939,7 @@ open class KABotClient: NSObject {
                 let messageTuple = onReceiveMessage(object: botMessage)
                 if let object = messageTuple.0 {
                     if !removeTemplate{
+                        arrayOfSelectedBtnIndex.insert(1001, at: 0)
                         allMessages.append(object)
                     }
                 }
