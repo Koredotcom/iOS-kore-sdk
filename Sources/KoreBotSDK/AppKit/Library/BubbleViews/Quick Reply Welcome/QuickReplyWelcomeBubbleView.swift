@@ -8,7 +8,9 @@
 
 import UIKit
 import KoreBotSDK
-
+#if SWIFT_PACKAGE
+import ObjcSupport
+#endif
 class QuickReplyWelcomeBubbleView: BubbleView {
     static let elementsLimit: Int = 4
     

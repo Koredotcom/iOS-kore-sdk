@@ -6,7 +6,9 @@
 //
 
 import UIKit
-
+#if SWIFT_PACKAGE
+import ObjcSupport
+#endif
 class QuickReplyTopBubbleView: BubbleView {
     static let elementsLimit: Int = 4
     
