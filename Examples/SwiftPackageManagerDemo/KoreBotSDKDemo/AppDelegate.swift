@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import KoreBotSDK
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,7 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         if let window = window {
             window.backgroundColor = UIColor.white
-            //let appLaunchViewController: AppLaunchViewController = AppLaunchViewController(nibName: "AppLaunchViewController", bundle: Bundle.sdkModule)
+
+            //let appLaunchViewController = AppLaunchViewController(nibName: "AppLaunchViewController", bundle: Bundle.sdkModule)
             let appLaunchViewController: ViewController = ViewController(nibName: "ViewController", bundle: nil)
             let navigationController: UINavigationController = UINavigationController(rootViewController: appLaunchViewController)
 

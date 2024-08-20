@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name = 'KoreBotSDK'
-    s.version = '0.1.2'
+    s.version = '1.0.0'
     s.license  = {:type => 'MIT', :file => 'KoreBotSDK/LICENSE' }
     s.summary = 'KoreBotSDK lets a user interact with Kore bots'
     s.homepage = 'https://kore.ai'
@@ -12,30 +12,11 @@ Pod::Spec.new do |s|
     s.source_files = 'KoreBotSDK/KoreBotSDK.h'
 
     s.swift_version = '4.2'
-
-    s.subspec 'Library' do |ss|
-        ss.ios.deployment_target = '10.0'
-        ss.source_files = 'KoreBotSDK/**/*.{h,m,swift}'
-        ss.dependency 'Mantle', '2.1.0'
-        ss.dependency 'AFNetworking', '4.0.1'
-        ss.dependency 'SocketRocket'
-        
-        ss.ios.frameworks = 'SystemConfiguration'
-    end
-
-    s.subspec 'UIKit' do |ss|
-        ss.ios.deployment_target = '10.0'
-        ss.source_files = ['Widgets/**/*.{h,m,txt,swift,xib}','KoreAssitant/**/*.{h,m,txt,swift,xib}']
-        ss.resource_bundles = {
-            'Templates' => ['Widgets/**/*.xib'],
-            'Widgets' => ['Widgets/Widgets/**/**/*.xib'],
-            'Lato' => ['Widgets/Resources/Fonts/Lato/*.ttf'],
-            'BebasNeue' => ['Widgets/Resources/Fonts/BebasNeue/*.ttf'],
-            'Symbols' => ['Widgets/Resources/Fonts/AppSymbols/*.ttf'],
-        }
-        ss.resources = ['KoreAssitant/**/*.{xcdatamodeld}', 'Widgets/Resources/*.{xcassets}']
-        ss.dependency 'AFNetworking', '4.0.1'
-        ss.dependency 'GhostTypewriter'
-        ss.dependency 'MarkdownKit'
-    end
+    s.ios.deployment_target = '12.0'
+    s.source_files = 'KoreBotSDK/**/*.{h,m,swift}'
+    s.resources = ['KoreBotSDK/**/*.{xcdatamodeld}', 'KoreBotSDK/**/*.{xcassets}','KoreBotSDK/**/*.xib','KoreBotSDK/Widgets/**/**/*.xib','KoreBotSDK/**/*.json']
+    s.dependency 'Alamofire'
+    s.dependency 'Starscream'
+    s.dependency 'ObjectMapper'
+    s.ios.frameworks = 'SystemConfiguration'
 end

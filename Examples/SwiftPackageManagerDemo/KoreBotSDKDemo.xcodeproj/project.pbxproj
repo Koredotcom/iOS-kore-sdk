@@ -3,17 +3,17 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		050267521DEC65BF001256D3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 050267511DEC65BF001256D3 /* AVFoundation.framework */; };
 		0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8401DED7A1B00107721 /* AudioToolbox.framework */; };
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
-		9516E0D42B4EA35C00A161D1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9516E0D22B4EA35C00A161D1 /* ViewController.swift */; };
-		9516E0D52B4EA35C00A161D1 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9516E0D32B4EA35C00A161D1 /* ViewController.xib */; };
-		95B56D3F2B45428B002A49D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95B56D3E2B45428B002A49D7 /* Assets.xcassets */; };
-		9A3B19369ABDCDF5030E7B7E /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE91BE4E497989D44D73FFB9 /* Pods_KoreBotSDKDemo.framework */; };
+		9541B52F2B0DE90100356AA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9541B52E2B0DE90100356AA7 /* Assets.xcassets */; };
+		95A34F4C2B511E1A0037D3A5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A34F4A2B511E1A0037D3A5 /* ViewController.swift */; };
+		95A34F4D2B511E1A0037D3A5 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A34F4B2B511E1A0037D3A5 /* ViewController.xib */; };
+		D12681AB2B064F42005DA94E /* KoreBotSDK in Frameworks */ = {isa = PBXBuildFile; productRef = D12681AA2B064F42005DA94E /* KoreBotSDK */; };
 		D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */; };
 		D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D175AD561CEF0CD500BB9442 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -24,16 +24,13 @@
 		0590F8411DED7A1B00107721 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		0590F8421DED7A1B00107721 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
-		9516E0D22B4EA35C00A161D1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		9516E0D32B4EA35C00A161D1 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
-		95B56D3E2B45428B002A49D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		BE91BE4E497989D44D73FFB9 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9541B52E2B0DE90100356AA7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		95A34F4A2B511E1A0037D3A5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		95A34F4B2B511E1A0037D3A5 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		D175AD4A1CEF0CD500BB9442 /* Kore Bot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kore Bot.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D175AD571CEF0CD500BB9442 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D175AD591CEF0CD500BB9442 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E4082FF73647689A4264EC3A /* Pods-KoreBotSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.debug.xcconfig"; path = "Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		FB00FB204178E5F1027215DF /* Pods-KoreBotSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoreBotSDKDemo.release.xcconfig"; path = "Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,8 +40,8 @@
 			files = (
 				0590F8441DED7A1B00107721 /* AudioToolbox.framework in Frameworks */,
 				0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */,
+				D12681AB2B064F42005DA94E /* KoreBotSDK in Frameworks */,
 				050267521DEC65BF001256D3 /* AVFoundation.framework in Frameworks */,
-				9A3B19369ABDCDF5030E7B7E /* Pods_KoreBotSDKDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,7 +56,6 @@
 				0590F8421DED7A1B00107721 /* CoreAudio.framework */,
 				0590F8431DED7A1B00107721 /* CoreAudioKit.framework */,
 				050267511DEC65BF001256D3 /* AVFoundation.framework */,
-				BE91BE4E497989D44D73FFB9 /* Pods_KoreBotSDKDemo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -70,7 +66,6 @@
 				D175AD4C1CEF0CD500BB9442 /* KoreBotSDKDemo */,
 				D175AD4B1CEF0CD500BB9442 /* Products */,
 				A851461715333BEDEFC8310F /* Frameworks */,
-				D2F4C7A078E6168F5ED0D9F2 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -86,22 +81,13 @@
 			isa = PBXGroup;
 			children = (
 				D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */,
-				9516E0D22B4EA35C00A161D1 /* ViewController.swift */,
-				9516E0D32B4EA35C00A161D1 /* ViewController.xib */,
-				95B56D3E2B45428B002A49D7 /* Assets.xcassets */,
+				95A34F4A2B511E1A0037D3A5 /* ViewController.swift */,
+				95A34F4B2B511E1A0037D3A5 /* ViewController.xib */,
 				D175AD561CEF0CD500BB9442 /* LaunchScreen.storyboard */,
+				9541B52E2B0DE90100356AA7 /* Assets.xcassets */,
 				D175AD591CEF0CD500BB9442 /* Info.plist */,
 			);
 			path = KoreBotSDKDemo;
-			sourceTree = "<group>";
-		};
-		D2F4C7A078E6168F5ED0D9F2 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				E4082FF73647689A4264EC3A /* Pods-KoreBotSDKDemo.debug.xcconfig */,
-				FB00FB204178E5F1027215DF /* Pods-KoreBotSDKDemo.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -111,17 +97,18 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D175AD5C1CEF0CD500BB9442 /* Build configuration list for PBXNativeTarget "KoreBotSDKDemo" */;
 			buildPhases = (
-				5E553390197AE02AAC36489F /* [CP] Check Pods Manifest.lock */,
 				D175AD461CEF0CD500BB9442 /* Sources */,
 				D175AD471CEF0CD500BB9442 /* Frameworks */,
 				D175AD481CEF0CD500BB9442 /* Resources */,
-				616C215DA2AC53C3029B694E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = KoreBotSDKDemo;
+			packageProductDependencies = (
+				D12681AA2B064F42005DA94E /* KoreBotSDK */,
+			);
 			productName = KoreBotSDKDemo;
 			productReference = D175AD4A1CEF0CD500BB9442 /* Kore Bot.app */;
 			productType = "com.apple.product-type.application";
@@ -138,9 +125,7 @@
 				TargetAttributes = {
 					D175AD491CEF0CD500BB9442 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = TUE6KHKZ4Z;
 						LastSwiftMigration = 0820;
-						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -154,6 +139,9 @@
 				Base,
 			);
 			mainGroup = D175AD411CEF0CD500BB9442;
+			packageReferences = (
+				D12681A92B064F42005DA94E /* XCLocalSwiftPackageReference "../../KoreBotSDK" */,
+			);
 			productRefGroup = D175AD4B1CEF0CD500BB9442 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -168,69 +156,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				95B56D3F2B45428B002A49D7 /* Assets.xcassets in Resources */,
-				9516E0D52B4EA35C00A161D1 /* ViewController.xib in Resources */,
 				D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */,
+				95A34F4D2B511E1A0037D3A5 /* ViewController.xib in Resources */,
+				9541B52F2B0DE90100356AA7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		5E553390197AE02AAC36489F /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-KoreBotSDKDemo-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		616C215DA2AC53C3029B694E /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/KoreBotSDK/KoreBotSDK.framework",
-				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
-				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KoreBotSDK.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KoreBotSDKDemo/Pods-KoreBotSDKDemo-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D175AD461CEF0CD500BB9442 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9516E0D42B4EA35C00A161D1 /* ViewController.swift in Sources */,
+				95A34F4C2B511E1A0037D3A5 /* ViewController.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -357,7 +296,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -366,7 +306,6 @@
 		};
 		D175AD5D1CEF0CD500BB9442 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E4082FF73647689A4264EC3A /* Pods-KoreBotSDKDemo.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -378,7 +317,10 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TUE6KHKZ4Z;
 				INFOPLIST_FILE = KoreBotSDKDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk;
 				PRODUCT_NAME = "Kore Bot";
@@ -393,7 +335,6 @@
 		};
 		D175AD5E1CEF0CD500BB9442 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FB00FB204178E5F1027215DF /* Pods-KoreBotSDKDemo.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -405,7 +346,10 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TUE6KHKZ4Z;
 				INFOPLIST_FILE = KoreBotSDKDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEV_ENV\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk;
 				PRODUCT_NAME = "Kore Bot";
@@ -439,6 +383,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		D12681A92B064F42005DA94E /* XCLocalSwiftPackageReference "../../KoreBotSDK" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../KoreBotSDK;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D12681AA2B064F42005DA94E /* KoreBotSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KoreBotSDK;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D175AD421CEF0CD500BB9442 /* Project object */;
 }
