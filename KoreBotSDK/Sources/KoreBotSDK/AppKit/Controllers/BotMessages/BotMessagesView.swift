@@ -103,6 +103,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(StackedCarosuelCell.self, forCellReuseIdentifier:"StackedCarosuelCell")
         self.tableView.register(AdvancedMultiCell.self, forCellReuseIdentifier:"AdvancedMultiCell")
         self.tableView.register(RadioOptionTemplateCell.self, forCellReuseIdentifier: "RadioOptionTemplateCell")
+        self.tableView.register(QuickReplyTopBubbleCell.self, forCellReuseIdentifier: "QuickReplyTopBubbleCell")
         self.tableView.register(EmptyBubbleViewCell.self, forCellReuseIdentifier:"EmptyBubbleViewCell")
     }
     
@@ -235,6 +236,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 cellIdentifier = "AdvancedMultiCell"
             case .radioOptionTemplate:
                 cellIdentifier = "RadioOptionTemplateCell"
+            case .quick_replies_top:
+                cellIdentifier = "QuickReplyTopBubbleCell"
             case .noTemplate:
                 cellIdentifier = "EmptyBubbleViewCell"
             }
@@ -503,6 +506,19 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
                 }
+                break
+            case .quick_replies_top:
+                let bubbleView: QuickReplyTopBubbleView = cell.bubbleView as! QuickReplyTopBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                self.textLinkDetection(textLabel: bubbleView.titleLbl)
+                cell.bubbleView.drawBorder = true
+                bubbleView.tag = indexPath.row
+                bubbleView.viewTag = indexPath.row
                 break
             case .noTemplate:
                 break

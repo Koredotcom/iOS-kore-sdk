@@ -12,7 +12,7 @@ import Alamofire
 import CoreData
 
 open class BotConnect: NSObject {
-
+    public var showQuickRepliesBottom = true
     // MARK: - init
     public override init() {
         super.init()
@@ -26,7 +26,7 @@ open class BotConnect: NSObject {
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {
             return
         }
-        
+        isShowQuickRepliesBottom = showQuickRepliesBottom
         loadCustomFonts()
         if !isIntialiseFileUpload{
             isIntialiseFileUpload = true

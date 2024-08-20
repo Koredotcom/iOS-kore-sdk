@@ -31,7 +31,7 @@ class FeedbackSliderViewController: UIViewController, UITextViewDelegate {
     var dataString: String!
     var viewDelegate: feedbackViewDelegate?
     var messageToDisplay:String?
-    var selectedValue : Int!
+    var selectedValue : String!
     var selectedDescription : String!
     
     // MARK: init
@@ -179,7 +179,7 @@ class FeedbackSliderViewController: UIViewController, UITextViewDelegate {
     @IBAction func tapsOnSubmitButtonAct(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
         descriptionTextView.resignFirstResponder()
-        if selectedValue != 5{
+        if Int(selectedValue) != 5{
             if descriptionTextView.text == placeholderText {
                 descriptionTextView.text = ""
                 selectedDescription = descriptionTextView.text
@@ -215,7 +215,7 @@ extension FeedbackSliderViewController : UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let elements = arrayOfSmiley[indexPath.item]
-        selectedValue = elements.value!
+        selectedValue = elements.value ?? ""
         
         if elements.smileyId! == 5{
             subViewHeightConstraint.constant = 200
@@ -254,9 +254,9 @@ extension FeedbackSliderViewController: FloatRatingViewDelegate {
         //selectedValue = Int(floatRatingView.rating)
         let index = Int(floatRatingView.rating) - 1
         let elements = arrayOfSmiley[index]
-        selectedValue = elements.value!
+        selectedValue = elements.value ?? ""
         
-        if selectedValue == 5{
+        if Int(selectedValue) == 5{
             subViewHeightConstraint.constant = 200
             textViewHeightContraint.constant = 0
             descriptionLabel.isHidden = false

@@ -74,6 +74,10 @@ var headerTxt = SDKConfiguration.botConfig.chatBotName
 var arrayOfViews = [BubbleView?]()
 var arrayOfTemplateTypes = [String]()
 
+var feedBackTemplateSelectedValue = ""
+var isShowQuickRepliesBottom = true
+var arrayOfSelectedBtnIndex:NSMutableArray = NSMutableArray()
+
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)
@@ -228,6 +232,8 @@ open class Utilities: NSObject {
             return .advanced_multi_select
         }else if templateType == "radioOptionTemplate"{
             return .radioOptionTemplate
+        }else if templateType == "quick_replies_top"{
+            return .quick_replies_top
         }else if templateType == "text"{
             return .text
         }

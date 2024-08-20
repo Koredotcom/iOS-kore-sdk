@@ -847,3 +847,15 @@ class EmptyBubbleViewCell : MessageBubbleCell {
         }
     }
 }
+class QuickReplyTopBubbleCell: MessageBubbleCell{
+    override func bubbleType() -> ComponentType {
+        return .quick_replies_top
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}

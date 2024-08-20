@@ -168,6 +168,9 @@ open class BubbleView: UIView {
             case .radioOptionTemplate:
                 bubbleView =  RadioOptionBubbleView()
                 break
+            case .quick_replies_top:
+                bubbleView = QuickReplyTopBubbleView()
+                break
             case .noTemplate:
                 bubbleView = EmptyBubbleView()
                 break

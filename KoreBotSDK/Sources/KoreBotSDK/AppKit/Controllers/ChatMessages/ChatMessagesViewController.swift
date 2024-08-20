@@ -517,6 +517,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             return .advanced_multi_select
         }else if templateType == "radioOptionTemplate"{
             return .radioOptionTemplate
+        }else if templateType == "quick_replies_top"{
+            return .quick_replies_top
         }
         else if templateType == "text"{
             return .text
@@ -598,7 +600,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 
                 if (type == "template") {
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
-                    let templateType: String = dictionary["template_type"] as! String
+                    let templateType: String = dictionary["template_type"] as? String ?? ""
                     var tabledesign: String
                     
                     tabledesign  = (dictionary["table_design"] != nil ? dictionary["table_design"] as? String : "responsive")!
@@ -1070,6 +1072,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         self.botClient.sendMessage(text, dictionary: dictionary, options: options)
                     }
                 }
+                arrayOfSelectedBtnIndex.insert(1000, at: 0)
                 self.textMessageSent()
             })
         }

@@ -36,7 +36,7 @@ public class Componentss: NSObject, Decodable {
     
       public var limit: Int?
       public var radioOptions: [RadioOptions]?
-    
+    public var thumpsUpDownArrays: [SmileyArraysAction]?
     enum ColorCodeKeys: String, CodingKey {
             case template_type = "template_type"
             case text = "text"
@@ -64,6 +64,7 @@ public class Componentss: NSObject, Decodable {
             case audioUrl = "audioUrl"
             case limit = "limit"
             case radioOptions = "radioOptions"
+        case thumpsUpDownArrays = "thumpsUpDownArrays"
        }
        
        // MARK: - init
@@ -99,6 +100,7 @@ public class Componentss: NSObject, Decodable {
            audioUrl = try? container.decode(String.self, forKey: .audioUrl)
            limit = try? container.decode(Int.self, forKey: .limit)
            radioOptions = try? container.decode([RadioOptions].self, forKey: .radioOptions)
+           thumpsUpDownArrays = try? container.decode([SmileyArraysAction].self, forKey: .thumpsUpDownArrays)
        }
 }
 // MARK: - Elements
@@ -299,7 +301,7 @@ public class PostbackAction: NSObject, Decodable {
 
 // MARK: - Smileys Array
 public class SmileyArraysAction: NSObject, Decodable {
-    public var value: Int?
+    public var value: String?
     public var smileyId: Int?
     public var starId: Int?
     public var colorFeedback: String?
@@ -320,7 +322,14 @@ public class SmileyArraysAction: NSObject, Decodable {
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
-        value = try? container.decode(Int.self, forKey: .value)
+        if let valueInteger = try? container.decodeIfPresent(Int.self, forKey: .value) {
+            value = String(valueInteger ?? -00)
+            if value == "-00"{
+                value = ""
+            }
+        } else if let valueString = try? container.decodeIfPresent(String.self, forKey: .value) {
+            value = valueString
+        }
         smileyId = try? container.decode(Int.self, forKey: .smileyId)
         starId = try? container.decode(Int.self, forKey: .starId)
         colorFeedback = try? container.decode(String.self, forKey: .colorFeedback)
