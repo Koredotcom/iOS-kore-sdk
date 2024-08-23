@@ -50,6 +50,8 @@ class ViewController: UIViewController {
         
         botConnect.showOrHideFooterViewIcons(isShowSpeachToTextIcon: true, isShowAttachmentIcon: true)
         
+        botConnect.loadCustomFonts(regularFont: "Inter-Regular", mediumFont: "Inter-Medium", boldFont: "Inter-Bold", semiBoldFont: "Inter-SemiBold", italicFont: "Inter-Italic")
+        
         // MARK: Show Bot window
         botConnect.show()
     }

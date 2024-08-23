@@ -28,8 +28,13 @@ typedef NSFont UIFont;
 #else
     NSUInteger defaultSize = 16;
 #endif
+    id mediumFont = [[NSUserDefaults standardUserDefaults] objectForKey:@"Medium"];
+    if(mediumFont){
+        self.defaultAttributes = @{ NSFontAttributeName: [UIFont fontWithName:mediumFont size:defaultSize] };
+    }else{
+        self.defaultAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:defaultSize] };
+    }
     
-    self.defaultAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:defaultSize] };
     
 #if TARGET_OS_TV
     _headerAttributes = @[ @{ NSFontAttributeName: [UIFont boldSystemFontOfSize:76] },
@@ -48,8 +53,12 @@ typedef NSFont UIFont;
 #endif
     
     _listAttributes = @[];
-    _quoteAttributes = @[@{NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Italic" size:defaultSize]}];
-    
+    id italic = [[NSUserDefaults standardUserDefaults] objectForKey:@"Italic"];
+    if(italic){
+        _quoteAttributes = @[@{NSFontAttributeName: [UIFont fontWithName:italic size:defaultSize]}];
+    }else{
+        _quoteAttributes = @[@{NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Italic" size:defaultSize]}];
+    }
     _imageAttributes = @{};
     _linkAttributes = @{ NSForegroundColorAttributeName: [UIColor blueColor],
                          NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle) };
@@ -57,11 +66,27 @@ typedef NSFont UIFont;
     // Courier New and Courier are the only monospace fonts compatible with watchOS 2
     _monospaceAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"Courier New" size:defaultSize],
                               NSForegroundColorAttributeName: [UIColor colorWithRed:0.95 green:0.54 blue:0.55 alpha:1] };
-    _strongAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Bold" size:defaultSize] };
-    _underlineAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:defaultSize], NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle) };
+    id bold = [[NSUserDefaults standardUserDefaults] objectForKey:@"Bold"];
+    if(bold){
+        _strongAttributes = @{ NSFontAttributeName: [UIFont fontWithName:bold size:defaultSize] };
+    }else{
+        _strongAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Bold" size:defaultSize] };
+    }
+    
+    if(mediumFont){
+        _underlineAttributes = @{ NSFontAttributeName: [UIFont fontWithName:mediumFont size:defaultSize], NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle) };
+    }else{
+        _underlineAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:defaultSize], NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle) };
+    }
+    
 
 #if TARGET_OS_IPHONE
-    _emphasisAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Italic" size:defaultSize] };
+    if(italic){
+        _emphasisAttributes = @{ NSFontAttributeName: [UIFont fontWithName:italic size:defaultSize] };
+    }else{
+        _emphasisAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Italic" size:defaultSize] };
+    }
+    
 #else
     _emphasisAttributes = @{ NSFontAttributeName: [[NSFontManager sharedFontManager] convertFont:[UIFont systemFontOfSize:defaultSize] toHaveTrait:NSItalicFontMask] };
 #endif

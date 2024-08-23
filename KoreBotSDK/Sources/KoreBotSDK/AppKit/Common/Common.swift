@@ -46,6 +46,7 @@ var mediumCustomFont = "HelveticaNeue-Medium"
 var boldCustomFont = "HelveticaNeue-Bold"
 var semiBoldCustomFont = "HelveticaNeue-Semibold"
 var italicCustomFont =  "HelveticaNeue-Italic"
+var isLoadCustomFonts = false
 
 var isAgentConnect = false
 
