@@ -1,0 +1,10 @@
+
+module ChatBotObjc {
+    header "KREAttributedLabel.h"
+        header "KREAttributedLabel.h"
+        header "KRELayoutManager.h"
+        header "KREUtilities.h"
+        header "NSMutableAttributedString+KREUtils.h"
+        header "KRETypingActivityIndicator.h"
+        header "KRETypingStatusView.h"
+}

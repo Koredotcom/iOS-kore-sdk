@@ -1,0 +1,4 @@
+
+extension Bundle {
+    public static let blah = Bundle.module
+}

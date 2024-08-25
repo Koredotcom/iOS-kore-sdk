@@ -1,0 +1,660 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		07929D032AE6E0EA0027C7B3 /* KoreSDKSampleAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07929D022AE6E0EA0027C7B3 /* KoreSDKSampleAppApp.swift */; };
+		07929D052AE6E0EA0027C7B3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07929D042AE6E0EA0027C7B3 /* ContentView.swift */; };
+		07929D072AE6E0EA0027C7B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07929D062AE6E0EA0027C7B3 /* Assets.xcassets */; };
+		07929D0B2AE6E0EA0027C7B3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07929D0A2AE6E0EA0027C7B3 /* Preview Assets.xcassets */; };
+		07929D152AE6E0EB0027C7B3 /* KoreSDKSampleAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07929D142AE6E0EB0027C7B3 /* KoreSDKSampleAppTests.swift */; };
+		07929D1F2AE6E0EB0027C7B3 /* KoreSDKSampleAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07929D1E2AE6E0EB0027C7B3 /* KoreSDKSampleAppUITests.swift */; };
+		07929D212AE6E0EB0027C7B3 /* KoreSDKSampleAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07929D202AE6E0EB0027C7B3 /* KoreSDKSampleAppUITestsLaunchTests.swift */; };
+		07929D302AE6E2070027C7B3 /* ChatBot in Frameworks */ = {isa = PBXBuildFile; productRef = 07929D2F2AE6E2070027C7B3 /* ChatBot */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		07929D112AE6E0EB0027C7B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 07929CF72AE6E0EA0027C7B3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 07929CFE2AE6E0EA0027C7B3;
+			remoteInfo = KoreSDKSampleApp;
+		};
+		07929D1B2AE6E0EB0027C7B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 07929CF72AE6E0EA0027C7B3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 07929CFE2AE6E0EA0027C7B3;
+			remoteInfo = KoreSDKSampleApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		07929CFF2AE6E0EA0027C7B3 /* KoreSDKSampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KoreSDKSampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		07929D022AE6E0EA0027C7B3 /* KoreSDKSampleAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoreSDKSampleAppApp.swift; sourceTree = "<group>"; };
+		07929D042AE6E0EA0027C7B3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		07929D062AE6E0EA0027C7B3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		07929D082AE6E0EA0027C7B3 /* KoreSDKSampleApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KoreSDKSampleApp.entitlements; sourceTree = "<group>"; };
+		07929D0A2AE6E0EA0027C7B3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		07929D102AE6E0EB0027C7B3 /* KoreSDKSampleAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KoreSDKSampleAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		07929D142AE6E0EB0027C7B3 /* KoreSDKSampleAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoreSDKSampleAppTests.swift; sourceTree = "<group>"; };
+		07929D1A2AE6E0EB0027C7B3 /* KoreSDKSampleAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KoreSDKSampleAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		07929D1E2AE6E0EB0027C7B3 /* KoreSDKSampleAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoreSDKSampleAppUITests.swift; sourceTree = "<group>"; };
+		07929D202AE6E0EB0027C7B3 /* KoreSDKSampleAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoreSDKSampleAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		07929D2D2AE6E1A10027C7B3 /* KoreSDKSampleAppPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = KoreSDKSampleAppPackage; sourceTree = "<group>"; };
+		95D8541F2B3B0A840092A62D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		07929CFC2AE6E0EA0027C7B3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07929D302AE6E2070027C7B3 /* ChatBot in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		07929D0D2AE6E0EB0027C7B3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		07929D172AE6E0EB0027C7B3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		07929CF62AE6E0EA0027C7B3 = {
+			isa = PBXGroup;
+			children = (
+				07929D012AE6E0EA0027C7B3 /* KoreSDKSampleApp */,
+				07929D2D2AE6E1A10027C7B3 /* KoreSDKSampleAppPackage */,
+				07929D132AE6E0EB0027C7B3 /* KoreSDKSampleAppTests */,
+				07929D1D2AE6E0EB0027C7B3 /* KoreSDKSampleAppUITests */,
+				07929D002AE6E0EA0027C7B3 /* Products */,
+				07929D2E2AE6E2070027C7B3 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		07929D002AE6E0EA0027C7B3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				07929CFF2AE6E0EA0027C7B3 /* KoreSDKSampleApp.app */,
+				07929D102AE6E0EB0027C7B3 /* KoreSDKSampleAppTests.xctest */,
+				07929D1A2AE6E0EB0027C7B3 /* KoreSDKSampleAppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		07929D012AE6E0EA0027C7B3 /* KoreSDKSampleApp */ = {
+			isa = PBXGroup;
+			children = (
+				95D8541F2B3B0A840092A62D /* Info.plist */,
+				07929D022AE6E0EA0027C7B3 /* KoreSDKSampleAppApp.swift */,
+				07929D042AE6E0EA0027C7B3 /* ContentView.swift */,
+				07929D062AE6E0EA0027C7B3 /* Assets.xcassets */,
+				07929D082AE6E0EA0027C7B3 /* KoreSDKSampleApp.entitlements */,
+				07929D092AE6E0EA0027C7B3 /* Preview Content */,
+			);
+			path = KoreSDKSampleApp;
+			sourceTree = "<group>";
+		};
+		07929D092AE6E0EA0027C7B3 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				07929D0A2AE6E0EA0027C7B3 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		07929D132AE6E0EB0027C7B3 /* KoreSDKSampleAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				07929D142AE6E0EB0027C7B3 /* KoreSDKSampleAppTests.swift */,
+			);
+			path = KoreSDKSampleAppTests;
+			sourceTree = "<group>";
+		};
+		07929D1D2AE6E0EB0027C7B3 /* KoreSDKSampleAppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				07929D1E2AE6E0EB0027C7B3 /* KoreSDKSampleAppUITests.swift */,
+				07929D202AE6E0EB0027C7B3 /* KoreSDKSampleAppUITestsLaunchTests.swift */,
+			);
+			path = KoreSDKSampleAppUITests;
+			sourceTree = "<group>";
+		};
+		07929D2E2AE6E2070027C7B3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		07929CFE2AE6E0EA0027C7B3 /* KoreSDKSampleApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 07929D242AE6E0EB0027C7B3 /* Build configuration list for PBXNativeTarget "KoreSDKSampleApp" */;
+			buildPhases = (
+				07929CFB2AE6E0EA0027C7B3 /* Sources */,
+				07929CFC2AE6E0EA0027C7B3 /* Frameworks */,
+				07929CFD2AE6E0EA0027C7B3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KoreSDKSampleApp;
+			packageProductDependencies = (
+				07929D2F2AE6E2070027C7B3 /* ChatBot */,
+			);
+			productName = KoreSDKSampleApp;
+			productReference = 07929CFF2AE6E0EA0027C7B3 /* KoreSDKSampleApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		07929D0F2AE6E0EB0027C7B3 /* KoreSDKSampleAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 07929D272AE6E0EB0027C7B3 /* Build configuration list for PBXNativeTarget "KoreSDKSampleAppTests" */;
+			buildPhases = (
+				07929D0C2AE6E0EB0027C7B3 /* Sources */,
+				07929D0D2AE6E0EB0027C7B3 /* Frameworks */,
+				07929D0E2AE6E0EB0027C7B3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				07929D122AE6E0EB0027C7B3 /* PBXTargetDependency */,
+			);
+			name = KoreSDKSampleAppTests;
+			productName = KoreSDKSampleAppTests;
+			productReference = 07929D102AE6E0EB0027C7B3 /* KoreSDKSampleAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		07929D192AE6E0EB0027C7B3 /* KoreSDKSampleAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 07929D2A2AE6E0EB0027C7B3 /* Build configuration list for PBXNativeTarget "KoreSDKSampleAppUITests" */;
+			buildPhases = (
+				07929D162AE6E0EB0027C7B3 /* Sources */,
+				07929D172AE6E0EB0027C7B3 /* Frameworks */,
+				07929D182AE6E0EB0027C7B3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				07929D1C2AE6E0EB0027C7B3 /* PBXTargetDependency */,
+			);
+			name = KoreSDKSampleAppUITests;
+			productName = KoreSDKSampleAppUITests;
+			productReference = 07929D1A2AE6E0EB0027C7B3 /* KoreSDKSampleAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		07929CF72AE6E0EA0027C7B3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					07929CFE2AE6E0EA0027C7B3 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					07929D0F2AE6E0EB0027C7B3 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = 07929CFE2AE6E0EA0027C7B3;
+					};
+					07929D192AE6E0EB0027C7B3 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = 07929CFE2AE6E0EA0027C7B3;
+					};
+				};
+			};
+			buildConfigurationList = 07929CFA2AE6E0EA0027C7B3 /* Build configuration list for PBXProject "KoreSDKSampleApp" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 07929CF62AE6E0EA0027C7B3;
+			productRefGroup = 07929D002AE6E0EA0027C7B3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				07929CFE2AE6E0EA0027C7B3 /* KoreSDKSampleApp */,
+				07929D0F2AE6E0EB0027C7B3 /* KoreSDKSampleAppTests */,
+				07929D192AE6E0EB0027C7B3 /* KoreSDKSampleAppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		07929CFD2AE6E0EA0027C7B3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07929D0B2AE6E0EA0027C7B3 /* Preview Assets.xcassets in Resources */,
+				07929D072AE6E0EA0027C7B3 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		07929D0E2AE6E0EB0027C7B3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		07929D182AE6E0EB0027C7B3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		07929CFB2AE6E0EA0027C7B3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07929D052AE6E0EA0027C7B3 /* ContentView.swift in Sources */,
+				07929D032AE6E0EA0027C7B3 /* KoreSDKSampleAppApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		07929D0C2AE6E0EB0027C7B3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07929D152AE6E0EB0027C7B3 /* KoreSDKSampleAppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		07929D162AE6E0EB0027C7B3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07929D212AE6E0EB0027C7B3 /* KoreSDKSampleAppUITestsLaunchTests.swift in Sources */,
+				07929D1F2AE6E0EB0027C7B3 /* KoreSDKSampleAppUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		07929D122AE6E0EB0027C7B3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 07929CFE2AE6E0EA0027C7B3 /* KoreSDKSampleApp */;
+			targetProxy = 07929D112AE6E0EB0027C7B3 /* PBXContainerItemProxy */;
+		};
+		07929D1C2AE6E0EB0027C7B3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 07929CFE2AE6E0EA0027C7B3 /* KoreSDKSampleApp */;
+			targetProxy = 07929D1B2AE6E0EB0027C7B3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		07929D222AE6E0EB0027C7B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		07929D232AE6E0EB0027C7B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		07929D252AE6E0EB0027C7B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = KoreSDKSampleApp/KoreSDKSampleApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"KoreSDKSampleApp/Preview Content\"";
+				DEVELOPMENT_TEAM = TUE6KHKZ4Z;
+				ENABLE_PREVIEWS = YES;
+				EXCLUDED_ARCHS = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = KoreSDKSampleApp/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Allow access to camera.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Allow access to microphone.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow access to photo library.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Speech recognition will be used to determine which words you speak into this device's microphone.";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MARKETING_VERSION = 1.0;
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		07929D262AE6E0EB0027C7B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = KoreSDKSampleApp/KoreSDKSampleApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"KoreSDKSampleApp/Preview Content\"";
+				DEVELOPMENT_TEAM = TUE6KHKZ4Z;
+				ENABLE_PREVIEWS = YES;
+				EXCLUDED_ARCHS = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = KoreSDKSampleApp/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Allow access to camera.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Allow access to microphone.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow access to photo library.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Speech recognition will be used to determine which words you speak into this device's microphone.";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MARKETING_VERSION = 1.0;
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kore.sdk;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		07929D282AE6E0EB0027C7B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = KoreSDKSampleApp.KoreSDKSampleAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KoreSDKSampleApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KoreSDKSampleApp";
+			};
+			name = Debug;
+		};
+		07929D292AE6E0EB0027C7B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = KoreSDKSampleApp.KoreSDKSampleAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KoreSDKSampleApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KoreSDKSampleApp";
+			};
+			name = Release;
+		};
+		07929D2B2AE6E0EB0027C7B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = KoreSDKSampleApp.KoreSDKSampleAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = KoreSDKSampleApp;
+			};
+			name = Debug;
+		};
+		07929D2C2AE6E0EB0027C7B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = KoreSDKSampleApp.KoreSDKSampleAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = KoreSDKSampleApp;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		07929CFA2AE6E0EA0027C7B3 /* Build configuration list for PBXProject "KoreSDKSampleApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				07929D222AE6E0EB0027C7B3 /* Debug */,
+				07929D232AE6E0EB0027C7B3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		07929D242AE6E0EB0027C7B3 /* Build configuration list for PBXNativeTarget "KoreSDKSampleApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				07929D252AE6E0EB0027C7B3 /* Debug */,
+				07929D262AE6E0EB0027C7B3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		07929D272AE6E0EB0027C7B3 /* Build configuration list for PBXNativeTarget "KoreSDKSampleAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				07929D282AE6E0EB0027C7B3 /* Debug */,
+				07929D292AE6E0EB0027C7B3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		07929D2A2AE6E0EB0027C7B3 /* Build configuration list for PBXNativeTarget "KoreSDKSampleAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				07929D2B2AE6E0EB0027C7B3 /* Debug */,
+				07929D2C2AE6E0EB0027C7B3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		07929D2F2AE6E2070027C7B3 /* ChatBot */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ChatBot;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 07929CF72AE6E0EA0027C7B3 /* Project object */;
+}
