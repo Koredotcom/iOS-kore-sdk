@@ -816,6 +816,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.addObserver(self, selector: #selector(showPDFViewController), name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showPDFErrorMeesage), name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willTerminate(_:)), name: UIApplication.willTerminateNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(sendBtnEnabledOrDisabled), name: NSNotification.Name(rawValue: sendButtonDisabledNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -848,6 +850,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
         
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: sendButtonDisabledNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -892,6 +895,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @objc func didBecomeActive(_ notification: Notification) {
+        NotificationCenter.default.post(name: Notification.Name(sendButtonDisabledNotification), object: "Show")
         startMonitoringForReachability()
     }
     
@@ -1603,6 +1607,15 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 // Fallback on earlier versions
             }
             
+        }
+    }
+    
+    @objc func sendBtnEnabledOrDisabled(notification:Notification){
+        let dataString: String = notification.object as? String ?? ""
+        if dataString == "Show"{
+            composeView.sendButtonEnabeldOrDisabled(isEnabled: false)
+        }else{
+            composeView.sendButtonEnabeldOrDisabled(isEnabled: true)
         }
     }
     

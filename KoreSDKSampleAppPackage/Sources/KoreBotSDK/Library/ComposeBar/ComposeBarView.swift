@@ -274,6 +274,14 @@ class ComposeBarView: UIView {
         self.valueChanged()
     }
     
+    open func sendButtonEnabeldOrDisabled(isEnabled:Bool){
+        if isEnabled{
+            self.sendButton.isUserInteractionEnabled = true
+        }else{
+            self.sendButton.isUserInteractionEnabled = false
+        }
+    }
+    
     // MARK:- deinit
     deinit {
         self.topLineView = nil

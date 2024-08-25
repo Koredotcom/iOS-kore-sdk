@@ -49,6 +49,8 @@ var historyLimit = 0
 var RemovedTemplateCount = 0
 var isIntialiseFileUpload = false
 
+var notDeliverdMsgsArray = [String]()
+var sendButtonDisabledNotification = "SendButtonDisabledNotification"
 
 var regularCustomFont = ""
 var mediumCustomFont = ""

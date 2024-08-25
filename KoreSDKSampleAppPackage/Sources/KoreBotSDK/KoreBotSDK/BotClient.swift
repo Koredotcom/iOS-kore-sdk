@@ -249,6 +249,8 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             }
             dictionary?.forEach { (key, value) in parameters[key] = value }
             connection.sendMessage(message, parameters: parameters, options: options)
+        }else{
+            notDeliverdMsgsArray.append(message)
         }
     }
     
