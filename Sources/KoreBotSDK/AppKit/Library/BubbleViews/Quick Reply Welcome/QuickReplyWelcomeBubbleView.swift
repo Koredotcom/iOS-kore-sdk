@@ -282,15 +282,17 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
             let elements = arrayOfButtons[indexPath.row]
             cell.textlabel.text = elements.title
         }
-        cell.bgV.backgroundColor = .clear
+        let bgColor = (brandingShared.buttonActiveBgColor) ?? "#f3f3f5"
+        let textColor = (brandingShared.buttonActiveTextColor) ?? "#2881DF"
+        cell.bgV.backgroundColor = UIColor.init(hexString: bgColor)
         
         cell.textlabel.font = UIFont(name: mediumCustomFont, size: 12.0)
         cell.textlabel.textAlignment = .center
-        cell.textlabel.textColor = themeColor
+        cell.textlabel.textColor = UIColor.init(hexString: textColor)
         cell.textlabel.numberOfLines = 2
         cell.imagvWidthConstraint.constant = 0.0
         
-        cell.layer.borderColor = themeColor.cgColor
+        cell.layer.borderColor =  UIColor.init(hexString: bgColor).cgColor
         cell.layer.borderWidth = 1.5
         cell.layer.cornerRadius = 5
         cell.backgroundColor = .clear

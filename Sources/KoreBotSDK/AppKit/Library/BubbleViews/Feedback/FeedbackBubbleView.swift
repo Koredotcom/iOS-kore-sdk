@@ -84,8 +84,8 @@ class FeedbackBubbleView: BubbleView {
         floatRatingView.delegate = self
         floatRatingView.contentMode = UIView.ContentMode.scaleAspectFit
         floatRatingView.type = .wholeRatings
-        floatRatingView.emptyImage = UIImage(named: "StarEmpty")
-        floatRatingView.fullImage = UIImage(named: "StarFull")
+        floatRatingView.emptyImage = UIImage(named: "StarEmpty", in: bundle, compatibleWith: nil)
+        floatRatingView.fullImage = UIImage(named: "StarFull", in: bundle, compatibleWith: nil)
         floatRatingView.minRating = 1
         floatRatingView.maxRating = 5
         floatRatingView.rating = 0
@@ -111,7 +111,7 @@ class FeedbackBubbleView: BubbleView {
         self.cardView = UIView(frame:.zero)
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
-        cardView.backgroundColor =  UIColor.white
+        cardView.backgroundColor =  BubbleViewLeftTint
         if #available(iOS 11.0, *) {
             self.cardView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.clear, borderWidth: 1.5)
         }

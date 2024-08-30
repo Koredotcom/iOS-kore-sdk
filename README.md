@@ -87,10 +87,7 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
     * Open Examples/CocoapodsDemo/KoreBotSDKDemo.xcworkspace in Xcode.
     * Run the KoreBotSDKDemo.app in xcode
 
-## SDK V3
-   * Use this branch https://github.com/Koredotcom/iOS-kore-sdk/tree/SDKV3
-   
-   
+
 ## Integrating into your app
 #### 1. Setup KoreBotSDK
 ###### a. Using SPM
@@ -173,6 +170,15 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
         Privacy - Photo Library Usage Description  ---      Allow access to photo library.
         Privacy - Speech Recognition Usage Description  --- Speech recognition will be used to determine which words you speak into this device's microphone.
     
+## SDK V3
+   * Use this branch https://github.com/Koredotcom/iOS-kore-sdk/tree/SDKV3
+   
+## How to integrate KoreBotSDK withoutUI
+   * Use this branch https://github.com/Koredotcom/iOS-kore-sdk/tree/KoreLibrary
+   
+## How to enable API based (webhook channel) message communication
+###### a. Change the below line in ViewController.swift
+          let isWebhookEnabled = true // Default it's false.
 
 License
 ----
