@@ -1845,6 +1845,7 @@ extension ChatMessagesViewController {
                 let messageTuple = onReceiveMessage(object: botMessage)
                 if let object = messageTuple.0 {
                     if !removeTemplate{
+                        arrayOfSelectedBtnIndex.add(1001)
                         allMessages.append(object)
                     }
                 }

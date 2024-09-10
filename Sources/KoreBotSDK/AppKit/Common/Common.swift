@@ -56,6 +56,7 @@ var isBotConnectSucessFully = false
 var arrayOfViews = [BubbleView?]()
 var arrayOfTemplateTypes = [String]()
 
+var notDeliverdMsgsArray = [String]()
 var historyLimit = 0
 var RemovedTemplateCount = 0
 var isCallingHistoryApi = true
@@ -65,6 +66,7 @@ var appDisplayName = "KoreBotSDK"
 var isShowQuickRepliesBottom = true
 var isShowVideoOption = false
 var arrayOfSelectedBtnIndex:NSMutableArray = NSMutableArray()
+
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
