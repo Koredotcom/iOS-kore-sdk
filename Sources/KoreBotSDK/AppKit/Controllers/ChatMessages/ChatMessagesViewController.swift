@@ -943,7 +943,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             case .reachable(.ethernetOrWiFi), .reachable(.cellular):
                 if isTryConnect{
                     isInternetAvailable = true
-                    self.establishBotConnection()
+                    if !SDKConfiguration.botConfig.isWebhookEnabled{
+                        self.establishBotConnection()
+                    }
                     if isAgentConnect{
                         Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (_) in
                             self.stopLoader()
@@ -1118,11 +1120,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func receviceMessage(dictionary:[String: Any]){
-        
-        
         let data: Array = dictionary["data"] != nil ? dictionary["data"] as! Array : []
         for i in 0..<data.count{
-            
             let message: Message = Message()
             message.messageType = .reply
             let textComponent: Component = Component()
@@ -1153,17 +1152,25 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 switch type {
                 case "template":
                     if let dictionary = jsonObject["payload"] as? [String: Any] {
-                        let templateType = dictionary["template_type"] as? String ?? ""
+                        var templateType = dictionary["template_type"] as? String ?? ""
                         var tabledesign = "responsive"
                         if let value = dictionary["table_design"] as? String {
                             tabledesign = value
                         }
-                        
+                        if !isShowQuickRepliesBottom{
+                            if templateType == "quick_replies"{
+                                templateType = "quick_replies_top"
+                            }
+                        }
                         let componentType = getComponentType(templateType, tabledesign)
                         if componentType != .quickReply {
                             
                         }
-                        
+                        if templateType == "feedbackTemplate"{
+                            //if !history{
+                                feedBackTemplateSelectedValue = ""
+                            //}
+                        }
                         ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
                         if let tText = dictionary["text"] as? String, tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable) {
                             textMessage = Message()
@@ -1178,9 +1185,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                             textMessage?.addComponent(textComponent)
                         }
                         
-                        let optionsComponent: Component = Component(componentType)
-                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                        message.addComponent(optionsComponent)
+                        if templateType == "SYSTEM" || templateType == "live_agent" || templateType == ""{
+                           let textComponent = Component(.text)
+                           let text = dictionary["text"] as? String ?? ""
+                           textComponent.payload = text
+                           ttsBody = text
+                           message.addComponent(textComponent)
+                       }else{
+                          let optionsComponent: Component = Component(componentType)
+                          optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                          message.addComponent(optionsComponent)
+                       }
                     }
                 case "image":
                     if let _ = jsonObject["payload"] as? [String: Any] {
@@ -1216,6 +1231,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         message.sentDate = self.dateFormatter().date(from: valData["createdOn"] as? String ?? "")
                         message.addComponent(optionsComponent)
                     }
+                case "link":
+                    if let dictionary = jsonObject["payload"] as? [String: Any] {
+                        let  componentType = Component(.linkDownload)
+                        let optionsComponent: Component = componentType
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.addComponent(optionsComponent)
+                    }
                 case "error":
                     if let dictionary = jsonObject["payload"] as? [String: Any] {
                         let errorComponent: Component = Component(.error)
@@ -1228,6 +1250,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         let textComponent: Component = Component()
                         textComponent.payload = text
                         message.addComponent(textComponent)
+                    }else{
+                        if let dictionary = jsonObject["payload"] as? [String: Any],
+                           let text = dictionary["text"] as? String{
+                            let textComponent = Component()
+                            textComponent.payload = text
+                            ttsBody = text
+                            message.addComponent(textComponent)
+                        }
                     }
                 }
             }else if let jsonObject: [String: Any] = valData["val"] as? [String : Any]{
@@ -1237,10 +1267,15 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 switch type {
                 case "template":
                     if let dictionary = jsonObject["payload"] as? [String: Any] {
-                        let templateType = dictionary["template_type"] as? String ?? ""
+                        var templateType = dictionary["template_type"] as? String ?? ""
                         var tabledesign = "responsive"
                         if let value = dictionary["table_design"] as? String {
                             tabledesign = value
+                        }
+                        if !isShowQuickRepliesBottom{
+                            if templateType == "quick_replies"{
+                                templateType = "quick_replies_top"
+                            }
                         }
                         
                         let componentType = getComponentType(templateType, tabledesign)
@@ -1248,6 +1283,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                             
                         }
                         
+                        if templateType == "feedbackTemplate"{
+                            //if !history{
+                                feedBackTemplateSelectedValue = ""
+                            //}
+                        }
                         ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
                         if let tText = dictionary["text"] as? String, tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable) {
                             textMessage = Message()
@@ -1262,9 +1302,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                             textMessage?.addComponent(textComponent)
                         }
                         
-                        let optionsComponent: Component = Component(componentType)
-                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
-                        message.addComponent(optionsComponent)
+                        if templateType == "SYSTEM" || templateType == "live_agent" || templateType == ""{
+                           let textComponent = Component(.text)
+                           let text = dictionary["text"] as? String ?? ""
+                           textComponent.payload = text
+                           ttsBody = text
+                           message.addComponent(textComponent)
+                       }else{
+                          let optionsComponent: Component = Component(componentType)
+                          optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                          message.addComponent(optionsComponent)
+                       }
                     }
                 case "image":
                     if let _ = jsonObject["payload"] as? [String: Any] {
@@ -1300,6 +1348,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         message.sentDate = self.dateFormatter().date(from: valData["createdOn"] as? String ?? "")
                         message.addComponent(optionsComponent)
                     }
+                case "link":
+                    if let dictionary = jsonObject["payload"] as? [String: Any] {
+                        let  componentType = Component(.linkDownload)
+                        let optionsComponent: Component = componentType
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.addComponent(optionsComponent)
+                    }
                 case "error":
                     if let dictionary = jsonObject["payload"] as? [String: Any] {
                         let errorComponent: Component = Component(.error)
@@ -1312,6 +1367,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         let textComponent: Component = Component()
                         textComponent.payload = text
                         message.addComponent(textComponent)
+                    }else{
+                        if let dictionary = jsonObject["payload"] as? [String: Any],
+                           let text = dictionary["text"] as? String{
+                            let textComponent = Component()
+                            textComponent.payload = text
+                            ttsBody = text
+                            message.addComponent(textComponent)
+                        }
                     }
                 }
             }
@@ -1326,6 +1389,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 message.addComponent(textComponent)
                 lastMessageID = valData["messageId"] as? String
             }
+            historyLimit += 1
             addMessages(message, ttsBody)
             NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
         }
@@ -1874,8 +1938,10 @@ extension ChatMessagesViewController {
         })
     }
     func tableviewScrollDidEnd(){
-        if SDKConfiguration.botConfig.isShowChatHistory{
-            fetchMessages()
+        if !SDKConfiguration.botConfig.isWebhookEnabled{
+            if SDKConfiguration.botConfig.isShowChatHistory{
+                fetchMessages()
+            }
         }
     }
 }
