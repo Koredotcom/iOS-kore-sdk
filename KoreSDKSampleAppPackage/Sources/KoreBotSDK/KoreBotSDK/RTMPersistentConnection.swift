@@ -145,9 +145,9 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
             if self?.receivedLastPong == false {
                 // we did not receive the last pong
                 // abort the socket so that we can spin up a new connection
-                // self.websocket.close()
-                // self.timerSource.suspend()
-                // self.connectionDelegate?.rtmConnectionDidFailWithError(NSError())
+                self?.websocket?.disconnect()
+                self?.timerSource.suspend()
+                self?.connectionDelegate?.rtmConnectionDidFailWithError(NSError())
             } else if self?.isConnected == false {
                 self?.websocket?.disconnect()
                 self?.timerSource.suspend()
@@ -304,9 +304,9 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
             if self?.receivedLastPong == false {
                 // we did not receive the last pong
                 // abort the socket so that we can spin up a new connection
-                // self.websocket.close()
-                // self.timerSource.suspend()
-                // self.connectionDelegate?.rtmConnectionDidFailWithError(NSError())
+                self?.websocket?.disconnect()
+                self?.timerSource.suspend()
+                self?.connectionDelegate?.rtmConnectionDidFailWithError(NSError())
             } else if self?.isConnected == false {
                 self?.websocket?.disconnect()
                 self?.timerSource.suspend()

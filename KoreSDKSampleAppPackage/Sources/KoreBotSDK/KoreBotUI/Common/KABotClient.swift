@@ -206,7 +206,6 @@ open class KABotClient: NSObject {
                     for _ in 0..<notDeliverdMsgsArray.count{
                         self?.sendMessage(notDeliverdMsgsArray[0], options: nil)
                         notDeliverdMsgsArray.remove(at: 0)
-                        historyLimit += 1
                     }
                     self?.getAgentRecentHistory()
                 }

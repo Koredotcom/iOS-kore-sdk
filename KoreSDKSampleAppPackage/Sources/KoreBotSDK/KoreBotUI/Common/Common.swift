@@ -51,6 +51,7 @@ var isIntialiseFileUpload = false
 
 var notDeliverdMsgsArray = [String]()
 var sendButtonDisabledNotification = "SendButtonDisabledNotification"
+var isEstablishBotConnection = false
 
 var regularCustomFont = ""
 var mediumCustomFont = ""

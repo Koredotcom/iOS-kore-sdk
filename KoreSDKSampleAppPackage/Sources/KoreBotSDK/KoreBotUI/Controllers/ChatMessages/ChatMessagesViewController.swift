@@ -127,6 +127,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         headerView.addSubview(linerProgressBar)
         
         //Initialize elements
+        isEstablishBotConnection = false
+        startMonitoringForReachability()
         self.configureComposeBar()
         self.configureAudioComposer()
         self.configureQuickReplyView()
@@ -906,16 +908,19 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     @objc func startMonitoringForReachability() {
         let networkReachabilityManager = NetworkReachabilityManager.default
         networkReachabilityManager?.startListening(onUpdatePerforming: { (status) in
-            print("Network reachability: \(status)")
+            print("Network reachabilityddd: \(status)")
             switch status {
             case .reachable(.ethernetOrWiFi), .reachable(.cellular):
-                self.establishBotConnection()
-                Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (_) in
-                    self.stopLoader()
+                if isEstablishBotConnection {
+                    self.establishBotConnection()
+                    Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (_) in
+                        self.stopLoader()
+                    }
                 }
                 break
             case .notReachable:
                 self.showLoader()
+                NotificationCenter.default.post(name: Notification.Name(sendButtonDisabledNotification), object: "Show")
                 fallthrough
             default:
                 break
@@ -2422,6 +2427,7 @@ extension ChatMessagesViewController{
     }
     
     func sucessMethod(client: BotClient?, thread: KREThread?){
+        isEstablishBotConnection = true
         self.stopLoader()
         self.thread = thread
         self.botClient = client
