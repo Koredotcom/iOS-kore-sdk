@@ -16,6 +16,7 @@ open class BotConnect: NSObject {
     public var showQuickRepliesBottom = true
     public var showVideoOption = false
     
+    public var closeOrMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
     // MARK: - init
     public override init() {
         super.init()
@@ -44,6 +45,12 @@ open class BotConnect: NSObject {
         botViewController.title = SDKConfiguration.botConfig.chatBotName
         botViewController.modalPresentationStyle = .fullScreen
         rootViewController.present(navigationController, animated: false)
+        
+         botViewController.closeAndMinimizeEvent = { [weak self] (Dic) in
+            if let dic = Dic {
+                self?.closeOrMinimizeEvent(dic)
+            }
+        }
     }
     
     func loadCustomFonts(){

@@ -111,11 +111,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     @IBOutlet weak var dropDownBtn: UIButton!
     
-    
+    var isAppEnterBackground = false
     let bundleImage = Bundle.sdkModule
     var phassetToUpload: PHAsset?
     var componentSelectedToupload: Component?
     public weak var account = KoraApplication.sharedInstance.account
+    
+    public var closeAndMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
+    
     
     // MARK: init
     init() {
@@ -136,6 +139,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if #available(iOS 13.0, *) {
             overrideUserInterfaceStyle = .light
         }
+        isAppEnterBackground = false
         isTryConnect = true
         isBotConnectSucessFully = false
         networkMonitoringForReachability()
@@ -235,6 +239,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     @IBAction func tapsOnBackBtnAct(_ sender: Any) {
         if !chatMaskview.isHidden{
+            let dic = ["event_code": "BotClosed", "event_message": "Bot connection error"]
+            self.closeAndMinimizeEvent(dic)
             self.botClosed()
         }else{
             let alertController = UIAlertController(title: "", message: "Would you like to close the concersation or minimize.", preferredStyle:.alert)
@@ -242,6 +248,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             alertController.addAction(UIAlertAction(title: "Close", style: .default)
                       { action -> Void in
                             isShowWelcomeMsg = true
+                            let dic = ["event_code": "BotClosed", "event_message": "Bot closed by the user"]
+                            self.closeAndMinimizeEvent(dic)
                            if isAgentConnect{
                                self.botClient.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
                                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
@@ -254,6 +262,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                       })
             alertController.addAction(UIAlertAction(title: "Minimize", style: .default)
                       { action -> Void in
+                            let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
+                            self.closeAndMinimizeEvent(dic)
                             self.botClosed()
                       })
             self.present(alertController, animated: true, completion: nil)
@@ -915,6 +925,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @objc func didEnterBackground(_ notification: Notification) {
+        isAppEnterBackground = true
         stopMonitoringForReachability()
     }
     
@@ -982,6 +993,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 if isTryConnect{
                     isInternetAvailable = true
                     if isBotConnectSucessFully{
+                        if !self.isAppEnterBackground{
+                            if !SDKConfiguration.botConfig.isWebhookEnabled{
+                                self.establishBotConnection()
+                            }
+                        }
                         self.stopLoader()
                     }
                 }
@@ -1741,6 +1757,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         // Create the actions
         let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
             UIAlertAction in
+            let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
+            self.closeAndMinimizeEvent(dic)
             self.botClosed()
         }
         alertController.addAction(okAction)

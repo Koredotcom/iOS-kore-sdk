@@ -54,5 +54,12 @@ class ViewController: UIViewController {
         
         // MARK: Show Bot window
         botConnect.show()
+        
+        // MARK: Close Or Minimize event
+        botConnect.closeOrMinimizeEvent = { (eventDic) in
+           if let dic = eventDic {
+               print(dic)
+           }
+       }
     }
 }
