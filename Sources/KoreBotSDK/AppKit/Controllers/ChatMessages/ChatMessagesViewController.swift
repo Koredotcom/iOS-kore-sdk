@@ -251,12 +251,15 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                             let dic = ["event_code": "BotClosed", "event_message": "Bot closed by the user"]
                             self.closeAndMinimizeEvent(dic)
                            if isAgentConnect{
-                               self.botClient.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
+                               self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
                                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
                                    self.botClosed()
                                }
                            }else{
-                               self.botClosed()
+                               self.botClient.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
+                               Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                                   self.botClosed()
+                               }
                            }
                             
                       })
@@ -264,7 +267,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                       { action -> Void in
                             let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
                             self.closeAndMinimizeEvent(dic)
-                            self.botClosed()
+                            self.botClient.sendEventToAgentChat(eventName: minimize_Button_EventName,messageId: "")
+                            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                                    self.botClosed()
+                            }
                       })
             self.present(alertController, animated: true, completion: nil)
         }
@@ -931,7 +937,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     @objc func willTerminate(_ notification: Notification) {
         if isAgentConnect{
-            self.botClient.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
+            self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
+            sleep(1)
+        }else{
+            self.botClient.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
             sleep(1)
         }
     }

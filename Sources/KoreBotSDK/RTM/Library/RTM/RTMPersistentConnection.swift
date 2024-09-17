@@ -391,7 +391,7 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
             let meta = ["timezone": TimeZone.current.identifier, "locale": Locale.current.identifier]
             dictionary.setValue(meta, forKey: "meta")
             
-            debugPrint("Agent chat end: \(dictionary)")
+            debugPrint("Send Event: \(dictionary)")
             
             let jsonData = try! JSONSerialization.data(withJSONObject: dictionary, options: JSONSerialization.WritingOptions.prettyPrinted)
             self.websocket?.write(data: jsonData)
