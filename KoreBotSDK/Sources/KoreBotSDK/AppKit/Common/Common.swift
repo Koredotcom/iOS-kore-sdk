@@ -78,6 +78,8 @@ var feedBackTemplateSelectedValue = ""
 var isShowQuickRepliesBottom = true
 var arrayOfSelectedBtnIndex:NSMutableArray = NSMutableArray()
 
+var notDeliverdMsgsArray = [String]()
+
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)

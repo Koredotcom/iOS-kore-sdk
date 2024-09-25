@@ -194,6 +194,10 @@ open class KABotClient: NSObject {
                 //NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
             }
             DispatchQueue.main.async {
+                for _ in 0..<notDeliverdMsgsArray.count{
+                    self?.sendMessage(notDeliverdMsgsArray[0], options: nil)
+                    notDeliverdMsgsArray.remove(at: 0)
+                }
                 self?.getAgentRecentHistory()
             }
         }
@@ -509,7 +513,9 @@ open class KABotClient: NSObject {
                                 textComponent.payload = tText
                                 textMessage?.addComponent(textComponent)
                             }
-                            
+                            if let isAgent = dictionary["isAgent"] as? Bool, isAgent == true{
+                                isAgentConnect = true
+                            }
                             if templateType == "SYSTEM" || templateType == "live_agent" || templateType == ""{
                                let textComponent = Component(.text)
                                let text = dictionary["text"] as? String ?? ""

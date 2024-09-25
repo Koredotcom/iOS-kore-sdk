@@ -57,7 +57,7 @@ class KREPanelRequestOperation: KREOperation {
             block?(false)
             return
         }
-        KRELocationManager.shared.setupLocationManager()
+        //KRELocationManager.shared.setupLocationManager() //kk
         let urlString = panelsUrl(with: userId, server: server, email: email)
         let accessToken = String(format: "bearer %@", jwtAccessToken)
        
@@ -91,12 +91,13 @@ class KREPanelRequestOperation: KREOperation {
     
     func panelsUrl(with userId: String, server: String, email: String) -> String {
         let timezone = TimeZone.current.identifier
-        KRELocationManager.shared.updateLastKnowLocation()
+        /*KRELocationManager.shared.updateLastKnowLocation()
         let lastKnownRegion = KRELocationManager.shared.lastKnowRegion
         if let latitude = lastKnownRegion?.latitude, let longitude = lastKnownRegion?.longitude {
             return String(format: "\(server)widgetsdk/\(userId)/panels?resolveWidgets=true&from=\(email)")
         } else {
             return String(format: "\(server)widgetsdk/\(userId)/panels?resolveWidgets=true&from=\(email)")
-        }
+        }*/ //kk
+        return String(format: "\(server)widgetsdk/\(userId)/panels?resolveWidgets=true&from=\(email)")
     }
 }

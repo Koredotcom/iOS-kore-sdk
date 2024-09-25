@@ -124,6 +124,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     @IBOutlet weak var incomingCallContainerView: UIView!
     var inComingCallView: InComingCallView!
     var callFromAgentData: [String: Any]? = [:]
+    var appDisplayName = "Kore Bot SDK"
+    var isAppEnterBackground = false
     
 #if SWIFT_PACKAGE
     //let agentConnect = AgentConnect()
@@ -137,6 +139,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        appDisplayName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? SDKConfiguration.botConfig.chatBotName
+        isAppEnterBackground = false
         isTryConnect = true
         isBotConnectSucessFully = false
         networkMonitoringForReachability()
@@ -920,6 +924,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @objc func didEnterBackground(_ notification: Notification) {
+        isAppEnterBackground = true
         stopMonitoringForReachability()
     }
     
@@ -931,7 +936,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             case .reachable(.ethernetOrWiFi), .reachable(.cellular):
                 if isTryConnect{
                     isInternetAvailable = true
-                    self.establishBotConnection()
+                    if !SDKConfiguration.botConfig.isWebhookEnabled{
+                        self.establishBotConnection()
+                    }
                     if isAgentConnect{
                         Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (_) in
                             self.stopLoader()
@@ -964,6 +971,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 if isTryConnect{
                     isInternetAvailable = true
                     if isBotConnectSucessFully{
+                        if !self.isAppEnterBackground{
+                            if !SDKConfiguration.botConfig.isWebhookEnabled{
+                                self.establishBotConnection()
+                            }
+                        }
                         self.stopLoader()
                     }
                 }
@@ -1683,7 +1695,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
     }
     @objc func tokenExpiry(notification:Notification){
-        let alertController = UIAlertController(title: "Kore Bot SDK", message: "Your session has expired. Please re-login", preferredStyle: .alert)
+        let alertController = UIAlertController(title: appDisplayName, message: "Your session has expired. Please re-login", preferredStyle: .alert)
         // Create the actions
         let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
             UIAlertAction in
@@ -1848,6 +1860,7 @@ extension ChatMessagesViewController {
                 botMessage.messages = [messageModel]
                 let messageTuple = onReceiveMessage(object: botMessage)
                 if let object = messageTuple.0 {
+                    arrayOfSelectedBtnIndex.add(1001)
                     allMessages.append(object)
                 }
             }
@@ -1959,6 +1972,8 @@ extension ChatMessagesViewController{
         var config = FMPhotoPickerConfig()
         config.selectMode = .single
         config.shouldReturnAsset = true
+        config.strings["permission_dialog_title"] = appDisplayName
+        config.strings["permission_dialog_message"] = "\(appDisplayName) wants to access Photo Library"
         let picker = FMPhotoPickerViewController(config: config)
         picker.delegate = self
         present(picker, animated: true)
@@ -2017,7 +2032,7 @@ extension ChatMessagesViewController{
             }
         }
         else{
-            let actionController: UIAlertController = UIAlertController(title: "Bot SDK Demo",message: "Camera is not available", preferredStyle: .alert)
+            let actionController: UIAlertController = UIAlertController(title: appDisplayName,message: "Camera is not available", preferredStyle: .alert)
             let cancelAction: UIAlertAction = UIAlertAction(title: "OK", style: .cancel) { action -> Void  in
                 //Just dismiss the action sheet
             }
@@ -2431,11 +2446,11 @@ extension ChatMessagesViewController{
                 
             }) { (error) in
                 self.stopLoader()
-                self.showAlert(title: "Kore Bot SDK", message: "Please try again")
+                self.showAlert(title: self.appDisplayName, message: "Please try again")
             }
         } else {
             self.stopLoader()
-            self.showAlert(title: "Kore Bot SDK", message: "YOU MUST SET BOT 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
+            self.showAlert(title: appDisplayName, message: "YOU MUST SET BOT 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
         }
     }
     
@@ -2575,7 +2590,7 @@ extension ChatMessagesViewController{
                 })
                 
             }else{
-                self.showAlert(title: "Bot SDK Demo", message: "YOU MUST SET WIDGET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
+                self.showAlert(title: appDisplayName, message: "YOU MUST SET WIDGET 'clientId', 'clientSecret', 'chatBotName', 'identity' and 'botId'. Please check the documentation.")
             }
 
         } else {
