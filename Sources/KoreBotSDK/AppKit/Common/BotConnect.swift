@@ -54,7 +54,9 @@ open class BotConnect: NSObject {
         
          botViewController.closeAndMinimizeEvent = { [weak self] (Dic) in
             if let dic = Dic {
-                self?.closeOrMinimizeEvent(dic)
+                if self?.closeOrMinimizeEvent != nil{
+                    self?.closeOrMinimizeEvent(dic)
+                }
             }
         }
     }

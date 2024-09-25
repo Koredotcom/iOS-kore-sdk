@@ -92,7 +92,7 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
 #### 1. Setup KoreBotSDK
 ###### a. Using SPM
           dependencies: [
-              .package(url: "https://github.com/Koredotcom/iOS-kore-sdk", .upToNextMajor(from: "1.0.9"))
+              .package(url: "https://github.com/Koredotcom/iOS-kore-sdk", .upToNextMajor(from: "2.0.0"))
           ]
 ###### b. In your ViewController add below lines
         1. import KoreBotSDK 
@@ -118,6 +118,13 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
         
         // MARK: Show Bot window
         botConnect.show()
+        
+        // MARK: Close Or Minimize Callbacks
+        botConnect.closeOrMinimizeEvent = { (eventDic) in
+           if let dic = eventDic {
+               print(dic)
+           }
+       }
         
 ###### c. Add below permissions in info.plist
         Privacy - Camera Usage Description         ---      Allow access to camera.
@@ -164,6 +171,13 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
         // MARK: Show Bot window
         botConnect.show()
         
+        // MARK: Close Or Minimize Callbacks
+        botConnect.closeOrMinimizeEvent = { (eventDic) in
+           if let dic = eventDic {
+               print(dic)
+           }
+       }
+        
   ###### c. Add below permissions in info.plist
         Privacy - Camera Usage Description         ---      Allow access to camera.
         Privacy - Microphone Usage Description     ---      Allow access to microphone.
@@ -204,6 +218,13 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
         
         // MARK: Show Bot window
         botConnect.show()
+        
+        // MARK: Close Or Minimize Callbacks
+        botConnect.closeOrMinimizeEvent = { (eventDic) in
+           if let dic = eventDic {
+               print(dic)
+           }
+       }
 
 License
 ----
