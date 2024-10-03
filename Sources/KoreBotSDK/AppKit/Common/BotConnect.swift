@@ -54,6 +54,8 @@ open class BotConnect: NSObject {
         
          botViewController.closeAndMinimizeEvent = { [weak self] (Dic) in
             if let dic = Dic {
+                let jsonString = Utilities.stringFromJSONObject(object: dic)
+                NotificationCenter.default.post(name: Notification.Name("ChatbotCallBackNotification"), object: jsonString)
                 if self?.closeOrMinimizeEvent != nil{
                     self?.closeOrMinimizeEvent(dic)
                 }
