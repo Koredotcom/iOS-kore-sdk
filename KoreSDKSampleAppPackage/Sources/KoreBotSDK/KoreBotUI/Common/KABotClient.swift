@@ -245,8 +245,11 @@ open class KABotClient: NSObject {
         
         botClient.onMessage = { [weak self] (object) in
             history = false
-            let message = self?.onReceiveMessage(object: object)
-            self?.addMessages(message?.0, message?.1)
+            if self?.thread != nil{
+                let message = self?.onReceiveMessage(object: object)
+                self?.addMessages(message?.0, message?.1)
+            }
+            
         }
         
         botClient.onMessageAck = { (ack) in
@@ -269,11 +272,12 @@ open class KABotClient: NSObject {
         if let m = message, m.components.count > 0 {
             let delayInMilliSeconds = 500
             DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(delayInMilliSeconds)) {
-                let dataStoreManager = DataStoreManager.sharedManager
-                dataStoreManager.createNewMessageIn(thread: self.thread, message: m, completion: { (success) in
-                    
-                })
-                
+                if self.thread != nil{
+                    let dataStoreManager = DataStoreManager.sharedManager
+                    dataStoreManager.createNewMessageIn(thread: self.thread, message: m, completion: { (success) in
+                        
+                    })
+                }
                 if let tts = ttsBody {
                     NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: tts)
                 }
@@ -884,9 +888,10 @@ open class KABotClient: NSObject {
         
         // insert all messages
         if allMessages.count > 0 {
-            let dataStoreManager = DataStoreManager.sharedManager
-            dataStoreManager.insertMessages(allMessages, in:  thread, completion: nil)
-            
+            if self.thread != nil{
+                let dataStoreManager = DataStoreManager.sharedManager
+                dataStoreManager.insertMessages(allMessages, in:  thread, completion: nil)
+            }
         }
     }
     
