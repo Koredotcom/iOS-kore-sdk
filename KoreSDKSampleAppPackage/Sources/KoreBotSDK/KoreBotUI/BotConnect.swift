@@ -12,7 +12,7 @@ import Alamofire
 import CoreData
 
 open class BotConnect: NSObject {
-
+    public var locaNotificationEvent: ((_ dic: [String:Any]?) -> Void)!
     // MARK: - init
     public override init() {
         super.init()
@@ -39,6 +39,14 @@ open class BotConnect: NSObject {
         botViewController.title = SDKConfiguration.botConfig.chatBotName
         botViewController.modalPresentationStyle = .fullScreen
         rootViewController.present(navigationController, animated: false)
+        
+        botViewController.locaNotificationEvent = { [weak self] (Dic) in
+           if let dic = Dic {
+               if self?.locaNotificationEvent != nil{
+                   self?.locaNotificationEvent(dic)
+               }
+           }
+       }
     }
     
     func loadCustomFonts(){

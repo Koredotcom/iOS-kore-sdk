@@ -23,7 +23,7 @@ var showCustomTableTemplateNotification = "ShowCustomTableTemplateNotificationNa
 var pdfcTemplateViewNotification = "pdfShowViewNotification"
 var pdfcTemplateViewErrorNotification = "pdfShowErrorNotification"
 var reloadVideoCellNotification = "ReloadVideoCellNotification"
-
+var korebotLocalNotification = "KoreBotLocalNotification"
 var isAgentConnect = false
 
 var isSpeakingEnabled = false

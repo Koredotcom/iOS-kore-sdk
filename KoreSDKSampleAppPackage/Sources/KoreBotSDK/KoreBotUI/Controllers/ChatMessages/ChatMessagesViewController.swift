@@ -110,6 +110,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var phassetToUpload: PHAsset?
     var componentSelectedToupload: Component?
     public weak var account = KoraApplication.sharedInstance.account
+    public var locaNotificationEvent: ((_ dic: [String:Any]?) -> Void)!
     
     // MARK: init
     public init() {
@@ -820,6 +821,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.addObserver(self, selector: #selector(willTerminate(_:)), name: UIApplication.willTerminateNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(sendBtnEnabledOrDisabled), name: NSNotification.Name(rawValue: sendButtonDisabledNotification), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(localNotificationMethod), name: NSNotification.Name(rawValue: korebotLocalNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -853,6 +856,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: sendButtonDisabledNotification), object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: korebotLocalNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -1622,6 +1627,12 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }else{
             composeView.sendButtonEnabeldOrDisabled(isEnabled: true)
         }
+    }
+    
+    @objc func localNotificationMethod(notification:Notification){
+        let dataString: String = notification.object as? String ?? ""
+        let dic = ["text": dataString]
+        self.locaNotificationEvent(dic)
     }
     
     @objc func reloadTable(notification:Notification){
