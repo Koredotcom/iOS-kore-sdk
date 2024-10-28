@@ -882,7 +882,9 @@ open class KABotClient: NSObject {
         }
         var allMessages: [Message] = [Message]()
         var removeTemplate = false
+        var i = 0
         for message in botMessages {
+            i += 1
             removeTemplate = false
             if message.type == "outgoing" || message.type == "incoming" {
                 guard let components = message.components, let data = components.first?.data else {
@@ -946,7 +948,15 @@ open class KABotClient: NSObject {
                 let messageTuple = onReceiveMessage(object: botMessage)
                 if let object = messageTuple.0 {
                     if !removeTemplate{
-                        arrayOfSelectedBtnIndex.insert(1001, at: 0)
+                        if botMessages.count == i{
+                            if !isShowQuickRepliesBottom{
+                                arrayOfSelectedBtnIndex.insert(1000, at: 0)
+                            }else{
+                                arrayOfSelectedBtnIndex.insert(1001, at: 0)
+                            }
+                        }else{
+                            arrayOfSelectedBtnIndex.insert(1001, at: 0)
+                        }
                         allMessages.append(object)
                     }
                 }
