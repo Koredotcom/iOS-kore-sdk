@@ -30,20 +30,10 @@ open class BotConnect: NSObject {
     }
     
     public func show(){
-        isShowQuickRepliesBottom = showQuickRepliesBottom
-        isShowVideoOption = showVideoOption
-        close_AgentChat_EventName = closeAgentChatEventName
-        close_Button_EventName = closeButtonEventName
-        minimize_Button_EventName = minimizeButtonEventName
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {
             return
         }
-        loadCustomFonts()
-        isCallingHistoryApi = true
-        if !isIntialiseFileUpload{
-            isIntialiseFileUpload = true
-            filesUpload()
-        }
+        
         let botViewController = ChatMessagesViewController()
         let navigationController = UINavigationController(rootViewController: botViewController)
         navigationController.isNavigationBarHidden = true
@@ -101,6 +91,19 @@ open class BotConnect: NSObject {
         SDKConfiguration.botConfig.customData = customData as [String: Any]
         SDKConfiguration.botConfig.queryParameters = queryParameters as [[String: Any]]
         SDKConfiguration.botConfig.customJWToken = customJWToken
+        
+        isShowQuickRepliesBottom = showQuickRepliesBottom
+        isShowVideoOption = showVideoOption
+        close_AgentChat_EventName = closeAgentChatEventName
+        close_Button_EventName = closeButtonEventName
+        minimize_Button_EventName = minimizeButtonEventName
+        
+        loadCustomFonts()
+        isCallingHistoryApi = true
+        if !isIntialiseFileUpload{
+            isIntialiseFileUpload = true
+            filesUpload()
+        }
     }
     
     public func showOrHideFooterViewIcons(isShowSpeachToTextIcon:Bool, isShowAttachmentIcon:Bool){

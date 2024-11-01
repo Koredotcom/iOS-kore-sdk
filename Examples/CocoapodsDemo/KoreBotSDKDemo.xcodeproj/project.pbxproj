@@ -12,6 +12,8 @@
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		9516E0D42B4EA35C00A161D1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9516E0D22B4EA35C00A161D1 /* ViewController.swift */; };
 		9516E0D52B4EA35C00A161D1 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9516E0D32B4EA35C00A161D1 /* ViewController.xib */; };
+		9538D6422CD4ACEE004BB9ED /* SecondVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9538D6412CD4ACDD004BB9ED /* SecondVC.swift */; };
+		9538D6482CD4AD74004BB9ED /* SecondVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9538D6472CD4AD74004BB9ED /* SecondVC.xib */; };
 		95B56D3F2B45428B002A49D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95B56D3E2B45428B002A49D7 /* Assets.xcassets */; };
 		95C8FADE2BF5D9930069CDCA /* SampleView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C8FADC2BF5D9930069CDCA /* SampleView1.swift */; };
 		95C8FADF2BF5D9930069CDCA /* SearchGridTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C8FADD2BF5D9930069CDCA /* SearchGridTemplate.swift */; };
@@ -28,6 +30,8 @@
 		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		9516E0D22B4EA35C00A161D1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		9516E0D32B4EA35C00A161D1 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
+		9538D6412CD4ACDD004BB9ED /* SecondVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondVC.swift; sourceTree = "<group>"; };
+		9538D6472CD4AD74004BB9ED /* SecondVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SecondVC.xib; sourceTree = "<group>"; };
 		95B56D3E2B45428B002A49D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		95C8FADC2BF5D9930069CDCA /* SampleView1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleView1.swift; sourceTree = "<group>"; };
 		95C8FADD2BF5D9930069CDCA /* SearchGridTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchGridTemplate.swift; sourceTree = "<group>"; };
@@ -101,6 +105,8 @@
 				D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */,
 				9516E0D22B4EA35C00A161D1 /* ViewController.swift */,
 				9516E0D32B4EA35C00A161D1 /* ViewController.xib */,
+				9538D6412CD4ACDD004BB9ED /* SecondVC.swift */,
+				9538D6472CD4AD74004BB9ED /* SecondVC.xib */,
 				95B56D3E2B45428B002A49D7 /* Assets.xcassets */,
 				D175AD561CEF0CD500BB9442 /* LaunchScreen.storyboard */,
 				D175AD591CEF0CD500BB9442 /* Info.plist */,
@@ -184,6 +190,7 @@
 			files = (
 				95B56D3F2B45428B002A49D7 /* Assets.xcassets in Resources */,
 				9516E0D52B4EA35C00A161D1 /* ViewController.xib in Resources */,
+				9538D6482CD4AD74004BB9ED /* SecondVC.xib in Resources */,
 				D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				95C8FADE2BF5D9930069CDCA /* SampleView1.swift in Sources */,
+				9538D6422CD4ACEE004BB9ED /* SecondVC.swift in Sources */,
 				9516E0D42B4EA35C00A161D1 /* ViewController.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
 				95C8FADF2BF5D9930069CDCA /* SearchGridTemplate.swift in Sources */,

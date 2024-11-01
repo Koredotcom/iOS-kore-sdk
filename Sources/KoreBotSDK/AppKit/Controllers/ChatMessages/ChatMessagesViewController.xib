@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -23,6 +23,7 @@
                 <outlet property="dropDownBtn" destination="owa-n2-Opo" id="vvw-gq-jcH"/>
                 <outlet property="headerTitileLbl" destination="hck-M1-PCS" id="V7G-b2-v4x"/>
                 <outlet property="headerView" destination="vYq-Dl-sqx" id="3el-ya-tOH"/>
+                <outlet property="headerViewHeightConstraint" destination="x0K-6Q-nrN" id="fa7-eR-RCO"/>
                 <outlet property="leftMenuBackBtn" destination="iCg-HH-CcN" id="ESU-kZ-mor"/>
                 <outlet property="leftMenuContainerSubView" destination="4AR-SW-pLo" id="1wg-PT-IPi"/>
                 <outlet property="leftMenuContainerView" destination="2zt-kD-ifH" id="PDg-Y7-OK2"/>
@@ -46,9 +47,8 @@
                     <rect key="frame" x="0.0" y="85" width="375" height="581"/>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="owa-n2-Opo">
-                    <rect key="frame" x="170" y="19" width="200" height="1"/>
+                    <rect key="frame" x="0.0" y="19" width="370" height="1"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="200" id="WVo-bh-63b"/>
                         <constraint firstAttribute="height" constant="1" id="hhN-I5-pKw"/>
                     </constraints>
                 </button>
@@ -231,6 +231,7 @@
                 <constraint firstItem="0uF-el-Vxb" firstAttribute="bottom" secondItem="7Z6-mY-xVo" secondAttribute="bottom" id="l2o-ug-Hr8"/>
                 <constraint firstItem="IHl-t2-9Gj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="sOm-nC-hgN"/>
                 <constraint firstItem="0uF-el-Vxb" firstAttribute="bottom" secondItem="Usv-h4-tDT" secondAttribute="bottom" constant="1" id="shv-iF-pyx"/>
+                <constraint firstItem="owa-n2-Opo" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ubx-v4-SX7"/>
                 <constraint firstAttribute="trailing" secondItem="8ru-91-Smj" secondAttribute="trailing" id="v3q-WG-SDd"/>
                 <constraint firstItem="7Z6-mY-xVo" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" id="vSP-nQ-NDk"/>
                 <constraint firstAttribute="trailing" secondItem="y23-6f-O9g" secondAttribute="trailing" id="wvZ-jC-PT0"/>
