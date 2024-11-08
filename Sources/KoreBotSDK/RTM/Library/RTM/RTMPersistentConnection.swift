@@ -368,13 +368,22 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
             print("Socket is in OPEN state")
             let dictionary: NSMutableDictionary = NSMutableDictionary()
             let messageObject: NSMutableDictionary = NSMutableDictionary()
-            messageObject.addEntries(from: ["body": message, "attachments":[], "customData": parameters] as [String : Any])
+            if isZenDesk_Event{
+                messageObject.addEntries(from: ["body": eventName, "attachments":[], "customData": parameters] as [String : Any])
+            }else{
+                messageObject.addEntries(from: ["body": message, "attachments":[], "customData": parameters] as [String : Any])
+            }
+            
             if let object = options {
                 messageObject.addEntries(from: object)
             }
             
             dictionary.setObject(messageObject, forKey: "message" as NSCopying)
-            dictionary.setObject("/bot.message", forKey: "resourceid" as NSCopying)
+            if isZenDesk_Event{
+                dictionary.setObject("/bot.clientEvent", forKey: "resourceid" as NSCopying)
+            }else{
+                dictionary.setObject("/bot.message", forKey: "resourceid" as NSCopying)
+            }
             if (self.botInfoParameters != nil) {
                 dictionary.setObject(self.botInfoParameters as Any, forKey: "botInfo" as NSCopying)
             }

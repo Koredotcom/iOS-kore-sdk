@@ -18,6 +18,7 @@ open class BotConnect: NSObject {
     public var closeAgentChatEventName = "close_agent_chat"
     public var closeButtonEventName = "close_button_event"
     public var minimizeButtonEventName = "minimize_button_event"
+    public var isZenDeskEvent = false
     
     public var closeOrMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
     // MARK: - init
@@ -35,6 +36,7 @@ open class BotConnect: NSObject {
         close_AgentChat_EventName = closeAgentChatEventName
         close_Button_EventName = closeButtonEventName
         minimize_Button_EventName = minimizeButtonEventName
+        isZenDesk_Event = isZenDeskEvent
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {
             return
         }

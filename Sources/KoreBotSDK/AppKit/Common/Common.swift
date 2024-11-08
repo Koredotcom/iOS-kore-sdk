@@ -70,6 +70,7 @@ var arrayOfSelectedBtnIndex:NSMutableArray = NSMutableArray()
 var close_AgentChat_EventName = "close_agent_chat"
 var close_Button_EventName = "close_button_event"
 var minimize_Button_EventName = "minimize_button_event"
+var isZenDesk_Event = false
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
