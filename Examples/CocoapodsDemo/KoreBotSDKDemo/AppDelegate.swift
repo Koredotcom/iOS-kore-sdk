@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             initailizeKoreBotConfig()
             //
             let chatMessagesViewController: ChatMessagesViewController = ChatMessagesViewController()
-            chatMessagesViewController.isShowHeaderView = false
+            chatMessagesViewController.isShowHeaderView = true
             
             let secondVC: SecondVC = SecondVC(nibName: "SecondVC", bundle: nil)
             let appLaunchViewController: ViewController = ViewController(nibName: "ViewController", bundle: nil)
