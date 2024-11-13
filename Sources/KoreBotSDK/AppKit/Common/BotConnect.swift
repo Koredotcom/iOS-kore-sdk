@@ -33,7 +33,7 @@ open class BotConnect: NSObject {
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {
             return
         }
-        
+        customSettings()
         let botViewController = ChatMessagesViewController()
         let navigationController = UINavigationController(rootViewController: botViewController)
         navigationController.isNavigationBarHidden = true
@@ -77,7 +77,7 @@ open class BotConnect: NSObject {
     }
     
     public func initialize(_ clientId: String, clientSecret: String, botId: String, chatBotName: String, identity: String, isAnonymous: Bool, isWebhookEnabled: Bool, JWTServerUrl: String, BOTServerUrl: String, BrandingUrl: String, customData: [String: Any], queryParameters:[[String: Any]], customJWToken: String){
-        
+        customSettings()
         SDKConfiguration.botConfig.clientId = clientId as String
         SDKConfiguration.botConfig.clientSecret = clientSecret as String
         SDKConfiguration.botConfig.botId = botId as String
@@ -92,6 +92,9 @@ open class BotConnect: NSObject {
         SDKConfiguration.botConfig.queryParameters = queryParameters as [[String: Any]]
         SDKConfiguration.botConfig.customJWToken = customJWToken
         
+    }
+    
+    func customSettings(){
         isShowQuickRepliesBottom = showQuickRepliesBottom
         isShowVideoOption = showVideoOption
         close_AgentChat_EventName = closeAgentChatEventName

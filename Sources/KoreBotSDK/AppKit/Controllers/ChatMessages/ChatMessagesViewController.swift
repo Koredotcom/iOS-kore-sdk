@@ -249,7 +249,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     @IBAction func tapsOnBackBtnAct(_ sender: Any) {
         if !chatMaskview.isHidden{
             let dic = ["event_code": "BotClosed", "event_message": "Bot connection error"]
-            self.closeAndMinimizeEvent(dic)
+            if self.closeAndMinimizeEvent != nil{
+                self.closeAndMinimizeEvent(dic)
+            }
             self.botClosed()
         }else{
             let alertController = UIAlertController(title: "", message: "Would you like to close the concersation or minimize.", preferredStyle:.alert)
@@ -277,7 +279,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             alertController.addAction(UIAlertAction(title: "Minimize", style: .default)
                       { action -> Void in
                             let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
-                            self.closeAndMinimizeEvent(dic)
+                            if self.closeAndMinimizeEvent != nil{
+                               self.closeAndMinimizeEvent(dic)
+                             }
                             self.botClient.sendEventToAgentChat(eventName: minimize_Button_EventName,messageId: "")
                             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
                                     self.botClosed()
@@ -1782,7 +1786,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
             UIAlertAction in
             let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
-            self.closeAndMinimizeEvent(dic)
+            if self.closeAndMinimizeEvent != nil{
+                self.closeAndMinimizeEvent(dic)
+            }
             self.botClosed()
         }
         alertController.addAction(okAction)
