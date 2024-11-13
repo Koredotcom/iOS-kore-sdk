@@ -22,7 +22,7 @@ import ObjectMapper
 import ObjcSupport
 #endif
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate {
+public class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate {
     // MARK: properties
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
@@ -118,10 +118,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     public weak var account = KoraApplication.sharedInstance.account
     
     public var closeAndMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
-    
+    @IBOutlet weak var headerViewHeightConstraint: NSLayoutConstraint!
+    public var isShowHeaderView = true
     
     // MARK: init
-    init() {
+    public init() {
         super.init(nibName: "ChatMessagesViewController", bundle: .sdkModule)
     }
     
@@ -129,8 +130,16 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if !isShowHeaderView{
+            headerViewHeightConstraint.constant = 0.0
+            headerView.isHidden = true
+        }else{
+            headerViewHeightConstraint.constant = 64.0
+            headerView.isHidden = false
+        }
         
         appDisplayName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? SDKConfiguration.botConfig.chatBotName
 
@@ -176,11 +185,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.removeNotifications()
     }
     
-    override func didReceiveMemoryWarning() {
+    public override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    override func viewWillLayoutSubviews() {
+    public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
     }
     
@@ -240,7 +249,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     @IBAction func tapsOnBackBtnAct(_ sender: Any) {
         if !chatMaskview.isHidden{
             let dic = ["event_code": "BotClosed", "event_message": "Bot connection error"]
-            self.closeAndMinimizeEvent(dic)
+            if self.closeAndMinimizeEvent != nil{
+                self.closeAndMinimizeEvent(dic)
+            }
             self.botClosed()
         }else{
             let alertController = UIAlertController(title: "", message: "Would you like to close the concersation or minimize.", preferredStyle:.alert)
@@ -249,7 +260,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                       { action -> Void in
                             isShowWelcomeMsg = true
                             let dic = ["event_code": "BotClosed", "event_message": "Bot closed by the user"]
-                            self.closeAndMinimizeEvent(dic)
+                            if self.closeAndMinimizeEvent != nil{
+                                    self.closeAndMinimizeEvent(dic)
+                            }
                            if isAgentConnect{
                                self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
                                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
@@ -266,7 +279,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             alertController.addAction(UIAlertAction(title: "Minimize", style: .default)
                       { action -> Void in
                             let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
-                            self.closeAndMinimizeEvent(dic)
+                            if self.closeAndMinimizeEvent != nil{
+                                    self.closeAndMinimizeEvent(dic)
+                            }
                             self.botClient.sendEventToAgentChat(eventName: minimize_Button_EventName,messageId: "")
                             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
                                     self.botClosed()
@@ -1050,9 +1065,12 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         if (self.tapToDismissGestureRecognizer == nil) {
             self.taskMenuContainerHeightConstant.constant = 0
             self.tapToDismissGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(ChatMessagesViewController.dismissKeyboard(_:)))
-            //self.botMessagesView.addGestureRecognizer(tapToDismissGestureRecognizer)
-            self.tapToDismissGestureRecognizer.delegate = self
-            self.headerView.addGestureRecognizer(tapToDismissGestureRecognizer)
+            if isShowHeaderView{
+                self.tapToDismissGestureRecognizer.delegate = self
+                self.headerView.addGestureRecognizer(tapToDismissGestureRecognizer)
+            }else{
+                self.botMessagesView.addGestureRecognizer(tapToDismissGestureRecognizer)
+            }
         }
     }
     
@@ -1669,17 +1687,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     // MARK: KREGrowingTextViewDelegate methods
-    func growingTextView(_: KREGrowingTextView, changingHeight height: CGFloat, animate: Bool) {
+    public  func growingTextView(_: KREGrowingTextView, changingHeight height: CGFloat, animate: Bool) {
         UIView.animate(withDuration: animate ? 0.25: 0.0) {
             self.view.layoutIfNeeded()
         }
     }
     
-    func growingTextView(_: KREGrowingTextView, willChangeHeight height: CGFloat) {
+    public func growingTextView(_: KREGrowingTextView, willChangeHeight height: CGFloat) {
         
     }
     
-    func growingTextView(_: KREGrowingTextView, didChangeHeight height: CGFloat) {
+    public func growingTextView(_: KREGrowingTextView, didChangeHeight height: CGFloat) {
         
     }
     
@@ -1767,7 +1785,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
             UIAlertAction in
             let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
-            self.closeAndMinimizeEvent(dic)
+            if self.closeAndMinimizeEvent != nil{
+                self.closeAndMinimizeEvent(dic)
+            }
             self.botClosed()
         }
         alertController.addAction(okAction)
@@ -1973,12 +1993,12 @@ extension ChatMessagesViewController {
     }
 }
 extension ChatMessagesViewController: KABotClientDelegate {
-    func showTypingStatusForBot() {
+    public func showTypingStatusForBot() {
         self.typingStatusView?.isHidden = true
         self.typingStatusView?.startTypingStatus(using: botHistoryIcon,dotColor: themeColor)
     }
     
-    func hideTypingStatusForBot(){
+    public func hideTypingStatusForBot(){
         self.typingStatusView?.stopTypingStatus()
     }
     
@@ -2167,10 +2187,10 @@ extension ChatMessagesViewController: FMPhotoPickerViewControllerDelegate {
         }
     }
     
-    func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith photos: [UIImage]) {
+    public func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith photos: [UIImage]) {
         
     }
-    func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith assets: [PHAsset]) {
+    public func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith assets: [PHAsset]) {
         self.dismiss(animated: false)
         // self.messageInputBar.presenter?.attachmentManager.invalidate()
         let phAsset:PHAsset  = assets.first!
@@ -2488,11 +2508,11 @@ extension ChatMessagesViewController: UICollectionViewDataSource, UICollectionVi
         self.attachmentCollectionView.register(Bundle.xib(named: "AttachmentCell"),
                                                forCellWithReuseIdentifier: "AttachmentCell")
     }
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return attachmentArray.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // swiftlint:disable force_cast
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AttachmentCell", for: indexPath) as! AttachmentCell
         cell.backgroundColor = .clear
@@ -3191,7 +3211,7 @@ extension ChatMessagesViewController {
     }
 }
 extension ChatMessagesViewController: UIGestureRecognizerDelegate{
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if touch.view?.isDescendant(of: botMessagesView.tableView) == true || touch.view?.isDescendant(of: quickReplyView) == true{
             return false
         }

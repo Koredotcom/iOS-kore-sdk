@@ -31,21 +31,12 @@ open class BotConnect: NSObject {
     }
     
     public func show(){
-        isShowQuickRepliesBottom = showQuickRepliesBottom
-        isShowVideoOption = showVideoOption
-        close_AgentChat_EventName = closeAgentChatEventName
-        close_Button_EventName = closeButtonEventName
-        minimize_Button_EventName = minimizeButtonEventName
-        isZenDesk_Event = isZenDeskEvent
+        customSettings()
+        
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {
             return
         }
-        loadCustomFonts()
-        isCallingHistoryApi = true
-        if !isIntialiseFileUpload{
-            isIntialiseFileUpload = true
-            filesUpload()
-        }
+        
         let botViewController = ChatMessagesViewController()
         let navigationController = UINavigationController(rootViewController: botViewController)
         navigationController.isNavigationBarHidden = true
@@ -62,6 +53,22 @@ open class BotConnect: NSObject {
                     self?.closeOrMinimizeEvent(dic)
                 }
             }
+        }
+    }
+    
+    func customSettings(){
+        isShowQuickRepliesBottom = showQuickRepliesBottom
+        isShowVideoOption = showVideoOption
+        close_AgentChat_EventName = closeAgentChatEventName
+        close_Button_EventName = closeButtonEventName
+        minimize_Button_EventName = minimizeButtonEventName
+        isZenDesk_Event = isZenDeskEvent
+        
+        loadCustomFonts()
+        isCallingHistoryApi = true
+        if !isIntialiseFileUpload{
+            isIntialiseFileUpload = true
+            filesUpload()
         }
     }
     
@@ -89,6 +96,8 @@ open class BotConnect: NSObject {
     }
     
     public func initialize(_ clientId: String, clientSecret: String, botId: String, chatBotName: String, identity: String, isAnonymous: Bool, isWebhookEnabled: Bool, JWTServerUrl: String, BOTServerUrl: String, BrandingUrl: String, customData: [String: Any], queryParameters:[[String: Any]], customJWToken: String){
+        
+        customSettings()
         
         SDKConfiguration.botConfig.clientId = clientId as String
         SDKConfiguration.botConfig.clientSecret = clientSecret as String
