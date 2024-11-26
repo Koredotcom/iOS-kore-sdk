@@ -730,10 +730,12 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         if let m = message, m.components.count > 0 {
             let delayInMilliSeconds = 500
             DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(delayInMilliSeconds)) {
-                let dataStoreManager = DataStoreManager.sharedManager
-                dataStoreManager.createNewMessageIn(thread: self.thread, message: m, completion: { (success) in
-                    
-                })
+                if self.thread != nil{
+                    let dataStoreManager = DataStoreManager.sharedManager
+                    dataStoreManager.createNewMessageIn(thread: self.thread, message: m, completion: { (success) in
+                        
+                    })
+                }
                 
                 if let tts = ttsBody {
                     NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: tts)
@@ -910,7 +912,11 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         
         var keyboardHeight = keyboardFrameEnd.size.height;
         if #available(iOS 11.0, *) {
-            keyboardHeight -= self.view.safeAreaInsets.bottom
+            if self.view.safeAreaInsets.bottom == 0.0{
+                keyboardHeight -= (UIWindow().frame.height -  self.view.frame.height)
+            }else{
+                keyboardHeight -= self.view.safeAreaInsets.bottom
+            }
         } else {
             // Fallback on earlier versions
         };

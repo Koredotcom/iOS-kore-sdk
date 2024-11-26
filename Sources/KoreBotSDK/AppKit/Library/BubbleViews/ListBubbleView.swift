@@ -78,7 +78,7 @@ class ListBubbleView: BubbleView {
                     
                     options.append(option)
                 }
-                spaceing = 0.0
+                spaceing = 15.0
                 if elements.count > 3{
                     if let buttons = jsonObject["buttons"] as? Array<[String: Any]>, let buttonElement = buttons.first {
                         let title: String = buttonElement["title"] != nil ? buttonElement["title"] as! String : ""
