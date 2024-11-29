@@ -259,7 +259,6 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             alertController.addAction(UIAlertAction(title: closeMsg, style: .default)
                       { action -> Void in
                             isShowWelcomeMsg = true
-                            isAgentConnect = false
                             let dic = ["event_code": "BotClosed", "event_message": "Bot closed by the user"]
                             if self.closeAndMinimizeEvent != nil{
                                     self.closeAndMinimizeEvent(dic)
@@ -267,11 +266,13 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                            if isAgentConnect{
                                self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
                                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                                   isAgentConnect = false
                                    self.botClosed()
                                }
                            }else{
                                self.botClient.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
                                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                                   isAgentConnect = false
                                    self.botClosed()
                                }
                            }
