@@ -243,7 +243,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             self.closeAndMinimizeEvent(dic)
             self.botClosed()
         }else{
-            let alertController = UIAlertController(title: "", message: "Would you like to close the concersation or minimize.", preferredStyle:.alert)
+            let alertController = UIAlertController(title: "", message: "Would you like to close the conversation or minimize.", preferredStyle:.alert)
 
             alertController.addAction(UIAlertAction(title: "Close", style: .default)
                       { action -> Void in
@@ -253,11 +253,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                            if isAgentConnect{
                                self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
                                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                                   isAgentConnect = false
                                    self.botClosed()
                                }
                            }else{
                                self.botClient.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
                                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                                   isAgentConnect = false
                                    self.botClosed()
                                }
                            }
@@ -269,7 +271,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                             self.closeAndMinimizeEvent(dic)
                             self.botClient.sendEventToAgentChat(eventName: minimize_Button_EventName,messageId: "")
                             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
-                                    self.botClosed()
+                                isAgentConnect = false
+                                self.botClosed()
                             }
                       })
             self.present(alertController, animated: true, completion: nil)
