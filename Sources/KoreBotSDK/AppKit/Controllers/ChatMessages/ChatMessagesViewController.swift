@@ -254,11 +254,12 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             }
             self.botClosed()
         }else{
-            let alertController = UIAlertController(title: "", message: "Would you like to close the concersation or minimize.", preferredStyle:.alert)
+            let alertController = UIAlertController(title: "", message: closeOrMinimizeMsg, preferredStyle:.alert)
 
-            alertController.addAction(UIAlertAction(title: "Close", style: .default)
+            alertController.addAction(UIAlertAction(title: closeMsg, style: .default)
                       { action -> Void in
                             isShowWelcomeMsg = true
+                            isAgentConnect = false
                             let dic = ["event_code": "BotClosed", "event_message": "Bot closed by the user"]
                             if self.closeAndMinimizeEvent != nil{
                                     self.closeAndMinimizeEvent(dic)
@@ -276,8 +277,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                            }
                             
                       })
-            alertController.addAction(UIAlertAction(title: "Minimize", style: .default)
+            alertController.addAction(UIAlertAction(title: minimizeMsg, style: .default)
                       { action -> Void in
+                            isAgentConnect = false
                             let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
                             if self.closeAndMinimizeEvent != nil{
                                     self.closeAndMinimizeEvent(dic)
@@ -1685,7 +1687,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         transition.subtype = .fromLeft
         self.leftMenuContainerView.layer.add(CATransition().segueFromLeft(), forKey: nil)
         self.leftMenuView.leftMenuTableviewReload()
-        leftMenuTitleLbl.text = "Menu"
+        leftMenuTitleLbl.text = leftMenuTitle
     }
     func composeBarAttachmentButtonAction(_: ComposeBarView) {
         print("Attachment")
@@ -1786,9 +1788,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         }
     }
     @objc func tokenExpiry(notification:Notification){
-        let alertController = UIAlertController(title: appDisplayName, message: "Your session has expired. Please try again", preferredStyle: .alert)
+        let alertController = UIAlertController(title: appDisplayName, message: sessionExpiryMsg, preferredStyle: .alert)
         // Create the actions
-        let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+        let okAction = UIAlertAction(title: alertOk, style: UIAlertAction.Style.default) {
             UIAlertAction in
             let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
             if self.closeAndMinimizeEvent != nil{
@@ -1851,7 +1853,7 @@ extension ChatMessagesViewController {
             return
         }
         
-        botClient.getHistory(offset: offset,limit: 20, success: { [weak self] (responseObj) in
+        botClient.getHistory(offset: offset,limit: SDKConfiguration.botConfig.history_batch_size, success: { [weak self] (responseObj) in
             if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
                 self?.insertOrUpdateHistoryMessages(messages)
             }
@@ -2559,7 +2561,7 @@ extension ChatMessagesViewController{
                 
             }) { (error) in
                 self.stopLoader()
-                self.showAlert(title: appDisplayName, message: "Please try again")
+                self.showAlert(title: appDisplayName, message: pleaseTryAgain)
             }
         } else {
             self.stopLoader()

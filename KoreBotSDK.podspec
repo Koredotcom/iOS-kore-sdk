@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
     s.swift_version = '4.2'
     s.ios.deployment_target = '12.0'
     s.source_files = 'Sources/**/*.{h,m,swift}'
-    s.resources = ['Sources/**/*.{xcdatamodeld}', 'Sources/**/*.{xcassets}','Sources/**/*.xib','Sources/Widgets/**/**/*.xib','Sources/**/*.json']
+    s.resources = ['Sources/**/*.{xcdatamodeld}', 'Sources/**/*.{xcassets}','Sources/**/*.xib','Sources/Widgets/**/**/*.xib','Sources/**/*.json','Sources/**/*.lproj']
     s.dependency 'Alamofire'
     s.dependency 'AlamofireImage'
     s.dependency 'Starscream'

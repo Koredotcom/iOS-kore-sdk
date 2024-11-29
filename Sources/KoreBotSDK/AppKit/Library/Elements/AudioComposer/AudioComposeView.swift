@@ -62,7 +62,7 @@ class AudioComposeView: UIView {
         self.animateBGView.addSubview(self.audioImageView)
         
         self.audiolabel = UILabel()
-        self.audiolabel.text = "Tap to speak"
+        self.audiolabel.text = tapToSpeak
         self.audiolabel.font = UIFont(name: regularCustomFont, size: 11.0)
         self.audiolabel.textColor = .black
         self.audiolabel.textAlignment = .center

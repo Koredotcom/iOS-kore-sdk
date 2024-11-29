@@ -38,7 +38,9 @@ class SDKConfiguration: NSObject {
         
         public static var customJWToken : String = "" //This should represent the subject for send own JWToken.
         
-        static let isShowChatHistory = true // Set true to Show chat history or false hide chat history.
+        public static var isShowChatHistory = true // Set true to Show chat history or false hide chat history.
+        
+        public static var history_batch_size = 20 // history limit.
         
         public static var isShowSpeachToTextIcon : Bool = true
         

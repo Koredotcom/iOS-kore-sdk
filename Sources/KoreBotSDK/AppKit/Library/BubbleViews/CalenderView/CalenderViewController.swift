@@ -65,6 +65,7 @@ class CalenderViewController: UIViewController {
         
         confirmButton.backgroundColor = UIColor.init(hexString: brandingShared.buttonActiveBgColor ?? "#000000")
         confirmButton.setTitleColor(UIColor.init(hexString: brandingShared.buttonActiveTextColor ?? "#ffffff"), for: .normal)
+        confirmButton.setTitle(confirm, for: .normal)
         if #available(iOS 14, *) {
             datePicker.preferredDatePickerStyle = .wheels
             datePicker.backgroundColor = .white

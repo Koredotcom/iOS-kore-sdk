@@ -12,13 +12,16 @@ import Alamofire
 import CoreData
 
 open class BotConnect: NSObject {
-
+    let bundle = Bundle.sdkModule
     public var showQuickRepliesBottom = true
     public var showVideoOption = false
     public var closeAgentChatEventName = "close_agent_chat"
     public var closeButtonEventName = "close_button_event"
     public var minimizeButtonEventName = "minimize_button_event"
     public var isZenDeskEvent = false
+    public var history_enable = true
+    public var history_batch_size = 20
+    public var koreSDkLanguage = "en"
     
     public var closeOrMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
     // MARK: - init
@@ -63,6 +66,9 @@ open class BotConnect: NSObject {
         close_Button_EventName = closeButtonEventName
         minimize_Button_EventName = minimizeButtonEventName
         isZenDesk_Event = isZenDeskEvent
+        SDKConfiguration.botConfig.isShowChatHistory = history_enable
+        SDKConfiguration.botConfig.history_batch_size = history_batch_size
+        laguageSettings()
         
         loadCustomFonts()
         isCallingHistoryApi = true
@@ -114,9 +120,41 @@ open class BotConnect: NSObject {
         SDKConfiguration.botConfig.customJWToken = customJWToken
     }
     
-    public func showOrHideFooterViewIcons(isShowSpeachToTextIcon:Bool, isShowAttachmentIcon:Bool){
+    public func showOrHideFooterViewIcons(isShowSpeachToTextIcon:Bool, isShowAttachmentIcon:Bool, isShowMenuBtnIcon: Bool? = nil){
         SDKConfiguration.botConfig.isShowSpeachToTextIcon = isShowSpeachToTextIcon
         SDKConfiguration.botConfig.isShowAttachmentIcon = isShowAttachmentIcon
+        if let showMenu = isShowMenuBtnIcon{
+            isShowComposeMenuBtn = showMenu
+        }
+    }
+    
+    func laguageSettings(){
+        //let locale = NSLocale.current.languageCode
+        var localizedText = koreSDkLanguage
+            if let path = bundle.path(forResource: localizedText, ofType: "lproj") {
+                  let bundle = Bundle(path: path)
+                  getLaguageValues(bundle: bundle!)
+            }else{
+                if let url = bundle.url(forResource: localizedText, withExtension: "lproj", subdirectory: "Languages"){
+                    let bundle = Bundle(url: url)
+                    getLaguageValues(bundle: bundle!)
+                }else{
+                    //localizedText = Text("How to change the language inside of the app.", bundle: bundleImage)
+                }
+            }
+    }
+    
+    func getLaguageValues(bundle: Bundle){
+        composeBarPlaceholder = bundle.localizedString(forKey: "composeBarPlaceholder", value: "", table: nil)
+        tapToSpeak = bundle.localizedString(forKey: "tapToSpeak", value: "", table: nil)
+        closeOrMinimizeMsg = bundle.localizedString(forKey: "closeOrMinimizeMsg", value: "", table: nil)
+        closeMsg = bundle.localizedString(forKey: "closeMsg", value: "", table: nil)
+        minimizeMsg = bundle.localizedString(forKey: "minimizeMsg", value: "", table: nil)
+        alertOk = bundle.localizedString(forKey: "alertOk", value: "", table: nil)
+        leftMenuTitle = bundle.localizedString(forKey: "leftMenuTitle", value: "", table: nil)
+        confirm = bundle.localizedString(forKey: "confirm", value: "", table: nil)
+        pleaseTryAgain = bundle.localizedString(forKey: "pleaseTryAgain", value: "", table: nil)
+        sessionExpiryMsg = bundle.localizedString(forKey: "sessionExpiryMsg", value: "", table: nil)
     }
     
     public func customTemplatesFromCustomer(numbersOfViews:[BubbleView], customerTemplaateTypes:[String]){

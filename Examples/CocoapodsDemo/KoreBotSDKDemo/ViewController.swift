@@ -52,6 +52,13 @@ class ViewController: UIViewController {
         // MARK: Set Speach to text and Attachments
         botConnect.showOrHideFooterViewIcons(isShowSpeachToTextIcon: true, isShowAttachmentIcon: true)
         
+        // MARK: Show or hide history
+        botConnect.history_enable = true
+        
+        botConnect.history_batch_size = 10
+        
+        botConnect.koreSDkLanguage = "en"
+        
         // MARK: Show Bot window
         botConnect.show()
         
