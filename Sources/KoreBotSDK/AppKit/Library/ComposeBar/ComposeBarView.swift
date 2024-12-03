@@ -169,7 +169,7 @@ class ComposeBarView: UIView {
     func brandingChnages(){
         
         let attributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: UIFont(name: regularCustomFont, size: 14.0) ?? UIFont.systemFont(ofSize: 14.0), NSAttributedString.Key.foregroundColor: UIColor.init(hexString: (brandingShared.widgetFooterPlaceholderColor) ?? "#000000")]
-        self.growingTextView.placeholderAttributedText = NSAttributedString(string: "Message...", attributes:attributes)
+        self.growingTextView.placeholderAttributedText = NSAttributedString(string: composeBarPlaceholder, attributes:attributes)
         
         self.growingTextView.textView.tintColor = UIColor.init(hexString: (brandingShared.widgetFooterTextColor) ?? "#26344A")
         self.growingTextView.textView.textColor = UIColor.init(hexString: (brandingShared.widgetFooterTextColor) ?? "#26344A")
