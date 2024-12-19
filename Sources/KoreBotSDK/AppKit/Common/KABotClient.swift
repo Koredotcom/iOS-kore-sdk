@@ -776,7 +776,7 @@ open class KABotClient: NSObject {
     }
     
     func fetachWebhookHistory(){
-        self.webhookHistoryApi(10, success: { [weak self] (responseObj) in
+        self.webhookHistoryApi(10,offset: 0 ,success: { [weak self] (responseObj) in
             if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
                 botHistoryIcon = responseObject["icon"] as? String
                 self?.insertOrUpdateHistoryMessages(messages)
@@ -1060,8 +1060,8 @@ open class KABotClient: NSObject {
     }
     
     // MARK:
-    func webhookHistoryApi(_ limit: Int!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
-        let urlString: String = "\(SDKConfiguration.serverConfig.BOT_SERVER)/api/chathistory/\(SDKConfiguration.botConfig.botId)/ivr?botId=\(SDKConfiguration.botConfig.botId)&limit=\(limit!)"
+    func webhookHistoryApi(_ limit: Int!,offset: Int!, success:((_ dictionary: [String: Any]) -> Void)?, failure:((_ error: Error) -> Void)?) {
+        let urlString: String = "\(SDKConfiguration.serverConfig.BOT_SERVER)/api/chathistory/\(SDKConfiguration.botConfig.botId)/ivr?botId=\(SDKConfiguration.botConfig.botId)&limit=\(limit!)&offset=\(offset!)"
        
         let authorizationStr = "bearer \(jwtToken ?? "")"
         let headers: HTTPHeaders = [

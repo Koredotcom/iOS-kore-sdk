@@ -258,6 +258,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
 
             alertController.addAction(UIAlertAction(title: closeMsg, style: .default)
                       { action -> Void in
+                            self.unsubscribeNotifications()
                             isShowWelcomeMsg = true
                             let dic = ["event_code": "BotClosed", "event_message": "Bot closed by the user"]
                             if self.closeAndMinimizeEvent != nil{
@@ -960,6 +961,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }
     
     @objc func willTerminate(_ notification: Notification) {
+        self.unsubscribeNotifications()
         if isAgentConnect{
             self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
             sleep(1)
@@ -1988,17 +1990,36 @@ extension ChatMessagesViewController {
             }else{
                 self?.offSet =  count + RemovedTemplateCount
                 if (self?.botMessagesView.spinner.isHidden)!{
-                    self?.getMessages(offset: self!.offSet)
+                    if !SDKConfiguration.botConfig.isWebhookEnabled{
+                        self?.getMessages(offset: self!.offSet)
+                    }else{
+                        self?.fetachWebhookHistory(offset: self!.offSet)
+                    }
                 }
             }
         })
     }
     func tableviewScrollDidEnd(){
-        if !SDKConfiguration.botConfig.isWebhookEnabled{
-            if SDKConfiguration.botConfig.isShowChatHistory{
-                fetchMessages()
-            }
+        if SDKConfiguration.botConfig.isShowChatHistory{
+            fetchMessages()
         }
+    }
+    
+    func fetachWebhookHistory(offset:Int){
+        guard historyRequestInProgress == false else {
+            return
+        }
+        
+        kaBotClient.webhookHistoryApi(SDKConfiguration.botConfig.history_batch_size,offset: offset ,success: { [weak self] (responseObj) in
+            if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
+                botHistoryIcon = responseObject["icon"] as? String
+                self?.insertOrUpdateHistoryMessages(messages)
+            }
+            self?.historyRequestInProgress = false
+        }, failure: { [weak self] (error) in
+            self?.historyRequestInProgress = false
+            print("Unable to webhook history fetch messges \(error.localizedDescription)")
+        })
     }
 }
 extension ChatMessagesViewController: KABotClientDelegate {
@@ -2869,6 +2890,25 @@ extension ChatMessagesViewController{
         }
     }
     
+    func subscribeNotifications(){
+        if let deviceToken = SDKConfiguration.botConfig.deviceToken{
+            self.botClient.subscribeToNotifications(deviceToken) { succes in
+                print("subscribe Notifications")
+            } failure: { error in
+                print(error)
+            }
+        }
+    }
+    func unsubscribeNotifications(){
+        if let deviceToken = SDKConfiguration.botConfig.deviceToken{
+            self.botClient.unsubscribeToNotifications(deviceToken) { succes in
+                print("unsubscribe Notifications")
+            } failure: { error in
+                print(error)
+            }
+        }
+    }
+    
     func sucessMethod(client: BotClient?, thread: KREThread?){
         isBotConnectSucessFully = true
         self.stopLoader()
@@ -2879,6 +2919,7 @@ extension ChatMessagesViewController{
         self.configureleftMenu()
         self.configureQuickReplyView()
         chatMaskview.isHidden = true
+        subscribeNotifications()
         if isShowWelcomeMsg{
             NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
         }

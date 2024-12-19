@@ -45,6 +45,8 @@ class SDKConfiguration: NSObject {
         public static var isShowSpeachToTextIcon : Bool = true
         
         public static var isShowAttachmentIcon : Bool = true
+        
+        public static var deviceToken:Data? =  nil
     }
     
     struct serverConfig {

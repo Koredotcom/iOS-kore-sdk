@@ -22,6 +22,7 @@ open class BotConnect: NSObject {
     public var history_enable = true
     public var history_batch_size = 20
     public var koreSDkLanguage = "en"
+    public var device_Token: Data? = nil
     
     public var closeOrMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
     // MARK: - init
@@ -69,7 +70,7 @@ open class BotConnect: NSObject {
         SDKConfiguration.botConfig.isShowChatHistory = history_enable
         SDKConfiguration.botConfig.history_batch_size = history_batch_size
         laguageSettings()
-        
+        SDKConfiguration.botConfig.deviceToken = device_Token
         loadCustomFonts()
         isCallingHistoryApi = true
         if !isIntialiseFileUpload{
