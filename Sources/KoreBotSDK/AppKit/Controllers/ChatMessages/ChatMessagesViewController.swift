@@ -121,6 +121,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     @IBOutlet weak var headerViewHeightConstraint: NSLayoutConstraint!
     public var isShowHeaderView = true
     
+    @IBOutlet weak var footerStatusBarView: UIView!
+    
+    
     // MARK: init
     public init() {
         super.init(nibName: "ChatMessagesViewController", bundle: .sdkModule)
@@ -129,7 +132,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -168,12 +171,34 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         composeView.backgroundColor = UIColor.init(hexString: "#eaeaea")
         self.view.backgroundColor = UIColor.init(hexString: "#f3f3f5")
         self.view.bringSubviewToFront(chatMaskview)
+        
+        if isShowComposeMenuBtn{
+            leftMenuAddgesture()
+        }
+    }
+    
+    func leftMenuAddgesture() {
+        let leftMenuDismissGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(leftMenuDismissGesture))
+        leftMenuDismissGestureRecognizer.delegate = self
+        self.leftMenuContainerView.addGestureRecognizer(leftMenuDismissGestureRecognizer)
+    }
+    @objc func leftMenuDismissGesture() {
+        self.leftMenuBackBtnAct(self)
     }
     
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addNotifications()
         navigationController?.setNavigationBarHidden(true, animated: false)
+        setStatusBarBackgroundColor()
+    }
+    
+    func setStatusBarBackgroundColor(){
+        if #available(iOS 13.0, *) {
+            let statusBar = UIView(frame: UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarFrame ?? CGRect.zero)
+            statusBar.backgroundColor = statusBarBackgroundColor
+            UIApplication.shared.keyWindow?.addSubview(statusBar)
+        }
     }
     
     override open func viewDidAppear(_ animated: Bool) {
@@ -331,7 +356,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         self.threadContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[botMessagesView]|", options:[], metrics:nil, views:["botMessagesView" : self.botMessagesView!]))
         self.threadContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[botMessagesView]|", options:[], metrics:nil, views:["botMessagesView" : self.botMessagesView!]))
     }
-    
+
     func configureComposeBar() {
         self.composeView = ComposeBarView()
         self.composeView.translatesAutoresizingMaskIntoConstraints = false
@@ -2580,7 +2605,7 @@ extension ChatMessagesViewController{
             self.showLoader()
             kaBotClient.connect(block: { [weak self] (client, thread) in
                 self?.brandingApis(client: client, thread: thread)
-                
+              
             }) { (error) in
                 self.stopLoader()
                 self.showAlert(title: appDisplayName, message: pleaseTryAgain)
@@ -2601,7 +2626,7 @@ extension ChatMessagesViewController{
                 return
             }
             if activeTheme.widgetHeader?.bordercolor != nil{ //V2 branding response
-                self?.bradingValuesStoredInSingleton(activeTheme: activeTheme)
+                self?.bradingValuesStoredInSingleton(responseTheme: activeTheme)
                 self?.sucessMethod(client: client, thread: thread)
             }else{ //V3 branding response
                 if let v3Branding = brandingDic["v3"] as? [String: Any]{
@@ -2750,7 +2775,8 @@ extension ChatMessagesViewController{
         })
     }
     
-    func bradingValuesStoredInSingleton(activeTheme: ActiveTheme){
+    func bradingValuesStoredInSingleton(responseTheme: ActiveTheme){
+        let activeTheme = localActiveTheme != nil ? responseTheme.updateWith(configModel: localActiveTheme!) : responseTheme
         let widgetBorderColor = activeTheme.widgetHeader?.bordercolor
         let widgetTextColor = activeTheme.widgetHeader?.fontcolor
         let buttonInactiveBgColor = activeTheme.buttons?.onHoverButtonColor
@@ -2819,7 +2845,7 @@ extension ChatMessagesViewController{
                       let activeTheme = try? jsonDecoder.decode(ActiveTheme.self, from: jsonData) else {
                     return
                 }
-                 self.bradingValuesStoredInSingleton(activeTheme: activeTheme)
+                 self.bradingValuesStoredInSingleton(responseTheme: activeTheme)
                 self.sucessMethod(client: client, thread: thread)
             } catch {
             }
@@ -2832,7 +2858,7 @@ extension ChatMessagesViewController{
                           let activeTheme = try? jsonDecoder.decode(ActiveTheme.self, from: jsonData) else {
                         return
                     }
-                     self.bradingValuesStoredInSingleton(activeTheme: activeTheme)
+                     self.bradingValuesStoredInSingleton(responseTheme: activeTheme)
                     self.sucessMethod(client: client, thread: thread)
                 }
             }else{
@@ -2841,7 +2867,7 @@ extension ChatMessagesViewController{
         }
     }
     
-    func brandingMapping(brandingValues: BrandingModel?){
+    /*func brandingMapping(brandingValues: BrandingModel?){
         let brandingShared = BrandingSingleton.shared
         brandingShared.brandingInfoModel = brandingValues
         brandingShared.widgetBorderColor = brandingShared.brandingInfoModel?.widgetBorderColor
@@ -2867,7 +2893,7 @@ extension ChatMessagesViewController{
         brandingShared.widgetFooterPlaceholderColor = brandingShared.brandingInfoModel?.widgetHeaderColor
         brandingShared.widgetFooterBorderColor = brandingShared.brandingInfoModel?.widgetHeaderColor
         brandingShared.bubbleShape = "square"
-    }
+    }*/
     func fetachBrandingDataFromStr(client: BotClient?, thread: KREThread?){
         let jsonStr = brandingShared.brandingjsonStr
         let jsonResult = Utilities.jsonObjectFromString(jsonString: jsonStr)
@@ -3050,6 +3076,11 @@ extension ChatMessagesViewController{
             }
         }
         composeView.backgroundColor = UIColor.init(hexString: (brandingShared.widgetFooterColor) ?? "#eaeaea")
+        if statusBarBottomBackgroundColor == nil{
+            footerStatusBarView.backgroundColor = UIColor.init(hexString: (brandingShared.widgetFooterColor) ?? "#eaeaea")
+        }else{
+            footerStatusBarView.backgroundColor = statusBarBottomBackgroundColor
+        }
         composeView.brandingChnages()
         audioComposeView.backgroundColor = UIColor.init(hexString: (brandingShared.widgetFooterColor) ?? "#eaeaea")
         

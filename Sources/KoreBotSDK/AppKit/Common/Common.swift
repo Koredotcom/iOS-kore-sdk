@@ -72,6 +72,11 @@ var close_Button_EventName = "close_button_event"
 var minimize_Button_EventName = "minimize_button_event"
 var isZenDesk_Event = false
 
+var statusBarBackgroundColor = UIColor.clear
+var statusBarBottomBackgroundColor:UIColor? = nil
+var connectModeString:String? = nil
+var localActiveTheme:ActiveTheme? = nil
+
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)

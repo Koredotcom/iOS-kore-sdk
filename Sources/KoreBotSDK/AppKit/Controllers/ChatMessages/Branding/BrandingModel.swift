@@ -86,14 +86,15 @@ class BrandingModel: NSObject , Decodable {
        }
 }
 
-class ActiveTheme: NSObject , Decodable {
+public class ActiveTheme: NSObject , Decodable {
       public var botMessage: BotMessagee?
       public var buttons: Buttons?
       public var userMessage: BotMessagee?
       public var widgetBody: WidgetBody?
       public var widgetFooter: WidgetFooter?
       public var widgetHeader: WidgetHeader?
-    public var generalAttributes: GeneralAttributes?
+      public var generalAttributes: GeneralAttributes?
+    
     enum ColorCodeKeys: String, CodingKey {
             case botMessage = "botMessage"
             case buttons = "buttons"
@@ -119,9 +120,22 @@ class ActiveTheme: NSObject , Decodable {
            widgetHeader = try? container.decode(WidgetHeader.self, forKey: .widgetHeader)
            generalAttributes = try? container.decode(GeneralAttributes.self, forKey: .generalAttributes)
        }
+    
+    public func updateWith(configModel: ActiveTheme)-> ActiveTheme{
+        self.botMessage = configModel.botMessage != nil ? botMessage?.updateWith(configModel: configModel.botMessage!) : botMessage
+        self.buttons = configModel.buttons != nil ? buttons?.updateWith(configModel: configModel.buttons!) : buttons
+        self.userMessage = configModel.userMessage != nil ? userMessage?.updateWith(configModel: configModel.userMessage!) : userMessage
+        self.widgetBody = configModel.widgetBody != nil ? widgetBody?.updateWith(configModel: configModel.widgetBody!) : widgetBody
+        self.widgetFooter = configModel.widgetFooter != nil ? widgetFooter?.updateWith(configModel: configModel.widgetFooter!) : widgetFooter
+        self.widgetHeader = configModel.widgetHeader != nil ? widgetHeader?.updateWith(configModel: configModel.widgetHeader!) : widgetHeader
+        self.generalAttributes = configModel.generalAttributes != nil ? generalAttributes?.updateWith(configModel: configModel.generalAttributes!) : generalAttributes
+        return self
+    }
 }
 
-class BotMessagee: NSObject , Decodable {
+
+
+public class BotMessagee: NSObject , Decodable {
     public var bordercolor: String?
     public var bubbleColor: String?
     public var fontcolor: String?
@@ -143,10 +157,17 @@ class BotMessagee: NSObject , Decodable {
          bubbleColor = try? container.decode(String.self, forKey: .bubbleColor)
          fontcolor = try? container.decode(String.self, forKey: .fontcolor)
      }
+    
+    public func updateWith(configModel: BotMessagee) -> BotMessagee{
+        self.bordercolor = (configModel.bordercolor == nil || configModel.bordercolor == "")  ? bordercolor : configModel.bordercolor
+        self.bubbleColor = (configModel.bubbleColor == nil || configModel.bubbleColor == "")  ? bubbleColor : configModel.bubbleColor
+        self.fontcolor = (configModel.fontcolor == nil || configModel.fontcolor == "")  ? fontcolor : configModel.fontcolor
+        return self
+    }
 }
 
 
-class Buttons: NSObject , Decodable {
+public class Buttons: NSObject , Decodable {
       public var borderColor: String?
       public var defaultButtonColor: String?
       public var defaultFontColor: String?
@@ -174,9 +195,18 @@ class Buttons: NSObject , Decodable {
            onHoverButtonColor = try? container.decode(String.self, forKey: .onHoverButtonColor)
            onHoverFontColor = try? container.decode(String.self, forKey: .onHoverFontColor)
        }
+    
+    public func updateWith(configModel: Buttons) -> Buttons{
+        self.borderColor = (configModel.borderColor == nil || configModel.borderColor == "")  ? borderColor : configModel.borderColor
+        self.defaultButtonColor = (configModel.defaultButtonColor == nil || configModel.defaultButtonColor == "")  ? defaultButtonColor : configModel.defaultButtonColor
+        self.defaultFontColor = (configModel.defaultFontColor == nil || configModel.defaultFontColor == "")  ? defaultFontColor : configModel.defaultFontColor
+        self.onHoverButtonColor = (configModel.onHoverButtonColor == nil || configModel.onHoverButtonColor == "")  ? onHoverButtonColor : configModel.onHoverButtonColor
+        self.onHoverFontColor = (configModel.onHoverFontColor == nil || configModel.onHoverFontColor == "")  ? onHoverFontColor : configModel.onHoverFontColor
+        return self
+    }
 }
 
-class WidgetBody: NSObject , Decodable {
+public class WidgetBody: NSObject , Decodable {
       public var backGroundColor: String?
       public var backGroundImage: String?
       public var useBackgroundImage: Bool?
@@ -198,9 +228,16 @@ class WidgetBody: NSObject , Decodable {
            backGroundImage = try? container.decode(String.self, forKey: .backGroundImage)
            useBackgroundImage = try? container.decode(Bool.self, forKey: .useBackgroundImage)
        }
+    
+    public func updateWith(configModel: WidgetBody) -> WidgetBody{
+        self.backGroundColor = (configModel.backGroundColor == nil || configModel.backGroundColor == "")  ? backGroundColor : configModel.backGroundColor
+        self.backGroundImage = (configModel.backGroundImage == nil || configModel.backGroundImage == "")  ? backGroundImage : configModel.backGroundImage
+        self.useBackgroundImage = (configModel.useBackgroundImage == nil)  ? useBackgroundImage : configModel.useBackgroundImage
+        return self
+    }
 }
 
-class WidgetFooter: NSObject , Decodable {
+public class WidgetFooter: NSObject , Decodable {
       public var backGroundColor: String?
       public var bordercolor: String?
       public var fontcolor: String?
@@ -226,9 +263,17 @@ class WidgetFooter: NSObject , Decodable {
            fontcolor = try? container.decode(String.self, forKey: .fontcolor)
            placeHolder = try? container.decode(String.self, forKey: .placeHolder)
        }
+    
+    public func updateWith(configModel: WidgetFooter) -> WidgetFooter{
+        self.backGroundColor = (configModel.backGroundColor == nil || configModel.backGroundColor == "")  ? backGroundColor : configModel.backGroundColor
+        self.bordercolor = (configModel.bordercolor == nil || configModel.bordercolor == "")  ? bordercolor : configModel.bordercolor
+        self.fontcolor = (configModel.fontcolor == nil || configModel.fontcolor == "")  ? fontcolor : configModel.fontcolor
+        self.placeHolder = (configModel.placeHolder == nil || configModel.placeHolder == "")  ? placeHolder : configModel.placeHolder
+        return self
+    }
 }
 
-class WidgetHeader: NSObject , Decodable {
+public class WidgetHeader: NSObject , Decodable {
       public var backGroundColor: String?
       public var bordercolor: String?
       public var fontcolor: String?
@@ -251,9 +296,16 @@ class WidgetHeader: NSObject , Decodable {
            bordercolor = try? container.decode(String.self, forKey: .bordercolor)
            fontcolor = try? container.decode(String.self, forKey: .fontcolor)
        }
+    
+    public func updateWith(configModel: WidgetHeader) -> WidgetHeader{
+        self.backGroundColor = (configModel.backGroundColor == nil || configModel.backGroundColor == "")  ? backGroundColor : configModel.backGroundColor
+        self.bordercolor = (configModel.bordercolor == nil || configModel.bordercolor == "")  ? bordercolor : configModel.bordercolor
+        self.fontcolor = (configModel.fontcolor == nil || configModel.fontcolor == "")  ? fontcolor : configModel.fontcolor
+        return self
+    }
 }
 
-class GeneralAttributes: NSObject , Decodable {
+public class GeneralAttributes: NSObject , Decodable {
       public var bubbleShape: String?
       public var bordercolor: String?
     
@@ -272,4 +324,9 @@ class GeneralAttributes: NSObject , Decodable {
            bubbleShape = try? container.decode(String.self, forKey: .bubbleShape)
            bordercolor = try? container.decode(String.self, forKey: .bordercolor)
        }
+    public func updateWith(configModel: GeneralAttributes) -> GeneralAttributes{
+        self.bubbleShape = (configModel.bubbleShape == nil || configModel.bubbleShape == "")  ? bubbleShape : configModel.bubbleShape
+        self.bordercolor = (configModel.bordercolor == nil || configModel.bordercolor == "")  ? bordercolor : configModel.bordercolor
+        return self
+    }
 }

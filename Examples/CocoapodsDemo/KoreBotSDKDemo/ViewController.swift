@@ -49,8 +49,8 @@ class ViewController: UIViewController {
         // MARK: Set Bot Config
         botConnect.initialize(clientId, clientSecret: clientSecret, botId: botId, chatBotName: chatBotName, identity: identity, isAnonymous: isAnonymous, isWebhookEnabled: isWebhookEnabled, JWTServerUrl: JWT_SERVER, BOTServerUrl: BOT_SERVER, BrandingUrl: Branding_SERVER, customData: customData, queryParameters: queryParameters, customJWToken: customJWToken)
         
-        // MARK: Set Speach to text and Attachments
-        botConnect.showOrHideFooterViewIcons(isShowSpeachToTextIcon: true, isShowAttachmentIcon: true)
+        // MARK: Set Speach to text, Attachments and Menu
+        botConnect.showOrHideFooterViewIcons(isShowSpeachToTextIcon: true, isShowAttachmentIcon: true, isShowMenuBtnIcon: false)
         
         // MARK: Show or hide history
         botConnect.history_enable = true
@@ -58,6 +58,25 @@ class ViewController: UIViewController {
         botConnect.history_batch_size = 10
         
         botConnect.koreSDkLanguage = "en"
+        
+        botConnect.setStatusBarBackgroundColor(bgColor: UIColor.clear)
+        
+        
+        // MARK: Local Branding
+        if let path = Bundle.main.path(forResource: "localbranding", ofType: "json") {
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+        
+                let jsonDecoder = JSONDecoder()
+                guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonResult as Any , options: .prettyPrinted),
+                      let activeTheme = try? jsonDecoder.decode(ActiveTheme.self, from: jsonData) else {
+                    return
+                }
+                botConnect.setBrandingConfig(configTheme: activeTheme)
+            } catch {
+            }
+        }
         
         // MARK: Show Bot window
         botConnect.show()

@@ -204,9 +204,15 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
             return
         }
         if tryReconnect == true {
-            urlString.append("&isReconnect=true&ConnectionMode=Reconnect")
+            if let connectModeStr = connectModeString ,connectModeStr != ""{
+                urlString.append("&isReconnect=true&ConnectionMode=Reconnect")
+            }else{
+                urlString.append("&isReconnect=true")
+            }
         }else{
-            urlString.append("&isReconnect=false")
+            if let connectModeStr = connectModeString ,connectModeStr != ""{
+                urlString.append(connectModeStr)
+            }
             for i in 0..<queryParams.count{
                 let params = queryParams[i]
                 let key = Array(params)[0].key

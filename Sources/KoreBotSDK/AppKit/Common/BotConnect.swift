@@ -79,6 +79,33 @@ open class BotConnect: NSObject {
         }
     }
     
+    public func setBrandingConfig(configTheme:ActiveTheme){
+        localActiveTheme = configTheme
+    }
+    
+    public func setStatusBarBackgroundColor(bgColor: UIColor){
+        statusBarBackgroundColor = bgColor
+    }
+    
+    public func setBottomStatusBarBackgroundColor(bgColor: UIColor){
+        statusBarBottomBackgroundColor = bgColor
+    }
+    
+    public func setConnectionMode(connectMode: String){
+        connectModeString = "&ConnectionMode="+connectMode
+    }
+    
+    public func getLocalBranding(isEnabled: Bool? = nil, branding:String){
+        if let path = Bundle.main.path(forResource: "branding", ofType: "json") {
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+               
+            } catch {
+            }
+        }
+    }
+    
     func loadCustomFonts(){
         regularCustomFont = "HelveticaNeue"
         mediumCustomFont = "HelveticaNeue-Medium"
