@@ -123,6 +123,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     
     @IBOutlet weak var footerStatusBarView: UIView!
     
+    @IBOutlet weak var statusBarView: UIView!
     
     // MARK: init
     public init() {
@@ -190,7 +191,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         super.viewWillAppear(animated)
         addNotifications()
         navigationController?.setNavigationBarHidden(true, animated: false)
-        setStatusBarBackgroundColor()
+        statusBarView.backgroundColor = statusBarBackgroundColor
     }
     
     func setStatusBarBackgroundColor(){

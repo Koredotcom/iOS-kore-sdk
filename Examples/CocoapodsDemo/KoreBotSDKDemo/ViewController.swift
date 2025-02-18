@@ -59,24 +59,6 @@ class ViewController: UIViewController {
         
         botConnect.koreSDkLanguage = "en"
         
-        botConnect.setStatusBarBackgroundColor(bgColor: UIColor.clear)
-        
-        
-        // MARK: Local Branding
-        if let path = Bundle.main.path(forResource: "localbranding", ofType: "json") {
-            do {
-                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-                let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
-        
-                let jsonDecoder = JSONDecoder()
-                guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonResult as Any , options: .prettyPrinted),
-                      let activeTheme = try? jsonDecoder.decode(ActiveTheme.self, from: jsonData) else {
-                    return
-                }
-                botConnect.setBrandingConfig(configTheme: activeTheme)
-            } catch {
-            }
-        }
         
         // MARK: Show Bot window
         botConnect.show()
