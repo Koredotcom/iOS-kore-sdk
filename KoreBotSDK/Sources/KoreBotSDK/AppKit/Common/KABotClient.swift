@@ -83,20 +83,33 @@ open class KABotClient: NSObject {
     
     // MARK: - fetch messages
     func fetchMessages(completion block: ((Bool) -> Void)? = nil) {
-        let dataStoreManager = DataStoreManager.sharedManager
-        dataStoreManager.getMessagesCount(completion: { [weak self] (count) in
-            guard count == 0 else {
-                self?.reconnectStatus(completion: block)
-                return
+        guard isCallingHistoryApi else {
+            isCallingHistoryApi = false
+            self.reconnectStatus(completion: block)
+            return
+        }
+        var limit = 0
+        if isShowWelcomeMsg{
+            RemovedTemplateCount = 0
+            historyLimit = 0
+            limit = 0
+        }else{
+            limit = historyLimit
+            if limit == 0{
+                limit = 1
             }
-            
-            self?.getMessages(offset: 0, completion:{ (success) in
-                if success {
-                    self?.reconnectStatus(completion: block)
-                } else {
-                    block?(false)
-                }
-            })
+            if historyLimit >= 20{
+                limit = 20
+            }
+        }
+        
+        self.getMessages(offset: 0, limit: limit, completion:{ (success) in
+            if success {
+                isCallingHistoryApi = false
+                self.reconnectStatus(completion: block)
+            } else {
+                block?(false)
+            }
         })
     }
     
@@ -237,7 +250,9 @@ open class KABotClient: NSObject {
             history = false
             isShowWelcomeMsg = false
             let message = self?.onReceiveMessage(object: object)
-            self?.addMessages(message?.0, message?.1)
+            if !isOTPValidationTemplate{
+                self?.addMessages(message?.0, message?.1)
+            }
         }
         
         botClient.onMessageAck = { (ack) in
@@ -376,6 +391,9 @@ open class KABotClient: NSObject {
             return .radioOptionTemplate
         }else if templateType == "quick_replies_top"{
             return .quick_replies_top
+        }
+        else if templateType == "articleTemplate"{
+            return .articleTemplate
         }else if templateType == "text"{
             return .text
         }
@@ -384,6 +402,7 @@ open class KABotClient: NSObject {
     
     
     func onReceiveMessage(object: BotMessageModel?) -> (Message?, String?) {
+        isOTPValidationTemplate = false
         NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil) //hideTypingStatusForBot()
         var ttsBody: String?
         var textMessage: Message! = nil
@@ -426,6 +445,7 @@ open class KABotClient: NSObject {
             }
             
             if !isAgentHisotryApi{
+                historyLimit += 1
                 //self.botClient.sendEventToAgentChat(eventName: "message_delivered", messageId: message.messageId)
                 self.botClient.sendEventToAgentChat(eventName: "message_read", messageId: message.messageId)
             }
@@ -493,7 +513,22 @@ open class KABotClient: NSObject {
                                 if !history{
                                     feedBackTemplateSelectedValue = ""
                                 }
-                            }
+                            }else if templateType == "otpValidationTemplate" || templateType == "resetPinTemplate"{
+                                isOTPValidationTemplate = true
+                                if !history{
+                                    let otpStr = Utilities.stringFromJSONObject(object: dictionary)
+                                    let otptemplateType = templateType
+                                    if otptemplateType == "resetPinTemplate"{
+                                        NotificationCenter.default.post(name: Notification.Name(resetpinTemplateNotification), object: otpStr)
+                                    }else if otptemplateType == "passwordReset" {
+                                       // NotificationCenter.default.post(name: Notification.Name(resetPasswordTemplateNotification), object: otpStr)
+                                    }else{
+                                        NotificationCenter.default.post(name: Notification.Name(otpValidationTemplateNotification), object: otpStr)
+                                    }
+                                }else{
+                                    OTPValidationRemoveCount += 1
+                                }
+                        }
 
                             let componentType = getComponentType(templateType, tabledesign)
                             if componentType != .quickReply {
@@ -810,12 +845,12 @@ open class KABotClient: NSObject {
     }
     
     // MARK: - get history
-    public func getMessages(offset: Int, completion block:((Bool) -> Void)?) {
+    public func getMessages(offset: Int, limit: Int, completion block:((Bool) -> Void)?) {
         guard historyRequestInProgress == false else {
             return
         }
         //getHistory - fetch all the history that the bot has previously
-                botClient.getHistory(offset: offset, success: { [weak self] (responseObj) in
+                botClient.getHistory(offset: offset, limit: limit, success: { [weak self] (responseObj) in
                     if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
                         botHistoryIcon = responseObject["icon"] as? String
                         arrayOfSelectedBtnIndex = []
@@ -876,6 +911,7 @@ open class KABotClient: NSObject {
         guard botMessages.count > 0 else {
             return
         }
+        OTPValidationRemoveCount = 0
         var allMessages: [Message] = [Message]()
         var removeTemplate = false
         for message in botMessages {
@@ -918,11 +954,16 @@ open class KABotClient: NSObject {
                             }
                         }
                     }
+                    if jsonString == "Welpro"{
+                        removeTemplate = true
+                        RemovedTemplateCount  += 1
+                    }
                 }
                 
                 if isAgentHisotryApi{
                     if isAgentConnect{
                         if message.messageId != lastReceivedMessageId{
+                            historyLimit += 1
                             self.botClient.sendEventToAgentChat(eventName: "message_read", messageId: message.messageId)
                         }
                     }
@@ -937,8 +978,10 @@ open class KABotClient: NSObject {
                 let messageTuple = onReceiveMessage(object: botMessage)
                 if let object = messageTuple.0 {
                     if !removeTemplate{
-                        arrayOfSelectedBtnIndex.insert(1001, at: 0)
-                        allMessages.append(object)
+                        if !isOTPValidationTemplate{
+                            arrayOfSelectedBtnIndex.insert(1001, at: 0)
+                            allMessages.append(object)
+                        }
                     }
                 }
             }
@@ -1158,7 +1201,7 @@ open class KABotClient: NSObject {
     func getAgentRecentHistory(){
         if isAgentConnect{
             isAgentHisotryApi = true
-            botClient.getHistory(offset: 0, success: { [weak self] (responseObj) in
+            botClient.getHistory(offset: 0, limit: 10, success: { [weak self] (responseObj) in
                 if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
                     print("Agent History messges \(messages.count) \(messages)")
                     self?.insertOrUpdateHistoryMessages(messages)

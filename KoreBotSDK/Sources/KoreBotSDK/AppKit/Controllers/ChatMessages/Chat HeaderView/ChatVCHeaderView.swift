@@ -103,7 +103,10 @@ class ChatVCHeaderView: UIView {
     func configure(headerDic: HeaderModel, headerHeight: Float){
         self.headerHeight = headerHeight
         self.headerDic = headerDic
-        let titleTxt = headerDic.title?.name
+        var titleTxt = headerDic.title?.name
+        if titleTxt == ""{
+            titleTxt = SDKConfiguration.botConfig.chatBotName
+        }
         var titleTxtColor = "#000000"
         let titleFont = UIFont(name: "HelveticaNeue-Bold", size: 16.0)
         let subTitleTxt = headerDic.sub_title?.name

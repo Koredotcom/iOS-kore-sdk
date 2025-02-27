@@ -298,10 +298,10 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         requestManager.unsubscribeToNotifications(deviceToken as Data?, userInfo: userInfoModel, authInfo: authInfoModel, success: success, failure: failure as! ((Error) -> Void)?)
     }
     
-    open func getHistory(offset: Int, success:((_ responseObject: Any?) -> Void)?, failure:((_ error: Error?) -> Void)?) {
+    open func getHistory(offset: Int, limit: Int, success:((_ responseObject: Any?) -> Void)?, failure:((_ error: Error?) -> Void)?) {
         let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
         if let botInfo = botInfoParameters, let authInfo = authInfoModel {
-            requestManager.getHistory(offset: offset, authInfo, botInfo: botInfo, success: success, failure: failure)
+            requestManager.getHistory(offset: offset, limit: limit, authInfo, botInfo: botInfo, success: success, failure: failure)
         } else {
             failure?(nil)
         }

@@ -84,7 +84,7 @@ open class HTTPRequestManager : NSObject {
     }
     
     // MARK: history from lastMessage
-    open func getHistory(offset: Int, _ authInfo: AuthInfoModel, botInfo: [String: Any], success:((_ responseObject: [String: Any]?) -> Void)?, failure:((_ error: Error?) -> Void)?) {
+    open func getHistory(offset: Int, limit: Int, _ authInfo: AuthInfoModel, botInfo: [String: Any], success:((_ responseObject: [String: Any]?) -> Void)?, failure:((_ error: Error?) -> Void)?) {
         let urlString: String = Constants.URL.historyUrl
         let accessToken = String(format: "%@ %@", authInfo.tokenType ?? "", authInfo.accessToken ?? "")
         let headers: HTTPHeaders = [
@@ -93,7 +93,7 @@ open class HTTPRequestManager : NSObject {
         ]
         
         //let parameters = ["botId": botInfo["taskBotId"], "direction": "false", "limit": "20"]
-        let parameters = ["botId": botInfo["taskBotId"]!, "direction": 0, "limit": 10, "offset": offset]
+        let parameters = ["botId": botInfo["taskBotId"]!, "direction": 0, "limit": limit, "offset": offset]
         let dataRequest = sessionManager.request(urlString, method: .get, parameters: parameters, headers: headers)
         dataRequest.validate().responseJSON { (response) in
             if let _ = response.error {

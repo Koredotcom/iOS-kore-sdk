@@ -22,7 +22,7 @@ import ObjectMapper
 import ObjcSupport
 #endif
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate, WelcomeScreenViewDelegate {
+class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate, WelcomeScreenViewDelegate, ArticleViewDelegate, OTPValidationDelegate, resetPinDelegate {
     // MARK: properties
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
@@ -126,7 +126,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var callFromAgentData: [String: Any]? = [:]
     var appDisplayName = "Kore Bot SDK"
     var isAppEnterBackground = false
-    
+    public var closeAndMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
 #if SWIFT_PACKAGE
     //let agentConnect = AgentConnect()
 #endif
@@ -237,7 +237,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     func botClosed(){
         isTryConnect = false
-        isShowWelcomeMsg = true // Set fasle here.. when you go back and come chat sceen new welcome message not displied.
+        //isShowWelcomeMsg = true // Set fasle here.. when you go back and come chat sceen new welcome message not displied.
         if isAgentConnect{
             self.botClient.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
@@ -254,9 +254,38 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             view.endEditing(true)
             chatWelcomeScreenContainerView.isHidden = false
         }else{
-            botClosed()
+            //botClosed()
+            //isShowWelcomeMsg = true
+            showCloseOrMinimiseAlert()
         }
     }
+    
+    func showCloseOrMinimiseAlert(){
+        let alertController = UIAlertController(title: "", message: "Would you like to close the concersation or minimize.", preferredStyle:.alert)
+        alertController.addAction(UIAlertAction(title: "Close", style: .default)
+                  { action -> Void in
+                        isShowWelcomeMsg = true
+                        let dic = ["event_code": "BotClosed", "event_message": "Bot closed by the user"]
+                        self.closeAndMinimizeEvent(dic)
+                       if isAgentConnect{
+                           self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
+                           Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                               self.botClosed()
+                           }
+                       }else{
+                               self.botClosed()
+                       }
+                        
+                  })
+        alertController.addAction(UIAlertAction(title: "Minimize", style: .default)
+                  { action -> Void in
+                        let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
+                        self.closeAndMinimizeEvent(dic)
+                        self.botClosed()
+                  })
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     //MARK: Menu Button Action
     @IBAction func menuButtonAction(_ sender: Any) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -524,6 +553,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }else if templateType == "quick_replies_top"{
             return .quick_replies_top
         }
+        else if templateType == "articleTemplate"{
+            return .articleTemplate
+        }
         else if templateType == "text"{
             return .text
         }
@@ -531,6 +563,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func onReceiveMessage(object: BotMessageModel?) -> (Message?, String?) {
+        isOTPValidationTemplate = false
         var ttsBody: String?
         var textMessage: Message! = nil
         let message: Message = Message()
@@ -612,6 +645,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     
                     if componentType != .quickReply {
                         
+                    }
+                    if templateType == "otpValidationTemplate" || templateType == "resetPinTemplate"{
+                        isOTPValidationTemplate = true
+                        OTPValidationRemoveCount += 1
                     }
                     
                     let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
@@ -852,6 +889,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.addObserver(self, selector: #selector(callFromAgent), name: NSNotification.Name(rawValue: callFromAgentNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willTerminate(_:)), name: UIApplication.willTerminateNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(tokenExpiry), name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(showArticleTemplateView), name: NSNotification.Name(rawValue: showArticleTemplateNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(OTPvalidateTemplateActtion), name: NSNotification.Name(rawValue: otpValidationTemplateNotification), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(resetPinTemplateActtion), name: NSNotification.Name(rawValue: resetpinTemplateNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -876,6 +918,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: callFromAgentNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showArticleTemplateNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: otpValidationTemplateNotification), object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: resetpinTemplateNotification), object: nil)
+
     }
     
     // MARK: notification handlers
@@ -1085,6 +1132,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     }
                 }
                 arrayOfSelectedBtnIndex.insert(1000, at: 0)
+                historyLimit += 1
                 self.textMessageSent()
             })
         }
@@ -1699,6 +1747,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         // Create the actions
         let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
             UIAlertAction in
+            let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
+            self.closeAndMinimizeEvent(dic)
             self.botClosed()
         }
         alertController.addAction(okAction)
@@ -1729,6 +1779,30 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.navigationController?.present(listViewDetailsViewController, animated: true, completion: nil)
     }
     
+    @objc func showArticleTemplateView(notification:Notification) {
+        let dataString: String = notification.object as! String
+        let articleDetailsViewController = ArticleDetailVC(dataString: dataString)
+        articleDetailsViewController.viewDelegate = self
+        articleDetailsViewController.modalPresentationStyle = .overFullScreen
+        self.navigationController?.present(articleDetailsViewController, animated: true, completion: nil)
+    }
+    
+    @objc func OTPvalidateTemplateActtion(notification:Notification){
+        let dataString: String = notification.object as! String
+        let otpValidationVC = OTPValidationVC(dataString: dataString)
+        otpValidationVC.viewDelegate = self
+        otpValidationVC.modalPresentationStyle = .overFullScreen
+        self.navigationController?.present(otpValidationVC, animated: true, completion: nil)
+    }
+    
+    @objc func resetPinTemplateActtion(notification:Notification){
+        let dataString: String = notification.object as! String
+        let oresetPinVC = ResetPinViewController(dataString: dataString)
+        oresetPinVC.viewDelegate = self
+        oresetPinVC.modalPresentationStyle = .overFullScreen
+        self.navigationController?.present(oresetPinVC, animated: true, completion: nil)
+    }
+    
     @objc func dropDownTemplateActtion(notification:Notification){
          let dataString: String = notification.object as! String
         composeView.setText(dataString)
@@ -1756,7 +1830,7 @@ extension ChatMessagesViewController {
             return
         }
         
-        botClient.getHistory(offset: offset, success: { [weak self] (responseObj) in
+        botClient.getHistory(offset: offset,limit: 20, success: { [weak self] (responseObj) in
             if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
                 self?.insertOrUpdateHistoryMessages(messages)
             }
@@ -1814,7 +1888,9 @@ extension ChatMessagesViewController {
         }
         
         var allMessages: [Message] = [Message]()
+        var removeTemplate = false
         for message in botMessages {
+            removeTemplate = false
             if message.type == "outgoing" || message.type == "incoming" {
                 guard let components = message.components, let data = components.first?.data else {
                     continue
@@ -1853,6 +1929,10 @@ extension ChatMessagesViewController {
                            }
                        }
                    }
+                    if jsonString == "Welpro"{
+                        removeTemplate = true
+                        RemovedTemplateCount  += 1
+                    }
                 }
                 
                 messageModel.type = "text"
@@ -1860,8 +1940,12 @@ extension ChatMessagesViewController {
                 botMessage.messages = [messageModel]
                 let messageTuple = onReceiveMessage(object: botMessage)
                 if let object = messageTuple.0 {
-                    arrayOfSelectedBtnIndex.add(1001)
-                    allMessages.append(object)
+                    if !removeTemplate{
+                        if !isOTPValidationTemplate{
+                            arrayOfSelectedBtnIndex.add(1001)
+                            allMessages.append(object)
+                        }
+                    }
                 }
             }
         }
@@ -1880,7 +1964,7 @@ extension ChatMessagesViewController {
             if count == 0 {
                 self?.getMessages(offset: 0)
             }else{
-                self?.offSet =  count
+                self?.offSet =  count + RemovedTemplateCount + OTPValidationRemoveCount
                 if (self?.botMessagesView.spinner.isHidden)!{
                     self?.getMessages(offset: self!.offSet)
                 }
@@ -2141,25 +2225,31 @@ extension ChatMessagesViewController: FMPhotoPickerViewControllerDelegate {
                     var attachment = [String: Any]()
                     var textTo = ""
                     attachment["fileId"] = fileId
-                    attachment["fileName"] = component.fileMeta.fileName
-                    attachment["fileType"] = component.templateType
+                    attachment["fileName"] = "\(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                    //attachment["fileType"] = component.templateType
+                    attachment["fileExtn"] = component.fileMeta.fileExtn
                     if component.templateType == "image" {
                         textTo = "\(text)\n \u{1F4F7} \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                        attachment["fileType"] = "image"
                     }else if component.templateType == "video" {
                         textTo = "\(text)\n 🎥 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
+                        attachment["fileType"] = "video"
                     } else {
-                         if component.fileMeta.fileExtn == "pdf"{
+                        if component.fileMeta.fileExtn == "pdf"{
                             textTo = "\(text)\n 📄 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
-                         }else if component.fileMeta.fileExtn == "mp3"{
+                            attachment["fileType"] = "pdf"
+                        }else if component.fileMeta.fileExtn == "mp3"{
                             textTo = "\(text)\n 🎵 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
-                         }else{
+                            attachment["fileType"] = "mp3"
+                        }else{
                             textTo = "\(text)\n 📁 \(component.fileMeta.fileName ?? "").\(component.fileMeta.fileExtn ?? "")"
-                         }
+                            attachment["fileType"] = component.templateType
+                        }
                         
                     }
                     self.removeActivityIndicator(spinner: activityIndicator)
                     
-                    self.sendTextMessage(textTo, dictionary: ["attachments": [attachment]], options: ["attachments": [attachment]])
+                    self.sendTextMessage(textTo, dictionary: [:], options: ["attachments": [attachment]])
                     
                 }
             }
@@ -3007,7 +3097,10 @@ extension ChatMessagesViewController{
     
     func configureHeaderView(headerDic: HeaderModel){
         self.headerDic = headerDic
-        let titleTxt = headerDic.title?.name
+        var titleTxt = headerDic.title?.name
+        if titleTxt == ""{
+            titleTxt = SDKConfiguration.botConfig.chatBotName
+        }
         let titleTxtColor = headerDic.title?.color
         let titleFont = UIFont(name: "HelveticaNeue-Bold", size: 16.0)
         let subTitleTxt = headerDic.sub_title?.name
@@ -3102,7 +3195,9 @@ extension ChatMessagesViewController{
         
     }
     @IBAction func tapsOnCloseBtnAct(_ sender: Any) {
-        botClosed()
+        //botClosed()
+        //isShowWelcomeMsg = true
+        showCloseOrMinimiseAlert()
     }
 }
 

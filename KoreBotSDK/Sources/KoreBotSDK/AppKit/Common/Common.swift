@@ -15,6 +15,7 @@ var showTableTemplateNotification = "ShowTableTemplateNotificationName"
 var reloadTableNotification = "reloadTableNotification"
 var updateUserImageNotification = "updateUserImageNotification"
 var showListViewTemplateNotification = "ListViewTemplateNotificationName"
+var showArticleTemplateNotification = "ArticleTemplateNotificationName"
 var showListWidgetViewTemplateNotification = "ListWidgetViewTemplateNotificationName"
 var showAttachmentSendButtonNotification = "ShowAttachmentSendButton"
 var dropDownTemplateNotification = "DropDownTemplateNotificationName"
@@ -79,6 +80,16 @@ var isShowQuickRepliesBottom = true
 var arrayOfSelectedBtnIndex:NSMutableArray = NSMutableArray()
 
 var notDeliverdMsgsArray = [String]()
+var historyLimit = 0
+var RemovedTemplateCount = 0
+var isCallingHistoryApi = true
+var close_AgentChat_EventName = "close_agent_chat"
+
+
+var isOTPValidationTemplate = false
+var OTPValidationRemoveCount = 0
+var otpValidationTemplateNotification = "OTPvalidationTemplateNotificationName"
+var resetpinTemplateNotification = "ResetPinTemplateNotificationName"
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
@@ -236,6 +247,8 @@ open class Utilities: NSObject {
             return .radioOptionTemplate
         }else if templateType == "quick_replies_top"{
             return .quick_replies_top
+        }else if templateType == "articleTemplate"{
+            return .articleTemplate
         }else if templateType == "text"{
             return .text
         }

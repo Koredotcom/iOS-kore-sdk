@@ -105,6 +105,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(RadioOptionTemplateCell.self, forCellReuseIdentifier: "RadioOptionTemplateCell")
         self.tableView.register(QuickReplyTopBubbleCell.self, forCellReuseIdentifier: "QuickReplyTopBubbleCell")
         self.tableView.register(EmptyBubbleViewCell.self, forCellReuseIdentifier:"EmptyBubbleViewCell")
+        self.tableView.register(ArticleBubbleCell.self, forCellReuseIdentifier:"ArticleBubbleCell")
+        
     }
     
     override func layoutSubviews() {
@@ -238,6 +240,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 cellIdentifier = "RadioOptionTemplateCell"
             case .quick_replies_top:
                 cellIdentifier = "QuickReplyTopBubbleCell"
+            case .articleTemplate:
+                cellIdentifier = "ArticleBubbleCell"
             case .noTemplate:
                 cellIdentifier = "EmptyBubbleViewCell"
             }
@@ -519,6 +523,15 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 cell.bubbleView.drawBorder = true
                 bubbleView.tag = indexPath.row
                 bubbleView.viewTag = indexPath.row
+                break
+            case .articleTemplate:
+                let bubbleView: ArticleBubbleView = cell.bubbleView as! ArticleBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
                 break
             case .noTemplate:
                 break

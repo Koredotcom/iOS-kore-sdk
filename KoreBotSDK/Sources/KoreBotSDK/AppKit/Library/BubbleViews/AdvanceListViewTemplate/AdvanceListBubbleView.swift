@@ -948,16 +948,33 @@ extension AdvanceListBubbleView: UICollectionViewDelegate, UICollectionViewDataS
                     }else{
                         cell.titleBtn.setTitle(buttonDetails?.title, for: .normal)
                         if let imageIcon = buttonDetails?.icon{
-                            let image = Utilities.base64ToImage(base64String: imageIcon)
-                            cell.titleBtn.setImage(image, for: .normal)
+//                            let image = Utilities.base64ToImage(base64String: imageIcon)
+//                            cell.titleBtn.setImage(image, for: .normal)
+                            if imageIcon.contains("base64"){
+                                let image = Utilities.base64ToImage(base64String: imageIcon)
+                                cell.titleBtn.setImage(image, for: .normal)
+                            }else{
+                                if let url = URL(string: imageIcon){
+                                    cell.titleBtn.af.setImage(for: .normal, url: url)
+                                }
+                            }
                             cell.titleBtn.setTitle(" \(buttonDetails?.title ?? "")", for: .normal)
                         }
                     }
                 }else{
                     cell.titleBtn.setTitle(buttonDetails?.title, for: .normal)
                     if let imageIcon = buttonDetails?.icon{
-                        let image = Utilities.base64ToImage(base64String: imageIcon)
-                        cell.titleBtn.setImage(image, for: .normal)
+//                        let image = Utilities.base64ToImage(base64String: imageIcon)
+//                        cell.titleBtn.setImage(image, for: .normal)
+                        if imageIcon.contains("base64"){
+                            let image = Utilities.base64ToImage(base64String: imageIcon)
+                            cell.titleBtn.setImage(image, for: .normal)
+                        }else{
+                            if let url = URL(string: imageIcon){
+                                cell.titleBtn.af.setImage(for: .normal, url: url)
+                            }
+                        }
+
                         cell.titleBtn.setTitle(" \(buttonDetails?.title ?? "")", for: .normal)
                     }
                 }

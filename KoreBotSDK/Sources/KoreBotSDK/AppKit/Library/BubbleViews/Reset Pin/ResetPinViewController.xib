@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Gilroy-Bold.otf">
+            <string>Gilroy-Bold</string>
+        </array>
+        <array key="Gilroy-Semibold.otf">
+            <string>Gilroy-Semibold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ResetPinViewController" customModule="KoreBotSDK" customModuleProvider="target">
+            <connections>
+                <outlet property="HeadingLbl" destination="SSt-My-Zqd" id="3xy-r2-wMg"/>
+                <outlet property="bgV" destination="CEv-uS-YlF" id="x2f-34-7Ap"/>
+                <outlet property="enterPinlbl" destination="D3X-EW-x2C" id="dRP-PK-mlx"/>
+                <outlet property="errorLbl" destination="M82-3y-ewc" id="en7-wg-3pX"/>
+                <outlet property="fifthTF" destination="Sek-Ay-84q" id="qjO-Qf-wd5"/>
+                <outlet property="fifthTFre" destination="Xib-TF-Z2X" id="nyb-KZ-b9F"/>
+                <outlet property="firstTF" destination="8aO-de-gSX" id="RFB-dA-jBW"/>
+                <outlet property="firstTFre" destination="dRD-Wt-DnI" id="jJM-4B-0vr"/>
+                <outlet property="foruthTF" destination="Crf-bg-Wq5" id="sS3-av-UHu"/>
+                <outlet property="foruthTFre" destination="RX5-Ln-cXo" id="wj6-sG-lMd"/>
+                <outlet property="reEnterPinLbl" destination="SIF-7r-S3Y" id="t8N-9e-MJY"/>
+                <outlet property="secondTF" destination="DAo-vU-K9g" id="lAC-qe-miA"/>
+                <outlet property="secondTFre" destination="Snc-t0-Rf4" id="D28-ng-boa"/>
+                <outlet property="sixthTF" destination="caI-ab-aFH" id="ED8-U5-XQf"/>
+                <outlet property="sixthTFre" destination="5Tw-DM-IJC" id="PqV-Zt-Qgv"/>
+                <outlet property="submitBtn" destination="JsG-E0-7HI" id="OVN-Od-K6q"/>
+                <outlet property="thirdTF" destination="QL9-Fp-kUh" id="QoH-0Y-Zdu"/>
+                <outlet property="thirdTFre" destination="Mlh-i8-q9U" id="PNw-yO-wZ0"/>
+                <outlet property="underToplineLbl" destination="ils-yo-fCo" id="pux-ly-rdt"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CEv-uS-YlF">
+                    <rect key="frame" x="0.0" y="20" width="414" height="716"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset Pin" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="SSt-My-Zqd">
+                            <rect key="frame" x="24" y="46" width="322" height="29.333333333333329"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="pLi-bJ-AiA"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Gilroy-Bold" family="Gilroy" pointSize="25"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="91C-IU-shp">
+                            <rect key="frame" x="354" y="8" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="0S3-wp-jv3"/>
+                                <constraint firstAttribute="width" constant="44" id="F3c-c5-e3z"/>
+                            </constraints>
+                            <state key="normal" image="XButtonGray20"/>
+                            <connections>
+                                <action selector="closeBtnAct:" destination="-1" eventType="touchUpInside" id="vMu-gf-VOR"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your new PIN" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="D3X-EW-x2C">
+                            <rect key="frame" x="24" y="101.33333333333333" width="390" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="fWe-yW-1c9"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wCM-Qe-6gB">
+                            <rect key="frame" x="0.0" y="138.33333333333334" width="414" height="45"/>
+                            <subviews>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8aO-de-gSX">
+                                    <rect key="frame" x="24" y="5" width="40" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="Cm8-NX-13D"/>
+                                        <constraint firstAttribute="width" constant="40" id="X80-Bu-8Q3"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="goX-Bz-rve"/>
+                                    </connections>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DAo-vU-K9g">
+                                    <rect key="frame" x="74" y="5" width="40" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="40" id="Jnd-iy-rc5"/>
+                                        <constraint firstAttribute="height" constant="40" id="aBq-vf-fIQ"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="Fp8-pS-HaS"/>
+                                    </connections>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QL9-Fp-kUh">
+                                    <rect key="frame" x="124" y="5" width="40" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="LFR-2P-Zh5"/>
+                                        <constraint firstAttribute="width" constant="40" id="kdX-oj-p9b"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="0CW-UK-lyS"/>
+                                    </connections>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Crf-bg-Wq5">
+                                    <rect key="frame" x="174" y="5" width="40" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="40" id="Yyy-yL-7l7"/>
+                                        <constraint firstAttribute="height" constant="40" id="reA-Et-EkR"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="pnA-y1-8DC"/>
+                                    </connections>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Sek-Ay-84q">
+                                    <rect key="frame" x="224" y="5" width="40" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="6L4-gn-yWL"/>
+                                        <constraint firstAttribute="width" constant="40" id="up0-BQ-dQB"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="SOu-vD-ppg"/>
+                                    </connections>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="caI-ab-aFH">
+                                    <rect key="frame" x="274" y="5" width="40" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="QxJ-5o-lZN"/>
+                                        <constraint firstAttribute="width" constant="40" id="TeM-Tj-9rV"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="men-8I-e7P"/>
+                                    </connections>
+                                </textField>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="8aO-de-gSX" firstAttribute="leading" secondItem="wCM-Qe-6gB" secondAttribute="leading" constant="24" id="18u-Ue-SBs"/>
+                                <constraint firstItem="QL9-Fp-kUh" firstAttribute="leading" secondItem="DAo-vU-K9g" secondAttribute="trailing" constant="10" id="8tD-RI-aXX"/>
+                                <constraint firstItem="Crf-bg-Wq5" firstAttribute="leading" secondItem="QL9-Fp-kUh" secondAttribute="trailing" constant="10" id="B0L-OY-dal"/>
+                                <constraint firstItem="DAo-vU-K9g" firstAttribute="top" secondItem="wCM-Qe-6gB" secondAttribute="top" constant="5" id="HeK-Wo-M3o"/>
+                                <constraint firstItem="8aO-de-gSX" firstAttribute="top" secondItem="wCM-Qe-6gB" secondAttribute="top" constant="5" id="MTM-SU-Nsw"/>
+                                <constraint firstItem="caI-ab-aFH" firstAttribute="top" secondItem="wCM-Qe-6gB" secondAttribute="top" constant="5" id="PMV-7k-ILt"/>
+                                <constraint firstItem="Crf-bg-Wq5" firstAttribute="top" secondItem="wCM-Qe-6gB" secondAttribute="top" constant="5" id="Tlk-PW-ELY"/>
+                                <constraint firstItem="caI-ab-aFH" firstAttribute="leading" secondItem="Sek-Ay-84q" secondAttribute="trailing" constant="10" id="aMP-OD-R3T"/>
+                                <constraint firstItem="Sek-Ay-84q" firstAttribute="leading" secondItem="Crf-bg-Wq5" secondAttribute="trailing" constant="10" id="aOh-td-3qv"/>
+                                <constraint firstItem="Sek-Ay-84q" firstAttribute="top" secondItem="wCM-Qe-6gB" secondAttribute="top" constant="5" id="cMN-If-USa"/>
+                                <constraint firstItem="QL9-Fp-kUh" firstAttribute="top" secondItem="wCM-Qe-6gB" secondAttribute="top" constant="5" id="eyj-eg-vlY"/>
+                                <constraint firstItem="DAo-vU-K9g" firstAttribute="leading" secondItem="8aO-de-gSX" secondAttribute="trailing" constant="10" id="iQL-Mv-Hzl"/>
+                                <constraint firstAttribute="height" constant="45" id="ovS-lt-jro"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Re-enter your PIN" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="SIF-7r-S3Y">
+                            <rect key="frame" x="24" y="203.33333333333334" width="390" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="f4N-N4-Y5Q"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9dt-pQ-uk7">
+                            <rect key="frame" x="0.0" y="240.33333333333331" width="414" height="45"/>
+                            <subviews>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dRD-Wt-DnI">
+                                    <rect key="frame" x="24" y="5" width="40" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="CEE-HT-ErT"/>
+                                        <constraint firstAttribute="width" constant="40" id="Ru0-oJ-AEr"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="x5O-hZ-PhC"/>
+                                    </connections>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Snc-t0-Rf4">
+                                    <rect key="frame" x="74" y="5" width="40" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="2lO-fJ-nF2"/>
+                                        <constraint firstAttribute="width" constant="40" id="fQj-h4-UUb"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="au9-Ar-qDE"/>
+                                    </connections>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Mlh-i8-q9U">
+                                    <rect key="frame" x="124" y="5" width="40" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="40" id="U7N-qJ-dVv"/>
+                                        <constraint firstAttribute="height" constant="40" id="bpT-Ji-hsv"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="3IJ-TQ-4Jt"/>
+                                    </connections>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RX5-Ln-cXo">
+                                    <rect key="frame" x="174" y="5" width="40" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="40" id="NJp-V7-Myh"/>
+                                        <constraint firstAttribute="height" constant="40" id="tqA-Yf-uYz"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="HEH-Uq-bki"/>
+                                    </connections>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xib-TF-Z2X">
+                                    <rect key="frame" x="224" y="5" width="40" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="L9c-ut-wtb"/>
+                                        <constraint firstAttribute="width" constant="40" id="eDu-uS-fb6"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="oJM-fM-bMG"/>
+                                    </connections>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Tw-DM-IJC">
+                                    <rect key="frame" x="274" y="5" width="40" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="40" id="9wW-4y-qya"/>
+                                        <constraint firstAttribute="height" constant="40" id="OLp-nu-osE"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="Vr0-Gp-1gv"/>
+                                    </connections>
+                                </textField>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="RX5-Ln-cXo" firstAttribute="top" secondItem="9dt-pQ-uk7" secondAttribute="top" constant="5" id="0Ns-Vx-D6g"/>
+                                <constraint firstItem="Mlh-i8-q9U" firstAttribute="leading" secondItem="Snc-t0-Rf4" secondAttribute="trailing" constant="10" id="0Qf-HF-fO4"/>
+                                <constraint firstItem="dRD-Wt-DnI" firstAttribute="leading" secondItem="9dt-pQ-uk7" secondAttribute="leading" constant="24" id="Dcp-3P-5aJ"/>
+                                <constraint firstItem="Snc-t0-Rf4" firstAttribute="leading" secondItem="dRD-Wt-DnI" secondAttribute="trailing" constant="10" id="IAs-Mo-PbR"/>
+                                <constraint firstItem="Snc-t0-Rf4" firstAttribute="top" secondItem="9dt-pQ-uk7" secondAttribute="top" constant="5" id="LS1-bu-2Y2"/>
+                                <constraint firstAttribute="height" constant="45" id="PwZ-jX-zNN"/>
+                                <constraint firstItem="Xib-TF-Z2X" firstAttribute="leading" secondItem="RX5-Ln-cXo" secondAttribute="trailing" constant="10" id="Y1v-95-NCd"/>
+                                <constraint firstItem="dRD-Wt-DnI" firstAttribute="top" secondItem="9dt-pQ-uk7" secondAttribute="top" constant="5" id="cmb-Rg-Bn6"/>
+                                <constraint firstItem="5Tw-DM-IJC" firstAttribute="leading" secondItem="Xib-TF-Z2X" secondAttribute="trailing" constant="10" id="dPc-gZ-wgg"/>
+                                <constraint firstItem="RX5-Ln-cXo" firstAttribute="leading" secondItem="Mlh-i8-q9U" secondAttribute="trailing" constant="10" id="dc2-Pa-tTb"/>
+                                <constraint firstItem="5Tw-DM-IJC" firstAttribute="top" secondItem="9dt-pQ-uk7" secondAttribute="top" constant="5" id="lYz-32-rCq"/>
+                                <constraint firstItem="Xib-TF-Z2X" firstAttribute="top" secondItem="9dt-pQ-uk7" secondAttribute="top" constant="5" id="xfI-uP-hsd"/>
+                                <constraint firstItem="Mlh-i8-q9U" firstAttribute="top" secondItem="9dt-pQ-uk7" secondAttribute="top" constant="5" id="xyE-SQ-7as"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your new PIN" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M82-3y-ewc">
+                            <rect key="frame" x="8" y="305.33333333333331" width="398" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="ahz-sP-BaY"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="18"/>
+                            <color key="textColor" systemColor="systemRedColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ils-yo-fCo">
+                            <rect key="frame" x="183" y="12" width="48" height="4"/>
+                            <color key="backgroundColor" red="0.8666666666666667" green="0.8784313725490196" blue="0.9137254901960784" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="48" id="ZAr-XC-jX1"/>
+                                <constraint firstAttribute="height" constant="4" id="xce-Ld-nZe"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JsG-E0-7HI">
+                            <rect key="frame" x="24" y="341.33333333333331" width="366" height="40"/>
+                            <color key="backgroundColor" systemColor="systemBlueColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="W50-mg-HFk"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                            <state key="normal" title="Submit">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="submitBtnAct:" destination="-1" eventType="touchUpInside" id="xUK-QZ-AvQ"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="9dt-pQ-uk7" firstAttribute="top" secondItem="SIF-7r-S3Y" secondAttribute="bottom" constant="16" id="0Lq-GR-aM7"/>
+                        <constraint firstAttribute="trailing" secondItem="9dt-pQ-uk7" secondAttribute="trailing" id="1w7-wQ-aOd"/>
+                        <constraint firstItem="wCM-Qe-6gB" firstAttribute="leading" secondItem="CEv-uS-YlF" secondAttribute="leading" id="2QH-oI-dkU"/>
+                        <constraint firstItem="D3X-EW-x2C" firstAttribute="leading" secondItem="CEv-uS-YlF" secondAttribute="leading" constant="24" id="41I-bW-sbn"/>
+                        <constraint firstItem="91C-IU-shp" firstAttribute="top" secondItem="CEv-uS-YlF" secondAttribute="top" constant="8" id="4Bp-gh-Y6t"/>
+                        <constraint firstAttribute="trailing" secondItem="M82-3y-ewc" secondAttribute="trailing" constant="8" id="5Pd-2S-zV7"/>
+                        <constraint firstItem="9dt-pQ-uk7" firstAttribute="leading" secondItem="CEv-uS-YlF" secondAttribute="leading" id="7uT-Vq-zWd"/>
+                        <constraint firstAttribute="trailing" secondItem="wCM-Qe-6gB" secondAttribute="trailing" id="DMW-Dn-qLQ"/>
+                        <constraint firstItem="JsG-E0-7HI" firstAttribute="leading" secondItem="CEv-uS-YlF" secondAttribute="leading" constant="24" id="ELt-Vc-jLF"/>
+                        <constraint firstItem="SSt-My-Zqd" firstAttribute="top" secondItem="CEv-uS-YlF" secondAttribute="top" constant="46" id="G0k-eF-ve0"/>
+                        <constraint firstItem="SIF-7r-S3Y" firstAttribute="top" secondItem="wCM-Qe-6gB" secondAttribute="bottom" constant="20" id="IDU-Gc-k5J"/>
+                        <constraint firstAttribute="trailing" secondItem="91C-IU-shp" secondAttribute="trailing" constant="16" id="IXH-we-BHz"/>
+                        <constraint firstItem="JsG-E0-7HI" firstAttribute="top" secondItem="M82-3y-ewc" secondAttribute="bottom" constant="15" id="LNu-5c-FRp"/>
+                        <constraint firstItem="SIF-7r-S3Y" firstAttribute="leading" secondItem="CEv-uS-YlF" secondAttribute="leading" constant="24" id="MLh-1F-Ykr"/>
+                        <constraint firstAttribute="trailing" secondItem="wCM-Qe-6gB" secondAttribute="trailing" id="MRL-Xl-SFm"/>
+                        <constraint firstItem="91C-IU-shp" firstAttribute="leading" secondItem="SSt-My-Zqd" secondAttribute="trailing" constant="8" symbolic="YES" id="Ney-Rb-tVw"/>
+                        <constraint firstItem="wCM-Qe-6gB" firstAttribute="leading" secondItem="CEv-uS-YlF" secondAttribute="leading" id="Ovc-sx-cWv"/>
+                        <constraint firstItem="M82-3y-ewc" firstAttribute="leading" secondItem="CEv-uS-YlF" secondAttribute="leading" constant="8" id="T5h-zb-K2b"/>
+                        <constraint firstItem="ils-yo-fCo" firstAttribute="centerX" secondItem="CEv-uS-YlF" secondAttribute="centerX" id="XjE-2n-bEO"/>
+                        <constraint firstItem="ils-yo-fCo" firstAttribute="top" secondItem="CEv-uS-YlF" secondAttribute="top" constant="12" id="Z9N-aj-6bZ"/>
+                        <constraint firstItem="M82-3y-ewc" firstAttribute="top" secondItem="9dt-pQ-uk7" secondAttribute="bottom" constant="20" id="aNy-mx-hKS"/>
+                        <constraint firstItem="wCM-Qe-6gB" firstAttribute="top" secondItem="D3X-EW-x2C" secondAttribute="bottom" constant="16" id="bHf-gs-uGp"/>
+                        <constraint firstAttribute="trailing" secondItem="SIF-7r-S3Y" secondAttribute="trailing" id="dIQ-2H-Qmm"/>
+                        <constraint firstAttribute="trailing" secondItem="JsG-E0-7HI" secondAttribute="trailing" constant="24" id="fyj-ts-cdC"/>
+                        <constraint firstItem="SSt-My-Zqd" firstAttribute="leading" secondItem="CEv-uS-YlF" secondAttribute="leading" constant="24" id="lcR-kU-Ivf"/>
+                        <constraint firstItem="D3X-EW-x2C" firstAttribute="top" secondItem="SSt-My-Zqd" secondAttribute="bottom" constant="26" id="oqc-CC-jmm"/>
+                        <constraint firstAttribute="trailing" secondItem="D3X-EW-x2C" secondAttribute="trailing" id="tYb-gD-tFR"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.19606164383561644" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="CEv-uS-YlF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="CoQ-aS-9Yi"/>
+                <constraint firstItem="CEv-uS-YlF" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="dMM-fU-8m5"/>
+                <constraint firstItem="CEv-uS-YlF" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="eg2-03-8sf"/>
+                <constraint firstItem="CEv-uS-YlF" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="msT-SJ-HSy"/>
+            </constraints>
+            <point key="canvasLocation" x="-30" y="-131"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="XButtonGray20" width="20" height="20"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

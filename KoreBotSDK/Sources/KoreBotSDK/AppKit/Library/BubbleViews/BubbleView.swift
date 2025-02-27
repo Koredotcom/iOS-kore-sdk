@@ -171,6 +171,9 @@ open class BubbleView: UIView {
             case .quick_replies_top:
                 bubbleView = QuickReplyTopBubbleView()
                 break
+            case .articleTemplate:
+                bubbleView = ArticleBubbleView()
+                break
             case .noTemplate:
                 bubbleView = EmptyBubbleView()
                 break

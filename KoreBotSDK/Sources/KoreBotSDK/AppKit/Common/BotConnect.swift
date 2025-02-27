@@ -13,6 +13,8 @@ import CoreData
 
 open class BotConnect: NSObject {
     public var showQuickRepliesBottom = true
+    public var closeOrMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
+    public var closeAgentChatEventName = "close_agent_chat"
     // MARK: - init
     public override init() {
         super.init()
@@ -28,6 +30,8 @@ open class BotConnect: NSObject {
         }
         isShowQuickRepliesBottom = showQuickRepliesBottom
         loadCustomFonts()
+        isCallingHistoryApi = true
+        close_AgentChat_EventName = closeAgentChatEventName
         if !isIntialiseFileUpload{
             isIntialiseFileUpload = true
             filesUpload()
@@ -39,6 +43,14 @@ open class BotConnect: NSObject {
         botViewController.title = SDKConfiguration.botConfig.chatBotName
         botViewController.modalPresentationStyle = .fullScreen
         rootViewController.present(navigationController, animated: false)
+        
+        botViewController.closeAndMinimizeEvent = { [weak self] (Dic) in
+           if let dic = Dic {
+               if self?.closeOrMinimizeEvent != nil{
+                   self?.closeOrMinimizeEvent(dic)
+               }
+           }
+       }
     }
     
     func loadCustomFonts(){

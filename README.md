@@ -43,48 +43,49 @@ If you are using SPM project Setting up clientId, clientSecret, botId, chatBotNa
 
 Client id - Copy this id from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
  ```
- static let clientId = "<client-id>"
+  let clientId = "<client-id>"
  ```
 
 Client secret - copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
  ```
-static let clientSecret = "<client-secret>"
+ let clientSecret = "<client-secret>"
  ```
 
 User identity - this should represent the subject for JWT token that could be an email or phone number in case of known user. In case of anonymous user, this can be a randomly generated unique id.
  ```
-static let identity = "<user@example.com>"
+ let identity = "<user@example.com>"
  ```
 
 Bot name - copy this value from Bot Builder -> Channels -> Web/Mobile SDK config  ex. "Demo Bot"
  ```
-static let chatBotName = "<bot-name>"
+ let chatBotName = "<bot-name>"
  ```
 
 Bot Id - copy this value from Bot Builder -> Channels -> Web/Mobile SDK config  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
  ```
-static let botId = "<bot-id>"
+ let botId = "<bot-id>"
  ```
 
 BOT_SERVER URL- replace it with your server URL, if required
  ```
-static let BOT_SERVER = "https://bots.kore.ai";
+ let BOT_SERVER = "https://bots.kore.ai";
  ```
 
 Anonymous user - if not anonymous, assign same identity (such as email or phone number) while making a connection
  ```
-static bool isAnonymous = false; 
+ bool isAnonymous = false; 
  ```
 
 JWT_SERVER URL - specify the server URL for JWT token generation. This token is used to authorize the SDK client. Refer to documentation on how to setup the JWT server for token generation - e.g. https://jwt-token-server.example.com/
  ```
-static let JWT_SERVER = "<jwt-token-server-url>";
+ let JWT_SERVER = "<jwt-token-server-url>";
 ```
 
 Enable the webhook channel - This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
   ```
- static bool isWebhookEnabled = false; 
+  bool isWebhookEnabled = false; 
   ```
+  
 ## Running the Demo app
 #### a. Using Cocoa Pods
     * Download or clone the repository.

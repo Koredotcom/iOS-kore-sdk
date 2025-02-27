@@ -859,3 +859,24 @@ class QuickReplyTopBubbleCell: MessageBubbleCell{
         }
     }
 }
+
+class ArticleBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .articleTemplate
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleLeadingConstraint.constant = defaultSpacing
+            self.bubbleTrailingConstraint.constant = defaultSpacing
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            
+            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+        }
+    }
+    
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        self.senderImageView.isHidden = true
+    }
+}

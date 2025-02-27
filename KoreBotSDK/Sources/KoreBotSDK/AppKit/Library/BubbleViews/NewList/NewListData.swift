@@ -37,6 +37,8 @@ public class Componentss: NSObject, Decodable {
       public var limit: Int?
       public var radioOptions: [RadioOptions]?
     public var thumpsUpDownArrays: [SmileyArraysAction]?
+    public var displayLimit: Int?
+    public var showmore: Bool?
     enum ColorCodeKeys: String, CodingKey {
             case template_type = "template_type"
             case text = "text"
@@ -64,7 +66,9 @@ public class Componentss: NSObject, Decodable {
             case audioUrl = "audioUrl"
             case limit = "limit"
             case radioOptions = "radioOptions"
-        case thumpsUpDownArrays = "thumpsUpDownArrays"
+            case thumpsUpDownArrays = "thumpsUpDownArrays"
+            case displayLimit = "displayLimit"
+            case showmore = "showmore"
        }
        
        // MARK: - init
@@ -101,6 +105,8 @@ public class Componentss: NSObject, Decodable {
            limit = try? container.decode(Int.self, forKey: .limit)
            radioOptions = try? container.decode([RadioOptions].self, forKey: .radioOptions)
            thumpsUpDownArrays = try? container.decode([SmileyArraysAction].self, forKey: .thumpsUpDownArrays)
+           displayLimit = try? container.decode(Int.self, forKey: .displayLimit)
+           showmore = try? container.decode(Bool.self, forKey: .showmore)
        }
 }
 // MARK: - Elements
@@ -118,6 +124,12 @@ public class ComponentElements: NSObject, Decodable {
     public var buttons: [ComponentItemAction]?
     public var collectionTitle: String?
     public var collection: [AdvancedMultiSelectCollection]?
+    public var descr: String?
+    public var createdOn : String?
+    public var updatedOn : String?
+    public var iconStr : String?
+    public var elementButton: ComponentItemAction?
+    
     enum ColorCodeKeys: String, CodingKey {
         case color = "color"
         case subtitle = "subtitle"
@@ -132,6 +144,11 @@ public class ComponentElements: NSObject, Decodable {
         case buttons = "buttons"
         case collectionTitle = "collectionTitle"
         case collection = "collection"
+        case descr = "description"
+        case createdOn = "createdOn"
+        case updatedOn = "updatedOn"
+        case iconStr = "icon"
+        case elementButton = "button"
     }
     
     // MARK: - init
@@ -160,6 +177,11 @@ public class ComponentElements: NSObject, Decodable {
         buttons = try? container.decode([ComponentItemAction].self, forKey: .buttons)
         collectionTitle = try? container.decode(String.self, forKey: .collectionTitle)
         collection = try? container.decode([AdvancedMultiSelectCollection].self, forKey: .collection)
+        descr = try? container.decode(String.self, forKey: .descr)
+        createdOn = try? container.decode(String.self, forKey: .createdOn)
+        updatedOn = try? container.decode(String.self, forKey: .updatedOn)
+        iconStr = try? container.decode(String.self, forKey: .iconStr)
+        elementButton = try? container.decode(ComponentItemAction.self, forKey: .elementButton)
     }
 }
 
