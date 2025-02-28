@@ -174,6 +174,12 @@ open class BubbleView: UIView {
             case .articleTemplate:
                 bubbleView = ArticleBubbleView()
                 break
+            case .answerTemplate:
+                bubbleView = AnswerBubbleView()
+                break
+            case .OtpOrResetTemplate:
+                bubbleView = OTPorResetBubbleView()
+                break
             case .noTemplate:
                 bubbleView = EmptyBubbleView()
                 break

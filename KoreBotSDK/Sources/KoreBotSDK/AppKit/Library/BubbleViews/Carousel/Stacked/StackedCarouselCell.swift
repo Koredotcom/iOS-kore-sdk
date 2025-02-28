@@ -47,10 +47,10 @@ extension StackedCarouselCell: UITableViewDelegate, UITableViewDataSource{
         cell.textLbl.font = UIFont(name: mediumCustomFont, size: 14.0)
         cell.bgV.layer.cornerRadius = 2.0
         cell.bgV.layer.borderWidth = 1.0
-        cell.bgV.layer.borderColor = BubbleViewBotChatTextColor.cgColor
+        cell.bgV.layer.borderColor = themeColor.cgColor
         cell.bgV.clipsToBounds = true
         cell.bgV.backgroundColor = .clear
-        cell.textLbl.textColor = BubbleViewBotChatTextColor
+        cell.textLbl.textColor = themeColor
         if indexPath.row == 1{
             cell.bgV.backgroundColor = themeColor
             cell.textLbl.textColor = .white

@@ -241,7 +241,7 @@ extension FeedbackBubbleView : UICollectionViewDelegate, UICollectionViewDataSou
         
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
+        return UIEdgeInsets(top: 5.0, left: 0.0, bottom: 5.0, right: 5.0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -249,12 +249,14 @@ extension FeedbackBubbleView : UICollectionViewDelegate, UICollectionViewDataSou
         var width = 50
         var height = 50
         if feedBackview == "ThumbsUpDown"{
+            let elements = arrayOfSmiley[indexPath.item]
+            text = "👍 \(elements.value ?? "")"
             var textWidth = 10
             let size = text?.size(withAttributes:[.font: UIFont(name: regularCustomFont, size: 14.0) as Any])
             if text != nil {
                 textWidth = Int(size!.width)
             }
-            width = textWidth + 100
+            width = textWidth + 20
             height = 50
         }
         return CGSize(width: width , height: height)

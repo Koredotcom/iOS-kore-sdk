@@ -880,3 +880,35 @@ class ArticleBubbleCell : MessageBubbleCell {
         self.senderImageView.isHidden = true
     }
 }
+
+class AnswerBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .answerTemplate
+    }
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleLeadingConstraint.constant = defaultSpacing
+            self.bubbleTrailingConstraint.constant = defaultSpacing
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            
+            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+        }
+    }
+    
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        self.senderImageView.isHidden = true
+    }
+}
+class OTPorResetBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .OtpOrResetTemplate
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}

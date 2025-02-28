@@ -394,6 +394,10 @@ open class KABotClient: NSObject {
         }
         else if templateType == "articleTemplate"{
             return .articleTemplate
+        }else if templateType == "answerTemplate"{
+            return .answerTemplate
+        }else if templateType == "otpValidationTemplate" || templateType == "resetPinTemplate"{
+            return .OtpOrResetTemplate
         }else if templateType == "text"{
             return .text
         }
@@ -514,7 +518,7 @@ open class KABotClient: NSObject {
                                     feedBackTemplateSelectedValue = ""
                                 }
                             }else if templateType == "otpValidationTemplate" || templateType == "resetPinTemplate"{
-                                isOTPValidationTemplate = true
+                                //isOTPValidationTemplate = true
                                 if !history{
                                     let otpStr = Utilities.stringFromJSONObject(object: dictionary)
                                     let otptemplateType = templateType
@@ -526,7 +530,7 @@ open class KABotClient: NSObject {
                                         NotificationCenter.default.post(name: Notification.Name(otpValidationTemplateNotification), object: otpStr)
                                     }
                                 }else{
-                                    OTPValidationRemoveCount += 1
+                                    //OTPValidationRemoveCount += 1
                                 }
                         }
 

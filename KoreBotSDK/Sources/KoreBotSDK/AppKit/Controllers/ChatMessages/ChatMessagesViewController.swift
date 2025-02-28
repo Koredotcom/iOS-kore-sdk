@@ -555,6 +555,10 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
         else if templateType == "articleTemplate"{
             return .articleTemplate
+        }else if templateType == "answerTemplate"{
+            return .answerTemplate
+        }else if templateType == "otpValidationTemplate" || templateType == "resetPinTemplate"{
+            return .OtpOrResetTemplate
         }
         else if templateType == "text"{
             return .text
@@ -647,8 +651,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         
                     }
                     if templateType == "otpValidationTemplate" || templateType == "resetPinTemplate"{
-                        isOTPValidationTemplate = true
-                        OTPValidationRemoveCount += 1
+                        //isOTPValidationTemplate = true
+                        //OTPValidationRemoveCount += 1
                     }
                     
                     let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""

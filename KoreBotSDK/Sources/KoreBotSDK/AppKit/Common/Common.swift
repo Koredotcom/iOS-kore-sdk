@@ -91,6 +91,9 @@ var OTPValidationRemoveCount = 0
 var otpValidationTemplateNotification = "OTPvalidationTemplateNotificationName"
 var resetpinTemplateNotification = "ResetPinTemplateNotificationName"
 
+var connectModeString:String? = nil
+
+
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)
@@ -249,6 +252,10 @@ open class Utilities: NSObject {
             return .quick_replies_top
         }else if templateType == "articleTemplate"{
             return .articleTemplate
+        }else if templateType == "answerTemplate"{
+            return .answerTemplate
+        }else if templateType == "otpValidationTemplate" || templateType == "resetPinTemplate"{
+            return .OtpOrResetTemplate
         }else if templateType == "text"{
             return .text
         }

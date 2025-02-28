@@ -106,6 +106,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(QuickReplyTopBubbleCell.self, forCellReuseIdentifier: "QuickReplyTopBubbleCell")
         self.tableView.register(EmptyBubbleViewCell.self, forCellReuseIdentifier:"EmptyBubbleViewCell")
         self.tableView.register(ArticleBubbleCell.self, forCellReuseIdentifier:"ArticleBubbleCell")
+        self.tableView.register(AnswerBubbleCell.self, forCellReuseIdentifier:"AnswerBubbleCell")
+        self.tableView.register(OTPorResetBubbleCell.self, forCellReuseIdentifier:"OTPorResetBubbleCell")
         
     }
     
@@ -242,6 +244,10 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 cellIdentifier = "QuickReplyTopBubbleCell"
             case .articleTemplate:
                 cellIdentifier = "ArticleBubbleCell"
+            case .answerTemplate:
+                cellIdentifier = "AnswerBubbleCell"
+            case .OtpOrResetTemplate:
+                cellIdentifier = "OTPorResetBubbleCell"
             case .noTemplate:
                 cellIdentifier = "EmptyBubbleViewCell"
             }
@@ -533,6 +539,14 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
                 }
                 break
+            case .answerTemplate:
+                let bubbleView: AnswerBubbleView = cell.bubbleView as! AnswerBubbleView
+                self.textViewLinkDetection(textLabel: bubbleView.titleLbl)
+                cell.bubbleView.drawBorder = true
+                break
+            case .OtpOrResetTemplate:
+                cell.bubbleView.drawBorder = true
+                break
             case .noTemplate:
                 break
             }
@@ -664,6 +678,18 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             switch hotword {
             case KREAttributedHotWordLink:
                 self.viewDelegate?.linkButtonTapAction(urlString: string!)
+                break
+            default:
+                break
+            }
+        }
+    }
+    
+    func textViewLinkDetection(textLabel:KREAttributedTextView) {
+        textLabel.detectionBlock = {(hotword, string) in
+            switch hotword {
+            case KREAttributedHotWordLink:
+                self.viewDelegate?.linkButtonTapAction(urlString: string)
                 break
             default:
                 break
