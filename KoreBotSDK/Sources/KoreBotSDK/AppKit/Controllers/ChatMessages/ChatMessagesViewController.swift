@@ -988,6 +988,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 if isTryConnect{
                     isInternetAvailable = true
                     if !SDKConfiguration.botConfig.isWebhookEnabled{
+                        if isNetworkOnResumeCallingHistory{
+                            loadReconnectionHistory = true
+                        }
                         self.establishBotConnection()
                     }
                     if isAgentConnect{
@@ -1024,6 +1027,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     if isBotConnectSucessFully{
                         if !self.isAppEnterBackground{
                             if !SDKConfiguration.botConfig.isWebhookEnabled{
+                                if isNetworkOnResumeCallingHistory{
+                                    loadReconnectionHistory = true
+                                }
                                 self.establishBotConnection()
                             }
                         }

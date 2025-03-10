@@ -92,7 +92,8 @@ var otpValidationTemplateNotification = "OTPvalidationTemplateNotificationName"
 var resetpinTemplateNotification = "ResetPinTemplateNotificationName"
 
 var connectModeString:String? = nil
-
+var loadReconnectionHistory = false
+var isNetworkOnResumeCallingHistory = true
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {

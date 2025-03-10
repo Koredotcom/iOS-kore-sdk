@@ -15,6 +15,8 @@ open class BotConnect: NSObject {
     public var showQuickRepliesBottom = true
     public var closeOrMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
     public var closeAgentChatEventName = "close_agent_chat"
+    public var networkOnResumeCallingHistory = true
+
     // MARK: - init
     public override init() {
         super.init()
@@ -28,6 +30,7 @@ open class BotConnect: NSObject {
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {
             return
         }
+        customSettings()
         isShowQuickRepliesBottom = showQuickRepliesBottom
         loadCustomFonts()
         isCallingHistoryApi = true
@@ -59,6 +62,9 @@ open class BotConnect: NSObject {
         boldCustomFont = "HelveticaNeue-Bold"
         semiBoldCustomFont = "HelveticaNeue-Semibold"
         italicCustomFont =  "HelveticaNeue-Italic"
+    }
+    func customSettings(){
+        isNetworkOnResumeCallingHistory = networkOnResumeCallingHistory
     }
     
     func filesUpload(){
