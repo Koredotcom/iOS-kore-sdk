@@ -22,6 +22,7 @@ open class BotConnect: NSObject {
     public var history_enable = true
     public var history_batch_size = 20
     public var koreSDkLanguage = "en"
+    public var networkOnResumeCallingHistory = true
     public var device_Token: Data? = nil
     
     public var closeOrMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
@@ -73,6 +74,7 @@ open class BotConnect: NSObject {
         SDKConfiguration.botConfig.deviceToken = device_Token
         loadCustomFonts()
         isCallingHistoryApi = true
+        isNetworkOnResumeCallingHistory = networkOnResumeCallingHistory
         if !isIntialiseFileUpload{
             isIntialiseFileUpload = true
             filesUpload()

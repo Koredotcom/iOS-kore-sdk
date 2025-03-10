@@ -205,7 +205,7 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
         }
         if tryReconnect == true {
             if let connectModeStr = connectModeString ,connectModeStr != ""{
-                urlString.append("&isReconnect=true&ConnectionMode=Reconnect")
+                urlString.append("&ConnectionMode=Reconnect")
             }else{
                 urlString.append("&isReconnect=true")
             }

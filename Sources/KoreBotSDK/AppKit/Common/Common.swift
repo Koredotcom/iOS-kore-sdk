@@ -76,6 +76,8 @@ var statusBarBackgroundColor = UIColor.clear
 var statusBarBottomBackgroundColor:UIColor? = nil
 var connectModeString:String? = nil
 var localActiveTheme:ActiveTheme? = nil
+var loadReconnectionHistory = false
+var isNetworkOnResumeCallingHistory = true
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {

@@ -211,9 +211,8 @@ open class KABotClient: NSObject {
                 for _ in 0..<notDeliverdMsgsArray.count{
                     self?.sendMessage(notDeliverdMsgsArray[0], options: nil)
                     notDeliverdMsgsArray.remove(at: 0)
-                    //historyLimit += 1
                 }
-                self?.getAgentRecentHistory()
+                self?.getAgentRecentHistoryOrLoadReconnectionHistory()
             }
         }
         
@@ -913,6 +912,9 @@ open class KABotClient: NSObject {
                     payloadObj["payload"] = jsonObject["payload"] as? [String : Any]
                     payloadObj["type"] = jsonObject["type"]
                     componentModel.payload = payloadObj
+                    if isAgentHisotryApi{
+                        historyLimit += 1
+                    }
                 } else {
                     var payloadObj: [String: Any] = [String: Any]()
                     payloadObj["text"] = jsonString
@@ -940,6 +942,10 @@ open class KABotClient: NSObject {
                             historyLimit += 1
                             self.botClient.sendEventToAgentChat(eventName: "message_read", messageId: message.messageId)
                         }
+                    }else{
+                        if message.type != "incoming"{
+                            historyLimit += 1
+                         }
                     }
                     if message.type == "incoming" {
                         removeTemplate = true
@@ -1179,7 +1185,7 @@ open class KABotClient: NSObject {
         
     }
     
-    func getAgentRecentHistory(){
+    func getAgentRecentHistoryOrLoadReconnectionHistory(){
         if isAgentConnect{
             isAgentHisotryApi = true
             botClient.getHistory(offset: 0, limit: 10, success: { [weak self] (responseObj) in
@@ -1195,6 +1201,47 @@ open class KABotClient: NSObject {
                 print("Unable to fetch messges \(error?.localizedDescription ?? "")")
             })
                 
+        }else{ //LoadReconnectionHistory
+            if loadReconnectionHistory{
+                loadReconnectionHistory = false
+                isAgentHisotryApi = true
+                botClient.getHistory(offset: 0, limit: 10, success: { [weak self] (responseObj) in
+                    if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
+                        print("Recent History messges \(messages.count) \(messages)")
+                        var filterMessages: Array<[String: Any]> = [[String: Any]]()
+                        let botMessages = Mapper<BotMessages>().mapArray(JSONArray: messages)
+                        guard botMessages.count > 0 else {
+                            self?.historyRequestInProgress = false
+                            self?.isAgentHisotryApi = false
+                            return
+                        }
+                        var i = 0
+                        var addTemplate = false
+                        var sameMsgIdTemplateNotAdded = false
+                        for message in botMessages {
+                            if message.messageId == self?.lastReceivedMessageId{
+                                addTemplate = true
+                                sameMsgIdTemplateNotAdded = true
+                            }else{
+                                sameMsgIdTemplateNotAdded = false
+                            }
+                            if addTemplate{ // Template added after same message id
+                                if !sameMsgIdTemplateNotAdded{
+                                    filterMessages.append(messages[i])
+                                }
+                            }
+                            i = i+1
+                        }
+                        self?.insertOrUpdateHistoryMessages(filterMessages)
+                        self?.isAgentHisotryApi = false
+                    }
+                    self?.historyRequestInProgress = false
+                }, failure: { [weak self] (error) in
+                    self?.historyRequestInProgress = false
+                    self?.isAgentHisotryApi = false
+                    print("Unable to fetch messges \(error?.localizedDescription ?? "")")
+                })
+            }
         }
     }
 }
