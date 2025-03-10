@@ -85,6 +85,12 @@ open class BotConnect: NSObject {
     public func setConnectionMode(connectMode: String){
         connectModeString = "&ConnectionMode="+connectMode
     }
+    public func setStatusBarBackgroundColor(bgColor: UIColor){
+        statusBarBackgroundColor = bgColor
+    }
+    public func setBottomStatusBarBackgroundColor(bgColor: UIColor){
+        statusBarBottomBackgroundColor = bgColor
+    }
     
     public func initialize(_ clientId: String, clientSecret: String, botId: String, chatBotName: String, identity: String, isAnonymous: Bool, isWebhookEnabled: Bool, JWTServerUrl: String, BOTServerUrl: String, BrandingUrl: String, customData: [String: Any], queryParameters:[[String: Any]], customJWToken: String){
         

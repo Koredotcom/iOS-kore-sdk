@@ -127,6 +127,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var appDisplayName = "Kore Bot SDK"
     var isAppEnterBackground = false
     public var closeAndMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
+    
+    
+    @IBOutlet weak var footerStatusBarView: UIView!
 #if SWIFT_PACKAGE
     //let agentConnect = AgentConnect()
 #endif
@@ -2626,6 +2629,11 @@ extension ChatMessagesViewController{
         self.configureAudioComposer()
         self.configureIncomingCallView()
         if let footerDic = brandingValues.footer{
+            if statusBarBottomBackgroundColor == nil{
+                footerStatusBarView.backgroundColor = UIColor.init(hexString: footerDic.bg_color ?? "#FFFFFF")
+            }else{
+                footerStatusBarView.backgroundColor = statusBarBottomBackgroundColor
+            }
             if let layout = footerDic.layout, layout == "keypad"{
                 self.configureViewForKeyboard(true)
             }else{
@@ -3052,8 +3060,14 @@ extension ChatMessagesViewController{
             if let userMessage = bodyDic.user_message{
                 if let bg_color =  userMessage.bg_color{
                     themeColor  = UIColor.init(hexString: bg_color)
-                    statusBarView.backgroundColor = UIColor.init(hexString: bg_color)
-                    statusBarView.isHidden = true
+                    if statusBarBackgroundColor != nil{
+                        statusBarView.backgroundColor = statusBarBackgroundColor
+                        statusBarView.isHidden = false
+                    }else{
+                        statusBarView.backgroundColor = UIColor.init(hexString: bg_color)
+                        statusBarView.isHidden = true
+                    }
+                    
                     BubbleViewRightTint = UIColor.init(hexString: bg_color)
                 }
                 if let textColor = userMessage.color{
