@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FooterModel: NSObject , Decodable {
+public class FooterModel: NSObject , Decodable {
     public var bg_color : String?
     public var layout : String?
     public var style : String?
@@ -37,10 +37,20 @@ class FooterModel: NSObject , Decodable {
         buttons = try? container.decode(Buttons.self, forKey: .buttons)
         icons_color = try? container.decode(String.self, forKey: .icons_color)
     }
+    
+    public func updateWith(configModel: FooterModel) -> FooterModel{
+        self.bg_color = (configModel.bg_color == nil || configModel.bg_color == "")  ? bg_color : configModel.bg_color
+        self.layout = (configModel.layout == nil || configModel.layout == "")  ? layout : configModel.layout
+        self.style = (configModel.style == nil || configModel.style == "")  ? style : configModel.style
+        self.compose_bar = (configModel.compose_bar == nil)  ? compose_bar : configModel.compose_bar
+        self.buttons = (configModel.buttons == nil)  ? buttons : configModel.buttons
+        self.icons_color = (configModel.icons_color == nil || configModel.icons_color == "")  ? icons_color : configModel.icons_color
+        return self
+    }
 
 }
 
-class Compose_bar: NSObject , Decodable {
+public class Compose_bar: NSObject , Decodable {
     public var bg_color : String?
     public var outline_color : String?
     public var placeholder : String?
@@ -60,11 +70,17 @@ class Compose_bar: NSObject , Decodable {
         outline_color = try? container.decode(String.self, forKey: .outline_color)
         placeholder = try? container.decode(String.self, forKey: .placeholder)
     }
+    public func updateWith(configModel: Compose_bar) -> Compose_bar{
+        self.bg_color = (configModel.bg_color == nil || configModel.bg_color == "")  ? bg_color : configModel.bg_color
+        self.outline_color = (configModel.outline_color == nil || configModel.outline_color == "")  ? outline_color : configModel.outline_color
+        self.placeholder = (configModel.placeholder == nil || configModel.placeholder == "")  ? placeholder : configModel.placeholder
+        return self
+    }
 
 }
 
 
-class Actions: NSObject , Decodable {
+public class Actions: NSObject , Decodable {
     public var title : String?
     public var type : String?
     public var value : String?
@@ -87,10 +103,16 @@ class Actions: NSObject , Decodable {
         value = try? container.decode(String.self, forKey: .value)
         icon = try? container.decode(String.self, forKey: .icon)
     }
-
+    public func updateWith(configModel: Actions) -> Actions{
+        self.title = (configModel.title == nil || configModel.title == "")  ? title : configModel.title
+        self.type = (configModel.type == nil || configModel.type == "")  ? type : configModel.type
+        self.value = (configModel.value == nil || configModel.value == "")  ? value : configModel.value
+        self.icon = (configModel.icon == nil || configModel.icon == "")  ? icon : configModel.icon
+        return self
+    }
 }
 
-class Menu: NSObject , Decodable {
+public class Menu: NSObject , Decodable {
     public var show : Bool?
     public var icon : String?
     public var actions : [Actions]?
@@ -111,9 +133,40 @@ class Menu: NSObject , Decodable {
         actions = try? container.decode([Actions].self, forKey: .actions)
     }
 
+    public func updateWith(configModel: Menu) -> Menu{
+        self.show = (configModel.show == nil)  ? show : configModel.show
+        self.icon = (configModel.icon == nil || configModel.icon == "")  ? icon : configModel.icon
+        self.actions = (configModel.actions == nil)  ? actions: configModel.actions
+        return self
+    }
 }
 
-class Emoji: NSObject , Decodable {
+public class Emoji: NSObject , Decodable {
+    public var show : Bool?
+    public var icon : String?
+    
+    enum CodingKeys: String, CodingKey {
+        case show = "show"
+        case icon = "icon"
+    }
+    // MARK: - init
+    public override init() {
+        super.init()
+    }
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        show = try? container.decode(Bool.self, forKey: .show)
+        icon = try? container.decode(String.self, forKey: .icon)
+    }
+    public func updateWith(configModel: Emoji) -> Emoji{
+        self.show = (configModel.show == nil)  ? show : configModel.show
+        self.icon = (configModel.icon == nil || configModel.icon == "")  ? icon : configModel.icon
+        return self
+    }
+}
+
+
+public class Microphone: NSObject , Decodable {
     public var show : Bool?
     public var icon : String?
     
@@ -131,10 +184,14 @@ class Emoji: NSObject , Decodable {
         icon = try? container.decode(String.self, forKey: .icon)
     }
 
+    public func updateWith(configModel: Microphone) -> Microphone{
+        self.show = (configModel.show == nil)  ? show : configModel.show
+        self.icon = (configModel.icon == nil || configModel.icon == "")  ? icon : configModel.icon
+        return self
+    }
 }
 
-
-class Microphone: NSObject , Decodable {
+public class Attachment: NSObject , Decodable {
     public var show : Bool?
     public var icon : String?
     
@@ -151,24 +208,10 @@ class Microphone: NSObject , Decodable {
         show = try? container.decode(Bool.self, forKey: .show)
         icon = try? container.decode(String.self, forKey: .icon)
     }
-
-}
-
-class Attachment: NSObject , Decodable {
-    public var show : Bool?
-    public var icon : String?
     
-    enum CodingKeys: String, CodingKey {
-        case show = "show"
-        case icon = "icon"
-    }
-    // MARK: - init
-    public override init() {
-        super.init()
-    }
-    required public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        show = try? container.decode(Bool.self, forKey: .show)
-        icon = try? container.decode(String.self, forKey: .icon)
+    public func updateWith(configModel: Attachment) -> Attachment{
+        self.show = (configModel.show == nil)  ? show : configModel.show
+        self.icon = (configModel.icon == nil || configModel.icon == "")  ? icon : configModel.icon
+        return self
     }
 }

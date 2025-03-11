@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BrandingModel: NSObject , Decodable {
+public class BrandingModel: NSObject , Decodable {
     
     public var body: Body?
     public var chat_bubble: ChatBubble?
@@ -41,10 +41,20 @@ class BrandingModel: NSObject , Decodable {
            header = try? container.decode(HeaderModel.self, forKey: .header)
            welcome_screen = try? container.decode(WelcomeScreen.self, forKey: .welcome_screen)
        }
+    
+    public func updateWith(configModel: BrandingModel)-> BrandingModel{
+        self.body = configModel.body != nil ? body?.updateWith(configModel: configModel.body!) : body
+        self.chat_bubble = configModel.chat_bubble != nil ? chat_bubble?.updateWith(configModel: configModel.chat_bubble!) : chat_bubble
+        self.footer = configModel.footer != nil ? footer?.updateWith(configModel: configModel.footer!) : footer
+        self.general = configModel.general != nil ? general?.updateWith(configModel: configModel.general!) : general
+        self.header = configModel.header != nil ? header?.updateWith(configModel: configModel.header!) : header
+        self.welcome_screen = configModel.welcome_screen != nil ? welcome_screen?.updateWith(configModel: configModel.welcome_screen!) : welcome_screen
+        return self
+    }
 }
 
 
-class General : NSObject , Decodable {
+public class General : NSObject , Decodable {
     public var bot_icon : String?
     public var size : String?
     public var themeType : String?
@@ -67,10 +77,18 @@ class General : NSObject , Decodable {
         themeType = try? container.decode(String.self, forKey: .themeType)
         generalColors = try? container.decode(GeneralColors.self, forKey: .generalColors)
     }
+    
+    public func updateWith(configModel: General) -> General{
+        self.bot_icon = (configModel.bot_icon == nil || configModel.bot_icon == "")  ? bot_icon : configModel.bot_icon
+        self.size = (configModel.size == nil || configModel.size == "")  ? size : configModel.size
+        self.themeType = (configModel.themeType == nil || configModel.themeType == "")  ? themeType : configModel.themeType
+        self.generalColors = (configModel.generalColors == nil)  ? generalColors : configModel.generalColors
+        return self
+    }
 
 }
 
-class GeneralColors : NSObject , Decodable {
+public class GeneralColors : NSObject , Decodable {
     public var primaryColor : String?
     public var primary_text : String?
     public var secondaryColor : String?
@@ -95,6 +113,15 @@ class GeneralColors : NSObject , Decodable {
         secondaryColor = try? container.decode(String.self, forKey: .secondaryColor)
         secondary_text = try? container.decode(String.self, forKey: .secondary_text)
         useColorPaletteOnly = try? container.decode(Bool.self, forKey: .useColorPaletteOnly)
+    }
+    
+    public func updateWith(configModel: GeneralColors) -> GeneralColors{
+        self.primaryColor = (configModel.primaryColor == nil || configModel.primaryColor == "")  ? primaryColor : configModel.primaryColor
+        self.primary_text = (configModel.primary_text == nil || configModel.primary_text == "")  ? primary_text : configModel.primary_text
+        self.secondaryColor = (configModel.secondaryColor == nil || configModel.secondaryColor == "")  ? secondaryColor : configModel.secondaryColor
+        self.secondary_text = (configModel.secondary_text == nil || configModel.secondary_text == "")  ? secondary_text : configModel.secondary_text
+        self.useColorPaletteOnly = (configModel.useColorPaletteOnly == nil)  ? useColorPaletteOnly : configModel.useColorPaletteOnly
+        return self
     }
 
 }

@@ -96,6 +96,9 @@ var loadReconnectionHistory = false
 var isNetworkOnResumeCallingHistory = true
 var statusBarBackgroundColor:UIColor? = nil
 var statusBarBottomBackgroundColor:UIColor? = nil
+
+var overRideBrandingTheme:BrandingModel? = nil
+
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Body: NSObject , Decodable {
+public class Body: NSObject , Decodable {
     public var background : Background?
     public var font : Font?
     public var user_message : User_message?
@@ -58,10 +58,27 @@ class Body: NSObject , Decodable {
         secondaryHoverColor = try? container.decode(String.self, forKey: .secondaryHoverColor)
         img = try? container.decode(String.self, forKey: .img)
     }
+    
+    public func updateWith(configModel: Body) -> Body{
+        self.background = (configModel.background == nil)  ? background : configModel.background
+        self.font = (configModel.font == nil)  ? font : configModel.font
+        self.user_message = (configModel.user_message == nil)  ? user_message : configModel.user_message
+        self.bot_message = (configModel.bot_message == nil)  ? bot_message : configModel.bot_message
+        self.agent_message = (configModel.agent_message == nil)  ? agent_message : configModel.agent_message
+        self.time_stamp = (configModel.time_stamp == nil)  ? time_stamp : configModel.time_stamp
+        self.icon = (configModel.icon == nil)  ? icon : configModel.icon
+        self.bubble_style = (configModel.bubble_style == nil || configModel.bubble_style == "")  ? bubble_style : configModel.bubble_style
+        self.primaryColor = (configModel.primaryColor == nil || configModel.primaryColor == "")  ? primaryColor : configModel.primaryColor
+        self.primaryHoverColor = (configModel.primaryHoverColor == nil || configModel.primaryHoverColor == "")  ? primaryHoverColor : configModel.primaryHoverColor
+        self.secondaryColor = (configModel.secondaryColor == nil || configModel.secondaryColor == "")  ? secondaryColor : configModel.secondaryColor
+        self.secondaryHoverColor = (configModel.secondaryHoverColor == nil || configModel.secondaryHoverColor == "")  ? secondaryHoverColor : configModel.secondaryHoverColor
+        self.img = (configModel.img == nil || configModel.img == "")  ? img : configModel.img
+        return self
+    }
 
 }
 
-class Font : NSObject , Decodable {
+public class Font : NSObject , Decodable {
     public var family : String?
     public var size : String?
     public var style : String?
@@ -81,10 +98,17 @@ class Font : NSObject , Decodable {
         size = try? container.decode(String.self, forKey: .size)
         style = try? container.decode(String.self, forKey: .style)
     }
+    
+    public func updateWith(configModel: Font) -> Font{
+        self.family = (configModel.family == nil || configModel.family == "")  ? family : configModel.family
+        self.size = (configModel.size == nil || configModel.size == "")  ? size : configModel.size
+        self.style = (configModel.style == nil || configModel.style == "")  ? style : configModel.style
+        return self
+    }
 
 }
 
-class User_message : NSObject , Decodable {
+public class User_message : NSObject , Decodable {
     public var bg_color : String?
     public var color : String?
 
@@ -101,10 +125,15 @@ class User_message : NSObject , Decodable {
         bg_color = try? container.decode(String.self, forKey: .bg_color)
         color = try? container.decode(String.self, forKey: .color)
     }
+    public func updateWith(configModel: User_message) -> User_message{
+        self.bg_color = (configModel.bg_color == nil || configModel.bg_color == "")  ? bg_color : configModel.bg_color
+        self.color = (configModel.color == nil || configModel.color == "")  ? color : configModel.color
+        return self
+    }
 
 }
 
-class Bot_message : NSObject , Decodable {
+public class Bot_message : NSObject , Decodable {
     public var bg_color : String?
     public var color : String?
 
@@ -121,10 +150,14 @@ class Bot_message : NSObject , Decodable {
         bg_color = try? container.decode(String.self, forKey: .bg_color)
         color = try? container.decode(String.self, forKey: .color)
     }
-
+    public func updateWith(configModel: Bot_message) -> Bot_message{
+        self.bg_color = (configModel.bg_color == nil || configModel.bg_color == "")  ? bg_color : configModel.bg_color
+        self.color = (configModel.color == nil || configModel.color == "")  ? color : configModel.color
+        return self
+    }
 }
 
-class Agent_message : NSObject , Decodable {
+public class Agent_message : NSObject , Decodable {
     public var bg_color : String?
     public var color : String?
     public var separator : String?
@@ -153,10 +186,20 @@ class Agent_message : NSObject , Decodable {
         title = try? container.decode(Title.self, forKey: .title)
         sub_title = try? container.decode(Sub_title.self, forKey: .sub_title)
     }
+    
+    public func updateWith(configModel: Agent_message) -> Agent_message{
+        self.bg_color = (configModel.bg_color == nil || configModel.bg_color == "")  ? bg_color : configModel.bg_color
+        self.color = (configModel.color == nil || configModel.color == "")  ? color : configModel.color
+        self.separator = (configModel.separator == nil || configModel.separator == "")  ? separator : configModel.separator
+        self.icon = (configModel.icon == nil)  ? icon : configModel.icon
+        self.title = (configModel.title == nil)  ? title : configModel.title
+        self.sub_title = (configModel.sub_title == nil)  ? sub_title : configModel.sub_title
+        return self
+    }
 
 }
 
-class Time_stamp : NSObject , Decodable {
+public class Time_stamp : NSObject , Decodable {
     public var show : Bool?
     public var show_type : String?
     public var position : String?
@@ -187,6 +230,16 @@ class Time_stamp : NSObject , Decodable {
         color = try? container.decode(String.self, forKey: .color)
         timeformat = try? container.decode(String.self, forKey: .timeformat)
         date_format = try? container.decode(String.self, forKey: .date_format)
+    }
+    public func updateWith(configModel: Time_stamp) -> Time_stamp{
+        self.show = (configModel.show == nil)  ? show : configModel.show
+        self.show_type = (configModel.show_type == nil || configModel.show_type == "")  ? show_type : configModel.show_type
+        self.position = (configModel.position == nil || configModel.position == "")  ? position : configModel.position
+        self.separator = (configModel.separator == nil || configModel.separator == "")  ? separator : configModel.separator
+        self.color = (configModel.color == nil || configModel.color == "")  ? color : configModel.color
+        self.timeformat = (configModel.timeformat == nil || configModel.timeformat == "")  ? timeformat : configModel.timeformat
+        self.date_format = (configModel.date_format == nil || configModel.date_format == "")  ? date_format : configModel.date_format
+        return self
     }
 
 }

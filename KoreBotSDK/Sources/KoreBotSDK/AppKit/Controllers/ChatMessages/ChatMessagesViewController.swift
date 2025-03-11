@@ -2567,7 +2567,8 @@ extension ChatMessagesViewController{
                 let brandingDic = try? jsonDecoder.decode(BrandingModel.self, from: jsonData) else {
                     return
                 }
-                brandingValues = brandingDic
+                //brandingValues = brandingDic
+                self?.overRideLocalBranding(responseTheme: brandingDic)
                 self?.sucessMethod(client: client, thread: thread)
             }else{
                 self?.getOfflineBrandingData(client: client, thread: thread)
@@ -2576,6 +2577,11 @@ extension ChatMessagesViewController{
         }, failure: { (error) in
             self.getOfflineBrandingData(client: client, thread: thread)
         })
+    }
+    
+    func overRideLocalBranding(responseTheme: BrandingModel){
+        let overRideTheme = overRideBrandingTheme != nil ? responseTheme.updateWith(configModel: overRideBrandingTheme!) : responseTheme
+        brandingValues = overRideTheme
     }
     
     func getOfflineBrandingData(client: BotClient?, thread: KREThread?){
@@ -2587,7 +2593,8 @@ extension ChatMessagesViewController{
                 let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
                 if let jsonResult = jsonResult as? Dictionary<String, AnyObject> {
                     let brandingDic = try DictionaryDecoder().decode(BrandingModel.self, from: jsonResult as [String : Any])
-                    brandingValues = brandingDic
+                    //brandingValues = brandingDic
+                    self.overRideLocalBranding(responseTheme: brandingDic)
                     self.sucessMethod(client: client, thread: thread)
                 }
             } catch {
@@ -2599,7 +2606,8 @@ extension ChatMessagesViewController{
                     let jsonResult = try? JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
                     if let jsonResult = jsonResult as? Dictionary<String, AnyObject> {
                         let brandingDic = try? DictionaryDecoder().decode(BrandingModel.self, from: jsonResult as [String : Any])
-                        brandingValues = brandingDic ?? BrandingModel()
+                        //brandingValues = brandingDic ?? BrandingModel()
+                        self.overRideLocalBranding(responseTheme: brandingDic ?? BrandingModel())
                         self.sucessMethod(client: client, thread: thread)
                     }else{
                         self.sucessMethod(client: client, thread: thread)

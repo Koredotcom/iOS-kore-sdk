@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HeaderModel : NSObject , Decodable {
+public class HeaderModel : NSObject , Decodable {
     public var bg_color : String?
     public var size : String?
     public var style : String?
@@ -43,10 +43,22 @@ class HeaderModel : NSObject , Decodable {
         buttons = try? container.decode(Buttons.self, forKey: .buttons)
         icons_color = try? container.decode(String.self, forKey: .icons_color) 
     }
+    
+    public func updateWith(configModel: HeaderModel) -> HeaderModel{
+        self.bg_color = (configModel.bg_color == bg_color || configModel.bg_color == "")  ? bg_color : configModel.bg_color
+        self.size = (configModel.size == nil || configModel.size == "")  ? size : configModel.size
+        self.style = (configModel.style == nil || configModel.style == "")  ? style : configModel.style
+        self.icon = (configModel.icon == nil)  ? icon : configModel.icon
+        self.title = (configModel.title == nil)  ? title : configModel.title
+        self.sub_title = (configModel.sub_title == nil)  ? sub_title : configModel.sub_title
+        self.buttons = (configModel.buttons == nil)  ? buttons : configModel.buttons
+        self.icons_color = (configModel.icons_color == nil || configModel.icons_color == "")  ? icons_color : configModel.icons_color
+        return self
+    }
 
 }
 
-class Sub_title : NSObject , Decodable {
+public class Sub_title : NSObject , Decodable {
     public var name : String?
     public var color : String?
 
@@ -64,4 +76,9 @@ class Sub_title : NSObject , Decodable {
         color = try? container.decode(String.self, forKey: .color)
     }
 
+    public func updateWith(configModel: Sub_title) -> Sub_title{
+        self.name = (configModel.name == name || configModel.name == "")  ? name : configModel.name
+        self.color = (configModel.color == nil || configModel.color == "")  ? color : configModel.color
+        return self
+    }
 }

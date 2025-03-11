@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WelcomeScreen: NSObject , Decodable {
+public class WelcomeScreen: NSObject , Decodable {
     public var show: Bool?
     public var layout: String?
     public var background: Background?
@@ -62,9 +62,26 @@ class WelcomeScreen: NSObject , Decodable {
         static_links = try? container.decode(Static_links.self, forKey: .static_links)
         promotional_content = try? container.decode(Promotional_Content.self, forKey: .promotional_content)
     }
+    
+    public func updateWith(configModel: WelcomeScreen) -> WelcomeScreen{
+        self.show = (configModel.show == nil)  ? show : configModel.show
+        self.layout = (configModel.layout == nil || configModel.layout == "")  ? layout : configModel.layout
+        self.background = (configModel.background == nil)  ? background : configModel.background
+        self.bottom_background = (configModel.bottom_background == nil)  ? bottom_background : configModel.bottom_background
+        self.logo = (configModel.logo == nil)  ? logo : configModel.logo
+        self.note = (configModel.note == nil)  ? note : configModel.note
+        self.starter_box = (configModel.starter_box == nil)  ? starter_box : configModel.starter_box
+        self.sub_title = (configModel.sub_title == nil)  ? sub_title : configModel.sub_title
+        self.templates = (configModel.templates == nil)  ? templates : configModel.templates
+        self.title = (configModel.title == nil)  ? title : configModel.title
+        self.top_fonts = (configModel.top_fonts == nil)  ? top_fonts : configModel.top_fonts
+        self.static_links = (configModel.static_links == nil)  ? static_links : configModel.static_links
+        self.promotional_content = (configModel.promotional_content == nil)  ? promotional_content : configModel.promotional_content
+        return self
+    }
 }
 
-class Background: NSObject , Decodable {
+public class Background: NSObject , Decodable {
     public var color: String?
     public var type: String?
     public var img: String?
@@ -86,9 +103,16 @@ class Background: NSObject , Decodable {
         img = try? container.decode(String.self, forKey: .img)
         type = try? container.decode(String.self, forKey: .type)
     }
+    
+    public func updateWith(configModel: Background) -> Background{
+        self.color = (configModel.color == nil || configModel.color == "")  ? color : configModel.color
+        self.img = (configModel.img == nil || configModel.img == "")  ? img : configModel.img
+        self.type = (configModel.type == nil || configModel.type == "")  ? type : configModel.type
+        return self
+    }
 }
 
-class BottomBackground: NSObject , Decodable {
+public class BottomBackground: NSObject , Decodable {
     public var color: String?
     enum ColorCodeKeys: String, CodingKey {
         case color = "color"
@@ -102,9 +126,13 @@ class BottomBackground: NSObject , Decodable {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
         color = try? container.decode(String.self, forKey: .color)
     }
+    public func updateWith(configModel: BottomBackground) -> BottomBackground{
+        self.color = (configModel.color == nil || configModel.color == "")  ? color : configModel.color
+        return self
+    }
 }
 
-class Logo: NSObject , Decodable {
+public class Logo: NSObject , Decodable {
     public var logo_url: String?
     enum ColorCodeKeys: String, CodingKey {
         case logo_url = "logo_url"
@@ -118,9 +146,13 @@ class Logo: NSObject , Decodable {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
         logo_url = try? container.decode(String.self, forKey: .logo_url)
     }
+    public func updateWith(configModel: Logo) -> Logo{
+        self.logo_url = (configModel.logo_url == nil || configModel.logo_url == "")  ? logo_url : configModel.logo_url
+        return self
+    }
 }
 
-class Note: NSObject , Decodable {
+public class Note: NSObject , Decodable {
     public var color: String?
     public var name: String?
     
@@ -138,9 +170,14 @@ class Note: NSObject , Decodable {
         color = try? container.decode(String.self, forKey: .color)
         name = try? container.decode(String.self, forKey: .name)
     }
+    public func updateWith(configModel: Note) -> Note{
+        self.color = (configModel.color == nil || configModel.color == "")  ? color : configModel.color
+        self.name = (configModel.name == nil || configModel.name == "")  ? name : configModel.name
+        return self
+    }
 }
 
-class SubTitle: NSObject , Decodable {
+public class SubTitle: NSObject , Decodable {
     public var color: String?
     public var name: String?
     
@@ -158,9 +195,14 @@ class SubTitle: NSObject , Decodable {
         color = try? container.decode(String.self, forKey: .color)
         name = try? container.decode(String.self, forKey: .name)
     }
+    public func updateWith(configModel: SubTitle) -> SubTitle{
+        self.color = (configModel.color == nil || configModel.color == "")  ? color : configModel.color
+        self.name = (configModel.name == nil || configModel.name == "")  ? name : configModel.name
+        return self
+    }
 }
 
-class Templates: NSObject , Decodable {
+public class Templates: NSObject , Decodable {
     public var color: String?
     enum ColorCodeKeys: String, CodingKey {
         case color = "color"
@@ -174,9 +216,14 @@ class Templates: NSObject , Decodable {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
         color = try? container.decode(String.self, forKey: .color)
     }
+    
+    public func updateWith(configModel: Templates) -> Templates{
+        self.color = (configModel.color == nil || configModel.color == "")  ? color : configModel.color
+        return self
+    }
 }
 
-class Title: NSObject , Decodable {
+public class Title: NSObject , Decodable {
     public var color: String?
     public var name: String?
     
@@ -194,9 +241,15 @@ class Title: NSObject , Decodable {
         color = try? container.decode(String.self, forKey: .color)
         name = try? container.decode(String.self, forKey: .name)
     }
+    
+    public func updateWith(configModel: Title) -> Title{
+        self.color = (configModel.color == nil || configModel.color == "")  ? color : configModel.color
+        self.name = (configModel.name == nil || configModel.name == "")  ? name : configModel.name
+        return self
+    }
 }
 
-class TopFonts: NSObject , Decodable {
+public class TopFonts: NSObject , Decodable {
     public var color: String?
     enum ColorCodeKeys: String, CodingKey {
         case color = "color"
@@ -210,8 +263,12 @@ class TopFonts: NSObject , Decodable {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
         color = try? container.decode(String.self, forKey: .color)
     }
+    public func updateWith(configModel: TopFonts) -> TopFonts{
+        self.color = (configModel.color == nil || configModel.color == "")  ? color : configModel.color
+        return self
+    }
 }
-class StarterBox: NSObject , Decodable {
+public class StarterBox: NSObject , Decodable {
     public var show : Bool?
     public var icon : Icon?
     public var title : String?
@@ -247,9 +304,20 @@ class StarterBox: NSObject , Decodable {
         quick_start_buttons = try? container.decode(Quick_start_buttons.self, forKey: .quick_start_buttons)
        
     }
+    
+    public func updateWith(configModel: StarterBox) -> StarterBox{
+        self.show = (configModel.show == nil)  ? show : configModel.show
+        self.icon = (configModel.icon == nil)  ? icon : configModel.icon
+        self.title = (configModel.title == nil || configModel.title == "")  ? title : configModel.title
+        self.sub_text = (configModel.sub_text == nil || configModel.sub_text == "")  ? sub_text : configModel.sub_text
+        self.start_conv_button = (configModel.start_conv_button == nil)  ? start_conv_button : configModel.start_conv_button
+        self.start_conv_text = (configModel.start_conv_text == nil)  ? start_conv_text : configModel.start_conv_text
+        self.quick_start_buttons = (configModel.quick_start_buttons == nil)  ? quick_start_buttons : configModel.quick_start_buttons
+        return self
+    }
 }
 
-class Icon: NSObject , Decodable {
+public class Icon: NSObject , Decodable {
     public var show : Bool?
     public var user_icon : Bool?
     public var bot_icon : Bool?
@@ -280,9 +348,19 @@ class Icon: NSObject , Decodable {
         icon_url = try? container.decode(String.self, forKey: .icon_url)
         color = try? container.decode(String.self, forKey: .color)
     }
+    
+    public func updateWith(configModel: Icon) -> Icon{
+        self.show = (configModel.show == nil)  ? show : configModel.show
+        self.user_icon = (configModel.user_icon == nil)  ? user_icon : configModel.user_icon
+        self.bot_icon = (configModel.bot_icon == nil)  ? bot_icon : configModel.bot_icon
+        self.agent_icon = (configModel.agent_icon == nil)  ? agent_icon : configModel.agent_icon
+        self.icon_url = (configModel.icon_url == nil || configModel.icon_url == "")  ? icon_url : configModel.icon_url
+        self.color = (configModel.color == nil || configModel.color == "")  ? color : configModel.color
+        return self
+    }
 }
 
-class Start_conv_button: NSObject , Decodable {
+public class Start_conv_button: NSObject , Decodable {
     public var color : String?
 
     enum ColorCodeKeys: String, CodingKey {
@@ -296,10 +374,13 @@ class Start_conv_button: NSObject , Decodable {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
         color = try? container.decode(String.self, forKey: .color)
     }
-
+    public func updateWith(configModel: Start_conv_button) -> Start_conv_button{
+        self.color = (configModel.color == nil || configModel.color == "")  ? color : configModel.color
+        return self
+    }
 }
 
-class Start_conv_text: NSObject , Decodable {
+public class Start_conv_text: NSObject , Decodable {
     public var color : String?
 
     enum ColorCodeKeys: String, CodingKey {
@@ -314,10 +395,13 @@ class Start_conv_text: NSObject , Decodable {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
         color = try? container.decode(String.self, forKey: .color)
     }
-
+    public func updateWith(configModel: Start_conv_text) -> Start_conv_text{
+        self.color = (configModel.color == nil || configModel.color == "")  ? color : configModel.color
+        return self
+    }
 }
 
-class Quick_start_buttons: NSObject , Decodable {
+public class Quick_start_buttons: NSObject , Decodable {
     public var show : Bool?
     public var style : String?
     public var buttons : [Buttons]?
@@ -343,9 +427,17 @@ class Quick_start_buttons: NSObject , Decodable {
         action =  try? container.decode(Action.self, forKey: .action)
     }
 
+    public func updateWith(configModel: Quick_start_buttons) -> Quick_start_buttons{
+        self.show = (configModel.show == nil)  ? show : configModel.show
+        self.style = (configModel.style == nil || configModel.style == "")  ? style : configModel.style
+        self.buttons = (configModel.buttons == nil)  ? buttons : configModel.buttons
+        self.input = (configModel.input == nil || configModel.input == "")  ? input : configModel.input
+        self.action = (configModel.action == nil)  ? action : configModel.action
+        return self
+    }
 }
 
-class Static_links: NSObject , Decodable {
+public class Static_links: NSObject , Decodable {
     public var show : Bool?
     public var layout : String?
     public var links : [Links]?
@@ -365,9 +457,16 @@ class Static_links: NSObject , Decodable {
         layout =  try? container.decode(String.self, forKey: .layout)
         links =  try? container.decode([Links].self, forKey: .links)
     }
+    
+    public func updateWith(configModel: Static_links) -> Static_links{
+        self.show = (configModel.show == nil)  ? show : configModel.show
+        self.layout = (configModel.layout == nil || configModel.layout == "")  ? layout : configModel.layout
+        self.links = (configModel.links == nil)  ? links : configModel.links
+        return self
+    }
 
 }
-class Buttons: NSObject , Decodable {
+public class Buttons: NSObject , Decodable {
     public var title : String?
     public var action : Action?
     
@@ -419,9 +518,25 @@ class Buttons: NSObject , Decodable {
         microphone = try? container.decode(Microphone.self, forKey: .microphone)
         attachment = try? container.decode(Attachment.self, forKey: .attachment)
     }
+    
+    public func updateWith(configModel: Buttons) -> Buttons{
+        self.title = (configModel.title == nil || configModel.title == "")  ? title : configModel.title
+        self.action = (configModel.action == nil)  ? action : configModel.action
+        self.close = (configModel.close == nil)  ? close : configModel.close
+        self.expand = (configModel.expand == nil)  ? expand : configModel.expand
+        self.help = (configModel.help == nil)  ? help : configModel.help
+        self.live_agent = (configModel.live_agent == nil)  ? live_agent : configModel.live_agent
+        self.minimise = (configModel.minimise == nil)  ? minimise : configModel.minimise
+        self.reconnect = (configModel.reconnect == nil)  ? reconnect : configModel.reconnect
+        self.menu = (configModel.menu == nil)  ? menu : configModel.menu
+        self.emoji = (configModel.emoji == nil)  ? emoji : configModel.emoji
+        self.microphone = (configModel.microphone == nil)  ? microphone : configModel.microphone
+        self.attachment = (configModel.attachment == nil)  ? attachment : configModel.attachment
+        return self
+    }
 
 }
-class Action : NSObject , Decodable {
+public class Action : NSObject , Decodable {
     public var type : String?
     public var value : String?
     public var icon : String?
@@ -441,10 +556,16 @@ class Action : NSObject , Decodable {
         value = try? container.decode(String.self, forKey: .value)
         icon = try? container.decode(String.self, forKey: .icon)
     }
+    public func updateWith(configModel: Action) -> Action{
+        self.type = (configModel.type == nil || configModel.type == "")  ? type : configModel.type
+        self.value = (configModel.value == nil || configModel.value == "")  ? value : configModel.value
+        self.icon = (configModel.icon == nil || configModel.icon == "")  ? icon : configModel.icon
+        return self
+    }
 
 }
 
-class Links : NSObject , Decodable {
+public class Links : NSObject , Decodable {
     public var title : String?
     public var descrip : String?
     public var action : Action?
@@ -465,9 +586,15 @@ class Links : NSObject , Decodable {
         action = try? container.decode(Action.self, forKey: .action)
     }
 
+    public func updateWith(configModel: Links) -> Links{
+        self.title = (configModel.title == nil || configModel.title == "")  ? title : configModel.title
+        self.descrip = (configModel.descrip == nil || configModel.descrip == "")  ? descrip : configModel.descrip
+        self.action = (configModel.action == nil)  ? action : configModel.action
+        return self
+    }
 }
 
-class Close: NSObject , Decodable {
+public class Close: NSObject , Decodable {
     public var icon : String?
     public var show : Bool?
     enum CodingKeys: String, CodingKey {
@@ -483,10 +610,15 @@ class Close: NSObject , Decodable {
         icon = try? container.decode(String.self, forKey: .icon)
         show = try? container.decode(Bool.self, forKey: .show)
     }
+    public func updateWith(configModel: Close) -> Close{
+        self.icon = (configModel.icon == nil || configModel.icon == "")  ? icon : configModel.icon
+        self.show = (configModel.show == nil)  ? show : configModel.show
+        return self
+    }
 
 }
 
-class Help : NSObject , Decodable {
+public class Help : NSObject , Decodable {
     public var show : Bool?
     public var action : Action?
 
@@ -503,10 +635,16 @@ class Help : NSObject , Decodable {
         show = try? container.decode(Bool.self, forKey: .show)
         action = try? container.decode(Action.self, forKey: .action)
     }
+    
+    public func updateWith(configModel: Help) -> Help{
+        self.show = (configModel.show == nil)  ? show : configModel.show
+        self.action = (configModel.action == nil)  ? action : configModel.action
+        return self
+    }
 
 }
 
-class LiveAgent : NSObject , Decodable {
+public class LiveAgent : NSObject , Decodable {
     public var show : Bool?
     public var action : Action?
 
@@ -523,10 +661,15 @@ class LiveAgent : NSObject , Decodable {
         show = try? container.decode(Bool.self, forKey: .show)
         action = try? container.decode(Action.self, forKey: .action)
     }
-
+    
+    public func updateWith(configModel: LiveAgent) -> LiveAgent{
+        self.show = (configModel.show == nil)  ? show : configModel.show
+        self.action = (configModel.action == nil)  ? action : configModel.action
+        return self
+    }
 }
 
-class Promotional_Content : NSObject , Decodable {
+public class Promotional_Content : NSObject , Decodable {
     public var show : Bool?
     public var promotions : [Promotions]?
 
@@ -544,8 +687,13 @@ class Promotional_Content : NSObject , Decodable {
         promotions =  try? container.decode([Promotions].self, forKey: .promotions)
     }
 
+    public func updateWith(configModel: Promotional_Content) -> Promotional_Content{
+        self.show = (configModel.show == nil)  ? show : configModel.show
+        self.promotions = (configModel.promotions == nil)  ? promotions : configModel.promotions
+        return self
+    }
 }
-class Promotions : NSObject , Decodable {
+public class Promotions : NSObject , Decodable {
     public var banner : String?
     public var action : Action?
 
@@ -563,5 +711,10 @@ class Promotions : NSObject , Decodable {
         action =  try? container.decode(Action.self, forKey: .action)
     }
 
+    public func updateWith(configModel: Promotions) -> Promotions{
+        self.banner = (configModel.banner == nil)  ? banner : configModel.banner
+        self.action = (configModel.action == nil)  ? action : configModel.action
+        return self
+    }
 }
 

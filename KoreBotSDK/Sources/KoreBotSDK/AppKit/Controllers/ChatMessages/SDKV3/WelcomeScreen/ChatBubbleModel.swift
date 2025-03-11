@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChatBubble : NSObject , Decodable {
+public class ChatBubble : NSObject , Decodable {
     public var style : String?
     public var icon : Icon?
     public var minimise : Minimise?
@@ -46,10 +46,23 @@ class ChatBubble : NSObject , Decodable {
         primary_color = try? container.decode(String.self, forKey: .primary_color)
         secondary_color = try? container.decode(String.self, forKey: .secondary_color)
     }
+    
+    public func updateWith(configModel: ChatBubble) -> ChatBubble{
+        self.style = (configModel.style == nil || configModel.style == "")  ? style : configModel.style
+        self.icon = (configModel.icon == nil)  ? icon : configModel.icon
+        self.minimise = (configModel.minimise == nil)  ? minimise : configModel.minimise
+        self.sound = (configModel.sound == nil || configModel.sound == "")  ? sound : configModel.sound
+        self.alignment = (configModel.alignment == nil || configModel.alignment == "")  ? alignment : configModel.alignment
+        self.animation = (configModel.animation == nil || configModel.animation == "")  ? animation : configModel.animation
+        self.expand_animation = (configModel.expand_animation == nil || configModel.expand_animation == "")  ? expand_animation : configModel.expand_animation
+        self.primary_color = (configModel.primary_color == nil || configModel.primary_color == "")  ? primary_color : configModel.primary_color
+        self.secondary_color = (configModel.secondary_color == nil || configModel.secondary_color == "")  ? secondary_color : configModel.secondary_color
+        return self
+    }
 
 }
 
-class Minimise : NSObject , Decodable {
+public class Minimise : NSObject , Decodable {
     public var show : String?
     public var theme : String?
     public var icon : Icon?
@@ -68,6 +81,13 @@ class Minimise : NSObject , Decodable {
         show = try? container.decode(String.self, forKey: .show)
         icon = try? container.decode(Icon.self, forKey: .icon)
         theme = try? container.decode(String.self, forKey: .theme)
+    }
+    
+    public func updateWith(configModel: Minimise) -> Minimise{
+        self.show = (configModel.show == nil || configModel.show == "")  ? show : configModel.show
+        self.icon = (configModel.icon == nil)  ? icon : configModel.icon
+        self.theme = (configModel.theme == nil || configModel.theme == "")  ? theme : configModel.theme
+        return self
     }
 
 }
