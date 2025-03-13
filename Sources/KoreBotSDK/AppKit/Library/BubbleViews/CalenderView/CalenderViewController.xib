@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -33,7 +33,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Djm-YW-F5N">
-                    <rect key="frame" x="0.0" y="287" width="375" height="380"/>
+                    <rect key="frame" x="0.0" y="257" width="375" height="410"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please Choose" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="zCG-rQ-KY0">
                             <rect key="frame" x="10" y="10" width="312" height="21"/>
@@ -56,7 +56,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fyj-zI-ltK">
-                            <rect key="frame" x="0.0" y="340" width="375" height="40"/>
+                            <rect key="frame" x="15" y="340" width="345" height="40"/>
                             <color key="backgroundColor" systemColor="systemBlueColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="gcO-cP-cbT"/>
@@ -194,17 +194,17 @@
                         <constraint firstItem="dbX-js-ngB" firstAttribute="top" secondItem="5vi-6K-swE" secondAttribute="bottom" constant="13" id="Fm7-OB-63K"/>
                         <constraint firstItem="dbX-js-ngB" firstAttribute="leading" secondItem="Djm-YW-F5N" secondAttribute="leading" id="GYE-NG-ika"/>
                         <constraint firstAttribute="trailing" secondItem="5vi-6K-swE" secondAttribute="trailing" id="Gbj-rq-c6l"/>
-                        <constraint firstAttribute="bottom" secondItem="Fyj-zI-ltK" secondAttribute="bottom" id="Ii9-72-boX"/>
                         <constraint firstItem="gDW-LO-tKU" firstAttribute="top" secondItem="zCG-rQ-KY0" secondAttribute="bottom" constant="10" id="Qvt-X6-77c"/>
-                        <constraint firstAttribute="trailing" secondItem="Fyj-zI-ltK" secondAttribute="trailing" id="R50-GC-r5C"/>
+                        <constraint firstAttribute="trailing" secondItem="Fyj-zI-ltK" secondAttribute="trailing" constant="15" id="R50-GC-r5C"/>
+                        <constraint firstAttribute="bottom" secondItem="Fyj-zI-ltK" secondAttribute="bottom" constant="30" id="cEh-rt-1FX"/>
                         <constraint firstItem="zCG-rQ-KY0" firstAttribute="top" secondItem="Djm-YW-F5N" secondAttribute="top" constant="10" id="cyo-aJ-6YW"/>
                         <constraint firstAttribute="trailing" secondItem="gDW-LO-tKU" secondAttribute="trailing" id="dwW-CW-ZKB"/>
                         <constraint firstItem="HNX-qV-AsK" firstAttribute="leading" secondItem="zCG-rQ-KY0" secondAttribute="trailing" constant="8" id="kcS-9v-1vU"/>
                         <constraint firstItem="gDW-LO-tKU" firstAttribute="leading" secondItem="Djm-YW-F5N" secondAttribute="leading" id="mf2-eS-lXd"/>
-                        <constraint firstAttribute="height" constant="380" id="oRk-s1-sER"/>
+                        <constraint firstAttribute="height" constant="410" id="oRk-s1-sER"/>
                         <constraint firstAttribute="trailing" secondItem="HNX-qV-AsK" secondAttribute="trailing" constant="1" id="qhh-F8-jdq"/>
                         <constraint firstItem="zCG-rQ-KY0" firstAttribute="leading" secondItem="Djm-YW-F5N" secondAttribute="leading" constant="10" id="snd-Py-qwB"/>
-                        <constraint firstItem="Fyj-zI-ltK" firstAttribute="leading" secondItem="Djm-YW-F5N" secondAttribute="leading" id="xX7-a2-IcN"/>
+                        <constraint firstItem="Fyj-zI-ltK" firstAttribute="leading" secondItem="Djm-YW-F5N" secondAttribute="leading" constant="15" id="xX7-a2-IcN"/>
                         <constraint firstItem="HNX-qV-AsK" firstAttribute="top" secondItem="Djm-YW-F5N" secondAttribute="top" id="yjs-iA-A6k"/>
                     </constraints>
                 </view>
@@ -214,7 +214,7 @@
             <constraints>
                 <constraint firstItem="Djm-YW-F5N" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Mbf-hQ-0G9"/>
                 <constraint firstItem="Djm-YW-F5N" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="NfN-OF-JoG"/>
-                <constraint firstItem="Djm-YW-F5N" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="OQW-Hi-deW"/>
+                <constraint firstItem="Djm-YW-F5N" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="OQW-Hi-deW"/>
             </constraints>
             <point key="canvasLocation" x="138.40000000000001" y="107.49625187406298"/>
         </view>
@@ -225,7 +225,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -13,7 +13,7 @@
     "bubbleShape": "square"
   },
   "userMessage": {
-    "bubbleColor": "#00ffff",
+    "bubbleColor": "",
     "fontColor": ""
   },
   "widgetBody": {

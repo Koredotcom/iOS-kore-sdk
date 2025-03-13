@@ -2637,15 +2637,15 @@ extension ChatMessagesViewController{
                 self?.sucessMethod(client: client, thread: thread)
             }else{ //V3 branding response
                 if let v3Branding = brandingDic["v3"] as? [String: Any]{
-                    let widgetBorderColor = "#000000"
-                    let buttonInactiveBgColor = "#FFFFFF"
-                    let buttonInactiveTextColor = "#ff5e00"
+                    var widgetBorderColor = "#000000"
+                    var buttonInactiveBgColor = "#FFFFFF"
+                    var buttonInactiveTextColor = "#ff5e00"
                     var buttonActiveBgColor = "#f3f3f5"
                     var buttonActiveTextColor = "#2881DF"
-                    let widgetBgColor = "#ffffff"
+                    var widgetBgColor = "#ffffff"
                     let theme = ""
                     let botName = SDKConfiguration.botConfig.chatBotName
-                    let widgetDividerColor = "#c9c7c9"
+                    var widgetDividerColor = "#c9c7c9"
                     let bankLogo = ""
                     var widgetBgImage = ""
                     var widgetBodyColor = "#FFFFFFF"
@@ -2656,8 +2656,9 @@ extension ChatMessagesViewController{
                     var widgetTextColor = ""
                     var widgetHeaderColor = ""
                     var widgetFooterColor = ""
-                    let widgetFooterTextColor = "#000000"
-                    let widgetFooterPlaceholderColor = "#9A9A9A"
+                    var widgetFooterTextColor = "#000000"
+                    var widgetFooterPlaceholderColor = "#9A9A9A"
+                    var widgetFooterBorderColor = ""
                     var bubbleShape =  "square"
                     
                     if let body = v3Branding["body"] as? [String: Any]{
@@ -2704,6 +2705,11 @@ extension ChatMessagesViewController{
                         if let footerBg = footer["bg_color"] as? String{
                             widgetFooterColor = footerBg
                         }
+                        if let composeBar = footer["compose_bar"] as? [String: Any]{
+                            if let boraderColor = composeBar["outline-color"] as? String{
+                                widgetFooterBorderColor = boraderColor
+                            }
+                        }
                     }
                     if let header = v3Branding["header"] as? [String: Any]{
                         //print(header)
@@ -2749,6 +2755,69 @@ extension ChatMessagesViewController{
                         }
                     }
                     
+                    if let widgetHeaderBorderColor = localActiveTheme?.widgetHeader?.bordercolor, widgetHeaderBorderColor != ""{
+                        widgetBorderColor = widgetHeaderBorderColor
+                    }
+                    if let widgetHeaderTextColor = localActiveTheme?.widgetHeader?.fontcolor, widgetHeaderTextColor != ""{
+                        widgetTextColor = widgetHeaderTextColor
+                    }
+                    if let buttononHoverButtonColor = localActiveTheme?.buttons?.onHoverButtonColor, buttononHoverButtonColor != ""{
+                        buttonInactiveBgColor = buttononHoverButtonColor
+                    }
+                    if let buttononHoverFontColor = localActiveTheme?.buttons?.onHoverFontColor, buttononHoverFontColor != ""{
+                        buttonInactiveTextColor = buttononHoverFontColor
+                    }
+                    if let defaultButtonColor = localActiveTheme?.buttons?.defaultButtonColor, defaultButtonColor != ""{
+                        buttonActiveBgColor = defaultButtonColor
+                    }
+                    if let defaultBtnFontColor = localActiveTheme?.buttons?.defaultFontColor, defaultBtnFontColor != ""{
+                        buttonActiveTextColor = defaultBtnFontColor
+                    }
+                    if let widgetHeaderBgColor = localActiveTheme?.widgetHeader?.backGroundColor, widgetHeaderBgColor != ""{
+                        widgetBgColor = widgetHeaderBgColor
+                    }
+                    if let userchatBubbleBgColor = localActiveTheme?.userMessage?.bubbleColor, userchatBubbleBgColor != ""{
+                        userchatBgColor = userchatBubbleBgColor
+                    }
+                    if let userchatFontColor = localActiveTheme?.userMessage?.fontcolor, userchatFontColor != ""{
+                        userchatTextColor = userchatFontColor
+                    }
+                    if var botMessageBubbleColor = localActiveTheme?.botMessage?.bubbleColor, botMessageBubbleColor != ""{
+                        botchatBgColor = botMessageBubbleColor
+                    }
+                    if let botchatFontcolor = localActiveTheme?.botMessage?.fontcolor, botchatFontcolor != ""{
+                        botchatTextColor = botchatFontcolor
+                    }
+                     
+                    if let widgetFooterPlaceHolder = localActiveTheme?.widgetFooter?.placeHolder, widgetFooterPlaceHolder != ""{
+                        widgetDividerColor = widgetFooterPlaceHolder
+                    }
+                     if let userWidgetBgImage =  localActiveTheme?.widgetBody?.useBackgroundImage, userWidgetBgImage == true{
+                         widgetBgImage = localActiveTheme?.widgetBody?.backGroundImage ?? ""
+                     }
+                    if let widgetBodyBgColor = localActiveTheme?.widgetBody?.backGroundColor, widgetBodyBgColor != ""{
+                        widgetBodyColor = widgetBodyBgColor
+                    }
+                    if let widgetFooterBgColor = localActiveTheme?.widgetFooter?.backGroundColor, widgetFooterBgColor != ""{
+                        widgetFooterColor = widgetFooterBgColor
+                    }
+                    if let widgetHeaderBgColor = localActiveTheme?.widgetHeader?.backGroundColor, widgetHeaderBgColor != ""{
+                        widgetHeaderColor = widgetHeaderBgColor
+                    }
+                    
+                    if let widgetFooterFontColor = localActiveTheme?.widgetFooter?.fontcolor, widgetFooterFontColor != ""{
+                        widgetFooterTextColor = widgetFooterFontColor
+                    }
+                    if let widgetFooterPlaceholder = localActiveTheme?.widgetFooter?.placeHolder, widgetFooterPlaceholder != ""{
+                        widgetFooterPlaceholderColor = widgetFooterPlaceholder
+                    }
+                    if let widgetFooterBorderColour = localActiveTheme?.widgetFooter?.bordercolor, widgetFooterBorderColour != ""{
+                        widgetFooterBorderColor = widgetFooterBorderColour
+                    }
+                    if let bubbleshape = localActiveTheme?.generalAttributes?.bubbleShape, bubbleshape != ""{
+                        bubbleShape = bubbleshape
+                    }
+                    
                     brandingShared.widgetBorderColor = widgetBorderColor
                     brandingShared.widgetTextColor = widgetTextColor
                     brandingShared.buttonInactiveBgColor = buttonInactiveBgColor
@@ -2770,6 +2839,7 @@ extension ChatMessagesViewController{
                     brandingShared.widgetHeaderColor = widgetHeaderColor
                     brandingShared.widgetFooterTextColor = widgetFooterTextColor
                     brandingShared.widgetFooterPlaceholderColor = widgetFooterPlaceholderColor
+                    brandingShared.widgetFooterBorderColor = widgetFooterBorderColor
                     brandingShared.bubbleShape = bubbleShape
                     self?.sucessMethod(client: client, thread: thread)
                 }else{
