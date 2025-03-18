@@ -175,8 +175,8 @@ class OTPValidationVC: UIViewController, UITextFieldDelegate {
         resendOTPBtn.clipsToBounds = true
         didNotGetaCodeLbl.font = UIFont(name: semiBoldCustomFont, size: 14.0)
         
-        submitBtn.backgroundColor = UIColor.init(hexString: btnBgColor)
-        submitBtn.setTitleColor( UIColor.init(hexString:btnTextColor), for: .normal)
+        submitBtn.backgroundColor = UIColor.init(hexString: btnBgActiveColor)
+        submitBtn.setTitleColor( UIColor.init(hexString:btnActiveTextColor), for: .normal)
         submitBtn.layer.cornerRadius = 4.0
         submitBtn.clipsToBounds = true
         

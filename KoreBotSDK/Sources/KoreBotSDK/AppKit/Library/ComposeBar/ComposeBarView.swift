@@ -84,7 +84,6 @@ class ComposeBarView: UIView {
         self.growingTextView.layer.cornerRadius = 4.0
         self.growingTextView.isUserInteractionEnabled = false
         
-        
         let attributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: UIFont(name: regularCustomFont, size: 14.0) ?? UIFont.systemFont(ofSize: 14.0), NSAttributedString.Key.foregroundColor: Common.UIColorRGB(0xB5B9BA)]
         self.growingTextView.placeholderAttributedText = NSAttributedString(string: txtViewPlaceHolderTxt ?? "Type a message", attributes:attributes)
         

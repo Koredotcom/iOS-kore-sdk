@@ -175,8 +175,8 @@ class ResetPinViewController: UIViewController, UITextFieldDelegate {
         
         getData()
         
-        submitBtn.backgroundColor = UIColor.init(hexString: btnBgColor)
-        submitBtn.setTitleColor( UIColor.init(hexString:btnTextColor), for: .normal)
+        submitBtn.backgroundColor = UIColor.init(hexString: btnBgActiveColor)
+        submitBtn.setTitleColor( UIColor.init(hexString:btnActiveTextColor), for: .normal)
         submitBtn.layer.cornerRadius = 4.0
         submitBtn.clipsToBounds = true
         

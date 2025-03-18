@@ -60,8 +60,8 @@ var italicCustomFont =  "HelveticaNeue-Italic"
 //SDKV3
 var brandingValues = BrandingModel()
 var brandingBodyDic = Body()
-var btnBgColor = "#4B4EDE"
-var btnTextColor = "#FFFFFF"
+var btnBgActiveColor = "#4B4EDE"
+var btnActiveTextColor = "#FFFFFF"
 var btnBoarderColor = "#4B4EDE"
 var templateBoarderColor = "#E4E5E7"
 

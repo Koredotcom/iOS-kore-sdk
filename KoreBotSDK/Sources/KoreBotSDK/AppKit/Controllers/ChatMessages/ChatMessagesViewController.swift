@@ -384,12 +384,14 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.quickReplyView = KREQuickSelectView()
         self.quickReplyView.translatesAutoresizingMaskIntoConstraints = false
         self.quickSelectContainerView.addSubview(self.quickReplyView)
-        self.quickReplyView.bgColor = btnBgColor
-        self.quickReplyView.textColor = btnTextColor
-        self.quickReplyView.boarderColor = btnBoarderColor
+        let bgColor = btnBgActiveColor
+        let textColor = btnActiveTextColor
+        self.quickReplyView.bgColor = bgColor
+        self.quickReplyView.textColor = textColor
+        self.quickReplyView.boarderColor = textColor
         self.quickReplyView.fontName = mediumCustomFont
-        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[quickReplyView]|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
-        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView(60)]", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-40-[quickReplyView]-15-|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
+        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView]-5-|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
         
         self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
             if let text = text, let payload = payload {
@@ -1519,7 +1521,12 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                     words.append(word)
                 }
                 self.quickReplyView.words = words
-                
+                let bgColor = btnBgActiveColor
+                let textColor = btnActiveTextColor
+                self.quickReplyView.bgColor = bgColor
+                self.quickReplyView.textColor = textColor
+                self.quickReplyView.boarderColor = textColor
+                self.quickReplyView.fontName = mediumCustomFont
                 self.updateQuickSelectViewConstraints()
             }
         } else if(message != nil) {
@@ -1532,9 +1539,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.closeQuickSelectViewConstraints()
     }
     func updateQuickSelectViewConstraints() {
-        if self.quickSelectContainerHeightConstraint.constant == 60.0 {return}
+        let height = self.quickReplyView.collectionView.collectionViewLayout.collectionViewContentSize.height
+        let maxHeight = height > 198.0 ? 198.0 : height //248.0
+        self.quickReplyView.collectionView.isScrollEnabled = false
+        if  maxHeight >= 198.0{
+            self.quickReplyView.collectionView.isScrollEnabled = true
+        }
+        var quickSelectCollVheight = maxHeight > 60.0 ? maxHeight : 60.0
+        //quickSelectCollVheight += CGFloat(quickReplySuggesstionLblHeight)
+        if self.quickSelectContainerHeightConstraint.constant == quickSelectCollVheight {return}
         
-        self.quickSelectContainerHeightConstraint.constant = 60.0
+        self.quickSelectContainerHeightConstraint.constant = quickSelectCollVheight
         UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
             self.view.layoutIfNeeded()
         }) { (Bool) in
@@ -3077,9 +3092,11 @@ extension ChatMessagesViewController{
                     }
                     
                     BubbleViewRightTint = UIColor.init(hexString: bg_color)
+                    btnBgActiveColor = bg_color
                 }
                 if let textColor = userMessage.color{
                     BubbleViewUserChatTextColor  = UIColor.init(hexString: textColor)
+                    btnActiveTextColor = textColor
                 }
             }
             
@@ -3097,6 +3114,9 @@ extension ChatMessagesViewController{
                 BubbleViewUserChatTextColor = UIColor.init(hexString:genaralSecondary_textColor)
                 BubbleViewLeftTint = UIColor.init(hexString:genaralSecondaryColor)
                 BubbleViewBotChatTextColor = UIColor.init(hexString:genaralPrimary_textColor)
+                
+                btnBgActiveColor = genaralPrimaryColor
+                btnActiveTextColor = genaralSecondary_textColor
             }
             
         }

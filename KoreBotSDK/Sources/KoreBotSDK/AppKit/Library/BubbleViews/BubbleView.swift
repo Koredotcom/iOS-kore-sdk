@@ -24,6 +24,7 @@ let BubbleViewCurveRadius: CGFloat = 20.0
 let BubbleViewMaxWidth: CGFloat = (UIScreen.main.bounds.size.width - 90.0)
 
 open class BubbleView: UIView {
+    let brandingShared = BrandingSingleton.shared
     var tailPosition: BubbleMaskTailPosition! {
         didSet {
             self.backgroundColor = self.borderColor()

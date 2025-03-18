@@ -15,6 +15,7 @@
 		959541692BF379DE001B8D18 /* SampleView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959541672BF379DE001B8D18 /* SampleView1.swift */; };
 		9595416A2BF379DE001B8D18 /* SearchGridTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959541682BF379DE001B8D18 /* SearchGridTemplate.swift */; };
 		95B56D3F2B45428B002A49D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95B56D3E2B45428B002A49D7 /* Assets.xcassets */; };
+		95D052482D81671700BCA425 /* localbranding.json in Resources */ = {isa = PBXBuildFile; fileRef = 95D052472D81671700BCA425 /* localbranding.json */; };
 		9A3B19369ABDCDF5030E7B7E /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE91BE4E497989D44D73FFB9 /* Pods_KoreBotSDKDemo.framework */; };
 		D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */; };
 		D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D175AD561CEF0CD500BB9442 /* LaunchScreen.storyboard */; };
@@ -31,6 +32,7 @@
 		959541672BF379DE001B8D18 /* SampleView1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleView1.swift; sourceTree = "<group>"; };
 		959541682BF379DE001B8D18 /* SearchGridTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchGridTemplate.swift; sourceTree = "<group>"; };
 		95B56D3E2B45428B002A49D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		95D052472D81671700BCA425 /* localbranding.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = localbranding.json; sourceTree = "<group>"; };
 		BE91BE4E497989D44D73FFB9 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D175AD4A1CEF0CD500BB9442 /* Kore Bot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kore Bot.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 		9595416B2BF37C25001B8D18 /* SampleTemplates */ = {
 			isa = PBXGroup;
 			children = (
+				95D052472D81671700BCA425 /* localbranding.json */,
 				959541682BF379DE001B8D18 /* SearchGridTemplate.swift */,
 				959541672BF379DE001B8D18 /* SampleView1.swift */,
 			);
@@ -184,6 +187,7 @@
 			files = (
 				95B56D3F2B45428B002A49D7 /* Assets.xcassets in Resources */,
 				9516E0D52B4EA35C00A161D1 /* ViewController.xib in Resources */,
+				95D052482D81671700BCA425 /* localbranding.json in Resources */,
 				D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

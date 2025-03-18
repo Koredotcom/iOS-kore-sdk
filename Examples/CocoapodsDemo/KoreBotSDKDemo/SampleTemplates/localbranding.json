@@ -1,0 +1,33 @@
+{
+  "botMessage": {
+    "bubbleColor": "",
+    "fontColor": ""
+  },
+  "buttons": {
+    "defaultButtonColor": "",
+    "defaultFontColor": "",
+    "onHoverButtonColor": "",
+    "onHoverFontColor": ""
+  },
+  "generalAttributes": {
+    "bubbleShape": "square"
+  },
+  "userMessage": {
+    "bubbleColor": "#00ffff",
+    "fontColor": ""
+  },
+  "widgetBody": {
+    "backgroundImage": "",
+    "backgroundColor": ""
+  },
+  "widgetFooter": {
+    "borderColor": "",
+    "fontColor": "",
+    "backgroundColor": "",
+    "placeHolderColor": ""
+  },
+  "widgetHeader": {
+    "backgroundColor": "",
+    "fontColor": ""
+  }
+}
