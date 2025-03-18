@@ -133,7 +133,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -2055,6 +2055,13 @@ extension ChatMessagesViewController {
     }
 }
 extension ChatMessagesViewController: KABotClientDelegate {
+    public func showTopLoader(){
+        self.showLoader()
+    }
+    public func stopTopLoader(){
+        self.stopLoader()
+    }
+    
     public func showTypingStatusForBot() {
         self.typingStatusView?.isHidden = true
         self.typingStatusView?.startTypingStatus(using: botHistoryIcon,dotColor: themeColor)
@@ -3375,4 +3382,16 @@ extension ChatMessagesViewController: UIGestureRecognizerDelegate{
         }
         return true
     }
+    public func socketDisconnect(){
+        if(self.botClient != nil){
+            kaBotClient.socketDisconnect()
+        }
+    }
+    public func socketConnect(isReconnect:Bool){
+        if(self.botClient != nil){
+            isShowWelcomeMsg = isReconnect
+            kaBotClient.tryConnect()
+        }
+    }
+    
 }

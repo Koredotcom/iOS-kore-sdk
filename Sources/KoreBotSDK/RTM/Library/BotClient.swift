@@ -160,6 +160,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     open func disconnect() {
         if let connection = connection {
             connection.disconnect()
+            self.rtmConnectionDidClose(1000, reason: "User closed the bot")
             connection.connectionDelegate = nil
         }
         connection = nil

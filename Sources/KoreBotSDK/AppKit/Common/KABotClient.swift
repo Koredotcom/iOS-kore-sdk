@@ -16,6 +16,9 @@ public protocol KABotClientDelegate: AnyObject {
     func botConnection(with connectionState: BotClientConnectionState)
     func showTypingStatusForBot()
     func hideTypingStatusForBot()
+    
+    func showTopLoader()
+    func stopTopLoader()
 }
 
 open class KABotClient: NSObject {
@@ -213,6 +216,7 @@ open class KABotClient: NSObject {
                     notDeliverdMsgsArray.remove(at: 0)
                 }
                 self?.getAgentRecentHistoryOrLoadReconnectionHistory()
+                self?.delegate?.stopTopLoader()
             }
         }
         
@@ -229,8 +233,8 @@ open class KABotClient: NSObject {
                     weakSelf.delegate?.botConnection(with: weakSelf.connectionState)
                 }
             }
-            self?.tryConnect()
             NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+            self?.delegate?.showTopLoader()
         }
         
         botClient.connectionDidFailWithError = { [weak self] (error) in
@@ -291,7 +295,7 @@ open class KABotClient: NSObject {
     
     func deConfigureBotClient() {
         // events
-        botClient.disconnect()
+        socketDisconnect()
         botClient.connectionWillOpen = nil
         botClient.connectionDidOpen = nil
         botClient.connectionReady = nil
@@ -300,6 +304,10 @@ open class KABotClient: NSObject {
         botClient.onMessage = nil
         botClient.onMessageAck = nil
         botClient.onUserMessageReceived = nil
+    }
+    
+    func socketDisconnect() {
+        botClient.disconnect()
     }
     
     // MARK: -
@@ -435,8 +443,10 @@ open class KABotClient: NSObject {
             
             if !isAgentHisotryApi{
                 historyLimit += 1
-                //self.botClient.sendEventToAgentChat(eventName: "message_delivered", messageId: message.messageId)
-                self.botClient.sendEventToAgentChat(eventName: "message_read", messageId: message.messageId)
+                if isAgentConnect{
+                    //self.botClient.sendEventToAgentChat(eventName: "message_delivered", messageId: message.messageId)
+                    self.botClient.sendEventToAgentChat(eventName: "message_read", messageId: message.messageId)
+                }
             }
         }
         
