@@ -50,6 +50,21 @@ class ViewController: UIViewController {
         // MARK: Set Bot Config
         botConnect.initialize(clientId, clientSecret: clientSecret, botId: botId, chatBotName: chatBotName, identity: identity, isAnonymous: isAnonymous, isWebhookEnabled: isWebhookEnabled, JWTServerUrl: JWT_SERVER, BOTServerUrl: BOT_SERVER, BrandingUrl: Branding_SERVER, customData: customData, queryParameters: queryParameters, customJWToken: customJWToken)
         
+        // MARK: Set Speach to text, Attachments and Menu
+        botConnect.showOrHideFooterViewIcons(isShowSpeachToTextIcon: true, isShowAttachmentIcon: true, isShowMenuBtnIcon: false)
+        
+        // MARK: Show or hide history
+        botConnect.history_enable = true
+        
+        botConnect.history_batch_size = 10
+        
+        botConnect.koreSDkLanguage = "en"
+        
+        // MARK: Change Statusbar Background color
+        botConnect.setStatusBarBackgroundColor(bgColor: UIColor.clear)
+        
+        // MARK: Change FooterStatusbar Background color
+        //botConnect.setBottomStatusBarBackgroundColor(bgColor: UIColor.clear)
         
         // MARK: Local Branding
         if let path = Bundle.main.path(forResource: "localbranding", ofType: "json") {
@@ -66,6 +81,12 @@ class ViewController: UIViewController {
             } catch {
             }
         }
+        
+        //botConnect.composeBar_Placeholder = ""
+        
+        //botConnect.close_Btn = ""
+        
+        //botConnect.minimize_Btn = ""
         
         // MARK: Show Bot window
         botConnect.show()
