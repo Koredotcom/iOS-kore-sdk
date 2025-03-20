@@ -87,6 +87,7 @@ class BrandingModel: NSObject , Decodable {
 }
 
 public class ActiveTheme: NSObject , Decodable {
+      public var botName : String?
       public var botMessage: BotMessagee?
       public var buttons: Buttons?
       public var userMessage: BotMessagee?
@@ -103,6 +104,7 @@ public class ActiveTheme: NSObject , Decodable {
             case widgetFooter = "widgetFooter"
             case widgetHeader = "widgetHeader"
             case generalAttributes = "generalAttributes"
+            case botName = "botName"
        }
        
        // MARK: - init
@@ -119,6 +121,7 @@ public class ActiveTheme: NSObject , Decodable {
            widgetFooter = try? container.decode(WidgetFooter.self, forKey: .widgetFooter)
            widgetHeader = try? container.decode(WidgetHeader.self, forKey: .widgetHeader)
            generalAttributes = try? container.decode(GeneralAttributes.self, forKey: .generalAttributes)
+           botName = try? container.decode(String.self, forKey: .botName)
        }
     
     public func updateWith(configModel: ActiveTheme)-> ActiveTheme{
@@ -129,6 +132,7 @@ public class ActiveTheme: NSObject , Decodable {
         self.widgetFooter = configModel.widgetFooter != nil ? widgetFooter?.updateWith(configModel: configModel.widgetFooter!) : widgetFooter
         self.widgetHeader = configModel.widgetHeader != nil ? widgetHeader?.updateWith(configModel: configModel.widgetHeader!) : widgetHeader
         self.generalAttributes = configModel.generalAttributes != nil ? generalAttributes?.updateWith(configModel: configModel.generalAttributes!) : generalAttributes
+        self.botName = (configModel.botName == nil || configModel.botName == "")  ? botName : configModel.botName
         return self
     }
 }

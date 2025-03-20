@@ -988,13 +988,15 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     
     @objc func willTerminate(_ notification: Notification) {
         self.unsubscribeNotifications()
-        if isAgentConnect{
-            self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
-            sleep(1)
-        }else{
-            self.botClient.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
-            sleep(1)
+        if(self.botClient != nil){
+            if isAgentConnect{
+                self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
+            }else{
+                self.botClient.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
+            }
         }
+        prepareForDeinit()
+        sleep(1)
     }
     func showTypingToAgent(_: ComposeBarView){
         if isAgentConnect{
@@ -2651,7 +2653,7 @@ extension ChatMessagesViewController{
                     var buttonActiveTextColor = "#2881DF"
                     var widgetBgColor = "#ffffff"
                     let theme = ""
-                    let botName = SDKConfiguration.botConfig.chatBotName
+                    var botName = SDKConfiguration.botConfig.chatBotName
                     var widgetDividerColor = "#c9c7c9"
                     let bankLogo = ""
                     var widgetBgImage = ""
@@ -2824,6 +2826,9 @@ extension ChatMessagesViewController{
                     if let bubbleshape = localActiveTheme?.generalAttributes?.bubbleShape, bubbleshape != ""{
                         bubbleShape = bubbleshape
                     }
+                    if let botNamee = localActiveTheme?.botName, botNamee != ""{
+                        botName = botNamee
+                    }
                     
                     brandingShared.widgetBorderColor = widgetBorderColor
                     brandingShared.widgetTextColor = widgetTextColor
@@ -2871,7 +2876,7 @@ extension ChatMessagesViewController{
         let userchatBgColor = activeTheme.userMessage?.bubbleColor
         let userchatTextColor = activeTheme.userMessage?.fontcolor
         let theme = ""
-        let botName = SDKConfiguration.botConfig.chatBotName
+        let botName =  (activeTheme.botName == nil || activeTheme.botName == "")  ? SDKConfiguration.botConfig.chatBotName : activeTheme.botName
         let botchatBgColor = activeTheme.botMessage?.bubbleColor
         let botchatTextColor = activeTheme.botMessage?.fontcolor
          
@@ -3384,6 +3389,7 @@ extension ChatMessagesViewController: UIGestureRecognizerDelegate{
     }
     public func socketDisconnect(){
         if(self.botClient != nil){
+            isShowWelcomeMsg = true
             kaBotClient.socketDisconnect()
         }
     }

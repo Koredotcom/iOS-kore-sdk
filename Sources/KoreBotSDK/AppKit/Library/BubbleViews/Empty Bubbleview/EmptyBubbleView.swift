@@ -50,7 +50,7 @@ class EmptyBubbleView: BubbleView{
             }
             
             let views: [String: UIView] = ["tileBgv": tileBgv]
-                   self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-5-|", options: [], metrics: nil, views: views))
+                   self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
             self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]", options: [], metrics: nil, views: views))
                  
             self.titleLbl = UILabel(frame: CGRect.zero)
@@ -111,6 +111,6 @@ class EmptyBubbleView: BubbleView{
             if textSize.height < self.titleLbl.font.pointSize {
                 textSize.height = self.titleLbl.font.pointSize
             }
-            return CGSize(width: 0.0, height: textSize.height+20)
+            return CGSize(width: 0.0, height: textSize.height)
         }
     }

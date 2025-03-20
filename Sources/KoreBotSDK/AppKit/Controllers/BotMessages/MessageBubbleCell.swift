@@ -79,14 +79,14 @@ class MessageBubbleCell : UITableViewCell {
         self.senderImageView = UIImageView()
         self.senderImageView.contentMode = .scaleAspectFit
         self.senderImageView.clipsToBounds = true
-        self.senderImageView.layer.cornerRadius = 15
+        self.senderImageView.layer.cornerRadius = 0 //15
         self.senderImageView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(self.senderImageView)
         
         self.userImageView = UIImageView()
         self.userImageView.contentMode = .scaleAspectFit
         self.userImageView.clipsToBounds = true
-        self.userImageView.layer.cornerRadius = 15
+        self.userImageView.layer.cornerRadius = 0
         self.userImageView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(self.userImageView)
         
@@ -120,9 +120,16 @@ class MessageBubbleCell : UITableViewCell {
         
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-45-[dateLabel]-\(userImageViewTrialing + 2)-|", options:[], metrics:nil, views:views))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(28)]", options:[], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[senderImageView(28)]-4-|", options:[], metrics:nil, views:views))
+        
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[userImageView(\(userImageViewWidth))]-8-|", options:[], metrics:nil, views:views))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[userImageView(28)]-4-|", options:[], metrics:nil, views:views))
+        if isShowBotIconTop{
+            self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-35-[userImageView(28)]", options:[], metrics:nil, views:views))
+            self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-35-[senderImageView(28)]", options:[], metrics:nil, views:views))
+        }else{
+            self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[userImageView(28)]-4-|", options:[], metrics:nil, views:views))
+            self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[senderImageView(28)]-4-|", options:[], metrics:nil, views:views))
+        }
+        
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[dateLabel(21)]-0-[bubbleContainerView]", options:[], metrics:nil, views:views))
 
         self.bubbleBottomConstraint = NSLayoutConstraint(item:self.contentView, attribute:.bottom, relatedBy:.equal, toItem:self.bubbleContainerView, attribute:.bottom, multiplier:1.0, constant:4.0)

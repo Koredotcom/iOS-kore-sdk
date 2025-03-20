@@ -23,6 +23,7 @@ open class BotConnect: NSObject {
     public var history_batch_size = 20
     public var koreSDkLanguage = "en"
     public var networkOnResumeCallingHistory = true
+    public var setIsShowBotIconTop = false
     public var device_Token: Data? = nil
     let chatViewController = ChatMessagesViewController()
     public var composeBar_Placeholder = ""
@@ -85,6 +86,7 @@ open class BotConnect: NSObject {
         loadCustomFonts()
         isCallingHistoryApi = true
         isNetworkOnResumeCallingHistory = networkOnResumeCallingHistory
+        isShowBotIconTop = setIsShowBotIconTop
         if !isIntialiseFileUpload{
             isIntialiseFileUpload = true
             filesUpload()
@@ -114,18 +116,7 @@ open class BotConnect: NSObject {
     public func socketConnect(isReconnect:Bool){
         chatViewController.socketConnect(isReconnect: isReconnect)
     }
-    
-    public func getLocalBranding(isEnabled: Bool? = nil, branding:String){
-        if let path = Bundle.main.path(forResource: "branding", ofType: "json") {
-            do {
-                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-                let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
-               
-            } catch {
-            }
-        }
-    }
-    
+        
     func loadCustomFonts(){
         regularCustomFont = "HelveticaNeue"
         mediumCustomFont = "HelveticaNeue-Medium"
