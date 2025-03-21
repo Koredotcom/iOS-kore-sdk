@@ -116,6 +116,11 @@ open class BotConnect: NSObject {
     public func socketConnect(isReconnect:Bool){
         chatViewController.socketConnect(isReconnect: isReconnect)
     }
+    
+    // MARK: MinimiseChatBot
+    public func minimizeChatBot(){
+        chatViewController.minimizeChatBotWindow()
+    }
         
     func loadCustomFonts(){
         regularCustomFont = "HelveticaNeue"

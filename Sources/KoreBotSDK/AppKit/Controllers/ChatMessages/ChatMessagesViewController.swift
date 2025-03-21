@@ -246,9 +246,13 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         KABotClient.shared.deConfigureBotClient()
         self.deConfigureSTTClient()
         self.stopTTS()
-        self.composeView.growingTextView.viewDelegate = nil
-        self.composeView.delegate = nil
-        self.audioComposeView.prepareForDeinit()
+        if self.composeView != nil{
+            self.composeView.growingTextView.viewDelegate = nil
+            self.composeView.delegate = nil
+        }
+        if self.audioComposeView != nil{
+            self.audioComposeView.prepareForDeinit()
+        }
         if botMessagesView != nil{
             self.botMessagesView.prepareForDeinit()
             self.botMessagesView.viewDelegate = nil
@@ -1774,8 +1778,10 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }
     
     func stopTTS(){
-        if(self.speechSynthesizer.isSpeaking){
-            self.speechSynthesizer.stopSpeaking(at: AVSpeechBoundary.immediate)
+        if self.speechSynthesizer != nil{
+            if(self.speechSynthesizer.isSpeaking){
+                self.speechSynthesizer.stopSpeaking(at: AVSpeechBoundary.immediate)
+            }
         }
     }
     
@@ -3388,8 +3394,8 @@ extension ChatMessagesViewController: UIGestureRecognizerDelegate{
         return true
     }
     public func socketDisconnect(){
+        isShowWelcomeMsg = true
         if(self.botClient != nil){
-            isShowWelcomeMsg = true
             kaBotClient.socketDisconnect()
         }
     }
@@ -3398,6 +3404,14 @@ extension ChatMessagesViewController: UIGestureRecognizerDelegate{
             isShowWelcomeMsg = isReconnect
             kaBotClient.tryConnect()
         }
+    }
+    public func minimizeChatBotWindow(){
+        isAgentConnect = false
+        let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
+        if self.closeAndMinimizeEvent != nil{
+                self.closeAndMinimizeEvent(dic)
+        }
+        self.botClosed()
     }
     
 }
