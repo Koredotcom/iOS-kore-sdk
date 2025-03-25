@@ -271,8 +271,6 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     func botClosed(){
         isTryConnect = false
         prepareForDeinit()
-        //NotificationCenter.default.post(name: Notification.Name(reloadVideoCellNotification), object: nil)
-        //navigationController?.popViewController(animated: true)
         navigationController?.dismiss(animated: false)
     }
     
@@ -934,6 +932,10 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willTerminateNotification, object: nil)
     }
     
     // MARK: notification handlers

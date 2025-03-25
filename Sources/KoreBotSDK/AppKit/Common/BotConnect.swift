@@ -25,7 +25,7 @@ open class BotConnect: NSObject {
     public var networkOnResumeCallingHistory = true
     public var setIsShowBotIconTop = false
     public var device_Token: Data? = nil
-    let chatViewController = ChatMessagesViewController()
+    var botViewController:ChatMessagesViewController!
     public var composeBar_Placeholder = ""
     public var tap_To_Speak = ""
     public var close_Or_MinimizeTitle = ""
@@ -53,7 +53,7 @@ open class BotConnect: NSObject {
             return
         }
         
-        let botViewController = ChatMessagesViewController()
+         botViewController = ChatMessagesViewController()
         let navigationController = UINavigationController(rootViewController: botViewController)
         navigationController.isNavigationBarHidden = true
         navigationController.modalPresentationStyle = .fullScreen
@@ -110,16 +110,16 @@ open class BotConnect: NSObject {
     }
     
     public func socketDisconnect(){
-        chatViewController.socketDisconnect()
+        botViewController.socketDisconnect()
     }
     
     public func socketConnect(isReconnect:Bool){
-        chatViewController.socketConnect(isReconnect: isReconnect)
+        botViewController.socketConnect(isReconnect: isReconnect)
     }
     
     // MARK: MinimiseChatBot
     public func minimizeChatBot(){
-        chatViewController.minimizeChatBotWindow()
+        botViewController.minimizeChatBotWindow()
     }
         
     func loadCustomFonts(){
