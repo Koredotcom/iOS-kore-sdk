@@ -933,9 +933,6 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
         
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIApplication.willTerminateNotification, object: nil)
     }
     
     // MARK: notification handlers
@@ -3409,11 +3406,16 @@ extension ChatMessagesViewController: UIGestureRecognizerDelegate{
     }
     public func minimizeChatBotWindow(){
         isAgentConnect = false
+        removeNotificationCenter()
         let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
         if self.closeAndMinimizeEvent != nil{
                 self.closeAndMinimizeEvent(dic)
         }
         self.botClosed()
     }
-    
+    func removeNotificationCenter(){
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willTerminateNotification, object: nil)
+    }
 }
