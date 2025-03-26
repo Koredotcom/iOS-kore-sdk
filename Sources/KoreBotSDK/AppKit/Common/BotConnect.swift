@@ -110,11 +110,16 @@ open class BotConnect: NSObject {
     }
     
     public func socketDisconnect(){
-        botViewController.socketDisconnect()
+        isShowWelcomeMsg = true
+        if botViewController != nil{
+            botViewController.socketDisconnect()
+        }
     }
     
     public func socketConnect(isReconnect:Bool){
-        botViewController.socketConnect(isReconnect: isReconnect)
+        if botViewController != nil{
+            botViewController.socketConnect(isReconnect: isReconnect)
+        }
     }
     
     // MARK: MinimiseChatBot
