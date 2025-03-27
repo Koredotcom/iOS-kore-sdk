@@ -218,12 +218,10 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
                 cell.selectionStyle = UITableViewCell.SelectionStyle.none
                 cell.textLabel?.text = option.title
                 cell.textLabel?.textAlignment = .center
-                cell.textLabel?.textColor = UIColor.init(hexString: "#1565C0")
-                cell.backgroundColor = UIColor.init(hexString: "#E3F2FD")
+                cell.textLabel?.textColor = bubbleViewBotChatButtonTextColor
+                cell.backgroundColor = bubbleViewBotChatButtonBgColor
                 if #available(iOS 8.2, *) {
                     cell.textLabel?.font = UIFont.textFont(ofSize: 16.0, weight: .regular)
-                } else {
-                    // Fallback on earlier versions
                 }
             }
             
