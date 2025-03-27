@@ -183,7 +183,7 @@ extension FeedbackBubbleView : UICollectionViewDelegate, UICollectionViewDataSou
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if arrayOfSmiley.count > 0{
             return  arrayOfSmiley.count
@@ -206,9 +206,17 @@ extension FeedbackBubbleView : UICollectionViewDelegate, UICollectionViewDataSou
             cell.maskV.isHidden = true
             cell.maskV.layer.cornerRadius = 2.0
             cell.maskV.clipsToBounds = true
+            cell.maskV.alpha = 1.0
             if feedBackTemplateSelectedValue == elements.value ?? ""{
                 cell.maskV.isHidden = false
-                cell.nameLbl.textColor = UIColor.init(hexString: "#D27588")
+                cell.maskV.alpha = 0.4
+                if indexPath.row == 0{
+                    cell.nameLbl.textColor = UIColor.init(hexString: "#16A34A")
+                    cell.maskV.backgroundColor = UIColor.init(hexString: "#aaf0c4")
+                }else{
+                    cell.nameLbl.textColor = UIColor.init(hexString: "#D27588")
+                    cell.maskV.backgroundColor = UIColor.init(hexString: "#D27588")
+                }
             }
             return cell
         }else{
@@ -256,7 +264,7 @@ extension FeedbackBubbleView : UICollectionViewDelegate, UICollectionViewDataSou
             if text != nil {
                 textWidth = Int(size!.width)
             }
-            width = textWidth + 20
+            width = textWidth + 15
             height = 50
         }
         return CGSize(width: width , height: height)

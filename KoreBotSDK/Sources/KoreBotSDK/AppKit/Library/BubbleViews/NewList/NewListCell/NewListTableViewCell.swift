@@ -22,7 +22,15 @@ class NewListTableViewCell: UITableViewCell {
         super.awakeFromNib()
         bgView.layer.cornerRadius = 10
         bgView.layer.borderWidth = 1
-        bgView.layer.borderColor = UIColor.lightGray.cgColor
+        bgView.layer.borderColor = BubbleViewLeftTint.cgColor
+        
+        titleLabel.textColor = BubbleViewBotChatTextColor
+        subTitleLabel.textColor = BubbleViewBotChatTextColor
+        priceLbl.textColor = UIColor.init(hexString: "#16A34A")
+        
+//        titleLabel.font =  UIFont(name: semiBoldCustomFont, size: 14.0)
+//        subTitleLabel.font = UIFont(name: regularCustomFont, size: 12.0)
+//        priceLbl.font = UIFont(name: semiBoldCustomFont, size: 14.0)
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

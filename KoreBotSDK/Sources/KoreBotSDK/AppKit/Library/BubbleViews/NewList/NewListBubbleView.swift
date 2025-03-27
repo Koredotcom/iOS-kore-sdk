@@ -221,11 +221,11 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.selectionStyle = .none
         cell.bgView.backgroundColor = .white
         let elements = arrayOfComponents[indexPath.row]
-        if elements.imageURL == nil{
+        if elements.image_url == nil{
             cell.imageViewWidthConstraint.constant = 0.0
         }else{
             cell.imageViewWidthConstraint.constant = 50.0
-            if let urlstr = elements.imageURL, let url = URL(string: urlstr){
+            if let urlstr = elements.image_url, let url = URL(string: urlstr){
                 cell.imgView.af.setImage(withURL: url, placeholderImage:  UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil))
             }else{
                 cell.imgView.image = UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil)
@@ -236,7 +236,7 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.titleLabel.text = elements.title
         cell.subTitleLabel.text = elements.subtitle
         cell.priceLbl.text = elements.value
-        cell.bgView.layer.borderWidth = 0.0
+        cell.bgView.layer.borderWidth = 1.0
         return cell
         
     }

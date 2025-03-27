@@ -127,7 +127,7 @@ class StackedCarouselBubbleView: BubbleView {
     
     //MARK: View height calculation
     override var intrinsicContentSize : CGSize {
-        let withOutBtnsHeight = 250.0
+        let withOutBtnsHeight = 230.0 //250
         return CGSize(width: 0.0, height: withOutBtnsHeight + btnsHeight)
     }
     
@@ -140,7 +140,7 @@ extension StackedCarouselBubbleView : UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrayOfCarousels.count*xLoop
+        return arrayOfCarousels.count //*xLoop
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -148,7 +148,7 @@ extension StackedCarouselBubbleView : UICollectionViewDelegate, UICollectionView
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! StackedCarouselCell
         cell.layer.cornerRadius = 5.0
         cell.layer.borderWidth = 0.5
-        cell.layer.borderColor = UIColor.lightGray.cgColor
+        cell.layer.borderColor = BubbleViewLeftTint.cgColor
         cell.clipsToBounds = true
         let arrayIndex = arrayIndexForRow(indexPath.row)
         let elements = arrayOfCarousels[arrayIndex]
@@ -164,7 +164,13 @@ extension StackedCarouselBubbleView : UICollectionViewDelegate, UICollectionView
         cell.descLbl.textColor = BubbleViewBotChatTextColor
         cell.bottomTitleLbl.textColor = BubbleViewBotChatTextColor
         cell.bottomDescLbl.textColor = BubbleViewBotChatTextColor
-
+        if let urlstr = elements.topSection?.image_url, let url = URL(string: urlstr){
+            cell.imageVHeightConstraint.constant = 90.0
+            cell.imagV.af.setImage(withURL: url, placeholderImage:  UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil))
+        }else{
+            //cell.imageVHeightConstraint.constant = 45.0
+            //cell.imagV.image = nil
+        }
         return cell
     }
     func arrayIndexForRow(_ row : Int)-> Int {
@@ -174,7 +180,7 @@ extension StackedCarouselBubbleView : UICollectionViewDelegate, UICollectionView
         
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 5.0, left: 15.0, bottom: 5.0, right: 5.0)
+        return UIEdgeInsets(top: 5.0, left: 15.0, bottom: 5.0, right: 15.0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

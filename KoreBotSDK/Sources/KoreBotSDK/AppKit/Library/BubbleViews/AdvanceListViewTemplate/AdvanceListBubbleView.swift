@@ -430,24 +430,24 @@ extension AdvanceListBubbleView: UITableViewDelegate, UITableViewDataSource{
                     let radio_check = UIImage(named: "check", in: bundle, compatibleWith: nil)
                     let tintedradio_checkImage = radio_check?.withRenderingMode(.alwaysTemplate)
                     cell.checkBtn.setImage(tintedradio_checkImage, for: .normal)
-                    cell.checkBtn.tintColor = .blue
+                    cell.checkBtn.tintColor = themeColor
                 }else{
                     let radio_check = UIImage(named: "uncheck", in: bundle, compatibleWith: nil)
                     let tintedradio_checkImage = radio_check?.withRenderingMode(.alwaysTemplate)
                     cell.checkBtn.setImage(tintedradio_checkImage, for: .normal)
-                    cell.checkBtn.tintColor = .lightGray
+                    cell.checkBtn.tintColor = themeColor
                 }
             }else{
                 if checkboxIndexPath.contains(indexPath) {
                     let radio_check = UIImage(named: "radio_check", in: bundle, compatibleWith: nil)
                     let tintedradio_checkImage = radio_check?.withRenderingMode(.alwaysTemplate)
                     cell.checkBtn.setImage(tintedradio_checkImage, for: .normal)
-                    cell.checkBtn.tintColor = .blue
+                    cell.checkBtn.tintColor = themeColor
                 }else{
                     let radio_check = UIImage(named: "radio_uncheck", in: bundle, compatibleWith: nil)
                     let tintedradio_checkImage = radio_check?.withRenderingMode(.alwaysTemplate)
                     cell.checkBtn.setImage(tintedradio_checkImage, for: .normal)
-                    cell.checkBtn.tintColor = .lightGray
+                    cell.checkBtn.tintColor = themeColor
                 }
             }
             return cell
@@ -847,12 +847,12 @@ extension AdvanceListBubbleView: UITableViewDelegate, UITableViewDataSource{
                          headerView.btn.setTitle(options.title, for: .normal)
                          let btnStyles = options.buttonStyles
                          headerView.btn.backgroundColor = UIColor(hexString: btnStyles?.bground ?? "#eaf1fe")
-                         headerView.btn.setTitleColor(UIColor(hexString: btnStyles?.color ?? "#10f4f4"), for: .normal)
+                         headerView.btn.setTitleColor(UIColor(hexString: btnStyles?.color ?? btnBgActiveColor), for: .normal)
                          headerView.btn.addTarget(self, action: #selector(self.headerOptionsBtnAction(_:)), for: .touchUpInside)
                          headerView.btn.layer.borderWidth = 0.0
                          if (btnStyles?.btnBorder) != nil{
                              headerView.btn.layer.borderWidth = 1.0
-                             headerView.btn.layer.borderColor = UIColor(hexString: btnStyles?.color ?? "#10f4f4").cgColor
+                             headerView.btn.layer.borderColor = UIColor(hexString: btnStyles?.color ?? btnBgActiveColor).cgColor
                              headerView.btn.clipsToBounds = true
                          }
                          headerView.btn.tag = section
@@ -998,13 +998,13 @@ extension AdvanceListBubbleView: UICollectionViewDelegate, UICollectionViewDataS
                 cell.layer.borderWidth = 1.5
                 cell.layer.cornerRadius = 5
                 if indexPath.item == 0{
-                    cell.textlabel.textColor = UIColor.white
-                    cell.layer.borderColor = UIColor.blue.cgColor
-                    cell.backgroundColor = UIColor.blue
+                    cell.textlabel.textColor = UIColor.init(hexString: btnActiveTextColor)
+                    cell.layer.borderColor = UIColor.init(hexString: btnBgActiveColor).cgColor
+                    cell.backgroundColor = UIColor.init(hexString: btnBgActiveColor)
                 }else{
-                    cell.textlabel.textColor = UIColor.lightGray
-                    cell.layer.borderColor = UIColor.lightGray.cgColor
-                    cell.backgroundColor = .white
+                    cell.textlabel.textColor = BubbleViewBotChatTextColor
+                    cell.layer.borderColor = UIColor.init(hexString: btnBgActiveColor).cgColor
+                    cell.backgroundColor = .clear
                 }
                 
                 cell.imagvWidthConstraint.constant = 0.0

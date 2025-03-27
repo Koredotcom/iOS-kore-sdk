@@ -245,9 +245,13 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
             cell.imgVLeadingConstraint.constant = 0.0
         }
         if checkboxIndexPath.contains(indexPath) {
-            cell.checkImage.image = UIImage(named: "check", in: bundle, compatibleWith: nil)
+            let imgV = UIImage.init(named: "check", in: bundle, compatibleWith: nil)
+            cell.checkImage.image = imgV?.withRenderingMode(.alwaysTemplate)
+            cell.checkImage.tintColor = themeColor
         }else{
-             cell.checkImage.image = UIImage(named: "uncheck", in: bundle, compatibleWith: nil)
+            let imgV = UIImage.init(named: "uncheck", in: bundle, compatibleWith: nil)
+            cell.checkImage.image = imgV?.withRenderingMode(.alwaysTemplate)
+            cell.checkImage.tintColor = themeColor
         }
         return cell
         
@@ -315,9 +319,15 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
         headerSubView.headerCheckBtn.tag = section
         
         if arrayOfHeaderCheck[section] == "Check" {
-            headerSubView.headerCheckBtn.setImage(UIImage(named: "check", in: bundle, compatibleWith: nil), for: .normal)
+            let menuImage = UIImage(named: "check", in: bundle, compatibleWith: nil)
+            let tintedMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
+            headerSubView.headerCheckBtn.setImage(tintedMenuImage, for: .normal)
+            headerSubView.headerCheckBtn.tintColor = themeColor
         }else{
-            headerSubView.headerCheckBtn.setImage(UIImage(named: "uncheck", in: bundle, compatibleWith: nil), for: .normal)
+            let menuImage = UIImage(named: "uncheck", in: bundle, compatibleWith: nil)
+            let tintedMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
+            headerSubView.headerCheckBtn.setImage(tintedMenuImage, for: .normal)
+            headerSubView.headerCheckBtn.tintColor = themeColor
         }
         
         let views: [String: UIView] = ["headerSubView": headerSubView]

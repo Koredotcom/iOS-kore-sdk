@@ -507,10 +507,12 @@ open class KABotClient: NSObject {
                             if let value = dictionary["table_design"] as? String {
                                 tabledesign = value
                             }
-                            
-                            if !isShowQuickRepliesBottom{
-                                if templateType == "quick_replies"{
+                            if templateType == "quick_replies"{
+                                if !isShowQuickRepliesBottom{
                                     templateType = "quick_replies_top"
+                                }
+                                if let stackedBtns = dictionary["stackedButtons"] as? Bool, !stackedBtns{
+                                    quickRepliesIsHorizontal = true
                                 }
                             }
                             if templateType == "feedbackTemplate"{

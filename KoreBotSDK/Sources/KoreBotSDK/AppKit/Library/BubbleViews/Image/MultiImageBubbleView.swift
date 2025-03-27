@@ -230,6 +230,14 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
         if ((self.didSelectComponentAtIndex) != nil) {
             self.didSelectComponentAtIndex((indexPath as NSIndexPath).row)
         }
+        
+        if  imageDataDic["type"] as? String != "video" {
+            if let imageurlStr = imageDataDic["url"] as? String{
+                if !imageurlStr.contains(".gif"){
+                    print(imageurlStr)
+                }
+            }
+        }
     }
     
     /// MARK: UICollectionViewDelegateFlowLayout

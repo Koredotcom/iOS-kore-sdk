@@ -65,7 +65,7 @@ class ListBubbleView: BubbleView {
                     let subtitle: String = dictionary["subtitle"] != nil ? dictionary["subtitle"] as! String : ""
                     let imageUrl: String = dictionary["image_url"] != nil ? dictionary["image_url"] as! String : ""
                     
-                    let option: KREOption = KREOption(title: title, subTitle: subtitle, imageURL: imageUrl, optionType: .list)
+                    let option: KREOption = KREOption(title: title, subTitle: subtitle, imageURL: imageUrl, optionType: .list, buttonBgColor: btnBgActiveColor, buttonTextColor: btnActiveTextColor)
                     if let defaultAction = dictionary["default_action"] as? [String: Any],
                         let action = Utilities.getKREActionFromDictionary(dictionary: defaultAction) {
                         option.setDefaultAction(action: action)
@@ -83,7 +83,7 @@ class ListBubbleView: BubbleView {
                     if let buttons = jsonObject["buttons"] as? Array<[String: Any]>, let buttonElement = buttons.first {
                         let title: String = buttonElement["title"] != nil ? buttonElement["title"] as! String : ""
                         
-                        let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button)
+                        let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button, buttonBgColor: btnBgActiveColor, buttonTextColor: btnActiveTextColor)
                         if let action = Utilities.getKREActionFromDictionary(dictionary: buttonElement) {
                             option.setDefaultAction(action: action)
                         }

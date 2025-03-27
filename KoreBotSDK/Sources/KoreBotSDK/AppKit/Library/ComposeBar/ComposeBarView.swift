@@ -187,7 +187,7 @@ class ComposeBarView: UIView {
         var footerIconColor = "#000000"
         
         if useColorPaletteOnly == true{
-            footerIconColor =  genaralPrimaryColor
+            //footerIconColor =  genaralPrimaryColor
             self.backgroundColor = UIColor.init(hexString: genaralSecondaryColor)
             self.growingTextView.layer.borderColor = UIColor.init(hexString: genaralPrimaryColor).cgColor
         }else{

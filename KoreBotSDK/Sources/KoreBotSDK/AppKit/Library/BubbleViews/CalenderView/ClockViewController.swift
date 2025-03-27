@@ -34,6 +34,16 @@ class ClockViewController: UIViewController {
         confirmButton.backgroundColor = themeColor
         timePicker.addTarget(self, action: #selector(ClockViewController.timePickerChanged(timePicker:)), for: UIControl.Event.valueChanged)
         getTime(timePicker: timePicker)
+        
+        confirmButton.backgroundColor = UIColor.init(hexString: btnBgActiveColor)
+        confirmButton.setTitleColor(UIColor.init(hexString: btnActiveTextColor), for: .normal)
+        confirmButton.setTitle("Confirm", for: .normal)
+        confirmButton.layer.cornerRadius = 5.0
+        confirmButton.clipsToBounds = true
+        
+        if #available(iOS 11.0, *) {
+            self.bgView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
+        }
     }
     @objc func timePickerChanged(timePicker:UIDatePicker){
         getTime(timePicker: timePicker)

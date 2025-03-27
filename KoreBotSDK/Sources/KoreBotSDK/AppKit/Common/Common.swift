@@ -74,7 +74,7 @@ var headerTxt = SDKConfiguration.botConfig.chatBotName
 
 var arrayOfViews = [BubbleView?]()
 var arrayOfTemplateTypes = [String]()
-
+var quickRepliesIsHorizontal = false
 var feedBackTemplateSelectedValue = ""
 var isShowQuickRepliesBottom = true
 var arrayOfSelectedBtnIndex:NSMutableArray = NSMutableArray()

@@ -48,8 +48,8 @@ class CalenderViewController: UIViewController {
     var endDateString : String?
     let dateFormatter = DateFormatter()
     var compareEndDate : String?
-    let bundle = Bundle.sdkModule
-    var isStartDateComing = false
+    let bundle = Bundle(for: CalenderViewController.self)
+      var isStartDateComing = false
     
     // MARK: init
        init(dataString: String, chatId: String, kreMessage: KREMessage) {
@@ -75,10 +75,11 @@ class CalenderViewController: UIViewController {
         fromDateRangeLabel.font = UIFont(name: boldCustomFont, size: 14.0)
         toDateRangeLabel.font = UIFont(name: boldCustomFont, size: 14.0)
         
-        headingLabel.textColor =  BubbleViewBotChatTextColor
-        confirmButton.backgroundColor = themeColor
-       
-        confirmButton.setTitleColor(UIColor.white, for: .normal)
+        confirmButton.backgroundColor = UIColor.init(hexString: btnBgActiveColor)
+        confirmButton.setTitleColor(UIColor.init(hexString: btnActiveTextColor), for: .normal)
+        confirmButton.setTitle("Confirm", for: .normal)
+        confirmButton.layer.cornerRadius = 5.0
+        confirmButton.clipsToBounds = true
         if #available(iOS 14, *) {
             datePicker.preferredDatePickerStyle = .wheels
             datePicker.backgroundColor = .white
@@ -100,7 +101,6 @@ class CalenderViewController: UIViewController {
     }
 
     @IBAction func clickOnCloseButton(_ sender: Any) {
-        calenderCloseTag = true
          self.dismiss(animated: true, completion: nil)
     }
     func getData(){
@@ -136,10 +136,10 @@ class CalenderViewController: UIViewController {
         let dateFormatterGet = DateFormatter()
         dateFormatterGet.dateFormat = formte
         let fromDate: NSDate? = dateFormatterGet.date(from: startdateString!) as NSDate?
-        let startDateNew = (dateFormatterGet.string(from: fromDate as? Date ?? Date()))
+        let startDateNew = (dateFormatterGet.string(from: fromDate! as Date))
         print(startDateNew)
         let toDate: NSDate? = dateFormatterGet.date(from: endDateString!) as NSDate?
-        let toDateNew = (dateFormatterGet.string(from: toDate as? Date ?? Date()))
+        let toDateNew = (dateFormatterGet.string(from: toDate! as Date))
         print(toDateNew)
         
         
@@ -244,6 +244,7 @@ class CalenderViewController: UIViewController {
         }
         
         datePicker.maximumDate = Calendar.current.date(byAdding: .year, value: 0, to: maximumDate)
+//        datePicker.setDate(Date(), animated: true)
         selectDate(datePicker: datePicker)
     }
     
@@ -262,6 +263,7 @@ class CalenderViewController: UIViewController {
     @IBAction func clickConfirmBtn(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
         if templateType == "daterange" {
+            //let selectedDates = ("\(selectedFromDate!) to \(selectedToDate!)")
             var changeFromDateformat = formattedDateFromString(dateString: selectedFromDate!, withFormat: formte!)
             var changeToDateformat = formattedDateFromString(dateString: selectedToDate!, withFormat: formte!)
             
@@ -407,6 +409,18 @@ extension Date {
     func month() -> String? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM"
+        return dateFormatter.string(from: self).capitalized
+    }
+    
+    func hour() -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH"
+        return dateFormatter.string(from: self).capitalized
+    }
+    
+    func minutes() -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "mm"
         return dateFormatter.string(from: self).capitalized
     }
     

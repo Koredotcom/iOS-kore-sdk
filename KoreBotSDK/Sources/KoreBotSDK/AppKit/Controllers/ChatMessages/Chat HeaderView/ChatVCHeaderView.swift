@@ -119,7 +119,7 @@ class ChatVCHeaderView: UIView {
         let iconUrl  = headerDic.icon?.icon_url
         var headerIconColor = "#000000"
         if useColorPaletteOnly{
-            headerIconColor = genaralPrimaryColor
+            //headerIconColor = genaralPrimaryColor
             titleTxtColor = genaralPrimary_textColor
             subTitleTxtColor = genaralPrimary_textColor
         }else{

@@ -116,6 +116,7 @@ public class ComponentElements: NSObject, Decodable {
     public var title: String?
     public var value: String?
     public var imageURL: String?
+    public var image_url: String?
     public var action: ComponentItemAction?
     
     public var topSection: AllSections?
@@ -136,6 +137,7 @@ public class ComponentElements: NSObject, Decodable {
         case title = "title"
         case value = "value"
         case imageURL = "imageURL"
+        case image_url = "image_url"
         case action = "default_action"
         
         case topSection = "topSection"
@@ -170,6 +172,7 @@ public class ComponentElements: NSObject, Decodable {
             value = valueString
         }
         imageURL = try? container.decode(String.self, forKey: .imageURL)
+        image_url = try? container.decode(String.self, forKey: .image_url)
         action = try? container.decode(ComponentItemAction.self, forKey: .action)
         topSection = try? container.decode(AllSections.self, forKey: .topSection)
         middleSection = try? container.decode(AllSections.self, forKey: .middleSection)
@@ -189,10 +192,12 @@ public class ComponentElements: NSObject, Decodable {
 public class AllSections: NSObject, Decodable {
     public var title: String?
     public var descrip: String?
+    public var image_url: String?
     
     enum ColorCodeKeys: String, CodingKey {
         case title = "title"
         case descrip = "description"
+        case image_url = "image_url"
     }
     
     // MARK: - init
@@ -204,6 +209,7 @@ public class AllSections: NSObject, Decodable {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
         title = try? container.decode(String.self, forKey: .title)
         descrip = try? container.decode(String.self, forKey: .descrip)
+        image_url = try? container.decode(String.self, forKey: .image_url)
     }
 }
 

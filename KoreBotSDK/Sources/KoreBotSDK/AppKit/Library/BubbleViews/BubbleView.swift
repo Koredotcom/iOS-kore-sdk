@@ -82,7 +82,6 @@ open class BubbleView: UIView {
                 break
             case .image, .video:
                 //.sdkModule
-                //bubbleView = Bundle.main.loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as? BubbleView
                 bubbleView = Bundle.sdkModule.loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as? BubbleView
                 break
             case .audio:

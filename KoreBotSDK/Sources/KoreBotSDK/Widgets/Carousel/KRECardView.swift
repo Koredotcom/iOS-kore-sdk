@@ -24,13 +24,15 @@ open class KRECardInfo: NSObject {
     open var defaultAction: KREAction?
     public var payload: [String: Any]?
     public var isImagePresent: Bool = true
+    var titleTextColor = UIColor.black
+    var urlTextColor = UIColor.black
     
     // MARK:- init
     public override init() {
         super.init()
     }
     
-    public init(title: String, subTitle: String, imageURL: String) {
+    public init(title: String, subTitle: String, imageURL: String, titleTextColor: UIColor, urlTextColor: UIColor) {
         super.init()
         self.title = title
         self.subTitle = subTitle
@@ -38,6 +40,8 @@ open class KRECardInfo: NSObject {
         if imageURL == "" || imageURL == nil {
             isImagePresent = false
         }
+        self.titleTextColor = titleTextColor
+        self.urlTextColor = urlTextColor
     }
     
     public func setOptionData(title: String, subTitle: String, imageURL: String) {
@@ -264,17 +268,28 @@ public class KRECardView: UIView, UIGestureRecognizerDelegate {
     static func getAttributedString(cardInfo: KRECardInfo) -> NSMutableAttributedString {
         let title = cardInfo.title ?? ""
         let subtitle = cardInfo.subTitle ?? ""
+        var urlTxt = ""
         
+        if let urlString = cardInfo.defaultAction?.payload{
+            urlTxt = urlString
+        }
+
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 0.25 * 16.0
-        let myAttributes = [NSAttributedString.Key.foregroundColor:UIColor(hex: 0x484848),
+        let myAttributes = [NSAttributedString.Key.foregroundColor:cardInfo.titleTextColor,
                             NSAttributedString.Key.font: UIFont.textFont(ofSize: 16.0, weight: .regular),
                             NSAttributedString.Key.paragraphStyle:paragraphStyle]
         let mutableAttrString = NSMutableAttributedString(string: title, attributes: myAttributes)
-        let myAttributes2 = [NSAttributedString.Key.foregroundColor:UIColor(hex: 0x777777),
+        let myAttributes2 = [NSAttributedString.Key.foregroundColor:cardInfo.titleTextColor,
                              NSAttributedString.Key.font: UIFont.textFont(ofSize: 15.0, weight: .regular)]
         let mutableAttrString2 = NSMutableAttributedString(string: "\n\(subtitle)", attributes: myAttributes2)
         mutableAttrString.append(mutableAttrString2)
+        if urlTxt != ""{
+            let myAttributes3 = [NSAttributedString.Key.foregroundColor:cardInfo.urlTextColor,
+                                 NSAttributedString.Key.font: UIFont.textFont(ofSize: 15.0, weight: .regular)]
+            let mutableAttrString3 = NSMutableAttributedString(string: "\n\(urlTxt)", attributes: myAttributes3)
+            mutableAttrString.append(mutableAttrString3)
+        }
         return mutableAttrString
     }
     

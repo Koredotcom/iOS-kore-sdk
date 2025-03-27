@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -30,7 +30,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vr6-ox-KhF">
-                    <rect key="frame" x="0.0" y="287" width="375" height="380"/>
+                    <rect key="frame" x="0.0" y="257" width="375" height="410"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please Choose" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="d7D-op-D68">
                             <rect key="frame" x="10" y="10" width="312" height="21"/>
@@ -53,7 +53,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z9n-P1-rU7">
-                            <rect key="frame" x="0.0" y="340" width="375" height="40"/>
+                            <rect key="frame" x="15" y="340" width="345" height="40"/>
                             <color key="backgroundColor" systemColor="systemBlueColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="46V-QM-VWP"/>
@@ -106,14 +106,14 @@
                         <constraint firstItem="gVw-VT-xdx" firstAttribute="top" secondItem="vr6-ox-KhF" secondAttribute="top" id="5ph-Bi-dtl"/>
                         <constraint firstItem="gVw-VT-xdx" firstAttribute="leading" secondItem="d7D-op-D68" secondAttribute="trailing" constant="8" id="Hsw-Th-GEX"/>
                         <constraint firstItem="Z9n-P1-rU7" firstAttribute="top" secondItem="E1b-nh-Gbm" secondAttribute="bottom" constant="6" id="IOY-YI-p7x"/>
-                        <constraint firstAttribute="trailing" secondItem="Z9n-P1-rU7" secondAttribute="trailing" id="LyB-AB-i1o"/>
-                        <constraint firstItem="Z9n-P1-rU7" firstAttribute="leading" secondItem="vr6-ox-KhF" secondAttribute="leading" id="Qbd-Xq-0pD"/>
+                        <constraint firstAttribute="trailing" secondItem="Z9n-P1-rU7" secondAttribute="trailing" constant="15" id="LyB-AB-i1o"/>
+                        <constraint firstItem="Z9n-P1-rU7" firstAttribute="leading" secondItem="vr6-ox-KhF" secondAttribute="leading" constant="15" id="Qbd-Xq-0pD"/>
                         <constraint firstAttribute="trailing" secondItem="E1b-nh-Gbm" secondAttribute="trailing" id="QpU-t2-nfW"/>
                         <constraint firstItem="d7D-op-D68" firstAttribute="top" secondItem="vr6-ox-KhF" secondAttribute="top" constant="10" id="YGL-Rb-LkZ"/>
                         <constraint firstItem="E1b-nh-Gbm" firstAttribute="leading" secondItem="vr6-ox-KhF" secondAttribute="leading" id="Z92-zo-19i"/>
                         <constraint firstItem="d7D-op-D68" firstAttribute="leading" secondItem="vr6-ox-KhF" secondAttribute="leading" constant="10" id="bn2-FG-An4"/>
-                        <constraint firstAttribute="bottom" secondItem="Z9n-P1-rU7" secondAttribute="bottom" id="h8A-wQ-9dB"/>
-                        <constraint firstAttribute="height" constant="380" id="kNx-NO-6tG"/>
+                        <constraint firstAttribute="bottom" secondItem="Z9n-P1-rU7" secondAttribute="bottom" constant="30" id="h8A-wQ-9dB"/>
+                        <constraint firstAttribute="height" constant="410" id="kNx-NO-6tG"/>
                         <constraint firstItem="E1b-nh-Gbm" firstAttribute="top" secondItem="0NZ-Ic-3sx" secondAttribute="bottom" constant="13" id="lAk-Yt-bwQ"/>
                         <constraint firstItem="0NZ-Ic-3sx" firstAttribute="top" secondItem="d7D-op-D68" secondAttribute="bottom" constant="10" id="m6v-b5-PxV"/>
                         <constraint firstAttribute="trailing" secondItem="0NZ-Ic-3sx" secondAttribute="trailing" id="nMi-W4-cVx"/>
@@ -126,7 +126,7 @@
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.29916028911564624" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="vr6-ox-KhF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="6hA-dN-07j"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="vr6-ox-KhF" secondAttribute="bottom" id="CKK-RW-JlN"/>
+                <constraint firstItem="vr6-ox-KhF" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="Rhm-P4-WE8"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="vr6-ox-KhF" secondAttribute="trailing" id="bST-UC-f0d"/>
             </constraints>
             <point key="canvasLocation" x="-47" y="20"/>
@@ -135,7 +135,7 @@
     <resources>
         <image name="XButtonGray20" width="20" height="20"/>
         <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

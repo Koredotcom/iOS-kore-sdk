@@ -14,17 +14,17 @@ extension UIFont {
         let _ = KREFontLoader.shared
         switch weight {
         case .regular:
-            font = UIFont(name: "Lato-Regular", size: fontSize)
+            font = UIFont(name: regularCustomFont, size: fontSize)
         case .medium:
-            font = UIFont(name: "Lato-Medium", size: fontSize)
+            font = UIFont(name: mediumCustomFont, size: fontSize)
         case .bold:
-            font = UIFont(name: "Lato-Bold", size: fontSize)
+            font = UIFont(name: boldCustomFont, size: fontSize)
         case .semibold:
-            font = UIFont(name: "Lato-Semibold", size: fontSize)
+            font = UIFont(name: semiBoldCustomFont, size: fontSize)
         case .heavy:
-            font = UIFont(name: "Lato-Heavy", size: fontSize)
+            font = UIFont(name: boldCustomFont, size: fontSize)
         default:
-            font = UIFont(name: "Lato-Regular", size: fontSize)
+            font = UIFont(name: regularCustomFont, size: fontSize)
         }
         
         return font ?? UIFont.systemFont(ofSize: fontSize, weight: weight)
@@ -32,7 +32,7 @@ extension UIFont {
     
     @objc public class func textItalicFont(ofSize fontSize: CGFloat) -> UIFont {
         let _ = KREFontLoader.shared
-        let font = UIFont(name: "Lato-Italic", size: fontSize)
+        let font = UIFont(name: italicCustomFont, size: fontSize)
         return font ?? UIFont.italicSystemFont(ofSize: fontSize)
     }
 

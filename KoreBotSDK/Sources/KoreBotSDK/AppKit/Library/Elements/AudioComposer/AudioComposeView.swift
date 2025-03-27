@@ -183,7 +183,7 @@ class AudioComposeView: UIView {
         let bgColor = footerDic.bg_color
         if useColorPaletteOnly == true{
             self.backgroundColor = UIColor.init(hexString: genaralSecondaryColor)
-            footerIconColor =  genaralPrimaryColor
+            //footerIconColor =  genaralPrimaryColor
         }else{
             self.backgroundColor = UIColor.init(hexString: bgColor ?? "#EEF2F6")
             footerIconColor =  footerDic.icons_color ?? "#000000"

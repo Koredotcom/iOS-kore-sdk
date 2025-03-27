@@ -18,7 +18,7 @@ open class KRETypingStatusView: UIView {
         typingImageView.contentMode = .scaleAspectFill
         typingImageView.translatesAutoresizingMaskIntoConstraints = false
         typingImageView.clipsToBounds = true
-        typingImageView.layer.cornerRadius = 15.0
+        //typingImageView.layer.cornerRadius = 15.0
         return typingImageView
     }()
     var dancingDots: KRETypingActivityIndicator = {

@@ -16,7 +16,7 @@ class InLineFormBubbleView: BubbleView {
     
     var tableView: UITableView!
     fileprivate let cellIdentifier = "InlineFormTableViewCell"
-    var footerButtonTitle:NSString?
+    var footerButtonTitle:String?
     
     var headingLabel: KREAttributedLabel!
     var textfeilds: Array<Dictionary<String, Any>> = []
@@ -28,7 +28,7 @@ class InLineFormBubbleView: BubbleView {
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
     NSAttributedString.Key.font : UIFont(name: mediumCustomFont, size: 15.0) as Any,
-    NSAttributedString.Key.foregroundColor : UIColor.lightGray]
+    NSAttributedString.Key.foregroundColor : UIColor(hexString: btnActiveTextColor)]
     var arrayOfTextFieldsText = NSMutableArray()
     
     override func prepareForReuse() {
@@ -82,7 +82,8 @@ class InLineFormBubbleView: BubbleView {
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
-                textfeilds = jsonObject["formFields"] != nil ? jsonObject["formFields"] as! Array<Dictionary<String, Any>> : []
+                 let formFields = jsonObject["formFields"] != nil ? jsonObject["formFields"] as! Array<Dictionary<String, Any>> : []
+                textfeilds = formFields
                 arrayOfTextFieldsText = []
                 for _ in 0..<textfeilds.count{
                     arrayOfTextFieldsText.add("")
@@ -96,11 +97,17 @@ class InLineFormBubbleView: BubbleView {
                     headerText = String(headerText[..<headerText.index(headerText.startIndex, offsetBy: InLineFormBubbleView.headerTextLimit)]) + "..."
                 }
                 self.headingLabel.setHTMLString(headerText, withWidth: BubbleViewMaxWidth - 20)
-                if jsonObject["fieldButton"] != nil {
-                    let btnTitle = (jsonObject["fieldButton"] as AnyObject).object(forKey: "title") != nil ? ((jsonObject["fieldButton"] as AnyObject).object(forKey: "title") as! String) : ""
-                    footerButtonTitle = btnTitle as NSString
+                if  formFields.count > 0{
+                    let fieldBtns = formFields[0]
+                    if let feildBtn = fieldBtns["fieldButton"] as? [String: Any] {
+                        if let btnTitle = feildBtn["title"] as? String{
+                            footerButtonTitle = btnTitle
+                        }
+                        
+                    }
                 }
                 
+                tableView.reloadData()
             }
         }
     }
@@ -196,7 +203,7 @@ extension InLineFormBubbleView: UITableViewDelegate,UITableViewDataSource{
         let title: String = dictionary["label"] != nil ? dictionary["label"] as! String : ""
         let placeHolder: String = dictionary["placeholder"] != nil ? dictionary["placeholder"] as! String : ""
         let formFeildType: String = dictionary["type"] != nil ? dictionary["type"] as! String : ""
-        cell.tiltLbl.text = "\(title) :"
+        cell.tiltLbl.text = "\(title)"
         cell.textFeildName.placeholder = placeHolder
         
         cell.tiltLbl .textColor = BubbleViewBotChatTextColor
@@ -213,10 +220,10 @@ extension InLineFormBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.textFeildName.tag = indexPath.row
         cell.textFeildName.translatesAutoresizingMaskIntoConstraints = false
         let attributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.clear,
+            NSAttributedString.Key.foregroundColor: UIColor.lightGray,
             NSAttributedString.Key.font : UIFont(name: mediumCustomFont, size: 15) ?? UIFont.systemFont(ofSize: 15)
         ]
-        cell.textFeildName.attributedPlaceholder = NSAttributedString(string: "", attributes:attributes)
+        cell.textFeildName.attributedPlaceholder = NSAttributedString(string: placeHolder, attributes:attributes)
         return cell
         
     }
@@ -227,7 +234,7 @@ extension InLineFormBubbleView: UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let view = UIView()
         let sendButton = UIButton(frame: CGRect.zero)
-        sendButton.backgroundColor = BubbleViewRightTint
+        sendButton.backgroundColor = UIColor.init(hexString: btnBgActiveColor)
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.clipsToBounds = true
         sendButton.layer.cornerRadius = 5

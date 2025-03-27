@@ -103,18 +103,23 @@ open class KREOption: NSObject {
     
     var defaultAction:KREAction?
     var buttonAction:KREAction?
+    
+    var buttonBgColor = ""
+    var buttonTextColor = ""
 
     // MARK:- init
     public override init() {
         super.init()
     }
     
-    public init(title: String, subTitle: String, imageURL: String, optionType: KREOptionType) {
+    public init(title: String, subTitle: String, imageURL: String, optionType: KREOptionType, buttonBgColor: String, buttonTextColor: String) {
         super.init()
         self.title = truncateString(title, count: KREOption.titleCharLimit)
         self.subTitle = truncateString(subTitle, count: KREOption.subtitleCharLimit)
         self.imageURL = imageURL
         self.optionType = optionType
+        self.buttonBgColor = buttonBgColor
+        self.buttonTextColor = buttonTextColor
     }
     
     public func setDefaultAction(action: KREAction) {
@@ -219,15 +224,11 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
                 
                 cell.textLabel?.text = option.title
                 cell.textLabel?.textAlignment = .center
-                //cell.textLabel?.textColor = UIColor.lightRoyalBlue
-                //cell.textLabel?.font = UIFont(name: "Gilroy-Regular", size: 16.0)
-                cell.textLabel?.textColor = UIColor.init(hexString: "#1565C0")
-                cell.backgroundColor = UIColor.init(hexString: "#E3F2FD")
+                cell.textLabel?.textColor = UIColor(hexString: option.buttonTextColor)
+                cell.backgroundColor = UIColor(hexString: option.buttonBgColor)
                 if #available(iOS 8.2, *) {
                     //cell.textLabel?.font = UIFont.textFont(ofSize: 14.0, weight: .medium)
-                    cell.textLabel?.font = UIFont(name: "Gilroy-Regular", size: 16.0)
-                } else {
-                    // Fallback on earlier versions
+                    cell.textLabel?.font = UIFont(name: regularCustomFont, size: 16.0)
                 }
             }
             

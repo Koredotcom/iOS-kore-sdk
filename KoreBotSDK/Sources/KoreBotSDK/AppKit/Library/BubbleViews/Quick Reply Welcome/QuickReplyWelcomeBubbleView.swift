@@ -38,7 +38,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
     var showMore = false
     var isQuickReplies  = true
     var isReloadBtnLink = true
-    
+    var isFullWidth = false
     var quickReplyView: KREQuickSelectView!
     
     //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
@@ -204,6 +204,10 @@ class QuickReplyWelcomeBubbleView: BubbleView {
                         arrayOfElements = allItems.quickReplies ?? []
                     }
                     
+                    isFullWidth = false
+                    if let fullWidth = jsonObject["fullWidth"] as? Bool, fullWidth == true{
+                        isFullWidth = true
+                    }
                     self.collectionView.collectionViewLayout.invalidateLayout()
                     self.collectionView.reloadData()
                     
@@ -267,17 +271,24 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
             let elements = arrayOfButtons[indexPath.row]
             cell.textlabel.text = elements.title
         }
-        let bgColor = btnBgActiveColor
-        let textColor = btnActiveTextColor
+        var bgColor = btnBgActiveColor
+        var textColor = btnActiveTextColor
         cell.bgV.backgroundColor = UIColor.init(hexString: bgColor)
-        
+        cell.layer.borderColor =  UIColor.init(hexString: bgColor).cgColor
+        if isFullWidth{
+             bgColor = "#FFFFFF"
+            textColor = genaralPrimary_textColor
+             cell.bgV.backgroundColor = UIColor.init(hexString: bgColor)
+             cell.layer.borderColor =  BubbleViewLeftTint.cgColor
+        }
+       
         cell.textlabel.font = UIFont(name: mediumCustomFont, size: 12.0)
         cell.textlabel.textAlignment = .center
         cell.textlabel.textColor = UIColor.init(hexString: textColor)
         cell.textlabel.numberOfLines = 2
         cell.imagvWidthConstraint.constant = 0.0
         
-        cell.layer.borderColor =  UIColor.init(hexString: bgColor).cgColor
+        
         cell.layer.borderWidth = 1.5
         cell.layer.cornerRadius = 5
         cell.backgroundColor = .clear
@@ -318,7 +329,13 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
         if text != nil {
             textWidth = Int(size!.width)
         }
-        return CGSize(width: min(Int(maxContentWidth()) - 10 , textWidth + 28) , height: 40)
+        
+        if isFullWidth{
+            return CGSize(width: BubbleViewMaxWidth  , height: 40)
+        }else{
+            return CGSize(width: min(Int(maxContentWidth()) - 10 , textWidth + 28) , height: 40)
+        }
+        
     }
     
     func maxContentWidth() -> CGFloat {

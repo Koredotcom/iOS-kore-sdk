@@ -74,7 +74,7 @@ class OptionsBubbleView: BubbleView {
                     let dictionary = buttons[i]
                     let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
                     
-                    let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button)
+                    let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button, buttonBgColor: btnBgActiveColor, buttonTextColor: btnActiveTextColor)
                     if let action = Utilities.getKREActionFromDictionary(dictionary: dictionary) {
                         option.setDefaultAction(action: action)
                     }

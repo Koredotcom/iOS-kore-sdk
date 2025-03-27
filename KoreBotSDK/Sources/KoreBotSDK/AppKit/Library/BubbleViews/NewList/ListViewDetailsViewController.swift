@@ -14,7 +14,7 @@ protocol NewListViewDelegate {
 }
 
 class ListViewDetailsViewController: UIViewController {
-
+    @IBOutlet weak var subView: UIView!
     @IBOutlet weak var headingLebel: UILabel!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var tableview: UITableView!
@@ -37,6 +37,9 @@ class ListViewDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        if #available(iOS 11.0, *) {
+            self.subView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
+        }
         getData()
         self.tableview.tableFooterView = UIView(frame:.zero)
         self.tableview.register(Bundle.xib(named: listCellIdentifier), forCellReuseIdentifier: listCellIdentifier)
@@ -89,11 +92,11 @@ extension ListViewDetailsViewController: UITableViewDelegate,UITableViewDataSour
         cell.selectionStyle = .none
         
         let elements = arrayOfElements[indexPath.row] as ComponentElements
-       if elements.imageURL == nil{
+       if elements.image_url == nil{
             cell.imageViewWidthConstraint.constant = 0.0
         }else{
             cell.imageViewWidthConstraint.constant = 50.0
-            let url = URL(string: elements.imageURL!)
+            let url = URL(string: elements.image_url!)
             cell.imgView.af.setImage(withURL: url!, placeholderImage: UIImage(named: "placeholder_image"))
         }
         cell.titleLabel.text = elements.title

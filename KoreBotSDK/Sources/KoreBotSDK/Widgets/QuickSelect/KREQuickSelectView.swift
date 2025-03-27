@@ -130,7 +130,11 @@ open class KREQuickSelectView: UIView {
     
     override open func layoutSubviews() {
         super.layoutSubviews()
-        
+        if quickRepliesIsHorizontal{
+            collectionView.isScrollEnabled = true
+            flowLayout.scrollDirection = .horizontal
+            collectionView.collectionViewLayout = flowLayout
+        }
         let views = ["collectionView": collectionView, "lineView": lineView]
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[collectionView]|", options: [], metrics: nil, views: views))
        

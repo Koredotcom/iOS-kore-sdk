@@ -86,14 +86,14 @@ class MessageBubbleCell : UITableViewCell {
         self.senderImageView = UIImageView()
         self.senderImageView.contentMode = .scaleAspectFit
         self.senderImageView.clipsToBounds = true
-        self.senderImageView.layer.cornerRadius = 15
+        //self.senderImageView.layer.cornerRadius = 15
         self.senderImageView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(self.senderImageView)
         
         self.userImageView = UIImageView()
         self.userImageView.contentMode = .scaleAspectFit
         self.userImageView.clipsToBounds = true
-        self.userImageView.layer.cornerRadius = 15
+        //self.userImageView.layer.cornerRadius = 15
         self.userImageView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(self.userImageView)
         
@@ -654,16 +654,30 @@ class MultiSelectBubbleCell : MessageBubbleCell {
         return .multiSelect
     }
     
+//    override var tailPosition: BubbleMaskTailPosition {
+//        didSet {
+//            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+//            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+//            
+////            self.bubbleTrailingConstraint.constant = 10
+////            self.bubbleLeadingConstraint.constant = 10
+////            self.senderImageView.isHidden = true
+////            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+//        }
+//    }
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+            self.bubbleLeadingConstraint.constant = defaultSpacing
+            self.bubbleTrailingConstraint.constant = defaultSpacing
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
             
-//            self.bubbleTrailingConstraint.constant = 10
-//            self.bubbleLeadingConstraint.constant = 10
-//            self.senderImageView.isHidden = true
-//            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
         }
+    }
+    
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        self.senderImageView.isHidden = true
     }
 }
 
@@ -795,11 +809,21 @@ class StackedCarosuelCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleLeadingConstraint.constant = bubbleLeadingConstant
-            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+//            self.bubbleLeadingConstraint.constant = bubbleLeadingConstant
+//            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+//            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+
+            self.bubbleLeadingConstraint.constant = defaultSpacing
+            self.bubbleTrailingConstraint.constant = defaultSpacing
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
             
+            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
         }
+        
+    }
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        self.senderImageView.isHidden = true
     }
 }
 class AdvancedMultiCell : MessageBubbleCell {
@@ -826,12 +850,26 @@ class RadioOptionTemplateCell : MessageBubbleCell {
         return .radioOptionTemplate
     }
     
+//    override var tailPosition: BubbleMaskTailPosition {
+//        didSet {
+//            self.bubbleLeadingConstraint.constant = bubbleLeadingConstant
+//            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+//            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+//        }
+//    }
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleLeadingConstraint.constant = bubbleLeadingConstant
-            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+            self.bubbleLeadingConstraint.constant = defaultSpacing
+            self.bubbleTrailingConstraint.constant = defaultSpacing
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            
+            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
         }
+    }
+    
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        self.senderImageView.isHidden = true
     }
 }
 

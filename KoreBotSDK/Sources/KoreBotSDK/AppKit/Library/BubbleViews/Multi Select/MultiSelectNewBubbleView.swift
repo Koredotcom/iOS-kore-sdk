@@ -126,7 +126,8 @@ class MultiSelectNewBubbleView: BubbleView {
             cellHeight = row.bounds.height
             finalHeight += cellHeight
         }
-        return CGSize(width: 0.0, height: 20+finalHeight+40)
+        let footerViewHeight = 50.0
+        return CGSize(width: 0.0, height: 20+finalHeight+footerViewHeight)
     }
     
     @objc fileprivate func SelectAllButtonAction(_ sender: AnyObject!) {
@@ -157,9 +158,13 @@ extension MultiSelectNewBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.titleLabel.text = elements.title
         
         if checkboxIndexPath.contains(indexPath) {
-            cell.checkImage.image =  UIImage(named: "check", in: bundle, compatibleWith: nil)
+            let imgV = UIImage.init(named: "check", in: bundle, compatibleWith: nil)
+            cell.checkImage.image = imgV?.withRenderingMode(.alwaysTemplate)
+            cell.checkImage.tintColor = themeColor
         }else{
-             cell.checkImage.image =  UIImage(named: "uncheck", in: bundle, compatibleWith: nil)
+            let imgV = UIImage.init(named: "uncheck", in: bundle, compatibleWith: nil)
+            cell.checkImage.image = imgV?.withRenderingMode(.alwaysTemplate)
+            cell.checkImage.tintColor = themeColor
         }
         return cell
         
@@ -181,7 +186,7 @@ extension MultiSelectNewBubbleView: UITableViewDelegate,UITableViewDataSource{
         print(arrayOfSeletedValues)
     }
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-           return 40
+           return 50
     }
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let view = UIView()
@@ -190,22 +195,25 @@ extension MultiSelectNewBubbleView: UITableViewDelegate,UITableViewDataSource{
             showMoreButton.translatesAutoresizingMaskIntoConstraints = false
             showMoreButton.clipsToBounds = true
             showMoreButton.layer.cornerRadius = 5
-            showMoreButton.layer.borderColor = UIColor.lightGray.cgColor
+            showMoreButton.layer.borderColor = UIColor.clear.cgColor
             showMoreButton.layer.borderWidth = 1
             showMoreButton.setTitleColor(.blue, for: .normal)
             showMoreButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-            showMoreButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 16.0)
+            showMoreButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 12.0)
             view.addSubview(showMoreButton)
             showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
             showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
             if arrayOfButtons.count>0{
-                let btnTitle: String = arrayOfButtons[0].title!
+                let btnTitle: String = arrayOfButtons[0].title ?? "Done"
                 let attributeString = NSMutableAttributedString(string: btnTitle,
                                                                 attributes: yourAttributes)
-                showMoreButton.setAttributedTitle(attributeString, for: .normal)
+               // showMoreButton.setAttributedTitle(attributeString, for: .normal)
+                showMoreButton.setTitle(btnTitle, for: .normal)
             }
+            showMoreButton.backgroundColor = UIColor(hexString: btnBgActiveColor)
+        showMoreButton.setTitleColor(UIColor(hexString: btnActiveTextColor), for: .normal)
             let views: [String: UIView] = ["showMoreButton": showMoreButton]
-            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[showMoreButton(40)]-0-|", options:[], metrics:nil, views:views))
+            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[showMoreButton(35)]-0-|", options:[], metrics:nil, views:views))
             view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[showMoreButton]-0-|", options:[], metrics:nil, views:views))
         return view
     }

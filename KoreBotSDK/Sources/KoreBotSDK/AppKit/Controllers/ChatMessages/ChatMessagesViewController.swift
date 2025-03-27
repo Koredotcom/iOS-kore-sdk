@@ -127,7 +127,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     var appDisplayName = "Kore Bot SDK"
     var isAppEnterBackground = false
     public var closeAndMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
-    
+    var quickReplyViewLeadingConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var footerStatusBarView: UIView!
 #if SWIFT_PACKAGE
@@ -393,6 +393,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-40-[quickReplyView]-15-|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView]-5-|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
         
+        quickReplyViewLeadingConstraint = NSLayoutConstraint(item:self.quickReplyView as Any, attribute:.leading, relatedBy:.equal, toItem:self.quickSelectContainerView, attribute:.leading, multiplier:1.0, constant:40)
+        self.quickSelectContainerView.addConstraints([quickReplyViewLeadingConstraint])
         self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
             if let text = text, let payload = payload {
                 self?.sendTextMessage(text, options: ["body": payload])
@@ -1539,22 +1541,38 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.closeQuickSelectViewConstraints()
     }
     func updateQuickSelectViewConstraints() {
-        let height = self.quickReplyView.collectionView.collectionViewLayout.collectionViewContentSize.height
-        let maxHeight = height > 198.0 ? 198.0 : height //248.0
-        self.quickReplyView.collectionView.isScrollEnabled = false
-        if  maxHeight >= 198.0{
-            self.quickReplyView.collectionView.isScrollEnabled = true
-        }
-        var quickSelectCollVheight = maxHeight > 60.0 ? maxHeight : 60.0
-        //quickSelectCollVheight += CGFloat(quickReplySuggesstionLblHeight)
-        if self.quickSelectContainerHeightConstraint.constant == quickSelectCollVheight {return}
-        
-        self.quickSelectContainerHeightConstraint.constant = quickSelectCollVheight
-        UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
-            self.view.layoutIfNeeded()
-        }) { (Bool) in
+        if quickRepliesIsHorizontal{
+            DispatchQueue.main.async {
+                self.quickReplyView.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: true)
+                }
+            self.quickReplyViewLeadingConstraint.constant = 0
+            if self.quickSelectContainerHeightConstraint.constant == 60.0 {return}
+            self.quickSelectContainerHeightConstraint.constant = 60.0
+            UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
+                self.view.layoutIfNeeded()
+            }) { (Bool) in
+                
+            }
+        }else{
+            self.quickReplyViewLeadingConstraint.constant = 40
+            let height = self.quickReplyView.collectionView.collectionViewLayout.collectionViewContentSize.height
+            let maxHeight = height > 198.0 ? 198.0 : height //248.0
+            self.quickReplyView.collectionView.isScrollEnabled = false
+            if  maxHeight >= 198.0{
+                self.quickReplyView.collectionView.isScrollEnabled = true
+            }
+            var quickSelectCollVheight = maxHeight > 60.0 ? maxHeight : 60.0
+            //quickSelectCollVheight += CGFloat(quickReplySuggesstionLblHeight)
+            if self.quickSelectContainerHeightConstraint.constant == quickSelectCollVheight {return}
             
+            self.quickSelectContainerHeightConstraint.constant = quickSelectCollVheight
+            UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
+                self.view.layoutIfNeeded()
+            }) { (Bool) in
+                
+            }
         }
+       
     }
     
     func closeQuickSelectViewConstraints() {
@@ -3123,24 +3141,26 @@ extension ChatMessagesViewController{
         
         
         chatWelcomeScreenContainerView.isHidden = true
-        if let welcomeScreenDic = brandingValues.welcome_screen{
-            if let isShowWelcomeScreen = welcomeScreenDic.show, isShowWelcomeScreen == true{
-                self.view.bringSubviewToFront(chatWelcomeScreenContainerView)
-                chatWelcomeScreenContainerView.isHidden = false
-                self.isShowWelcomeScreen = isShowWelcomeScreen
-                 
-                self.welcomeScreenView = WelcomeScreenView()
-                self.welcomeScreenView.viewDelegate = self
-                self.welcomeScreenView.translatesAutoresizingMaskIntoConstraints = false
-                self.welcomeScreenView.configure(with: welcomeScreenDic, generalDic: brandingValues.general)
-                self.welcomeScreenView.backgroundColor = UIColor(hexString: "#F8FAFC")
-                self.chatWelcomeScreenContainerView.addSubview(self.welcomeScreenView!)
-                
-                self.chatWelcomeScreenContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[welcomeScreenView]|", options:[], metrics:nil, views:["welcomeScreenView" : self.welcomeScreenView!]))
-                self.chatWelcomeScreenContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[welcomeScreenView]|", options:[], metrics:nil, views:["welcomeScreenView" : self.welcomeScreenView!]))
+        if isShowWelcomeMsg{
+            if let welcomeScreenDic = brandingValues.welcome_screen{
+                if let isShowWelcomeScreen = welcomeScreenDic.show, isShowWelcomeScreen == true{
+                    self.view.bringSubviewToFront(chatWelcomeScreenContainerView)
+                    chatWelcomeScreenContainerView.isHidden = false
+                    self.isShowWelcomeScreen = isShowWelcomeScreen
+                     
+                    self.welcomeScreenView = WelcomeScreenView()
+                    self.welcomeScreenView.viewDelegate = self
+                    self.welcomeScreenView.translatesAutoresizingMaskIntoConstraints = false
+                    self.welcomeScreenView.configure(with: welcomeScreenDic, generalDic: brandingValues.general)
+                    self.welcomeScreenView.backgroundColor = UIColor(hexString: "#F8FAFC")
+                    self.chatWelcomeScreenContainerView.addSubview(self.welcomeScreenView!)
+                    
+                    self.chatWelcomeScreenContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[welcomeScreenView]|", options:[], metrics:nil, views:["welcomeScreenView" : self.welcomeScreenView!]))
+                    self.chatWelcomeScreenContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[welcomeScreenView]|", options:[], metrics:nil, views:["welcomeScreenView" : self.welcomeScreenView!]))
+                }
             }
         }
-        
+    
         if let headerDic = brandingValues.header{
             configureHeaderView(headerDic: headerDic)
         }

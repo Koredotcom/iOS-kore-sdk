@@ -122,7 +122,7 @@ class MenuBubbleView: BubbleView {
                     let dictionary = buttons[i]
                     let title: String = dictionary["title"] != nil ? dictionary["title"] as! String : ""
                     let imageUrl: String = dictionary["image_url"] != nil ? dictionary["image_url"] as! String : ""
-                    let option: KREOption = KREOption(title: title, subTitle: "", imageURL: imageUrl, optionType: .menu)
+                    let option: KREOption = KREOption(title: title, subTitle: "", imageURL: imageUrl, optionType: .menu, buttonBgColor: btnBgActiveColor, buttonTextColor: btnActiveTextColor)
                     if let action = Utilities.getKREActionFromDictionary(dictionary: dictionary) {
                         option.setDefaultAction(action: action)
                     }

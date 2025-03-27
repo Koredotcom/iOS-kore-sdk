@@ -14,6 +14,7 @@ protocol StackedCarouselCellDelegate {
 
 class StackedCarouselCell: UICollectionViewCell {
 
+    @IBOutlet weak var imageVHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var imagV: UIImageView!
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var descLbl: UILabel!
