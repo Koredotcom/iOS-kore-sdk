@@ -344,6 +344,9 @@ open class KABotClient: NSObject {
         else if (templateType == "mini_table") {
             return .minitable
         }
+        else if (templateType == "mini_table_horizontal") {
+            return .minitable_Horizontal
+        }
         else if (templateType == "menu") {
             return .menu
         }
@@ -515,6 +518,11 @@ open class KABotClient: NSObject {
                                     quickRepliesIsHorizontal = true
                                 }
                             }
+                            if templateType == "mini_table"{
+                                if let layOut = dictionary["layout"] as? String, layOut == "horizontal"{
+                                    templateType = "mini_table_horizontal"
+                                }
+                            }
                             if templateType == "feedbackTemplate"{
                                 if !history{
                                     feedBackTemplateSelectedValue = ""
@@ -542,7 +550,7 @@ open class KABotClient: NSObject {
                             }
                             
                             ttsBody = dictionary["speech_hint"] != nil ? dictionary["speech_hint"] as? String : nil
-                            if let tText = dictionary["text"] as? String, tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable) {
+                            if let tText = dictionary["text"] as? String, tText.count > 0 && (componentType == .carousel || componentType == .chart || componentType == .table || componentType == .minitable || componentType == .responsiveTable || componentType == .minitable_Horizontal) {
                                 textMessage = Message()
                                 textMessage?.messageType = .reply
                                 textMessage?.sentDate = message.sentDate

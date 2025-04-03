@@ -528,6 +528,25 @@ class MiniTableBubbleCell : MessageBubbleCell {
         self.senderImageView.isHidden = true
     }
 }
+class MiniTableHorizontalBubbleCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .minitable_Horizontal
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleLeadingConstraint.constant = 0
+            self.bubbleTrailingConstraint.constant = 0
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+        }
+    }
+    
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        self.senderImageView.isHidden = true
+    }
+}
 class MenuBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .menu
