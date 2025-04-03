@@ -53,7 +53,7 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
         self.subTableView.bounces = false
         self.subTableView.separatorStyle = .none
         self.subTableView.allowsSelection = false
-        
+        self.subTableView.isScrollEnabled = false
         subTableView.register(ExpandedTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
        
         contentView.addSubview(subTableView)
@@ -92,7 +92,7 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
             let dict = headers[indexPath.row*2]
             cell.titleLbl?.text = dict.title
             cell.titleLbl.textAlignment = dict.alignment
-            cell.titleLbl.font = UIFont(name: "Lato-Semibold", size: 1.0)
+            cell.titleLbl.font = UIFont(name: semiBoldCustomFont, size: 1.0)
             cell.titleLbl.font = cell.titleLbl.font.withSize(10.0)
         }
         
@@ -101,7 +101,7 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
             let dict = headers[indexPath.row*2+1]
             cell.titleLbl1?.text = dict.title
             cell.titleLbl1.textAlignment = .left
-            cell.titleLbl1.font = UIFont(name: "Lato-Semibold", size: 1.0)
+            cell.titleLbl1.font = UIFont(name: semiBoldCustomFont, size: 1.0)
             cell.titleLbl1.font = cell.titleLbl.font.withSize(10.0)
         }
         let row = rows[sec]
@@ -115,7 +115,7 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
         cell.valueLbl1.textAlignment = cell.titleLbl1.textAlignment
 
        
-        cell.backgroundColor = UIColor.white
+        cell.backgroundColor = UIColor.clear
         return cell
     }
     
