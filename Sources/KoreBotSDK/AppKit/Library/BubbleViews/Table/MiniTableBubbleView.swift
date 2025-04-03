@@ -76,7 +76,8 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
     
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
     let kMinTextWidth: CGFloat = 20.0
-    
+
+    var senderImageView: UIImageView!
     var tileBgv: UIView!
     
     override func applyBubbleMask() {
@@ -96,19 +97,41 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
     }
     
     func intializeCardLayout(){
+        self.tileBgv = UIView(frame:.zero)
+        self.tileBgv.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.tileBgv)
+        self.tileBgv.layer.rasterizationScale =  UIScreen.main.scale
+        self.tileBgv.layer.shouldRasterize = true
+        self.tileBgv.layer.cornerRadius = 2.0
+        self.tileBgv.clipsToBounds = true
+        self.tileBgv.backgroundColor =  BubbleViewLeftTint
+        
         self.cardView = UIView(frame:.zero)
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
         cardView.layer.rasterizationScale =  UIScreen.main.scale
-        cardView.layer.shadowColor = UIColor(red: 232/255, green: 232/255, blue: 230/255, alpha: 1).cgColor
-        cardView.layer.shadowOpacity = 1
-        cardView.layer.shadowOffset =  CGSize(width: 0.0, height: -3.0)
-        cardView.layer.shadowRadius = 6.0
+        cardView.layer.shadowColor = UIColor.clear.cgColor
+        cardView.layer.cornerRadius = 4.0
+        cardView.layer.borderWidth = 1.0
+        cardView.layer.borderColor = BubbleViewLeftTint.cgColor
+        cardView.clipsToBounds = true
         cardView.layer.shouldRasterize = true
         cardView.backgroundColor =  UIColor.white
-        let cardViews: [String: UIView] = ["cardView": cardView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+        
+        self.senderImageView = UIImageView()
+        self.senderImageView.contentMode = .scaleAspectFit
+        self.senderImageView.clipsToBounds = true
+        self.senderImageView.layer.cornerRadius = 0.0//15
+        self.senderImageView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.senderImageView)
+        
+        let cardViews: [String: UIView] = ["senderImageView": senderImageView, "tileBgv": tileBgv, "cardView": cardView]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-15-[cardView]-2-|", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[senderImageView(28)]", options: [], metrics: nil, views: cardViews))
+        
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[senderImageView(28)]-8-[tileBgv]", options: [], metrics: nil, views: cardViews))
+        titleBgvLayout()
         NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
 
     }
@@ -116,17 +139,6 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
     override func initialize() {
         super.initialize()
         intializeCardLayout()
-        
-        
-        self.tileBgv = UIView(frame:.zero)
-        self.tileBgv.translatesAutoresizingMaskIntoConstraints = false
-        self.cardView.addSubview(self.tileBgv)
-        self.tileBgv.layer.rasterizationScale =  UIScreen.main.scale
-        self.tileBgv.layer.shouldRasterize = true
-        self.tileBgv.layer.cornerRadius = 2.0
-        self.tileBgv.clipsToBounds = true
-        self.tileBgv.backgroundColor =  Common.UIColorRGB(0xEDEFF2)
-        
         
         self.tableView = UITableView(frame: CGRect.zero,style:.grouped)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -141,13 +153,14 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         self.tableView.isScrollEnabled = false
         tableView.register(MiniTableViewCell.self, forCellReuseIdentifier: customCellIdentifier)
         
-        let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView]
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-[tableView]-20-|", options: [], metrics: nil, views: views))
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-25-[tileBgv]-25-|", options: [], metrics: nil, views: views))
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[tableView]-15-|", options: [], metrics: nil, views: views))
-        
-        self.titleLbl = UILabel(frame: CGRect.zero)
-        self.titleLbl.textColor = Common.UIColorRGB(0x484848)
+        let views: [String: UIView] = ["tableView": tableView]
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[tableView]-5-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
+    }
+    
+    func titleBgvLayout(){
+        self.titleLbl = KREAttributedLabel(frame: CGRect.zero)
+        self.titleLbl.textColor = BubbleViewBotChatTextColor
         self.titleLbl.font = UIFont(name: mediumCustomFont, size: 16.0)
         self.titleLbl.numberOfLines = 0
         self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -162,8 +175,32 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         self.titleLbl.sizeToFit()
         
         let subView: [String: UIView] = ["titleLbl": titleLbl]
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
+        let metrics: [String: NSNumber] = ["textLabelMaxWidth": NSNumber(value: Float(kMaxTextWidth)), "textLabelMinWidth": NSNumber(value: Float(kMinTextWidth))]
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLbl]-10-|", options: [], metrics: metrics, views: subView))
+        
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl(>=textLabelMinWidth,<=textLabelMaxWidth)]-10-|", options: [], metrics: metrics, views: subView))
+        setCornerRadiousToTitleView()
+    }
+    func setCornerRadiousToTitleView(){
+        let bubbleStyle = brandingShared.bubbleShape
+        var radius = 10.0
+        let borderWidth = 0.0
+        let borderColor = UIColor.clear
+        if #available(iOS 11.0, *) {
+            if bubbleStyle == "balloon"{
+                self.tileBgv.roundCorners([.layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+            }else if bubbleStyle == "rounded" || bubbleStyle == "circle"{
+                radius = 15.0
+                self.tileBgv.roundCorners([.layerMaxXMinYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+            }else if bubbleStyle == "rectangle"{
+                radius = 8.0
+                self.tileBgv.roundCorners([.layerMaxXMinYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+            }else if bubbleStyle == "square"{
+                self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+            }else{
+                self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 20.0, borderColor: UIColor.lightGray, borderWidth: 0.0)
+            }
+        }
     }
     
     override func populateComponents() {
@@ -173,6 +210,14 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
                 let data: Dictionary<String, Any> = jsonObject as! Dictionary<String, Any>
+                self.titleLbl.text = "\(data["text"] ?? "")"
+                let placeHolderIcon = UIImage(named: "kora", in: Bundle.sdkModule, compatibleWith: nil)
+                self.senderImageView.image = placeHolderIcon
+                if (botHistoryIcon != nil) {
+                    if let fileUrl = URL(string: botHistoryIcon!) {
+                        self.senderImageView.af.setImage(withURL: fileUrl, placeholderImage: placeHolderIcon)
+                    }
+               }
                 self.data = MiniTableData(data)
                 var rowsDataCount = 0
                 var index = 0
@@ -186,7 +231,6 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
                     if  self.data.rows[self.data.rows.count-1][0] != "---" {
                         self.data.rows.append(["---"])
                     }
-                    self.titleLbl.text = "\(data["text"] ?? "")"
                     self.tableView.reloadData()
                 }
                 
@@ -221,19 +265,20 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         if (rows.count > (indexPath.row * 2)){
             cell.headerLabel.text = rows[indexPath.row*2]
             cell.headerLabel.numberOfLines = 0
-            cell.headerLabel.font = UIFont(name: "Lato-Regular", size: 15.0)
+            cell.headerLabel.font = UIFont(name: regularCustomFont, size: 15.0)
             cell.headerLabel.font = cell.headerLabel.font.withSize(15.0)
             cell.headerLabel.textColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
         }
         if (rows.count > (indexPath.row * 2+1)){
             cell.secondLbl.text = rows[indexPath.row*2+1]
             cell.secondLbl.textAlignment = .right
-            cell.secondLbl.font = UIFont(name: "Lato-Regular", size: 15.0)
+            cell.secondLbl.font = UIFont(name: regularCustomFont, size: 15.0)
             cell.secondLbl.font = cell.headerLabel.font.withSize(15.0)
             
             cell.secondLbl.textColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
         }
         cell.backgroundColor = UIColor.white
+        cell.selectionStyle = .none
         return cell
         
     }
@@ -244,7 +289,7 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         let headerLabel = UILabel(frame: .zero)
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.textAlignment = .left
-        headerLabel.font = UIFont(name: "Lato-Bold", size: 15.0)
+        headerLabel.font = UIFont(name: boldCustomFont, size: 15.0)
         headerLabel.font = headerLabel.font.withSize(15.0)
         
         headerLabel.textColor = UIColor(red: 38/255, green: 52/255, blue: 74/255, alpha: 1)
@@ -254,7 +299,7 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         let secondLbl = UILabel(frame: .zero)
         secondLbl.translatesAutoresizingMaskIntoConstraints = false
         secondLbl.textAlignment = .left
-        secondLbl.font = UIFont(name: "Lato-Bold", size: 15.0)
+        secondLbl.font = UIFont(name: boldCustomFont, size: 15.0)
         secondLbl.font = secondLbl.font.withSize(15.0)
         secondLbl.textColor = UIColor(red: 38/255, green: 52/255, blue: 74/255, alpha: 1)
         secondLbl.text =  data.headers[section*2+1].title
@@ -277,6 +322,12 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         return view
     }
     
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if data.elements.count - 1 == section{
+            return 0
+        }
+        return 1
+    }
     override var intrinsicContentSize : CGSize {
         
         let limitingSize: CGSize  = CGSize(width: kMaxTextWidth, height: CGFloat.greatestFiniteMagnitude)
@@ -303,7 +354,8 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
             }
         }
         
-        return CGSize(width: 0.0, height: finalHeight + textSize.height)
+        var removeSpace = CGFloat(data.elements.count * 35)
+        return CGSize(width: 0.0, height: finalHeight + textSize.height - removeSpace)
     }
     
 }

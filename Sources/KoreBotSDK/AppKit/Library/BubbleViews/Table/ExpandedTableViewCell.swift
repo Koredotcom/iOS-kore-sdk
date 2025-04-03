@@ -44,21 +44,21 @@ class ExpandedTableViewCell: UITableViewCell {
         titleLbl = UILabel(frame: .zero)
         titleLbl.translatesAutoresizingMaskIntoConstraints = false
         titleLbl.textAlignment = .left
-        titleLbl.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
+        titleLbl.textColor = BubbleViewBotChatTextColor
         contentView.addSubview(titleLbl)
         
         valueLbl = UILabel(frame: .zero)
         valueLbl.translatesAutoresizingMaskIntoConstraints = false
         valueLbl.textAlignment = .left
-        valueLbl.font = UIFont(name: "Lato-Regular", size: 16.0)
+        valueLbl.font = UIFont(name: regularCustomFont, size: 16.0)
         valueLbl.font = valueLbl.font.withSize(16.0)
-        valueLbl.textColor =  UIColor(red: 38/255, green: 52/255, blue: 74/255, alpha: 1)
+        valueLbl.textColor =  BubbleViewBotChatTextColor
         contentView.addSubview(valueLbl)
         
         titleLbl1 = UILabel(frame: .zero)
         titleLbl1.translatesAutoresizingMaskIntoConstraints = false
         titleLbl1.textAlignment = .left
-        titleLbl1.textColor =  UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
+        titleLbl1.textColor =  BubbleViewBotChatTextColor
 
 
         contentView.addSubview(titleLbl1)
@@ -66,10 +66,10 @@ class ExpandedTableViewCell: UITableViewCell {
         valueLbl1 = UILabel(frame: .zero)
         valueLbl1.translatesAutoresizingMaskIntoConstraints = false
         valueLbl1.textAlignment = .left
-        valueLbl1.font = UIFont(name: "Lato-Regular", size: 16.0)
+        valueLbl1.font = UIFont(name: regularCustomFont, size: 16.0)
         valueLbl1.font = valueLbl.font.withSize(16.0)
 
-        valueLbl1.textColor =  UIColor(red: 38/255, green: 52/255, blue: 74/255, alpha: 1)
+        valueLbl1.textColor =  BubbleViewBotChatTextColor
         
         contentView.addSubview(valueLbl1)
         

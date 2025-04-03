@@ -101,6 +101,7 @@ public class ComponentElements: NSObject, Decodable {
     public var title: String?
     public var value: String?
     public var imageURL: String?
+    public var image_url: String?
     public var action: ComponentItemAction?
     
     enum ColorCodeKeys: String, CodingKey {
@@ -110,6 +111,7 @@ public class ComponentElements: NSObject, Decodable {
         case value = "value"
         case imageURL = "imageURL"
         case action = "default_action"
+        case image_url = "image_url"
     }
     
     // MARK: - init
@@ -131,6 +133,7 @@ public class ComponentElements: NSObject, Decodable {
             value = valueString
         }
         imageURL = try? container.decode(String.self, forKey: .imageURL)
+        image_url = try? container.decode(String.self, forKey: .image_url)
         action = try? container.decode(ComponentItemAction.self, forKey: .action)
     }
 }

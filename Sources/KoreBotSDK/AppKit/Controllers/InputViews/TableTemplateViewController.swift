@@ -9,7 +9,7 @@
 import UIKit
 
 class TableTemplateViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDelegate, UITableViewDataSource {
-    
+    let bundle = Bundle.sdkModule
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var closeButton: UIButton!
@@ -41,13 +41,11 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        let customCollectionViewLayout = self.collectionView.collectionViewLayout as! CustomCollectionViewLayout
-//        customCollectionViewLayout.shouldPinFirstRow = true
         let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: dataString!) as! NSDictionary
         let data: Dictionary<String, Any> = jsonObject as! Dictionary<String, Any>
         self.data = TableData(data)
         titleLabel.text = jsonObject["text"] as? String ?? ""
+        titleLabel.textColor = BubbleViewBotChatTextColor
         if(self.data.tableDesign == "regular"){
             self.collectionView.isHidden = false
             self.tableView.isHidden = true
@@ -228,11 +226,17 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
             if indexPaths.contains(indexPath){
                 let subtableViewCell = SubTableViewCell(style: .default, reuseIdentifier: cellReuseIdentifier1)
                 subtableViewCell.backgroundColor = UIColor.white
-                subtableViewCell.accessoryView = UIImageView(image: UIImage(named: "arrowSelected"))
+                subtableViewCell.accessoryView = UIImageView(image:  UIImage(named: "arrowSelected", in: bundle, compatibleWith: nil))
                 subtableViewCell.rows = data.rows
                 subtableViewCell.headers = data.headers
                 subtableViewCell.sec = indexPath.section
-                
+                if indexPath.section % 2 == 0{
+                    subtableViewCell.backgroundColor = BubbleViewLeftTint
+                    subtableViewCell.subTableView.backgroundColor = BubbleViewLeftTint
+                }else{
+                    subtableViewCell.backgroundColor = .white
+                    subtableViewCell.subTableView.backgroundColor = .white
+                }
                 return subtableViewCell
             }
             else{
@@ -245,9 +249,14 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
                 if(row.count > indexPath.row*2+1){
                     cell.secondLbl.text = row[indexPath.row*2+1]
                 }
-                cell.accessoryView = UIImageView(image: UIImage(named: "arrowUnselected"))
+                cell.accessoryView = UIImageView(image:  UIImage(named: "arrowUnselected", in: bundle, compatibleWith: nil))
                 cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 22)
-
+                if indexPath.section % 2 == 0{
+                    cell.backgroundColor = BubbleViewLeftTint
+                }else{
+                    cell.backgroundColor = .white
+            
+                }
                 return cell
                 
             }
@@ -261,9 +270,13 @@ class TableTemplateViewController: UIViewController, UICollectionViewDataSource,
             if(row.count > indexPath.row*2+1){
                 cell.secondLbl.text = row[indexPath.row*2+1]
             }
-            cell.accessoryView = UIImageView(image: UIImage(named: "arrowUnselected"))
+            cell.accessoryView = UIImageView(image:  UIImage(named: "arrowUnselected", in: bundle, compatibleWith: nil))
             cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 22)
-
+            if indexPath.section % 2 == 0{
+                cell.backgroundColor = BubbleViewLeftTint
+            }else{
+                cell.backgroundColor = .white
+            }
             return cell
             
         }

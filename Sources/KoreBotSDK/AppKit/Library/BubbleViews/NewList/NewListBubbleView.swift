@@ -21,16 +21,15 @@ class NewListBubbleView: BubbleView {
     var isShowMore = false
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
-        NSAttributedString.Key.font : UIFont(name: boldCustomFont, size: 15.0) as Any,
-        NSAttributedString.Key.foregroundColor : themeColor,
-        NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue]
+        NSAttributedString.Key.font : UIFont(name: mediumCustomFont, size: 12.0) as Any,
+        NSAttributedString.Key.foregroundColor : themeColor]
  
     var arrayOfComponents = [ComponentElements]()
     var arrayOfButtons = [ComponentItemAction]()
     
     var showMore = false
-   // public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
-   // public var linkAction: ((_ text: String?) -> Void)!
+    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    //public var linkAction: ((_ text: String?) -> Void)!
     override func applyBubbleMask() {
         //nothing to put here
         if(self.maskLayer == nil){
@@ -60,8 +59,10 @@ class NewListBubbleView: BubbleView {
         self.tileBgv.clipsToBounds = true
         self.tileBgv.layer.borderWidth = 1.0
         self.cardView.addSubview(self.tileBgv)
-        self.tileBgv.backgroundColor = .white //Common.UIColorRGB(0xEDEFF2)
-        
+        self.tileBgv.backgroundColor = BubbleViewLeftTint
+        if #available(iOS 11.0, *) {
+            self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.lightGray, borderWidth: 1.5)
+        }
         
         self.tableView = UITableView(frame: CGRect.zero,style:.plain)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -80,7 +81,7 @@ class NewListBubbleView: BubbleView {
         }
 
         let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView]
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
 
@@ -102,16 +103,6 @@ class NewListBubbleView: BubbleView {
         let subView: [String: UIView] = ["titleLbl": titleLbl]
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
-    }
-    
-    func intializeCardLayout(){
-        self.cardView = UIView(frame:.zero)
-        self.cardView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(self.cardView)
-        cardView.backgroundColor =  UIColor.clear
-        let cardViews: [String: UIView] = ["cardView": cardView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
         setCornerRadiousToTitleView()
     }
     
@@ -135,6 +126,21 @@ class NewListBubbleView: BubbleView {
                 self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 20.0, borderColor: UIColor.lightGray, borderWidth: 0.0)
             }
         }
+    }
+    
+    func intializeCardLayout(){
+        self.cardView = UIView(frame:.zero)
+        self.cardView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.cardView)
+        cardView.backgroundColor =  UIColor.clear
+        cardView.layer.cornerRadius = 4.0
+        cardView.layer.borderWidth = 0.0
+        cardView.layer.borderColor = BubbleViewLeftTint.cgColor
+        cardView.clipsToBounds = true
+        let cardViews: [String: UIView] = ["cardView": cardView]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
+        
     }
     
     // MARK: populate components
@@ -184,7 +190,7 @@ class NewListBubbleView: BubbleView {
         }else{
              moreButtonHeight = 0.0
         }
-        return CGSize(width: 0.0, height: textSize.height+40+finalHeight+moreButtonHeight)
+        return CGSize(width: 0.0, height: textSize.height+30+finalHeight+moreButtonHeight)
     }
     
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
@@ -220,11 +226,11 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.selectionStyle = .none
         cell.bgView.backgroundColor = .white
         let elements = arrayOfComponents[indexPath.row]
-        if elements.imageURL == nil{
+        if elements.image_url == nil{
             cell.imageViewWidthConstraint.constant = 0.0
         }else{
             cell.imageViewWidthConstraint.constant = 50.0
-            if let urlstr = elements.imageURL, let url = URL(string: urlstr){
+            if let urlstr = elements.image_url, let url = URL(string: urlstr){
                 cell.imgView.af.setImage(withURL: url, placeholderImage:  UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil))
             }else{
                 cell.imgView.image = UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil)
@@ -235,7 +241,7 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.titleLabel.text = elements.title
         cell.subTitleLabel.text = elements.subtitle
         cell.priceLbl.text = elements.value
-        cell.bgView.layer.borderWidth = 0.0
+        cell.bgView.layer.borderWidth = 1.0
         return cell
         
     }
@@ -259,13 +265,9 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
             let showMoreButton = UIButton(frame: CGRect.zero)
             showMoreButton.backgroundColor = .clear
             showMoreButton.translatesAutoresizingMaskIntoConstraints = false
-            showMoreButton.clipsToBounds = true
-            showMoreButton.layer.cornerRadius = 5
-            showMoreButton.setTitleColor(.blue, for: .normal)
             showMoreButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-            showMoreButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0)
             view.addSubview(showMoreButton)
-            showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.right
+            showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
             showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
              var btnTitle: String?
             if self.isShowMore{
@@ -275,12 +277,17 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
                      btnTitle = "Show More"
                 }
             }
-           let attributeString = NSMutableAttributedString(string: btnTitle ?? "See More",
-                                                            attributes: yourAttributes)
+            let attributeString = NSMutableAttributedString(string: btnTitle ?? "See More",
+                                                             attributes: yourAttributes)
             showMoreButton.setAttributedTitle(attributeString, for: .normal)
+            showMoreButton.layer.cornerRadius = 5
+            showMoreButton.layer.borderWidth = 1
+            showMoreButton.layer.borderColor = themeColor.cgColor
+            showMoreButton.clipsToBounds = true
+            
             let views: [String: UIView] = ["showMoreButton": showMoreButton]
             view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[showMoreButton(30)]-0-|", options:[], metrics:nil, views:views))
-            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[showMoreButton]-0-|", options:[], metrics:nil, views:views))
+            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[showMoreButton(100)]-5-|", options:[], metrics:nil, views:views))
         }
         return view
     }
