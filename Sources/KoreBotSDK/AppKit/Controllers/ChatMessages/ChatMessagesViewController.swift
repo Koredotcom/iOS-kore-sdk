@@ -1552,7 +1552,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }
     
     func optionsButtonTapNewAction(text:String, payload:String){
-        self.sendTextMessage(text, options: ["body": payload])
+        self.sendTextMessage(text, options: ["body": payload, "renderMsg":text])
     }
     
     func linkButtonTapAction(urlString: String) {
@@ -1979,9 +1979,16 @@ extension ChatMessagesViewController {
                     payloadObj["payload"] = jsonObject["payload"] as! [String : Any]
                     payloadObj["type"] = jsonObject["type"]
                     componentModel.payload = payloadObj
-                } else {
+                } else{
                     var payloadObj: [String: Any] = [String: Any]()
                     payloadObj["text"] = jsonString
+                    if let tags = message.tags{
+                        if let allText = tags.altText, allText.count > 0{
+                            if let payloadValue = allText[0].value {
+                                payloadObj["text"]  = payloadValue
+                            }
+                        }
+                    }
                     payloadObj["type"] = "text"
                     componentModel.type = "text"
                     componentModel.payload = payloadObj

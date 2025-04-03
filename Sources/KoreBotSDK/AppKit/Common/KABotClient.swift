@@ -273,6 +273,28 @@ open class KABotClient: NSObject {
                     }
                 }
             }
+            if let type = object["type"] as? String, type == "user_messages"{
+                if self?.thread != nil{
+                    if let messages = object["message"] as? [String:Any]{
+                        if let body = messages["body"] as? String{
+                            let message: Message = Message()
+                            message.messageType = .default
+                            message.sentDate = Date()
+                            message.messageId = UUID().uuidString
+                            let textComponent: Component = Component()
+                            textComponent.payload = body
+                            if let renderMsg =  messages["renderMsg"] as? String{
+                                textComponent.payload = renderMsg
+                            }
+                            message.addComponent(textComponent)
+                            arrayOfSelectedBtnIndex.insert(1000, at: 0)
+                            historyLimit += 1
+                            self?.addMessages(message, nil)
+                        }
+                    }
+                    
+                }
+            }
         }
     }
     func addMessages(_ message: Message?, _ ttsBody: String?) {
@@ -928,6 +950,13 @@ open class KABotClient: NSObject {
                 } else {
                     var payloadObj: [String: Any] = [String: Any]()
                     payloadObj["text"] = jsonString
+                    if let tags = message.tags{
+                        if let allText = tags.altText, allText.count > 0{
+                            if let payloadValue = allText[0].value {
+                                payloadObj["text"]  = payloadValue
+                            }
+                        }
+                    }
                     payloadObj["type"] = "text"
                     componentModel.type = "text"
                     componentModel.payload = payloadObj

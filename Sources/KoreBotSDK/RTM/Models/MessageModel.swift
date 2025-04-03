@@ -98,6 +98,7 @@ open class BotMessages: Mappable {
     //    open var channels: String?
     open var botId: String?
     open var messageId: String?
+    open var tags: Tags?
     
     // MARK: -
     public required init?(map: Map) {
@@ -119,6 +120,7 @@ open class BotMessages: Mappable {
         components <- map["components"]
         botId <- map["botId"]
         messageId <- map["_id"]
+        tags <- map["tags"]
     }
 }
 
@@ -135,3 +137,31 @@ open class BotMessageComponents: Mappable {
         data <- map["data"]
     }
 }
+
+// MARK: - Tags
+open class Tags: Mappable {
+    open var altText: [AltText]?
+    
+    // MARK: -
+    public required init?(map: Map) {
+        
+    }
+    
+    public func mapping(map: Map) {
+        altText <- map["altText"]
+    }
+}
+
+open class AltText: Mappable {
+    open var value: String?
+    
+    // MARK: -
+    public required init?(map: Map) {
+        
+    }
+    
+    public func mapping(map: Map) {
+        value <- map["value"]
+    }
+}
+
