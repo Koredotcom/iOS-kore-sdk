@@ -273,7 +273,7 @@ open class KABotClient: NSObject {
                     }
                 }
             }
-            if let type = object["type"] as? String, type == "user_messages"{
+           /* if let type = object["type"] as? String, type == "user_messages"{
                 if self?.thread != nil{
                     if let messages = object["message"] as? [String:Any]{
                         if let body = messages["body"] as? String{
@@ -294,7 +294,7 @@ open class KABotClient: NSObject {
                     }
                     
                 }
-            }
+            }*/
         }
     }
     func addMessages(_ message: Message?, _ ttsBody: String?) {

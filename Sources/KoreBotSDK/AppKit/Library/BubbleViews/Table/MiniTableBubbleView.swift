@@ -10,7 +10,9 @@
 
 
 import UIKit
-
+#if SWIFT_PACKAGE
+import ObjcSupport
+#endif
 struct MiniHeader {
     var title: String = ""
     var alignment: NSTextAlignment = .left

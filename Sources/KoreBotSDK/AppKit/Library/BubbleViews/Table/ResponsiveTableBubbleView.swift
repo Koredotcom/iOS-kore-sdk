@@ -9,7 +9,9 @@
 
 
 import UIKit
-
+#if SWIFT_PACKAGE
+import ObjcSupport
+#endif
 
 class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSource {
     var tableView: UITableView!
