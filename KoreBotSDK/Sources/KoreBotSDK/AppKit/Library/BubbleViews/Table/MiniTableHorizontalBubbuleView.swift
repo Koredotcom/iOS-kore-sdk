@@ -6,7 +6,9 @@
 //
 
 import UIKit
-
+#if SWIFT_PACKAGE
+import ObjcSupport
+#endif
 class MiniTableHorizontalBubbuleView: BubbleView {
 
     var titleLbl: UILabel!
