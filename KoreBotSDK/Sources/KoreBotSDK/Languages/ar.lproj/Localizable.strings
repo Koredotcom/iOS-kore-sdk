@@ -1,0 +1,17 @@
+/* 
+  Localizable.strings
+  KoreBotSDK
+
+  Created by Pagidimarri Kartheek on 28/02/25.
+*/
+
+"composeBarPlaceholder" = "Message...";
+"tapToSpeak" = "Tap to speak";
+"closeOrMinimizeMsg" = "Would you like to close the conversation or minimize.";
+"closeMsg" = "Close";
+"minimizeMsg" = "Minimize";
+"alertOk" = "OK";
+"leftMenuTitle" = "Menu";
+"confirm" = "Confirm";
+"pleaseTryAgain" = "Please try again";
+"sessionExpiryMsg" = "Your session has expired. Please try again";

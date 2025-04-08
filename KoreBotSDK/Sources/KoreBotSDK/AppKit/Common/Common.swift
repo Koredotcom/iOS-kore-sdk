@@ -99,6 +99,12 @@ var statusBarBottomBackgroundColor:UIColor? = nil
 
 var overRideBrandingTheme:BrandingModel? = nil
 
+var emojiDic = [String : Any]()
+var isEmojiDispaly = false
+var recentHistoryBatchSize = 10
+var isPaginatedScrollEnable = SDKConfiguration.botConfig.isShowChatHistory
+var paginatedScrollBatchSize = 10
+
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)

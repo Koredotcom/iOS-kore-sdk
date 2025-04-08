@@ -84,7 +84,7 @@ class AudioComposeView: UIView {
        
         
         self.audiolabel = UILabel()
-        self.audiolabel.text = "Tap microphone to speak"
+        self.audiolabel.text = tapToSpeak
         self.audiolabel.font = UIFont(name: "HelveticaNeue", size: 11.0)
         self.audiolabel.textColor = UIColor.init(hexString: "#697586")
         self.audiolabel.textAlignment = .center

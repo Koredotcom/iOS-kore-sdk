@@ -69,10 +69,16 @@ class TextBubbleView : BubbleView {
                 let string: String = component.componentDesc! as String
                 let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: string)
                 if let parsedString = KREUtilities.formatHTMLEscapedString(htmlStrippedString) {
-                    let replaceStr = parsedString.replacingOccurrences(of: ":)", with: "😊")
+                    var replaceStr = parsedString
+                    if isEmojiDispaly{
+                        replaceStr = replaceUnicodeWithEmojis(input: replaceStr)
+                    }
                     self.textLabel.setHTMLString(replaceStr, withWidth: kMaxTextWidth)
                 }else{
-                    let replaceStr = string.replacingOccurrences(of: ":)", with: "😊")
+                    var replaceStr = string
+                    if isEmojiDispaly{
+                        replaceStr = replaceUnicodeWithEmojis(input: replaceStr)
+                    }
                     self.textLabel.text = replaceStr
                 }
             }
@@ -86,6 +92,22 @@ class TextBubbleView : BubbleView {
             textSize.height = self.textLabel.font.pointSize
         }
         return CGSize(width: textSize.width + 20, height: textSize.height + 20)
+    }
+    
+    func replaceUnicodeWithEmojis(input: String) -> String {
+        // Dictionary mapping Unicode sequences to Emojis
+        let emojis = emojiDic["emojis"] as? [String: String] ?? [:]
+        let unicodeToEmoji: [String: String] = emojis
+        
+        var output = input
+        
+        // Replace each Unicode with corresponding emoji
+        for (unicode, emoji) in unicodeToEmoji {
+             let emojiStr = emoji.unicode
+            output = output.replacingOccurrences(of: unicode, with: emojiStr ?? "")
+        }
+        
+        return output
     }
 }
 
@@ -148,5 +170,15 @@ class ErrorBubbleView : TextBubbleView {
                 }
             }
         }
+    }
+}
+extension String {
+    var unicode: String? {
+        if let charCode = UInt32(self, radix: 16),
+           let unicode = UnicodeScalar(charCode) {
+            let str = String(unicode)
+            return str
+        }
+        return nil
     }
 }

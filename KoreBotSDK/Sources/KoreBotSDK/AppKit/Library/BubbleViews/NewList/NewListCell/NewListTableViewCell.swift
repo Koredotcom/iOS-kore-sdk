@@ -2,7 +2,7 @@
 //  NewListTableViewCell.swift
 //  KoreBotSDKDemo
 //
-//  Created by MatrixStream_01 on 13/05/20.
+//  Created by Pagidimarri Kartheek on 13/05/20.
 //  Copyright © 2020 Kore. All rights reserved.
 //
 

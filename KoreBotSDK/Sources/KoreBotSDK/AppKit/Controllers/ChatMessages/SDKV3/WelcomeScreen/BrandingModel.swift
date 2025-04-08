@@ -16,6 +16,7 @@ public class BrandingModel: NSObject , Decodable {
     public var general: General?
     public var header: HeaderModel?
     public var welcome_screen: WelcomeScreen?
+    public var override_kore_config: OverrideKoreConfig?
    
     enum ColorCodeKeys: String, CodingKey {
            case body = "body"
@@ -24,6 +25,7 @@ public class BrandingModel: NSObject , Decodable {
            case general = "general"
            case header = "header"
            case welcome_screen = "welcome_screen"
+          case override_kore_config = "override_kore_config"
         
        }
        
@@ -40,6 +42,7 @@ public class BrandingModel: NSObject , Decodable {
            general = try? container.decode(General.self, forKey: .general)
            header = try? container.decode(HeaderModel.self, forKey: .header)
            welcome_screen = try? container.decode(WelcomeScreen.self, forKey: .welcome_screen)
+           override_kore_config = try? container.decode(OverrideKoreConfig.self, forKey: .override_kore_config)
        }
     
     public func updateWith(configModel: BrandingModel)-> BrandingModel{
@@ -49,6 +52,7 @@ public class BrandingModel: NSObject , Decodable {
         self.general = configModel.general != nil ? general?.updateWith(configModel: configModel.general!) : general
         self.header = configModel.header != nil ? header?.updateWith(configModel: configModel.header!) : header
         self.welcome_screen = configModel.welcome_screen != nil ? welcome_screen?.updateWith(configModel: configModel.welcome_screen!) : welcome_screen
+        self.override_kore_config = configModel.override_kore_config != nil ? override_kore_config?.updateWith(configModel: configModel.override_kore_config!) : override_kore_config
         return self
     }
 }

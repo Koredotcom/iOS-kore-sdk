@@ -12,11 +12,22 @@ import Alamofire
 import CoreData
 
 open class BotConnect: NSObject {
+    let bundle = Bundle.sdkModule
     public var showQuickRepliesBottom = true
     public var closeOrMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
     public var closeAgentChatEventName = "close_agent_chat"
     public var networkOnResumeCallingHistory = true
-
+    public var koreSDkLanguage = "en"
+    public var composeBar_Placeholder = ""
+    public var tap_To_Speak = ""
+    public var close_Or_MinimizeTitle = ""
+    public var close_Btn_Title = ""
+    public var minimize_Btn_Title = ""
+    public var alert_Ok = ""
+    public var leftMenu_Title = ""
+    public var confirm_Title = ""
+    public var please_Try_Again = ""
+    public var sessionExpiry_Msg = ""
     // MARK: - init
     public override init() {
         super.init()
@@ -112,10 +123,88 @@ open class BotConnect: NSObject {
         SDKConfiguration.botConfig.customJWToken = customJWToken
     }
     
-    public func customTemplatesFromCustomer(numbersOfViews:[BubbleView], customerTemplaateTypes:[String]){
+    public func addCustomTemplates(numbersOfViews:[BubbleView], customerTemplaateTypes:[String]){
         arrayOfViews = numbersOfViews
         arrayOfTemplateTypes = customerTemplaateTypes
         print(arrayOfViews.count)
+    }
+    
+    func laguageSettings(){
+        //let locale = NSLocale.current.languageCode
+        var localizedText = koreSDkLanguage
+            if let path = bundle.path(forResource: localizedText, ofType: "lproj") {
+                  let bundle = Bundle(path: path)
+                  getLaguageValues(bundle: bundle!)
+            }else{
+                if let url = bundle.url(forResource: localizedText, withExtension: "lproj", subdirectory: "Languages"){
+                    let bundle = Bundle(url: url)
+                    getLaguageValues(bundle: bundle!)
+                }else{
+                    //localizedText = Text("How to change the language inside of the app.", bundle: bundleImage)
+                }
+            }
+    }
+    
+    func getLaguageValues(bundle: Bundle){
+        if composeBar_Placeholder != ""{
+            composeBarPlaceholder = composeBar_Placeholder
+        }else{
+            composeBarPlaceholder = bundle.localizedString(forKey: "composeBarPlaceholder", value: "", table: nil)
+        }
+        
+        if tap_To_Speak != ""{
+            tapToSpeak = tap_To_Speak
+        }else{
+            tapToSpeak = bundle.localizedString(forKey: "tapToSpeak", value: "", table: nil)
+        }
+        
+        if close_Or_MinimizeTitle != ""{
+            closeOrMinimizeMsg = close_Or_MinimizeTitle
+        }else{
+            closeOrMinimizeMsg = bundle.localizedString(forKey: "closeOrMinimizeMsg", value: "", table: nil)
+        }
+        
+        if close_Btn_Title != ""{
+            closeBtnTitle = close_Btn_Title
+        }else{
+            closeBtnTitle = bundle.localizedString(forKey: "closeMsg", value: "", table: nil)
+        }
+        
+        if minimize_Btn_Title != ""{
+            minimizeBtnTitle = minimize_Btn_Title
+        }else{
+            minimizeBtnTitle = bundle.localizedString(forKey: "minimizeMsg", value: "", table: nil)
+        }
+        
+        if alert_Ok != ""{
+            alertOk = alert_Ok
+        }else{
+            alertOk = bundle.localizedString(forKey: "alertOk", value: "", table: nil)
+        }
+        
+        if leftMenu_Title != ""{
+            leftMenuTitle = leftMenu_Title
+        }else{
+            leftMenuTitle = bundle.localizedString(forKey: "leftMenuTitle", value: "", table: nil)
+        }
+        
+        if confirm_Title != ""{
+            confirm = confirm_Title
+        }else{
+            confirm = bundle.localizedString(forKey: "confirm", value: "", table: nil)
+        }
+        
+        if please_Try_Again != ""{
+            pleaseTryAgain = please_Try_Again
+        }else{
+            pleaseTryAgain = bundle.localizedString(forKey: "pleaseTryAgain", value: "", table: nil)
+        }
+        
+        if sessionExpiry_Msg != ""{
+            sessionExpiryMsg = sessionExpiry_Msg
+        }else{
+            sessionExpiryMsg = bundle.localizedString(forKey: "sessionExpiryMsg", value: "", table: nil)
+        }
     }
     
 }

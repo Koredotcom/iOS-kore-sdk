@@ -264,8 +264,8 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     func showCloseOrMinimiseAlert(){
-        let alertController = UIAlertController(title: "", message: "Would you like to close the concersation or minimize.", preferredStyle:.alert)
-        alertController.addAction(UIAlertAction(title: "Close", style: .default)
+        let alertController = UIAlertController(title: "", message: closeOrMinimizeMsg, preferredStyle:.alert)
+        alertController.addAction(UIAlertAction(title: closeBtnTitle, style: .default)
                   { action -> Void in
                         isShowWelcomeMsg = true
                         let dic = ["event_code": "BotClosed", "event_message": "Bot closed by the user"]
@@ -280,7 +280,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                        }
                         
                   })
-        alertController.addAction(UIAlertAction(title: "Minimize", style: .default)
+        alertController.addAction(UIAlertAction(title: minimizeBtnTitle, style: .default)
                   { action -> Void in
                         let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
                         self.closeAndMinimizeEvent(dic)
@@ -1699,7 +1699,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
             transition.subtype = .fromLeft
             self.leftMenuContainerView.layer.add(CATransition().segueFromLeft(), forKey: nil)
             self.leftMenuView.leftMenuTableviewReload()
-            leftMenuTitleLbl.text = "Menu"
+            leftMenuTitleLbl.text = leftMenuTitle
     }
     func composeBarAttachmentButtonAction(_: ComposeBarView) {
         self.openAcionSheet()
@@ -1799,9 +1799,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
     }
     @objc func tokenExpiry(notification:Notification){
-        let alertController = UIAlertController(title: appDisplayName, message: "Your session has expired. Please re-login", preferredStyle: .alert)
+        let alertController = UIAlertController(title: appDisplayName, message: sessionExpiryMsg, preferredStyle: .alert)
         // Create the actions
-        let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+        let okAction = UIAlertAction(title: alertOk, style: UIAlertAction.Style.default) {
             UIAlertAction in
             let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
             self.closeAndMinimizeEvent(dic)
@@ -1886,7 +1886,7 @@ extension ChatMessagesViewController {
             return
         }
         
-        botClient.getHistory(offset: offset,limit: 20, success: { [weak self] (responseObj) in
+        botClient.getHistory(offset: offset,limit: paginatedScrollBatchSize, success: { [weak self] (responseObj) in
             if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
                 self?.insertOrUpdateHistoryMessages(messages)
             }
@@ -2035,8 +2035,10 @@ extension ChatMessagesViewController {
         })
     }
     func tableviewScrollDidEnd(){
-        if SDKConfiguration.botConfig.isShowChatHistory{
-            fetchMessages()
+        if !SDKConfiguration.botConfig.isWebhookEnabled{
+            if isPaginatedScrollEnable{
+                fetchMessages()
+            }
         }
     }
 }
@@ -2599,7 +2601,7 @@ extension ChatMessagesViewController{
                 
             }) { (error) in
                 self.stopLoader()
-                self.showAlert(title: self.appDisplayName, message: "Please try again")
+                self.showAlert(title: self.appDisplayName, message: pleaseTryAgain)
             }
         } else {
             self.stopLoader()
@@ -2675,6 +2677,7 @@ extension ChatMessagesViewController{
     func sucessMethod(client: BotClient?, thread: KREThread?){
         isBotConnectSucessFully = true
         chatMaskview.isHidden = true
+        self.getEmojisFromBrandingData()
         self.stopLoader()
         self.thread = thread
         self.botClient = client
@@ -2762,8 +2765,8 @@ extension ChatMessagesViewController{
         } else {
             panelCollectionViewContainerHeightConstraint.constant = 0
         }
+        
     }
-    
     func showdDynamicError(messageString:String){
         let payloadStr = ["text":messageString,"color": "#fc0307"]
         let message: Message = Message()
@@ -2835,8 +2838,43 @@ extension ChatMessagesViewController{
         BubbleViewUserChatTextColor = UIColor.init(hexString: "#FFFFFF")
         BubbleViewBotChatTextColor = UIColor.init(hexString: "#000000")
         headerView.backgroundColor = UIColor.init(hexString: "#FFFFFF")
-        
+
     }
+    func getEmojisFromBrandingData(){
+        isEmojiDispaly = false
+        if let override_kore_config = brandingValues.override_kore_config{
+            if let isemoji_short_cut = override_kore_config.emoji_short_cut{
+                isEmojiDispaly = isemoji_short_cut
+            }
+            if let history = override_kore_config.history, let isHistoryEnable = history.enable as? Bool{
+                SDKConfiguration.botConfig.isShowChatHistory = isHistoryEnable
+                if let recentHistory = history.recent, let recentHistoryBatch_size = recentHistory.batch_size as? Int{
+                    recentHistoryBatchSize = recentHistoryBatch_size
+                }
+                
+                if let paginated_scroll = history.paginated_scroll, let paginated_scroll_Enable = paginated_scroll.enable as? Bool{
+                    isPaginatedScrollEnable = paginated_scroll_Enable
+                }
+                if let paginated_scroll = history.paginated_scroll, let paginated_scroll_Batch_size = paginated_scroll.batch_size as? Int{
+                    paginatedScrollBatchSize = paginated_scroll_Batch_size
+                }
+            }
+        }
+        if let path = bundleImage.path(forResource: "branding", ofType: "json") {
+            if let data = try? Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe){
+                let jsonResult = try? JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+                emojiDic = jsonResult as? [String : Any] ?? [:]
+            }
+        }else{
+            if let url = bundleImage.url(forResource: "branding", withExtension: "json", subdirectory: "BrandindFiles"){
+                if let data = try? Data(contentsOf:url, options: .mappedIfSafe){
+                    let jsonResult = try? JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+                    emojiDic = jsonResult as? [String : Any] ?? [:]
+                }
+            }
+        }
+    }
+
 }
 // MARK: - LeftMenu
 extension ChatMessagesViewController: LeftMenuViewDelegate{
