@@ -253,13 +253,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         }
     }
     @IBAction func tapsOnBackBtnAct(_ sender: Any) {
-        if self.isShowWelcomeScreen{
-            view.endEditing(true)
-            chatWelcomeScreenContainerView.isHidden = false
+        if isBotConnectSucessFully{
+            if self.isShowWelcomeScreen{
+                view.endEditing(true)
+                chatWelcomeScreenContainerView.isHidden = false
+            }else{
+                //botClosed()
+                //isShowWelcomeMsg = true
+                showCloseOrMinimiseAlert()
+            }
         }else{
-            //botClosed()
-            //isShowWelcomeMsg = true
-            showCloseOrMinimiseAlert()
+            botClosed()
         }
     }
     
