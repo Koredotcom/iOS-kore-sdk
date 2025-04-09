@@ -39,6 +39,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
     var isQuickReplies  = true
     var isReloadBtnLink = true
     var isFullWidth = false
+    var variation = ""
     var quickReplyView: KREQuickSelectView!
     
     //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
@@ -208,6 +209,10 @@ class QuickReplyWelcomeBubbleView: BubbleView {
                     if let fullWidth = jsonObject["fullWidth"] as? Bool, fullWidth == true{
                         isFullWidth = true
                     }
+                    variation = ""
+                    if let variationBg = jsonObject["variation"] as? String{
+                        variation = variationBg
+                    }
                     self.collectionView.collectionViewLayout.invalidateLayout()
                     self.collectionView.reloadData()
                     
@@ -275,19 +280,22 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
         var textColor = btnActiveTextColor
         cell.bgV.backgroundColor = UIColor.init(hexString: bgColor)
         cell.layer.borderColor =  UIColor.init(hexString: bgColor).cgColor
-        if isFullWidth{
-             bgColor = "#FFFFFF"
-            textColor = genaralPrimary_textColor
-             cell.bgV.backgroundColor = UIColor.init(hexString: bgColor)
-             cell.layer.borderColor =  BubbleViewLeftTint.cgColor
-        }
-       
+        
         cell.textlabel.font = UIFont(name: mediumCustomFont, size: 12.0)
         cell.textlabel.textAlignment = .center
         cell.textlabel.textColor = UIColor.init(hexString: textColor)
         cell.textlabel.numberOfLines = 2
         cell.imagvWidthConstraint.constant = 0.0
         
+        if variation == "plain"{
+            cell.bgV.backgroundColor = UIColor.clear
+            cell.textlabel.textColor = BubbleViewBotChatTextColor
+            cell.layer.borderColor =  BubbleViewLeftTint.cgColor
+        }else if variation == "textInverted"{
+            cell.bgV.backgroundColor = BubbleViewLeftTint
+            cell.textlabel.textColor = BubbleViewRightTint
+            cell.layer.borderColor =  BubbleViewLeftTint.cgColor
+        }
         
         cell.layer.borderWidth = 1.5
         cell.layer.cornerRadius = 5

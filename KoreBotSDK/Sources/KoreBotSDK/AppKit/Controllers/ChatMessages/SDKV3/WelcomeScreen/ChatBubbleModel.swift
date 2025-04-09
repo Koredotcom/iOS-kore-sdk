@@ -49,8 +49,8 @@ public class ChatBubble : NSObject , Decodable {
     
     public func updateWith(configModel: ChatBubble) -> ChatBubble{
         self.style = (configModel.style == nil || configModel.style == "")  ? style : configModel.style
-        self.icon = (configModel.icon == nil)  ? icon : configModel.icon
-        self.minimise = (configModel.minimise == nil)  ? minimise : configModel.minimise
+        self.icon = configModel.icon != nil ? icon?.updateWith(configModel: configModel.icon!) : icon
+        self.minimise = configModel.minimise != nil ? minimise?.updateWith(configModel: configModel.minimise!) : minimise
         self.sound = (configModel.sound == nil || configModel.sound == "")  ? sound : configModel.sound
         self.alignment = (configModel.alignment == nil || configModel.alignment == "")  ? alignment : configModel.alignment
         self.animation = (configModel.animation == nil || configModel.animation == "")  ? animation : configModel.animation
@@ -85,7 +85,7 @@ public class Minimise : NSObject , Decodable {
     
     public func updateWith(configModel: Minimise) -> Minimise{
         self.show = (configModel.show == nil || configModel.show == "")  ? show : configModel.show
-        self.icon = (configModel.icon == nil)  ? icon : configModel.icon
+        self.icon = configModel.icon != nil ? icon?.updateWith(configModel: configModel.icon!) : icon
         self.theme = (configModel.theme == nil || configModel.theme == "")  ? theme : configModel.theme
         return self
     }

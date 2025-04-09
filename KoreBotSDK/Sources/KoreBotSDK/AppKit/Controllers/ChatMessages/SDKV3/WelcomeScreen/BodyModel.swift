@@ -60,13 +60,13 @@ public class Body: NSObject , Decodable {
     }
     
     public func updateWith(configModel: Body) -> Body{
-        self.background = (configModel.background == nil)  ? background : configModel.background
-        self.font = (configModel.font == nil)  ? font : configModel.font
-        self.user_message = (configModel.user_message == nil)  ? user_message : configModel.user_message
-        self.bot_message = (configModel.bot_message == nil)  ? bot_message : configModel.bot_message
-        self.agent_message = (configModel.agent_message == nil)  ? agent_message : configModel.agent_message
-        self.time_stamp = (configModel.time_stamp == nil)  ? time_stamp : configModel.time_stamp
-        self.icon = (configModel.icon == nil)  ? icon : configModel.icon
+        self.background = configModel.background != nil ? background?.updateWith(configModel: configModel.background!) : background
+        self.font = configModel.font != nil ? font?.updateWith(configModel: configModel.font!) : font
+        self.user_message = configModel.user_message != nil ? user_message?.updateWith(configModel: configModel.user_message!) : user_message
+        self.bot_message = configModel.bot_message != nil ? bot_message?.updateWith(configModel: configModel.bot_message!) : bot_message
+        self.agent_message = configModel.agent_message != nil ? agent_message?.updateWith(configModel: configModel.agent_message!) : agent_message
+        self.time_stamp = configModel.time_stamp != nil ? time_stamp?.updateWith(configModel: configModel.time_stamp!) : time_stamp
+        self.icon = configModel.icon != nil ? icon?.updateWith(configModel: configModel.icon!) : icon
         self.bubble_style = (configModel.bubble_style == nil || configModel.bubble_style == "")  ? bubble_style : configModel.bubble_style
         self.primaryColor = (configModel.primaryColor == nil || configModel.primaryColor == "")  ? primaryColor : configModel.primaryColor
         self.primaryHoverColor = (configModel.primaryHoverColor == nil || configModel.primaryHoverColor == "")  ? primaryHoverColor : configModel.primaryHoverColor
@@ -191,9 +191,9 @@ public class Agent_message : NSObject , Decodable {
         self.bg_color = (configModel.bg_color == nil || configModel.bg_color == "")  ? bg_color : configModel.bg_color
         self.color = (configModel.color == nil || configModel.color == "")  ? color : configModel.color
         self.separator = (configModel.separator == nil || configModel.separator == "")  ? separator : configModel.separator
-        self.icon = (configModel.icon == nil)  ? icon : configModel.icon
-        self.title = (configModel.title == nil)  ? title : configModel.title
-        self.sub_title = (configModel.sub_title == nil)  ? sub_title : configModel.sub_title
+        self.icon =  configModel.icon != nil ? icon?.updateWith(configModel: configModel.icon!) : icon
+        self.title = configModel.title != nil ? title?.updateWith(configModel: configModel.title!) : title
+        self.sub_title = configModel.sub_title != nil ? sub_title?.updateWith(configModel: configModel.sub_title!) : sub_title
         return self
     }
 

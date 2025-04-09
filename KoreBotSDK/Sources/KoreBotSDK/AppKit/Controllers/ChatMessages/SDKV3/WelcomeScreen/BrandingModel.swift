@@ -86,7 +86,7 @@ public class General : NSObject , Decodable {
         self.bot_icon = (configModel.bot_icon == nil || configModel.bot_icon == "")  ? bot_icon : configModel.bot_icon
         self.size = (configModel.size == nil || configModel.size == "")  ? size : configModel.size
         self.themeType = (configModel.themeType == nil || configModel.themeType == "")  ? themeType : configModel.themeType
-        self.generalColors = (configModel.generalColors == nil)  ? generalColors : configModel.generalColors
+        self.generalColors = configModel.generalColors != nil ? generalColors?.updateWith(configModel: configModel.generalColors!) : generalColors
         return self
     }
 

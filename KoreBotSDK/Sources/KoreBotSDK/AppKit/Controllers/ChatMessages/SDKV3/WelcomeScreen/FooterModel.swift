@@ -42,8 +42,8 @@ public class FooterModel: NSObject , Decodable {
         self.bg_color = (configModel.bg_color == nil || configModel.bg_color == "")  ? bg_color : configModel.bg_color
         self.layout = (configModel.layout == nil || configModel.layout == "")  ? layout : configModel.layout
         self.style = (configModel.style == nil || configModel.style == "")  ? style : configModel.style
-        self.compose_bar = (configModel.compose_bar == nil)  ? compose_bar : configModel.compose_bar
-        self.buttons = (configModel.buttons == nil)  ? buttons : configModel.buttons
+        self.compose_bar = configModel.compose_bar != nil ? compose_bar?.updateWith(configModel: configModel.compose_bar!) : compose_bar
+        self.buttons = configModel.buttons != nil ? buttons?.updateWith(configModel: configModel.buttons!) : buttons
         self.icons_color = (configModel.icons_color == nil || configModel.icons_color == "")  ? icons_color : configModel.icons_color
         return self
     }
@@ -136,7 +136,7 @@ public class Menu: NSObject , Decodable {
     public func updateWith(configModel: Menu) -> Menu{
         self.show = (configModel.show == nil)  ? show : configModel.show
         self.icon = (configModel.icon == nil || configModel.icon == "")  ? icon : configModel.icon
-        self.actions = (configModel.actions == nil)  ? actions: configModel.actions
+        //self.actions = configModel.actions != nil ? actions?.updateWith(configModel: configModel.actions!) : actions
         return self
     }
 }

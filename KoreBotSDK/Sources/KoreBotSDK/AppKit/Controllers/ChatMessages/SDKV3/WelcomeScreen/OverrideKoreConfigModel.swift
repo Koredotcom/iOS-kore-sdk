@@ -35,6 +35,7 @@ public class OverrideKoreConfig: NSObject , Decodable {
         self.emoji_short_cut = (configModel.emoji_short_cut == nil)  ? emoji_short_cut : configModel.emoji_short_cut
         self.enable = (configModel.enable == nil)  ? enable : configModel.enable
         self.typing_indicator_timeout = (configModel.typing_indicator_timeout == nil)  ? typing_indicator_timeout : configModel.typing_indicator_timeout
+        self.history = configModel.history != nil ? history?.updateWith(configModel: configModel.history!) : history
         return self
     }
 
@@ -63,9 +64,9 @@ public class OverrideKoreConfigHistory: NSObject , Decodable {
     }
     
     public func updateWith(configModel: OverrideKoreConfigHistory) -> OverrideKoreConfigHistory{
-        self.paginated_scroll = (configModel.paginated_scroll == nil)  ? paginated_scroll : configModel.paginated_scroll
+        self.paginated_scroll = configModel.paginated_scroll != nil ? paginated_scroll?.updateWith(configModel: configModel.paginated_scroll!) : paginated_scroll
         self.enable = (configModel.enable == nil)  ? enable : configModel.enable
-        self.recent = (configModel.recent == nil)  ? recent : configModel.recent
+        self.recent = configModel.recent != nil ? recent?.updateWith(configModel: configModel.recent!) : recent
         return self
     }
 

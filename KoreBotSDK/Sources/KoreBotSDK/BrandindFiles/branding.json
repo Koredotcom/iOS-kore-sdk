@@ -1,91 +1,137 @@
 {
     "general": {
-        "bot_icon": "url",
-        "size": "small|medium|large",
+        "version": 1,
+        "bot_icon": "",
         "themeType": "light",
-        "colors":{"primary":"#a37645",
-            "secondary":"#101828",
-            "primary_text":"#ffffff",
-            "secondary_text":"#1d2939",
-            "useColorPaletteOnly":true
+        "widgetPanel": false,
+        "colors": {
+            "primary": "#175CD3",
+            "secondary": "#EAECF0",
+            "primary_text": "#101828",
+            "secondary_text": "#FFFFFF",
+            "useColorPaletteOnly": true
+        },
+        "sounds": {
+            "enable": false,
+            "on_audio_call": {
+                "name": "Sound1",
+                "type": "default",
+                "url": "https://platform.kore.ai/assets/websdkthemes/on_audio_call.wav",
+                "fileId": ""
+            },
+            "on_close": {
+                "name": "Sound1",
+                "type": "default",
+                "url": "https://platform.kore.ai/assets/websdkthemes/on_close.wav",
+                "fileId": ""
+            },
+            "on_msg_send": {
+                "name": "Sound1",
+                "type": "default",
+                "url": "https://platform.kore.ai/assets/websdkthemes/on_msg_send.wav",
+                "fileId": ""
+            },
+            "on_new_msg": {
+                "name": "Sound1",
+                "type": "default",
+                "url": "https://platform.kore.ai/assets/websdkthemes/on_new_msg.wav",
+                "fileId": ""
+            },
+            "on_open": {
+                "name": "Sound1",
+                "type": "default",
+                "url": "https://platform.kore.ai/assets/websdkthemes/on_open.wav",
+                "fileId": ""
+            },
+            "on_proactive_msg": {
+                "name": "Sound1",
+                "type": "default",
+                "url": "https://platform.kore.ai/assets/websdkthemes/on_proactive_message.wav",
+                "fileId": ""
+            },
+            "on_video_call": {
+                "name": "Sound1",
+                "type": "default",
+                "url": "https://platform.kore.ai/assets/websdkthemes/on_video_call.wav",
+                "fileId": ""
+            }
         }
     },
     "chat_bubble": {
         "style": "rounded",
         "icon": {
-            "icon_url": "url2",
-            "size": "medium",
-            "shape": "square"
+            "icon_url": "icon-1",
+            "size": "small",
+            "type": "default",
+            "fileId": ""
         },
         "minimise": {
-            "icon": "url4",
-            "theme": "rectangle"
+            "icon": "icon-m-1",
+            "theme": "rounded",
+            "type": "default",
+            "fileId": ""
+        },
+        "proactive": {
+            "show": true,
+            "header": "Hello",
+            "messages": [
+                {
+                    "title": "Welcome to support"
+                },
+                {
+                    "title": "Can I help you any way?"
+                }
+            ],
+            "buttons": [
+                {
+                    "title": "Send Message",
+                    "type": "postback",
+                    "value": ""
+                }
+            ]
         },
         "sound": "themeOne",
-        "alignment": "block",
+        "alignment": "inline",
         "animation": "slide",
-        "expand_animation": "quick",
-        "primary_color": "#4B4EDE",
-        "secondary_color": "#4B4EDE"
+        "expand_animation": "minimize",
+        "primary_color": "#175CD3",
+        "secondary_color": "#FFFFFF"
     },
     "welcome_screen": {
         "show": true,
         "layout": "medium",
         "logo": {
-            "logo_url": "/images/sc-small.svg"
+            "logo_url": "https://platform.kore.ai/assets/websdkthemes/kore.png",
+            "type": "default",
+            "name": "kore.ai",
+            "fileId": ""
         },
         "title": {
-            "name": "Hello",
-            "color": "#ffffff"
+            "name": "Hello"
         },
         "sub_title": {
-            "name": "Welcome to Kore.ai",
-            "color": "#ffffff"
+            "name": "Welcome to Kore.ai"
         },
         "note": {
-            "name": "Our Community is ready to help you to join our best platform",
-            "color": "#ffffff"
+            "name": "Our Community is ready to help you to join our best platform"
         },
         "background": {
-            "type": "imagee",
-            "color": "#4B4EDE",
-            "img": "https://picsum.photos/seed/picsum/200/300"
-            },
+            "type": "color",
+            "color": "#175CD3",
+            "name": "bg.png",
+            "img": "https://picsum.photos/seed/picsum/200/300",
+            "imgType": "default",
+            "fileId": ""
+        },
         "top_fonts": {
-            "color": "#ffffff"
+            "color": "#FFFFFF"
         },
         "bottom_background": {
-            "color": "#4B4EDE"
+            "color": "#EAECF0"
         },
-        "templates": [],
-        "static_links": {
-            "show": true,
-            "layout": "carousel",
-            "links": [{
-                "title": "Community",
-                "description": "The US mobile number comes with two sims cards meant for GSM & LTE",
-                "action": {
-                    "type": "url",
-                    "value": "https://www.google.co.in/"
-                }
-            }]
-        },
-        "promotional_content": {
-        "show": true,
-        "promotions": [{
-        "banner": "https://picsum.photos/seed/picsum/200/300",
-        "action": {
-        "type": "url",
-        "value": "http://abc.com"
-        }
-        },
-        {
-        "banner": "https://picsum.photos/seed/picsum/200/300",
-        "action": {
-        "type": "url",
-        "value": "http://abc.com"
-        }
-        }]
+        "widgets": {
+            "show": false,
+            "widgetItems": []
         },
         "starter_box": {
             "show": true,
@@ -95,191 +141,233 @@
             "title": "Start New Conversation",
             "sub_text": "I'm your personal assistant I'm here to help",
             "start_conv_button": {
-                "color": "#4B4EDE"
+                "color": "#175CD3"
             },
             "start_conv_text": {
-                "color": "#ffffff"
+                "color": "#FFFFFF"
             },
             "quick_start_buttons": {
                 "show": true,
                 "style": "slack",
-                "buttons": [{
-                    "title": "Contact Sales",
+                "buttons": [
+                    {
+                        "title": "Hello",
+                        "action": {
+                            "type": "postback",
+                            "value": "Hello"
+                        }
+                    },
+                    {
+                        "title": "What can you do?",
+                        "action": {
+                            "type": "postback",
+                            "value": "What can you do?"
+                        }
+                    },
+                    {
+                        "title": "Connect to an Agent",
+                        "action": {
+                            "type": "postback",
+                            "value": "Connect to an Agent"
+                        }
+                    }
+                ],
+                "input": "button",
+                "action": {
+                    "type": "postback",
+                    "value": "Start Conversation"
+                }
+            }
+        },
+        "static_links": {
+            "show": true,
+            "layout": "carousel",
+            "links": [
+                {
+                    "title": "New Products",
+                    "description": "We have some exciting news and have released a few new products!",
                     "action": {
-                        "type": "postback",
-                        "value": "Contact Sales"
+                        "type": "url",
+                        "value": "https://kore.ai/"
                     }
                 },
                 {
-                    "title": "Free Trail",
+                    "title": "Platform Release",
+                    "description": "Kore.ai Unveils Generative AI, Large Language Models in XO Platform",
                     "action": {
-                        "type": "postback",
-                        "value": "Free Trail"
+                        "type": "url",
+                        "value": "https://kore.ai/"
                     }
                 },
                 {
-                    "title": "Support",
-                    "action": {
-                        "type": "postback",
-                        "value": "Support"
-                    }
-                },
-                {
-                    "title": "Hours of Operation",
-                    "action": {
-                        "type": "postback",
-                        "value": "Hours of Operation"
-                    }
-                },
-                {
-                    "title": "Kore.ai",
+                    "title": "Community",
+                    "description": "Visit our community site and get answers from our experts and user’s like you.",
                     "action": {
                         "type": "url",
                         "value": "https://kore.ai/"
                     }
                 }
-                ],
-                "input": "button",
-                "action": {
-                    "type": "url",
-                    "value": "https://abc.comrf"
+            ]
+        },
+        "promotional_content": {
+            "show": true,
+            "promotions": [
+                {
+                    "banner": "https://platform.kore.ai/assets/websdkthemes/kore_banner.png",
+                    "type": "default",
+                    "action": {
+                        "type": "url",
+                        "value": "https://kore.ai"
+                    },
+                    "name": "kore.png",
+                    "fileId": ""
                 }
-            }
+            ]
         }
     },
     "header": {
-        "bg_color": "#ffffff",
-        "size": "large",
-        "style": "translucent",
+        "bg_color": "#EAECF0",
+        "size": "compact",
         "icon": {
             "show": true,
-            "icon_url": "/images/avatar-bot.svg",
-            "color": "#ffffff"
+            "icon_url": "icon-1",
+            "type": "default",
+            "fileId": ""
         },
+        "icons_color": "#101828",
         "title": {
-            "name": "Bot",
-            "color": "#000000"
+            "name": "",
+            "color": "#101828"
         },
         "sub_title": {
             "name": "Your personal assistant",
-            "color": "#000000"
+            "color": "#101828"
         },
         "buttons": {
             "close": {
                 "show": true,
-                "icon": "/images/close-large.svg"
+                "icon": ""
             },
             "minimise": {
-                "show": "true|false",
-                "icon": "url|icomoon"
+                "show": false,
+                "icon": ""
             },
             "expand": {
-                "show": "true|false",
-                "icon": "url|icomoon"
+                "show": false,
+                "icon": ""
             },
             "reconnect": {
-                "show": "true|false",
-                "icon": "url|icomoon"
+                "show": true,
+                "icon": ""
             },
             "help": {
                 "show": true,
                 "action": {
-                    "type": "postback",
-                    "value": "help",
-                    "icon": "url|icomoon"
+                    "type": "postback|url",
+                    "value": "https://kore.ai/",
+                    "icon": ""
                 }
             },
             "live_agent": {
                 "show": true,
                 "action": {
-                    "type": "url",
-                    "value": "http://abc.cocd",
-                    "icon": "url|icomoon"
+                    "type": "postback|url",
+                    "value": "connect to agent",
+                    "icon": ""
                 }
             }
         }
     },
     "footer": {
-        "bg_color": "#EEF2F6",
+        "bg_color": "#EAECF0",
         "layout": "keypad",
-        "style": "translucent",
         "compose_bar": {
-            "bg_color": "#fffffe",
-            "outline-color": "#E5E5E5",
+            "bg_color": "#FFFFFE",
+            "outline-color": "#175CD3",
             "placeholder": "Type a message"
         },
+        "icons_color": "#101828",
         "buttons": {
             "menu": {
                 "show": true,
-                "icon": "url|icomoon",
-                "actions": [{
-                    "title": "Get Balance",
-                    "type": "postback",
-                    "value": "Get Balance",
-                    "icon": "url|icomoon"
-                },
-                {
-                    "title": "Get Transactions",
-                    "type": "postback",
-                    "value": "Get Transactions",
-                    "icon": "url|icomoon"
-                },
-                {
-                    "title": "Kore.ai",
-                    "type": "url",
-                    "value": "https://kore.ai/",
-                    "icon": "url|icomoon"
-                }
+                "icon_color": "#101828",
+                "actions": [
+                    {
+                        "title": "About",
+                        "type": "postback",
+                        "value": "About",
+                        "icon": ""
+                    },
+                    {
+                        "title": "Kore.ai",
+                        "type": "url",
+                        "value": "https://kore.ai/",
+                        "icon": ""
+                    }
                 ]
             },
             "emoji": {
                 "show": false,
-                "icon": "url|icomoon"
+                "icon": ""
             },
             "microphone": {
                 "show": true,
-                "icon": "url|icomoon"
+                "icon": ""
             },
             "attachment": {
                 "show": true,
-                "icon": "url|icomoon"
+                "icon": ""
+            },
+            "speaker": {
+                "show": false,
+                "icon": ""
+            },
+            "send_button": {
+                "show": true,
+                "icon": ""
             }
         }
     },
     "body": {
         "background": {
-            "type": "image",
-            "color": "#0D6EFD",
-            "img": "https://abc.com"
+            "type": "color",
+            "color": "#FFFFFF",
+            "img": "https://platform.kore.ai/assets/websdkthemes/background.png",
+            "imgType": "default",
+            "name": "bg.png",
+            "fileId": ""
         },
         "font": {
-            "family": "Impact",
+            "family": "Inter",
             "size": "medium",
-            "style": "1|2|3"
+            "style": ""
         },
         "user_message": {
-            "bg_color": "#4B4EDE",
-            "color": "#ffffff"
+            "bg_color": "#175CD3",
+            "color": "#FFFFFF"
         },
         "bot_message": {
-            "bg_color": "#EEF2F6",
-            "color": "#000000"
+            "bg_color": "#EAECF0",
+            "color": "#101828"
         },
         "agent_message": {
-            "bg_color": "#0D6EFD",
-            "color": "#0D6EFD",
-            "separator": "2",
+            "bg_color": "#EAECF0",
+            "color": "#101828",
+            "separator": "1",
             "icon": {
-                "show": "true|false",
-                "icon_url": "icomoon|url"
+                "show": true,
+                "icon_url": "https://platform.kore.ai/assets/websdkthemes/agent.jpg",
+                "type": "default"
             },
             "title": {
-                "name": "kore.aissss",
-                "color": "#0D6EFD"
+                "name": "Kore Agent",
+                "color": "#101828",
+                "type": "default"
             },
             "sub_title": {
-                "name": "your personal assistants",
-                "color": "#0D6EFD"
+                "name": "Agent servcie",
+                "color": "#101828",
+                "type": "default"
             }
         },
         "time_stamp": {
@@ -287,7 +375,13 @@
             "show_type": "always",
             "position": "top",
             "separator": "line",
-            "color": "#4B4EDE"
+            "color": "#101828",
+            "time_format": "12",
+            "date_format": "dd/mm/yyyy"
+        },
+        "typing_indicator": {
+            "icon": "",
+            "show": true
         },
         "icon": {
             "show": true,
@@ -295,12 +389,45 @@
             "bot_icon": true,
             "agent_icon": true
         },
+        "buttons": {
+            "bg_color": "red",
+            "color": "white"
+        },
         "bubble_style": "balloon",
-        "primaryColor": "#3f42d4",
-        "primaryHoverColor": "#de4bbc",
-        "secondaryColor": "#3639e6",
-        "secondaryHoverColor": "#b1b2f9",
-        "img": "6495705b0d5bbd027d2e39ad"
+        "bot_name": {
+            "show": true,
+            "name": "",
+            "show_type": "always",
+            "position": "top"
+        }
+    },
+    "widget_panel": {
+        "colors": {
+            "bg_color": "#FFFFFF",
+            "color": "#101828",
+            "sel_bg_color": "#EAECF0",
+            "sel_color": "#101828"
+        }
+    },
+    "override_kore_config": {
+        "enable": false,
+        "emoji_short_cut": true,
+        "typing_indicator_timeout": 10000,
+        "location": {
+            "enable": true,
+            "google_maps_API_key": ""
+        },
+        "history": {
+            "enable": true,
+            "recent": {
+                "batch_size": 10
+            },
+            "paginated_scroll": {
+                "enable": true,
+                "batch_size": 10,
+                "loading_label": "Loading old messages"
+            }
+        }
     }, "emojis":{
         "<3":"2764",
         "</3":"1f494",

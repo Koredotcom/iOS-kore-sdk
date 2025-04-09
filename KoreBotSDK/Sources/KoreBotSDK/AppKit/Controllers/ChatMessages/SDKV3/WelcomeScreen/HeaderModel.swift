@@ -48,10 +48,10 @@ public class HeaderModel : NSObject , Decodable {
         self.bg_color = (configModel.bg_color == bg_color || configModel.bg_color == "")  ? bg_color : configModel.bg_color
         self.size = (configModel.size == nil || configModel.size == "")  ? size : configModel.size
         self.style = (configModel.style == nil || configModel.style == "")  ? style : configModel.style
-        self.icon = (configModel.icon == nil)  ? icon : configModel.icon
-        self.title = (configModel.title == nil)  ? title : configModel.title
-        self.sub_title = (configModel.sub_title == nil)  ? sub_title : configModel.sub_title
-        self.buttons = (configModel.buttons == nil)  ? buttons : configModel.buttons
+        self.icon = configModel.icon != nil ? icon?.updateWith(configModel: configModel.icon!) : icon
+        self.title = configModel.title != nil ? title?.updateWith(configModel: configModel.title!) : title
+        self.sub_title = configModel.sub_title != nil ? sub_title?.updateWith(configModel: configModel.sub_title!) : sub_title
+        self.buttons = configModel.buttons != nil ? buttons?.updateWith(configModel: configModel.buttons!) : buttons
         self.icons_color = (configModel.icons_color == nil || configModel.icons_color == "")  ? icons_color : configModel.icons_color
         return self
     }

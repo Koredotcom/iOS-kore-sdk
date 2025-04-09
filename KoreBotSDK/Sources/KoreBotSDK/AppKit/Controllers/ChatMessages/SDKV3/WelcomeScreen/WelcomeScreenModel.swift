@@ -66,17 +66,17 @@ public class WelcomeScreen: NSObject , Decodable {
     public func updateWith(configModel: WelcomeScreen) -> WelcomeScreen{
         self.show = (configModel.show == nil)  ? show : configModel.show
         self.layout = (configModel.layout == nil || configModel.layout == "")  ? layout : configModel.layout
-        self.background = (configModel.background == nil)  ? background : configModel.background
-        self.bottom_background = (configModel.bottom_background == nil)  ? bottom_background : configModel.bottom_background
-        self.logo = (configModel.logo == nil)  ? logo : configModel.logo
-        self.note = (configModel.note == nil)  ? note : configModel.note
-        self.starter_box = (configModel.starter_box == nil)  ? starter_box : configModel.starter_box
-        self.sub_title = (configModel.sub_title == nil)  ? sub_title : configModel.sub_title
-        self.templates = (configModel.templates == nil)  ? templates : configModel.templates
-        self.title = (configModel.title == nil)  ? title : configModel.title
-        self.top_fonts = (configModel.top_fonts == nil)  ? top_fonts : configModel.top_fonts
-        self.static_links = (configModel.static_links == nil)  ? static_links : configModel.static_links
-        self.promotional_content = (configModel.promotional_content == nil)  ? promotional_content : configModel.promotional_content
+        self.background = configModel.background != nil ? background?.updateWith(configModel: configModel.background!) : background
+        self.bottom_background = configModel.bottom_background != nil ? bottom_background?.updateWith(configModel: configModel.bottom_background!) : bottom_background
+        self.logo = configModel.logo != nil ? logo?.updateWith(configModel: configModel.logo!) : logo
+        self.note = configModel.note != nil ? note?.updateWith(configModel: configModel.note!) : note
+        self.starter_box = configModel.starter_box != nil ? starter_box?.updateWith(configModel: configModel.starter_box!) : starter_box
+        self.sub_title = configModel.sub_title != nil ? sub_title?.updateWith(configModel: configModel.sub_title!) : sub_title
+        //self.templates = configModel.templates != nil ? templates?.updateWith(configModel: configModel.templates!) : templates
+        self.title = configModel.title != nil ? title?.updateWith(configModel: configModel.title!) : title
+        self.top_fonts = configModel.top_fonts != nil ? top_fonts?.updateWith(configModel: configModel.top_fonts!) : top_fonts
+        self.static_links = configModel.static_links != nil ? static_links?.updateWith(configModel: configModel.static_links!) : static_links
+        self.promotional_content = configModel.promotional_content != nil ? promotional_content?.updateWith(configModel: configModel.promotional_content!) : promotional_content
         return self
     }
 }
@@ -307,12 +307,12 @@ public class StarterBox: NSObject , Decodable {
     
     public func updateWith(configModel: StarterBox) -> StarterBox{
         self.show = (configModel.show == nil)  ? show : configModel.show
-        self.icon = (configModel.icon == nil)  ? icon : configModel.icon
+        self.icon = configModel.icon != nil ? icon?.updateWith(configModel: configModel.icon!) : icon
         self.title = (configModel.title == nil || configModel.title == "")  ? title : configModel.title
         self.sub_text = (configModel.sub_text == nil || configModel.sub_text == "")  ? sub_text : configModel.sub_text
-        self.start_conv_button = (configModel.start_conv_button == nil)  ? start_conv_button : configModel.start_conv_button
-        self.start_conv_text = (configModel.start_conv_text == nil)  ? start_conv_text : configModel.start_conv_text
-        self.quick_start_buttons = (configModel.quick_start_buttons == nil)  ? quick_start_buttons : configModel.quick_start_buttons
+        self.start_conv_button =  configModel.start_conv_button != nil ? start_conv_button?.updateWith(configModel: configModel.start_conv_button!) : start_conv_button
+        self.start_conv_text =  configModel.start_conv_text != nil ? start_conv_text?.updateWith(configModel: configModel.start_conv_text!) : start_conv_text
+        self.quick_start_buttons =  configModel.quick_start_buttons != nil ? quick_start_buttons?.updateWith(configModel: configModel.quick_start_buttons!) : quick_start_buttons
         return self
     }
 }
@@ -430,9 +430,9 @@ public class Quick_start_buttons: NSObject , Decodable {
     public func updateWith(configModel: Quick_start_buttons) -> Quick_start_buttons{
         self.show = (configModel.show == nil)  ? show : configModel.show
         self.style = (configModel.style == nil || configModel.style == "")  ? style : configModel.style
-        self.buttons = (configModel.buttons == nil)  ? buttons : configModel.buttons
+        //self.buttons = configModel.buttons != nil ? buttons?.updateWith(configModel: configModel.buttons!) : buttons
         self.input = (configModel.input == nil || configModel.input == "")  ? input : configModel.input
-        self.action = (configModel.action == nil)  ? action : configModel.action
+        self.action = configModel.action != nil ? action?.updateWith(configModel: configModel.action!) : action
         return self
     }
 }
@@ -461,7 +461,7 @@ public class Static_links: NSObject , Decodable {
     public func updateWith(configModel: Static_links) -> Static_links{
         self.show = (configModel.show == nil)  ? show : configModel.show
         self.layout = (configModel.layout == nil || configModel.layout == "")  ? layout : configModel.layout
-        self.links = (configModel.links == nil)  ? links : configModel.links
+        //self.links = configModel.links != nil ? links?.updateWith(configModel: configModel.links!) : links
         return self
     }
 
@@ -521,17 +521,17 @@ public class Buttons: NSObject , Decodable {
     
     public func updateWith(configModel: Buttons) -> Buttons{
         self.title = (configModel.title == nil || configModel.title == "")  ? title : configModel.title
-        self.action = (configModel.action == nil)  ? action : configModel.action
-        self.close = (configModel.close == nil)  ? close : configModel.close
-        self.expand = (configModel.expand == nil)  ? expand : configModel.expand
-        self.help = (configModel.help == nil)  ? help : configModel.help
-        self.live_agent = (configModel.live_agent == nil)  ? live_agent : configModel.live_agent
-        self.minimise = (configModel.minimise == nil)  ? minimise : configModel.minimise
-        self.reconnect = (configModel.reconnect == nil)  ? reconnect : configModel.reconnect
-        self.menu = (configModel.menu == nil)  ? menu : configModel.menu
-        self.emoji = (configModel.emoji == nil)  ? emoji : configModel.emoji
-        self.microphone = (configModel.microphone == nil)  ? microphone : configModel.microphone
-        self.attachment = (configModel.attachment == nil)  ? attachment : configModel.attachment
+        self.action = configModel.action != nil ? action?.updateWith(configModel: configModel.action!) : action
+        self.close = configModel.close != nil ? close?.updateWith(configModel: configModel.close!) : close
+        self.expand = configModel.expand != nil ? expand?.updateWith(configModel: configModel.expand!) : expand
+        self.help = configModel.help != nil ? help?.updateWith(configModel: configModel.help!) : help
+        self.live_agent = configModel.live_agent != nil ? live_agent?.updateWith(configModel: configModel.live_agent!) : live_agent
+        self.minimise = configModel.minimise != nil ? minimise?.updateWith(configModel: configModel.minimise!) : minimise
+        self.reconnect = configModel.reconnect != nil ? reconnect?.updateWith(configModel: configModel.reconnect!) : reconnect
+        self.menu = configModel.menu != nil ? menu?.updateWith(configModel: configModel.menu!) : menu
+        self.emoji = configModel.emoji != nil ? emoji?.updateWith(configModel: configModel.emoji!) : emoji
+        self.microphone = configModel.microphone != nil ? microphone?.updateWith(configModel: configModel.microphone!) : microphone
+        self.attachment = configModel.attachment != nil ? attachment?.updateWith(configModel: configModel.attachment!) : attachment
         return self
     }
 
@@ -589,7 +589,7 @@ public class Links : NSObject , Decodable {
     public func updateWith(configModel: Links) -> Links{
         self.title = (configModel.title == nil || configModel.title == "")  ? title : configModel.title
         self.descrip = (configModel.descrip == nil || configModel.descrip == "")  ? descrip : configModel.descrip
-        self.action = (configModel.action == nil)  ? action : configModel.action
+        self.action = configModel.action != nil ? action?.updateWith(configModel: configModel.action!) : action
         return self
     }
 }
@@ -638,7 +638,7 @@ public class Help : NSObject , Decodable {
     
     public func updateWith(configModel: Help) -> Help{
         self.show = (configModel.show == nil)  ? show : configModel.show
-        self.action = (configModel.action == nil)  ? action : configModel.action
+        self.action = configModel.action != nil ? action?.updateWith(configModel: configModel.action!) : action
         return self
     }
 
@@ -664,7 +664,7 @@ public class LiveAgent : NSObject , Decodable {
     
     public func updateWith(configModel: LiveAgent) -> LiveAgent{
         self.show = (configModel.show == nil)  ? show : configModel.show
-        self.action = (configModel.action == nil)  ? action : configModel.action
+        self.action = configModel.action != nil ? action?.updateWith(configModel: configModel.action!) : action
         return self
     }
 }
@@ -689,7 +689,7 @@ public class Promotional_Content : NSObject , Decodable {
 
     public func updateWith(configModel: Promotional_Content) -> Promotional_Content{
         self.show = (configModel.show == nil)  ? show : configModel.show
-        self.promotions = (configModel.promotions == nil)  ? promotions : configModel.promotions
+        //self.promotions = configModel.promotions != nil ? promotions?.updateWith(configModel: configModel.promotions!) : promotions
         return self
     }
 }
@@ -713,7 +713,7 @@ public class Promotions : NSObject , Decodable {
 
     public func updateWith(configModel: Promotions) -> Promotions{
         self.banner = (configModel.banner == nil)  ? banner : configModel.banner
-        self.action = (configModel.action == nil)  ? action : configModel.action
+        self.action = configModel.action != nil ? action?.updateWith(configModel: configModel.action!) : action
         return self
     }
 }
