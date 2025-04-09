@@ -105,7 +105,9 @@ open class BotConnect: NSObject {
     public func setBrandingConfig(configTheme:BrandingModel){
         overRideBrandingTheme = configTheme
     }
-    
+    public func socketDisconnect(){
+        isShowWelcomeMsg = true
+    }
     public func initialize(_ clientId: String, clientSecret: String, botId: String, chatBotName: String, identity: String, isAnonymous: Bool, isWebhookEnabled: Bool, JWTServerUrl: String, BOTServerUrl: String, BrandingUrl: String, customData: [String: Any], queryParameters:[[String: Any]], customJWToken: String){
         
         SDKConfiguration.botConfig.clientId = clientId as String

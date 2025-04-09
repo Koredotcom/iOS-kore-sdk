@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
     s.name = 'KoreBotSDK'
-    s.version = '0.1.2'
-    s.license  = {:type => 'MIT', :file => 'KoreBotSDK/LICENSE' }
+    s.version = '1.0.7'
+    s.license  = {:type => 'MIT', :file => 'LICENSE' }
     s.summary = 'KoreBotSDK lets a user interact with Kore bots'
     s.homepage = 'https://kore.ai'
     s.author = {'Srinivas Vasadi' => 'srinivas.vasadi@kore.com'}
@@ -13,8 +13,8 @@ Pod::Spec.new do |s|
 
     s.swift_version = '4.2'
     s.ios.deployment_target = '12.0'
-    s.source_files = 'KoreBotSDK/**/*.{h,m,swift}'
-    s.resources = ['KoreBotSDK/**/*.{xcdatamodeld}', 'KoreBotSDK/**/*.{xcassets}','KoreBotSDK/**/*.xib','KoreBotSDK/Widgets/**/**/*.xib','KoreBotSDK/**/*.json','KoreBotSDK/**/*.lproj']
+    s.source_files = 'Sources/**/*.{h,m,swift}'
+    s.resources = ['Sources/**/*.{xcdatamodeld}', 'Sources/**/*.{xcassets}','Sources/**/*.xib','Sources/Widgets/**/**/*.xib','Sources/**/*.json','Sources/**/*.lproj']
     s.dependency 'Alamofire'
     s.dependency 'AlamofireImage'
     s.dependency 'Starscream'

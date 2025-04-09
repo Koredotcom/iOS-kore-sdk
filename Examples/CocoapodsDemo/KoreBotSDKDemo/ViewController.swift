@@ -32,12 +32,26 @@ class ViewController: UIViewController {
     */
     
     @IBAction func connectBtnAction(_ sender: Any) {
-        let clientId = "cs-8fa81912-0b49-544a-848e-1ce84e7d2df6" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
-        let clientSecret = "DnY4BIXBR0Ytmvdb3yI3Lvfri/iDc/UOsxY2tChs7SY=" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
-        let botId =  "st-f59fda8f-e42c-5c6a-bc55-3395c109862a" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
-        let chatBotName = "SDK Demo" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
+//        let clientId = "cs-8fa81912-0b49-544a-848e-1ce84e7d2df6" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
+//        let clientSecret = "DnY4BIXBR0Ytmvdb3yI3Lvfri/iDc/UOsxY2tChs7SY=" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
+//        let botId =  "st-f59fda8f-e42c-5c6a-bc55-3395c109862a" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
+//        let chatBotName = "SDK Demo" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
+//        let identity = "test@gmail.com"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
+//        let isAnonymous = true // This should be either true (in case of known-user) or false (in-case of anonymous user).
+//        let isWebhookEnabled = false // This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
+//        let customData : [String: Any] = [:]
+//        let queryParameters: [[String: Any]] = [] //[["q1":true],["q2":"ios"],["q3":"1"]]
+//        let customJWToken: String = ""  //This should represent the subject for send own JWToken.
+//        let JWT_SERVER = String(format: "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
+//        let BOT_SERVER = String(format: "https://platform.kore.ai")
+//        let Branding_SERVER = String(format: "https://platform.kore.ai")
+        
+        let clientId = "cs-8fa81912-0b49-544a-848e-1ce84e7d2df6"//"cs-1b1ed162-2c62-543f-9bdd-d56cc7a89b4a" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
+        let clientSecret = "DnY4BIXBR0Ytmvdb3yI3Lvfri/iDc/UOsxY2tChs7SY="//"d/DK0fQrA7Ab/6jGIgGB6sVZxjGWJKC17QNRmtFq0go=" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
+        let botId =  "st-f59fda8f-e42c-5c6a-bc55-3395c109862a"//"st-0c3be6e0-3f7c-5134-97f9-2d14d7ca922c" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
+        let chatBotName = "v3_Templates" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
         let identity = "test@gmail.com"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
-        let isAnonymous = true // This should be either true (in case of known-user) or false (in-case of anonymous user).
+        let isAnonymous = false // This should be either true (in case of known-user) or false (in-case of anonymous user).
         let isWebhookEnabled = false // This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
         let customData : [String: Any] = [:]
         let queryParameters: [[String: Any]] = [] //[["q1":true],["q2":"ios"],["q3":"1"]]
@@ -46,11 +60,51 @@ class ViewController: UIViewController {
         let BOT_SERVER = String(format: "https://platform.kore.ai")
         let Branding_SERVER = String(format: "https://platform.kore.ai")
         
+//        let clientId = "cs-8dbe60f4-bc93-5559-a617-2ef173d5e827"//"cs-1b1ed162-2c62-543f-9bdd-d56cc7a89b4a" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
+//        let clientSecret = "+gyZIjtPUyQukO4bkfooQ52c/HNSekY8iULhfcJy4kw="//"d/DK0fQrA7Ab/6jGIgGB6sVZxjGWJKC17QNRmtFq0go=" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
+//        let botId =  "st-6b9d6fb9-e7ea-571c-b2cd-a6184e10af2a"//"st-0c3be6e0-3f7c-5134-97f9-2d14d7ca922c" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
+//        let chatBotName = "v3_Templates" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
+//        let identity = "test@gmail.com"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
+//        let isAnonymous = false // This should be either true (in case of known-user) or false (in-case of anonymous user).
+//        let isWebhookEnabled = false // This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
+//        let customData : [String: Any] = [:]
+//        let queryParameters: [[String: Any]] = [] //[["q1":true],["q2":"ios"],["q3":"1"]]
+//        let customJWToken: String = ""  //This should represent the subject for send own JWToken.
+//        let JWT_SERVER = String(format: "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
+//        let BOT_SERVER = String(format: "https://platform.kore.ai")
+//        let Branding_SERVER = String(format: "https://platform.kore.ai")
+        
         // MARK: Set Bot Config
         botConnect.initialize(clientId, clientSecret: clientSecret, botId: botId, chatBotName: chatBotName, identity: identity, isAnonymous: isAnonymous, isWebhookEnabled: isWebhookEnabled, JWTServerUrl: JWT_SERVER, BOTServerUrl: BOT_SERVER, BrandingUrl: Branding_SERVER, customData: customData, queryParameters: queryParameters, customJWToken: customJWToken)
         
+        //botConnect.setBottomStatusBarBackgroundColor(bgColor: .green)
+        //botConnect.setStatusBarBackgroundColor(bgColor: .red)
+        
+        // MARK: Local Branding
+        if let path = Bundle.main.path(forResource: "localbranding", ofType: "json") {
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+                
+                let jsonDecoder = JSONDecoder()
+                guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonResult as Any , options: .prettyPrinted),
+                      let activeTheme = try? jsonDecoder.decode(BrandingModel.self, from: jsonData) else {
+                    return
+                }
+                botConnect.setBrandingConfig(configTheme: activeTheme)
+            } catch {
+            }
+        }
+        
         // MARK: Show Bot window
         botConnect.show()
+        
+        // MARK: Close Or Minimize Callbacks
+        botConnect.closeOrMinimizeEvent = { (eventDic) in
+           if let dic = eventDic {
+               print(dic)
+           }
+       }
     }
 }
 
