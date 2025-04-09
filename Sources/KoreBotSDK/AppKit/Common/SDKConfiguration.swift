@@ -41,6 +41,8 @@ class SDKConfiguration: NSObject {
         public static var customJWToken : String = "" //This should represent the subject for send own JWToken.
         
         static var isShowChatHistory = true // Set true to Show chat history or false hide chat history.
+        
+        public static var deviceToken:Data? =  nil
     }
     
     struct serverConfig {

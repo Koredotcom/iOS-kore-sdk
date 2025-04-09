@@ -16,6 +16,7 @@ open class BotConnect: NSObject {
     public var showQuickRepliesBottom = true
     public var closeOrMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
     public var closeAgentChatEventName = "close_agent_chat"
+    public var device_Token: Data? = nil
     public var networkOnResumeCallingHistory = true
     public var koreSDkLanguage = "en"
     public var composeBar_Placeholder = ""
@@ -28,6 +29,7 @@ open class BotConnect: NSObject {
     public var confirm_Title = ""
     public var please_Try_Again = ""
     public var sessionExpiry_Msg = ""
+    
     // MARK: - init
     public override init() {
         super.init()
@@ -76,6 +78,7 @@ open class BotConnect: NSObject {
     }
     func customSettings(){
         isNetworkOnResumeCallingHistory = networkOnResumeCallingHistory
+        SDKConfiguration.botConfig.deviceToken = device_Token
     }
     
     func filesUpload(){

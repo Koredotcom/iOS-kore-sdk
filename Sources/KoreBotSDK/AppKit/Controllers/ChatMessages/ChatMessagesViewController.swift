@@ -268,6 +268,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         alertController.addAction(UIAlertAction(title: closeBtnTitle, style: .default)
                   { action -> Void in
                         isShowWelcomeMsg = true
+                        self.unsubscribeNotifications()
                         let dic = ["event_code": "BotClosed", "event_message": "Bot closed by the user"]
                         self.closeAndMinimizeEvent(dic)
                        if isAgentConnect{
@@ -1075,6 +1076,7 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     @objc func willTerminate(_ notification: Notification) {
+        self.unsubscribeNotifications()
         if isAgentConnect{
             self.botClient.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
             sleep(1)
@@ -2689,6 +2691,7 @@ extension ChatMessagesViewController{
         self.configureComposeBar()
         self.configureAudioComposer()
         self.configureIncomingCallView()
+        subscribeNotifications()
         if let footerDic = brandingValues.footer{
             if statusBarBottomBackgroundColor == nil{
                 footerStatusBarView.backgroundColor = UIColor.init(hexString: footerDic.bg_color ?? "#FFFFFF")
@@ -2779,6 +2782,24 @@ extension ChatMessagesViewController{
         addMessages(message, "")
     }
 
+    func subscribeNotifications(){
+        if let deviceToken = SDKConfiguration.botConfig.deviceToken{
+            self.botClient.subscribeToNotifications(deviceToken) { succes in
+                print("subscribe Notifications")
+            } failure: { error in
+                print(error)
+            }
+        }
+    }
+    func unsubscribeNotifications(){
+        if let deviceToken = SDKConfiguration.botConfig.deviceToken{
+            self.botClient.unsubscribeToNotifications(deviceToken) { succes in
+                print("unsubscribe Notifications")
+            } failure: { error in
+                print(error)
+            }
+        }
+    }
     
     func showAlert(title: String, message: String) {
         
