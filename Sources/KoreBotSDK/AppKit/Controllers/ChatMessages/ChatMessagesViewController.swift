@@ -22,7 +22,7 @@ import ObjectMapper
 import ObjcSupport
 #endif
 
-class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate, WelcomeScreenViewDelegate, ArticleViewDelegate, OTPValidationDelegate, resetPinDelegate {
+public class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate, WelcomeScreenViewDelegate, ArticleViewDelegate, OTPValidationDelegate, resetPinDelegate {
     // MARK: properties
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
@@ -134,13 +134,13 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     //let agentConnect = AgentConnect()
 #endif
     // MARK: init
-    init() {
+    public init() {
         super.init(nibName: "ChatMessagesViewController", bundle: .sdkModule)
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         appDisplayName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? SDKConfiguration.botConfig.chatBotName
         isAppEnterBackground = false
@@ -180,11 +180,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         self.removeNotifications()
     }
     
-    override func didReceiveMemoryWarning() {
+    public override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    override func viewWillLayoutSubviews() {
+    public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
     }
     
@@ -263,7 +263,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                 showCloseOrMinimiseAlert()
             }
         }else{
-            botClosed()
+            let dic = ["event_code": "BotClosed", "event_message": "Bot connection error"]
+            if self.closeAndMinimizeEvent != nil{
+                self.closeAndMinimizeEvent(dic)
+            }
+            self.botClosed()
         }
     }
     
@@ -274,7 +278,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
                         isShowWelcomeMsg = true
                         self.unsubscribeNotifications()
                         let dic = ["event_code": "BotClosed", "event_message": "Bot closed by the user"]
-                        self.closeAndMinimizeEvent(dic)
+                        if self.closeAndMinimizeEvent != nil{
+                                self.closeAndMinimizeEvent(dic)
+                        }
                        if isAgentConnect{
                            self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
                            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
@@ -288,7 +294,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         alertController.addAction(UIAlertAction(title: minimizeBtnTitle, style: .default)
                   { action -> Void in
                         let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
-                        self.closeAndMinimizeEvent(dic)
+                        if self.closeAndMinimizeEvent != nil{
+                            self.closeAndMinimizeEvent(dic)
+                        }
                         self.botClosed()
                   })
         self.present(alertController, animated: true, completion: nil)
@@ -961,7 +969,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         
         var keyboardHeight = keyboardFrameEnd.size.height;
         if #available(iOS 11.0, *) {
-            keyboardHeight -= self.view.safeAreaInsets.bottom
+            if self.view.safeAreaInsets.bottom == 0.0{
+                keyboardHeight -= (UIWindow().frame.height -  self.view.frame.height)
+            }else{
+                keyboardHeight -= self.view.safeAreaInsets.bottom
+            }
         } else {
             
         };
@@ -1081,9 +1093,11 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     
     @objc func willTerminate(_ notification: Notification) {
         self.unsubscribeNotifications()
-        if isAgentConnect{
-            self.botClient.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
-            sleep(1)
+        if(self.botClient != nil){
+            if isAgentConnect{
+                self.botClient.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
+                sleep(1)
+            }
         }
     }
     func showTypingToAgent(_: ComposeBarView){
@@ -1712,17 +1726,17 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
     }
     
     // MARK: KREGrowingTextViewDelegate methods
-    func growingTextView(_: KREGrowingTextView, changingHeight height: CGFloat, animate: Bool) {
+    public func growingTextView(_: KREGrowingTextView, changingHeight height: CGFloat, animate: Bool) {
         UIView.animate(withDuration: animate ? 0.25: 0.0) {
             self.view.layoutIfNeeded()
         }
     }
     
-    func growingTextView(_: KREGrowingTextView, willChangeHeight height: CGFloat) {
+    public func growingTextView(_: KREGrowingTextView, willChangeHeight height: CGFloat) {
         
     }
     
-    func growingTextView(_: KREGrowingTextView, didChangeHeight height: CGFloat) {
+    public func growingTextView(_: KREGrowingTextView, didChangeHeight height: CGFloat) {
         
     }
     
@@ -1810,7 +1824,9 @@ class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, Com
         let okAction = UIAlertAction(title: alertOk, style: UIAlertAction.Style.default) {
             UIAlertAction in
             let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
-            self.closeAndMinimizeEvent(dic)
+            if self.closeAndMinimizeEvent != nil{
+                self.closeAndMinimizeEvent(dic)
+            }
             self.botClosed()
         }
         alertController.addAction(okAction)
@@ -2049,12 +2065,12 @@ extension ChatMessagesViewController {
     }
 }
 extension ChatMessagesViewController: KABotClientDelegate {
-    func showTypingStatusForBot() {
+    public func showTypingStatusForBot() {
         self.typingStatusView?.isHidden = true
         self.typingStatusView?.startTypingStatus(using: botHistoryIcon,dotColor: themeColor)
     }
     
-    func hideTypingStatusForBot(){
+    public func hideTypingStatusForBot(){
         self.typingStatusView?.stopTypingStatus()
     }
     
@@ -2241,10 +2257,10 @@ extension ChatMessagesViewController: FMPhotoPickerViewControllerDelegate {
         }
     }
     
-    func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith photos: [UIImage]) {
+    public func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith photos: [UIImage]) {
         
     }
-    func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith assets: [PHAsset]) {
+    public func fmPhotoPickerController(_ picker: FMPhotoPickerViewController, didFinishPickingPhotoWith assets: [PHAsset]) {
         self.dismiss(animated: false)
         // self.messageInputBar.presenter?.attachmentManager.invalidate()
         let phAsset:PHAsset  = assets.first!
@@ -2562,11 +2578,11 @@ extension ChatMessagesViewController: UICollectionViewDataSource, UICollectionVi
         self.attachmentCollectionView.register(Bundle.xib(named: "AttachmentCell"),
                                                forCellWithReuseIdentifier: "AttachmentCell")
     }
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return attachmentArray.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // swiftlint:disable force_cast
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AttachmentCell", for: indexPath) as! AttachmentCell
         cell.backgroundColor = .clear
@@ -3110,11 +3126,25 @@ extension ChatMessagesViewController {
     }
 }
 extension ChatMessagesViewController: UIGestureRecognizerDelegate{
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if touch.view?.isDescendant(of: botMessagesView.tableView) == true || touch.view?.isDescendant(of: quickReplyView) == true{
             return false
         }
         return true
+    }
+    public func minimizeChatBotWindow(){
+        isAgentConnect = false
+        removeNotificationCenter()
+        let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
+        if self.closeAndMinimizeEvent != nil{
+                self.closeAndMinimizeEvent(dic)
+        }
+        self.botClosed()
+    }
+    func removeNotificationCenter(){
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willTerminateNotification, object: nil)
     }
 }
 //SDK V3
