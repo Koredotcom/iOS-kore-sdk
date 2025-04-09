@@ -37,6 +37,8 @@ open class BotConnect: NSObject {
     public var please_Try_Again = ""
     public var sessionExpiry_Msg = ""
     public var closeOrMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
+    public var buttonsCornerRadious = 5.0
+    public var buttonsTextBoraderColor: UIColor? = nil
     // MARK: - init
     public override init() {
         super.init()
@@ -87,6 +89,8 @@ open class BotConnect: NSObject {
         isCallingHistoryApi = true
         isNetworkOnResumeCallingHistory = networkOnResumeCallingHistory
         isShowBotIconTop = setIsShowBotIconTop
+        buttonTemplteBtnsCornerRadious = buttonsCornerRadious
+        buttonTemplteBtnsTextBoraderColor = buttonsTextBoraderColor
         if !isIntialiseFileUpload{
             isIntialiseFileUpload = true
             filesUpload()

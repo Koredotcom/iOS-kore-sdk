@@ -40,7 +40,8 @@ class QuickReplyWelcomeBubbleView: BubbleView {
     var showMore = false
     var isQuickReplies  = true
     var isReloadBtnLink = true
-    
+    var isFullWidth = false
+    var variation = ""
     var quickReplyView: KREQuickSelectView!
     
    // public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
@@ -218,7 +219,14 @@ class QuickReplyWelcomeBubbleView: BubbleView {
                         
                         arrayOfElements = allItems.quickReplies ?? []
                     }
-                    
+                    isFullWidth = false
+                    if let fullWidth = jsonObject["fullWidth"] as? Bool, fullWidth == true{
+                        isFullWidth = true
+                    }
+                    variation = ""
+                    if let variationBg = jsonObject["variation"] as? String{
+                        variation = variationBg
+                    }
                     self.collectionView.collectionViewLayout.invalidateLayout()
                     self.collectionView.reloadData()
                     
@@ -293,8 +301,23 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
         cell.imagvWidthConstraint.constant = 0.0
         
         cell.layer.borderColor =  UIColor.init(hexString: bgColor).cgColor
+        if variation == "plain"{
+            cell.bgV.backgroundColor = UIColor.clear
+            cell.textlabel.textColor = BubbleViewBotChatTextColor
+            cell.layer.borderColor =  BubbleViewLeftTint.cgColor
+        }else if variation == "textInverted"{
+            cell.bgV.backgroundColor = BubbleViewLeftTint
+            cell.textlabel.textColor = BubbleViewRightTint
+            cell.layer.borderColor =  BubbleViewLeftTint.cgColor
+        }
+
+        if buttonTemplteBtnsTextBoraderColor != nil{
+            cell.bgV.backgroundColor = UIColor.clear
+            cell.textlabel.textColor = buttonTemplteBtnsTextBoraderColor
+            cell.layer.borderColor =  buttonTemplteBtnsTextBoraderColor?.cgColor
+        }
         cell.layer.borderWidth = 1.5
-        cell.layer.cornerRadius = 5
+        cell.layer.cornerRadius = buttonTemplteBtnsCornerRadious
         cell.backgroundColor = .clear
         
         return cell
@@ -335,7 +358,12 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
         if text != nil {
             textWidth = Int(size!.width)
         }
-        return CGSize(width: min(Int(maxContentWidth()) - 10 , textWidth + 28) , height: 40)
+        
+        if isFullWidth{
+            return CGSize(width: BubbleViewMaxWidth - 5  , height: 40)
+        }else{
+            return CGSize(width: min(Int(maxContentWidth()) - 10 , textWidth + 28) , height: 40)
+        }
     }
     
     func maxContentWidth() -> CGFloat {

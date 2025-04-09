@@ -80,6 +80,9 @@ var localActiveTheme:ActiveTheme? = nil
 var loadReconnectionHistory = false
 var isNetworkOnResumeCallingHistory = true
 
+var buttonTemplteBtnsCornerRadious = 5.0
+var buttonTemplteBtnsTextBoraderColor:UIColor? = nil
+
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)
