@@ -191,6 +191,9 @@ open class Utilities: NSObject {
         else if (templateType == "mini_table") {
             return .minitable
         }
+        else if (templateType == "mini_table_horizontal") {
+            return .minitable_Horizontal
+        }
         else if (templateType == "menu") {
             return .menu
         }

@@ -372,6 +372,9 @@ open class KABotClient: NSObject {
         else if (templateType == "mini_table") {
             return .minitable
         }
+        else if (templateType == "mini_table_horizontal") {
+            return .minitable_Horizontal
+        }
         else if (templateType == "menu") {
             return .menu
         }
@@ -522,6 +525,12 @@ open class KABotClient: NSObject {
                             if !isShowQuickRepliesBottom{
                                 if templateType == "quick_replies"{
                                     templateType = "quick_replies_top"
+                                }
+                            }
+                            
+                            if templateType == "mini_table"{
+                                if let layOut = dictionary["layout"] as? String, layOut == "horizontal"{
+                                    templateType = "mini_table_horizontal"
                                 }
                             }
                             

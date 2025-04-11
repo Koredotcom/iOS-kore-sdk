@@ -82,6 +82,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(PiechartBubbleCell.self, forCellReuseIdentifier:"PiechartBubbleCell")
         self.tableView.register(TableBubbleCell.self, forCellReuseIdentifier:"TableBubbleCell")
         self.tableView.register(MiniTableBubbleCell.self, forCellReuseIdentifier:"MiniTableBubbleCell")
+        self.tableView.register(MiniTableHorizontalBubbleCell.self, forCellReuseIdentifier:"MiniTableHorizontalBubbleCell")
         self.tableView.register(ResponsiveTableBubbleCell.self, forCellReuseIdentifier:"ResponsiveTableBubbleCell")
         self.tableView.register(MenuBubbleCell.self, forCellReuseIdentifier:"MenuBubbleCell")
         self.tableView.register(NewListBubbleCell.self, forCellReuseIdentifier:"NewListBubbleCell")
@@ -174,6 +175,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 break
             case .minitable:
                 cellIdentifier = "MiniTableBubbleCell"
+                break
+            case .minitable_Horizontal:
+                cellIdentifier = "MiniTableHorizontalBubbleCell"
                 break
             case .table:
                 cellIdentifier = "TableBubbleCell"
@@ -336,6 +340,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 
                 break
             case .minitable:
+                
+                break
+            case .minitable_Horizontal:
                 
                 break
             case .responsiveTable:

@@ -115,6 +115,9 @@ open class BubbleView: UIView {
             case .minitable:
                 bubbleView = MiniTableBubbleView()
                 break
+            case .minitable_Horizontal:
+                bubbleView = MiniTableHorizontalBubbuleView()
+                break
             case .responsiveTable:
                 bubbleView = ResponsiveTableBubbleView()
                 break

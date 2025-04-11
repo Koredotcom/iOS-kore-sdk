@@ -35,21 +35,24 @@ class MiniTableData {
         
         var percentage: Int = 50//Int(floor(Double(100/columns.count)))
         for element in elements {
-            guard let columns = element["primary"] as? Array<Array<String>> else { return }
-            for column in columns {
-                let title = column[0]
-                var alignment: NSTextAlignment = .left
-                if column.count > 1, let align = column[1] as String? {
-                    if align == "right" {
-                        alignment = .right
-                    } else if align == "center" {
-                        alignment = .center
+            if let columns = element["primary"] as? Array<Array<String>> {
+                for column in columns {
+                    let title = column[0]
+                    var alignment: NSTextAlignment = .left
+                    if column.count > 1, let align = column[1] as String? {
+                        if align == "right" {
+                            alignment = .right
+                        } else if align == "center" {
+                            alignment = .center
+                        }
                     }
+                    if column.count > 2, let perc = column[2] as String? {
+                        percentage = Int(perc)!
+                    }
+                    headers.append(Header(title: title, alignment: alignment, percentage: percentage))
                 }
-                if column.count > 2, let perc = column[2] as String? {
-                    percentage = Int(perc)!
-                }
-                headers.append(Header(title: title, alignment: alignment, percentage: percentage))
+            }else{
+                headers.append(Header(title: "", alignment: .left, percentage: percentage))
             }
             print(headers)
             let values = element["additional"] as! Array<Any>

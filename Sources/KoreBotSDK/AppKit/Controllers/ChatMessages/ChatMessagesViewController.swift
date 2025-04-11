@@ -538,6 +538,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         else if (templateType == "mini_table") {
             return .minitable
         }
+        else if (templateType == "mini_table_horizontal") {
+            return .minitable_Horizontal
+        }
         else if (templateType == "menu") {
             return .menu
         }
@@ -651,7 +654,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                 
                 if (type == "template") {
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
-                    let templateType: String = dictionary["template_type"] as? String ?? ""
+                    var templateType: String = dictionary["template_type"] as? String ?? ""
                     var tabledesign: String
                     
                     tabledesign  = (dictionary["table_design"] != nil ? dictionary["table_design"] as? String : "responsive")!
@@ -659,6 +662,12 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                     
                     if componentType != .quickReply {
                         
+                    }
+                    
+                    if templateType == "mini_table"{
+                        if let layOut = dictionary["layout"] as? String, layOut == "horizontal"{
+                            templateType = "mini_table_horizontal"
+                        }
                     }
                     
                     let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""
