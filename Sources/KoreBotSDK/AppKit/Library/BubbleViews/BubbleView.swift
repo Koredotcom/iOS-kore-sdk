@@ -47,7 +47,7 @@ open class BubbleView: UIView {
     var drawBorder: Bool = false
     
     // MARK: init
-    public init() {
+    required public init() {
         super.init(frame: CGRect.zero)
         self.initialize()
     }
@@ -59,21 +59,21 @@ open class BubbleView: UIView {
     // MARK: bubbleWithType
     static func bubbleWithType(_ bubbleType: ComponentType) -> BubbleView{
         var bubbleView: BubbleView!
-        var isClientCustomTemplate = false
-        var isClientTemplateIndex = 0
+        var isCustomTemplate = false
+        var isCustomTemplateIndex = 0
         for i in 0..<arrayOfViews.count{
             let cleintTemplateTypeStr = arrayOfTemplateTypes[i]
             var tabledesign = "responsive"
             let clientTempateType =  Utilities.getComponentTypes(cleintTemplateTypeStr, tabledesign)
             if bubbleType == clientTempateType{
-                isClientTemplateIndex = i
-                isClientCustomTemplate = true
+                isCustomTemplateIndex = i
+                isCustomTemplate = true
             }
         }
-        if isClientCustomTemplate{
+        if isCustomTemplate{
             if arrayOfViews.count > 0{
-                let vieww = arrayOfViews[isClientTemplateIndex]
-                bubbleView = vieww as? BubbleView
+                let vieww = arrayOfViews[isCustomTemplateIndex]
+                bubbleView = vieww.init()
             }
         }else{
             switch (bubbleType) {

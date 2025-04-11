@@ -267,20 +267,21 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         var isCalenderView = false
         var isFeedbackView = false
         
-        var isClientCustomTemplate = false
-        var isClientTemplateIndex = 0
+        var isCustomTemplate = false
+        var isCustomTemplateIndex = 0
         for i in 0..<arrayOfViews.count{
             let cleintTemplateTypeStr = arrayOfTemplateTypes[i]
             var tabledesign = "responsive"
             let clientTempateType =  Utilities.getComponentTypes(cleintTemplateTypeStr, tabledesign)
             if cell.bubbleView.bubbleType == clientTempateType{
-                isClientTemplateIndex = i
-                isClientCustomTemplate = true
+                isCustomTemplateIndex = i
+                isCustomTemplate = true
             }
         }
-        if isClientCustomTemplate{
-            let clientCustomView = arrayOfViews[isClientTemplateIndex]
-            let bubbeView = clientCustomView
+        if isCustomTemplate{
+            let customTemplateView = arrayOfViews[isCustomTemplateIndex]
+            //let bubbeView = customTemplateView
+            let bubbeView = cell.bubbleView
             bubbeView?.optionsAction = {[weak self] (text, payload) in
                 self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
             }

@@ -3,82 +3,16 @@
     "version": 1,
     "bot_icon": "",
     "themeType": "",
-    "widgetPanel": null,
     "colors": {
       "primary": "",
       "secondary": "",
       "primary_text": "",
       "secondary_text": "",
       "useColorPaletteOnly": null
-    },
-    "sounds": {
-      "enable": null,
-      "on_audio_call": {
-        "name": "",
-        "type": "",
-        "url": "",
-        "fileId": ""
-      },
-      "on_close": {
-        "name": "",
-        "type": "",
-        "url": "",
-        "fileId": ""
-      },
-      "on_msg_send": {
-        "name": "",
-        "type": "",
-        "url": "",
-        "fileId": ""
-      },
-      "on_new_msg": {
-        "name": "",
-        "type": "",
-        "url": "",
-        "fileId": ""
-      },
-      "on_open": {
-        "name": "",
-        "type": "",
-        "url": "",
-        "fileId": ""
-      },
-      "on_proactive_msg": {
-        "name": "",
-        "type": "",
-        "url": "",
-        "fileId": ""
-      },
-      "on_video_call": {
-        "name": "",
-        "type": "",
-        "url": "",
-        "fileId": ""
-      }
     }
   },
   "chat_bubble": {
     "style": "",
-    "icon": {
-      "icon_url": "",
-      "size": "",
-      "type": "",
-      "fileId": ""
-    },
-    "minimise": {
-      "icon": "",
-      "theme": "",
-      "type": "",
-      "fileId": ""
-    },
-    "proactive": {
-      "show": null,
-      "header": ""
-    },
-    "sound": "",
-    "alignment": "",
-    "animation": "",
-    "expand_animation": "",
     "primary_color": "",
     "secondary_color": ""
   },
@@ -88,8 +22,7 @@
     "logo": {
       "logo_url": "",
       "type": "",
-      "name": "",
-      "fileId": ""
+      "name": ""
     },
     "title": {
       "name": ""
@@ -97,59 +30,19 @@
     "sub_title": {
       "name": ""
     },
-    "note": {
-      "name": ""
-    },
     "background": {
       "type": "",
       "color": "",
       "name": "",
       "img": "",
-      "imgType": "",
-      "fileId": ""
-    },
-    "top_fonts": {
-      "color": ""
+      "imgType": ""
     },
     "bottom_background": {
       "color": ""
-    },
-    "widgets": {
-      "show": null,
-      "widgetItems": [
-      ]
-    },
-    "starter_box": {
-      "show": null,
-      "icon": {
-        "show": null
-      },
-      "title": "",
-      "sub_text": "",
-      "start_conv_button": {
-        "color": ""
-      },
-      "start_conv_text": {
-        "color": ""
-      }
-    },
-    "static_links": {
-      "show": null,
-      "layout": ""
-    },
-    "promotional_content": {
-      "show": null
     }
   },
   "header": {
     "bg_color": "",
-    "size": "",
-    "icon": {
-      "show": null,
-      "icon_url": "",
-      "type": "",
-      "fileId": ""
-    },
     "icons_color": "",
     "title": {
       "name": "",
@@ -158,101 +51,22 @@
     "sub_title": {
       "name": "",
       "color": ""
-    },
-    "buttons": {
-      "close": {
-        "show": null,
-        "icon": ""
-      },
-      "minimise": {
-        "show": null,
-        "icon": ""
-      },
-      "expand": {
-        "show": null,
-        "icon": ""
-      },
-      "reconnect": {
-        "show": null,
-        "icon": ""
-      },
-      "help": {
-        "show": null,
-        "action": {
-          "type": "",
-          "value": "",
-          "icon": ""
-        }
-      },
-      "live_agent": {
-        "show": null,
-        "action": {
-          "type": "",
-          "value": "",
-          "icon": ""
-        }
-      }
     }
   },
   "footer": {
     "bg_color": "",
-    "layout": "",
     "compose_bar": {
       "bg_color": "",
       "outline-color": "",
       "placeholder": ""
     },
-    "icons_color": "",
-    "buttons": {
-      "menu": {
-        "show": null,
-        "icon_color": "",
-        "actions": [
-          {
-            "title": "",
-            "type": "",
-            "value": "",
-            "icon": ""
-          },
-          {
-            "title": "",
-            "type": "",
-            "value": "",
-            "icon": ""
-          }
-        ]
-      },
-      "emoji": {
-        "show": null,
-        "icon": ""
-      },
-      "microphone": {
-        "show": null,
-        "icon": ""
-      },
-      "attachment": {
-        "show": null,
-        "icon": ""
-      },
-      "speaker": {
-        "show": null,
-        "icon": ""
-      }
-    }
+    "icons_color": ""
   },
   "body": {
     "background": {
       "type": "",
       "color": "",
-      "img": "",
-      "imgType": "",
-      "name": "",
-      "fileId": ""
-    },
-    "font": {
-      "family": "",
-      "size": "",
-      "style": ""
+      "img": ""
     },
     "user_message": {
       "bg_color": "",
@@ -262,57 +76,6 @@
       "bg_color": "",
       "color": ""
     },
-    "agent_message": {
-      "bg_color": "",
-      "color": "",
-      "separator": "",
-      "icon": {
-        "show": null,
-        "icon_url": "",
-        "type": ""
-      },
-      "title": {
-        "name": "",
-        "color": "",
-        "type": ""
-      },
-      "sub_title": {
-        "name": "",
-        "color": "",
-        "type": ""
-      }
-    },
-    "time_stamp": {
-      "show": null,
-      "show_type": "",
-      "position": "",
-      "separator": "",
-      "color": "",
-      "time_format": "",
-      "date_format": ""
-    },
-    "typing_indicator": {
-      "icon": "",
-      "show": null
-    },
-    "icon": {
-      "show": null,
-      "user_icon": null,
-      "bot_icon": null,
-      "agent_icon": null
-    },
-    "buttons": {
-      "bg_color": "",
-      "color": ""
-    },
     "bubble_style": ""
-  },
-  "widget_panel": {
-    "colors": {
-      "bg_color": "",
-      "color": "",
-      "sel_bg_color": "",
-      "sel_color": ""
-    }
   }
 }

@@ -72,7 +72,7 @@ var genaralSecondary_textColor = "#000000"
 var useColorPaletteOnly = false
 var headerTxt = SDKConfiguration.botConfig.chatBotName
 
-var arrayOfViews = [BubbleView?]()
+var arrayOfViews = [BubbleView.Type]()
 var arrayOfTemplateTypes = [String]()
 var quickRepliesIsHorizontal = false
 var feedBackTemplateSelectedValue = ""
@@ -84,6 +84,9 @@ var historyLimit = 0
 var RemovedTemplateCount = 0
 var isCallingHistoryApi = true
 var close_AgentChat_EventName = "close_agent_chat"
+var close_Button_EventName = "close_button_event"
+var minimize_Button_EventName = "minimize_button_event"
+var isZenDesk_Event = false
 
 
 var isOTPValidationTemplate = false

@@ -283,21 +283,26 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                         }
                        if isAgentConnect{
                            self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
-                           Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
-                               self.botClosed()
-                           }
                        }else{
-                               self.botClosed()
+                           self.botClient.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
                        }
-                        
+                        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                                isAgentConnect = false
+                                self.botClosed()
+                        }
                   })
         alertController.addAction(UIAlertAction(title: minimizeBtnTitle, style: .default)
                   { action -> Void in
+                        
                         let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
                         if self.closeAndMinimizeEvent != nil{
                             self.closeAndMinimizeEvent(dic)
                         }
-                        self.botClosed()
+                        self.botClient.sendEventToAgentChat(eventName: minimize_Button_EventName,messageId: "")
+                        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                            isAgentConnect = false
+                            self.botClosed()
+                        }
                   })
         self.present(alertController, animated: true, completion: nil)
     }
@@ -1095,10 +1100,13 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         self.unsubscribeNotifications()
         if(self.botClient != nil){
             if isAgentConnect{
-                self.botClient.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
-                sleep(1)
+                self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
+            }else{
+                self.botClient.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
             }
         }
+        prepareForDeinit()
+        sleep(1)
     }
     func showTypingToAgent(_: ComposeBarView){
         if isAgentConnect{
