@@ -101,7 +101,9 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
 ## Integrating into your app
 #### 1. Setup KoreBotSDK
 ###### a. Using SPM
-        Add local Package(KoreBotSDK) from download project into your project.
+        dependencies: [
+              .package(url: "https://github.com/Koredotcom/iOS-kore-sdk", .upToNextMajor(from: "0.2.3"))
+          ]
 ###### b. In your ViewController add below lines
         1. import KoreBotSDK 
         2. let botConnect = BotConnect() 
@@ -174,6 +176,45 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
         Privacy - Photo Library Usage Description  ---      Allow access to photo library.
         Privacy - Speech Recognition Usage Description  --- Speech recognition will be used to determine which words you speak into this device's microphone.
     
+
+## How to integrate KoreBotSDK withoutUI
+   * Use this branch https://github.com/Koredotcom/iOS-kore-sdk/tree/KoreLibrary
+   
+## How to enable API based (webhook channel) message communication
+###### a. Enable the webhook channel by following the below link
+          https://developer.kore.ai/docs/bots/channel-enablement/adding-webhook-channel/
+          
+###### b. In your ViewController add below lines
+        1. import KoreBotSDK 
+        2. let botConnect = BotConnect() 
+        3. Add below lines in button action method
+        
+        let clientId = "<client-id>" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
+        let clientSecret = "<client-secret>" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
+        let botId =  "<bot-id>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
+        let chatBotName = "bot-name" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
+        let identity = "<identity-email> or <random-id>" // This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
+        let isAnonymous = true // This should be either true (in case of known-user) or false (in-case of anonymous user).
+        let isWebhookEnabled = true  // This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
+        let customData : [String: Any] = [:]
+        let queryParameters: [[String: Any]] = [] //[["ConnectionMode":"Start_New_Resume_Agent"],["q2":"ios"],["q3":"1"]]
+        let customJWToken: String = ""  //This should represent the subject for send own JWToken.
+        let JWT_SERVER = String(format: "http://<jwt-server-host>/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
+        let BOT_SERVER = String(format: "https://bots.kore.ai")
+        let Branding_SERVER = String(format: "https://bots.kore.ai")
+        
+        // MARK: Set Bot Config
+        botConnect.initialize(clientId, clientSecret: clientSecret, botId: botId, chatBotName: chatBotName, identity: identity, isAnonymous: isAnonymous, isWebhookEnabled: isWebhookEnabled, JWTServerUrl: JWT_SERVER, BOTServerUrl: BOT_SERVER, BrandingUrl: Branding_SERVER, customData: customData, queryParameters: queryParameters, customJWToken: customJWToken)
+        
+        // MARK: Show Bot window
+        botConnect.show()
+        
+        // MARK: Close Or Minimize Callbacks
+        botConnect.closeOrMinimizeEvent = { (eventDic) in
+           if let dic = eventDic {
+               print(dic)
+           }
+       }
 
 License
 ----
