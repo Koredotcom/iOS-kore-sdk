@@ -1526,6 +1526,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         }
         
     }
+    func keyBoardShow(){
+        self.composeView.becomeFirstResponder()
+    }
     
     func verifyUrl(urlString: String?) -> Bool {
         if let urlString = urlString {

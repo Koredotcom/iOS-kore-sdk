@@ -29,6 +29,10 @@ class ListBubbleView: BubbleView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[optionsView]|", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[optionsView]|", options: [], metrics: nil, views: views))
         
+        optionsView.layer.cornerRadius = 0.0
+        optionsView.layer.borderWidth = 1.0
+        optionsView.layer.borderColor = BubbleViewLeftTint.cgColor
+        
         // property blocks
         self.optionsView.optionsButtonAction = { [weak self] (text, payload) in
             if((self?.optionsAction) != nil){
@@ -103,7 +107,7 @@ class ListBubbleView: BubbleView {
     //MARK: View height calculation
     override var intrinsicContentSize : CGSize {
         let height = self.optionsView.getExpectedHeight(width: BubbleViewMaxWidth)
-        let viewSize:CGSize = CGSize(width: BubbleViewMaxWidth, height: height + CGFloat(spaceing))
+        let viewSize:CGSize = CGSize(width: BubbleViewMaxWidth, height: height - 30.0)
         return viewSize;
     }
 }

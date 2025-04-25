@@ -625,16 +625,17 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             }
         }
         
-        let dateFormatter: DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEE, d MMMM YYYY"
-        let dateString = dateFormatter.string(from: date)
+//        let dateFormatter: DateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "EEE, d MMMM YYYY"
+//        let dateString = dateFormatter.string(from: date)
+        let dateString = Utilities.getDateformater(sentOn: date)
         
         let label = UILabel()
         label.transform = CGAffineTransform(scaleX: 1, y: -1)
         label.text = dateString
         label.textAlignment = .center
         label.textColor = UIColor.darkGray.withAlphaComponent(0.8)
-        label.font = UIFont(name: regularCustomFont, size: 13)
+        label.font = UIFont(name: regularCustomFont, size: 12)
         return label
     }
     
@@ -643,7 +644,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     }
     
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.0
+        return 20.0
     }
     
     // MARK:- KREFetchedResultsControllerDelegate methods

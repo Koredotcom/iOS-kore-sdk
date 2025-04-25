@@ -115,7 +115,7 @@ open class KREOption: NSObject {
     public init(title: String, subTitle: String, imageURL: String, optionType: KREOptionType, buttonBgColor: String, buttonTextColor: String) {
         super.init()
         self.title = truncateString(title, count: KREOption.titleCharLimit)
-        self.subTitle = truncateString(subTitle, count: KREOption.subtitleCharLimit)
+        self.subTitle = subTitle //truncateString(subTitle, count: KREOption.subtitleCharLimit)
         self.imageURL = imageURL
         self.optionType = optionType
         self.buttonBgColor = buttonBgColor
@@ -238,8 +238,12 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             
             cell.titleLabel.text = option.title
-            cell.subTitleLabel.text = option.subTitle
-            
+            //cell.subTitleLabel.text = option.subTitle
+            cell.subTitleLabel.setHTMLString(option.subTitle, withWidth: BubbleViewMaxWidth - 20.0)
+            cell.subTitleLabel.font  = UIFont(name: mediumCustomFont, size: 14.0)
+            cell.subTitleLabel.numberOfLines = 15
+            cell.titleLabel.textColor = BubbleViewBotChatTextColor
+            cell.subTitleLabel.textColor = BubbleViewBotChatTextColor
             if let urlString = option.imageURL, let url = URL(string: urlString) {
                 cell.imgView.af.setImage(withURL: url, placeholderImage: UIImage(named: "placeholder_image"))
                 cell.imgViewWidthConstraint.constant = 60.0
