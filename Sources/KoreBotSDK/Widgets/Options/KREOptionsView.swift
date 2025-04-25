@@ -112,7 +112,7 @@ open class KREOption: NSObject {
     public init(title: String, subTitle: String, imageURL: String, optionType: KREOptionType) {
         super.init()
         self.title = truncateString(title, count: KREOption.titleCharLimit)
-        self.subTitle = truncateString(subTitle, count: KREOption.subtitleCharLimit)
+        self.subTitle = subTitle //truncateString(subTitle, count: KREOption.subtitleCharLimit)
         self.imageURL = imageURL
         self.optionType = optionType
     }
@@ -231,8 +231,11 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             
             cell.titleLabel.text = option.title
-            cell.subTitleLabel.text = option.subTitle
-            
+            cell.titleLabel.font  = UIFont(name: mediumCustomFont, size: 15.0)
+            //cell.subTitleLabel.text = option.subTitle
+            cell.subTitleLabel.setHTMLString(option.subTitle, withWidth: BubbleViewMaxWidth - 20.0)
+            cell.subTitleLabel.font  = UIFont(name: mediumCustomFont, size: 14.0)
+            cell.subTitleLabel.numberOfLines = 15
             if let urlString = option.imageURL, let url = URL(string: urlString) {
                 cell.imgView.af.setImage(withURL: url, placeholderImage: UIImage(named: "placeholder_image"))
                 cell.imgViewWidthConstraint.constant = 60.0
@@ -240,7 +243,8 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
                 cell.imageView?.image = nil
                 cell.imgViewWidthConstraint.constant = 0.0
             }
-            
+            cell.titleLabel.textColor = BubbleViewBotChatTextColor
+            cell.subTitleLabel.textColor = BubbleViewBotChatTextColor
             if(option.buttonAction != nil){
                 let buttonAction = option.buttonAction
                 cell.actionButtonHeightConstraint.constant = 30.0

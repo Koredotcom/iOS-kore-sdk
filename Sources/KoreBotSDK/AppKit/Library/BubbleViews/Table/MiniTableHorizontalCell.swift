@@ -101,6 +101,23 @@ class MiniTableHorizontalCell: UICollectionViewCell, UITableViewDelegate, UITabl
             cell.secondLbl.font = cell.headerLabel.font.withSize(15.0)
             
             cell.secondLbl.textColor = BubbleViewBotChatTextColor
+            
+            let fullText = rows[indexPath.row*2+1]
+            let attributedString = NSMutableAttributedString(string: fullText)
+            // Find the range of the word "Swift"
+            var wordToColor = "."
+            if let range = fullText.range(of: wordToColor) {
+                // Convert String range to NSRange the right way
+                let nsRange = NSRange(range, in: fullText)
+                attributedString.addAttribute(.foregroundColor, value: UIColor.clear, range: nsRange)
+            }
+             wordToColor = ","
+            if let range = fullText.range(of: wordToColor) {
+                // Convert String range to NSRange the right way
+                let nsRange = NSRange(range, in: fullText)
+                attributedString.addAttribute(.foregroundColor, value: UIColor.clear, range: nsRange)
+            }
+            cell.secondLbl.attributedText = attributedString
         }
         
         if indexPath.row % 2 == 0{
@@ -128,7 +145,7 @@ class MiniTableHorizontalCell: UICollectionViewCell, UITableViewDelegate, UITabl
         
         let secondLbl = UILabel(frame: .zero)
         secondLbl.translatesAutoresizingMaskIntoConstraints = false
-        secondLbl.textAlignment = .left
+        secondLbl.textAlignment = .right
         secondLbl.font = UIFont(name: boldCustomFont, size: 15.0)
         secondLbl.font = secondLbl.font.withSize(15.0)
         secondLbl.textColor = BubbleViewBotChatTextColor

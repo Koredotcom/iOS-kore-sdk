@@ -34,33 +34,68 @@ class MiniTableData {
         elements = locElements
         
         var percentage: Int = 50//Int(floor(Double(100/columns.count)))
-        for element in elements {
-            if let columns = element["primary"] as? Array<Array<String>> {
-                for column in columns {
-                    let title = column[0]
+        for i in 0..<elements.count{ //element in elements
+            let element = elements[i]
+            var appendTitle = ""
+            if let columns = element["primary"] as? Array<Array<Any>> {
+                for j in 0..<columns.count { //column in columns
+                    let column = columns[j]
+                    var  title = column[0] as? String ?? ""
                     var alignment: NSTextAlignment = .left
-                    if column.count > 1, let align = column[1] as String? {
-                        if align == "right" {
+                    if column.count > 1, let align = column[1] as Any? {
+                        if align as? String == "right" {
                             alignment = .right
-                        } else if align == "center" {
+                        } else if align as? String == "center" {
                             alignment = .center
+                        }else{
+                            alignment = .left
                         }
                     }
-                    if column.count > 2, let perc = column[2] as String? {
-                        percentage = Int(perc)!
+                    if column.count > 2, let perc = column[2] as Any? {
+                        //percentage = Int(perc)!
+                        percentage = (perc as? String).flatMap { Int($0, radix: 16) }!
+
                     }
-                    headers.append(Header(title: title, alignment: alignment, percentage: percentage))
+                    
+                    if columns.count > 2{
+                        if j == 0{
+                            headers.append(Header(title: title, alignment: alignment, percentage: percentage))
+                        }else if j == 1{
+                            appendTitle +=  title
+                        }
+                        if j == 2{
+                            appendTitle += "    \(title)"
+                            headers.append(Header(title: appendTitle, alignment: alignment, percentage: percentage))
+                        }
+                    }else{
+                        headers.append(Header(title: title, alignment: alignment, percentage: percentage))
+                    }
+                    
+                    
                 }
             }else{
                 headers.append(Header(title: "", alignment: .left, percentage: percentage))
             }
             print(headers)
+            let columns = element["primary"] as? Array<Array<Any>>
             let values = element["additional"] as! Array<Any>
             var row = Array<String>()
             for value in values {
-                for v in value as! [Any] {
+                var appendRow = ""
+                for j in 0..<(value as AnyObject).count { //v in value as! [Any]
+                    let vv = value as! [Any]
+                    let v = vv[j]
                     let val = v as? String ?? ""
-                    row.append(val)
+                    
+                    if (value as AnyObject).count < columns?.count ?? 0 {
+                        if j == 0{
+                            row.append(val)
+                        }else {
+                            row.append("\(val)      .    ,")
+                        }
+                    }else{
+                        row.append(val)
+                    }
                 }
             }
             rows.append(row)
@@ -279,8 +314,25 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
             cell.secondLbl.textAlignment = .right
             cell.secondLbl.font = UIFont(name: regularCustomFont, size: 15.0)
             cell.secondLbl.font = cell.headerLabel.font.withSize(15.0)
-            
+            cell.secondLbl.backgroundColor = .clear
             cell.secondLbl.textColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
+            
+            let fullText = rows[indexPath.row*2+1]
+            let attributedString = NSMutableAttributedString(string: fullText)
+            // Find the range of the word "Swift"
+            var wordToColor = "."
+            if let range = fullText.range(of: wordToColor) {
+                // Convert String range to NSRange the right way
+                let nsRange = NSRange(range, in: fullText)
+                attributedString.addAttribute(.foregroundColor, value: UIColor.clear, range: nsRange)
+            }
+             wordToColor = ","
+            if let range = fullText.range(of: wordToColor) {
+                // Convert String range to NSRange the right way
+                let nsRange = NSRange(range, in: fullText)
+                attributedString.addAttribute(.foregroundColor, value: UIColor.clear, range: nsRange)
+            }
+            cell.secondLbl.attributedText = attributedString
         }
         cell.backgroundColor = UIColor.white
         cell.selectionStyle = .none
@@ -303,7 +355,7 @@ class MiniTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDataSourc
         
         let secondLbl = UILabel(frame: .zero)
         secondLbl.translatesAutoresizingMaskIntoConstraints = false
-        secondLbl.textAlignment = .left
+        secondLbl.textAlignment = .right
         secondLbl.font = UIFont(name: boldCustomFont, size: 15.0)
         secondLbl.font = secondLbl.font.withSize(15.0)
         secondLbl.textColor = UIColor(red: 38/255, green: 52/255, blue: 74/255, alpha: 1)

@@ -362,7 +362,9 @@ class AdvanceListBubbleView: BubbleView {
             let options = headerOptions[0]
             if options.contenttype == "button"{
                 if options.type == "postback"{
-                    self.optionsAction?(options.title, options.payload)
+                    if let title = options.title{
+                        self.optionsAction?(title, options.payload ?? title)
+                    }
                 }else if options.type == "url"{
                     self.linkAction?(options.headerurl)
                 }
@@ -1048,11 +1050,15 @@ extension AdvanceListBubbleView: UICollectionViewDelegate, UICollectionViewDataS
                     if slectedRadioTitles != ""{
                         self.optionsAction?(slectedRadioTitles, slectedRadioValues)
                     }else{
-                        self.optionsAction?(options?.title, options?.payload)
+                        if let title = options?.title{
+                            self.optionsAction?(title, options?.payload ?? title)
+                        }
                     }
                     
                 }else{
-                    self.optionsAction?(options?.title, options?.payload)
+                    if let title = options?.title{
+                        self.optionsAction?(title, options?.payload ?? title)
+                    }
                 }
                 
             }else{
@@ -1094,14 +1100,18 @@ extension AdvanceListBubbleView: UICollectionViewDelegate, UICollectionViewDataS
                     colorDropDown.show()
                 }else{
                     if options?.type == "postback"{
-                        self.optionsAction?(options?.title, options?.payload)
+                        if let title = options?.title{
+                            self.optionsAction?(title, options?.payload ?? title)
+                        }
                     }else if options?.type == "url"{
                             self.linkAction?(options?.headerurl)
                     }
                 }
             }else{
                 if options?.type == "postback"{
-                    self.optionsAction?(options?.title, options?.payload)
+                    if let title = options?.title{
+                        self.optionsAction?(title, options?.payload ?? title)
+                    }
                 }else if options?.type == "url"{
                         self.linkAction?(options?.headerurl)
                 }

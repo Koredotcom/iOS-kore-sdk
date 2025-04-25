@@ -329,16 +329,20 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
             if elements.type == "web_url" || elements.type == "url"{
                     self.linkAction?(elements.url)
             }else{
-                self.optionsAction?(elements.title, elements.payload)
-                self.maskview.isHidden = false
+                if let title = elements.title{
+                    self.optionsAction?(title, elements.payload ?? title)
+                    self.maskview.isHidden = false
+                }
             }
         }else{
             let elements = arrayOfButtons[indexPath.row]
             if elements.type == "web_url" || elements.type == "url"{
                 self.linkAction?(elements.url)
             }else{
-                self.optionsAction?(elements.title, elements.payload)
-                self.maskview.isHidden = false
+                if let title = elements.title{
+                    self.optionsAction?(title, elements.payload ?? title)
+                    self.maskview.isHidden = false
+                }
             }
         }
         

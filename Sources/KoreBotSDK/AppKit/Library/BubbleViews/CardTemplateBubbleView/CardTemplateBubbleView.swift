@@ -624,7 +624,9 @@ extension CardTemplateBubbleView: UITableViewDelegate, UITableViewDataSource{
         if let footerBtns = elements.buttons, footerBtns.count > 0 {
             let btns = footerBtns[0]
             if btns.type == "postback"{
-                self.optionsAction?(btns.title, btns.payload ?? btns.title)
+                if let title = btns.title{
+                    self.optionsAction?(title, btns.payload ?? title)
+                }
             }else if btns.type == "url"{
                 self.linkAction?(btns.linkurl)
             }

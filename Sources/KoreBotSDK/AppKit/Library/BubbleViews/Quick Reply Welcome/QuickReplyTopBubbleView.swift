@@ -340,7 +340,7 @@ extension QuickReplyTopBubbleView : UICollectionViewDelegate, UICollectionViewDa
                 arrayOfSelectedBtnIndex.replaceObject(at: viewTag ?? 0, with: indexPath.item)
                 NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
                 Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (_) in
-                    self.optionsAction?(elements.title, elements.payload)
+                    self.optionsAction?(elements.title, elements.payload ?? elements.title)
                 }
                 self.maskview.isHidden = true
             }
@@ -352,7 +352,7 @@ extension QuickReplyTopBubbleView : UICollectionViewDelegate, UICollectionViewDa
                 arrayOfSelectedBtnIndex.replaceObject(at: viewTag ?? 0, with: indexPath.item)
                 NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
                 Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (_) in
-                    self.optionsAction?(elements.title, elements.payload)
+                    self.optionsAction?(elements.title, elements.payload ?? elements.title)
                 }
                 self.maskview.isHidden = true
             }

@@ -657,17 +657,17 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                     var templateType: String = dictionary["template_type"] as? String ?? ""
                     var tabledesign: String
                     
+                    if templateType == "mini_table"{
+                        if let layOut = dictionary["layout"] as? String, layOut == "horizontal"{
+                            templateType = "mini_table_horizontal"
+                        }
+                    }
+                    
                     tabledesign  = (dictionary["table_design"] != nil ? dictionary["table_design"] as? String : "responsive")!
                     let componentType = self.getComponentType(templateType,tabledesign)
                     
                     if componentType != .quickReply {
                         
-                    }
-                    
-                    if templateType == "mini_table"{
-                        if let layOut = dictionary["layout"] as? String, layOut == "horizontal"{
-                            templateType = "mini_table_horizontal"
-                        }
                     }
                     
                     let tText: String = dictionary["text"] != nil ? dictionary["text"] as! String : ""

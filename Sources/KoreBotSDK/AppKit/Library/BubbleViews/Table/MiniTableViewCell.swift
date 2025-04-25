@@ -49,7 +49,7 @@ class MiniTableViewCell: UITableViewCell {
         secondLbl.translatesAutoresizingMaskIntoConstraints = false
         secondLbl.textAlignment = .left
         secondLbl.font = UIFont(name: regularCustomFont, size: 15.0)
-        secondLbl.font = secondLbl.font.withSize(15.0)
+        //secondLbl.font = secondLbl.font.withSize(15.0)
 
         secondLbl.textColor = UIColor.black
         contentView.addSubview(secondLbl)

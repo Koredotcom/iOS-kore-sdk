@@ -7,12 +7,14 @@
 //
 
 import UIKit
-
+#if SWIFT_PACKAGE
+import ObjcSupport
+#endif
 class KREListTableViewCell: UITableViewCell {
 
     @IBOutlet weak var imgView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subTitleLabel: UILabel!
+    @IBOutlet weak var subTitleLabel: KREAttributedLabel!
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var actionButtonHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var imgViewWidthConstraint: NSLayoutConstraint!

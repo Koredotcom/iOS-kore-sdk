@@ -10,7 +10,7 @@ import UIKit
 
 class ListBubbleView: BubbleView {
     static let elementsLimit: Int = 3
-
+    var tileBgv : UIView!
     var optionsView: KREOptionsView!
     var reloadTable = false
     //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
@@ -20,14 +20,35 @@ class ListBubbleView: BubbleView {
     override func initialize() {
         super.initialize()
         
+        self.tileBgv = UIView(frame:.zero)
+        self.tileBgv.translatesAutoresizingMaskIntoConstraints = false
+        self.tileBgv.layer.rasterizationScale =  UIScreen.main.scale
+        self.tileBgv.layer.shouldRasterize = true
+        self.tileBgv.layer.cornerRadius = 0.0
+        self.tileBgv.layer.borderColor = UIColor.clear.cgColor
+        self.tileBgv.clipsToBounds = true
+        self.tileBgv.layer.borderWidth = 0.0
+        self.addSubview(self.tileBgv)
+        self.tileBgv.backgroundColor = .white
+        
+        let views: [String: UIView] = ["tileBgv": tileBgv]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
+        
         self.optionsView = KREOptionsView()
         self.optionsView.translatesAutoresizingMaskIntoConstraints = false
         self.optionsView.isUserInteractionEnabled = true
-        self.addSubview(self.optionsView)
+        self.tileBgv.addSubview(self.optionsView)
         
-        let views: [String: UIView] = ["optionsView": optionsView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[optionsView]|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[optionsView]|", options: [], metrics: nil, views: views))
+        optionsView.layer.cornerRadius = 0.0
+        optionsView.layer.borderWidth = 1.0
+        optionsView.layer.borderColor = BubbleViewLeftTint.cgColor
+        
+        let viewss: [String: UIView] = ["optionsView": optionsView]
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-2-[optionsView]-2-|", options: [], metrics: nil, views: viewss))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-2-[optionsView]-2-|", options: [], metrics: nil, views: viewss))
+        
+        
         
         // property blocks
         self.optionsView.optionsButtonAction = { [weak self] (text, payload) in
@@ -78,8 +99,9 @@ class ListBubbleView: BubbleView {
                     
                     options.append(option)
                 }
-                spaceing = 15.0
+                spaceing = 0.0
                 if elements.count > 3{
+                    spaceing = 15.0
                     if let buttons = jsonObject["buttons"] as? Array<[String: Any]>, let buttonElement = buttons.first {
                         let title: String = buttonElement["title"] != nil ? buttonElement["title"] as! String : ""
                         
@@ -89,11 +111,7 @@ class ListBubbleView: BubbleView {
                         }
                         options.append(option)
                     }
-                }else{
-                    spaceing = 15.0
                 }
-                
-                
                 self.optionsView.options.removeAll()
                 self.optionsView.options = options
             }
