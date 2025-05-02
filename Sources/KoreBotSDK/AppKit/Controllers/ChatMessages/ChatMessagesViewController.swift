@@ -154,7 +154,6 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         linerProgressBar.frame = CGRect(x: 0, y: 0 , width: UIScreen.main.bounds.size.width, height:1)
         headerView.addSubview(linerProgressBar)
         //Initialize elements
-        self.configureQuickReplyView()
         self.configureTypingStatusView()
         self.configureSTTClient()
         self.configAttachmentCollectionView()
@@ -1719,18 +1718,26 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             _ = self.composeView.resignFirstResponder()
         }
         
-        leftMenuContainerView.isHidden = false
-        let zero = CGAffineTransform(translationX: 0.0, y: 0.0)
-        self.leftMenuContainerView.transform = zero
+        let isleftMenuShow = false
+        if isleftMenuShow == true{
+            leftMenuContainerView.isHidden = false
+            let zero = CGAffineTransform(translationX: 0.0, y: 0.0)
+            self.leftMenuContainerView.transform = zero
+            
+                leftMenuContainerView.semanticContentAttribute = .forceLeftToRight
+                leftMenuContainerSubView.semanticContentAttribute = .forceLeftToRight
+                let transition = CATransition()
+                transition.type = .push
+                transition.subtype = .fromLeft
+                self.leftMenuContainerView.layer.add(CATransition().segueFromLeft(), forKey: nil)
+                self.leftMenuView.leftMenuTableviewReload()
+                leftMenuTitleLbl.text = leftMenuTitle
+        }else{
+            let taskMenuVC = TaskMenuViewController()
+            taskMenuVC.modalPresentationStyle = .overFullScreen
+            self.navigationController?.present(taskMenuVC, animated: true, completion: nil)
+        }
         
-            leftMenuContainerView.semanticContentAttribute = .forceLeftToRight
-            leftMenuContainerSubView.semanticContentAttribute = .forceLeftToRight
-            let transition = CATransition()
-            transition.type = .push
-            transition.subtype = .fromLeft
-            self.leftMenuContainerView.layer.add(CATransition().segueFromLeft(), forKey: nil)
-            self.leftMenuView.leftMenuTableviewReload()
-            leftMenuTitleLbl.text = leftMenuTitle
     }
     func composeBarAttachmentButtonAction(_: ComposeBarView) {
         self.openAcionSheet()
@@ -2717,6 +2724,7 @@ extension ChatMessagesViewController{
         self.brandingValuesChanges()
         self.configureleftMenu()
         self.configureWelcomeScreenView()
+        self.configureQuickReplyView()
         
         self.configureThreadView()
         self.configureComposeBar()

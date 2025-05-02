@@ -18,7 +18,7 @@ class TaskMenuTablViewCell: UITableViewCell {
         // Initialization code
         bgView.layer.cornerRadius = 10
         bgView.layer.borderWidth = 1
-        bgView.layer.borderColor = UIColor.lightGray.cgColor
+        bgView.layer.borderColor = BubbleViewLeftTint.cgColor
         
         imgView.layer.cornerRadius = imgView.frame.size.height/2
         imgView.clipsToBounds = true

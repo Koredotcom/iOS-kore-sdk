@@ -84,7 +84,7 @@ class CarouselBubbleView: BubbleView {
                         let buttonElement = buttons[i]
                         let title: String = buttonElement["title"] != nil ? buttonElement["title"] as! String: ""
                         
-                        let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .button, buttonBgColor: btnBgActiveColor, buttonTextColor: btnActiveTextColor)
+                        let option: KREOption = KREOption(title: title, subTitle: "", imageURL: "", optionType: .newButton, buttonBgColor: btnBgActiveColor, buttonTextColor: btnActiveTextColor)
                         if let action = Utilities.getKREActionFromDictionary(dictionary: buttonElement) {
                             option.setDefaultAction(action: action)
                         }

@@ -114,7 +114,9 @@ class SubTableViewCell: UITableViewCell,UITableViewDelegate,UITableViewDataSourc
         }
         cell.valueLbl1.textAlignment = cell.titleLbl1.textAlignment
 
-       
+        cell.titleLbl.textColor = BubbleViewBotChatTextColor
+        cell.titleLbl1.textColor = BubbleViewBotChatTextColor
+        cell.valueLbl1.textColor = BubbleViewBotChatTextColor
         cell.backgroundColor = UIColor.clear
         return cell
     }

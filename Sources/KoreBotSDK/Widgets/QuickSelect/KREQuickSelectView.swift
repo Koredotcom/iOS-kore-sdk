@@ -116,7 +116,7 @@ open class KREQuickSelectView: UIView {
     
     lazy var lineView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = UIColor.paleGrey
+        view.backgroundColor = BubbleViewLeftTint
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -140,7 +140,7 @@ open class KREQuickSelectView: UIView {
        
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[lineView]|", options: [], metrics: nil, views: views))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[lineView(0.0)][collectionView]|", options: [], metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[lineView(1.0)][collectionView]|", options: [], metrics: nil, views: views))
     }
     
     func maxContentWidth() -> CGFloat {
@@ -173,8 +173,8 @@ extension KREQuickSelectView: UICollectionViewDelegate, UICollectionViewDataSour
             let word = words?[indexPath.row] {
             cell.labelText = word.title
             cell.imageURL = word.imageURL
-            cell.layer.borderColor = UIColor.init(hexString: bgColor).cgColor //boarderColor
-            cell.backgroundColor = UIColor.init(hexString: bgColor)
+            cell.layer.borderColor = BubbleViewLeftTint.cgColor
+            cell.backgroundColor = BubbleViewLeftTint
             cell.textColor = textColor
             cell.fontName = fontName
             cell.layer.borderWidth = 1.5

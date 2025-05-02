@@ -55,8 +55,9 @@ typedef NSFont UIFont;
                          NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle) };
     
     // Courier New and Courier are the only monospace fonts compatible with watchOS 2
-    _monospaceAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"Courier New" size:defaultSize],
-                              NSForegroundColorAttributeName: [UIColor colorWithRed:0.95 green:0.54 blue:0.55 alpha:1] };
+    //_monospaceAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"Courier New" size:defaultSize],
+     //                         NSForegroundColorAttributeName: [UIColor colorWithRed:0.95 green:0.54 blue:0.55 alpha:1] };
+    _monospaceAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:defaultSize] };
     _strongAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Bold" size:defaultSize] };
     _underlineAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:defaultSize], NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle) };
 

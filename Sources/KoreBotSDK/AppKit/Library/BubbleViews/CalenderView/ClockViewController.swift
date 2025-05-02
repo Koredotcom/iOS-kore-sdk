@@ -31,6 +31,7 @@ class ClockViewController: UIViewController {
             overrideUserInterfaceStyle = .light
         }
         headingLabel.textColor =  BubbleViewBotChatTextColor
+        headingLabel.text = ""
         confirmButton.backgroundColor = themeColor
         timePicker.addTarget(self, action: #selector(ClockViewController.timePickerChanged(timePicker:)), for: UIControl.Event.valueChanged)
         getTime(timePicker: timePicker)

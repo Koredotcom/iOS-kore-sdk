@@ -222,6 +222,8 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
                 if(row.count > indexPath.row*2+1){
                     cell.secondLbl.text = row[indexPath.row*2+1]
                 }
+                cell.headerLabel.textColor = BubbleViewBotChatTextColor
+                cell.secondLbl.textColor = BubbleViewBotChatTextColor
                 cell.accessoryView = UIImageView(image:  UIImage(named: "arrowUnselected", in: bundle, compatibleWith: nil))
                 cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 22)
                 if indexPath.section % 2 == 0{
@@ -242,6 +244,8 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
             if(row.count > indexPath.row*2+1){
                 cell.secondLbl.text = row[indexPath.row*2+1]
             }
+            cell.headerLabel.textColor = BubbleViewBotChatTextColor
+            cell.secondLbl.textColor = BubbleViewBotChatTextColor
             cell.accessoryView = UIImageView(image:  UIImage(named: "arrowUnselected", in: bundle, compatibleWith: nil))
             cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 22)
 

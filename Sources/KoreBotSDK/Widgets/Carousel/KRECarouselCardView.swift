@@ -49,18 +49,19 @@ public class KRECarouselCardView: UIView, UIGestureRecognizerDelegate {
     
     public func setup() {
         let width = self.frame.size.width
-        self.imageView.contentMode = .scaleAspectFit
+        self.imageView.contentMode = .scaleAspectFill
         self.imageView.backgroundColor = UIColor.white
-        self.imageView.clipsToBounds = true
         self.imageView.layer.borderWidth = 0.5
+        self.imageView.layer.cornerRadius = 5.0
         self.imageView.layer.borderColor = UIColor.lightGray.cgColor
+        self.imageView.clipsToBounds = true
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
         self.imageView.isUserInteractionEnabled = true
         self.addSubview(self.imageView)
         
         var views: [String: UIView] = ["imageView": self.imageView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[imageView]", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[imageView]|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[imageView]", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[imageView]-10-|", options: [], metrics: nil, views: views))
         
         self.imageViewHeightConstraint = NSLayoutConstraint(item: self.imageView, attribute:.height, relatedBy:.equal, toItem:nil, attribute:.notAnAttribute, multiplier:1.0, constant:width*0.5)
         self.imageView.addConstraint(self.imageViewHeightConstraint)
@@ -69,7 +70,7 @@ public class KRECarouselCardView: UIView, UIGestureRecognizerDelegate {
         self.optionsView.isUserInteractionEnabled = true
         self.optionsView.contentMode = UIView.ContentMode.topLeft
         self.optionsView.layer.borderWidth = 0.5
-        self.optionsView.layer.borderColor = UIColor.lightGray.cgColor
+        self.optionsView.layer.borderColor = BubbleViewLeftTint.cgColor
         self.optionsView.optionsTableView.separatorInset = UIEdgeInsets.zero
         self.addSubview(self.optionsView)
         views = ["optionsView": self.optionsView]
@@ -187,7 +188,7 @@ public class KRECarouselCardView: UIView, UIGestureRecognizerDelegate {
         }
         self.borderLayer.path = self.maskLayer.path // Reuse the Bezier path
         self.borderLayer.fillColor = UIColor.clear.cgColor
-        self.borderLayer.strokeColor = UIColor(hex: 0xebebeb).cgColor
+        self.borderLayer.strokeColor = BubbleViewLeftTint.cgColor//UIColor(hex: 0xebebeb).cgColor
         self.borderLayer.lineWidth = 1.5
         self.borderLayer.frame = self.bounds
     }
@@ -195,7 +196,7 @@ public class KRECarouselCardView: UIView, UIGestureRecognizerDelegate {
     func createBezierPath() -> UIBezierPath {
         // Drawing code
         let cornerRadius: CGFloat = 5
-        let extCornerRadius: CGFloat = 20
+        let extCornerRadius: CGFloat = 5
         let aPath = UIBezierPath()
         let frame = self.bounds
         

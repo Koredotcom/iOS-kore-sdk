@@ -88,7 +88,7 @@ public class KREAction: NSObject, Decodable, Encodable {
 }
 
 public enum KREOptionType : Int {
-    case button = 1, list = 2, menu = 3
+    case button = 1, list = 2, menu = 3, newButton = 4
 }
 
 open class KREOption: NSObject {
@@ -180,7 +180,7 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
         optionsView.isScrollEnabled = false
         optionsView.estimatedRowHeight = UITableView.automaticDimension
         optionsView.rowHeight = UITableView.automaticDimension
-        optionsView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
+        optionsView.separatorStyle = UITableViewCell.SeparatorStyle.none
         optionsView.separatorInset = .zero
         optionsView.separatorColor = UIColor.paleLilacFour
         optionsView.setNeedsLayout()
@@ -193,6 +193,8 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
     public func setup() {
         optionsTableView.register(Bundle.xib(named: "KREListTableViewCell"), forCellReuseIdentifier: "KREListTableViewCell")
         optionsTableView.register(Bundle.xib(named: "KREOptionsTableViewCell"), forCellReuseIdentifier: "KREOptionsTableViewCell")
+        optionsTableView.register(Bundle.xib(named: "KREOptionsTableViewNewCell"), forCellReuseIdentifier: "KREOptionsTableViewNewCell")
+        
         addSubview(optionsTableView)
         
         let views = ["tableView": optionsTableView]
@@ -226,10 +228,20 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
                 cell.textLabel?.textAlignment = .center
                 cell.textLabel?.textColor = UIColor(hexString: option.buttonTextColor)
                 cell.backgroundColor = UIColor(hexString: option.buttonBgColor)
-                if #available(iOS 8.2, *) {
-                    //cell.textLabel?.font = UIFont.textFont(ofSize: 14.0, weight: .medium)
-                    cell.textLabel?.font = UIFont(name: regularCustomFont, size: 16.0)
-                }
+                cell.textLabel?.font = UIFont(name: regularCustomFont, size: 14.0)
+            }
+            
+            return cell
+        }else if(option.optionType == KREOptionType.newButton){
+            let cell = tableView.dequeueReusableCell(withIdentifier: "KREOptionsTableViewNewCell", for: indexPath)
+            if let cell = cell as? KREOptionsTableViewNewCell {
+                cell.selectionStyle = UITableViewCell.SelectionStyle.none
+                
+                cell.titleLabel?.text = option.title
+                cell.titleLabel?.textAlignment = .center
+                cell.titleLabel?.textColor = UIColor(hexString: option.buttonTextColor)
+                cell.bgView.backgroundColor = UIColor(hexString: option.buttonBgColor)
+                cell.titleLabel?.font = UIFont(name: mediumCustomFont, size: 12.0)
             }
             
             return cell
@@ -309,17 +321,27 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        let option: KREOption = options[indexPath.row]
+        if(option.optionType == KREOptionType.newButton){
+            return 44
+        }else{
+            return UITableView.automaticDimension
+        }
     }
     
     public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        let option: KREOption = options[indexPath.row]
+        if(option.optionType == KREOptionType.newButton){
+            return 44
+        }else{
+            return UITableView.automaticDimension
+        }
     }
     
     public func getExpectedHeight(width: CGFloat) -> CGFloat {
         var height: CGFloat = 0.0
         for option in options  {
-            if(option.optionType == KREOptionType.button){
+            if(option.optionType == KREOptionType.button || option.optionType == KREOptionType.newButton){
                 height += kMaxRowHeight
             }else if(option.optionType == KREOptionType.list){
                 let cell:KREListTableViewCell = self.tableView(optionsTableView, cellForRowAt: IndexPath(row: options.index(of: option)!, section: 0)) as! KREListTableViewCell

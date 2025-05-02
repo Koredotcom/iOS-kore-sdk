@@ -10,6 +10,7 @@ import UIKit
 
 class CardTemplateHedaderView: UIView {
     
+    @IBOutlet weak var underlineLbl: UILabel!
     @IBOutlet weak var cardBoaderTopLbl: UILabel!
     @IBOutlet weak var cardVerLbl: UILabel!
     @IBOutlet weak var bgV: UIView!

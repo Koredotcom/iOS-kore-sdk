@@ -296,7 +296,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 let bubbleView: TextBubbleView = cell.bubbleView as! TextBubbleView
                 
                 self.textLinkDetection(textLabel: bubbleView.textLabel)
-                if(bubbleView.textLabel.attributedText?.string == "Welcome John, You already hold a Savings account with Kore bank."){
+                if(bubbleView.textLabel.attributedText?.string == "Welcome Kore."){
                     userActive = true
                 }
                 if(userActive){
@@ -378,7 +378,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .newList:
                 let bubbleView: NewListBubbleView = cell.bubbleView as! NewListBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
-                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
@@ -389,7 +389,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .tableList:
                 let bubbleView: TableListBubbleView = cell.bubbleView as! TableListBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
-                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
@@ -405,7 +405,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .quick_replies_welcome:
                 let bubbleView: QuickReplyWelcomeBubbleView = cell.bubbleView as! QuickReplyWelcomeBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
-                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
@@ -415,20 +415,20 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .notification:
                 let bubbleView: NotificationBubbleView = cell.bubbleView as! NotificationBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
-                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 break
             case .multiSelect:
                 let bubbleView: MultiSelectNewBubbleView = cell.bubbleView as! MultiSelectNewBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
-                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 cell.bubbleView.drawBorder = true
                 break
             case .list_widget:
                 let bubbleView: ListWidgetBubbleView = cell.bubbleView as! ListWidgetBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
-                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
@@ -438,7 +438,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .feedbackTemplate:
                 let bubbleView: FeedbackBubbleView = cell.bubbleView as! FeedbackBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
-                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 isFeedbackView = true
                 cell.bubbleView.drawBorder = true
@@ -447,7 +447,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 let bubbleView: InLineFormBubbleView = cell.bubbleView as! InLineFormBubbleView
                 
                 bubbleView.optionsAction = {[weak self] (text, payload) in
-                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 cell.bubbleView.drawBorder = true
                 break
@@ -457,7 +457,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .custom_table:
                 let bubbleView: CustomTableBubbleView = cell.bubbleView as! CustomTableBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
-                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
@@ -467,7 +467,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .advancedListTemplate:
                 let bubbleView: AdvanceListBubbleView = cell.bubbleView as! AdvanceListBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
-                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
@@ -482,7 +482,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .cardTemplate:
                 let bubbleView: CardTemplateBubbleView = cell.bubbleView as! CardTemplateBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
-                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
@@ -499,7 +499,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 let bubbleView: StackedCarouselBubbleView = cell.bubbleView as! StackedCarouselBubbleView
                 cell.bubbleView.drawBorder = true
                 bubbleView.optionsAction = {[weak self] (text, payload) in
-                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
@@ -509,7 +509,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 let bubbleView: AdvancedMultiSelectBubbleView = cell.bubbleView as! AdvancedMultiSelectBubbleView
                 cell.bubbleView.drawBorder = true
                 bubbleView.optionsAction = {[weak self] (text, payload) in
-                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
@@ -519,7 +519,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 let bubbleView: RadioOptionBubbleView = cell.bubbleView as! RadioOptionBubbleView
                 cell.bubbleView.drawBorder = true
                 bubbleView.optionsAction = {[weak self] (text, payload) in
-                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
@@ -528,7 +528,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .quick_replies_top:
                 let bubbleView: QuickReplyTopBubbleView = cell.bubbleView as! QuickReplyTopBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
-                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
@@ -541,7 +541,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .articleTemplate:
                 let bubbleView: ArticleBubbleView = cell.bubbleView as! ArticleBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
-                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)

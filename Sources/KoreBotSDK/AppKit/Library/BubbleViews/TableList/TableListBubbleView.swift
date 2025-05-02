@@ -71,7 +71,7 @@ class TableListBubbleView: BubbleView {
         cardView.layer.rasterizationScale =  UIScreen.main.scale
         cardView.layer.cornerRadius = 4.0
         cardView.layer.borderWidth = 1.0
-        cardView.layer.borderColor = UIColor.init(hexString: templateBoarderColor).cgColor
+        cardView.layer.borderColor = BubbleViewLeftTint.cgColor
         cardView.clipsToBounds = true
         cardView.backgroundColor =  UIColor.white
         let cardViews: [String: UIView] = ["cardView": cardView]
@@ -249,7 +249,7 @@ extension TableListBubbleView: UITableViewDelegate,UITableViewDataSource{
         let view = UIView()
         
         let subView = UIView()
-        subView.backgroundColor = UIColor.init(red: 242.0/255.0, green: 243.0/255.0, blue: 245.0/255.0, alpha: 1.0)
+        subView.backgroundColor = .clear
         subView.translatesAutoresizingMaskIntoConstraints = false
         subView.layer.cornerRadius = 5.0
         subView.clipsToBounds = true
@@ -268,16 +268,16 @@ extension TableListBubbleView: UITableViewDelegate,UITableViewDataSource{
         let headerDescLabel = UILabel(frame: .zero)
         headerDescLabel.translatesAutoresizingMaskIntoConstraints = false
         headerDescLabel.textAlignment = .left
-        headerDescLabel.font = UIFont(name: boldCustomFont, size: 15.0)
+        headerDescLabel.font = UIFont(name: semiBoldCustomFont, size: 15.0)
         headerDescLabel.font = headerDescLabel.font.withSize(15.0)
         headerDescLabel.textColor = .black
         headerDescLabel.text =  arrayOfComponents[section].sectionHeaderDesc ?? ""
         subView.addSubview(headerDescLabel)
         
         let views: [String: UIView] = ["headerLabel": headerLabel, "headerDescLabel":headerDescLabel]
-        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[headerLabel]-[headerDescLabel]-15-|", options:[], metrics:nil, views:views))
-        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[headerLabel]-10-|", options:[], metrics:nil, views:views))
-        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[headerDescLabel]-10-|", options:[], metrics:nil, views:views))
+        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[headerLabel]-15-|", options:[], metrics:nil, views:views))
+        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[headerDescLabel]-15-|", options:[], metrics:nil, views:views))
+        subView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[headerLabel(15)]-10-[headerDescLabel(15)]-5-|", options:[], metrics:nil, views:views))
         
         let subViews: [String: UIView] = ["subView": subView]
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[subView]-0-|", options:[], metrics:nil, views:subViews))

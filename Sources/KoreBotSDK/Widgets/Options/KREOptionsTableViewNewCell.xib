@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="KREOptionsTableViewNewCell" customModule="KoreBotSDK">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Sa-iB-Kps">
+                        <rect key="frame" x="10" y="7.6666666666666679" width="300" height="29.000000000000004"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="htD-Gg-8tz">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="29"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="htD-Gg-8tz" secondAttribute="trailing" id="4ew-gs-3fm"/>
+                            <constraint firstItem="htD-Gg-8tz" firstAttribute="top" secondItem="8Sa-iB-Kps" secondAttribute="top" id="fWA-RE-XvR"/>
+                            <constraint firstAttribute="bottom" secondItem="htD-Gg-8tz" secondAttribute="bottom" id="wKk-cm-hkQ"/>
+                            <constraint firstItem="htD-Gg-8tz" firstAttribute="leading" secondItem="8Sa-iB-Kps" secondAttribute="leading" id="xSW-Ca-Xkg"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="8Sa-iB-Kps" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="62A-Q6-z2q"/>
+                    <constraint firstAttribute="trailing" secondItem="8Sa-iB-Kps" secondAttribute="trailing" constant="10" id="eII-wi-lMP"/>
+                    <constraint firstItem="8Sa-iB-Kps" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7.7000000000000002" id="kNh-pc-PXs"/>
+                    <constraint firstAttribute="bottom" secondItem="8Sa-iB-Kps" secondAttribute="bottom" constant="7.5" id="own-7C-sby"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="bgView" destination="8Sa-iB-Kps" id="RNB-U8-1ET"/>
+                <outlet property="titleLabel" destination="htD-Gg-8tz" id="IkB-cs-Al0"/>
+            </connections>
+            <point key="canvasLocation" x="138.93129770992365" y="19.718309859154932"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

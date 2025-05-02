@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -15,7 +15,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardTemplateHedaderView" customModule="KoreBotSDKFrameWork" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardTemplateHedaderView" customModule="KoreBotSDK" customModuleProvider="target">
             <connections>
                 <outlet property="bgV" destination="WXc-fK-MyB" id="ww1-sS-7EB"/>
                 <outlet property="btn" destination="qgh-Sc-wDw" id="lTu-30-Q2x"/>
@@ -29,6 +29,7 @@
                 <outlet property="imagView" destination="zKr-o5-LYK" id="hXn-LE-8IG"/>
                 <outlet property="subTilteLabel" destination="Wvx-b7-W4i" id="IcF-e4-0bp"/>
                 <outlet property="titleLabel" destination="U9v-zn-GPX" id="B0I-Mc-6FW"/>
+                <outlet property="underlineLbl" destination="Ug1-oH-CTb" id="Sag-pc-fJX"/>
                 <outlet property="verticalLabel" destination="mIe-Gx-etc" id="Rut-G4-Foc"/>
                 <outlet property="verticalLblLeadingConstraint" destination="CE2-Ce-bmZ" id="Cgt-JN-31F"/>
                 <outlet property="verticalLblWidthConstraint" destination="jmE-kh-ZQB" id="cIP-ZV-duE"/>
@@ -91,7 +92,7 @@
                             </constraints>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qgh-Sc-wDw">
-                            <rect key="frame" x="268" y="10.666666666666664" width="70" height="21"/>
+                            <rect key="frame" x="268" y="10.5" width="70" height="21"/>
                             <color key="backgroundColor" systemColor="systemOrangeColor"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="70" id="pep-67-j1B"/>
@@ -121,6 +122,16 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ug1-oH-CTb">
+                            <rect key="frame" x="0.0" y="59" width="375" height="1"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="0.26514668367346939" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="F1Z-GX-6Mc"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
@@ -132,9 +143,12 @@
                         <constraint firstAttribute="trailing" secondItem="tgr-di-fuo" secondAttribute="trailing" constant="2" id="98f-l3-3c8"/>
                         <constraint firstItem="mIe-Gx-etc" firstAttribute="leading" secondItem="WXc-fK-MyB" secondAttribute="leading" constant="8" id="CE2-Ce-bmZ"/>
                         <constraint firstItem="Wvx-b7-W4i" firstAttribute="leading" secondItem="zKr-o5-LYK" secondAttribute="trailing" constant="5" id="CuV-e9-fyx"/>
+                        <constraint firstAttribute="trailing" secondItem="Ug1-oH-CTb" secondAttribute="trailing" id="MDq-9x-ux9"/>
                         <constraint firstItem="zKr-o5-LYK" firstAttribute="centerY" secondItem="WXc-fK-MyB" secondAttribute="centerY" id="Nm1-6S-rvu"/>
                         <constraint firstItem="tgr-di-fuo" firstAttribute="top" secondItem="WXc-fK-MyB" secondAttribute="top" constant="7" id="Qdd-Yn-S1d"/>
                         <constraint firstItem="qgh-Sc-wDw" firstAttribute="leading" secondItem="Wvx-b7-W4i" secondAttribute="trailing" constant="2" id="Rdg-EC-vAk"/>
+                        <constraint firstAttribute="bottom" secondItem="Ug1-oH-CTb" secondAttribute="bottom" id="V53-HX-sQN"/>
+                        <constraint firstItem="Ug1-oH-CTb" firstAttribute="leading" secondItem="WXc-fK-MyB" secondAttribute="leading" id="VPf-uY-4SF"/>
                         <constraint firstItem="U9v-zn-GPX" firstAttribute="top" secondItem="WXc-fK-MyB" secondAttribute="top" constant="9" id="Vdc-vv-aKW"/>
                         <constraint firstItem="ufG-M6-yEE" firstAttribute="top" secondItem="WXc-fK-MyB" secondAttribute="top" id="YoT-Kz-GLb"/>
                         <constraint firstAttribute="bottom" secondItem="mIe-Gx-etc" secondAttribute="bottom" constant="10" id="a5D-IG-gbw"/>

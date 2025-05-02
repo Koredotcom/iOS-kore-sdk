@@ -21,7 +21,7 @@ public class KRETokenCollectionViewCell: UICollectionViewCell {
                 self.label.backgroundColor = UIColor(hex: 0x485260)
             } else {
                 self.label.font = UIFont(name: fontName, size: 12.0)
-                self.label.textColor = UIColor.init(hexString: textColor)
+                self.label.textColor = BubbleViewRightTint
                 self.label.backgroundColor = .clear
             }
         }
