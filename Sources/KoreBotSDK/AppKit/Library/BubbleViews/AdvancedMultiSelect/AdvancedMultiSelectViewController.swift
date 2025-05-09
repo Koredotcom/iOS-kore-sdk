@@ -1,225 +1,123 @@
 //
-//  AdvancedMultiSelectBubbleView.swift
-//  KoreBotSDKDemo
+//  AdvancedMultiSelectViewController.swift
+//  KoreBotSDK
 //
-//  Created by Kartheek Pagidimarri on 11/10/23.
-//  Copyright © 2023 Kore. All rights reserved.
+//  Created by Pagidimarri Kartheek on 08/05/25.
 //
 
 import UIKit
-
-class AdvancedMultiSelectBubbleView: BubbleView {
+protocol AdvancedMultiSelectDelegate {
+    func optionsButtonTapNewAction(text:String, payload:String)
+}
+class AdvancedMultiSelectViewController: UIViewController {
     let bundle = Bundle.sdkModule
-    var tileBgv: UIView!
-    var titleLbl: UILabel!
-    var tableView: UITableView!
-    var cardView: UIView!
-    let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
-    let kMinTextWidth: CGFloat = 20.0
+    @IBOutlet weak var headerLbl: UILabel!
+    @IBOutlet weak var subView: UIView!
+    @IBOutlet weak var tabV: UITableView!
+    @IBOutlet weak var closeButton: UIButton!
+    var jsonData : Componentss?
+    var dataString: String!
     fileprivate let multiSelectCellIdentifier = "AdvancedMultiSelectCell"
     var sectionLimit = 1
     var isShowMoreIsHidden = false
     var checkboxIndexPath = [IndexPath]() //for Rows checkbox
     var arrayOfSeletedValues = [String]()
+    var arrayOfSeletedTitles = [String]()
     var arrayOfHeaderCheck = [String]()
-    var isSliderView = false
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
-        NSAttributedString.Key.font : UIFont(name: boldCustomFont, size: 12.0) as Any,
-        NSAttributedString.Key.foregroundColor : UIColor.white]
+        NSAttributedString.Key.font : UIFont(name: boldCustomFont, size: 15.0) as Any,
+        NSAttributedString.Key.foregroundColor : BubbleViewUserChatTextColor]
     
     var arrayOfElements = [ComponentElements]()
     var arrayOfButtons = [ComponentItemAction]()
     var showMore = false
-    //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
-    //public var linkAction: ((_ text: String?) -> Void)!
+    var viewDelegate: AdvancedMultiSelectDelegate?
     
-    override func applyBubbleMask() {
-        //nothing to put here
-        if(self.maskLayer == nil){
-            self.maskLayer = CAShapeLayer()
-        }
-        self.maskLayer.path = self.createBezierPath().cgPath
-        self.maskLayer.position = CGPoint(x:0, y:0)
-    }
+    @IBOutlet weak var doneButton: UIButton!
     
-    override var tailPosition: BubbleMaskTailPosition! {
-        didSet {
-            self.backgroundColor = .clear
-        }
-    }
-    
-//    override func prepareForReuse() {
-//        checkboxIndexPath = [IndexPath]()
-//         arrayOfSeletedValues = [String]()
-//    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
+        headerLbl.textColor = BubbleViewBotChatTextColor
+        headerLbl.font = UIFont.init(name: boldCustomFont, size: 15.0)
+        // Do any additional setup after loading the view.
+        if #available(iOS 11.0, *) {
+            self.subView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
+        }
+        getData()
+        //self.tabV.tableFooterView = UIView(frame:.zero)
+        self.tabV.register(Bundle.xib(named: multiSelectCellIdentifier), forCellReuseIdentifier: multiSelectCellIdentifier)
+    }
+    func getData(){
+       let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: dataString!) as! NSDictionary
+            let jsonDecoder = JSONDecoder()
+            guard let jsonData1 = try? JSONSerialization.data(withJSONObject: jsonObject as Any , options: .prettyPrinted),
+                let allItems = try? jsonDecoder.decode(Componentss.self, from: jsonData1) else {
+                        return
+                }
+        jsonData = allItems
+        headerLbl.text = jsonData?.heading ?? ""
+        
+        doneButton.backgroundColor = themeColor
+        doneButton.clipsToBounds = true
+        doneButton.layer.cornerRadius = 5
+        doneButton.layer.borderColor = themeColor.cgColor
+        doneButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 15.0)
+        doneButton.layer.borderWidth = 1
+        doneButton.setTitleColor(BubbleViewUserChatTextColor, for: .normal)
+        doneButton.addTarget(self, action: #selector(self.doneButtonButtonAction(_:)), for: .touchUpInside)
+    
+        if arrayOfButtons.count>0{
+            let btnTitle: String = arrayOfButtons[0].title!
+            let attributeString = NSMutableAttributedString(string: btnTitle,
+                                                            attributes: yourAttributes)
+            doneButton.setAttributedTitle(attributeString, for: .normal)
+        }
+            
+        arrayOfSeletedValues = []
+        arrayOfSeletedTitles = []
+        arrayOfElements = allItems.elements ?? []
+        arrayOfButtons = allItems.buttons ?? []
+        if !isShowMoreIsHidden{
+            sectionLimit = allItems.limit ?? arrayOfElements.count
+            for _ in 0..<arrayOfElements.count{
+                arrayOfHeaderCheck.append("Uncheck")
+            }
+        }
+        self.tabV.reloadData()
+        hideDoneButton()
+    }
+
+    init(dataString: String) {
+        super.init(nibName: "AdvancedMultiSelectViewController", bundle: bundle)
+        self.dataString = dataString
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    @IBAction func closeBtnAct(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
     /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
     }
     */
     
-    override func initialize() {
-        super.initialize()
-       // UserDefaults.standard.set(false, forKey: "SliderKey")
-        intializeCardLayout()
-        self.tileBgv = UIView(frame:.zero)
-        self.tileBgv.translatesAutoresizingMaskIntoConstraints = false
-        self.tileBgv.layer.rasterizationScale =  UIScreen.main.scale
-        self.tileBgv.layer.shouldRasterize = true
-        self.tileBgv.layer.cornerRadius = 10.0
-        self.cardView.addSubview(self.tileBgv)
-        self.tileBgv.backgroundColor = BubbleViewLeftTint
-        
-        
-        self.tableView = UITableView(frame: CGRect.zero,style:.plain)
-        self.tableView.translatesAutoresizingMaskIntoConstraints = false
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
-        self.tableView.backgroundColor = .white
-        self.tableView.showsHorizontalScrollIndicator = false
-        self.tableView.showsVerticalScrollIndicator = true
-        self.tableView.bounces = false
-        self.tableView.separatorStyle = .none
-        self.cardView.addSubview(self.tableView)
-        self.tableView.isScrollEnabled = true
-
-        self.tableView.register(Bundle.xib(named: multiSelectCellIdentifier), forCellReuseIdentifier: multiSelectCellIdentifier)
-        if #available(iOS 15.0, *) {
-            tableView.sectionHeaderTopPadding = 0
-        }
-        if #available(iOS 11.0, *) {
-            self.tableView.roundCorners([.layerMaxXMinYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: 5.0, borderColor: UIColor.lightGray, borderWidth: 0.0)
-        }
-        
-        let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView]
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-5-[tableView]-5-|", options: [], metrics: nil, views: views))
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
-        
-
-        self.titleLbl = UILabel(frame: CGRect.zero)
-        self.titleLbl.textColor = BubbleViewBotChatTextColor
-        self.titleLbl.font = UIFont(name: mediumCustomFont, size: 16.0)
-        self.titleLbl.numberOfLines = 0
-        self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
-        self.titleLbl.isUserInteractionEnabled = true
-        self.titleLbl.contentMode = UIView.ContentMode.topLeft
-        self.titleLbl.translatesAutoresizingMaskIntoConstraints = false
-        self.tileBgv.addSubview(self.titleLbl)
-        self.titleLbl.adjustsFontSizeToFitWidth = true
-        self.titleLbl.backgroundColor = .clear
-        self.titleLbl.layer.cornerRadius = 6.0
-        self.titleLbl.clipsToBounds = true
-        self.titleLbl.sizeToFit()
-        
-        let subView: [String: UIView] = ["titleLbl": titleLbl]
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
-        setCornerRadiousToTitleView()
-        
-    }
-    func setCornerRadiousToTitleView(){
-        let bubbleStyle = brandingBodyDic.bubble_style
-        let radius = 10.0
-        let borderWidth = 0.0
-        let borderColor = UIColor.clear
-        if #available(iOS 11.0, *) {
-            if bubbleStyle == "balloon"{
-                self.tileBgv.roundCorners([.layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
-            }else if bubbleStyle == "rounded"{
-                self.tileBgv.roundCorners([.layerMaxXMinYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
-                
-        }else if bubbleStyle == "rectangle"{
-                self.tileBgv.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
-            }
-        }
-    }
-    func intializeCardLayout(){
-        self.cardView = UIView(frame:.zero)
-        self.cardView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(self.cardView)
-        cardView.backgroundColor =  UIColor.clear
-        let cardViews: [String: UIView] = ["cardView": cardView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
-        
+    @IBAction func dontButtonAction(_ sender: Any) {
     }
     
-    // MARK: populate components
-    override func populateComponents() {
-        if (components.count > 0) {
-            let component: KREComponent = components.firstObject as! KREComponent
-            if (component.message != nil) {
-                let jsonString = component.message?.messageId
-                print(jsonString!)
-                
-            }
-            if (component.componentDesc != nil) {
-                let jsonString = component.componentDesc
-                let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
-                let jsonDecoder = JSONDecoder()
-                 guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObject as Any , options: .prettyPrinted),
-                let allItems = try? jsonDecoder.decode(Componentss.self, from: jsonData) else {
-                    return
-                }
-                self.titleLbl.text = allItems.heading ?? ""
-                isSliderView = allItems.sliderView  ?? false
-                arrayOfSeletedValues = []
-                arrayOfElements = allItems.elements ?? []
-                arrayOfButtons = allItems.buttons ?? []
-                if !isShowMoreIsHidden{
-                    sectionLimit = allItems.limit ?? arrayOfElements.count
-                    for _ in 0..<arrayOfElements.count{
-                        arrayOfHeaderCheck.append("Uncheck")
-                    }
-                }
-                self.tableView.reloadData()
-                
-            }
-        }
-    }
-    
-    //MARK: View height calculation
-    override var intrinsicContentSize : CGSize {
-        let limitingSize: CGSize  = CGSize(width: kMaxTextWidth, height: CGFloat.greatestFiniteMagnitude)
-        var textSize: CGSize = self.titleLbl.sizeThatFits(limitingSize)
-        if textSize.height < self.titleLbl.font.pointSize {
-            textSize.height = self.titleLbl.font.pointSize
-        }
-        if isSliderView{
-            return CGSize(width: 0.0, height: textSize.height + 0.0)
-        }else{
-            var cellHeight : CGFloat = 0.0
-            var finalHeight: CGFloat = 0.0
-            var HeaderVHeight: CGFloat = 0.0
-            let footerHeight: CGFloat = 40.0
-            for cellSection in 0..<sectionLimit{
-                let elements = arrayOfElements[cellSection]
-                if let collectionCount = elements.collection?.count{
-                    for i in 0..<collectionCount{
-                        let row = tableView.dequeueReusableCell(withIdentifier: multiSelectCellIdentifier, for: IndexPath(row: i, section: cellSection))as! AdvancedMultiSelectCell
-                        cellHeight = row.bounds.height
-                        finalHeight += cellHeight
-                        
-                    }
-                    
-                    if collectionCount == 1{
-                        HeaderVHeight += 45.0
-                    }else{
-                        HeaderVHeight += 75.0
-                    }
-                }
-            }
-            return CGSize(width: 0.0, height: textSize.height+40+finalHeight+HeaderVHeight+footerHeight)
-        }
-        
-    }
+
 }
 
-extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDelegate{
+extension AdvancedMultiSelectViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
@@ -235,7 +133,7 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell : AdvancedMultiSelectCell = self.tableView.dequeueReusableCell(withIdentifier: multiSelectCellIdentifier) as! AdvancedMultiSelectCell
+        let cell : AdvancedMultiSelectCell = tableView.dequeueReusableCell(withIdentifier: multiSelectCellIdentifier) as! AdvancedMultiSelectCell
         cell.backgroundColor = UIColor.clear
         cell.selectionStyle = .none
         let elements = arrayOfElements[indexPath.section]
@@ -258,7 +156,7 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
         }else{
             let imgV = UIImage.init(named: "uncheck", in: bundle, compatibleWith: nil)
             cell.checkImage.image = imgV?.withRenderingMode(.alwaysTemplate)
-            cell.checkImage.tintColor = themeColor
+            cell.checkImage.tintColor = BubbleViewLeftTint
         }
         return cell
         
@@ -267,12 +165,14 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
         let elements = arrayOfElements[indexPath.section]
         let elementsCollection = elements.collection?[indexPath.row]
         if checkboxIndexPath.contains(indexPath) {
-            removeSelectedValues(value: elementsCollection?.value ?? "")
+            removeSelectedValues(value: elementsCollection?.value ?? "", title: elementsCollection?.title ?? "")
             checkboxIndexPath.remove(at: checkboxIndexPath.firstIndex(of: indexPath)!)
         }else{
             checkboxIndexPath.append(indexPath)
             let value = "\(elementsCollection?.value ?? "")"
             arrayOfSeletedValues.append(value)
+            let title = "\(elementsCollection?.title ?? "")"
+            arrayOfSeletedTitles.append(title)
         }
         var zzz = 0
         if let collectionCount = elements.collection?.count{
@@ -293,10 +193,18 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
             }
         }
         tableView.reloadData()
+        hideDoneButton()
     }
-    func removeSelectedValues(value:String){
+    func hideDoneButton(){
+        if arrayOfSeletedValues.count > 0{
+            doneButton.isHidden = false
+        }else{
+            doneButton.isHidden = true
+        }
+    }
+    func removeSelectedValues(value:String,title:String){
         arrayOfSeletedValues = arrayOfSeletedValues.filter(){$0 != value}
-        print(arrayOfSeletedValues)
+        arrayOfSeletedTitles = arrayOfSeletedTitles.filter(){$0 != title}
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let elements = arrayOfElements[section]
@@ -351,7 +259,7 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
                     let indexPath = IndexPath(row: i , section: sender.tag)
                     let elementsCollection = elements.collection?[i]
                     if checkboxIndexPath.contains(indexPath) {
-                        removeSelectedValues(value: elementsCollection?.value ?? "")
+                        removeSelectedValues(value: elementsCollection?.value ?? "", title: elementsCollection?.title ?? "")
                         checkboxIndexPath.remove(at: checkboxIndexPath.firstIndex(of: indexPath)!)
                     }
                 }
@@ -368,11 +276,14 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
                         checkboxIndexPath.append(indexPath)
                         let value = "\(elementsCollection?.value ?? "")"
                         arrayOfSeletedValues.append(value)
+                        let title = "\(elementsCollection?.title ?? "")"
+                        arrayOfSeletedTitles.append(title)
                     }
                 }
             }
         }
-        tableView.reloadData()
+        tabV.reloadData()
+        hideDoneButton()
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -393,11 +304,11 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
         showMoreButton.clipsToBounds = true
         showMoreButton.layer.cornerRadius = 5
         showMoreButton.layer.borderWidth = 1
-        showMoreButton.layer.borderColor = themeColor.cgColor
-        showMoreButton.setTitleColor(themeColor, for: .normal)
+        showMoreButton.layer.borderColor = UIColor.clear.cgColor
+        showMoreButton.setTitleColor(BubbleViewBotChatTextColor, for: .normal)
         showMoreButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
         showMoreButton.setTitle("View more", for: .normal)
-        showMoreButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 12.0)
+        showMoreButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 15.0)
         view.addSubview(showMoreButton)
         showMoreButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
         showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
@@ -414,7 +325,7 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
         doneButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
         view.addSubview(doneButton)
         doneButton.addTarget(self, action: #selector(self.doneButtonButtonAction(_:)), for: .touchUpInside)
-        
+        doneButton.isHidden = true
         if arrayOfButtons.count>0{
             let btnTitle: String = arrayOfButtons[0].title!
             let attributeString = NSMutableAttributedString(string: btnTitle,
@@ -422,9 +333,10 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
             doneButton.setAttributedTitle(attributeString, for: .normal)
         }
         
+        
         let views: [String: UIView] = ["showMoreButton": showMoreButton, "doneButton": doneButton]
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[showMoreButton(40)]-0-|", options:[], metrics:nil, views:views))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[showMoreButton(100)]", options:[], metrics:nil, views:views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[showMoreButton(100)]", options:[], metrics:nil, views:views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[doneButton(40)]-0-|", options:[], metrics:nil, views:views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[doneButton(100)]-10-|", options:[], metrics:nil, views:views))
         return view
@@ -432,14 +344,16 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
             isShowMoreIsHidden = true
             sectionLimit = arrayOfElements.count
-            NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+            tabV.reloadData()
     }
     
     @objc fileprivate func doneButtonButtonAction(_ sender: AnyObject!) {
         if arrayOfSeletedValues.count > 0{
-            let joined = arrayOfSeletedValues.joined(separator: ", ")
-            print(joined)
-            self.optionsAction?("Here are selected items: \(joined)",joined)
+            let joinedValues = arrayOfSeletedValues.joined(separator: ", ")
+            let joinedTitles = arrayOfSeletedTitles.joined(separator: ", ")
+            print(joinedTitles)
+            self.dismiss(animated: true, completion: nil)
+            self.viewDelegate?.optionsButtonTapNewAction(text: "Here are selected items: \(joinedTitles)", payload: joinedValues)
         }
     }
 }

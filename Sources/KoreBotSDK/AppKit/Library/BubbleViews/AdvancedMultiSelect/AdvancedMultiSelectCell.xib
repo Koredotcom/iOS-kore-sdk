@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -27,7 +27,7 @@
                         <rect key="frame" x="10" y="0.0" width="300" height="66"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123456" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rKB-3d-4V5">
-                                <rect key="frame" x="100" y="6" width="192" height="21"/>
+                                <rect key="frame" x="93" y="6" width="199" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="3Pv-Qn-JQg"/>
                                 </constraints>
@@ -43,7 +43,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123456" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jCK-Vp-41Z">
-                                <rect key="frame" x="100" y="35" width="192" height="21"/>
+                                <rect key="frame" x="93" y="35" width="199" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="8By-6O-Qhc"/>
                                 </constraints>
@@ -51,10 +51,11 @@
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder_image" translatesAutoresizingMaskIntoConstraints="NO" id="g91-Ma-zro">
-                                <rect key="frame" x="43" y="5" width="52" height="56"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder_image" translatesAutoresizingMaskIntoConstraints="NO" id="g91-Ma-zro">
+                                <rect key="frame" x="43" y="13" width="45" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="52" id="3Sc-hW-ex8"/>
+                                    <constraint firstAttribute="width" constant="45" id="3Sc-hW-ex8"/>
+                                    <constraint firstAttribute="height" constant="40" id="PSe-hg-Y9h"/>
                                 </constraints>
                             </imageView>
                         </subviews>
@@ -67,11 +68,10 @@
                             <constraint firstItem="g91-Ma-zro" firstAttribute="leading" secondItem="QF1-nt-qp4" secondAttribute="trailing" constant="5" id="LhY-HP-7cg"/>
                             <constraint firstItem="rKB-3d-4V5" firstAttribute="leading" secondItem="g91-Ma-zro" secondAttribute="trailing" constant="5" id="RZA-5c-wKO"/>
                             <constraint firstItem="QF1-nt-qp4" firstAttribute="leading" secondItem="JwT-4b-KXX" secondAttribute="leading" constant="8" id="Uj0-gw-Jxe"/>
-                            <constraint firstAttribute="bottom" secondItem="g91-Ma-zro" secondAttribute="bottom" constant="5" id="d8C-qZ-B4A"/>
                             <constraint firstItem="jCK-Vp-41Z" firstAttribute="leading" secondItem="g91-Ma-zro" secondAttribute="trailing" constant="5" id="pI4-xh-q9R"/>
+                            <constraint firstItem="g91-Ma-zro" firstAttribute="centerY" secondItem="JwT-4b-KXX" secondAttribute="centerY" id="tCq-3G-9e7"/>
                             <constraint firstAttribute="bottom" secondItem="jCK-Vp-41Z" secondAttribute="bottom" constant="10" id="uss-P6-LuP"/>
                             <constraint firstAttribute="trailing" secondItem="rKB-3d-4V5" secondAttribute="trailing" constant="8" id="wxn-cj-Esp"/>
-                            <constraint firstItem="g91-Ma-zro" firstAttribute="top" secondItem="JwT-4b-KXX" secondAttribute="top" constant="5" id="zfF-bR-6NJ"/>
                         </constraints>
                     </view>
                 </subviews>

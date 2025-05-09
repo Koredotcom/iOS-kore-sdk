@@ -22,6 +22,7 @@ class RadioOptionBubbleView : BubbleView {
     var seletedTitle = ""
     var seletedRow = 100
     let checkBtn = UIButton(frame: CGRect.zero)
+    public var maskview: UIView!
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.font : UIFont(name: boldCustomFont, size: 12.0) as Any,
@@ -62,7 +63,7 @@ class RadioOptionBubbleView : BubbleView {
         self.tileBgv.layer.shouldRasterize = true
         self.tileBgv.layer.cornerRadius = 10.0
         self.cardView.addSubview(self.tileBgv)
-        self.tileBgv.backgroundColor = BubbleViewLeftTint
+        self.tileBgv.backgroundColor = .clear
         
         self.tableView = UITableView(frame: CGRect.zero,style:.plain)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -76,16 +77,25 @@ class RadioOptionBubbleView : BubbleView {
         self.cardView.addSubview(self.tableView)
         self.tableView.isScrollEnabled = true
         
+        self.maskview = UIView(frame:.zero)
+        self.maskview.translatesAutoresizingMaskIntoConstraints = false
+        self.cardView.addSubview(self.maskview)
+        self.maskview.isHidden = true
+        self.maskview.backgroundColor = .clear
+        
         self.tableView.register(Bundle.xib(named: cellIdentifier), forCellReuseIdentifier: cellIdentifier)
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0
         }
-        let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView]
+        let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView, "maskview": maskview]
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
         
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[maskview]|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[maskview]-0-|", options: [], metrics: nil, views: views))
+        
         self.titleLbl = UILabel(frame: CGRect.zero)
-        self.titleLbl.textColor = Common.UIColorRGB(0x484848)
+        self.titleLbl.textColor = BubbleViewBotChatTextColor
         self.titleLbl.font = UIFont(name: mediumCustomFont, size: 16.0)
         self.titleLbl.numberOfLines = 0
         self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -204,8 +214,8 @@ extension RadioOptionBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.backgroundColor = UIColor.white
         cell.selectionStyle = .none
         let elements = arrayOfElements[indexPath.row]
-        cell.titleLabel.text = elements.title
-        
+        cell.titleLabel.text = "\(elements.title ?? "") \n\(elements.value ?? "")"
+        cell.titleLabel.textColor = BubbleViewBotChatTextColor
         if seletedRow == indexPath.row {
             let imgV = UIImage.init(named: "radio_check", in: bundle, compatibleWith: nil)
             cell.checkImage.image = imgV?.withRenderingMode(.alwaysTemplate)
@@ -213,7 +223,7 @@ extension RadioOptionBubbleView: UITableViewDelegate,UITableViewDataSource{
         }else{
             let imgV = UIImage.init(named: "radio_uncheck", in: bundle, compatibleWith: nil)
             cell.checkImage.image = imgV?.withRenderingMode(.alwaysTemplate)
-            cell.checkImage.tintColor = themeColor
+            cell.checkImage.tintColor = BubbleViewLeftTint
         }
         cell.bgV.layer.cornerRadius = 5.0
         cell.bgV.layer.borderWidth = 0.0
@@ -229,6 +239,10 @@ extension RadioOptionBubbleView: UITableViewDelegate,UITableViewDataSource{
         let value = "\(elements.value ?? "")"
         seletedRow = indexPath.row
         seletedValue = value
+        if let postBack = elements.postback{
+            seletedTitle = postBack.title ?? title
+            seletedValue = postBack.value ?? value
+        }
         tableView.reloadData()
         
     }
@@ -247,7 +261,7 @@ extension RadioOptionBubbleView: UITableViewDelegate,UITableViewDataSource{
         footerBtn.layer.borderWidth = 1
         footerBtn.setTitleColor(.white, for: .normal)
         footerBtn.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-        footerBtn.titleLabel?.font = UIFont(name: boldCustomFont, size: 12.0)
+        footerBtn.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0)
         view.addSubview(footerBtn)
         footerBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
         footerBtn.addTarget(self, action: #selector(self.footerBtnAction(_:)), for: .touchUpInside)
@@ -261,6 +275,7 @@ extension RadioOptionBubbleView: UITableViewDelegate,UITableViewDataSource{
     @objc fileprivate func footerBtnAction(_ sender: AnyObject!) {
         if seletedValue != ""{
             self.optionsAction?(seletedTitle,seletedValue)
+            self.maskview.isHidden = false
         }
     }
 }

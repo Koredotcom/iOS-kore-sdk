@@ -45,7 +45,7 @@ extension StackedCarouselCell: UITableViewDelegate, UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: "StackedButtonCell", for: indexPath) as! StackedButtonCell
         let btnDetails = btnsArray[indexPath.row]
         cell.textLbl?.text = btnDetails.title
-        cell.textLbl.font = UIFont(name: mediumCustomFont, size: 14.0)
+        cell.textLbl.font = UIFont(name: mediumCustomFont, size: 12.0)
         cell.bgV.layer.cornerRadius = 2.0
         cell.bgV.layer.borderWidth = 1.0
         cell.bgV.layer.borderColor = themeColor.cgColor

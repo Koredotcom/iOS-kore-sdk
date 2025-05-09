@@ -19,7 +19,7 @@ class NewListBubbleView: BubbleView {
     fileprivate let listCellIdentifier = "NewListTableViewCell"
     var rowsDataLimit = 4
     var isShowMore = false
-    
+    public var maskview: UIView!
     let yourAttributes : [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.font : UIFont(name: mediumCustomFont, size: 12.0) as Any,
         NSAttributedString.Key.foregroundColor : themeColor]
@@ -79,11 +79,20 @@ class NewListBubbleView: BubbleView {
         if #available(iOS 15.0, *){
             self.tableView.sectionHeaderTopPadding = 0.0
         }
+        
+        self.maskview = UIView(frame:.zero)
+        self.maskview.translatesAutoresizingMaskIntoConstraints = false
+        self.cardView.addSubview(self.maskview)
+        self.maskview.isHidden = true
+        self.maskview.backgroundColor = .clear
 
-        let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView]
+        let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView, "maskview": maskview]
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
+        
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[maskview]|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[maskview]-0-|", options: [], metrics: nil, views: views))
 
         self.titleLbl = UILabel(frame: CGRect.zero)
         self.titleLbl.textColor = BubbleViewBotChatTextColor
@@ -244,6 +253,7 @@ extension NewListBubbleView: UITableViewDelegate,UITableViewDataSource{
         let elements = arrayOfComponents[indexPath.row]
         if elements.action?.type != nil {
             if elements.action?.type == "postback"{
+                maskview.isHidden = false
                 self.optionsAction?(elements.action?.title,elements.action?.payload ?? elements.action?.title)
             }else{
                 if elements.action?.fallback_url != nil {

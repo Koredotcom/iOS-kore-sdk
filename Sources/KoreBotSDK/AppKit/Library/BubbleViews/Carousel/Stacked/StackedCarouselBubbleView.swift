@@ -17,10 +17,11 @@ class StackedCarouselBubbleView: BubbleView {
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth
     let kMinTextWidth: CGFloat = 20.0
     var arrayOfCarousels = [ComponentElements]()
-    
+    var isImageAvailable = true
+    var withOutBtnsLayoutHeight = 175.0
     //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
     //public var linkAction: ((_ text: String?) -> Void)!
-    
+    var shouldScrollInitially = true
     let xLoop = 50
     
     var btnsHeight = 40.0
@@ -59,8 +60,7 @@ class StackedCarouselBubbleView: BubbleView {
     func createCollectionView(){
 
         let wiidth = UIScreen.main.bounds.size.width
-        let withOutBtnsHeight = 175.0
-        let layout = ZoomAndSnapFlowLayout(itemSize: CGSize(width: wiidth / 1.8, height: withOutBtnsHeight + btnsHeight))
+        let layout = ZoomAndSnapFlowLayout(itemSize: CGSize(width: wiidth / 1.8, height: withOutBtnsLayoutHeight + btnsHeight))
         layout.scrollDirection = .horizontal
         self.collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -111,26 +111,58 @@ class StackedCarouselBubbleView: BubbleView {
                 }
                 self.arrayOfCarousels = allItems.elements ?? []
                 var arrayBtnsCount = [Int]()
+                isImageAvailable = false
+                withOutBtnsLayoutHeight = 100.0
                 for i in 0..<arrayOfCarousels.count{
                     let btns = arrayOfCarousels[i]
                     arrayBtnsCount.append(btns.buttons?.count ?? 0)
+                    if let urlstr = btns.topSection?.image_url, let url = URL(string: urlstr){
+                        isImageAvailable = true
+                        withOutBtnsLayoutHeight = 175.0
+                    }
                 }
                 let maxNofBtns = arrayBtnsCount.max()
                 btnsHeight = CGFloat(maxNofBtns ?? 0) * 40.0
                 self.collectionView.reloadData()
-                if self.arrayOfCarousels.count > 1{
-                    self.collectionView.scrollToItem(at: NSIndexPath.init(item: 1, section: 0) as IndexPath, at: .centeredHorizontally, animated: true)
-                }
+                updateItemHeight(to: withOutBtnsLayoutHeight + btnsHeight)
             }
         }
     }
     
     //MARK: View height calculation
     override var intrinsicContentSize : CGSize {
-        let withOutBtnsHeight = 230.0 //250
-        return CGSize(width: 0.0, height: withOutBtnsHeight + btnsHeight)
+        let heightOfBubbleView = 230.0 + btnsHeight
+        if isImageAvailable{
+            return CGSize(width: 0.0, height: heightOfBubbleView)
+        }else{
+            let imageHeight = 90.0
+            return CGSize(width: 0.0, height: heightOfBubbleView - imageHeight)
+        }
+        
     }
     
+    func updateItemHeight(to newHeight: CGFloat) {
+        let newWidth = UIScreen.main.bounds.size.width / 1.8
+        if let layout = self.collectionView.collectionViewLayout as? ZoomAndSnapFlowLayout {
+            layout.itemSize = CGSize(width: newWidth, height: newHeight)
+            layout.invalidateLayout()
+            self.collectionView.collectionViewLayout.invalidateLayout()
+        }
+    }
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        // Ensure it's only done once if needed
+        if shouldScrollInitially {
+            shouldScrollInitially = false
+            if self.arrayOfCarousels.count > 1{
+                DispatchQueue.main.async {
+                    let indexPath = IndexPath(item: 1, section: 0)
+                    self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+                }
+            }
+        }
+    }
    
 }
 extension StackedCarouselBubbleView : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
@@ -168,8 +200,8 @@ extension StackedCarouselBubbleView : UICollectionViewDelegate, UICollectionView
             cell.imageVHeightConstraint.constant = 90.0
             cell.imagV.af.setImage(withURL: url, placeholderImage:  UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil))
         }else{
-            //cell.imageVHeightConstraint.constant = 45.0
-            //cell.imagV.image = nil
+            cell.imageVHeightConstraint.constant = 10.0
+            cell.imagV.image = nil
         }
         return cell
     }

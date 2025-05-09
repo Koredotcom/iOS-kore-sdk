@@ -37,6 +37,8 @@ class ListViewDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        headingLebel.textColor = BubbleViewBotChatTextColor
+        headingLebel.font = UIFont.init(name: boldCustomFont, size: 15.0)
         if #available(iOS 11.0, *) {
             self.subView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
         }

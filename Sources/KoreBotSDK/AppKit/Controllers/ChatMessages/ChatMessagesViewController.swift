@@ -22,7 +22,7 @@ import ObjectMapper
 import ObjcSupport
 #endif
 
-public class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate, WelcomeScreenViewDelegate, ArticleViewDelegate, OTPValidationDelegate, resetPinDelegate {
+public class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate, WelcomeScreenViewDelegate, ArticleViewDelegate, OTPValidationDelegate, resetPinDelegate, AdvancedMultiSelectDelegate {
     // MARK: properties
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
@@ -677,6 +677,11 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                         if let layOut = dictionary["layout"] as? String, layOut == "horizontal"{
                             templateType = "mini_table_horizontal"
                         }
+                    }else if templateType == "carousel"{
+                        
+                        if dictionary["carousel_type"] as? String ?? ""  == "stacked"{
+                            templateType = "stacked"
+                        }
                     }
                     
                     let componentType = self.getComponentType(templateType,tabledesign)
@@ -931,7 +936,11 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(showArticleTemplateView), name: NSNotification.Name(rawValue: showArticleTemplateNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(OTPvalidateTemplateActtion), name: NSNotification.Name(rawValue: otpValidationTemplateNotification), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(resetPinTemplateActtion), name: NSNotification.Name(rawValue: resetpinTemplateNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(resetPinTemplateAction), name: NSNotification.Name(rawValue: resetpinTemplateNotification), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(aAdvancedMultiSelectAction), name: NSNotification.Name(rawValue: advancedMultiSelectTemplateNotification), object: nil)
+        
+        
     }
     
     func removeNotifications() {
@@ -960,6 +969,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: otpValidationTemplateNotification), object: nil)
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: resetpinTemplateNotification), object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: advancedMultiSelectTemplateNotification), object: nil)
+        
 
     }
     
@@ -1676,7 +1688,6 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     func populateFeedbackSliderView(with message: KREMessage?) {
         if message?.templateType == (ComponentType.feedbackTemplate.rawValue as NSNumber) {
             let component: KREComponent = message!.components![0] as! KREComponent
-            print(component)
             if (!component.isKind(of: KREComponent.self)) {
                 return;
             }
@@ -1687,6 +1698,23 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                 feedbackViewController.viewDelegate = self
                 feedbackViewController.modalPresentationStyle = .overFullScreen
                 self.navigationController?.present(feedbackViewController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func populateAdvancedMultiSelectSliderView(with message: KREMessage?) {
+        if message?.templateType == (ComponentType.advanced_multi_select.rawValue as NSNumber) {
+            let component: KREComponent = message!.components![0] as! KREComponent
+            if (!component.isKind(of: KREComponent.self)) {
+                return;
+            }
+            
+            if ((component.componentDesc) != nil) {
+                let jsonString = component.componentDesc
+                let vc = AdvancedMultiSelectViewController(dataString: jsonString!)
+                vc.viewDelegate = self
+                vc.modalPresentationStyle = .overFullScreen
+                self.navigationController?.present(vc, animated: true, completion: nil)
             }
         }
     }
@@ -1891,12 +1919,20 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         self.navigationController?.present(otpValidationVC, animated: true, completion: nil)
     }
     
-    @objc func resetPinTemplateActtion(notification:Notification){
+    @objc func resetPinTemplateAction(notification:Notification){
         let dataString: String = notification.object as! String
         let oresetPinVC = ResetPinViewController(dataString: dataString)
         oresetPinVC.viewDelegate = self
         oresetPinVC.modalPresentationStyle = .overFullScreen
         self.navigationController?.present(oresetPinVC, animated: true, completion: nil)
+    }
+    
+    @objc func aAdvancedMultiSelectAction(notification:Notification){
+        let dataString: String = notification.object as! String
+        let vc = AdvancedMultiSelectViewController(dataString: dataString)
+        vc.viewDelegate = self
+        vc.modalPresentationStyle = .overFullScreen
+        self.navigationController?.present(vc, animated: true, completion: nil)
     }
     
     @objc func dropDownTemplateActtion(notification:Notification){

@@ -415,6 +415,7 @@ class PiechartBubbleCell : MessageBubbleCell {
             self.bubbleLeadingConstraint.constant = 0
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
             
         }
     }

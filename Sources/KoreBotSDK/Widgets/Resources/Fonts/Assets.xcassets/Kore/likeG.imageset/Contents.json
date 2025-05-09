@@ -1,12 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "radio_uncheck.png",
+      "filename" : "likeG.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "radio_uncheck@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

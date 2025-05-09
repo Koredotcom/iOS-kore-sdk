@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -28,6 +29,13 @@
                         <color key="textColor" red="0.46666666666666667" green="0.46666666666666667" blue="0.46666666666666667" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="1Bv-Bb-6Pr" customClass="KREAttributedTextView">
+                        <rect key="frame" x="73" y="28" width="226" height="14"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="textColor" systemColor="labelColor"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
                     <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V99-ov-DQB">
                         <rect key="frame" x="83" y="44" width="206" height="30"/>
                         <constraints>
@@ -51,16 +59,20 @@
                     <constraint firstItem="cOS-sE-Uxe" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="5cq-xB-6oQ"/>
                     <constraint firstAttribute="bottomMargin" secondItem="V99-ov-DQB" secondAttribute="bottom" id="AQq-KT-abr"/>
                     <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="kzc-p6-0Od" secondAttribute="bottom" constant="2" id="GPB-74-wZM"/>
+                    <constraint firstAttribute="trailing" secondItem="1Bv-Bb-6Pr" secondAttribute="trailing" constant="21" id="GSm-Kp-0dI"/>
+                    <constraint firstItem="1Bv-Bb-6Pr" firstAttribute="leading" secondItem="kzc-p6-0Od" secondAttribute="trailing" constant="5" id="GqG-0I-VPJ"/>
                     <constraint firstItem="kzc-p6-0Od" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-11" id="IqR-ms-e97"/>
                     <constraint firstItem="V99-ov-DQB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="sR1-6j-Ue4" secondAttribute="bottom" constant="5" id="Jym-CW-cUa"/>
                     <constraint firstAttribute="trailingMargin" secondItem="sR1-6j-Ue4" secondAttribute="trailing" constant="5" id="M4M-Pa-M2c"/>
+                    <constraint firstItem="kzc-p6-0Od" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17.5" id="MT2-fg-7ya"/>
                     <constraint firstAttribute="trailingMargin" secondItem="V99-ov-DQB" secondAttribute="trailing" constant="15" id="XhF-Ov-lY4"/>
+                    <constraint firstItem="V99-ov-DQB" firstAttribute="top" secondItem="1Bv-Bb-6Pr" secondAttribute="bottom" constant="2" id="aCl-mz-jGH"/>
                     <constraint firstItem="cOS-sE-Uxe" firstAttribute="leading" secondItem="kzc-p6-0Od" secondAttribute="trailing" constant="5" id="bUM-RD-WPM"/>
                     <constraint firstItem="sR1-6j-Ue4" firstAttribute="leading" secondItem="kzc-p6-0Od" secondAttribute="trailing" constant="5" id="jWf-EJ-tdD"/>
                     <constraint firstAttribute="trailingMargin" secondItem="cOS-sE-Uxe" secondAttribute="trailing" constant="5" id="kP3-XQ-0oB"/>
                     <constraint firstItem="sR1-6j-Ue4" firstAttribute="top" secondItem="cOS-sE-Uxe" secondAttribute="bottom" id="oA5-DY-Oza"/>
                     <constraint firstItem="V99-ov-DQB" firstAttribute="leading" secondItem="kzc-p6-0Od" secondAttribute="trailing" constant="15" id="odQ-I1-F7n"/>
-                    <constraint firstItem="kzc-p6-0Od" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="yZi-mc-sie"/>
+                    <constraint firstItem="1Bv-Bb-6Pr" firstAttribute="top" secondItem="cOS-sE-Uxe" secondAttribute="bottom" id="rcF-Fw-xee"/>
                 </constraints>
             </tableViewCellContentView>
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -70,9 +82,18 @@
                 <outlet property="imgView" destination="kzc-p6-0Od" id="pR0-Iq-Biq"/>
                 <outlet property="imgViewWidthConstraint" destination="iPy-XE-vcQ" id="eEo-N0-A58"/>
                 <outlet property="subTitleLabel" destination="sR1-6j-Ue4" id="NSr-7W-yq1"/>
+                <outlet property="subTitleTxtV" destination="1Bv-Bb-6Pr" id="etL-Vp-U7x"/>
                 <outlet property="titleLabel" destination="cOS-sE-Uxe" id="QLd-EP-XWg"/>
             </connections>
             <point key="canvasLocation" x="33.600000000000001" y="56.221889055472268"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

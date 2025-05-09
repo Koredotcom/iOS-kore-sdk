@@ -34,7 +34,6 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         //nothing to put here
         if(self.maskLayer == nil){
             self.maskLayer = CAShapeLayer()
-            self.tileBgv.layer.mask = self.maskLayer
         }
         self.maskLayer.path = self.createBezierPath().cgPath
         self.maskLayer.position = CGPoint(x:0, y:0)
@@ -76,60 +75,16 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         cardView.layer.rasterizationScale =  UIScreen.main.scale
         cardView.layer.cornerRadius = 4.0
         cardView.layer.borderWidth = 1.0
-        cardView.layer.borderColor = UIColor.init(hexString: templateBoarderColor).cgColor
+        cardView.layer.borderColor = BubbleViewLeftTint.cgColor
         cardView.clipsToBounds = true
         cardView.layer.shouldRasterize = true
         cardView.backgroundColor =  UIColor.white
         
-        self.tileBgv = UIView(frame:.zero)
-        self.tileBgv.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(self.tileBgv)
-        self.tileBgv.layer.rasterizationScale =  UIScreen.main.scale
-        self.tileBgv.layer.shouldRasterize = true
-        self.tileBgv.layer.cornerRadius = 2.0
-        self.tileBgv.clipsToBounds = true
-        self.tileBgv.backgroundColor =  BubbleViewLeftTint
-        if #available(iOS 11.0, *) {
-            self.tileBgv.roundCorners([.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.clear, borderWidth: 1.5)
-        }
-        
-        self.senderImageView = UIImageView()
-        self.senderImageView.contentMode = .scaleAspectFit
-        self.senderImageView.clipsToBounds = true
-        self.senderImageView.layer.cornerRadius = 15
-        self.senderImageView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(self.senderImageView)
-        
-        let cardViews: [String: UIView] = ["senderImageView": senderImageView, "tileBgv": tileBgv, "cardView": cardView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-15-[cardView]-2-|", options: [], metrics: nil, views: cardViews))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[senderImageView(30)]", options: [], metrics: nil, views: cardViews))
-        
+        let cardViews: [String: UIView] = ["cardView": cardView]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[cardView]-5-|", options: [], metrics: nil, views: cardViews))
+    
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[senderImageView(30)]-10-[tileBgv]", options: [], metrics: nil, views: cardViews))
-        //self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[senderImageView(00)]-15-[tileBgv]", options: [], metrics: nil, views: cardViews))
-        
-        
-        self.titleLbl = KREAttributedLabel(frame: CGRect.zero)
-        self.titleLbl.textColor = BubbleViewBotChatTextColor
-        self.titleLbl.font = UIFont(name: mediumCustomFont, size: 16.0)
-        self.titleLbl.numberOfLines = 0
-        self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
-        self.titleLbl.isUserInteractionEnabled = true
-        self.titleLbl.contentMode = UIView.ContentMode.topLeft
-        self.titleLbl.translatesAutoresizingMaskIntoConstraints = false
-        self.tileBgv.addSubview(self.titleLbl)
-        self.titleLbl.adjustsFontSizeToFitWidth = true
-        self.titleLbl.backgroundColor = .clear
-        self.titleLbl.layer.cornerRadius = 6.0
-        self.titleLbl.clipsToBounds = true
-        self.titleLbl.sizeToFit()
-        
-        let subView: [String: UIView] = ["titleLbl": titleLbl]
-        let metrics: [String: NSNumber] = ["textLabelMaxWidth": NSNumber(value: Float(kMaxTextWidth)), "textLabelMinWidth": NSNumber(value: Float(kMinTextWidth))]
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLbl]-10-|", options: [], metrics: metrics, views: subView))
-        
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[titleLbl(>=textLabelMinWidth,<=textLabelMaxWidth)]-16-|", options: [], metrics: metrics, views: subView))
-        setCornerRadiousToTitleView()
+    
     }
     
     func setCornerRadiousToTitleView(){
@@ -149,20 +104,35 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         }
     }
     
+    func titleLable(){
+        self.titleLbl = KREAttributedLabel(frame: CGRect.zero)
+        self.titleLbl.textColor = BubbleViewBotChatTextColor
+        self.titleLbl.font = UIFont(name: mediumCustomFont, size: 16.0)
+        self.titleLbl.numberOfLines = 0
+        self.titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
+        self.titleLbl.isUserInteractionEnabled = true
+        self.titleLbl.contentMode = UIView.ContentMode.topLeft
+        self.titleLbl.translatesAutoresizingMaskIntoConstraints = false
+        self.cardView.addSubview(self.titleLbl)
+        self.titleLbl.adjustsFontSizeToFitWidth = true
+        self.titleLbl.backgroundColor = .clear
+        self.titleLbl.layer.cornerRadius = 6.0
+        self.titleLbl.clipsToBounds = true
+        self.titleLbl.sizeToFit()
+
+    }
     // MARK: initialize chart views
     func intializePieChartView(_ jsonObject: NSDictionary,_ pieType: String){
         intializeCardLayout()
-        
-        
-        
+        titleLable()
         self.pcView = PieChartView()
         self.pcView.translatesAutoresizingMaskIntoConstraints = false
         self.cardView.addSubview(self.pcView)
         
-        let views: [String: UIView] = [ "pcView": pcView]
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[pcView]-15-|", options: [], metrics: nil, views: views))
+        let views: [String: UIView] = ["titleLbl": titleLbl ,"pcView": pcView]
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLbl]-10-[pcView]-15-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[pcView]-15-|", options: [], metrics: nil, views: views))
-      
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[titleLbl]-16-|", options: [], metrics: nil, views: views))
         
         
         
@@ -184,8 +154,8 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         if(pieType == "regular"){
             l.drawInside = false
             l.formSize = 12.0
-            l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
-            l.font = UIFont(name: mediumCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0)
+            l.textColor = BubbleViewBotChatTextColor
+            l.font = UIFont(name: regularCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0)
             l.form = .circle
             
             self.pcView.chartDescription.enabled = false
@@ -198,8 +168,8 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         if(pieType == "donut"){
             l.drawInside = false
             l.formSize = 12.0
-            l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
-            l.font = UIFont(name: mediumCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0)
+            l.textColor = BubbleViewBotChatTextColor
+            l.font = UIFont(name: regularCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0)
             
             self.pcView.chartDescription.enabled = false
             self.pcView.drawHoleEnabled = true
@@ -212,8 +182,8 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         if(pieType == "donut_legend"){
             l.drawInside = false
             l.formSize = 12.0
-            l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
-            l.font = UIFont(name: mediumCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0)
+            l.textColor = BubbleViewBotChatTextColor
+            l.font = UIFont(name: regularCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0)
             l.form = .circle
             
             self.pcView.chartDescription.enabled = false
@@ -231,13 +201,15 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
     
     func intializeLineChartView(){
         intializeCardLayout()
+        titleLable()
         self.lcView = LineChartView()
         self.lcView.translatesAutoresizingMaskIntoConstraints = false
         self.cardView.addSubview(self.lcView)
         
-        let views: [String: UIView] = ["lcView": lcView]
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[lcView]-15-|", options: [], metrics: nil, views: views))
+        let views: [String: UIView] = ["titleLbl": titleLbl, "lcView": lcView]
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLbl]-10-[lcView]-15-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[lcView]-15-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[titleLbl]-16-|", options: [], metrics: nil, views: views))
         
         self.lcView.chartDescription.enabled = false
         self.lcView.isUserInteractionEnabled = true
@@ -245,11 +217,11 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         self.lcView.leftAxis.enabled = true
         self.lcView.leftAxis.drawAxisLineEnabled = true
         self.lcView.leftAxis.drawGridLinesEnabled = false
-        self.lcView.leftAxis.labelTextColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
+        self.lcView.leftAxis.labelTextColor = BubbleViewBotChatTextColor
         self.lcView.rightAxis.enabled = false
         
         self.lcView.xAxis.labelPosition = .bottom
-        self.lcView.xAxis.labelTextColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
+        self.lcView.xAxis.labelTextColor = BubbleViewBotChatTextColor
         self.lcView.xAxis.drawAxisLineEnabled = true
         self.lcView.xAxis.drawGridLinesEnabled = false
         self.lcView.xAxis.granularity = 1.0
@@ -270,8 +242,8 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         l.orientation = .horizontal
         l.drawInside = true
         l.formSize = 12.0
-        l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
-        l.font = UIFont(name: mediumCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0)
+        l.textColor = BubbleViewBotChatTextColor
+        l.font = UIFont(name: regularCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0)
         l.form = .circle
         cellHeight = 280.0
     }
@@ -279,7 +251,7 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
     func intializeBarChartView(_ direction:String){
         
         intializeCardLayout()
-        
+        titleLable()
         if(direction == "horizontal"){
             self.bcView = HorizontalBarChartView()
         }else{
@@ -289,9 +261,10 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         self.bcView.translatesAutoresizingMaskIntoConstraints = false
         self.cardView.addSubview(self.bcView)
         
-        let views: [String: UIView] = ["bcView": bcView]
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[bcView]-15-|", options: [], metrics: nil, views: views))
+        let views: [String: UIView] = ["titleLbl": titleLbl,"bcView": bcView]
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLbl]-10-[bcView]-15-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-30-[bcView]-15-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[titleLbl]-16-|", options: [], metrics: nil, views: views))
         
         self.bcView.chartDescription.enabled = false
         if(direction == "horizontal"){
@@ -303,14 +276,14 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         }
         self.bcView.leftAxis.drawAxisLineEnabled = true
         self.bcView.leftAxis.drawGridLinesEnabled = false
-        self.bcView.leftAxis.labelTextColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
+        self.bcView.leftAxis.labelTextColor = BubbleViewBotChatTextColor
         
         self.bcView.rightAxis.drawAxisLineEnabled = true
         self.bcView.rightAxis.drawGridLinesEnabled = false
-        self.bcView.rightAxis.labelTextColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
+        self.bcView.rightAxis.labelTextColor = BubbleViewBotChatTextColor
         
         self.bcView.xAxis.labelPosition = .bottom
-        self.bcView.xAxis.labelTextColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
+        self.bcView.xAxis.labelTextColor = BubbleViewBotChatTextColor
         self.bcView.xAxis.drawAxisLineEnabled = true
         self.bcView.xAxis.drawGridLinesEnabled = false
         self.bcView.xAxis.granularity = 1.0
@@ -327,8 +300,8 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         l.orientation = .horizontal
         l.drawInside = true
         l.formSize = 12.0
-        l.textColor = UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1)
-        l.font = UIFont(name: mediumCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0)
+        l.textColor = BubbleViewBotChatTextColor
+        l.font = UIFont(name: regularCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0)
         
         let marker = BalloonMarker(color: UIColor.white.withAlphaComponent(0.9), font: UIFont(name: boldCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0) , textColor: .black, insets: UIEdgeInsets(top: 8.0, left: 8.0, bottom: 20.0, right: 8.0))
         self.bcView.marker = marker
@@ -341,9 +314,9 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
     
     func colorsPalet() -> [NSUIColor]{
         var colors: Array<UIColor> = Array<UIColor>()
-        colors.append( UIColor(red: 95/255, green: 107/255, blue: 247/255, alpha: 1))
-        colors.append( UIColor(red: 153/255, green: 237/255, blue: 158/255, alpha: 1))
-        colors.append( UIColor(red: 247/255, green: 128/255, blue: 131/255, alpha: 1))
+        colors.append( UIColor(red: 91/255, green: 200/255, blue: 196/255, alpha: 1))
+        colors.append( UIColor(red: 74/255, green: 154/255, blue: 242/255, alpha: 1))
+        colors.append( UIColor(red: 142/255, green: 203/255, blue: 96/255, alpha: 1))
         colors.append( UIColor(red: 247/255, green: 128/255, blue: 131/255, alpha: 1))
         colors.append( UIColor(red: 253/255, green: 226/255, blue: 150/255, alpha: 1))
         colors.append( UIColor(red: 117/255, green: 176/255, blue: 254/255, alpha: 1))
@@ -352,7 +325,6 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         colors.append( UIColor(red: 179/255, green: 186/255, blue: 200/255, alpha: 1))
         colors.append( UIColor(red: 156/255, green: 235/255, blue: 249/255, alpha: 1))
         colors.append( UIColor(red: 247/255, green: 199/255, blue: 244/255, alpha: 1))
-        
         
         
         colors.append(contentsOf: ChartColorTemplates.colorful())
@@ -377,7 +349,7 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
             let displayValue: String = dictionary["displayValue"] != nil ? dictionary["displayValue"] as! String : ""
             var pieChartDataEntry = PieChartDataEntry(value: (value as NSString).doubleValue, label: title , data: dictionary as AnyObject)
             if(pietype == "donut"){
-                pieChartDataEntry = PieChartDataEntry(value: (value as NSString).doubleValue, label: title + "  " + displayValue, data: dictionary as AnyObject)
+                pieChartDataEntry = PieChartDataEntry(value: (value as NSString).doubleValue, label: title + "  " + value, data: dictionary as AnyObject)
             }else if(pietype == "donut_legend"){
                 pieChartDataEntry = PieChartDataEntry(value: (value as NSString).doubleValue, label: title + "  " + value, data: dictionary as AnyObject)
             }
@@ -395,15 +367,15 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         if(pietype == "regular"){
             let pieChartData = PieChartData(dataSet: pieChartDataSet)
             pieChartData.setValueFormatter(self)
-            pieChartData.setValueFont(UIFont(name: mediumCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0, weight: .medium))
+            pieChartData.setValueFont(UIFont(name: regularCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0, weight: .medium))
             pieChartDataSet.yValuePosition = .outsideSlice
             pieChartDataSet.valueLinePart1OffsetPercentage = 0.8
             pieChartDataSet.valueLinePart1Length = 0.4
             pieChartDataSet.valueLinePart2Length = 0.4
-            pieChartDataSet.valueLineColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
+            pieChartDataSet.valueLineColor = BubbleViewBotChatTextColor
             pieChartData.setValueFormatter(self)
-            pieChartData.setValueFont(UIFont(name: mediumCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0, weight: .medium))
-            pieChartData.setValueTextColor(UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1))
+            pieChartData.setValueFont(UIFont(name: regularCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0, weight: .medium))
+            pieChartData.setValueTextColor(BubbleViewBotChatTextColor)
             pieChartData.setDrawValues(true)
             self.pcView.extraRightOffset = rightOffset
             self.pcView.extraBottomOffset = 2.0
@@ -418,11 +390,11 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
             pieChartDataSet.valueLinePart1OffsetPercentage = 0.8
             pieChartDataSet.valueLinePart1Length = 0.4
             pieChartDataSet.valueLinePart2Length = 0.4
-            pieChartDataSet.valueLineColor = UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1)
+            pieChartDataSet.valueLineColor = BubbleViewBotChatTextColor
             let pieChartData = PieChartData(dataSet: pieChartDataSet)
             pieChartData.setValueFormatter(self)
-            pieChartData.setValueFont(UIFont(name: mediumCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0, weight: .medium))
-            pieChartData.setValueTextColor(UIColor(red: 138/255, green: 149/255, blue: 159/255, alpha: 1))
+            pieChartData.setValueFont(UIFont(name: regularCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0, weight: .medium))
+            pieChartData.setValueTextColor(BubbleViewBotChatTextColor)
             pieChartData.setDrawValues(true)
             self.pcView.extraRightOffset = rightOffset
             self.pcView.extraBottomOffset = 2.0
@@ -653,16 +625,8 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         if let txt = jsonObject["text"] as? String{
             self.titleLbl?.setHTMLString(txt, withWidth: kMaxTextWidth)
         }else{
-            self.titleLbl?.text = "Report details"
+            self.titleLbl?.text = ""
         }
-        
-        let placeHolderIcon = UIImage(named: "kora", in: Bundle.sdkModule, compatibleWith: nil)
-        self.senderImageView.image = placeHolderIcon
-        if (botHistoryIcon != nil) {
-            if let fileUrl = URL(string: botHistoryIcon!) {
-                self.senderImageView.af.setImage(withURL: fileUrl, placeholderImage: placeHolderIcon)
-            }
-       }
     }
     // MARK: populate components
     override func populateComponents() {

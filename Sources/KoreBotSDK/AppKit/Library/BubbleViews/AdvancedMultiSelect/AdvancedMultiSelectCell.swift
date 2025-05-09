@@ -26,6 +26,9 @@ class AdvancedMultiSelectCell: UITableViewCell {
         bgV.layer.borderWidth = 1.0
         bgV.layer.borderColor = UIColor.lightGray.cgColor
         bgV.clipsToBounds = true
+        
+        imagV.layer.cornerRadius = 5.0
+        imagV.clipsToBounds = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

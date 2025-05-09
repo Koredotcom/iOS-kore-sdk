@@ -54,7 +54,8 @@ class FeedbackBubbleView: BubbleView {
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 5
+        layout.minimumInteritemSpacing = 5
+        layout.minimumLineSpacing = 0
         self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         self.collectionView.dataSource = self
@@ -90,11 +91,11 @@ class FeedbackBubbleView: BubbleView {
         self.maskview.backgroundColor = .clear
         
         let views: [String: UIView] = ["titleLbl": titleLbl, "collectionView": collectionView, "floatRatingView": floatRatingView, "maskview": maskview]
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-[collectionView(50)]-0-|", options: [], metrics: nil, views: views))
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-[floatRatingView(40)]", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=21)]-5-[collectionView(50)]-0-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=21)]-5-[floatRatingView(40)]", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: views))
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[collectionView]-10-|", options: [], metrics: nil, views: views))
-         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[floatRatingView]-10-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[collectionView]-0-|", options: [], metrics: nil, views: views))
+         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[floatRatingView(260)]", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[maskview]|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[maskview]-0-|", options: [], metrics: nil, views: views))
     }
@@ -103,10 +104,7 @@ class FeedbackBubbleView: BubbleView {
         self.cardView = UIView(frame:.zero)
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.cardView)
-        cardView.backgroundColor =  BubbleViewLeftTint
-        if #available(iOS 11.0, *) {
-            self.cardView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 15.0, borderColor: UIColor.clear, borderWidth: 1.5)
-        }
+        cardView.backgroundColor =  .white
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
@@ -117,8 +115,8 @@ class FeedbackBubbleView: BubbleView {
     func setCornerRadiousToTitleView(){
         let bubbleStyle = brandingBodyDic.bubble_style
         let radius = 10.0
-        let borderWidth = 0.0
-        let borderColor = UIColor.clear
+        let borderWidth = 1.0
+        let borderColor = BubbleViewLeftTint
         if #available(iOS 11.0, *) {
             if bubbleStyle == "balloon"{
                 self.cardView.roundCorners([.layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
@@ -197,25 +195,31 @@ extension FeedbackBubbleView : UICollectionViewDelegate, UICollectionViewDataSou
             cell.backgroundColor = .clear
             let elements = arrayOfSmiley[indexPath.item]
             if indexPath.row == 0{
-                cell.nameLbl.text = "👍 \(elements.value ?? "")"
+                cell.nameLbl.text = "\(elements.value ?? "")"
+                cell.nameLbl.textColor = UIColor.init(hexString: "#16A34A")
+                cell.thumbImageV.image = UIImage(named: "likeG", in: bundle, compatibleWith: nil)
+                cell.maskV.backgroundColor = UIColor.init(hexString: "#DCFCE7")
             }else{
-                cell.nameLbl.text = "👎 \(elements.value ?? "")"
+                cell.nameLbl.text = "\(elements.value ?? "")"
+                cell.nameLbl.textColor = UIColor.init(hexString: "#D27588")
+                cell.thumbImageV.image = UIImage(named: "disLikeR", in: bundle, compatibleWith: nil)
+                cell.maskV.backgroundColor = UIColor.init(hexString: "#FEF2F2")
             }
             cell.nameLbl.font = UIFont(name: regularCustomFont, size: 14.0)
-            cell.nameLbl.textColor = BubbleViewBotChatTextColor
-            cell.maskV.isHidden = true
-            cell.maskV.layer.cornerRadius = 2.0
+            cell.maskV.isHidden = false
+            cell.maskV.layer.cornerRadius = 5.0
             cell.maskV.clipsToBounds = true
             cell.maskV.alpha = 1.0
             if feedBackTemplateSelectedValue == elements.value ?? ""{
                 cell.maskV.isHidden = false
-                cell.maskV.alpha = 0.4
                 if indexPath.row == 0{
-                    cell.nameLbl.textColor = UIColor.init(hexString: "#16A34A")
-                    cell.maskV.backgroundColor = UIColor.init(hexString: "#aaf0c4")
+                    cell.nameLbl.textColor = UIColor.init(hexString: "#FFFFFF")
+                    cell.maskV.backgroundColor = UIColor.init(hexString: "#16A34A")
+                    cell.thumbImageV.image = UIImage(named: "likeW", in: bundle, compatibleWith: nil)
                 }else{
-                    cell.nameLbl.textColor = UIColor.init(hexString: "#D27588")
-                    cell.maskV.backgroundColor = UIColor.init(hexString: "#D27588")
+                    cell.nameLbl.textColor = UIColor.init(hexString: "#FFFFFF")
+                    cell.maskV.backgroundColor = UIColor.init(hexString: "#DC2626")
+                    cell.thumbImageV.image = UIImage(named: "disLikeW", in: bundle, compatibleWith: nil)
                 }
             }
             return cell
@@ -249,7 +253,7 @@ extension FeedbackBubbleView : UICollectionViewDelegate, UICollectionViewDataSou
         
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 5.0, left: 0.0, bottom: 5.0, right: 5.0)
+        return UIEdgeInsets(top: 0.0, left: 3.0, bottom: 5.0, right: 5.0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -258,13 +262,14 @@ extension FeedbackBubbleView : UICollectionViewDelegate, UICollectionViewDataSou
         var height = 50
         if feedBackview == "ThumbsUpDown"{
             let elements = arrayOfSmiley[indexPath.item]
-            text = "👍 \(elements.value ?? "")"
+            text = "\(elements.value ?? "")"
             var textWidth = 10
             let size = text?.size(withAttributes:[.font: UIFont(name: regularCustomFont, size: 14.0) as Any])
             if text != nil {
                 textWidth = Int(size!.width)
             }
-            width = textWidth + 15
+            let thumbWidth = 40
+            width = textWidth + 15 + thumbWidth
             height = 50
         }
         return CGSize(width: width , height: height)

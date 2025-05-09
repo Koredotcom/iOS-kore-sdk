@@ -15,6 +15,7 @@ public class Componentss: NSObject, Decodable {
       public var buttons: [ComponentItemAction]?
       public var moreData: ComponentMoreData?
       public var heading: String?
+      public var sliderView: Bool?
       public var format: String?
       public var startDate: String?
       public var endDate: String?
@@ -69,6 +70,7 @@ public class Componentss: NSObject, Decodable {
             case thumpsUpDownArrays = "thumpsUpDownArrays"
             case displayLimit = "displayLimit"
             case showmore = "showmore"
+            case sliderView = "sliderView"
        }
        
        // MARK: - init
@@ -107,6 +109,7 @@ public class Componentss: NSObject, Decodable {
            thumpsUpDownArrays = try? container.decode([SmileyArraysAction].self, forKey: .thumpsUpDownArrays)
            displayLimit = try? container.decode(Int.self, forKey: .displayLimit)
            showmore = try? container.decode(Bool.self, forKey: .showmore)
+           sliderView = try? container.decode(Bool.self, forKey: .sliderView)
        }
 }
 // MARK: - Elements

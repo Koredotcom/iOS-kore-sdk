@@ -20,6 +20,7 @@ protocol BotMessagesViewDelegate {
     func populateCalenderView(with message: KREMessage?)
     func populateClockView(with message: KREMessage?)
     func populateFeedbackSliderView(with message: KREMessage?)
+    func populateAdvancedMultiSelectSliderView(with message: KREMessage?)
     func tableviewScrollDidEnd()
 }
 
@@ -266,7 +267,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         var isQuickReply = false
         var isCalenderView = false
         var isFeedbackView = false
-        
+        var isMultiselectSlideView = false
         var isCustomTemplate = false
         var isCustomTemplateIndex = 0
         for i in 0..<arrayOfViews.count{
@@ -308,7 +309,13 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 }
                 cell.bubbleView.drawBorder = true
                 break
-            case .image, .video, .audio:
+            case .image, .video:
+                let bubbleView: MultiImageBubbleView = cell.bubbleView as! MultiImageBubbleView
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                break
+            case .audio:
                 break
             case .options:
                 let bubbleView: OptionsBubbleView = cell.bubbleView as! OptionsBubbleView
@@ -383,7 +390,12 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
                 }
-                
+                let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                if firstIndexPath.isEqual(indexPath) {
+                    bubbleView.maskview.isHidden = true
+                }else{
+                    bubbleView.maskview.isHidden = false
+                }
                 cell.bubbleView.drawBorder = true
                 break
             case .tableList:
@@ -450,6 +462,12 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                     self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 cell.bubbleView.drawBorder = true
+                let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                if firstIndexPath.isEqual(indexPath) {
+                    bubbleView.maskview.isHidden = true
+                }else{
+                    bubbleView.maskview.isHidden = false
+                }
                 break
             case .dropdown_template:
                 cell.bubbleView.drawBorder = true
@@ -508,6 +526,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             case .advanced_multi_select:
                 let bubbleView: AdvancedMultiSelectBubbleView = cell.bubbleView as! AdvancedMultiSelectBubbleView
                 cell.bubbleView.drawBorder = true
+                isMultiselectSlideView = true
                 bubbleView.optionsAction = {[weak self] (text, payload) in
                     self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
@@ -523,6 +542,12 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                if firstIndexPath.isEqual(indexPath) {
+                    bubbleView.maskview.isHidden = true
+                }else{
+                    bubbleView.maskview.isHidden = false
                 }
                 break
             case .quick_replies_top:
@@ -592,6 +617,17 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                         let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
                         if jsonObject["sliderView"] as! Bool{
                             self.viewDelegate?.populateFeedbackSliderView(with: message)
+                        }
+                    }
+                }
+            }else if isMultiselectSlideView{
+                if message.templateType == (ComponentType.advanced_multi_select.rawValue as NSNumber) {
+                    let component: KREComponent = message.components![0] as! KREComponent
+                    if ((component.componentDesc) != nil) {
+                        let jsonString = component.componentDesc
+                        let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
+                        if let isSliderV = jsonObject["sliderView"] as? Bool , isSliderV == true{
+                            self.viewDelegate?.populateAdvancedMultiSelectSliderView(with: message)
                         }
                     }
                 }

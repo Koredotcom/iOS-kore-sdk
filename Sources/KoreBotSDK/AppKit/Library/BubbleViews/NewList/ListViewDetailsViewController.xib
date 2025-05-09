@@ -69,7 +69,7 @@
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" white="0.0" alpha="0.303284551056338" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.303284551056338" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="HM7-li-H3t" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="6rX-5b-MV0"/>
                 <constraint firstItem="HM7-li-H3t" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="9Tf-HJ-i6M"/>

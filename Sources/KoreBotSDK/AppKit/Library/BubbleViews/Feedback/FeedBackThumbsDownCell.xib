@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -23,11 +23,24 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZaK-eR-nTh">
                                 <rect key="frame" x="0.0" y="0.0" width="108" height="40"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="likeW" translatesAutoresizingMaskIntoConstraints="NO" id="fqq-Qx-1na">
+                                        <rect key="frame" x="5" y="10" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="Qo4-at-9N3"/>
+                                            <constraint firstAttribute="width" constant="20" id="Zr4-Rk-4Ji"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
                                 <color key="backgroundColor" red="0.82352941176470584" green="0.45882352941176469" blue="0.53333333333333333" alpha="0.39928784013605439" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="fqq-Qx-1na" firstAttribute="leading" secondItem="ZaK-eR-nTh" secondAttribute="leading" constant="5" id="8tG-15-R6W"/>
+                                    <constraint firstItem="fqq-Qx-1na" firstAttribute="centerY" secondItem="ZaK-eR-nTh" secondAttribute="centerY" id="kDW-ha-Mo6"/>
+                                </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mfp-f4-GgJ">
-                                <rect key="frame" x="5" y="5" width="98" height="30"/>
+                                <rect key="frame" x="28" y="5" width="75" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -38,10 +51,10 @@
                             <constraint firstAttribute="trailing" secondItem="Mfp-f4-GgJ" secondAttribute="trailing" constant="5" id="5sE-Sa-XJD"/>
                             <constraint firstItem="ZaK-eR-nTh" firstAttribute="top" secondItem="vsM-UC-X4P" secondAttribute="top" id="6aE-kk-tNz"/>
                             <constraint firstAttribute="bottom" secondItem="ZaK-eR-nTh" secondAttribute="bottom" id="MdD-rZ-35T"/>
-                            <constraint firstItem="Mfp-f4-GgJ" firstAttribute="leading" secondItem="vsM-UC-X4P" secondAttribute="leading" constant="5" id="P9y-tz-YyU"/>
                             <constraint firstItem="Mfp-f4-GgJ" firstAttribute="top" secondItem="vsM-UC-X4P" secondAttribute="top" constant="5" id="Qcr-C7-LB5"/>
                             <constraint firstAttribute="bottom" secondItem="Mfp-f4-GgJ" secondAttribute="bottom" constant="5" id="Zuw-gW-R7o"/>
                             <constraint firstAttribute="trailing" secondItem="ZaK-eR-nTh" secondAttribute="trailing" id="aCR-7y-dob"/>
+                            <constraint firstItem="Mfp-f4-GgJ" firstAttribute="leading" secondItem="fqq-Qx-1na" secondAttribute="trailing" constant="3" id="b6B-53-tOo"/>
                             <constraint firstItem="ZaK-eR-nTh" firstAttribute="leading" secondItem="vsM-UC-X4P" secondAttribute="leading" id="vD5-jT-US4"/>
                         </constraints>
                     </view>
@@ -58,11 +71,13 @@
             <connections>
                 <outlet property="maskV" destination="ZaK-eR-nTh" id="JhH-8h-pmC"/>
                 <outlet property="nameLbl" destination="Mfp-f4-GgJ" id="jFI-ng-xxw"/>
+                <outlet property="thumbImageV" destination="fqq-Qx-1na" id="tFb-zd-GGu"/>
             </connections>
             <point key="canvasLocation" x="94.656488549618317" y="20.422535211267608"/>
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="likeW" width="42" height="40"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

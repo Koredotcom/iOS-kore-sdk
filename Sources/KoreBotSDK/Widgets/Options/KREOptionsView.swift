@@ -256,6 +256,18 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
             cell.subTitleLabel.numberOfLines = 15
             cell.titleLabel.textColor = BubbleViewBotChatTextColor
             cell.subTitleLabel.textColor = BubbleViewBotChatTextColor
+            
+            cell.subTitleLabel.isHidden = true
+            
+            cell.subTitleTxtV.setHTMLString( option.subTitle ?? "", withWidth: BubbleViewMaxWidth - 20.0)
+            cell.subTitleTxtV.font  = UIFont(name: mediumCustomFont, size: 14.0)
+            cell.subTitleTxtV.textColor = .red
+            cell.subTitleTxtV.textColor = BubbleViewBotChatTextColor
+            cell.subTitleTxtV.mentionTextColor = BubbleViewBotChatTextColor
+            cell.subTitleTxtV.hashtagTextColor = BubbleViewBotChatTextColor
+            cell.subTitleTxtV.linkTextColor = BubbleViewBotChatTextColor
+            cell.subTitleTxtV.tintColor = BubbleViewBotChatTextColor
+            
             if let urlString = option.imageURL, let url = URL(string: urlString) {
                 cell.imgView.af.setImage(withURL: url, placeholderImage: UIImage(named: "placeholder_image"))
                 cell.imgViewWidthConstraint.constant = 60.0

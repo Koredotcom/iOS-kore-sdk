@@ -25,6 +25,7 @@ class InLineFormBubbleView: BubbleView {
     var inlineTextField: UITextField!
     var inlineButton: UIButton!
     //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    public var maskview: UIView!
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
     NSAttributedString.Key.font : UIFont(name: mediumCustomFont, size: 15.0) as Any,
@@ -66,12 +67,19 @@ class InLineFormBubbleView: BubbleView {
         self.tableView.isScrollEnabled = false
         self.tableView.register(Bundle.xib(named: cellIdentifier), forCellReuseIdentifier: cellIdentifier)
         
-        let views: [String: UIView] = ["headingLabel": headingLabel, "tableView": tableView]
+        self.maskview = UIView(frame:.zero)
+        self.maskview.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.maskview)
+        self.maskview.isHidden = true
+        self.maskview.backgroundColor = .clear
+        
+        let views: [String: UIView] = ["headingLabel": headingLabel, "tableView": tableView, "maskview": maskview]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[headingLabel]-10-[tableView]-10-|", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[headingLabel]-10-|", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[tableView]-10-|", options: [], metrics: nil, views: views))
         
-        
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[maskview]|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[maskview]-0-|", options: [], metrics: nil, views: views))
         
     }
     
@@ -153,7 +161,7 @@ class InLineFormBubbleView: BubbleView {
                 let indexPath = IndexPath(row: i, section: sender.tag)
                 let cell = tableView.cellForRow(at: indexPath) as! InlineFormTableViewCell
                 cell.textFeildName.resignFirstResponder()
-                arrayOfTextFieldsText.replaceObject(at: i, with: "")
+                //arrayOfTextFieldsText.replaceObject(at: i, with: "")
             }
             tableView.reloadData()
             if isSecure {
@@ -161,6 +169,7 @@ class InLineFormBubbleView: BubbleView {
             }else{
                 self.optionsAction?(finalString, finalString)
             }
+            self.maskview.isHidden = false
         }
            
     }
@@ -207,12 +216,15 @@ extension InLineFormBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.textFeildName.placeholder = placeHolder
         
         cell.tiltLbl .textColor = BubbleViewBotChatTextColor
-        cell.textFeildName.borderStyle = .bezel
+        cell.textFeildName.borderStyle = .roundedRect
         if formFeildType == "password"{
             cell.textFeildName.isSecureTextEntry = true
         }else{
             cell.textFeildName.isSecureTextEntry = false
         }
+        cell.textFeildName.layer.borderWidth = 1.0
+        cell.textFeildName.layer.borderColor = BubbleViewRightTint.cgColor
+        cell.textFeildName.clipsToBounds = true
         cell.textFeildName.backgroundColor = .white
         cell.textFeildName.delegate = self
         cell.textFeildName.text = arrayOfTextFieldsText[indexPath.row] as? String
@@ -221,7 +233,7 @@ extension InLineFormBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.textFeildName.translatesAutoresizingMaskIntoConstraints = false
         let attributes = [
             NSAttributedString.Key.foregroundColor: UIColor.lightGray,
-            NSAttributedString.Key.font : UIFont(name: mediumCustomFont, size: 15) ?? UIFont.systemFont(ofSize: 15)
+            NSAttributedString.Key.font : UIFont(name: regularCustomFont, size: 14.0) ?? UIFont.systemFont(ofSize: 14.0)
         ]
         cell.textFeildName.attributedPlaceholder = NSAttributedString(string: placeHolder, attributes:attributes)
         return cell
