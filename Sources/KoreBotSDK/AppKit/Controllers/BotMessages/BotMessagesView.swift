@@ -289,7 +289,13 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 }
                 cell.bubbleView.drawBorder = true
                 break
-            case .image, .video, .audio:
+            case .image, .video:
+                let bubbleView: MultiImageBubbleView = cell.bubbleView as! MultiImageBubbleView
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                break
+            case .audio:
                 break
             case .options:
                 let bubbleView: OptionsBubbleView = cell.bubbleView as! OptionsBubbleView

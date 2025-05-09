@@ -47,12 +47,21 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
                     textlabel.text = ""
                 }
             }
+            textlabel.textColor = BubbleViewBotChatTextColor
             self.collectionView.collectionViewLayout.invalidateLayout()
             self.collectionView.reloadData()
         }
     }
     @IBOutlet weak var textLblHeightConstarint: NSLayoutConstraint!
     
+    @IBOutlet weak var downLoadBtn: UIButton!
+    
+    @IBOutlet weak var downloadBtnHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var downloadBtnTopConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var downloadBtnBottomConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var bgV: UIView!
     @IBOutlet weak var textlabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     var COMPONENT_PADDING: CGFloat = 0.0
@@ -69,6 +78,15 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
                 }
         self.viewingIndex = NSNotFound
         NotificationCenter.default.addObserver(self, selector: #selector(reloadVideoAct), name: NSNotification.Name(rawValue: reloadVideoCellNotification), object: nil)
+        
+        downLoadBtn.layer.cornerRadius = 5.0
+        downLoadBtn.setTitleColor(BubbleViewRightTint, for: .normal)
+        downLoadBtn.titleLabel?.font = UIFont.init(name: regularCustomFont, size: 14.0)
+        downLoadBtn.clipsToBounds = true
+       
+        self.layer.borderColor = BubbleViewLeftTint.cgColor
+        self.layer.borderWidth = 1.0
+        self.clipsToBounds = true
     }
     
     @objc func reloadVideoAct(notification:Notification){
@@ -82,10 +100,31 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
        // self.collectionView.frame = self.bounds
     }
     
+    @IBAction func tapsOnDownloadBtnAction(_ sender: Any) {
+        if let url = imageDataDic["url"] as? String{
+            self.linkAction?(url)
+        }
+    }
     
     override var intrinsicContentSize : CGSize {
+        self.downloadBtnTopConstraint.constant = 10.0
+        self.downloadBtnBottomConstraint.constant = 10.0
+        self.downloadBtnHeightConstraint.constant = 35.0
         
-        return CGSize(width: BubbleViewMaxWidth, height: 200)
+        if imageDataDic["videoUrl"] as? String != nil{
+            self.downloadBtnTopConstraint.constant = 0.0
+            self.downloadBtnBottomConstraint.constant = 0.0
+            self.downloadBtnHeightConstraint.constant = 0.0
+            return CGSize(width: BubbleViewMaxWidth, height: 200)
+        }else{
+            if let gifImageUrl = imageDataDic["url"] as? String, gifImageUrl.contains(".gif"){
+                self.downloadBtnTopConstraint.constant = 0.0
+                self.downloadBtnBottomConstraint.constant = 0.0
+                self.downloadBtnHeightConstraint.constant = 0.0
+                return CGSize(width: BubbleViewMaxWidth, height: 200)
+            }
+            return CGSize(width: BubbleViewMaxWidth, height: 255)
+        }
     }
     
     func visibleCells() -> NSArray {
@@ -113,7 +152,7 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
         if (self.components.count > MAX_CELLS) {
             return MAX_CELLS
         }
-        return self.components.count
+        return 1 //self.components.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -168,7 +207,6 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
                 cell.menuBtn.isUserInteractionEnabled = true
                 cell.videoPlayerView.addSubview(cell.menuBtn)
                 cell.videoPlayerView.bringSubviewToFront(cell.menuBtn)
-                
             }else{
                 cell.videoPlayerView.isHidden = true
                 if let payload = imageDataDic["payload"] as? [String: Any]{
@@ -179,11 +217,11 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
                         cell.imageComponent.image = UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil)
                     }
                 }else{
-                        if let imageurlStr = imageDataDic["url"] as? String, let url = URL(string:imageurlStr){
+                    if let imageurlStr = imageDataDic["url"] as? String, let url = URL(string:imageurlStr){
                             cell.imageComponent.af.setImage(withURL: url, placeholderImage: UIImage.init(named: "placeholder_image", in: bundle, compatibleWith: nil))
-                        }else{
-                            cell.imageComponent.image = UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil)
-                        }
+                    }else{
+                            cell.imageComponent.image = UIImage(named: "placeholder_image")
+                    }
                 }
                 
                 if let gifImageUrl = imageDataDic["url"] as? String, gifImageUrl.contains(".gif"){
@@ -228,6 +266,14 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
         
         if ((self.didSelectComponentAtIndex) != nil) {
             self.didSelectComponentAtIndex((indexPath as NSIndexPath).row)
+        }
+        
+        if  imageDataDic["type"] as? String != "video" {
+            if let imageurlStr = imageDataDic["url"] as? String{
+                if !imageurlStr.contains(".gif"){
+                    print(imageurlStr)
+                }
+            }
         }
     }
     
