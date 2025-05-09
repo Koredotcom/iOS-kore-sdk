@@ -28,7 +28,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wOI-rH-Tyq" userLabel="Title Label">
-                                <rect key="frame" x="43" y="12.5" width="269" height="17"/>
+                                <rect key="frame" x="43" y="12" width="269" height="17.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="17" id="AY6-qH-dXV"/>
                                 </constraints>
@@ -41,6 +41,7 @@
                         <constraints>
                             <constraint firstItem="wOI-rH-Tyq" firstAttribute="centerY" secondItem="DJt-lB-bY4" secondAttribute="centerY" id="D89-GH-JRI"/>
                             <constraint firstItem="aXi-J1-ihU" firstAttribute="leading" secondItem="DJt-lB-bY4" secondAttribute="leading" constant="10" id="Gfp-jd-If7"/>
+                            <constraint firstAttribute="bottom" secondItem="wOI-rH-Tyq" secondAttribute="bottom" constant="12" id="M3m-YU-8P0"/>
                             <constraint firstAttribute="trailing" secondItem="wOI-rH-Tyq" secondAttribute="trailing" constant="8" id="O54-OI-c5d"/>
                             <constraint firstItem="wOI-rH-Tyq" firstAttribute="leading" secondItem="aXi-J1-ihU" secondAttribute="trailing" constant="8" id="RAY-57-3j2"/>
                             <constraint firstItem="aXi-J1-ihU" firstAttribute="centerY" secondItem="DJt-lB-bY4" secondAttribute="centerY" id="jky-Y6-71c"/>
@@ -58,6 +59,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="bgView" destination="DJt-lB-bY4" id="0cG-Kw-FwM"/>
+                <outlet property="imagVWidthConstarint" destination="exS-DT-U3T" id="9Jw-HY-MaK"/>
                 <outlet property="imgView" destination="aXi-J1-ihU" id="uho-lj-gy5"/>
                 <outlet property="titleLabel" destination="wOI-rH-Tyq" id="ORb-gf-Yb3"/>
             </connections>

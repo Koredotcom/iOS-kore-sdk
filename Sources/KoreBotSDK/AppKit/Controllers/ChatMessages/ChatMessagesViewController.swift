@@ -1762,6 +1762,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                 leftMenuTitleLbl.text = leftMenuTitle
         }else{
             let taskMenuVC = TaskMenuViewController()
+            taskMenuVC.viewDelegate = self
             taskMenuVC.modalPresentationStyle = .overFullScreen
             self.navigationController?.present(taskMenuVC, animated: true, completion: nil)
         }

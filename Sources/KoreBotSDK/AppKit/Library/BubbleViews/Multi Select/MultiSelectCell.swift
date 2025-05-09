@@ -12,6 +12,7 @@ class MultiSelectCell: UITableViewCell {
     @IBOutlet weak var checkImage: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     
+    @IBOutlet weak var bgV: UIView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

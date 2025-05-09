@@ -431,7 +431,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 }
                 break
             case .multiSelect:
-                let bubbleView: MultiSelectNewBubbleView = cell.bubbleView as! MultiSelectNewBubbleView
+                let bubbleView: MultiSelectBubbleView = cell.bubbleView as! MultiSelectBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
                     self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }

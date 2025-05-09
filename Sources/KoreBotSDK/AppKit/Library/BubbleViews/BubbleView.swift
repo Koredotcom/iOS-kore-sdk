@@ -136,7 +136,7 @@ open class BubbleView: UIView {
                 bubbleView = NotificationBubbleView()
                 break
             case .multiSelect:
-                bubbleView = MultiSelectNewBubbleView()
+                bubbleView = MultiSelectBubbleView()
                 break
             case .list_widget:
                 bubbleView = ListWidgetBubbleView()

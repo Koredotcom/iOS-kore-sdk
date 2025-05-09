@@ -13,6 +13,7 @@ class TaskMenuTablViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var bgView: UIView!
    
+    @IBOutlet weak var imagVWidthConstarint: NSLayoutConstraint!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

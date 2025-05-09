@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MultiSelectNewBubbleView: BubbleView {
+class MultiSelectBubbleView: BubbleView {
     let bundle = Bundle.sdkModule
     var titleLbl: UILabel!
     var tableView: UITableView!
@@ -64,7 +64,7 @@ class MultiSelectNewBubbleView: BubbleView {
         self.tableView.showsHorizontalScrollIndicator = false
         self.tableView.showsVerticalScrollIndicator = true
         self.tableView.bounces = false
-        self.tableView.separatorStyle = .singleLine
+        self.tableView.separatorStyle = .none
         self.cardView.addSubview(self.tableView)
         self.tableView.isScrollEnabled = true
         self.tableView.register(Bundle.xib(named: multiSelectCellIdentifier), forCellReuseIdentifier: multiSelectCellIdentifier)
@@ -82,7 +82,7 @@ class MultiSelectNewBubbleView: BubbleView {
         cardView.backgroundColor =  UIColor.white
         cardView.layer.cornerRadius = 4.0
         cardView.layer.borderWidth = 0.0
-        cardView.layer.borderColor = UIColor.init(hexString: templateBoarderColor).cgColor
+        cardView.layer.borderColor = BubbleViewLeftTint.cgColor
         cardView.clipsToBounds = true
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
@@ -127,14 +127,14 @@ class MultiSelectNewBubbleView: BubbleView {
             finalHeight += cellHeight
         }
         let footerViewHeight = 50.0
-        return CGSize(width: 0.0, height: 20+finalHeight+footerViewHeight)
+        return CGSize(width: 0.0, height: finalHeight+footerViewHeight)
     }
     
     @objc fileprivate func SelectAllButtonAction(_ sender: AnyObject!) {
 
     }
 }
-extension MultiSelectNewBubbleView: UITableViewDelegate,UITableViewDataSource{
+extension MultiSelectBubbleView: UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
@@ -156,6 +156,14 @@ extension MultiSelectNewBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.selectionStyle = .none
         let elements = arrayOfElements[indexPath.row]
         cell.titleLabel.text = elements.title
+        cell.titleLabel.textColor = BubbleViewBotChatTextColor
+        cell.titleLabel.font = UIFont.init(name: regularCustomFont, size: 15.0)
+        
+        cell.bgV.backgroundColor = .white
+        cell.bgV.layer.borderColor = BubbleViewLeftTint.cgColor
+        cell.bgV.layer.borderWidth = 1.0
+        cell.bgV.layer.cornerRadius = 3.0
+        cell.bgV.clipsToBounds = true
         
         if checkboxIndexPath.contains(indexPath) {
             let imgV = UIImage.init(named: "check", in: bundle, compatibleWith: nil)
@@ -164,7 +172,7 @@ extension MultiSelectNewBubbleView: UITableViewDelegate,UITableViewDataSource{
         }else{
             let imgV = UIImage.init(named: "uncheck", in: bundle, compatibleWith: nil)
             cell.checkImage.image = imgV?.withRenderingMode(.alwaysTemplate)
-            cell.checkImage.tintColor = themeColor
+            cell.checkImage.tintColor = BubbleViewLeftTint
         }
         return cell
         
@@ -211,7 +219,7 @@ extension MultiSelectNewBubbleView: UITableViewDelegate,UITableViewDataSource{
                 showMoreButton.setTitle(btnTitle, for: .normal)
             }
             showMoreButton.backgroundColor = UIColor(hexString: btnBgActiveColor)
-        showMoreButton.setTitleColor(UIColor(hexString: btnActiveTextColor), for: .normal)
+            showMoreButton.setTitleColor(UIColor(hexString: btnActiveTextColor), for: .normal)
             let views: [String: UIView] = ["showMoreButton": showMoreButton]
             view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[showMoreButton(35)]-0-|", options:[], metrics:nil, views:views))
             view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[showMoreButton]-0-|", options:[], metrics:nil, views:views))
@@ -225,56 +233,56 @@ extension MultiSelectNewBubbleView: UITableViewDelegate,UITableViewDataSource{
         }
     }
    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-       if (cell.responds(to: #selector(getter: UIView.tintColor))) {
-           let cornerRadius: CGFloat = 5
-           cell.backgroundColor = UIColor.clear
-           let layer: CAShapeLayer  = CAShapeLayer()
-           let pathRef: CGMutablePath  = CGMutablePath()
-           let bounds: CGRect  = cell.bounds.insetBy(dx: 0, dy: 0)
-           var addLine: Bool  = false
-           if (indexPath.row == 0 && indexPath.row == tableView.numberOfRows(inSection: indexPath.section)-1) {
-               pathRef.__addRoundedRect(transform: nil, rect: bounds, cornerWidth: cornerRadius, cornerHeight: cornerRadius)
-           } else if (indexPath.row == 0) {
-               pathRef.move(to: CGPoint(x:bounds.minX,y:bounds.maxY))
-               pathRef.addArc(tangent1End: CGPoint(x:bounds.minX,y:bounds.minY), tangent2End: CGPoint(x:bounds.midX,y:bounds.minY), radius: cornerRadius)
-               
-               pathRef.addArc(tangent1End: CGPoint(x:bounds.maxX,y:bounds.minY), tangent2End: CGPoint(x:bounds.maxX,y:bounds.midY), radius: cornerRadius)
-               pathRef.addLine(to: CGPoint(x:bounds.maxX,y:bounds.maxY))
-               addLine = true;
-           } else if (indexPath.row == tableView.numberOfRows(inSection: indexPath.section)-1) {
-               
-               pathRef.move(to: CGPoint(x:bounds.minX,y:bounds.minY))
-               pathRef.addArc(tangent1End: CGPoint(x:bounds.minX,y:bounds.maxY), tangent2End: CGPoint(x:bounds.midX,y:bounds.maxY), radius: cornerRadius)
-               
-               pathRef.addArc(tangent1End: CGPoint(x:bounds.maxX,y:bounds.maxY), tangent2End: CGPoint(x:bounds.maxX,y:bounds.midY), radius: cornerRadius)
-               pathRef.addLine(to: CGPoint(x:bounds.maxX,y:bounds.minY))
-               
-           } else {
-               pathRef.addRect(bounds)
-               addLine = true
-           }
-           layer.path = pathRef
-           //CFRelease(pathRef)
-           //set the border color
-           layer.strokeColor = UIColor.lightGray.cgColor;
-           //set the border width
-           layer.lineWidth = 1
-           layer.fillColor = UIColor(white: 1, alpha: 1.0).cgColor
-           
-           
-           if (addLine == true) {
-               let lineLayer: CALayer = CALayer()
-               let lineHeight: CGFloat  = (0.5 / UIScreen.main.scale)
-               lineLayer.frame = CGRect(x:bounds.minX, y:bounds.size.height-lineHeight, width:bounds.size.width, height:lineHeight)
-               lineLayer.backgroundColor = tableView.separatorColor!.cgColor
-               layer.addSublayer(lineLayer)
-           }
-           
-           let testView: UIView = UIView(frame:bounds)
-           testView.layer.insertSublayer(layer, at: 0)
-           testView.backgroundColor = UIColor.clear
-           cell.backgroundView = testView
-       }
+//       if (cell.responds(to: #selector(getter: UIView.tintColor))) {
+//           let cornerRadius: CGFloat = 5
+//           cell.backgroundColor = UIColor.clear
+//           let layer: CAShapeLayer  = CAShapeLayer()
+//           let pathRef: CGMutablePath  = CGMutablePath()
+//           let bounds: CGRect  = cell.bounds.insetBy(dx: 0, dy: 0)
+//           var addLine: Bool  = false
+//           if (indexPath.row == 0 && indexPath.row == tableView.numberOfRows(inSection: indexPath.section)-1) {
+//               pathRef.__addRoundedRect(transform: nil, rect: bounds, cornerWidth: cornerRadius, cornerHeight: cornerRadius)
+//           } else if (indexPath.row == 0) {
+//               pathRef.move(to: CGPoint(x:bounds.minX,y:bounds.maxY))
+//               pathRef.addArc(tangent1End: CGPoint(x:bounds.minX,y:bounds.minY), tangent2End: CGPoint(x:bounds.midX,y:bounds.minY), radius: cornerRadius)
+//               
+//               pathRef.addArc(tangent1End: CGPoint(x:bounds.maxX,y:bounds.minY), tangent2End: CGPoint(x:bounds.maxX,y:bounds.midY), radius: cornerRadius)
+//               pathRef.addLine(to: CGPoint(x:bounds.maxX,y:bounds.maxY))
+//               addLine = true;
+//           } else if (indexPath.row == tableView.numberOfRows(inSection: indexPath.section)-1) {
+//               
+//               pathRef.move(to: CGPoint(x:bounds.minX,y:bounds.minY))
+//               pathRef.addArc(tangent1End: CGPoint(x:bounds.minX,y:bounds.maxY), tangent2End: CGPoint(x:bounds.midX,y:bounds.maxY), radius: cornerRadius)
+//               
+//               pathRef.addArc(tangent1End: CGPoint(x:bounds.maxX,y:bounds.maxY), tangent2End: CGPoint(x:bounds.maxX,y:bounds.midY), radius: cornerRadius)
+//               pathRef.addLine(to: CGPoint(x:bounds.maxX,y:bounds.minY))
+//               
+//           } else {
+//               pathRef.addRect(bounds)
+//               addLine = true
+//           }
+//           layer.path = pathRef
+//           //CFRelease(pathRef)
+//           //set the border color
+//           layer.strokeColor = BubbleViewLeftTint.cgColor;
+//           //set the border width
+//           layer.lineWidth = 1
+//           layer.fillColor = UIColor(white: 1, alpha: 1.0).cgColor
+//           
+//           
+//           if (addLine == true) {
+//               let lineLayer: CALayer = CALayer()
+//               let lineHeight: CGFloat  = (0.5 / UIScreen.main.scale)
+//               lineLayer.frame = CGRect(x:bounds.minX, y:bounds.size.height-lineHeight, width:bounds.size.width, height:lineHeight)
+//               lineLayer.backgroundColor = tableView.separatorColor!.cgColor
+//               layer.addSublayer(lineLayer)
+//           }
+//           
+//           let testView: UIView = UIView(frame:bounds)
+//           testView.layer.insertSublayer(layer, at: 0)
+//           testView.backgroundColor = UIColor.clear
+//           cell.backgroundView = testView
+//       }
        
    }
 }

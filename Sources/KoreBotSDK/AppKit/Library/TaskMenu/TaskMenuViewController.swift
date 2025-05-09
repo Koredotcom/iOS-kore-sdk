@@ -87,7 +87,6 @@ extension TaskMenuViewController: UITableViewDelegate,UITableViewDataSource{
            return 1
        }
        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-           
            return  self.arrayOftasks.count
        }
        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -98,7 +97,7 @@ extension TaskMenuViewController: UITableViewDelegate,UITableViewDataSource{
            cell.titleLabel.text = tasks.title
            cell.titleLabel.font = UIFont.init(name: regularCustomFont, size: 15.0)
            cell.titleLabel.textColor = BubbleViewBotChatTextColor
-           
+           cell.imagVWidthConstarint.constant  = 25.0
            if let iconImg = tasks.icon{
                if iconImg.contains("base64"){
                    let image = Utilities.base64ToImage(base64String: tasks.icon)
@@ -107,6 +106,7 @@ extension TaskMenuViewController: UITableViewDelegate,UITableViewDataSource{
                    if let url = URL(string: iconImg){
                        cell.imgView.af.setImage(withURL: url, placeholderImage: UIImage.init(named: "placeholder_image", in: bundle, compatibleWith: nil))
                    }else{
+                       cell.imagVWidthConstarint.constant  = 0.0
                        cell.titleLabel.textAlignment = .center
                    }
                }
@@ -114,6 +114,7 @@ extension TaskMenuViewController: UITableViewDelegate,UITableViewDataSource{
            return cell
        }
        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+           self.dismiss(animated: true, completion: nil)
            let elements = arrayOftasks[indexPath.row]
            if let type = elements.type, type == "postback"{
                if let titile = elements.title{
@@ -124,7 +125,7 @@ extension TaskMenuViewController: UITableViewDelegate,UITableViewDataSource{
                    self.viewDelegate?.linkButtonTapAction(urlString: urlstr)
                }
            }
-           self.dismiss(animated: true, completion: nil)
+           
     }
        
 }
