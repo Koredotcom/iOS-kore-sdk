@@ -23,6 +23,7 @@ var pdfcTemplateViewNotification = "pdfShowViewNotification"
 var pdfcTemplateViewErrorNotification = "pdfShowErrorNotification"
 var reloadVideoCellNotification = "ReloadVideoCellNotification"
 var tokenExipryNotification = "TokenExpiryNotification"
+var activityViewControllerNotification = "ActivityViewControllerNotificationName"
 
 var isSpeakingEnabled = false
 
@@ -47,6 +48,9 @@ var mediumCustomFont = "HelveticaNeue-Medium"
 var boldCustomFont = "HelveticaNeue-Bold"
 var semiBoldCustomFont = "HelveticaNeue-Semibold"
 var italicCustomFont =  "HelveticaNeue-Italic"
+
+var downloadImage: UIImage?
+var downloadFileURL: URL?
 
 var isAgentConnect = false
 

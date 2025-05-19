@@ -25,6 +25,7 @@ class PDFBubbleView: BubbleView {
     var pdfUrl = ""
     var tileBgv: UIView!
     var titleLbl: KREAttributedLabel!
+    var fileExtension = ""
     
     override func applyBubbleMask() {
         //nothing to put here
@@ -77,7 +78,7 @@ class PDFBubbleView: BubbleView {
         downloadBtn.translatesAutoresizingMaskIntoConstraints = false
         downloadBtn.setTitleColor(.blue, for: .normal)
         downloadBtn.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-        downloadBtn.setImage(UIImage.init(named: ""), for: .normal)
+        //downloadBtn.setImage(UIImage.init(named: ""), for: .normal)
         cardView.addSubview(downloadBtn)
         downloadBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.right
         downloadBtn.addTarget(self, action: #selector(self.downloadButtonAction(_:)), for: .touchUpInside)
@@ -128,8 +129,12 @@ class PDFBubbleView: BubbleView {
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
-                let titleStr = jsonObject["fileName"] as? String ?? ""
-                self.titleLbl.setHTMLString(titleStr, withWidth: kMaxTextWidth)
+                let titleStr = jsonObject["fileName"] as? NSString ?? ".pdf"
+                fileExtension = jsonObject["format"] as? String ?? titleStr.pathExtension ?? "pdf"
+                if fileExtension == ""{
+                    fileExtension = "pdf"
+                }
+                self.titleLbl.setHTMLString(titleStr as String, withWidth: kMaxTextWidth)
                 var url = jsonObject["url"] as? String ?? ""
                 url = url.replacingOccurrences(of: " ", with: "")
                 pdfUrl = url
@@ -150,20 +155,61 @@ class PDFBubbleView: BubbleView {
     
     
     @objc fileprivate func downloadButtonAction(_ sender: AnyObject!) {
-        activityView.startAnimating()
-        activityView.isHidden = false
         let date: Date = Date()
         let timeStamp: Int?
         timeStamp = Int(date.timeIntervalSince1970)
-        let title = "downloand\(timeStamp ?? 0).pdf"
-        saveBase64StringToPDF(pdfUrl, fileName: title)
+            //saveBase64StringToPDF(pdfUrl, fileName: title)
+        if let url = URL(string: pdfUrl){
+            activityView.startAnimating()
+            activityView.isHidden = false
+            downloadBtn.isHidden = true
+            let fileName = url.lastPathComponent as NSString
+            let title = "\(fileName.deletingPathExtension)\(timeStamp ?? 0).\(fileExtension)"
+            downloadAndShareTextFile(from: url, fileName: title)
+        }
     }
     
+    func downloadAndShareTextFile(from url: URL, fileName: String) {
+            let task = URLSession.shared.downloadTask(with: url) { localURL, response, error in
+                guard let localURL = localURL, error == nil else {
+                    print("Download error: \(String(describing: error))")
+                    DispatchQueue.main.async {
+                        self.stopLoader()
+                    }
+                    return
+                }
     
+                // Move the file to a permanent location if needed
+                let fileManager = FileManager.default
+                let docsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+                let destURL = docsURL.appendingPathComponent("\(fileName)")
+    
+                try? fileManager.removeItem(at: destURL) // Clean up if needed
+                do {
+                    try fileManager.moveItem(at: localURL, to: destURL)
+    
+                    DispatchQueue.main.async {
+                        self.downloadBtn.isHidden = false
+                        self.activityView.stopAnimating()
+                        self.activityView.isHidden = true
+                        downloadFileURL = destURL
+                        NotificationCenter.default.post(name: Notification.Name(activityViewControllerNotification), object: nil)
+                    }
+                } catch {
+                    print("File move error: \(error)")
+                    DispatchQueue.main.async {
+                        self.stopLoader()
+                    }
+                }
+            }
+    
+            task.resume()
+        }
     
     
 
     func stopLoader(){
+        downloadBtn.isHidden = false
         activityView.stopAnimating()
         activityView.isHidden = true
         NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewErrorNotification), object: "please try again later")

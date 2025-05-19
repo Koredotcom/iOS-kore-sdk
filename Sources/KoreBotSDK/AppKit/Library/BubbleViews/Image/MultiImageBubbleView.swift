@@ -101,11 +101,38 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
     }
     
     @IBAction func tapsOnDownloadBtnAction(_ sender: Any) {
-        if let url = imageDataDic["url"] as? String{
-            self.linkAction?(url)
+        if let urlStr = imageDataDic["url"] as? String{
+            //self.linkAction?(urlStr)
+            if let url = URL(string: urlStr){
+                funcDownloadFile(url:url)
+                //downloadAndShareTextFile(from: url)
+            }
         }
     }
     
+    func funcDownloadFile(url:URL){
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else {
+                print("Download error:", error?.localizedDescription ?? "Unknown error")
+                return
+            }
+
+            if let image = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    downloadImage = image
+                    NotificationCenter.default.post(name: Notification.Name(activityViewControllerNotification), object: nil)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.linkAction?(url.absoluteString)
+                    print("Failed to convert data to UIImage")
+                }
+            }
+        }
+
+        task.resume()
+    }
+        
     override var intrinsicContentSize : CGSize {
         self.downloadBtnTopConstraint.constant = 10.0
         self.downloadBtnBottomConstraint.constant = 10.0
@@ -218,9 +245,30 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
                     }
                 }else{
                     if let imageurlStr = imageDataDic["url"] as? String, let url = URL(string:imageurlStr){
-                            cell.imageComponent.af.setImage(withURL: url, placeholderImage: UIImage.init(named: "placeholder_image", in: bundle, compatibleWith: nil))
+                            //cell.imageComponent.af.setImage(withURL: url, placeholderImage: UIImage.init(named: "placeholder_image", in: bundle, compatibleWith: nil))
+                        
+                        
+                        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                            guard let data = data, error == nil else {
+                                print("Download error:", error?.localizedDescription ?? "Unknown error")
+                                return
+                            }
+
+                            if let image = UIImage(data: data) {
+                                DispatchQueue.main.async {
+                                    cell.imageComponent.image = image
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    cell.imageComponent.image = UIImage(named: "placeholder_image", in: self.bundle, compatibleWith: nil)
+                                }
+                                
+                            }
+                        }
+
+                        task.resume()
                     }else{
-                            cell.imageComponent.image = UIImage(named: "placeholder_image")
+                            cell.imageComponent.image = UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil)
                     }
                 }
                 

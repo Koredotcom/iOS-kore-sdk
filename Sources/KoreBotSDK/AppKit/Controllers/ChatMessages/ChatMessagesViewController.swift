@@ -909,6 +909,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(showPDFErrorMeesage), name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willTerminate(_:)), name: UIApplication.willTerminateNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(tokenExpiry), name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showActivityViewController), name: NSNotification.Name(rawValue: activityViewControllerNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -941,7 +942,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
-        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: activityViewControllerNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -1875,6 +1876,23 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         listViewDetailsViewController.modalPresentationStyle = .overFullScreen
         listViewDetailsViewController.view.backgroundColor = .white
         self.navigationController?.present(listViewDetailsViewController, animated: true, completion: nil)
+    }
+    
+    @objc func showActivityViewController(notification:Notification){
+        let dataString: String = notification.object as? String ?? ""
+        if dataString == "Copy"{
+            self.toastMessage("Copied")
+        }else{
+            let activityItem: [Any] = [downloadFileURL as? Any, downloadImage as? Any]
+            let activityViewController = UIActivityViewController(activityItems: activityItem, applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+            
+            // exclude some activity types from the list (optional)
+            activityViewController.excludedActivityTypes = [ UIActivity.ActivityType.airDrop, UIActivity.ActivityType.postToFacebook ]
+            
+            // present the view controller
+            self.present(activityViewController, animated: true, completion: nil)
+        }
     }
     
     @objc func dropDownTemplateActtion(notification:Notification){
