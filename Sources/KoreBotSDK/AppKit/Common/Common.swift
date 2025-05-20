@@ -87,6 +87,14 @@ var isNetworkOnResumeCallingHistory = true
 var buttonTemplteBtnsCornerRadious = 5.0
 var buttonTemplteBtnsTextBoraderColor:UIColor? = nil
 
+var toastMessageStr = "Saved successfully under Files"
+
+var videoDownloadAlertTitle = "Download"
+var fileDownloadingToastMsg = "Downloading..."
+var fileSavedSuccessfullyToastMsg = "Saved successfully under Files"
+var videoDownloadAlertCancelTitle = "Cancel"
+var vileDownloadFailedToastMsg = "Download failed!"
+
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)

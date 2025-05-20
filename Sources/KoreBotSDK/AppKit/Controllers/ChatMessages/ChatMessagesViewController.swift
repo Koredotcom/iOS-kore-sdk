@@ -1826,7 +1826,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     @objc func showPDFViewController(notification:Notification){
         let dataString: String = notification.object as? String ?? ""
         if dataString == "Show"{
-            self.toastMessage("Statement saved successfully under Files")
+            self.toastMessage(toastMessageStr)
         }else{
             if #available(iOS 11.0, *) {
                 let vc = PdfShowViewController(dataString: dataString)

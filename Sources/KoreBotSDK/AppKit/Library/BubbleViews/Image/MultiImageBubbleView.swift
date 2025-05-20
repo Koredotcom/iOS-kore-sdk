@@ -69,6 +69,16 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
     var IMAGE_COMPONENT_HEIGHT: CGFloat = 80.0
     var MAX_CELLS: Int = 5
     
+    override func applyBubbleMask() {
+        //nothing to put here
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition! {
+        didSet {
+            
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -85,6 +95,7 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
         downLoadBtn.clipsToBounds = true
        
         self.layer.borderColor = BubbleViewLeftTint.cgColor
+        self.layer.cornerRadius = 5.0
         self.layer.borderWidth = 1.0
         self.clipsToBounds = true
     }
@@ -101,19 +112,28 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
     }
     
     @IBAction func tapsOnDownloadBtnAction(_ sender: Any) {
-        if let urlStr = imageDataDic["url"] as? String{
-            //self.linkAction?(urlStr)
-            if let url = URL(string: urlStr){
+        if let payload = imageDataDic["payload"] as? [String: Any]{
+            if let imageurlStr = payload["url"] as? String, let url = URL(string:imageurlStr){
                 funcDownloadFile(url:url)
-                //downloadAndShareTextFile(from: url)
+            }
+        }else{
+            if let urlStr = imageDataDic["url"] as? String{
+                if let url = URL(string: urlStr){
+                    funcDownloadFile(url:url)
+                }
             }
         }
+        
     }
     
     func funcDownloadFile(url:URL){
+        toastMessageStr = fileDownloadingToastMsg
+        NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewNotification), object: "Show")
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
                 print("Download error:", error?.localizedDescription ?? "Unknown error")
+                toastMessageStr = vileDownloadFailedToastMsg
+                NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewNotification), object: "Show")
                 return
             }
 
@@ -237,9 +257,27 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
             }else{
                 cell.videoPlayerView.isHidden = true
                 if let payload = imageDataDic["payload"] as? [String: Any]{
-                    let url = URL(string: ( payload["url"] as? String ?? ""))
-                    if url != nil{
-                        cell.imageComponent.af.setImage(withURL: url!, placeholderImage: UIImage.init(named: "placeholder_image", in: bundle, compatibleWith: nil))
+                    if let imageurlStr = payload["url"] as? String, let url = URL(string:imageurlStr){
+                        //cell.imageComponent.af.setImage(withURL: url, placeholderImage: UIImage.init(named: "placeholder_image", in: bundle, compatibleWith: nil))
+                        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                            guard let data = data, error == nil else {
+                                print("Download error:", error?.localizedDescription ?? "Unknown error")
+                                return
+                            }
+
+                            if let image = UIImage(data: data) {
+                                DispatchQueue.main.async {
+                                    cell.imageComponent.image = image
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    cell.imageComponent.image = UIImage(named: "placeholder_image", in: self.bundle, compatibleWith: nil)
+                                }
+                                
+                            }
+                        }
+
+                        task.resume()
                     }else{
                         cell.imageComponent.image = UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil)
                     }
@@ -372,94 +410,101 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
 extension MultiImageBubbleView{
     @objc fileprivate func menuButtonAction(_ sender: UIButton!) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            let action1 = UIAlertAction(title: "Download", style: .default) { (action) in
-                
-                self.loadFileAsync(url: URL(string: self.componentItems.videoUrl!)!) { (isSaved) in
-                    if isSaved{
-                        print("Video is saved!")
-                        DispatchQueue.main.async {
-                        let alert = UIAlertController(title: "BOT SDK", message: "Video is saved!", preferredStyle: UIAlertController.Style.alert)
-                        
-                        // add an action (button)
-                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                        
-                        // show the alert
-                        UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+            let action1 = UIAlertAction(title: videoDownloadAlertTitle, style: .default) { (action) in
+                if let urlStr = self.componentItems.videoUrl as? String{
+                    if let url = URL(string: urlStr){
+                        toastMessageStr = fileDownloadingToastMsg
+                        NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewNotification), object: "Show")
+                        let date: Date = Date()
+                        let timeStamp: Int?
+                        timeStamp = Int(date.timeIntervalSince1970)
+                        let fileName = "\(timeStamp ?? 0)\(url.lastPathComponent)"
+                        self.downloadVideo(from: urlStr, fileName: fileName) { savedURL in
+                            if let savedURL = savedURL {
+                                print("Video saved at: \(savedURL.path)")
+                                DispatchQueue.main.async {
+                                    toastMessageStr = fileSavedSuccessfullyToastMsg
+                                    NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewNotification), object: "Show")
+                                }
+                            } else {
+                                print("Failed to save video.")
+                                toastMessageStr = vileDownloadFailedToastMsg
+                                NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewNotification), object: "Show")
+                            }
                         }
                     }
                 }
             }
-            let action2 = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            let action2 = UIAlertAction(title: videoDownloadAlertCancelTitle, style: .cancel) { (action) in
                 print("Cancel is pressed......")
             }
             alertController.addAction(action1)
             alertController.addAction(action2)
-            UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+            guard let parentVC = self.parentViewController() else {
+               print("No parent view controller found")
+               return
+            }
+        parentVC.present(alertController, animated: true)
 
         }
     
     
-    
-    
-    /// Downloads a file asynchronously
-    func loadFileAsync(url: URL, completion: @escaping (Bool) -> Void) {
-
-        // create your document folder url
-        let documentsUrl = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-
-        // your destination file url
-        let destination = documentsUrl.appendingPathComponent(url.lastPathComponent)
-        if FileManager().fileExists(atPath: destination.path) {
-            print("The file already exists at path, deleting and replacing with latest")
-
-            if FileManager().isDeletableFile(atPath: destination.path){
-                do{
-                    try FileManager().removeItem(at: destination)
-                    print("previous file deleted")
-                    self.saveFile(url: url, destination: destination) { (complete) in
-                        if complete{
-                            completion(true)
-                        }else{
-                            completion(false)
-                        }
-                    }
-                }catch{
-                    print("current file could not be deleted")
-                }
-            }
-        // download the data from your url
-        }else{
-            self.saveFile(url: url, destination: destination) { (complete) in
-                if complete{
-                    completion(true)
-                }else{
-                    completion(false)
-                }
-            }
+}
+extension MultiImageBubbleView{
+    func downloadVideo(from urlString: String, fileName: String, completion: @escaping (URL?) -> Void) {
+        guard let url = URL(string: urlString) else {
+            print("Invalid URL.")
+            completion(nil)
+            return
         }
-    }
-
-
-    func saveFile(url: URL, destination: URL, completion: @escaping (Bool) -> Void){
-        URLSession.shared.downloadTask(with: url, completionHandler: { (location, response, error) in
-            // after downloading your data you need to save it to your destination url
-            guard
-                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
-                let location = location, error == nil
-                else { print("error with the url response"); completion(false); return}
+        
+        let task = URLSession.shared.downloadTask(with: url) { tempLocalUrl, response, error in
+            if let error = error {
+                print("Download error: \(error)")
+                completion(nil)
+                return
+            }
+            
+            guard let tempLocalUrl = tempLocalUrl else {
+                print("No file URL.")
+                completion(nil)
+                return
+            }
+            
+            // Get Documents folder
+            let fileManager = FileManager.default
+            let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let destinationURL = documentsDirectory.appendingPathComponent(fileName)
+            
+            // Remove existing file if needed
+            if fileManager.fileExists(atPath: destinationURL.path) {
+                try? fileManager.removeItem(at: destinationURL)
+            }
+            
             do {
-                try FileManager.default.moveItem(at: location, to: destination)
-                print("new file saved")
-                completion(true)
+                try fileManager.moveItem(at: tempLocalUrl, to: destinationURL)
+                print("File saved to: \(destinationURL)")
+                completion(destinationURL)
             } catch {
-                print("file could not be saved: \(error)")
-                completion(false)
+                print("Error saving file: \(error)")
+                completion(nil)
             }
-        }).resume()
+        }
+        
+        task.resume()
     }
-    
-    
+}
+extension UIView {
+    func parentViewController() -> UIViewController? {
+        var parentResponder: UIResponder? = self
+        while parentResponder != nil {
+            parentResponder = parentResponder?.next
+            if let viewController = parentResponder as? UIViewController {
+                return viewController
+            }
+        }
+        return nil
     }
-
+}
 
 

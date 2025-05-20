@@ -294,6 +294,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
                 }
+                cell.bubbleView.drawBorder = true
                 break
             case .audio:
                 break

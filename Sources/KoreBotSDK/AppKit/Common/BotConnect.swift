@@ -36,6 +36,11 @@ open class BotConnect: NSObject {
     public var confirm_Title = ""
     public var please_Try_Again = ""
     public var sessionExpiry_Msg = ""
+    public var videoDownload_AlertTitle = ""
+    public var fileDownloading_ToastMsg = ""
+    public var fileSavedSuccessfully_ToastMsg = ""
+    public var videoDownload_AlertCancelTitle = ""
+    public var vileDownloadFailed_ToastMsg = ""
     public var closeOrMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
     public var buttonsCornerRadious = 5.0
     public var buttonsTextBoraderColor: UIColor? = nil
@@ -257,6 +262,26 @@ open class BotConnect: NSObject {
         }else{
             sessionExpiryMsg = bundle.localizedString(forKey: "sessionExpiryMsg", value: "", table: nil)
         }
+        
+        if videoDownload_AlertTitle != ""{
+            videoDownloadAlertTitle = videoDownload_AlertTitle
+        }
+        
+        if fileDownloading_ToastMsg != ""{
+            fileDownloadingToastMsg = fileDownloading_ToastMsg
+        }
+        
+        if fileSavedSuccessfully_ToastMsg != ""{
+            fileSavedSuccessfullyToastMsg = fileSavedSuccessfully_ToastMsg
+        }
+        
+        if videoDownload_AlertCancelTitle != ""{
+            videoDownloadAlertCancelTitle = videoDownload_AlertCancelTitle
+        }
+        if vileDownloadFailed_ToastMsg != ""{
+            vileDownloadFailedToastMsg = vileDownloadFailed_ToastMsg
+        }
+        
     }
     
     @available(*, deprecated, message: "Please use addCustomTemplates(numbersOfViews:[BubbleView], customerTemplaateTypes:[String])")
