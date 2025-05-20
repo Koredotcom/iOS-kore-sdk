@@ -132,8 +132,10 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
                 print("Download error:", error?.localizedDescription ?? "Unknown error")
-                toastMessageStr = vileDownloadFailedToastMsg
-                NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewNotification), object: "Show")
+                DispatchQueue.main.async {
+                    toastMessageStr = vileDownloadFailedToastMsg
+                    NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewNotification), object: "Show")
+                }
                 return
             }
 
@@ -428,8 +430,10 @@ extension MultiImageBubbleView{
                                 }
                             } else {
                                 print("Failed to save video.")
-                                toastMessageStr = vileDownloadFailedToastMsg
-                                NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewNotification), object: "Show")
+                                DispatchQueue.main.async {
+                                    toastMessageStr = vileDownloadFailedToastMsg
+                                    NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewNotification), object: "Show")
+                                }
                             }
                         }
                     }
