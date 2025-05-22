@@ -125,8 +125,12 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
                print(dic)
            }
        }
+       
+###### c. Customized templates injection:
+            // To override existing template or add new template
+          botConnect.addCustomTemplates(numbersOfViews: [SampleView1.self],customerTemplaateTypes: ["link"])
         
-###### c. Add below permissions in info.plist
+###### d. Add below permissions in info.plist
         Privacy - Camera Usage Description         ---      Allow access to camera.
         Privacy - Microphone Usage Description     ---      Allow access to microphone.
         Privacy - Photo Library Usage Description  ---      Allow access to photo library.
@@ -177,8 +181,12 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
                print(dic)
            }
        }
-        
-  ###### c. Add below permissions in info.plist
+  
+###### c. Customized templates injection:
+            // To override existing template or add new template
+          botConnect.addCustomTemplates(numbersOfViews: [SampleView1.self],customerTemplaateTypes: ["link"])
+                
+###### d. Add below permissions in info.plist
         Privacy - Camera Usage Description         ---      Allow access to camera.
         Privacy - Microphone Usage Description     ---      Allow access to microphone.
         Privacy - Photo Library Usage Description  ---      Allow access to photo library.
