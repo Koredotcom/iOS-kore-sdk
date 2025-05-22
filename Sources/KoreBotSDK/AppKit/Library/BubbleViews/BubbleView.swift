@@ -69,13 +69,8 @@ open class BubbleView: UIView {
             var tabledesign = "responsive"
             let clientTempateType =  Utilities.getComponentTypes(cleintTemplateTypeStr, tabledesign)
             if bubbleType == clientTempateType{
-                if bubbleType == .noTemplate{
-                    
-                }else{
                     isCustomTemplateIndex = i
                     isCustomTemplate = true
-                }
-                
             }
         }
         if isCustomTemplate{
