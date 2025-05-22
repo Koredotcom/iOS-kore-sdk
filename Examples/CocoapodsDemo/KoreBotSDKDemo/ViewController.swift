@@ -28,7 +28,7 @@ class ViewController: UIViewController {
      }
      
      // MARK: Custom Template Injection
-     //botConnect.customTemplatesFromCustomer(numbersOfViews: [SampleView1(),SearchGridTemplate()],customerTemplaateTypes: ["advancedListTemplate","search_grid_template"])
+     //botConnect.addCustomTemplates(numbersOfViews: [LinkTemplateBubbleview.self],customerTemplaateTypes: ["link"])
      */
     
     @IBAction func connectBtnAction(_ sender: Any) {
@@ -49,6 +49,7 @@ class ViewController: UIViewController {
         
         // MARK: Set Bot Config
         botConnect.initialize(clientId, clientSecret: clientSecret, botId: botId, chatBotName: chatBotName, identity: identity, isAnonymous: isAnonymous, isWebhookEnabled: isWebhookEnabled, JWTServerUrl: JWT_SERVER, BOTServerUrl: BOT_SERVER, BrandingUrl: Branding_SERVER, customData: customData, queryParameters: queryParameters, customJWToken: customJWToken)
+        
         
         
         // MARK: Local Branding

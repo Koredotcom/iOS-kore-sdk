@@ -1,20 +1,19 @@
 //
-//  PDFBubbleView.swift
+//  LinkTemplateBubbleview.swift
 //  KoreBotSDKDemo
 //
-//  Created by Kartheek.Pagidimarri on 10/11/21.
-//  Copyright © 2021 Kore. All rights reserved.
+//  Created by Pagidimarri Kartheek on 22/05/25.
+//  Copyright © 2025 Kore. All rights reserved.
 //
 
 import UIKit
-#if SWIFT_PACKAGE
-import ObjcSupport
-#endif
-class PDFBubbleView: BubbleView {
+import KoreBotSDK
+class LinkTemplateBubbleview: BubbleView {
+
     let bundle = Bundle.sdkModule
     public var maskview: UIView!
     var cardView: UIView!
-    let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 80.0
+    let kMaxTextWidth: CGFloat = (UIScreen.main.bounds.size.width - 80.0)
     let cellIdentifier = "PdfDownloadCell"
     //public var linkAction: ((_ text: String?) -> Void)!
     var imageV: UIImageView!
@@ -27,15 +26,22 @@ class PDFBubbleView: BubbleView {
     var titleLbl: KREAttributedLabel!
     var fileExtension = ""
     
-    override func applyBubbleMask() {
-        //nothing to put here
+    /*
+    // Only override draw() if you perform custom drawing.
+    // An empty implementation adversely affects performance during animation.
+    override func draw(_ rect: CGRect) {
+        // Drawing code
+    }
+    */
+    required init() {
+        super.init()
     }
     
-    override var tailPosition: BubbleMaskTailPosition! {
-        didSet {
-            self.backgroundColor = .clear
-        }
+    @MainActor required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
+    
+    
     func intializeCardLayout(){
         self.cardView = UIView(frame:.zero)
         self.cardView.translatesAutoresizingMaskIntoConstraints = false
@@ -47,21 +53,21 @@ class PDFBubbleView: BubbleView {
         cardView.layer.shadowRadius = 6.0
         cardView.layer.shouldRasterize = true
         cardView.layer.cornerRadius = 10.0
-        cardView.backgroundColor =  BubbleViewLeftTint
+        cardView.backgroundColor =  .lightGray
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
     }
-    override func initialize() {
+    public override func initialize() {
         super.initialize()
         intializeCardLayout()
         
         self.titleLbl = KREAttributedLabel(frame: CGRect.zero)
-        self.titleLbl.textColor = BubbleViewBotChatTextColor
+        self.titleLbl.textColor = .black
         self.titleLbl.mentionTextColor = .white
         self.titleLbl.hashtagTextColor = .white
         self.titleLbl.linkTextColor = .white
-        self.titleLbl.font = UIFont(name: mediumCustomFont, size: 16.0)
+        self.titleLbl.font = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
         self.titleLbl.backgroundColor = .clear
         self.titleLbl.isUserInteractionEnabled = true
         self.titleLbl.contentMode = UIView.ContentMode.topLeft
@@ -78,22 +84,21 @@ class PDFBubbleView: BubbleView {
         downloadBtn.translatesAutoresizingMaskIntoConstraints = false
         downloadBtn.setTitleColor(.blue, for: .normal)
         downloadBtn.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-        //downloadBtn.setImage(UIImage.init(named: ""), for: .normal)
+
         cardView.addSubview(downloadBtn)
         downloadBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.right
         downloadBtn.addTarget(self, action: #selector(self.downloadButtonAction(_:)), for: .touchUpInside)
         let downloadImage = UIImage(named: "download", in: bundle, compatibleWith: nil)
         let tintedImage = downloadImage?.withRenderingMode(.alwaysTemplate)
         downloadBtn.setImage(tintedImage, for: .normal)
-        downloadBtn.tintColor = BubbleViewBotChatTextColor
+        downloadBtn.tintColor = .black
         
         activityView = UIActivityIndicatorView(frame: CGRect.zero)
         activityView.translatesAutoresizingMaskIntoConstraints = false
         cardView.addSubview(activityView)
         activityView.isHidden = true
-        activityView.color = BubbleViewBotChatTextColor
+        activityView.color = .green
         
-       
         self.maskview = UIView(frame:.zero)
         self.maskview.translatesAutoresizingMaskIntoConstraints = false
         self.cardView.addSubview(self.maskview)
@@ -111,18 +116,8 @@ class PDFBubbleView: BubbleView {
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[imageV(35)]-5-[titleLbl]-16-|", options: [], metrics: nil, views: listViews))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[downloadBtn(30)]-5-|", options: [], metrics: nil, views: listViews))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[activityView(30)]-5-|", options: [], metrics: nil, views: listViews))
-        
-        
     }
     
-    /*
-     // Only override draw() if you perform custom drawing.
-     // An empty implementation adversely affects performance during animation.
-     override func draw(_ rect: CGRect) {
-     // Drawing code
-     }
-     */
-    // MARK: populate components
     override func populateComponents() {
         if (components.count > 0) {
             let component: KREComponent = components.firstObject as! KREComponent
@@ -130,7 +125,7 @@ class PDFBubbleView: BubbleView {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
                 let titleStr = jsonObject["fileName"] as? NSString ?? ".pdf"
-                fileExtension = jsonObject["format"] as? String ?? titleStr.pathExtension ?? "pdf"
+                fileExtension = jsonObject["format"] as? String ?? titleStr.pathExtension
                 if fileExtension == ""{
                     fileExtension = "pdf"
                 }
@@ -152,13 +147,11 @@ class PDFBubbleView: BubbleView {
         
         return CGSize(width: 0.0, height:  CGFloat(50) + 32)
     }
-    
-    
+
     @objc fileprivate func downloadButtonAction(_ sender: AnyObject!) {
         let date: Date = Date()
         let timeStamp: Int?
         timeStamp = Int(date.timeIntervalSince1970)
-            //saveBase64StringToPDF(pdfUrl, fileName: title)
         if let url = URL(string: pdfUrl){
             activityView.startAnimating()
             activityView.isHidden = false
@@ -168,7 +161,6 @@ class PDFBubbleView: BubbleView {
             downloadAndShareTextFile(from: url, fileName: title)
         }
     }
-    
     func downloadAndShareTextFile(from url: URL, fileName: String) {
             let task = URLSession.shared.downloadTask(with: url) { localURL, response, error in
                 guard let localURL = localURL, error == nil else {
@@ -192,8 +184,7 @@ class PDFBubbleView: BubbleView {
                         self.downloadBtn.isHidden = false
                         self.activityView.stopAnimating()
                         self.activityView.isHidden = true
-                        downloadFileURL = destURL
-                        NotificationCenter.default.post(name: Notification.Name(activityViewControllerNotification), object: nil)
+                        NotificationCenter.default.post(name: Notification.Name("pdfToastNotification"), object: "File downloaded successfully under Files")
                     }
                 } catch {
                     print("File move error: \(error)")
@@ -210,12 +201,7 @@ class PDFBubbleView: BubbleView {
         downloadBtn.isHidden = false
         activityView.stopAnimating()
         activityView.isHidden = true
-        NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewToastNotification), object: "please try again later")
+        NotificationCenter.default.post(name: Notification.Name("pdfToastNotification"), object: "File can not be downloaded!")
     }
-}
 
-extension Date {
-    static var currentTimeStamp: Int64{
-        return Int64(Date().timeIntervalSince1970 * 1000)
-    }
 }

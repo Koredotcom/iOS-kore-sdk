@@ -20,7 +20,7 @@ var showAttachmentSendButtonNotification = "ShowAttachmentSendButton"
 var dropDownTemplateNotification = "DropDownTemplateNotificationName"
 var showCustomTableTemplateNotification = "ShowCustomTableTemplateNotificationName"
 var pdfcTemplateViewNotification = "pdfShowViewNotification"
-var pdfcTemplateViewErrorNotification = "pdfShowErrorNotification"
+var pdfcTemplateViewToastNotification = "pdfToastNotification"
 var reloadVideoCellNotification = "ReloadVideoCellNotification"
 var tokenExipryNotification = "TokenExpiryNotification"
 var activityViewControllerNotification = "ActivityViewControllerNotificationName"
@@ -58,7 +58,7 @@ var isTryConnect = true
 var isInternetAvailable = true
 var isBotConnectSucessFully = false
 
-var arrayOfViews = [BubbleView?]()
+var arrayOfViews = [BubbleView.Type]()
 var arrayOfTemplateTypes = [String]()
 
 var notDeliverdMsgsArray = [String]()
@@ -247,6 +247,14 @@ open class Utilities: NSObject {
             return .cardTemplate
         }else if templateType == "quick_replies_top"{
             return .quick_replies_top
+        }else if templateType == "link" || templateType == "pdfdownload"{
+            return .linkDownload
+        }else if templateType == "video"{
+                    return .video
+        }else if templateType == "image"{
+                    return .image
+        }else if templateType == "audio"{
+                    return .audio
         }
         else if templateType == "text"{
             return .text
@@ -254,3 +262,4 @@ open class Utilities: NSObject {
         return .noTemplate
     }
 }
+

@@ -285,13 +285,13 @@ open class BotConnect: NSObject {
     }
     
     @available(*, deprecated, message: "Please use addCustomTemplates(numbersOfViews:[BubbleView], customerTemplaateTypes:[String])")
-    public func customTemplatesFromCustomer(numbersOfViews:[BubbleView], customerTemplaateTypes:[String]){
+    public func customTemplatesFromCustomer(numbersOfViews:[BubbleView.Type], customerTemplaateTypes:[String]){
         arrayOfViews = numbersOfViews
         arrayOfTemplateTypes = customerTemplaateTypes
         print(arrayOfViews.count)
     }
     
-    public func addCustomTemplates(numbersOfViews:[BubbleView], customerTemplaateTypes:[String]){
+    public func addCustomTemplates(numbersOfViews:[BubbleView.Type], customerTemplaateTypes:[String]){
         arrayOfViews = numbersOfViews
         arrayOfTemplateTypes = customerTemplaateTypes
         print(arrayOfViews.count)

@@ -583,6 +583,18 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         }else if templateType == "quick_replies_top"{
             return .quick_replies_top
         }
+        else if templateType == "link" || templateType == "pdfdownload"{
+            return .linkDownload
+        }
+        else if templateType == "video"{
+            return .video
+        }
+        else if templateType == "image"{
+            return .image
+        }
+        else if templateType == "audio"{
+            return .audio
+        }
         else if templateType == "text"{
             return .text
         }
@@ -640,6 +652,16 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                 if let payload = componentModel.payload as? [String: Any] {
                     if let dictionary = payload["payload"] as? [String: Any] {
                         let optionsComponent: Component = Component(.image)
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                        return (message, ttsBody)
+                    }
+                }
+            }else if (componentModel.type == "link") {
+                if let payload = componentModel.payload as? [String: Any] {
+                    if let dictionary = payload["payload"] as? [String: Any] {
+                        let optionsComponent: Component = Component(.linkDownload)
                         optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                         message.sentDate = object?.createdOn
                         message.addComponent(optionsComponent)
@@ -749,7 +771,6 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                         message.sentDate = object?.createdOn
                         message.addComponent(optionsComponent)
                     }
-                    
                 }else if (type == "error") {
                     let dictionary: NSDictionary = payload["payload"] as! NSDictionary
                     let errorComponent: Component = Component(.error)
@@ -906,7 +927,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(showCustomTableTemplateView), name: NSNotification.Name(rawValue: showCustomTableTemplateNotification), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(showPDFViewController), name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showPDFErrorMeesage), name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showPDFErrorMeesage), name: NSNotification.Name(rawValue: pdfcTemplateViewToastNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willTerminate(_:)), name: UIApplication.willTerminateNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(tokenExpiry), name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showActivityViewController), name: NSNotification.Name(rawValue: activityViewControllerNotification), object: nil)
@@ -940,7 +961,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: reloadVideoCellNotification), object: nil)
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewToastNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: activityViewControllerNotification), object: nil)
     }

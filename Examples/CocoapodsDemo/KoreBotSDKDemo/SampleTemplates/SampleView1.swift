@@ -39,6 +39,14 @@ import KoreBotSDK
         // Drawing code
     }
     */
+     
+     required init() {
+         super.init()
+     }
+     
+     @MainActor required init(coder aDecoder: NSCoder) {
+         fatalError("init(coder:) has not been implemented")
+     }
     
     public override func initialize() {
          super.initialize()
