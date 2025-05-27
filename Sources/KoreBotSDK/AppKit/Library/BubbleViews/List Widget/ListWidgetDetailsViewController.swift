@@ -100,8 +100,11 @@ extension ListWidgetDetailsViewController: UITableViewDelegate,UITableViewDataSo
             let listView = cell.templateView
             listView.populateListItemView(listItem)
             listView.buttonActionHandler = { [weak self] (action) in
-                self?.viewDelegate?.optionsButtonTapNewAction(text: (action?.title!)! , payload:(action?.payload!)! )
-                self?.dismiss(animated: true, completion: nil)
+                if let title = action?.title{
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: title , payload: action?.payload ?? title )
+                    self?.dismiss(animated: true, completion: nil)
+                }
+                
             }
 //            listView.menuActionHandler = { [weak self] (actions) in
 //               // self?.delegate?.populateActions(actions, in: self?.widget, in: self?.panelItem)

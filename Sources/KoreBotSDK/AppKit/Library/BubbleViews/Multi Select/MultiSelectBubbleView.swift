@@ -1,5 +1,5 @@
 //
-//  MultiSelectNewBubbleView.swift
+//  MultiSelectBubbleView.swift
 //  KoreBotSDKDemo
 //
 //  Created by Kartheek Pagidimarri on 8/17/20.
@@ -17,15 +17,16 @@ class MultiSelectBubbleView: BubbleView {
     let kMinTextWidth: CGFloat = 20.0
     fileprivate let multiSelectCellIdentifier = "MultiSelectCell"
     let rowsDataLimit = 4
-    
+    var arrayOfHeaderCheck = [String]()
     var checkboxIndexPath = [IndexPath]() //for Rows checkbox
     var arrayOfSeletedValues = [String]()
+    var arrayOfSeletedTitles = [String]()
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.font : UIFont(name: boldCustomFont, size: 15.0) as Any,
         NSAttributedString.Key.foregroundColor : UIColor.blue,
         NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue]
-    
+    public var maskview: UIView!
     var arrayOfElements = [ComponentElements]()
     var arrayOfButtons = [ComponentItemAction]()
     var showMore = false
@@ -69,9 +70,22 @@ class MultiSelectBubbleView: BubbleView {
         self.tableView.isScrollEnabled = true
         self.tableView.register(Bundle.xib(named: multiSelectCellIdentifier), forCellReuseIdentifier: multiSelectCellIdentifier)
         
-        let views: [String: UIView] = ["tableView": tableView]
+        self.maskview = UIView(frame:.zero)
+        self.maskview.translatesAutoresizingMaskIntoConstraints = false
+        self.cardView.addSubview(self.maskview)
+        self.maskview.isHidden = true
+        self.maskview.backgroundColor = .clear
+        
+        let views: [String: UIView] = ["tableView": tableView, "maskview": maskview]
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[tableView]-5-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
+        
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[maskview]|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[maskview]-0-|", options: [], metrics: nil, views: views))
+        
+        if #available(iOS 15.0, *){
+            self.tableView.sectionHeaderTopPadding = 0.0
+        }
         
     }
     
@@ -108,8 +122,10 @@ class MultiSelectBubbleView: BubbleView {
                     return
                 }
                 arrayOfSeletedValues = []
-               arrayOfElements = allItems.elements ?? []
+                arrayOfElements = allItems.elements ?? []
                 arrayOfButtons = allItems.buttons ?? []
+                arrayOfHeaderCheck = []
+                arrayOfHeaderCheck.append("UnCheck")
                 self.tableView.reloadData()
                 
             }
@@ -127,11 +143,39 @@ class MultiSelectBubbleView: BubbleView {
             finalHeight += cellHeight
         }
         let footerViewHeight = 50.0
-        return CGSize(width: 0.0, height: finalHeight+footerViewHeight)
+        let headerViewHeight = 50.0
+        return CGSize(width: 0.0, height: finalHeight+footerViewHeight + headerViewHeight)
     }
     
-    @objc fileprivate func SelectAllButtonAction(_ sender: AnyObject!) {
-
+    @objc fileprivate func SelectAllButtonAction(_ sender: UIButton!) {
+        if arrayOfHeaderCheck[sender.tag] == "Check" {
+            arrayOfHeaderCheck[sender.tag] = "Uncheck"
+            
+            for i in 0..<arrayOfElements.count{
+                let elements = arrayOfElements[i]
+                    let indexPath = IndexPath(row: i , section: sender.tag)
+                    if checkboxIndexPath.contains(indexPath) {
+                        removeSelectedValues(value: elements.value ?? "", title: elements.title ?? "")
+                        checkboxIndexPath.remove(at: checkboxIndexPath.firstIndex(of: indexPath)!)
+                    }
+            }
+        }else{
+            arrayOfHeaderCheck[sender.tag] = "Check"
+            for i in 0..<arrayOfElements.count{
+                    let indexPath = IndexPath(row: i , section: sender.tag)
+                   let elements = arrayOfElements[i]
+                    if checkboxIndexPath.contains(indexPath) {
+                        
+                    }else{
+                        checkboxIndexPath.append(indexPath)
+                        let value = "\(elements.value ?? "")"
+                        arrayOfSeletedValues.append(value)
+                        let title = "\(elements.title ?? "")"
+                        arrayOfSeletedTitles.append(title)
+                    }
+            }
+        }
+        tableView.reloadData()
     }
 }
 extension MultiSelectBubbleView: UITableViewDelegate,UITableViewDataSource{
@@ -177,21 +221,54 @@ extension MultiSelectBubbleView: UITableViewDelegate,UITableViewDataSource{
         return cell
         
     }
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let elements = arrayOfElements[indexPath.row]
+//        if checkboxIndexPath.contains(indexPath) {
+//            removeSelectedValues(value: elements.title!)
+//            checkboxIndexPath.remove(at: checkboxIndexPath.firstIndex(of: indexPath)!)
+//        }else{
+//            checkboxIndexPath.append(indexPath)
+//            let value = "\(elements.title!)"
+//            arrayOfSeletedValues.append(value)
+//        }
+//        tableView.reloadRows(at: [indexPath], with: .none)
+//    }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let elements = arrayOfElements[indexPath.row]
+        
         if checkboxIndexPath.contains(indexPath) {
-            removeSelectedValues(value: elements.title!)
+            removeSelectedValues(value: elements.value ?? "", title: elements.title ?? "")
             checkboxIndexPath.remove(at: checkboxIndexPath.firstIndex(of: indexPath)!)
         }else{
             checkboxIndexPath.append(indexPath)
-            let value = "\(elements.title!)"
+            let value = "\(elements.value ?? "")"
             arrayOfSeletedValues.append(value)
+            let title = "\(elements.title ?? "")"
+            arrayOfSeletedTitles.append(title)
         }
-        tableView.reloadRows(at: [indexPath], with: .none)
+        var zzz = 0
+        
+        for i in 0..<arrayOfElements.count{
+                let elementsCollection = arrayOfElements[i]
+                let collectionTitle = elementsCollection.value
+                for j in 0..<arrayOfSeletedValues.count{
+                    let selectedTitles = arrayOfSeletedValues[j]
+                    if collectionTitle == selectedTitles{
+                        zzz += 1
+                    }
+                }
+            
+            if zzz == arrayOfElements.count{
+                arrayOfHeaderCheck[indexPath.section] = "Check"
+            }else{
+                arrayOfHeaderCheck[indexPath.section] = "Uncheck"
+            }
+        }
+        tableView.reloadData()
     }
-    func removeSelectedValues(value:String){
+    func removeSelectedValues(value:String,title:String){
         arrayOfSeletedValues = arrayOfSeletedValues.filter(){$0 != value}
-        print(arrayOfSeletedValues)
+        arrayOfSeletedTitles = arrayOfSeletedTitles.filter(){$0 != title}
     }
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
            return 50
@@ -227,11 +304,67 @@ extension MultiSelectBubbleView: UITableViewDelegate,UITableViewDataSource{
     }
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
         if arrayOfSeletedValues.count > 0{
-            let joined = arrayOfSeletedValues.joined(separator: ", ")
-            print(joined)
-            self.optionsAction?(joined,joined)
+            self.maskview.isHidden = false
+            let joinedValues = arrayOfSeletedValues.joined(separator: ", ")
+            let joinedTitles = arrayOfSeletedTitles.joined(separator: ", ")
+            self.optionsAction?(joinedTitles,joinedValues)
         }
     }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40.0
+    }
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = .white
+        
+        let checkImg = UIButton(frame: CGRect.zero)
+        checkImg.backgroundColor = .clear
+        checkImg.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(checkImg)
+        if arrayOfHeaderCheck[section] == "Check" {
+            let menuImage = UIImage(named: "check", in: bundle, compatibleWith: nil)
+            let tintedMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
+            checkImg.setImage(tintedMenuImage, for: .normal)
+            checkImg.tintColor = themeColor
+        }else{
+            let menuImage = UIImage(named: "uncheck", in: bundle, compatibleWith: nil)
+            let tintedMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
+            checkImg.setImage(tintedMenuImage, for: .normal)
+            checkImg.tintColor = BubbleViewLeftTint
+        }
+        
+        let titleLbl = UILabel(frame: CGRect.zero)
+        titleLbl.textColor = BubbleViewBotChatTextColor
+        titleLbl.font = UIFont(name: regularCustomFont, size: 15.0)
+        titleLbl.text = "Select All"
+        titleLbl.numberOfLines = 0
+        titleLbl.lineBreakMode = NSLineBreakMode.byWordWrapping
+        titleLbl.isUserInteractionEnabled = true
+        titleLbl.contentMode = UIView.ContentMode.topLeft
+        titleLbl.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(titleLbl)
+        titleLbl.adjustsFontSizeToFitWidth = true
+        titleLbl.backgroundColor = .clear
+        titleLbl.layer.cornerRadius = 6.0
+        titleLbl.clipsToBounds = true
+        titleLbl.sizeToFit()
+        
+        let checkBtn = UIButton(frame: CGRect.zero)
+        checkBtn.backgroundColor = .clear
+        checkBtn.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(checkBtn)
+        checkBtn.addTarget(self, action: #selector(self.SelectAllButtonAction(_:)), for: .touchUpInside)
+        checkBtn.tag = section
+        
+        let views: [String: UIView] = ["checkImg": checkImg, "titleLbl": titleLbl,"checkBtn": checkBtn]
+        headerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[checkImg(20)]", options:[], metrics:nil, views:views))
+        headerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(20)]", options:[], metrics:nil, views:views))
+        headerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-1-[checkImg(20)]-10-[titleLbl]-10-|", options:[], metrics:nil, views:views))
+        headerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[checkBtn]-0-|", options:[], metrics:nil, views:views))
+        headerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[checkBtn]-0-|", options:[], metrics:nil, views:views))
+        return headerView
+    }
+
    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 //       if (cell.responds(to: #selector(getter: UIView.tintColor))) {
 //           let cornerRadius: CGFloat = 5

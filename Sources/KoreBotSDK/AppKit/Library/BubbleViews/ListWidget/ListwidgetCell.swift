@@ -1,19 +1,18 @@
 //
-//  AdvancedListOptionsCell.swift
-//  KoreBotSDKFrameWork
+//  ListwidgetCell.swift
+//  KoreBotSDK
 //
-//  Created by Kartheek Pagidimarri on 21/07/23.
-//  Copyright © 2023 Kartheek.Pagidimarri. All rights reserved.
+//  Created by Pagidimarri Kartheek on 13/05/25.
 //
 
 import UIKit
 
-class AdvancedListOptionsCell: UITableViewCell {
+class ListwidgetCell: UITableViewCell {
 
-    @IBOutlet weak var checkImgV: UIImageView!
+    @IBOutlet weak var arrowBtn: UIButton!
     @IBOutlet weak var titleLbl: UILabel!
-    @IBOutlet weak var checkBtn: UIButton!
-    
+    @IBOutlet weak var imageV: UIImageView!
+    @IBOutlet weak var bgV: UIView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

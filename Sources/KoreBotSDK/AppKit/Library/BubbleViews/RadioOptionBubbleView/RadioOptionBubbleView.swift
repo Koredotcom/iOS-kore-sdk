@@ -252,7 +252,7 @@ extension RadioOptionBubbleView: UITableViewDelegate,UITableViewDataSource{
     }
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let view = UIView()
-            let footerBtn = UIButton(frame: CGRect.zero)
+        let footerBtn = UIButton(frame: CGRect.zero)
         footerBtn.backgroundColor = themeColor
         footerBtn.translatesAutoresizingMaskIntoConstraints = false
         footerBtn.clipsToBounds = true

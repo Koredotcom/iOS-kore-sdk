@@ -221,16 +221,19 @@ public class AdvancedTableListData: NSObject, Decodable {
 public class ButtonsLayout: NSObject, Decodable {
     public var buttonAligment: String?
     public var displayLimit: DisplayLimit?
+    public var style: String?
     
     public enum ListItemKeys: String, CodingKey {
         case buttonAligment = "buttonAligment"
         case displayLimit = "displayLimit"
+        case style = "style"
     }
     // MARK: - init
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: ListItemKeys.self)
         buttonAligment = try? container.decode(String.self, forKey: .buttonAligment)
         displayLimit = try? container.decode(DisplayLimit.self, forKey: .displayLimit)
+        style = try? container.decode(String.self, forKey: .style)
     }
 }
 public class DisplayLimit: NSObject, Decodable {

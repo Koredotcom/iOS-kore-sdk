@@ -20,7 +20,7 @@ class InLineFormBubbleView: BubbleView {
     
     var headingLabel: KREAttributedLabel!
     var textfeilds: Array<Dictionary<String, Any>> = []
-    //var titleLbl: UILabel!
+    
     var textFBgV: UIView!
     var inlineTextField: UITextField!
     var inlineButton: UIButton!
@@ -76,7 +76,7 @@ class InLineFormBubbleView: BubbleView {
         let views: [String: UIView] = ["headingLabel": headingLabel, "tableView": tableView, "maskview": maskview]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[headingLabel]-10-[tableView]-10-|", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[headingLabel]-10-|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[tableView]-10-|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[tableView]-5-|", options: [], metrics: nil, views: views))
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[maskview]|", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[maskview]-0-|", options: [], metrics: nil, views: views))
@@ -222,8 +222,8 @@ extension InLineFormBubbleView: UITableViewDelegate,UITableViewDataSource{
         }else{
             cell.textFeildName.isSecureTextEntry = false
         }
-        cell.textFeildName.layer.borderWidth = 1.0
-        cell.textFeildName.layer.borderColor = BubbleViewRightTint.cgColor
+        cell.textFeildName.layer.borderWidth = 5.0
+        cell.textFeildName.layer.borderColor = UIColor.clear.cgColor
         cell.textFeildName.clipsToBounds = true
         cell.textFeildName.backgroundColor = .white
         cell.textFeildName.delegate = self

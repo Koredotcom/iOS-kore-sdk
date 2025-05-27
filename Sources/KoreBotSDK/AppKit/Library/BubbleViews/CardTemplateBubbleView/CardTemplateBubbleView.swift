@@ -674,6 +674,10 @@ extension CardTemplateBubbleView{
         }
         colorDropDown.bottomOffset = CGPoint(x: Int(200), y: Int(dropDownPosition - 30))
         colorDropDown.dataSource = titles as! [String]
+        colorDropDown.reloadInputViews()
+        colorDropDown.reloadAllComponents()
+        colorDropDown.reloadAllData()
+        
         //colorDropDown.selectRow(0)
         // Action triggered on selection
         colorDropDown.selectionAction = { (index, item) in

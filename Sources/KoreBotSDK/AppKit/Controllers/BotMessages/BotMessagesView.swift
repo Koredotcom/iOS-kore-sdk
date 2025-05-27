@@ -435,15 +435,27 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 bubbleView.optionsAction = {[weak self] (text, payload) in
                     self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
+                let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                if firstIndexPath.isEqual(indexPath) {
+                    bubbleView.maskview.isHidden = true
+                }else{
+                    bubbleView.maskview.isHidden = false
+                }
                 cell.bubbleView.drawBorder = true
                 break
             case .list_widget:
-                let bubbleView: ListWidgetBubbleView = cell.bubbleView as! ListWidgetBubbleView
+                let bubbleView: ListWidgetNewBubbleView = cell.bubbleView as! ListWidgetNewBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
                     self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                if firstIndexPath.isEqual(indexPath) {
+                    bubbleView.maskview.isHidden = true
+                }else{
+                    bubbleView.maskview.isHidden = false
                 }
                 cell.bubbleView.drawBorder = true
                 break
@@ -470,6 +482,16 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 }
                 break
             case .dropdown_template:
+                let bubbleView: DropDownBubbleView = cell.bubbleView as! DropDownBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
+                }
+                let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                if firstIndexPath.isEqual(indexPath) {
+                    bubbleView.maskview.isHidden = true
+                }else{
+                    bubbleView.maskview.isHidden = false
+                }
                 cell.bubbleView.drawBorder = true
                 break
             case .custom_table:

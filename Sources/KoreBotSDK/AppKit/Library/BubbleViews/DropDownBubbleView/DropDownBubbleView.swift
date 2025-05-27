@@ -30,7 +30,8 @@ class DropDownBubbleView: BubbleView {
     
     var arrayOfComponents = [ComponentElements]()
     var arrayOfElements = NSMutableArray()
-    
+    var seletedValue = ""
+    public var maskview: UIView!
     override func prepareForReuse() {
         inlineTextField.text = ""
     }
@@ -54,19 +55,42 @@ class DropDownBubbleView: BubbleView {
         
         
         self.textFBgV = UIView(frame: CGRect.zero)
-        self.textFBgV.layer.cornerRadius = 2.0
+        self.textFBgV.layer.cornerRadius = 5.0
         self.textFBgV.layer.borderWidth = 1.0
-        self.textFBgV.layer.borderColor = UIColor.gray.cgColor
+        self.textFBgV.layer.borderColor = UIColor.clear.cgColor
         self.textFBgV.clipsToBounds = true
         self.textFBgV.backgroundColor = .white
         self.textFBgV.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.textFBgV)
-    
         
-        let views: [String: UIView] = ["headingLabel": headingLabel, "textFBgV": textFBgV]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[headingLabel]-5-[textFBgV(40)]-10-|", options: [], metrics: nil, views: views))
+        let footerBtn = UIButton(frame: CGRect.zero)
+        footerBtn.backgroundColor = themeColor
+        footerBtn.translatesAutoresizingMaskIntoConstraints = false
+        footerBtn.clipsToBounds = true
+        footerBtn.layer.cornerRadius = 5
+        footerBtn.layer.borderColor = themeColor.cgColor
+        footerBtn.layer.borderWidth = 1
+        footerBtn.setTitleColor(.white, for: .normal)
+        footerBtn.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
+        footerBtn.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0)
+        self.addSubview(footerBtn)
+        footerBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
+        footerBtn.addTarget(self, action: #selector(self.footerBtnAction(_:)), for: .touchUpInside)
+        footerBtn.setTitle("Submit", for: .normal)
+    
+        self.maskview = UIView(frame:.zero)
+        self.maskview.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.maskview)
+        self.maskview.isHidden = true
+        self.maskview.backgroundColor = .clear
+        
+        let views: [String: UIView] = ["headingLabel": headingLabel, "textFBgV": textFBgV, "footerBtn": footerBtn, "maskview": maskview]
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[headingLabel]-5-[textFBgV(40)]-10-[footerBtn(35)]-15-|", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[headingLabel]-15-|", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[textFBgV]-15-|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[footerBtn]-15-|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[maskview]|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[maskview]-0-|", options: [], metrics: nil, views: views))
         
         self.inlineTextField = UITextField(frame: CGRect.zero)
         self.inlineTextField.borderStyle = .none
@@ -101,6 +125,12 @@ class DropDownBubbleView: BubbleView {
         self.textFBgV.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[inlineButton]-0-|", options: [], metrics: nil, views: subviews))
         
     }
+    @objc fileprivate func footerBtnAction(_ sender: AnyObject!) {
+        if seletedValue != ""{
+            self.optionsAction?(seletedValue,seletedValue)
+            self.maskview.isHidden = false
+        }
+    }
     
     // MARK: populate components
     override func populateComponents() {
@@ -118,7 +148,13 @@ class DropDownBubbleView: BubbleView {
                 if(headerText.count > InLineFormBubbleView.headerTextLimit){
                     headerText = String(headerText[..<headerText.index(headerText.startIndex, offsetBy: InLineFormBubbleView.headerTextLimit)]) + "..."
                 }
-                self.headingLabel.setHTMLString(headerText, withWidth: BubbleViewMaxWidth - 20)
+                let labelTxt = jsonObject["label"] != nil ? jsonObject["label"] as! String : ""
+                if labelTxt == ""{
+                    self.headingLabel.setHTMLString("*\(headerText)*", withWidth: BubbleViewMaxWidth - 20)
+                }else{
+                    self.headingLabel.setHTMLString("*\(headerText)* \n\n\(labelTxt)", withWidth: BubbleViewMaxWidth - 20)
+                }
+                
                 
                 let jsonDecoder = JSONDecoder()
                 guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObject as Any , options: .prettyPrinted),
@@ -139,7 +175,8 @@ class DropDownBubbleView: BubbleView {
     override var intrinsicContentSize : CGSize {
         let limitingSize: CGSize  = CGSize(width: BubbleViewMaxWidth - 20, height: CGFloat.greatestFiniteMagnitude)
         let headingLabelSize: CGSize = self.headingLabel.sizeThatFits(limitingSize)
-        return CGSize(width: BubbleViewMaxWidth-60, height: headingLabelSize.height + 80)
+        let footerBtn = 50.0
+        return CGSize(width: BubbleViewMaxWidth-60, height: headingLabelSize.height + 80 + footerBtn)
     }
     
     @objc func tapsOnInlineFormBtn(_ sender:UIButton) {
@@ -154,14 +191,14 @@ extension DropDownBubbleView {
         dropDowns.forEach { $0.direction = .any }
         
         dropDown.backgroundColor = UIColor(white: 1, alpha: 1)
-        dropDown.selectionBackgroundColor = .clear//UIColor(red: 0.6494, green: 0.8155, blue: 1.0, alpha: 0.2)
-        dropDown.separatorColor = UIColor(white: 0.7, alpha: 0.8)
+        dropDown.selectionBackgroundColor = BubbleViewLeftTint
+        dropDown.separatorColor = .white//UIColor(white: 0.7, alpha: 0.8)
         dropDown.cornerRadius = 10
         dropDown.shadowColor = UIColor(white: 0.6, alpha: 1)
         dropDown.shadowOpacity = 0.9
         dropDown.shadowRadius = 25
         dropDown.animationduration = 0.25
-        dropDown.textColor = .darkGray
+        dropDown.textColor = BubbleViewBotChatTextColor
         setupColorDropDown()
     }
     // MARK: Setup DropDown
@@ -171,8 +208,9 @@ extension DropDownBubbleView {
         dropDown.dataSource = arrayOfElements as! [String]
         // Action triggered on selection
         dropDown.selectionAction = { [weak self] (index, item) in
-            self!.inlineTextField.text = item
-            NotificationCenter.default.post(name: Notification.Name(dropDownTemplateNotification), object: item)
+            self?.inlineTextField.text = item
+            self?.seletedValue = item
+            //NotificationCenter.default.post(name: Notification.Name(dropDownTemplateNotification), object: item)
         }
         
     }

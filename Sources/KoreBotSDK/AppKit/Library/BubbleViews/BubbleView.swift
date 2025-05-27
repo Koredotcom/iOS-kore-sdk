@@ -139,7 +139,7 @@ open class BubbleView: UIView {
                 bubbleView = MultiSelectBubbleView()
                 break
             case .list_widget:
-                bubbleView = ListWidgetBubbleView()
+                bubbleView = ListWidgetNewBubbleView()//ListWidgetBubbleView()
                 break
             case .feedbackTemplate:
                 bubbleView = FeedbackBubbleView()
