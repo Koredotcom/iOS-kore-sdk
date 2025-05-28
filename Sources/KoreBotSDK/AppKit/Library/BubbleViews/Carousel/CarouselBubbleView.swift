@@ -33,7 +33,7 @@ class CarouselBubbleView: BubbleView {
         self.addSubview(self.carouselView)
         
         let views: [String: UIView] = ["carouselView": carouselView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[carouselView]|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-3-[carouselView]|", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[carouselView]|", options: [], metrics: nil, views: views))
         
         self.carouselView.optionsAction = { [weak self] (text, payload) in
@@ -101,7 +101,7 @@ class CarouselBubbleView: BubbleView {
     }
     
     override var intrinsicContentSize : CGSize {
-        return CGSize(width: 0.0, height: self.carouselView.maxCardHeight)
+        return CGSize(width: 0.0, height: self.carouselView.maxCardHeight + 3.0)
     }
     
     override func prepareForReuse() {

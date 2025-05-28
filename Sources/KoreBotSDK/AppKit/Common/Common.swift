@@ -327,6 +327,20 @@ open class Utilities: NSObject {
         
         return time
     }
+    public static func isValidJsonString(check jsonString:String) -> Bool{
+        if let jsonDataToVerify = jsonString.data(using: .utf8)
+        {
+            do {
+                _ = try JSONSerialization.jsonObject(with: jsonDataToVerify)
+                //print("JSON is valid.")
+                return true
+            } catch {
+                //print("Error deserializing JSON: \(error.localizedDescription)")
+                return false
+            }
+        }
+        return false
+    }
     
     public static func getComponentTypes(_ templateType: String,_ tabledesign:String) -> ComponentType {
         if (templateType == "quick_replies") {

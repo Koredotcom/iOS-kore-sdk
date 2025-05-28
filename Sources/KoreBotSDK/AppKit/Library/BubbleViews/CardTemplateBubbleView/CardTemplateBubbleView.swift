@@ -327,7 +327,7 @@ extension CardTemplateBubbleView: UITableViewDelegate, UITableViewDataSource{
         let headerDetails = elements.cardHeading
         let  headerStyles = headerDetails?.headerStyles
         let bgColor = headerStyles?.background_color ?? "#0D6EFD"
-        //let textColor = headerStyles?.colorr ?? "#000000"
+        let textColor = headerStyles?.colorr ?? "#000000"
         let fontWeight = headerStyles?.font_weight ?? "Medium"
         if headerDetails?.desc == nil{
             let headerView = UIView()
@@ -364,7 +364,7 @@ extension CardTemplateBubbleView: UITableViewDelegate, UITableViewDataSource{
                     subView.roundCorners([.layerMaxXMinYCorner, .layerMinXMinYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.0)
                 }
             }
-            headerLabel.textColor = BubbleViewBotChatTextColor
+            headerLabel.textColor = UIColor(hexString: textColor)
             subView.backgroundColor  = UIColor(hexString: bgColor)
             
             

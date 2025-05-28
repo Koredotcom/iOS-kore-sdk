@@ -81,9 +81,9 @@ class ChartBubbleView: BubbleView, AxisValueFormatter, ValueFormatter {
         cardView.backgroundColor =  UIColor.white
         
         let cardViews: [String: UIView] = ["cardView": cardView]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[cardView]-5-|", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-1-[cardView]-1-|", options: [], metrics: nil, views: cardViews))
     
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-1-[cardView]-1-|", options: [], metrics: nil, views: cardViews))
     
     }
     

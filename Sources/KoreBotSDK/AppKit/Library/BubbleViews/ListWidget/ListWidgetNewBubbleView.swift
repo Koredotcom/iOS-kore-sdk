@@ -114,7 +114,7 @@ class ListWidgetNewBubbleView: BubbleView {
         self.addSubview(self.cardView)
         cardView.layer.cornerRadius = 4.0
         cardView.layer.borderWidth = 1.0
-        cardView.layer.borderColor = UIColor.init(hexString: templateBoarderColor).cgColor
+        cardView.layer.borderColor = BubbleViewLeftTint.cgColor
         cardView.clipsToBounds = true
         cardView.backgroundColor =  UIColor.white
         let cardViews: [String: UIView] = ["cardView": cardView]

@@ -29,9 +29,10 @@ class ListBubbleView: BubbleView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[optionsView]|", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[optionsView]|", options: [], metrics: nil, views: views))
         
-        optionsView.layer.cornerRadius = 0.0
-        optionsView.layer.borderWidth = 1.0
-        optionsView.layer.borderColor = BubbleViewLeftTint.cgColor
+        self.layer.cornerRadius = 0.0
+        self.layer.borderWidth = 1.0
+        self.clipsToBounds = true
+        self.layer.borderColor = BubbleViewLeftTint.cgColor
         
         // property blocks
         self.optionsView.optionsButtonAction = { [weak self] (text, payload) in

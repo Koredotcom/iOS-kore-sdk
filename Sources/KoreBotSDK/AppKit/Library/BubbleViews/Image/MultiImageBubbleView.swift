@@ -69,6 +69,16 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
     var IMAGE_COMPONENT_HEIGHT: CGFloat = 80.0
     var MAX_CELLS: Int = 5
     
+    override func applyBubbleMask() {
+        
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition! {
+        didSet {
+            //self.backgroundColor = .clear
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -85,6 +95,7 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
         downLoadBtn.clipsToBounds = true
        
         self.layer.borderColor = BubbleViewLeftTint.cgColor
+        self.layer.cornerRadius = 5.0
         self.layer.borderWidth = 1.0
         self.clipsToBounds = true
     }
@@ -123,7 +134,7 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
                 self.downloadBtnHeightConstraint.constant = 0.0
                 return CGSize(width: BubbleViewMaxWidth, height: 200)
             }
-            return CGSize(width: BubbleViewMaxWidth, height: 255)
+            return CGSize(width: BubbleViewMaxWidth, height: 300)
         }
     }
     

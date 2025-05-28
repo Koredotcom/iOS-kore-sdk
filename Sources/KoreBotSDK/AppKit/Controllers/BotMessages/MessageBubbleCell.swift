@@ -36,7 +36,8 @@ class MessageBubbleCell : UITableViewCell {
         dateLabel.isHidden = true
         return dateLabel
     }()
-    
+    var dateLabelHeightConstraint: NSLayoutConstraint!
+    var isHideBotIcon = true
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.initialize()
@@ -140,7 +141,7 @@ class MessageBubbleCell : UITableViewCell {
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[userImageView(\(userImageViewWidth))]-8-|", options:[], metrics:nil, views:views))
         
         var senderOrUserimageViewBottomVal = 4.0
-        
+        var dateLblHeight = 21.0
         if let timestamp = brandingBodyDic.time_stamp{
             if let timeStampShow = timestamp.show, timeStampShow == true{
                 dateLabel.isHidden = false
@@ -148,17 +149,21 @@ class MessageBubbleCell : UITableViewCell {
                 dateLabel.textColor = dateLblTextColor
                 
                 if let position = timestamp.position, position == "top"{
+                    dateLblHeight = 21.0
                     self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[dateLabel(21)]-0-[bubbleContainerView]", options:[], metrics:nil, views:views))
                     
                 }else{
+                    dateLblHeight = 21.0
                     self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[bubbleContainerView]-0-[dateLabel(21)]|", options:[], metrics:nil, views:views))
                     senderOrUserimageViewBottomVal = 22.0
                 }
                 
             }else{
+                dateLblHeight = 0.0
                 self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[dateLabel(0)]-0-[bubbleContainerView]", options:[], metrics:nil, views:views))
             }
         }else{
+            dateLblHeight = 0.0
             self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[dateLabel(0)]-0-[bubbleContainerView]", options:[], metrics:nil, views:views))
         }
         
@@ -183,7 +188,9 @@ class MessageBubbleCell : UITableViewCell {
         self.dateLabelTrailingConstraint = NSLayoutConstraint(item:self.contentView as Any, attribute:.trailing, relatedBy:.equal, toItem:self.dateLabel, attribute:.trailing, multiplier:1.0, constant:(bubbleTrailingConstant + 3.0)) //change here
         self.dateLabelTrailingConstraint.priority = UILayoutPriority.defaultHigh
         
-        self.contentView.addConstraints([self.bubbleTrailingConstraint, self.bubbleLeadingConstraint, self.bubbleBottomConstraint, self.dateLabelLeadingConstraint, self.dateLabelTrailingConstraint])
+        self.dateLabelHeightConstraint =  NSLayoutConstraint.init(item: self.dateLabel as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: dateLblHeight)
+        
+        self.contentView.addConstraints([self.bubbleTrailingConstraint, self.bubbleLeadingConstraint, self.bubbleBottomConstraint, self.dateLabelLeadingConstraint, self.dateLabelTrailingConstraint, self.dateLabelHeightConstraint])
     }
 
     func bubbleType() -> ComponentType {
@@ -295,6 +302,7 @@ class MessageBubbleCell : UITableViewCell {
         self.bubbleView = nil
         self.dateLabelTrailingConstraint = nil
         self.dateLabelLeadingConstraint = nil
+        self.dateLabelHeightConstraint = nil
     }
 }
 
@@ -345,7 +353,21 @@ class ImageBubbleCell : MessageBubbleCell {
     }
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            
+            if isHideBotIcon{
+                self.bubbleLeadingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+                
+                self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            }else{
+                
+            }
+        }
+    }
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        if isHideBotIcon{
+            self.senderImageView.isHidden = true
         }
     }
 }
@@ -357,12 +379,24 @@ class AudioBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            
+            if isHideBotIcon{
+                self.bubbleLeadingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+                
+                self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            }else{
+                
+            }
+        }
+    }
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        if isHideBotIcon{
+            self.senderImageView.isHidden = true
         }
     }
 }
-
-
 
 class OptionsBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
@@ -385,8 +419,22 @@ class ListBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
-            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            if isHideBotIcon{
+                self.bubbleLeadingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+                
+                self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            }else{
+                self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            }
+        }
+    }
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        if isHideBotIcon{
+            self.senderImageView.isHidden = true
         }
     }
 }
@@ -397,32 +445,44 @@ class CarouselBubbleCell : MessageBubbleCell {
     }
     
     override var tailPosition: BubbleMaskTailPosition {
-        didSet {
-            self.bubbleLeadingConstraint.constant = 0
-            self.bubbleTrailingConstraint.constant = 0
-            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            didSet {
+                self.bubbleLeadingConstraint.constant = 0
+                self.bubbleTrailingConstraint.constant = 0
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+                self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            }
+            
         }
-    }
+        override func configureWithComponents(_ components: Array<KREComponent>) {
+            super.configureWithComponents(components)
+            self.senderImageView.isHidden = true
+        }
 }
 
 class PiechartBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .chart
     }
-    
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleLeadingConstraint.constant = 0
-            self.bubbleTrailingConstraint.constant = 0
-            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
-            
+            if isHideBotIcon{
+                self.bubbleLeadingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+                
+                self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            }else{
+                self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            }
         }
     }
     
     override func configureWithComponents(_ components: Array<KREComponent>) {
         super.configureWithComponents(components)
-        self.senderImageView.isHidden = true
+        if isHideBotIcon{
+            self.senderImageView.isHidden = true
+        }
     }
 }
 
@@ -456,6 +516,9 @@ class MiniTableBubbleCell : MessageBubbleCell {
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
             self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            if defaultDateSpacing == 23.0{
+                 self.dateLabelLeadingConstraint.constant = defaultDateSpacing + 22.0
+            }
         }
     }
     
@@ -475,6 +538,9 @@ class MiniTableHorizontalBubbleCell : MessageBubbleCell {
             self.bubbleTrailingConstraint.constant = 0
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
             self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            if defaultDateSpacing == 23.0{
+                self.dateLabelLeadingConstraint.constant = defaultDateSpacing + 22.0
+            }
         }
     }
     
@@ -509,6 +575,9 @@ class ResponsiveTableBubbleCell : MessageBubbleCell {
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
             
             self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            if defaultDateSpacing == 23.0{
+                           self.dateLabelLeadingConstraint.constant = defaultDateSpacing + 22.0
+            }
         }
     }
     
@@ -526,36 +595,48 @@ class NewListBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleLeadingConstraint.constant = defaultSpacing
-            self.bubbleTrailingConstraint.constant = defaultSpacing
-            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            
-            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            if isHideBotIcon{
+                self.bubbleLeadingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+                
+                self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            }else{
+                self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            }
         }
     }
     override func configureWithComponents(_ components: Array<KREComponent>) {
         super.configureWithComponents(components)
-        self.senderImageView.isHidden = true
+        if isHideBotIcon{
+            self.senderImageView.isHidden = true
+        }
     }
 }
 class TableListBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .tableList
     }
-    
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleLeadingConstraint.constant = defaultSpacing
-            self.bubbleTrailingConstraint.constant = defaultSpacing
-            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            if isHideBotIcon{
+                self.bubbleLeadingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+                self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            }else{
+                self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            }
             
-            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
         }
     }
-    
     override func configureWithComponents(_ components: Array<KREComponent>) {
         super.configureWithComponents(components)
-        self.senderImageView.isHidden = true
+        if isHideBotIcon{
+            self.senderImageView.isHidden = true
+        }
     }
 }
 
@@ -608,31 +689,26 @@ class MultiSelectBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .multiSelect
     }
-    
-//    override var tailPosition: BubbleMaskTailPosition {
-//        didSet {
-//            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
-//            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-//            
-////            self.bubbleTrailingConstraint.constant = 10
-////            self.bubbleLeadingConstraint.constant = 10
-////            self.senderImageView.isHidden = true
-////            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-//        }
-//    }
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleLeadingConstraint.constant = defaultSpacing
-            self.bubbleTrailingConstraint.constant = defaultSpacing
-            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            
-            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            if isHideBotIcon{
+                self.bubbleLeadingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+                
+                self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            }else{
+                self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            }
         }
     }
     
     override func configureWithComponents(_ components: Array<KREComponent>) {
         super.configureWithComponents(components)
-        self.senderImageView.isHidden = true
+        if isHideBotIcon{
+            self.senderImageView.isHidden = true
+        }
     }
 }
 
@@ -643,8 +719,22 @@ class ListWidgetBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
-            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            if isHideBotIcon{
+                self.bubbleLeadingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+                
+                self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            }else{
+                self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            }
+        }
+    }
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        if isHideBotIcon{
+            self.senderImageView.isHidden = true
         }
     }
 }
@@ -655,9 +745,22 @@ class FeedbackBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
-            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-           
+            if isHideBotIcon{
+                self.bubbleLeadingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+                
+                self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            }else{
+                self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            }
+        }
+    }
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        if isHideBotIcon{
+            self.senderImageView.isHidden = true
         }
     }
 }
@@ -669,9 +772,22 @@ class InLineFormCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
-            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            
+            if isHideBotIcon{
+                self.bubbleLeadingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+                
+                self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            }else{
+                self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            }
+        }
+    }
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        if isHideBotIcon{
+            self.senderImageView.isHidden = true
         }
     }
 }
@@ -683,9 +799,23 @@ class DropDownell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
-            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            if isHideBotIcon{
+                self.bubbleLeadingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+                
+                self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            }else{
+                self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            }
             
+        }
+    }
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        if isHideBotIcon{
+            self.senderImageView.isHidden = true
         }
     }
 }
@@ -717,28 +847,47 @@ class AdvancedListTemplateCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleLeadingConstraint.constant = defaultSpacing
-            self.bubbleTrailingConstraint.constant = defaultSpacing
-            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            
-            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            if isHideBotIcon{
+                self.bubbleLeadingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+                self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            }else{
+                self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            }
         }
     }
     
     override func configureWithComponents(_ components: Array<KREComponent>) {
         super.configureWithComponents(components)
-        self.senderImageView.isHidden = true
+        if isHideBotIcon{
+            self.senderImageView.isHidden = true
+        }
     }
 }
 class CardTemplateBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .cardTemplate
     }
-    
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
-            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            if isHideBotIcon{
+                self.bubbleLeadingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+                
+                self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            }else{
+                self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            }
+        }
+    }
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        if isHideBotIcon{
+            self.senderImageView.isHidden = true
         }
     }
 }
@@ -805,26 +954,26 @@ class RadioOptionTemplateCell : MessageBubbleCell {
         return .radioOptionTemplate
     }
     
-//    override var tailPosition: BubbleMaskTailPosition {
-//        didSet {
-//            self.bubbleLeadingConstraint.constant = bubbleLeadingConstant
-//            self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
-//            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-//        }
-//    }
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleLeadingConstraint.constant = defaultSpacing
-            self.bubbleTrailingConstraint.constant = defaultSpacing
-            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
-            
-            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            if isHideBotIcon{
+                self.bubbleLeadingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.constant = defaultSpacing
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+                
+                self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            }else{
+                self.bubbleTrailingConstraint.constant = bubbleTrailingConstant
+                self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            }
         }
     }
     
     override func configureWithComponents(_ components: Array<KREComponent>) {
         super.configureWithComponents(components)
-        self.senderImageView.isHidden = true
+        if isHideBotIcon{
+            self.senderImageView.isHidden = true
+        }
     }
 }
 

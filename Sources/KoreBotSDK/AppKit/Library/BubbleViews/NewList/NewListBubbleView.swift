@@ -87,7 +87,7 @@ class NewListBubbleView: BubbleView {
         self.maskview.backgroundColor = .clear
 
         let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView, "maskview": maskview]
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
         
@@ -194,7 +194,7 @@ class NewListBubbleView: BubbleView {
         }else{
              moreButtonHeight = 0.0
         }
-        return CGSize(width: 0.0, height: textSize.height+30+finalHeight+moreButtonHeight)
+        return CGSize(width: 0.0, height: textSize.height+25+finalHeight+moreButtonHeight)
     }
     
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
