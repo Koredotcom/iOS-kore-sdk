@@ -23,7 +23,20 @@ class ListViewDetailsViewController: UIViewController {
     var arrayOfElements = [ComponentElements]()
     var jsonData : Componentss?
     var viewDelegate: NewListViewDelegate?
-    
+    @IBOutlet weak var segmentedV: UISegmentedControl!
+    @IBOutlet weak var segmentedVHeightConstraint: NSLayoutConstraint!
+    @IBAction func segmentedVAction(_ sender: Any) {
+        if segmentedV.selectedSegmentIndex == 0{
+            if let moreData = jsonData?.moreData{
+                arrayOfElements = moreData.tab1 ?? []
+            }
+        }else if segmentedV.selectedSegmentIndex == 1{
+            if let moreData = jsonData?.moreData{
+                arrayOfElements = moreData.tab2 ?? []
+            }
+        }
+        tableview.reloadData()
+    }
     // MARK: init
     init(dataString: String) {
         super.init(nibName: "ListViewDetailsViewController", bundle: .sdkModule)
@@ -42,6 +55,17 @@ class ListViewDetailsViewController: UIViewController {
         if #available(iOS 11.0, *) {
             self.subView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 10.0, borderColor: UIColor.clear, borderWidth: 1.5)
         }
+        if #available(iOS 13.0, *) {
+            segmentedV.selectedSegmentTintColor = BubbleViewRightTint
+        }
+        segmentedV.backgroundColor = .clear
+        
+        // selected option color
+        segmentedV.setTitleTextAttributes([.foregroundColor: BubbleViewUserChatTextColor], for: .selected)
+
+        // color of other options
+        segmentedV.setTitleTextAttributes([.foregroundColor: BubbleViewBotChatTextColor], for: .normal)
+        
         getData()
         self.tableview.tableFooterView = UIView(frame:.zero)
         self.tableview.register(Bundle.xib(named: listCellIdentifier), forCellReuseIdentifier: listCellIdentifier)
@@ -53,9 +77,16 @@ class ListViewDetailsViewController: UIViewController {
                 let allItems = try? jsonDecoder.decode(Componentss.self, from: jsonData1) else {
                         return
                 }
-                jsonData = allItems
+            jsonData = allItems
             arrayOfElements = jsonData?.elements ?? []
-            headingLebel.text = jsonData?.text ?? ""
+            headingLebel.text = jsonData?.heading ?? jsonData?.text ?? ""
+            segmentedVHeightConstraint.constant = 0.0
+            segmentedV.isHidden = true
+           if let moreData = jsonData?.moreData{
+               segmentedV.isHidden = false
+               segmentedVHeightConstraint.constant = 30.0
+               arrayOfElements = moreData.tab1 ?? []
+           }
     }
     /*
     // MARK: - Navigation

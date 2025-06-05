@@ -273,37 +273,49 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     func showCloseOrMinimiseAlert(){
         let alertController = UIAlertController(title: "", message: closeOrMinimizeMsg, preferredStyle:.alert)
         alertController.addAction(UIAlertAction(title: closeBtnTitle, style: .default)
-                  { action -> Void in
-                        isShowWelcomeMsg = true
-                        self.unsubscribeNotifications()
-                        let dic = ["event_code": "BotClosed", "event_message": "Bot closed by the user"]
-                        if self.closeAndMinimizeEvent != nil{
-                                self.closeAndMinimizeEvent(dic)
-                        }
-                       if isAgentConnect{
-                           self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
-                       }else{
-                           self.botClient.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
-                       }
-                        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
-                                isAgentConnect = false
-                                self.botClosed()
-                        }
-                  })
+                                  { action -> Void in
+            isShowWelcomeMsg = true
+            self.unsubscribeNotifications()
+            let dic = ["event_code": "BotClosed", "event_message": "Bot closed by the user"]
+            if self.closeAndMinimizeEvent != nil{
+                self.closeAndMinimizeEvent(dic)
+            }
+            if isAgentConnect{
+                self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
+            }else{
+                self.botClient.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
+            }
+            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                isAgentConnect = false
+                self.botClosed()
+            }
+        })
         alertController.addAction(UIAlertAction(title: minimizeBtnTitle, style: .default)
-                  { action -> Void in
-                        
-                        let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
-                        if self.closeAndMinimizeEvent != nil{
-                            self.closeAndMinimizeEvent(dic)
-                        }
-                        self.botClient.sendEventToAgentChat(eventName: minimize_Button_EventName,messageId: "")
-                        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
-                            isAgentConnect = false
-                            self.botClosed()
-                        }
-                  })
-        self.present(alertController, animated: true, completion: nil)
+                                  { action -> Void in
+            
+            let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
+            if self.closeAndMinimizeEvent != nil{
+                self.closeAndMinimizeEvent(dic)
+            }
+            self.botClient.sendEventToAgentChat(eventName: minimize_Button_EventName,messageId: "")
+            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                isAgentConnect = false
+                self.botClosed()
+            }
+        })
+        //self.present(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true) {
+            // After alert is presented, add gesture recognizer to superview
+            if let alertSuperview = alertController.view.superview?.superview {
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissAlertOnTapOutside))
+                alertSuperview.isUserInteractionEnabled = true
+                alertSuperview.addGestureRecognizer(tapGesture)
+            }
+        }
+    }
+    
+    @objc func dismissAlertOnTapOutside() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     //MARK: Menu Button Action

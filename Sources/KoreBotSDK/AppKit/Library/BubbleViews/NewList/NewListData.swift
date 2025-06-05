@@ -258,8 +258,8 @@ public class ComponentItemAction: NSObject, Decodable {
 // MARK: - MoreData
 public class ComponentMoreData: NSObject, Decodable {
     // MARK: - properties
-    public var tab1: [Tabs]?
-    public var tab2: [Tabs]?
+    public var tab1: [ComponentElements]?
+    public var tab2: [ComponentElements]?
 
     enum ColorCodeKeys: String, CodingKey {
         case tab1 = "Tab1"
@@ -273,8 +273,8 @@ public class ComponentMoreData: NSObject, Decodable {
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: ColorCodeKeys.self)
-        tab1 = try? container.decode([Tabs].self, forKey: .tab1)
-        tab2 = try? container.decode([Tabs].self, forKey: .tab2)
+        tab1 = try? container.decode([ComponentElements].self, forKey: .tab1)
+        tab2 = try? container.decode([ComponentElements].self, forKey: .tab2)
     }
 }
 // MARK: - Tabs
