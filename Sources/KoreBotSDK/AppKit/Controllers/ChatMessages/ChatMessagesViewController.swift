@@ -303,15 +303,15 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                 self.botClosed()
             }
         })
-        //self.present(alertController, animated: true, completion: nil)
-        self.present(alertController, animated: true) {
-            // After alert is presented, add gesture recognizer to superview
-            if let alertSuperview = alertController.view.superview?.superview {
-                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissAlertOnTapOutside))
-                alertSuperview.isUserInteractionEnabled = true
-                alertSuperview.addGestureRecognizer(tapGesture)
-            }
-        }
+        self.present(alertController, animated: true, completion: nil)
+//        self.present(alertController, animated: true) {
+//            // After alert is presented, add gesture recognizer to superview
+//            if let alertSuperview = alertController.view.superview?.superview {
+//                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissAlertOnTapOutside))
+//                alertSuperview.isUserInteractionEnabled = true
+//                alertSuperview.addGestureRecognizer(tapGesture)
+//            }
+//        }
     }
     
     @objc func dismissAlertOnTapOutside() {
@@ -951,7 +951,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(resetPinTemplateAction), name: NSNotification.Name(rawValue: resetpinTemplateNotification), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(aAdvancedMultiSelectAction), name: NSNotification.Name(rawValue: advancedMultiSelectTemplateNotification), object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(showActivityViewController), name: NSNotification.Name(rawValue: activityViewControllerNotification), object: nil)
         
     }
     
@@ -983,7 +983,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: resetpinTemplateNotification), object: nil)
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: advancedMultiSelectTemplateNotification), object: nil)
-        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: activityViewControllerNotification), object: nil)
 
     }
     
@@ -1552,7 +1552,10 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     func keyBoardShow(){
         self.composeView.becomeFirstResponder()
     }
-    
+    func updateMessage(messageId: String, componentDesc:String) {
+        let dataStoreManager = DataStoreManager.sharedManager
+        dataStoreManager.updateComponentDescription(messageId: messageId, newDescription: componentDesc)
+    }
     func verifyUrl(urlString: String?) -> Bool {
         if let urlString = urlString {
             if let url = URL(string: urlString) {
@@ -1951,6 +1954,23 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     @objc func dropDownTemplateActtion(notification:Notification){
          let dataString: String = notification.object as! String
         composeView.setText(dataString)
+    }
+    
+    @objc func showActivityViewController(notification:Notification){
+        let dataString: String = notification.object as? String ?? ""
+        if dataString == "Copy"{
+            self.toastMessage("Copied")
+        }else{
+            let activityItem: [Any] = [downloadFileURL as? Any, downloadImage as? Any]
+            let activityViewController = UIActivityViewController(activityItems: activityItem, applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+            
+            // exclude some activity types from the list (optional)
+            activityViewController.excludedActivityTypes = [ UIActivity.ActivityType.airDrop, UIActivity.ActivityType.postToFacebook ]
+            
+            // present the view controller
+            self.present(activityViewController, animated: true, completion: nil)
+        }
     }
     
     // MARK: -

@@ -22,6 +22,7 @@ protocol BotMessagesViewDelegate {
     func populateFeedbackSliderView(with message: KREMessage?)
     func populateAdvancedMultiSelectSliderView(with message: KREMessage?)
     func tableviewScrollDidEnd()
+    func updateMessage(messageId: String, componentDesc:String)
 }
 
 class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFetchedResultsControllerDelegate {
@@ -289,7 +290,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             bubbeView?.linkAction = {[weak self] (text) in
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
             }
-
+            bubbeView?.updateMessage = {[weak self] (messageId, componentDesc) in
+                self?.viewDelegate?.updateMessage(messageId: messageId ?? "", componentDesc: componentDesc ?? "")
+            }
         }else{
             switch (cell.bubbleView.bubbleType!) {
             case .text:
@@ -435,6 +438,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 bubbleView.optionsAction = {[weak self] (text, payload) in
                     self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
+                bubbleView.updateMessage = {[weak self] (messageId, componentDesc) in
+                    self?.viewDelegate?.updateMessage(messageId: messageId ?? "", componentDesc: componentDesc ?? "")
+                }
                 let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
                 if firstIndexPath.isEqual(indexPath) {
                     bubbleView.maskview.isHidden = true
@@ -464,6 +470,15 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 bubbleView.optionsAction = {[weak self] (text, payload) in
                     self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
+                bubbleView.updateMessage = {[weak self] (messageId, componentDesc) in
+                    self?.viewDelegate?.updateMessage(messageId: messageId ?? "", componentDesc: componentDesc ?? "")
+                }
+                let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                if firstIndexPath.isEqual(indexPath) {
+                    bubbleView.maskview.isHidden = true
+                }else{
+                    bubbleView.maskview.isHidden = false
+                }
                 isFeedbackView = true
                 cell.bubbleView.drawBorder = true
                 break
@@ -472,6 +487,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 
                 bubbleView.optionsAction = {[weak self] (text, payload) in
                     self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
+                }
+                bubbleView.updateMessage = {[weak self] (messageId, componentDesc) in
+                    self?.viewDelegate?.updateMessage(messageId: messageId ?? "", componentDesc: componentDesc ?? "")
                 }
                 cell.bubbleView.drawBorder = true
                 let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
@@ -485,6 +503,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 let bubbleView: DropDownBubbleView = cell.bubbleView as! DropDownBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
                     self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
+                }
+                bubbleView.updateMessage = {[weak self] (messageId, componentDesc) in
+                    self?.viewDelegate?.updateMessage(messageId: messageId ?? "", componentDesc: componentDesc ?? "")
                 }
                 let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
                 if firstIndexPath.isEqual(indexPath) {
@@ -564,6 +585,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                bubbleView.updateMessage = {[weak self] (messageId, componentDesc) in
+                    self?.viewDelegate?.updateMessage(messageId: messageId ?? "", componentDesc: componentDesc ?? "")
                 }
                 let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
                 if firstIndexPath.isEqual(indexPath) {

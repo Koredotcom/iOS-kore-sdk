@@ -31,7 +31,8 @@ class InLineFormBubbleView: BubbleView {
     NSAttributedString.Key.font : UIFont(name: mediumCustomFont, size: 15.0) as Any,
     NSAttributedString.Key.foregroundColor : UIColor(hexString: btnActiveTextColor)]
     var arrayOfTextFieldsText = NSMutableArray()
-    
+    var messageId = ""
+    var componentDescDic:[String:Any] = [:]
     override func prepareForReuse() {
         arrayOfTextFieldsText = []
     }
@@ -91,6 +92,8 @@ class InLineFormBubbleView: BubbleView {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
                  let formFields = jsonObject["formFields"] != nil ? jsonObject["formFields"] as! Array<Dictionary<String, Any>> : []
+                componentDescDic = jsonObject as! [String : Any]
+                messageId = component.message?.messageId ?? ""
                 textfeilds = formFields
                 arrayOfTextFieldsText = []
                 for _ in 0..<textfeilds.count{
@@ -114,7 +117,16 @@ class InLineFormBubbleView: BubbleView {
                         
                     }
                 }
-                
+                if let slectedValue = jsonObject["selectedValue"] as? [String: Any]{
+                    if let value = slectedValue["value"] as? NSArray{
+                        if value.count > 0{
+                            arrayOfTextFieldsText = []
+                            for _ in 0..<value.count{
+                                arrayOfTextFieldsText.add(value[0])
+                            }
+                        }
+                    }
+                }
                 tableView.reloadData()
             }
         }
@@ -164,6 +176,7 @@ class InLineFormBubbleView: BubbleView {
                 //arrayOfTextFieldsText.replaceObject(at: i, with: "")
             }
             tableView.reloadData()
+            insertSelectedValueIntoComponectDesc(value: arrayOfTextFieldsText)
             if isSecure {
                 self.optionsAction?(secureString, finalString)
             }else{
@@ -172,6 +185,12 @@ class InLineFormBubbleView: BubbleView {
             self.maskview.isHidden = false
         }
            
+    }
+    
+    func insertSelectedValueIntoComponectDesc(value: NSMutableArray){
+        let dic = ["value": value]
+        componentDescDic["selectedValue"] = dic
+        self.updateMessage?(messageId, Utilities.stringFromJSONObject(object: componentDescDic))
     }
     
 }

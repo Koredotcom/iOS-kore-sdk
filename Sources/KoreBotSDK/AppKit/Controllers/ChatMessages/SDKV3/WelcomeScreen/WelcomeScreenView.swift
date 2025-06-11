@@ -24,6 +24,7 @@ class WelcomeScreenView: UIView {
     @IBOutlet weak var topImageV: UIImageView!
     @IBOutlet weak var centeredImageV: UIImageView!
     @IBOutlet weak var bottomImagV: UIImageView!
+    @IBOutlet weak var poweredByViewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var bgSubV: UIView!
     @IBOutlet weak var bgViewTopConstraint: NSLayoutConstraint!
@@ -71,7 +72,8 @@ class WelcomeScreenView: UIView {
         view.frame = self.bounds
         view.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
         addSubview(view)
-        
+        poweredByViewHeightConstraint.constant = 0.0
+        powerdByfooterView.isHidden = true
         headingLbl.font = UIFont(name: boldCustomFont, size: 20.0)
         titleLbl.font = UIFont(name: boldCustomFont, size: 17.0)
         descLbl.font = UIFont(name: mediumCustomFont, size: 14.0)

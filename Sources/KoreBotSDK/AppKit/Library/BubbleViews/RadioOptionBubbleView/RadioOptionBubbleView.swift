@@ -23,7 +23,8 @@ class RadioOptionBubbleView : BubbleView {
     var seletedRow = 100
     let checkBtn = UIButton(frame: CGRect.zero)
     public var maskview: UIView!
-    
+    var messageId = ""
+    var componentDescDic:[String:Any] = [:]
     let yourAttributes : [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.font : UIFont(name: boldCustomFont, size: 12.0) as Any,
         NSAttributedString.Key.foregroundColor : UIColor.white]
@@ -149,8 +150,6 @@ class RadioOptionBubbleView : BubbleView {
             let component: KREComponent = components.firstObject as! KREComponent
             if (component.message != nil) {
                 let jsonString = component.message?.messageId
-                print(jsonString!)
-                
             }
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
@@ -160,12 +159,19 @@ class RadioOptionBubbleView : BubbleView {
                 let allItems = try? jsonDecoder.decode(Componentss.self, from: jsonData) else {
                     return
                 }
+                componentDescDic = jsonObject as! [String : Any]
+                messageId = component.message?.messageId ?? ""
                 self.titleLbl.text = allItems.heading
                 arrayOfElements = allItems.radioOptions ?? []
                 arrayOfHeaderCheck.append("uncheck")
                 arrayOfButtons = allItems.buttons ?? []
+                seletedRow = 100
+                if let slectedValue = jsonObject["selectedValue"] as? [String: Any]{
+                    if let value = slectedValue["value"] as? String{
+                        seletedRow = Int(Double(value) ?? 100)
+                    }
+                }
                 self.tableView.reloadData()
-                
             }
         }
     }
@@ -274,9 +280,15 @@ extension RadioOptionBubbleView: UITableViewDelegate,UITableViewDataSource{
     }
     @objc fileprivate func footerBtnAction(_ sender: AnyObject!) {
         if seletedValue != ""{
+            insertSelectedValueIntoComponectDesc(value: String(seletedRow))
             self.optionsAction?(seletedTitle,seletedValue)
             self.maskview.isHidden = false
         }
+    }
+    func insertSelectedValueIntoComponectDesc(value: String){
+        let dic = ["value": value]
+        componentDescDic["selectedValue"] = dic
+        self.updateMessage?(messageId, Utilities.stringFromJSONObject(object: componentDescDic))
     }
 }
 

@@ -35,7 +35,12 @@ class DropDownBubbleView: BubbleView {
     override func prepareForReuse() {
         inlineTextField.text = ""
     }
-    
+    var messageId = ""
+    var componentDescDic:[String:Any] = [:]
+    let attributes = [
+        NSAttributedString.Key.foregroundColor: UIColor.black,
+        NSAttributedString.Key.font : UIFont(name: regularCustomFont, size: 14) ?? UIFont.systemFont(ofSize: 14.0)
+    ]
     override func initialize() {
         super.initialize()
         
@@ -97,10 +102,6 @@ class DropDownBubbleView: BubbleView {
         self.inlineTextField.isSecureTextEntry = false
         inlineTextField.text = ""
         self.inlineTextField.translatesAutoresizingMaskIntoConstraints = false
-        let attributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.black,
-            NSAttributedString.Key.font : UIFont(name: mediumCustomFont, size: 14) ?? UIFont.systemFont(ofSize: 14.0)
-        ]
         self.inlineTextField.attributedPlaceholder = NSAttributedString(string: "Select", attributes:attributes)
         self.textFBgV.addSubview(self.inlineTextField)
         
@@ -127,6 +128,7 @@ class DropDownBubbleView: BubbleView {
     }
     @objc fileprivate func footerBtnAction(_ sender: AnyObject!) {
         if seletedValue != ""{
+            insertSelectedValueIntoComponectDesc(value: seletedValue)
             self.optionsAction?(seletedValue,seletedValue)
             self.maskview.isHidden = false
         }
@@ -139,6 +141,9 @@ class DropDownBubbleView: BubbleView {
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
+                componentDescDic = jsonObject as! [String : Any]
+                messageId = component.message?.messageId ?? ""
+                
                 let str = jsonObject["heading"] != nil ? jsonObject["heading"] as! String : ""
                 var headerText: String = str.replacingOccurrences(of: "\n", with: "")
                 if let text = KREUtilities.formatHTMLEscapedString(headerText) {
@@ -167,6 +172,12 @@ class DropDownBubbleView: BubbleView {
                     let elements = arrayOfComponents[i]
                     arrayOfElements.add(elements.title ?? "")
                 }
+                self.inlineTextField.attributedPlaceholder = NSAttributedString(string: "Select", attributes:attributes)
+                if let slectedValue = jsonObject["selectedValue"] as? [String: Any]{
+                    if let value = slectedValue["value"] as? String{
+                        self.inlineTextField.attributedPlaceholder = NSAttributedString(string: value, attributes:attributes)
+                    }
+                }
                 ConfigureDropDownView()
             }
         }
@@ -182,7 +193,11 @@ class DropDownBubbleView: BubbleView {
     @objc func tapsOnInlineFormBtn(_ sender:UIButton) {
         dropDown.show()
     }
-    
+    func insertSelectedValueIntoComponectDesc(value: String){
+        let dic = ["value": value]
+        componentDescDic["selectedValue"] = dic
+        self.updateMessage?(messageId, Utilities.stringFromJSONObject(object: componentDescDic))
+    }
 }
 extension DropDownBubbleView {
     func ConfigureDropDownView(){
@@ -208,7 +223,7 @@ extension DropDownBubbleView {
         dropDown.dataSource = arrayOfElements as! [String]
         // Action triggered on selection
         dropDown.selectionAction = { [weak self] (index, item) in
-            self?.inlineTextField.text = item
+            self?.inlineTextField.attributedPlaceholder = NSAttributedString(string: item, attributes:self?.attributes)
             self?.seletedValue = item
             //NotificationCenter.default.post(name: Notification.Name(dropDownTemplateNotification), object: item)
         }

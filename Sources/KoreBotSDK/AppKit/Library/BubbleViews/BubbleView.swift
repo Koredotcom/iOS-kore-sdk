@@ -37,6 +37,7 @@ open class BubbleView: UIView {
     
     public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)?
     public var linkAction: ((_ text: String?) -> Void)?
+    public var updateMessage: ((_ text: String?, _ componentDesc: String?) -> Void)?
     
     public var components:NSArray! {
         didSet(c) {

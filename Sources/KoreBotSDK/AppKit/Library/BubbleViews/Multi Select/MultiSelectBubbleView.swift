@@ -30,6 +30,8 @@ class MultiSelectBubbleView: BubbleView {
     var arrayOfElements = [ComponentElements]()
     var arrayOfButtons = [ComponentItemAction]()
     var showMore = false
+    var messageId = ""
+    var componentDescDic:[String:Any] = [:]
     //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
     //public var linkAction: ((_ text: String?) -> Void)!
     override func applyBubbleMask() {
@@ -116,6 +118,8 @@ class MultiSelectBubbleView: BubbleView {
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
+                componentDescDic = jsonObject as! [String : Any]
+                messageId = component.message?.messageId ?? ""
                 let jsonDecoder = JSONDecoder()
                  guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObject as Any , options: .prettyPrinted),
                 let allItems = try? jsonDecoder.decode(Componentss.self, from: jsonData) else {
@@ -126,6 +130,22 @@ class MultiSelectBubbleView: BubbleView {
                 arrayOfButtons = allItems.buttons ?? []
                 arrayOfHeaderCheck = []
                 arrayOfHeaderCheck.append("UnCheck")
+                if let slectedValue = jsonObject["selectedValue"] as? [String: Any]{
+                    print(slectedValue)
+                    if let value = slectedValue["value"] as? [[String: Any]]{
+                        for i in 0..<value.count{
+                            let selectedIndexpath = value[i]
+                            let section = selectedIndexpath["section"] as! Int
+                            let row = selectedIndexpath["row"] as! Int
+                            let indexPath = IndexPath(row: row , section: section)
+                            checkboxIndexPath.append(indexPath)
+                        }
+                    }
+                    if arrayOfElements.count == checkboxIndexPath.count{
+                        arrayOfHeaderCheck = []
+                        arrayOfHeaderCheck.append("Check")
+                    }
+                }
                 self.tableView.reloadData()
                 
             }
@@ -176,6 +196,20 @@ class MultiSelectBubbleView: BubbleView {
             }
         }
         tableView.reloadData()
+    }
+    
+    func insertSelectedValueIntoComponectDesc(value: [IndexPath]){
+        var indexPathArry: [[String: Any]] = []
+        var indexpathDic:[String:Any] = [:]
+        for indexPath in value {
+            print("Selected section: \(indexPath.section), row: \(indexPath.row)")
+            indexpathDic["section"] = indexPath.section
+            indexpathDic["row"] = indexPath.row
+            indexPathArry.append(indexpathDic)
+        }
+        let dic = ["value": indexPathArry]
+        componentDescDic["selectedValue"] = dic
+        self.updateMessage?(messageId, Utilities.stringFromJSONObject(object: componentDescDic))
     }
 }
 extension MultiSelectBubbleView: UITableViewDelegate,UITableViewDataSource{
@@ -305,6 +339,7 @@ extension MultiSelectBubbleView: UITableViewDelegate,UITableViewDataSource{
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
         if arrayOfSeletedValues.count > 0{
             self.maskview.isHidden = false
+            insertSelectedValueIntoComponectDesc(value: checkboxIndexPath)
             let joinedValues = arrayOfSeletedValues.joined(separator: ", ")
             let joinedTitles = arrayOfSeletedTitles.joined(separator: ", ")
             self.optionsAction?(joinedTitles,joinedValues)

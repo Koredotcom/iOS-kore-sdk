@@ -26,7 +26,7 @@ var pdfcTemplateViewErrorNotification = "pdfShowErrorNotification"
 var reloadVideoCellNotification = "ReloadVideoCellNotification"
 var callFromAgentNotification = "callFromAgentNotification"
 var tokenExipryNotification = "TokenExpiryNotification"
-
+var activityViewControllerNotification = "ActivityViewControllerNotificationName"
 var isSpeakingEnabled = false
 
 let userColor: UIColor = UIColor(red: 38 / 255.0, green: 52 / 255.0, blue: 74 / 255.0, alpha: 1)
@@ -108,6 +108,15 @@ var isEmojiDispaly = false
 var recentHistoryBatchSize = 10
 var isPaginatedScrollEnable = SDKConfiguration.botConfig.isShowChatHistory
 var paginatedScrollBatchSize = 10
+
+var toastMessageStr = "Saved successfully under Files"
+var videoDownloadAlertTitle = "Download"
+var fileDownloadingToastMsg = "Downloading..."
+var fileSavedSuccessfullyToastMsg = "Saved successfully under Files"
+var videoDownloadAlertCancelTitle = "Cancel"
+var vileDownloadFailedToastMsg = "Download failed!"
+var downloadImage: UIImage?
+var downloadFileURL: URL?
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {

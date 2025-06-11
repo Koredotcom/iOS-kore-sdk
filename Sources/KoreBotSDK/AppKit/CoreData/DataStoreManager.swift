@@ -267,6 +267,65 @@ class DataStoreManager: NSObject {
             }
         }
     }
+    
+    /*
+    func updateMessage(messageId: String, newText: String, completion: ((_ success: Bool) -> Void)? = nil) {
+        let context = coreDataManager.workerContext
+        context.perform {
+            let request: NSFetchRequest<KREMessage> = KREMessage.fetchRequest()
+            request.predicate = NSPredicate(format: "messageId == %@", messageId)
+
+            do {
+                let results = try context.fetch(request)
+                if let messageToUpdate = results.first {
+                    // Update the required field(s)
+                   // messageToUpdate.messageText = newText // assuming `messageText` exists
+                    try context.save()
+                    self.coreDataManager.saveChanges()
+                    completion?(true)
+                } else {
+                    completion?(false)
+                }
+            } catch {
+                print("Failed to update message: \(error)")
+                completion?(false)
+            }
+        }
+    }*/
+    
+    func updateComponentDescription(messageId: String, newDescription: String, completion: ((_ success: Bool) -> Void)? = nil) {
+        let context = coreDataManager.workerContext
+        context.perform {
+            let messageRequest: NSFetchRequest<KREMessage> = KREMessage.fetchRequest()
+            messageRequest.predicate = NSPredicate(format: "messageId == %@", messageId)
+
+            do {
+                let messages = try context.fetch(messageRequest)
+                guard let message = messages.first else {
+                    completion?(false)
+                    return
+                }
+
+                if let componentsSet = message.components{
+                    for component in componentsSet {
+                        if let component = component as? KREComponent {
+                            component.componentDesc = newDescription
+                        }
+                    }
+                    try context.save()
+                    self.coreDataManager.saveChanges()
+                    completion?(true)
+                } else {
+                    completion?(false)
+                }
+            } catch {
+                print("Failed to update componentDesc: \(error)")
+                completion?(false)
+            }
+        }
+    }
+    
+    
 
     func createNewMessageIn(thread: KREThread!, message: Message, completion block: ((_ staus: Bool) -> Void)?) {
         let context: NSManagedObjectContext = coreDataManager.workerContext

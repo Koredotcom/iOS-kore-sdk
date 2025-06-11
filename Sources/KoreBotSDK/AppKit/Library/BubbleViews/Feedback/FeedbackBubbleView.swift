@@ -13,7 +13,8 @@ class FeedbackBubbleView: BubbleView {
     var floatRatingView: FloatRatingView!
     var feedBackview = ""
     public var maskview: UIView!
-    
+    var messageId = ""
+    var componentDescDic:[String:Any] = [:]
     let yourAttributes : [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.font : UIFont(name: boldCustomFont, size: 15.0) as Any,
         NSAttributedString.Key.foregroundColor : UIColor.blue,
@@ -140,8 +141,11 @@ class FeedbackBubbleView: BubbleView {
                     let allItems = try? jsonDecoder.decode(Componentss.self, from: jsonData) else {
                                                 return
                     }
+                componentDescDic = jsonObject as! [String : Any]
+                messageId = component.message?.messageId ?? ""
                 self.titleLbl.text = allItems.text ?? ""
                 feedBackview = ""
+                feedBackTemplateSelectedValue = ""
                 if allItems.feedbackView! == "emojis"{
                     collectionView.isHidden = false
                     floatRatingView.isHidden = true
@@ -150,11 +154,22 @@ class FeedbackBubbleView: BubbleView {
                     collectionView.isHidden = true
                     floatRatingView.isHidden = false
                     arrayOfSmiley = allItems.starArrays?.reversed() ?? []
+                    floatRatingView.rating = 0.0
+                    if let slectedValue = jsonObject["selectedValue"] as? [String: Any]{
+                        if let value = slectedValue["value"] as? String{
+                            floatRatingView.rating = Double(value)!
+                        }
+                    }
                 }else if allItems.feedbackView! == "ThumbsUpDown"{
                     collectionView.isHidden = false
                     floatRatingView.isHidden = true
                     arrayOfSmiley = allItems.thumpsUpDownArrays ?? []
                     feedBackview = "ThumbsUpDown"
+                    if let slectedValue = jsonObject["selectedValue"] as? [String: Any]{
+                        if let value = slectedValue["value"] as? String{
+                            feedBackTemplateSelectedValue = value
+                        }
+                    }
                 }else{
                     collectionView.isHidden = false
                     floatRatingView.isHidden = true
@@ -233,9 +248,11 @@ extension FeedbackBubbleView : UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if feedBackview == "ThumbsUpDown"{
             let elements = arrayOfSmiley[indexPath.item]
-            feedBackTemplateSelectedValue = (elements.value ?? "")
+            let value = elements.value ?? ""
+            insertSelectedValueIntoComponectDesc(value: value)
+            feedBackTemplateSelectedValue = (value)
             self.maskview.isHidden = false
-            self.optionsAction?(String(elements.value ?? ""),String(elements.value ?? ""))
+            self.optionsAction?(String(value),String(value))
             collectionView.reloadData()
         }else{
             if arrayOfSmiley.count > 0{
@@ -285,10 +302,17 @@ extension FeedbackBubbleView: FloatRatingViewDelegate {
         let index = Int(floatRatingView.rating) - 1
         if arrayOfSmiley.count > 0{
             let elements = arrayOfSmiley[index]
+            insertSelectedValueIntoComponectDesc(value: String(elements.starId ?? 0))
             self.optionsAction?(String(elements.starId ?? 0),String(elements.value ?? ""))
         }else{
+            insertSelectedValueIntoComponectDesc(value: String(index+1))
             self.optionsAction?(String(index+1),String(index+1))
         }
     }
     
+    func insertSelectedValueIntoComponectDesc(value: String){
+        let dic = ["value": value]
+        componentDescDic["selectedValue"] = dic
+        self.updateMessage?(messageId, Utilities.stringFromJSONObject(object: componentDescDic))
+    }
 }

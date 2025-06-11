@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -21,6 +21,7 @@
                 <outlet property="headerImageV" destination="dlw-7p-nRa" id="4aV-IJ-Y98"/>
                 <outlet property="headingLbl" destination="CHi-h5-grz" id="4V7-pV-0ho"/>
                 <outlet property="powerdByfooterView" destination="N8i-Cq-5A0" id="OMf-mF-npW"/>
+                <outlet property="poweredByViewHeightConstraint" destination="s1w-D1-B8I" id="tPT-bq-FPA"/>
                 <outlet property="tabVBackV" destination="MI0-9b-NeC" id="YDT-ct-036"/>
                 <outlet property="tableViewTopConstraint" destination="thF-3X-yld" id="4TZ-Nm-12k"/>
                 <outlet property="tableview" destination="UP5-Q9-Mrf" id="G2C-Ym-FLi"/>
