@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,6 +22,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="109" height="50"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CQU-yU-kDP">
+                        <rect key="frame" x="0.0" y="0.0" width="109" height="50"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="inM-Gd-hvA">
                         <rect key="frame" x="0.0" y="0.0" width="109" height="45"/>
                         <subviews>
@@ -59,12 +63,17 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="inM-Gd-hvA" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="1Hf-XH-5MK"/>
+                <constraint firstAttribute="bottom" secondItem="CQU-yU-kDP" secondAttribute="bottom" id="4NV-1N-8Ug"/>
                 <constraint firstAttribute="trailing" secondItem="inM-Gd-hvA" secondAttribute="trailing" id="AmV-bZ-Yen"/>
                 <constraint firstItem="inM-Gd-hvA" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Xnq-oH-fLU"/>
+                <constraint firstAttribute="trailing" secondItem="CQU-yU-kDP" secondAttribute="trailing" id="Zvq-s3-HG7"/>
+                <constraint firstItem="CQU-yU-kDP" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="ijx-mn-fqI"/>
                 <constraint firstAttribute="bottom" secondItem="inM-Gd-hvA" secondAttribute="bottom" constant="5" id="ltG-r1-Y1n"/>
+                <constraint firstItem="CQU-yU-kDP" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="o4l-hn-zsg"/>
             </constraints>
             <size key="customSize" width="109" height="50"/>
             <connections>
+                <outlet property="bgV" destination="CQU-yU-kDP" id="ldT-n1-08b"/>
                 <outlet property="bgView" destination="inM-Gd-hvA" id="UMm-HO-iJ8"/>
                 <outlet property="textLabel" destination="QJW-dO-9Ra" id="DiD-ty-Zug"/>
                 <outlet property="underLineLbl" destination="Zxm-h0-uBN" id="P89-eB-TEf"/>

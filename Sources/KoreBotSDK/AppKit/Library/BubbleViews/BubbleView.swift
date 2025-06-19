@@ -40,6 +40,7 @@ open class BubbleView: UIView {
 
     public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)?
     public var linkAction: ((_ text: String?) -> Void)?
+    public var updateMessage: ((_ text: String?, _ componentDesc: String?) -> Void)?
     
     public var components:NSArray! {
         didSet(c) {
@@ -140,10 +141,10 @@ open class BubbleView: UIView {
                     bubbleView = NotificationBubbleView()
                 break
             case .multiSelect:
-                    bubbleView = MultiSelectNewBubbleView()
+                    bubbleView = MultiSelectBubbleView()
                 break
             case .list_widget:
-                    bubbleView = ListWidgetBubbleView()
+                    bubbleView = ListWidgetNewBubbleView()//ListWidgetBubbleView()
             break
             case .feedbackTemplate:
                 bubbleView = FeedbackBubbleView()
@@ -168,6 +169,15 @@ open class BubbleView: UIView {
                  break
             case .quick_replies_top:
                 bubbleView = QuickReplyTopBubbleView()
+                break
+            case .advanced_multi_select:
+                bubbleView =  AdvancedMultiSelectBubbleView()
+                break
+            case .radioOptionTemplate:
+                bubbleView =  RadioOptionBubbleView()
+                break
+            case .stackedCarousel:
+                bubbleView = StackedCarouselBubbleView()
                 break
             case .noTemplate:
                 bubbleView = EmptyBubbleView()

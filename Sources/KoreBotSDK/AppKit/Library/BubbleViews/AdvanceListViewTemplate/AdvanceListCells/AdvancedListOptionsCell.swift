@@ -10,6 +10,7 @@ import UIKit
 
 class AdvancedListOptionsCell: UITableViewCell {
 
+    @IBOutlet weak var checkImgV: UIImageView!
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var checkBtn: UIButton!
     

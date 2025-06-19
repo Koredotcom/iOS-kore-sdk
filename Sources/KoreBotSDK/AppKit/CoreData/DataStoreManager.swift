@@ -311,4 +311,36 @@ class DataStoreManager: NSObject {
             }
         }
     }
+    
+    func updateComponentDescription(messageId: String, newDescription: String, completion: ((_ success: Bool) -> Void)? = nil) {
+        let context = coreDataManager.workerContext
+        context.perform {
+            let messageRequest: NSFetchRequest<KREMessage> = KREMessage.fetchRequest()
+            messageRequest.predicate = NSPredicate(format: "messageId == %@", messageId)
+
+            do {
+                let messages = try context.fetch(messageRequest)
+                guard let message = messages.first else {
+                    completion?(false)
+                    return
+                }
+
+                if let componentsSet = message.components{
+                    for component in componentsSet {
+                        if let component = component as? KREComponent {
+                            component.componentDesc = newDescription
+                        }
+                    }
+                    try context.save()
+                    self.coreDataManager.saveChanges()
+                    completion?(true)
+                } else {
+                    completion?(false)
+                }
+            } catch {
+                print("Failed to update componentDesc: \(error)")
+                completion?(false)
+            }
+        }
+    }
 }

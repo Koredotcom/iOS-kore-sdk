@@ -22,7 +22,7 @@ import ObjectMapper
 import ObjcSupport
 #endif
 
-public class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate {
+public class ChatMessagesViewController: UIViewController, BotMessagesViewDelegate, ComposeBarViewDelegate, KREGrowingTextViewDelegate, NewListViewDelegate, TaskMenuNewDelegate, calenderSelectDelegate, ListWidgetViewDelegate, feedbackViewDelegate, CustomTableTemplateDelegate, AdvancedMultiSelectDelegate {
     // MARK: properties
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
@@ -550,7 +550,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         else if (templateType == "tableList") {
             return .tableList
         }
-        else if (templateType == "daterange" || templateType == "dateTemplate") {
+        else if (templateType == "daterange" || templateType == "dateTemplate" || templateType == "clockTemplate") {
             return .calendarView
         }
         else if (templateType == "quick_replies_welcome" || templateType == "button"){
@@ -594,6 +594,12 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         }
         else if templateType == "audio"{
             return .audio
+        }else if templateType == "advanced_multi_select"{
+            return .advanced_multi_select
+        }else if templateType == "radioOptionTemplate"{
+            return .radioOptionTemplate
+        }else if (templateType == "stacked"){
+            return .stackedCarousel
         }
         else if templateType == "text"{
             return .text
@@ -682,6 +688,11 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                     if templateType == "mini_table"{
                         if let layOut = dictionary["layout"] as? String, layOut == "horizontal"{
                             templateType = "mini_table_horizontal"
+                        }
+                    }else if templateType == "carousel"{
+                        
+                        if dictionary["carousel_type"] as? String ?? ""  == "stacked"{
+                            templateType = "stacked"
                         }
                     }
                     
@@ -1606,7 +1617,10 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         }
         return false
     }
-    
+    func updateMessage(messageId: String, componentDesc:String) {
+        let dataStoreManager = DataStoreManager.sharedManager
+        dataStoreManager.updateComponentDescription(messageId: messageId, newDescription: componentDesc)
+    }
     func populateQuickReplyCards(with message: KREMessage?) {
         if message?.templateType == (ComponentType.quickReply.rawValue as NSNumber) {
             let component: KREComponent = message!.components![0] as! KREComponent
@@ -1720,6 +1734,50 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         }
     }
     
+    func populateClockView(with message: KREMessage?) {
+        var messageId = ""
+        if message?.templateType == (ComponentType.calendarView.rawValue as NSNumber) {
+            let component: KREComponent = message!.components![0] as! KREComponent
+            print(component)
+            if (!component.isKind(of: KREComponent.self)) {
+                return;
+            }
+            if (component.message != nil) {
+                messageId = component.message!.messageId!
+            }
+            if ((component.componentDesc) != nil) {
+                let jsonString = component.componentDesc
+                let clockViewController = ClockViewController(dataString: jsonString!)
+                //clockViewController.viewDelegate = self
+                clockViewController.modalPresentationStyle = .overFullScreen
+                self.navigationController?.present(clockViewController, animated: true, completion: nil)
+                
+                clockViewController.optionsButtonTapNewAction = { [weak self] (text, payload) in
+                    if let text = text, let payload = payload {
+                        self?.optionsButtonTapNewAction(text: text, payload: payload)
+                    }
+                }
+            }
+        }
+    }
+    
+    func populateAdvancedMultiSelectSliderView(with message: KREMessage?) {
+        if message?.templateType == (ComponentType.advanced_multi_select.rawValue as NSNumber) {
+            let component: KREComponent = message!.components![0] as! KREComponent
+            if (!component.isKind(of: KREComponent.self)) {
+                return;
+            }
+            
+            if ((component.componentDesc) != nil) {
+                let jsonString = component.componentDesc
+                let vc = AdvancedMultiSelectViewController(dataString: jsonString!)
+                vc.viewDelegate = self
+                vc.modalPresentationStyle = .overFullScreen
+                self.navigationController?.present(vc, animated: true, completion: nil)
+            }
+        }
+    }
+    
     // MARK: ComposeBarViewDelegate methods
     
     func composeBarView(_: ComposeBarView, sendButtonAction text: String) {
@@ -1828,6 +1886,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     @objc func showTableTemplateView(notification:Notification) {
         let dataString: String = notification.object as! String
         let tableTemplateViewController = TableTemplateViewController(dataString: dataString)
+        tableTemplateViewController.modalPresentationStyle = .overFullScreen
         self.navigationController?.present(tableTemplateViewController, animated: true, completion: nil)
     }
     

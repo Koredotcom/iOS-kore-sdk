@@ -19,7 +19,10 @@ protocol BotMessagesViewDelegate {
     func optionsButtonTapNewAction(text:String, payload:String)
     func populateCalenderView(with message: KREMessage?)
     func populateFeedbackSliderView(with message: KREMessage?)
+    func populateAdvancedMultiSelectSliderView(with message: KREMessage?)
     func tableviewScrollDidEnd()
+    func updateMessage(messageId: String, componentDesc:String)
+    func populateClockView(with message: KREMessage?)
 }
 
 class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFetchedResultsControllerDelegate {
@@ -102,7 +105,10 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(PDFDownloadCell.self, forCellReuseIdentifier:"PDFDownloadCell")
         self.tableView.register(QuickReplyTopBubbleCell.self, forCellReuseIdentifier: "QuickReplyTopBubbleCell")
         self.tableView.register(EmptyBubbleViewCell.self, forCellReuseIdentifier:"EmptyBubbleViewCell")
-        
+        self.tableView.register(AdvancedMultiCell.self, forCellReuseIdentifier:"AdvancedMultiCell")
+        self.tableView.register(RadioOptionTemplateCell.self, forCellReuseIdentifier: "RadioOptionTemplateCell")
+        self.tableView.register(StackedCarosuelCell.self, forCellReuseIdentifier:"StackedCarosuelCell")
+
     }
     
     override func layoutSubviews() {
@@ -233,6 +239,12 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 cellIdentifier = "PDFDownloadCell"
             case .quick_replies_top:
                 cellIdentifier = "QuickReplyTopBubbleCell"
+            case .advanced_multi_select:
+                cellIdentifier = "AdvancedMultiCell"
+            case .radioOptionTemplate:
+                cellIdentifier = "RadioOptionTemplateCell"
+            case .stackedCarousel:
+                cellIdentifier = "StackedCarosuelCell"
             case .noTemplate:
                 cellIdentifier = "EmptyBubbleViewCell"
             }
@@ -248,6 +260,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         var isQuickReply = false
         var isCalenderView = false
         var isFeedbackView = false
+        var isMultiselectSlideView = false
         
         var isCustomTemplate = false
         var isCustomTemplateIndex = 0
@@ -269,6 +282,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             }
             bubbeView?.linkAction = {[weak self] (text) in
                 self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+            }
+            bubbeView?.updateMessage = {[weak self] (messageId, componentDesc) in
+                self?.viewDelegate?.updateMessage(messageId: messageId ?? "", componentDesc: componentDesc ?? "")
             }
 
         }else{
@@ -418,19 +434,34 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 }
                 break
             case .multiSelect:
-                let bubbleView: MultiSelectNewBubbleView = cell.bubbleView as! MultiSelectNewBubbleView
+                let bubbleView: MultiSelectBubbleView = cell.bubbleView as! MultiSelectBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
                     self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
+                }
+                bubbleView.updateMessage = {[weak self] (messageId, componentDesc) in
+                    self?.viewDelegate?.updateMessage(messageId: messageId ?? "", componentDesc: componentDesc ?? "")
+                }
+                let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                if firstIndexPath.isEqual(indexPath) {
+                    bubbleView.maskview.isHidden = true
+                }else{
+                    bubbleView.maskview.isHidden = false
                 }
                 cell.bubbleView.drawBorder = true
                 break
             case .list_widget:
-                let bubbleView: ListWidgetBubbleView = cell.bubbleView as! ListWidgetBubbleView
+                let bubbleView: ListWidgetNewBubbleView = cell.bubbleView as! ListWidgetNewBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
                     self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                if firstIndexPath.isEqual(indexPath) {
+                    bubbleView.maskview.isHidden = true
+                }else{
+                    bubbleView.maskview.isHidden = false
                 }
                 cell.bubbleView.drawBorder = true
                 break
@@ -438,6 +469,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 let bubbleView: FeedbackBubbleView = cell.bubbleView as! FeedbackBubbleView
                 bubbleView.optionsAction = {[weak self] (text, payload) in
                     self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
+                }
+                bubbleView.updateMessage = {[weak self] (messageId, componentDesc) in
+                    self?.viewDelegate?.updateMessage(messageId: messageId ?? "", componentDesc: componentDesc ?? "")
                 }
                 isFeedbackView = true
                 cell.bubbleView.drawBorder = true
@@ -455,9 +489,25 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 bubbleView.optionsAction = {[weak self] (text, payload) in
                     self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload!)
                 }
+                bubbleView.updateMessage = {[weak self] (messageId, componentDesc) in
+                    self?.viewDelegate?.updateMessage(messageId: messageId ?? "", componentDesc: componentDesc ?? "")
+                }
                 cell.bubbleView.drawBorder = true
                 break
             case .dropdown_template:
+                let bubbleView: DropDownBubbleView = cell.bubbleView as! DropDownBubbleView
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
+                }
+                bubbleView.updateMessage = {[weak self] (messageId, componentDesc) in
+                    self?.viewDelegate?.updateMessage(messageId: messageId ?? "", componentDesc: componentDesc ?? "")
+                }
+                let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                if firstIndexPath.isEqual(indexPath) {
+                    bubbleView.maskview.isHidden = true
+                }else{
+                    bubbleView.maskview.isHidden = false
+                }
                 cell.bubbleView.drawBorder = true
                 break
             case .custom_table:
@@ -514,6 +564,46 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 bubbleView.tag = indexPath.row
                 bubbleView.viewTag = indexPath.row
                 break
+            case .advanced_multi_select:
+                let bubbleView: AdvancedMultiSelectBubbleView = cell.bubbleView as! AdvancedMultiSelectBubbleView
+                cell.bubbleView.drawBorder = true
+                isMultiselectSlideView = true
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                break
+            case .radioOptionTemplate:
+                let bubbleView: RadioOptionBubbleView = cell.bubbleView as! RadioOptionBubbleView
+                cell.bubbleView.drawBorder = true
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                bubbleView.updateMessage = {[weak self] (messageId, componentDesc) in
+                    self?.viewDelegate?.updateMessage(messageId: messageId ?? "", componentDesc: componentDesc ?? "")
+                }
+                let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                if firstIndexPath.isEqual(indexPath) {
+                    bubbleView.maskview.isHidden = true
+                }else{
+                    bubbleView.maskview.isHidden = false
+                }
+                break
+            case .stackedCarousel:
+                let bubbleView: StackedCarouselBubbleView = cell.bubbleView as! StackedCarouselBubbleView
+                cell.bubbleView.drawBorder = true
+                bubbleView.optionsAction = {[weak self] (text, payload) in
+                    self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
+                }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                break
             case .noTemplate:
                 break
             }
@@ -528,7 +618,16 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             }
             
             if isCalenderView{
-                self.viewDelegate?.populateCalenderView(with: message)
+                let component: KREComponent = message.components![0] as! KREComponent
+                if ((component.componentDesc) != nil) {
+                    let jsonString = component.componentDesc
+                    let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
+                    if jsonObject["template_type"] as? String == "clockTemplate"{
+                        self.viewDelegate?.populateClockView(with: message)
+                    }else{
+                        self.viewDelegate?.populateCalenderView(with: message)
+                    }
+                }
             }
             
             if isFeedbackView{
@@ -539,6 +638,17 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                         let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
                         if jsonObject["sliderView"] as! Bool{
                             self.viewDelegate?.populateFeedbackSliderView(with: message)
+                        }
+                    }
+                }
+            }else if isMultiselectSlideView{
+                if message.templateType == (ComponentType.advanced_multi_select.rawValue as NSNumber) {
+                    let component: KREComponent = message.components![0] as! KREComponent
+                    if ((component.componentDesc) != nil) {
+                        let jsonString = component.componentDesc
+                        let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
+                        if let isSliderV = jsonObject["sliderView"] as? Bool , isSliderV == true{
+                            self.viewDelegate?.populateAdvancedMultiSelectSliderView(with: message)
                         }
                     }
                 }

@@ -957,6 +957,11 @@ extension DropDown {
 			self.setNeedsUpdateConstraints()
 		}
 	}
+    
+    public func reloadAllData() {
+        self.tableView.reloadData()
+        self.setNeedsUpdateConstraints()
+    }
 
 	/// (Pre)selects a row at a certain index.
 	public func selectRow(at index: Index?, scrollPosition: UITableView.ScrollPosition = .none) {

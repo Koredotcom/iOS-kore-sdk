@@ -16,6 +16,7 @@ class AdvanceListBubbleView: BubbleView {
     var tableView: UITableView!
     var cardView: UIView!
     var sortBtn: UIButton!
+    var searchBtn: UIButton!
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 32.0
     let kMinTextWidth: CGFloat = 20.0
     fileprivate let listCellIdentifier = "AdvancedTextCell"
@@ -46,6 +47,7 @@ class AdvanceListBubbleView: BubbleView {
     
     var footercollectionView: UICollectionView!
     var checkboxIndexPath = [IndexPath]()
+    
     override func applyBubbleMask() {
         //nothing to put here
         if(self.maskLayer == nil){
@@ -120,7 +122,7 @@ class AdvanceListBubbleView: BubbleView {
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-0-[tableView]-0-|", options: [], metrics: nil, views: views))
         
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[tableView]-5-|", options: [], metrics: nil, views: views))
         
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[maskview]|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[maskview]-0-|", options: [], metrics: nil, views: views))
@@ -138,7 +140,7 @@ class AdvanceListBubbleView: BubbleView {
         self.addSubview(self.cardView)
         cardView.layer.cornerRadius = 4.0
         cardView.layer.borderWidth = 1.0
-        cardView.layer.borderColor = UIColor.lightGray.cgColor
+        cardView.layer.borderColor = BubbleViewLeftTint.cgColor
         cardView.clipsToBounds = true
         cardView.backgroundColor =  UIColor.white
         let cardViews: [String: UIView] = ["cardView": cardView]
@@ -164,7 +166,7 @@ class AdvanceListBubbleView: BubbleView {
         headerTitle.sizeToFit()
         
         headerDesc = UILabel(frame: CGRect.zero)
-        headerDesc.textColor = .lightGray
+        headerDesc.textColor = BubbleViewBotChatTextColor
         headerDesc.font = UIFont(name: mediumCustomFont, size: 12.0)
         headerDesc.numberOfLines = 0
         headerDesc.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -184,20 +186,35 @@ class AdvanceListBubbleView: BubbleView {
         sortBtn.setImage(UIImage(named: "sort", in: bundle, compatibleWith: nil), for: .normal)
         sortBtn.translatesAutoresizingMaskIntoConstraints = false
         sortBtn.clipsToBounds = true
-        sortBtn.isHidden = true
+        sortBtn.isHidden = false
         sortBtn.layer.cornerRadius = 5
         sortBtn.setTitleColor(.blue, for: .normal)
         sortBtn.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
         sortBtn.titleLabel?.font = UIFont(name: mediumCustomFont, size: 15.0)
         self.tileBgv.addSubview(sortBtn)
         sortBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
-        sortBtn.addTarget(self, action: #selector(self.sortButtonAction(_:)), for: .touchUpInside)
+        //sortBtn.addTarget(self, action: #selector(self.sortButtonAction(_:)), for: .touchUpInside)
+        
+        searchBtn = UIButton(frame: CGRect.zero)
+        searchBtn.backgroundColor = .clear
+        searchBtn.setImage(UIImage(named: "search-1", in: bundle, compatibleWith: nil), for: .normal)
+        searchBtn.translatesAutoresizingMaskIntoConstraints = false
+        searchBtn.clipsToBounds = true
+        searchBtn.isHidden = false
+        sortBtn.layer.cornerRadius = 5
+        searchBtn.setTitleColor(.blue, for: .normal)
+        searchBtn.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
+        searchBtn.titleLabel?.font = UIFont(name: mediumCustomFont, size: 15.0)
+        self.tileBgv.addSubview(searchBtn)
+        searchBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
+        //searchBtn.addTarget(self, action: #selector(self.sortButtonAction(_:)), for: .touchUpInside)
 
         
-        let subView: [String: UIView] = ["headerTitle": headerTitle, "headerDesc": headerDesc ,"sortBtn": sortBtn]
+        let subView: [String: UIView] = ["headerTitle": headerTitle, "headerDesc": headerDesc ,"sortBtn": sortBtn, "searchBtn": searchBtn]
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[headerTitle(>=21)]-0-[headerDesc(>=21)]-0-|", options: [], metrics: nil, views: subView))
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[sortBtn(30)]", options: [], metrics: nil, views: subView))
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[headerTitle]-5-[sortBtn(30)]-2-|", options: [], metrics: nil, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[sortBtn(25)]", options: [], metrics: nil, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[searchBtn(25)]", options: [], metrics: nil, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[headerTitle]-5-[sortBtn(25)]-5-[searchBtn(25)]-8-|", options: [], metrics: nil, views: subView))
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[headerDesc]-8-|", options: [], metrics: nil, views: subView))
         
     }
@@ -228,9 +245,9 @@ class AdvanceListBubbleView: BubbleView {
                         let details = arrayOfElements[i]
                         if let isCollapsed = details.isCollapsed{
                             if isCollapsed == true{
-                                isCollapsedArray.append("Expand")
-                            }else{
                                 isCollapsedArray.append("Collapse")
+                            }else{
+                                isCollapsedArray.append("Expand")
                             }
                         }else{
                             isCollapsedArray.append("No")
@@ -362,9 +379,7 @@ class AdvanceListBubbleView: BubbleView {
             let options = headerOptions[0]
             if options.contenttype == "button"{
                 if options.type == "postback"{
-                    if let title = options.title{
-                        self.optionsAction?(title, options.payload ?? title)
-                    }
+                    self.optionsAction?(options.title, options.payload)
                 }else if options.type == "url"{
                     self.linkAction?(options.headerurl)
                 }
@@ -428,6 +443,8 @@ extension AdvanceListBubbleView: UITableViewDelegate, UITableViewDataSource{
             let optionsDataDetails = optionsData?[indexPath.row]
             cell.titleLbl.text = optionsDataDetails?.label
             if optionsDataDetails?.type == "checkbox"{
+                cell.checkBtn.isHidden = false
+                cell.checkImgV.isHidden = true
                 if checkboxIndexPath.contains(indexPath) {
                     let radio_check = UIImage(named: "check", in: bundle, compatibleWith: nil)
                     let tintedradio_checkImage = radio_check?.withRenderingMode(.alwaysTemplate)
@@ -440,16 +457,22 @@ extension AdvanceListBubbleView: UITableViewDelegate, UITableViewDataSource{
                     cell.checkBtn.tintColor = themeColor
                 }
             }else{
+                cell.checkBtn.isHidden = true
+                cell.checkImgV.isHidden = false
+                cell.layer.cornerRadius = 5.0
+                cell.clipsToBounds = true
                 if checkboxIndexPath.contains(indexPath) {
                     let radio_check = UIImage(named: "radio_check", in: bundle, compatibleWith: nil)
                     let tintedradio_checkImage = radio_check?.withRenderingMode(.alwaysTemplate)
-                    cell.checkBtn.setImage(tintedradio_checkImage, for: .normal)
-                    cell.checkBtn.tintColor = themeColor
+                    cell.checkImgV.image = tintedradio_checkImage
+                    cell.checkImgV.tintColor = themeColor
+                    cell.backgroundColor = BubbleViewLeftTint
                 }else{
                     let radio_check = UIImage(named: "radio_uncheck", in: bundle, compatibleWith: nil)
                     let tintedradio_checkImage = radio_check?.withRenderingMode(.alwaysTemplate)
-                    cell.checkBtn.setImage(tintedradio_checkImage, for: .normal)
-                    cell.checkBtn.tintColor = themeColor
+                    cell.checkImgV.image = tintedradio_checkImage
+                    cell.checkImgV.tintColor = themeColor
+                    cell.backgroundColor = UIColor.clear
                 }
             }
             return cell
@@ -495,8 +518,8 @@ extension AdvanceListBubbleView: UITableViewDelegate, UITableViewDataSource{
             }
             cell.titleLbl.text = elementDetails.title
             cell.descLbl.text = elementDetails.desc
-            cell.titleLbl.textColor = .black
-            cell.descLbl.textColor = .lightGray
+            cell.titleLbl.textColor = BubbleViewBotChatTextColor
+            cell.descLbl.textColor = BubbleViewBotChatTextColor
             if let titleStyles = elementDetails.titleStyles?.color{
                 cell.titleLbl.textColor = UIColor.init(hexString: titleStyles)
             }
@@ -505,6 +528,8 @@ extension AdvanceListBubbleView: UITableViewDelegate, UITableViewDataSource{
             }
 
             cell.imagV.isHidden = true
+            cell.imagV.layer.cornerRadius = 5.0
+            cell.imagV.clipsToBounds = true
             cell.desciptionIcon.isHidden = true
             cell.descriptionRightIcon.isHidden = true
             cell.descLblLeadingConstraint.constant = 0.0
@@ -604,9 +629,12 @@ extension AdvanceListBubbleView: UITableViewDelegate, UITableViewDataSource{
                         var removedCheckArray = NSMutableArray()
                         removedCheckArray = arrayOfCheckMarkSelected
                         for i in 0..<arrayOfCheckMarkSelected.count{
-                            if arrayOfCheckMarkSelected[i] as? String == optionsDataDetails?.label{
-                                removedCheckArray.removeObject(at: i)
+                            if arrayOfCheckMarkSelected.count > i{
+                                if arrayOfCheckMarkSelected[i] as? String == optionsDataDetails?.label{
+                                    removedCheckArray.removeObject(at: i)
+                                }
                             }
+                            
                         }
                         arrayOfCheckMarkSelected = []
                         arrayOfCheckMarkSelected = removedCheckArray
@@ -705,7 +733,6 @@ extension AdvanceListBubbleView: UITableViewDelegate, UITableViewDataSource{
         }else{
             return 0
         }
-        
     }
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let elementDetails = arrayOfElements[section]
@@ -844,30 +871,29 @@ extension AdvanceListBubbleView: UITableViewDelegate, UITableViewDataSource{
             if let headerOptions = headerDetails.headerOptions, headerOptions.count > 0{
                 for i in 0..<headerOptions.count{
                     let options = headerOptions[i]
-                     if options.contenttype == "button"{
-                         headerView.btnWidthConstraint.constant = 70.0
-                         headerView.btn.setTitle(options.title, for: .normal)
-                         let btnStyles = options.buttonStyles
-                         headerView.btn.backgroundColor = UIColor(hexString: btnStyles?.bground ?? "#eaf1fe")
-                         if let color =  btnStyles?.color{
-                             headerView.btn.setTitleColor(UIColor(hexString: color), for: .normal)
-                         }else{
-                             headerView.btn.setTitleColor(bubbleViewBotChatButtonBgColor, for: .normal)
-                         }
-                        
-                         headerView.btn.addTarget(self, action: #selector(self.headerOptionsBtnAction(_:)), for: .touchUpInside)
-                         headerView.btn.layer.borderWidth = 0.0
-                         if (btnStyles?.btnBorder) != nil{
-                             headerView.btn.layer.borderWidth = 1.0
-                             if let color =  btnStyles?.color{
-                                 headerView.btn.layer.borderColor = UIColor(hexString: color).cgColor
-                             }else{
-                                 headerView.btn.layer.borderColor = bubbleViewBotChatButtonBgColor.cgColor
-                             }
-                             headerView.btn.clipsToBounds = true
-                         }
-                         headerView.btn.tag = section
-                   }
+                    if options.contenttype == "button"{
+                        headerView.btnWidthConstraint.constant = 70.0
+                        headerView.btn.setTitle(options.title, for: .normal)
+                        let btnStyles = options.buttonStyles
+                        headerView.btn.backgroundColor = UIColor(hexString: btnStyles?.bground ?? "#eaf1fe")
+                        if let color =  btnStyles?.color{
+                            headerView.btn.setTitleColor(UIColor(hexString: color), for: .normal)
+                        }else{
+                            headerView.btn.setTitleColor(bubbleViewBotChatButtonBgColor, for: .normal)
+                        }
+                        headerView.btn.addTarget(self, action: #selector(self.headerOptionsBtnAction(_:)), for: .touchUpInside)
+                        headerView.btn.layer.borderWidth = 0.0
+                        if (btnStyles?.btnBorder) != nil{
+                            headerView.btn.layer.borderWidth = 1.0
+                            if let color =  btnStyles?.color{
+                                headerView.btn.layer.borderColor = UIColor(hexString: color).cgColor
+                            }else{
+                                headerView.btn.layer.borderColor = bubbleViewBotChatButtonBgColor.cgColor
+                            }
+                            headerView.btn.clipsToBounds = true
+                        }
+                        headerView.btn.tag = section
+                    }
                     if options.type == "text"{
                         headerView.btnWidthConstraint.constant = 70.0
                         headerView.btn.setTitle(options.value, for: .normal)
@@ -894,6 +920,11 @@ extension AdvanceListBubbleView: UITableViewDelegate, UITableViewDataSource{
                                let image = Utilities.base64ToImage(base64String: icon)
                                headerView.dropDownBtn.setImage(image, for: .normal)
                            }
+                       }
+                       if isCollapsedArray[section] == "Collapse"{
+                           headerView.dropDownBtn.transform = headerView.dropDownBtn.transform.rotated(by: 0)
+                       }else{
+                           headerView.dropDownBtn.transform = headerView.dropDownBtn.transform.rotated(by: .pi/2)
                        }
                        headerView.dropDownBtn.tintColor = .black
                        headerView.dropDownBtn.isUserInteractionEnabled = true
@@ -944,23 +975,20 @@ extension AdvanceListBubbleView: UICollectionViewDelegate, UICollectionViewDataS
                 cell.titleBtn.backgroundColor =  UIColor.init(hexString: "e9f1fe")
                 cell.titleBtn.layer.cornerRadius = 2.0
                 cell.titleBtn.clipsToBounds = true
+                cell.titleBtn.setTitleColor(BubbleViewRightTint, for: .normal)
                 let buttons =  elementDetails.buttons
                 let buttonDetails = buttons?[indexPath.item]
                 
                 let displayLimit = Int(elementDetails.buttonsLayout?.displayLimit?.displayCount ?? "0") ?? 0
                 if displayLimit < elementDetails.buttons?.count ?? 0{
                     if displayLimit == indexPath.item{
-                        cell.titleBtn.setTitle(" More", for: .normal)
+                        cell.titleBtn.setTitle("... More", for: .normal)
                         if #available(iOS 13.0, *) {
-                            cell.titleBtn.setImage(UIImage(named: "DotMenu", in: bundle, with: nil), for: .normal)
-                        } else {
-                            // Fallback on earlier versions
+                            cell.titleBtn.setImage(UIImage(named: "", in: bundle, with: nil), for: .normal)
                         }
                     }else{
                         cell.titleBtn.setTitle(buttonDetails?.title, for: .normal)
                         if let imageIcon = buttonDetails?.icon{
-//                            let image = Utilities.base64ToImage(base64String: imageIcon)
-//                            cell.titleBtn.setImage(image, for: .normal)
                             if imageIcon.contains("base64"){
                                 let image = Utilities.base64ToImage(base64String: imageIcon)
                                 cell.titleBtn.setImage(image, for: .normal)
@@ -975,8 +1003,6 @@ extension AdvanceListBubbleView: UICollectionViewDelegate, UICollectionViewDataS
                 }else{
                     cell.titleBtn.setTitle(buttonDetails?.title, for: .normal)
                     if let imageIcon = buttonDetails?.icon{
-//                        let image = Utilities.base64ToImage(base64String: imageIcon)
-//                        cell.titleBtn.setImage(image, for: .normal)
                         if imageIcon.contains("base64"){
                             let image = Utilities.base64ToImage(base64String: imageIcon)
                             cell.titleBtn.setImage(image, for: .normal)
@@ -1048,17 +1074,13 @@ extension AdvanceListBubbleView: UICollectionViewDelegate, UICollectionViewDataS
                    
                 }else if optionsDetails?.type == "radio"{
                     if slectedRadioTitles != ""{
-                        self.optionsAction?(slectedRadioTitles, slectedRadioValues)
+                        self.optionsAction?("Confirm: \(slectedRadioValues)", slectedRadioValues)
                     }else{
-                        if let title = options?.title{
-                            self.optionsAction?(title, options?.payload ?? title)
-                        }
+                        self.optionsAction?(options?.title, options?.payload)
                     }
                     
                 }else{
-                    if let title = options?.title{
-                        self.optionsAction?(title, options?.payload ?? title)
-                    }
+                    self.optionsAction?(options?.title, options?.payload)
                 }
                 
             }else{
@@ -1074,18 +1096,16 @@ extension AdvanceListBubbleView: UICollectionViewDelegate, UICollectionViewDataS
                 if displayLimit == indexPath.item{
                     
                     var buttons = [DropdownOptions]()
-                    for i in 0..<(elementDetails.buttons?.count ?? 0){ // add remaining buttons
-                        if i >= displayLimit{
+                    for i in 0..<(elementDetails.buttons?.count ?? 0){
+                        //if i >= displayLimit{ // add remaining buttons
                             buttons.append((elementDetails.buttons?[i])!)
-                        }
+                        //}
                     }
                     //let cell = collectionView.cellForItem(at: indexPath)
                     
                     let attributes = collectionView.layoutAttributesForItem(at: indexPath)
                     let cellRect = attributes?.frame
                     _ = collectionView.convert(cellRect ?? CGRect.zero, to: collectionView.superview)
-                    
-                    
                     
                     guard let cell = collectionView.cellForItem(at: indexPath) as? AdvancedListBtnCell else { return }
                         guard let layoutAttributes = collectionView.layoutAttributesForItem(at: indexPath) else { return }
@@ -1100,18 +1120,14 @@ extension AdvanceListBubbleView: UICollectionViewDelegate, UICollectionViewDataS
                     colorDropDown.show()
                 }else{
                     if options?.type == "postback"{
-                        if let title = options?.title{
-                            self.optionsAction?(title, options?.payload ?? title)
-                        }
+                        self.optionsAction?(options?.title, options?.payload)
                     }else if options?.type == "url"{
                             self.linkAction?(options?.headerurl)
                     }
                 }
             }else{
                 if options?.type == "postback"{
-                    if let title = options?.title{
-                        self.optionsAction?(title, options?.payload ?? title)
-                    }
+                    self.optionsAction?(options?.title, options?.payload)
                 }else if options?.type == "url"{
                         self.linkAction?(options?.headerurl)
                 }
@@ -1166,8 +1182,8 @@ extension AdvanceListBubbleView{
         //DropDown
         dropDowns.forEach { $0.dismissMode = .onTap }
         dropDowns.forEach { $0.direction = .any }
-        
-        colorDropDown.backgroundColor = UIColor(white: 1, alpha: 1)
+    
+        colorDropDown.backgroundColor = UIColor.init(hexString: "#eaf1fc")//UIColor(white: 1, alpha: 1)
         colorDropDown.selectionBackgroundColor = .clear//UIColor(red: 0.6494, green: 0.8155, blue: 1.0, alpha: 0.2)
         colorDropDown.separatorColor = UIColor(white: 0.7, alpha: 0.8)
         colorDropDown.cornerRadius = 10
@@ -1175,7 +1191,8 @@ extension AdvanceListBubbleView{
         colorDropDown.shadowOpacity = 0.9
         colorDropDown.shadowRadius = 25
         colorDropDown.animationduration = 0.25
-        colorDropDown.textColor = .darkGray
+        colorDropDown.textColor = BubbleViewRightTint
+        colorDropDown.addBorder(edge: .all, color: BubbleViewLeftTint, borderWidth: 1.0)
         
     }
     // MARK: Setup DropDown
@@ -1195,11 +1212,13 @@ extension AdvanceListBubbleView{
         colorDropDown.dataSource = titles as! [String]
         colorDropDown.reloadInputViews()
         colorDropDown.reloadAllComponents()
+        colorDropDown.reloadAllData()
         
         //colorDropDown.selectRow(0)
         // Action triggered on selection
         colorDropDown.selectionAction = { (index, item) in
             if let type = type[index] as? String, type == "postback"{
+                self.maskview.isHidden = false
                 self.optionsAction?(titles[index] as? String, payload[index] as? String )
             }else{
                 //self.linkAction()
@@ -1210,3 +1229,46 @@ extension AdvanceListBubbleView{
     
 }
 
+extension UIView {
+
+    func addBorder(edge: UIRectEdge, color: UIColor, borderWidth: CGFloat) {
+
+        let seperator = UIView()
+        self.addSubview(seperator)
+        seperator.translatesAutoresizingMaskIntoConstraints = false
+
+        seperator.backgroundColor = color
+
+        if edge == .top || edge == .bottom
+        {
+            seperator.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
+            seperator.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
+            seperator.heightAnchor.constraint(equalToConstant: borderWidth).isActive = true
+
+            if edge == .top
+            {
+                seperator.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
+            }
+            else
+            {
+                seperator.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
+            }
+        }
+        else if edge == .left || edge == .right
+        {
+            seperator.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
+            seperator.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
+            seperator.widthAnchor.constraint(equalToConstant: borderWidth).isActive = true
+
+            if edge == .left
+            {
+                seperator.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
+            }
+            else
+            {
+                seperator.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
+            }
+        }
+    }
+
+}

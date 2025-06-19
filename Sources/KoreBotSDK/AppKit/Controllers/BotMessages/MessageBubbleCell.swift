@@ -523,7 +523,7 @@ class FeedbackBubbleCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.constant = 20
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
@@ -629,6 +629,44 @@ class EmptyBubbleViewCell : MessageBubbleCell {
 class QuickReplyTopBubbleCell: MessageBubbleCell{
     override func bubbleType() -> ComponentType {
         return .quick_replies_top
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
+
+class AdvancedMultiCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .advanced_multi_select
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
+
+class RadioOptionTemplateCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .radioOptionTemplate
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}
+class StackedCarosuelCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .stackedCarousel
     }
     
     override var tailPosition: BubbleMaskTailPosition {

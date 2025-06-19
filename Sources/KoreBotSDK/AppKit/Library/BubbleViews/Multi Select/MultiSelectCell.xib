@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,6 +22,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bod-Ak-rRy">
+                        <rect key="frame" x="0.0" y="1" width="320" height="44"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123456" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KRI-IM-H9X">
                         <rect key="frame" x="36" y="14.5" width="279" height="21"/>
                         <constraints>
@@ -43,17 +47,22 @@
                     <constraint firstAttribute="trailing" secondItem="KRI-IM-H9X" secondAttribute="trailing" constant="5" id="3ps-XR-2Fp"/>
                     <constraint firstAttribute="bottom" secondItem="KRI-IM-H9X" secondAttribute="bottom" constant="14.5" id="6Oh-GC-dA7"/>
                     <constraint firstItem="c5v-WO-gD5" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="8s9-dl-ZV4"/>
+                    <constraint firstItem="Bod-Ak-rRy" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="1" id="9Da-nY-mUf"/>
                     <constraint firstItem="KRI-IM-H9X" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="9KI-vN-cnA"/>
+                    <constraint firstItem="Bod-Ak-rRy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="I2R-XE-OyP"/>
                     <constraint firstItem="KRI-IM-H9X" firstAttribute="leading" secondItem="c5v-WO-gD5" secondAttribute="trailing" constant="8" id="c8T-em-JfU"/>
+                    <constraint firstAttribute="trailing" secondItem="Bod-Ak-rRy" secondAttribute="trailing" id="llh-EU-l4j"/>
                     <constraint firstItem="c5v-WO-gD5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="pMJ-8S-FvX"/>
+                    <constraint firstAttribute="bottom" secondItem="Bod-Ak-rRy" secondAttribute="bottom" constant="5" id="wWd-EB-Omy"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="bgV" destination="Bod-Ak-rRy" id="01S-YW-444"/>
                 <outlet property="checkImage" destination="c5v-WO-gD5" id="nXl-Sd-e6s"/>
                 <outlet property="titleLabel" destination="KRI-IM-H9X" id="jzQ-Cl-pk0"/>
             </connections>
-            <point key="canvasLocation" x="139" y="114"/>
+            <point key="canvasLocation" x="137.68115942028987" y="113.83928571428571"/>
         </tableViewCell>
     </objects>
     <resources>

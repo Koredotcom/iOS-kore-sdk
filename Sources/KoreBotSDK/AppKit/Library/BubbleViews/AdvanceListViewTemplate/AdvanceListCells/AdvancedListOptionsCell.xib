@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -32,10 +32,19 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pHb-Nk-gU0">
+                        <rect key="frame" x="5" y="12.666666666666664" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="dy3-hO-eE1"/>
+                            <constraint firstAttribute="width" constant="30" id="pSe-aE-eXy"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="ioB-U8-N4T" secondAttribute="trailing" constant="3" id="2KS-6R-ldT"/>
+                    <constraint firstItem="pHb-Nk-gU0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="9NC-D4-LKk"/>
                     <constraint firstItem="ioB-U8-N4T" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="9Yz-1f-eL7"/>
+                    <constraint firstItem="pHb-Nk-gU0" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="BIv-Rt-YS8"/>
                     <constraint firstItem="VAp-Hq-Jqi" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="WGU-GC-2pX"/>
                     <constraint firstAttribute="bottom" secondItem="ioB-U8-N4T" secondAttribute="bottom" id="c1G-J0-oVa"/>
                     <constraint firstItem="ioB-U8-N4T" firstAttribute="leading" secondItem="VAp-Hq-Jqi" secondAttribute="trailing" constant="8" symbolic="YES" id="xhL-3I-k08"/>
@@ -45,6 +54,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="checkBtn" destination="VAp-Hq-Jqi" id="kD5-lh-L99"/>
+                <outlet property="checkImgV" destination="pHb-Nk-gU0" id="o1G-oa-rG6"/>
                 <outlet property="titleLbl" destination="ioB-U8-N4T" id="NgF-RA-OsR"/>
             </connections>
             <point key="canvasLocation" x="138.93129770992365" y="22.887323943661972"/>

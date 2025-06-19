@@ -9,6 +9,7 @@ import UIKit
 
 class FeedBackThumbsDownCell: UICollectionViewCell {
 
+    @IBOutlet weak var thumbImageV: UIImageView!
     @IBOutlet weak var maskV: UIView!
     @IBOutlet weak var nameLbl: UILabel!
     override func awakeFromNib() {

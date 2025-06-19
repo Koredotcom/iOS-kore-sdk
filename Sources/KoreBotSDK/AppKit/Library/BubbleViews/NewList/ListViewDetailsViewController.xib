@@ -12,7 +12,9 @@
             <connections>
                 <outlet property="closeButton" destination="Udq-kf-hbK" id="FEw-gO-gpd"/>
                 <outlet property="headingLebel" destination="0Ud-kt-XB7" id="8KD-vh-sRS"/>
-                <outlet property="subView" destination="HM7-li-H3t" id="3Yg-1b-70v"/>
+                <outlet property="segmentedV" destination="S4f-td-BPe" id="aS7-EC-NxG"/>
+                <outlet property="segmentedVHeightConstraint" destination="Jll-RB-IsW" id="Fnx-Xf-RGr"/>
+                <outlet property="subView" destination="HM7-li-H3t" id="L7O-oq-fp4"/>
                 <outlet property="tableview" destination="exn-Ys-HUC" id="eWN-ry-6F2"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -46,30 +48,48 @@
                             </connections>
                         </button>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="exn-Ys-HUC">
-                            <rect key="frame" x="10" y="57" width="355" height="550"/>
+                            <rect key="frame" x="10" y="90" width="355" height="517"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="XxX-4R-EPN"/>
                                 <outlet property="delegate" destination="-1" id="axI-Cq-k3U"/>
                             </connections>
                         </tableView>
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="S4f-td-BPe">
+                            <rect key="frame" x="10" y="49" width="120" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="31" id="Jll-RB-IsW"/>
+                                <constraint firstAttribute="width" constant="120" id="g9A-Zj-hmG"/>
+                            </constraints>
+                            <segments>
+                                <segment title="Tab1"/>
+                                <segment title="Tab2"/>
+                            </segments>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="selectedSegmentTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="segmentedVAction:" destination="-1" eventType="valueChanged" id="Cmj-UN-eYE"/>
+                            </connections>
+                        </segmentedControl>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="exn-Ys-HUC" firstAttribute="top" secondItem="0Ud-kt-XB7" secondAttribute="bottom" constant="8" id="4ix-lj-7R2"/>
                         <constraint firstItem="0Ud-kt-XB7" firstAttribute="top" secondItem="HM7-li-H3t" secondAttribute="top" constant="5" id="6ra-p8-AMa"/>
                         <constraint firstItem="Udq-kf-hbK" firstAttribute="top" secondItem="HM7-li-H3t" secondAttribute="top" constant="5" id="7bD-23-Jbc"/>
+                        <constraint firstItem="S4f-td-BPe" firstAttribute="leading" secondItem="HM7-li-H3t" secondAttribute="leading" constant="10" id="AIg-Tt-Erh"/>
                         <constraint firstItem="exn-Ys-HUC" firstAttribute="leading" secondItem="HM7-li-H3t" secondAttribute="leading" constant="10" id="FIb-pI-KO0"/>
                         <constraint firstAttribute="bottom" secondItem="exn-Ys-HUC" secondAttribute="bottom" id="GJp-0g-tKp"/>
                         <constraint firstAttribute="trailing" secondItem="exn-Ys-HUC" secondAttribute="trailing" constant="10" id="Nrb-hS-yFA"/>
+                        <constraint firstItem="S4f-td-BPe" firstAttribute="top" secondItem="0Ud-kt-XB7" secondAttribute="bottom" id="PEQ-uQ-Y1S"/>
                         <constraint firstItem="0Ud-kt-XB7" firstAttribute="leading" secondItem="HM7-li-H3t" secondAttribute="leading" constant="10" id="hMz-z2-ga2"/>
                         <constraint firstItem="Udq-kf-hbK" firstAttribute="leading" secondItem="0Ud-kt-XB7" secondAttribute="trailing" constant="3" id="inZ-PA-rec"/>
+                        <constraint firstItem="exn-Ys-HUC" firstAttribute="top" secondItem="S4f-td-BPe" secondAttribute="bottom" constant="10" id="oSO-qG-hsa"/>
                         <constraint firstAttribute="trailing" secondItem="Udq-kf-hbK" secondAttribute="trailing" constant="1" id="qpS-J7-1MT"/>
                     </constraints>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" white="0.0" alpha="0.303284551056338" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.303284551056338" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="HM7-li-H3t" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="6rX-5b-MV0"/>
                 <constraint firstItem="HM7-li-H3t" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="9Tf-HJ-i6M"/>

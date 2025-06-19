@@ -20,17 +20,19 @@ class InLineFormBubbleView: BubbleView {
     
     var headingLabel: KREAttributedLabel!
     var textfeilds: Array<Dictionary<String, Any>> = []
-    //var titleLbl: UILabel!
+    
     var textFBgV: UIView!
     var inlineTextField: UITextField!
     var inlineButton: UIButton!
     //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
+    public var maskview: UIView!
     
     let yourAttributes : [NSAttributedString.Key: Any] = [
     NSAttributedString.Key.font : UIFont(name: mediumCustomFont, size: 15.0) as Any,
     NSAttributedString.Key.foregroundColor : bubbleViewBotChatButtonTextColor]
     var arrayOfTextFieldsText = NSMutableArray()
-    
+    var messageId = ""
+    var componentDescDic:[String:Any] = [:]
     override func prepareForReuse() {
         arrayOfTextFieldsText = []
     }
@@ -66,12 +68,19 @@ class InLineFormBubbleView: BubbleView {
         self.tableView.isScrollEnabled = false
         self.tableView.register(Bundle.xib(named: cellIdentifier), forCellReuseIdentifier: cellIdentifier)
         
-        let views: [String: UIView] = ["headingLabel": headingLabel, "tableView": tableView]
+        self.maskview = UIView(frame:.zero)
+        self.maskview.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.maskview)
+        self.maskview.isHidden = true
+        self.maskview.backgroundColor = .clear
+        
+        let views: [String: UIView] = ["headingLabel": headingLabel, "tableView": tableView, "maskview": maskview]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[headingLabel]-10-[tableView]-10-|", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[headingLabel]-10-|", options: [], metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[tableView]-10-|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[tableView]-5-|", options: [], metrics: nil, views: views))
         
-        
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[maskview]|", options: [], metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[maskview]-0-|", options: [], metrics: nil, views: views))
         
     }
     
@@ -83,6 +92,8 @@ class InLineFormBubbleView: BubbleView {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
                  let formFields = jsonObject["formFields"] != nil ? jsonObject["formFields"] as! Array<Dictionary<String, Any>> : []
+                componentDescDic = jsonObject as! [String : Any]
+                messageId = component.message?.messageId ?? ""
                 textfeilds = formFields
                 arrayOfTextFieldsText = []
                 for _ in 0..<textfeilds.count{
@@ -106,7 +117,16 @@ class InLineFormBubbleView: BubbleView {
                         
                     }
                 }
-                
+                if let slectedValue = jsonObject["selectedValue"] as? [String: Any]{
+                    if let value = slectedValue["value"] as? NSArray{
+                        if value.count > 0{
+                            arrayOfTextFieldsText = []
+                            for _ in 0..<value.count{
+                                arrayOfTextFieldsText.add(value[0])
+                            }
+                        }
+                    }
+                }
                 tableView.reloadData()
             }
         }
@@ -153,16 +173,24 @@ class InLineFormBubbleView: BubbleView {
                 let indexPath = IndexPath(row: i, section: sender.tag)
                 let cell = tableView.cellForRow(at: indexPath) as! InlineFormTableViewCell
                 cell.textFeildName.resignFirstResponder()
-                arrayOfTextFieldsText.replaceObject(at: i, with: "")
+                //arrayOfTextFieldsText.replaceObject(at: i, with: "")
             }
             tableView.reloadData()
+            insertSelectedValueIntoComponectDesc(value: arrayOfTextFieldsText)
             if isSecure {
                 self.optionsAction?(secureString, finalString)
             }else{
                 self.optionsAction?(finalString, finalString)
             }
+            self.maskview.isHidden = false
         }
            
+    }
+    
+    func insertSelectedValueIntoComponectDesc(value: NSMutableArray){
+        let dic = ["value": value]
+        componentDescDic["selectedValue"] = dic
+        self.updateMessage?(messageId, Utilities.stringFromJSONObject(object: componentDescDic))
     }
     
 }
@@ -207,12 +235,15 @@ extension InLineFormBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.textFeildName.placeholder = placeHolder
         
         cell.tiltLbl .textColor = BubbleViewBotChatTextColor
-        cell.textFeildName.borderStyle = .bezel
+        cell.textFeildName.borderStyle = .roundedRect
         if formFeildType == "password"{
             cell.textFeildName.isSecureTextEntry = true
         }else{
             cell.textFeildName.isSecureTextEntry = false
         }
+        cell.textFeildName.layer.borderWidth = 5.0
+        cell.textFeildName.layer.borderColor = UIColor.clear.cgColor
+        cell.textFeildName.clipsToBounds = true
         cell.textFeildName.backgroundColor = .white
         cell.textFeildName.delegate = self
         cell.textFeildName.text = arrayOfTextFieldsText[indexPath.row] as? String
@@ -221,7 +252,7 @@ extension InLineFormBubbleView: UITableViewDelegate,UITableViewDataSource{
         cell.textFeildName.translatesAutoresizingMaskIntoConstraints = false
         let attributes = [
             NSAttributedString.Key.foregroundColor: UIColor.lightGray,
-            NSAttributedString.Key.font : UIFont(name: mediumCustomFont, size: 15) ?? UIFont.systemFont(ofSize: 15)
+            NSAttributedString.Key.font : UIFont(name: regularCustomFont, size: 14.0) ?? UIFont.systemFont(ofSize: 14.0)
         ]
         cell.textFeildName.attributedPlaceholder = NSAttributedString(string: placeHolder, attributes:attributes)
         return cell

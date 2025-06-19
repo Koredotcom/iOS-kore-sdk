@@ -215,7 +215,7 @@ open class Utilities: NSObject {
         else if (templateType == "tableList") {
             return .tableList
         }
-        else if (templateType == "daterange" || templateType == "dateTemplate") {
+        else if (templateType == "daterange" || templateType == "dateTemplate" || templateType == "clockTemplate") {
             return .calendarView
         }
         else if (templateType == "quick_replies_welcome" || templateType == "button"){
@@ -255,6 +255,12 @@ open class Utilities: NSObject {
                     return .image
         }else if templateType == "audio"{
                     return .audio
+        }else if templateType == "advanced_multi_select"{
+            return .advanced_multi_select
+        }else if templateType == "radioOptionTemplate"{
+            return .radioOptionTemplate
+        }else if (templateType == "stacked"){
+            return .stackedCarousel
         }
         else if templateType == "text"{
             return .text

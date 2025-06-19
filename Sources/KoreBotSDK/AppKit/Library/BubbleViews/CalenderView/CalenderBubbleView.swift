@@ -121,7 +121,7 @@ class CalenderBubbleView: BubbleView {
                     let allItems = try? jsonDecoder.decode(Componentss.self, from: jsonData) else {
                                                 return
                     }
-                self.titleLbl.text = allItems.text_message ?? ""
+                self.titleLbl.text = allItems.text_message ?? allItems.title ??  ""
             }
         }
     }
