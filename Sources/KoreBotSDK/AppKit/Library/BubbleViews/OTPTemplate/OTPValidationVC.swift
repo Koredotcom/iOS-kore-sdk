@@ -459,7 +459,7 @@ class OTPValidationVC: UIViewController, UITextFieldDelegate {
     func dismissKeyboard(){
         if isPinLengthSix{
             if self.firstTF.text?.count == 0 || self.secondTF.text?.count == 0 || self.thirdTF.text?.count == 0 || self.foruthTF.text?.count == 0 || self.fifthTF.text?.count == 0 || self.sixthTF.text?.count == 0{
-                NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewErrorNotification), object: "Umm...looks like your input is invalid. Please check and try again")
+                NotificationCenter.default.post(name: Notification.Name(showToastMessageNotification), object: "Umm...looks like your input is invalid. Please check and try again")
             }else{
                 stopTimer()
                 let otpText = "\(self.firstTF.text ?? "")\(self.secondTF.text ?? "")\(self.thirdTF.text ?? "")\(self.foruthTF.text ?? "")\(self.fifthTF.text ?? "")\(self.sixthTF.text ?? "")"
@@ -471,7 +471,7 @@ class OTPValidationVC: UIViewController, UITextFieldDelegate {
             }
         }else{
             if self.firstTF.text?.count == 0 || self.secondTF.text?.count == 0 || self.thirdTF.text?.count == 0 || self.foruthTF.text?.count == 0 {
-                NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewErrorNotification), object: "Umm...looks like your input is invalid. Please check and try again")
+                NotificationCenter.default.post(name: Notification.Name(showToastMessageNotification), object: "Umm...looks like your input is invalid. Please check and try again")
             }else{
                 stopTimer()
                 let otpText = "\(self.firstTF.text ?? "")\(self.secondTF.text ?? "")\(self.thirdTF.text ?? "")\(self.foruthTF.text ?? "")"

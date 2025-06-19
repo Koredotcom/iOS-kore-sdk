@@ -127,14 +127,12 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
     }
     
     func funcDownloadFile(url:URL){
-        toastMessageStr = fileDownloadingToastMsg
-        //NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewNotification), object: "Show")
+        NotificationCenter.default.post(name: Notification.Name(showToastMessageNotification), object: fileDownloadingToastMsg)
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
                 print("Download error:", error?.localizedDescription ?? "Unknown error")
                 DispatchQueue.main.async {
-                    toastMessageStr = vileDownloadFailedToastMsg
-                    NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewNotification), object: "Show")
+                    NotificationCenter.default.post(name: Notification.Name(showToastMessageNotification), object: vileDownloadFailedToastMsg)
                 }
                 return
             }
@@ -415,8 +413,7 @@ extension MultiImageBubbleView{
             let action1 = UIAlertAction(title: videoDownloadAlertTitle, style: .default) { (action) in
                 if let urlStr = self.componentItems.videoUrl as? String{
                     if let url = URL(string: urlStr){
-                        toastMessageStr = fileDownloadingToastMsg
-                        NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewNotification), object: "Show")
+                        NotificationCenter.default.post(name: Notification.Name(showToastMessageNotification), object: fileDownloadingToastMsg)
                         let date: Date = Date()
                         let timeStamp: Int?
                         timeStamp = Int(date.timeIntervalSince1970)
@@ -425,14 +422,12 @@ extension MultiImageBubbleView{
                             if let savedURL = savedURL {
                                 print("Video saved at: \(savedURL.path)")
                                 DispatchQueue.main.async {
-                                    toastMessageStr = fileSavedSuccessfullyToastMsg
-                                    NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewNotification), object: "Show")
+                                    NotificationCenter.default.post(name: Notification.Name(showToastMessageNotification), object: fileSavedSuccessfullyToastMsg)
                                 }
                             } else {
                                 print("Failed to save video.")
                                 DispatchQueue.main.async {
-                                    toastMessageStr = vileDownloadFailedToastMsg
-                                    NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewNotification), object: "Show")
+                                    NotificationCenter.default.post(name: Notification.Name(showToastMessageNotification), object: vileDownloadFailedToastMsg)
                                 }
                             }
                         }

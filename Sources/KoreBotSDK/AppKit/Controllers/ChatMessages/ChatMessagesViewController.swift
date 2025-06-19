@@ -598,6 +598,17 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             return .answerTemplate
         }else if templateType == "otpValidationTemplate" || templateType == "resetPinTemplate"{
             return .OtpOrResetTemplate
+        }else if templateType == "link" || templateType == "pdfdownload"{
+            return .linkDownload
+        }
+        else if templateType == "video"{
+            return .video
+        }
+        else if templateType == "image"{
+            return .image
+        }
+        else if templateType == "audio"{
+            return .audio
         }
         else if templateType == "text"{
             return .text
@@ -666,6 +677,16 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                 if let payload = componentModel.payload as? [String: Any] {
                     if let dictionary = payload["payload"] as? [String: Any] {
                         let optionsComponent: Component = Component(.image)
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                        return (message, ttsBody)
+                    }
+                }
+            }else if (componentModel.type == "link") {
+                if let payload = componentModel.payload as? [String: Any] {
+                    if let dictionary = payload["payload"] as? [String: Any] {
+                        let optionsComponent: Component = Component(.linkDownload)
                         optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
                         message.sentDate = object?.createdOn
                         message.addComponent(optionsComponent)
@@ -940,7 +961,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(showCustomTableTemplateView), name: NSNotification.Name(rawValue: showCustomTableTemplateNotification), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(showPDFViewController), name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showPDFErrorMeesage), name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showToastMeesage), name: NSNotification.Name(rawValue: showToastMessageNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(callFromAgent), name: NSNotification.Name(rawValue: callFromAgentNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willTerminate(_:)), name: UIApplication.willTerminateNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(tokenExpiry), name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
@@ -974,7 +995,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showCustomTableTemplateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: reloadVideoCellNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewErrorNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showToastMessageNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: callFromAgentNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: showArticleTemplateNotification), object: nil)
@@ -1848,6 +1869,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     @objc func showTableTemplateView(notification:Notification) {
         let dataString: String = notification.object as! String
         let tableTemplateViewController = TableTemplateViewController(dataString: dataString)
+        tableTemplateViewController.modalPresentationStyle = .overFullScreen
         self.navigationController?.present(tableTemplateViewController, animated: true, completion: nil)
     }
     
@@ -1859,7 +1881,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         self.navigationController?.present(customTableTemplateViewController, animated: true, completion: nil)
     }
     
-    @objc func showPDFErrorMeesage(notification:Notification){
+    @objc func showToastMeesage(notification:Notification){
         let dataString: String = notification.object as? String ?? ""
         self.toastMessage(dataString)
     }
@@ -1867,7 +1889,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     @objc func showPDFViewController(notification:Notification){
         let dataString: String = notification.object as? String ?? ""
         if dataString == "Show"{
-            self.toastMessage("Statement saved successfully under Files")
+            self.toastMessage("Saved successfully under Files")
         }else{
             if #available(iOS 11.0, *) {
                 let vc = PdfShowViewController(dataString: dataString)

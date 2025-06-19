@@ -25,6 +25,7 @@ class PDFBubbleView: BubbleView {
     var pdfUrl = ""
     var tileBgv: UIView!
     var titleLbl: KREAttributedLabel!
+    var fileExtension = ""
     
     override func applyBubbleMask() {
         //nothing to put here
@@ -77,20 +78,20 @@ class PDFBubbleView: BubbleView {
         downloadBtn.translatesAutoresizingMaskIntoConstraints = false
         downloadBtn.setTitleColor(.blue, for: .normal)
         downloadBtn.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
-        downloadBtn.setImage(UIImage.init(named: ""), for: .normal)
+        //downloadBtn.setImage(UIImage.init(named: ""), for: .normal)
         cardView.addSubview(downloadBtn)
         downloadBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.right
         downloadBtn.addTarget(self, action: #selector(self.downloadButtonAction(_:)), for: .touchUpInside)
         let downloadImage = UIImage(named: "download", in: bundle, compatibleWith: nil)
         let tintedImage = downloadImage?.withRenderingMode(.alwaysTemplate)
         downloadBtn.setImage(tintedImage, for: .normal)
-        downloadBtn.tintColor = themeColor
+        downloadBtn.tintColor = BubbleViewBotChatTextColor
         
         activityView = UIActivityIndicatorView(frame: CGRect.zero)
         activityView.translatesAutoresizingMaskIntoConstraints = false
         cardView.addSubview(activityView)
         activityView.isHidden = true
-        activityView.color = themeColor
+        activityView.color = BubbleViewBotChatTextColor
         
        
         self.maskview = UIView(frame:.zero)
@@ -111,7 +112,24 @@ class PDFBubbleView: BubbleView {
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[downloadBtn(30)]-5-|", options: [], metrics: nil, views: listViews))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[activityView(30)]-5-|", options: [], metrics: nil, views: listViews))
         
-        
+        setCornerRadiousToTitleView()
+    }
+    
+    func setCornerRadiousToTitleView(){
+        let bubbleStyle = brandingBodyDic.bubble_style
+        let radius = 10.0
+        let borderWidth = 0.0
+        let borderColor = UIColor.clear
+        if #available(iOS 11.0, *) {
+            if bubbleStyle == "balloon"{
+                self.cardView.roundCorners([.layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+            }else if bubbleStyle == "rounded"{
+                self.cardView.roundCorners([.layerMaxXMinYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+                
+        }else if bubbleStyle == "rectangle"{
+                self.cardView.roundCorners([ .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: radius, borderColor: borderColor, borderWidth: borderWidth)
+            }
+        }
     }
     
     /*
@@ -128,8 +146,12 @@ class PDFBubbleView: BubbleView {
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
-                let titleStr = jsonObject["fileName"] as? String ?? ""
-                self.titleLbl.setHTMLString(titleStr, withWidth: kMaxTextWidth)
+                let titleStr = jsonObject["fileName"] as? NSString ?? ".pdf"
+                fileExtension = jsonObject["format"] as? String ?? titleStr.pathExtension ?? "pdf"
+                if fileExtension == ""{
+                    fileExtension = "pdf"
+                }
+                self.titleLbl.setHTMLString(titleStr as String, withWidth: kMaxTextWidth)
                 var url = jsonObject["url"] as? String ?? ""
                 url = url.replacingOccurrences(of: " ", with: "")
                 pdfUrl = url
@@ -150,107 +172,63 @@ class PDFBubbleView: BubbleView {
     
     
     @objc fileprivate func downloadButtonAction(_ sender: AnyObject!) {
-        activityView.startAnimating()
-        activityView.isHidden = false
         let date: Date = Date()
         let timeStamp: Int?
         timeStamp = Int(date.timeIntervalSince1970)
-        let title = "downloand\(timeStamp ?? 0).pdf"
-        saveBase64StringToPDF(pdfUrl, fileName: title)
+            //saveBase64StringToPDF(pdfUrl, fileName: title)
+        if let url = URL(string: pdfUrl){
+            activityView.startAnimating()
+            activityView.isHidden = false
+            downloadBtn.isHidden = true
+            let fileName = url.lastPathComponent as NSString
+            let title = "\(fileName.deletingPathExtension)\(timeStamp ?? 0).\(fileExtension)"
+            downloadAndShareTextFile(from: url, fileName: title)
+        }
     }
     
+    func downloadAndShareTextFile(from url: URL, fileName: String) {
+            let task = URLSession.shared.downloadTask(with: url) { localURL, response, error in
+                guard let localURL = localURL, error == nil else {
+                    print("Download error: \(String(describing: error))")
+                    DispatchQueue.main.async {
+                        self.stopLoader()
+                    }
+                    return
+                }
     
+                // Move the file to a permanent location if needed
+                let fileManager = FileManager.default
+                let docsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+                let destURL = docsURL.appendingPathComponent("\(fileName)")
     
+                try? fileManager.removeItem(at: destURL) // Clean up if needed
+                do {
+                    try fileManager.moveItem(at: localURL, to: destURL)
     
-
+                    DispatchQueue.main.async {
+                        self.downloadBtn.isHidden = false
+                        self.activityView.stopAnimating()
+                        self.activityView.isHidden = true
+                        downloadFileURL = destURL
+                        //NotificationCenter.default.post(name: Notification.Name(activityViewControllerNotification), object: nil)
+                        NotificationCenter.default.post(name: Notification.Name(showToastMessageNotification), object: toastMessageStr)
+                    }
+                } catch {
+                    print("File move error: \(error)")
+                    DispatchQueue.main.async {
+                        self.stopLoader()
+                    }
+                }
+            }
+    
+            task.resume()
+        }
+    
     func stopLoader(){
+        downloadBtn.isHidden = false
         activityView.stopAnimating()
         activityView.isHidden = true
-        NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewErrorNotification), object: "please try again later")
-    }
-    func saveBase64StringToPDF(_ base64String: String, fileName: String) {
-        guard
-            var documentsURL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last,
-            let convertedData = Data(base64Encoded: base64String)
-        else {
-            //handle error when getting documents URL
-            stopLoader()
-            return
-        }
-        //name your file however you prefer
-        documentsURL.appendPathComponent(fileName)
-        
-        do {
-            try convertedData.write(to: documentsURL)
-        } catch {
-            //handle write error here
-        }
-        print(documentsURL)
-        
-        if #available(iOS 10.0, *) {
-            do {
-                let docURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-                let contents = try FileManager.default.contentsOfDirectory(at: docURL, includingPropertiesForKeys: [.fileResourceTypeKey], options: .skipsHiddenFiles)
-                for url in contents {
-                    if url.description.contains("\(fileName)") {
-                        // its your file! do what you want with it!
-                        let contents  = try FileManager.default.contentsOfDirectory(at: docURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
-                        for indexx in 0..<contents.count {
-                            if contents[indexx].lastPathComponent == url.lastPathComponent {
-                                DispatchQueue.main.async {
-                                    // Run UI Updates
-                                    //self.maskview.isHidden = false
-                                    Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { (_) in
-                                        self.activityView.stopAnimating()
-                                        self.activityView.isHidden = true
-                                        NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewNotification), object: "Show")
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch {
-                print("could not locate pdf file !!!!!!!")
-            }
-        }
-    }
-    
-    func showSavedPdf(fileName:String) {
-        if #available(iOS 10.0, *) {
-            do {
-                let docURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-                let contents = try FileManager.default.contentsOfDirectory(at: docURL, includingPropertiesForKeys: [.fileResourceTypeKey], options: .skipsHiddenFiles)
-                for url in contents {
-                    if url.description.contains("\(fileName)") {
-                        // its your file! do what you want with it!
-                        print("Got it \(url)")
-                        NotificationCenter.default.post(name: Notification.Name(pdfcTemplateViewNotification), object: "\(url)")
-                    }
-                }
-            } catch {
-                print("could not locate pdf file !!!!!!!")
-            }
-        }
-    }
-    
-    
-    func pdfFileAlreadySaved(fileName:String)-> Bool {
-        var status = false
-        if #available(iOS 10.0, *) {
-            do {
-                let docURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-                let contents = try FileManager.default.contentsOfDirectory(at: docURL, includingPropertiesForKeys: [.fileResourceTypeKey], options: .skipsHiddenFiles)
-                for url in contents {
-                    if url.description.contains("\(fileName)") {
-                        status = true
-                    }
-                }
-            } catch {
-                print("could not locate pdf file !!!!!!!")
-            }
-        }
-        return status
+        NotificationCenter.default.post(name: Notification.Name(showToastMessageNotification), object: "please try again later")
     }
 }
 

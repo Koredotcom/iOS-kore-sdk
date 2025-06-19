@@ -22,7 +22,7 @@ var showAttachmentSendButtonNotification = "ShowAttachmentSendButton"
 var dropDownTemplateNotification = "DropDownTemplateNotificationName"
 var showCustomTableTemplateNotification = "ShowCustomTableTemplateNotificationName"
 var pdfcTemplateViewNotification = "pdfShowViewNotification"
-var pdfcTemplateViewErrorNotification = "pdfShowErrorNotification"
+var showToastMessageNotification = "showToastMessageNotification"
 var reloadVideoCellNotification = "ReloadVideoCellNotification"
 var callFromAgentNotification = "callFromAgentNotification"
 var tokenExipryNotification = "TokenExpiryNotification"
@@ -429,6 +429,14 @@ open class Utilities: NSObject {
             return .OtpOrResetTemplate
         }else if templateType == "text"{
             return .text
+        }else if templateType == "link" || templateType == "pdfdownload"{
+            return .linkDownload
+        }else if templateType == "video"{
+                    return .video
+        }else if templateType == "image"{
+                    return .image
+        }else if templateType == "audio"{
+                    return .audio
         }
         return .noTemplate
     }
