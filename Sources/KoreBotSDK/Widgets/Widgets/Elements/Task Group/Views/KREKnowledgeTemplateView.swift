@@ -7,7 +7,11 @@
 //
 
 import UIKit
-import MarkdownKit
+//import MarkdownKit
+//import MarkdownKit
+#if SWIFT_PACKAGE
+import ObjcSupport
+#endif
 
 public class DescriptionImageView : UIImageView {
     public override var intrinsicContentSize: CGSize {
@@ -19,7 +23,8 @@ public class KREKnowledgeTemplateView: UIView {
     // MARK: - properties
     let bundle = Bundle.sdkModule
     var widthConstraint:NSLayoutConstraint?
-    let markdownParser = MarkdownParser(font: UIFont.textFont(ofSize: 15, weight: .regular))
+    //let markdownParser = MarkdownParser(font: UIFont.textFont(ofSize: 15, weight: .regular))
+    var markdownParser = TSMarkdownParser.standard()
 
     public lazy var dateLabel: UILabel = {
         let titleLabel = UILabel(frame: .zero)
@@ -396,7 +401,8 @@ public class KREKnowledgeTemplateView: UIView {
                 options: options,
                 documentAttributes: nil)
             attributedString.addAttributes(attributes, range: (attributedString.string as NSString).range(of: desc)) // some range
-            subTitleLabel.attributedText = markdownParser.parse(desc)
+            //subTitleLabel.attributedText = markdownParser.parse(desc)
+            subTitleLabel.attributedText = attributedString
         }
 
         if let sharedOn = knowledgeItem.sharedOn {
