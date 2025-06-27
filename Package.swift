@@ -20,7 +20,6 @@ let package = Package(
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.8.1")),
         .package(url: "https://github.com/Alamofire/AlamofireImage.git", .upToNextMajor(from: "4.3.0")),
         .package(url: "https://github.com/tristanhimmelman/ObjectMapper.git", .exact("4.1.0")),
-        .package(url: "https://github.com/bmoliveira/MarkdownKit.git", from: "1.7.0"),
         .package(url: "https://github.com/danielgindi/Charts.git", .upToNextMajor(from: "5.0.0")),
         .package(url: "https://github.com/wibosco/GhostTypewriter", .upToNextMajor(from: "2.1.0")),
         .package(url: "https://github.com/safx/Emoji-Swift", .upToNextMajor(from: "0.4.0")),
@@ -32,7 +31,7 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "KoreBotSDK",
-            dependencies: ["Starscream", "Alamofire", "AlamofireImage", "ObjectMapper", "MarkdownKit", .product(name: "DGCharts", package: "Charts"), "GhostTypewriter", .product(name: "Emoji", package: "Emoji-swift"), "FMPhotoPicker", "SwiftUTI","ObjcSupport"],
+            dependencies: ["Starscream", "Alamofire", "AlamofireImage", "ObjectMapper", .product(name: "DGCharts", package: "Charts"), "GhostTypewriter", .product(name: "Emoji", package: "Emoji-swift"), "FMPhotoPicker", "SwiftUTI","ObjcSupport"],
             resources: [.copy("BrandindFiles"),.copy("Languages")]),
         .target(name: "ObjcSupport", path: "Sources/ObjcSupport"),
         //.testTarget(name: "KoreBotSDKTests", dependencies: ["KoreBotSDK"]),

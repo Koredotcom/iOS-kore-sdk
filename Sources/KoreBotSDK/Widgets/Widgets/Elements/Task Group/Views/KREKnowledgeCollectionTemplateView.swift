@@ -7,13 +7,16 @@
 //
 
 import UIKit
-import MarkdownKit
+#if SWIFT_PACKAGE
+import ObjcSupport
+#endif
+//import MarkdownKit
 
 public class KREKnowledgeCollectionTemplateView: UIView {
     // MARK: - properties
     let bundle = Bundle.sdkModule
-  //  var markdownParser = TSMarkdownParser.standard()
-    let markdownParser = MarkdownParser(font: UIFont.textFont(ofSize: 15, weight: .regular))
+    var markdownParser = TSMarkdownParser.standard()
+    //let markdownParser = MarkdownParser(font: UIFont.textFont(ofSize: 15, weight: .regular))
 
     public lazy var suggestedStackView: UIStackView = {
         let stackView = UIStackView(frame: .zero)
@@ -191,7 +194,8 @@ public class KREKnowledgeCollectionTemplateView: UIView {
                     options: options,
                     documentAttributes: nil)
                 attributedString.addAttributes(attributes, range: (attributedString.string as NSString).range(of: answer)) // some range
-                subTitleLabel.attributedText = markdownParser.parse(answer)
+                //subTitleLabel.attributedText = markdownParser.parse(answer)
+                subTitleLabel.attributedText = attributedString
             }
         }
         let attributedText = NSMutableAttributedString(string: knowledgeCollectionItem.name ?? "", attributes: [NSAttributedString.Key.font: UIFont.textFont(ofSize: 11.0, weight: .medium), .kern: 0.09])

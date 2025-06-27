@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
     s.dependency 'Starscream'
     s.dependency 'ObjectMapper'
     s.dependency 'GhostTypewriter'
-    s.dependency 'MarkdownKit'
+    #s.dependency 'MarkdownKit'
     s.dependency 'DGCharts'
     s.dependency 'ObjectMapper'
     s.dependency 'FMPhotoPicker'
