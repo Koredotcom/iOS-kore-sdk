@@ -17,13 +17,15 @@ class AdvancedMultiSelectBubbleView: BubbleView {
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
     let kMinTextWidth: CGFloat = 20.0
     fileprivate let multiSelectCellIdentifier = "AdvancedMultiSelectCell"
+    public var maskview: UIView!
     var sectionLimit = 1
     var isShowMoreIsHidden = false
     var checkboxIndexPath = [IndexPath]() //for Rows checkbox
     var arrayOfSeletedValues = [String]()
+    var arrayOfSeletedTitles = [String]()
     var arrayOfHeaderCheck = [String]()
     var isSliderView = false
-    
+    var doneButton: UIButton!
     let yourAttributes : [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.font : UIFont(name: boldCustomFont, size: 12.0) as Any,
         NSAttributedString.Key.foregroundColor : UIColor.white]
@@ -33,7 +35,8 @@ class AdvancedMultiSelectBubbleView: BubbleView {
     var showMore = false
     //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
     //public var linkAction: ((_ text: String?) -> Void)!
-    
+    var messageId = ""
+    var componentDescDic:[String:Any] = [:]
     override func applyBubbleMask() {
         //nothing to put here
         if(self.maskLayer == nil){
@@ -49,11 +52,6 @@ class AdvancedMultiSelectBubbleView: BubbleView {
         }
     }
     
-//    override func prepareForReuse() {
-//        checkboxIndexPath = [IndexPath]()
-//         arrayOfSeletedValues = [String]()
-//    }
-
     /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -86,6 +84,12 @@ class AdvancedMultiSelectBubbleView: BubbleView {
         self.tableView.separatorStyle = .none
         self.cardView.addSubview(self.tableView)
         self.tableView.isScrollEnabled = true
+        
+        self.maskview = UIView(frame:.zero)
+        self.maskview.translatesAutoresizingMaskIntoConstraints = false
+        self.cardView.addSubview(self.maskview)
+        self.maskview.isHidden = true
+        self.maskview.backgroundColor = .clear
 
         self.tableView.register(Bundle.xib(named: multiSelectCellIdentifier), forCellReuseIdentifier: multiSelectCellIdentifier)
         if #available(iOS 15.0, *) {
@@ -95,10 +99,12 @@ class AdvancedMultiSelectBubbleView: BubbleView {
             self.tableView.roundCorners([.layerMaxXMinYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: 5.0, borderColor: UIColor.lightGray, borderWidth: 0.0)
         }
         
-        let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView]
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-5-[tableView]-5-|", options: [], metrics: nil, views: views))
+        let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView, "maskview": maskview]
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
         
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[maskview]|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[maskview]-0-|", options: [], metrics: nil, views: views))
 
         self.titleLbl = UILabel(frame: CGRect.zero)
         self.titleLbl.textColor = BubbleViewBotChatTextColor
@@ -116,8 +122,9 @@ class AdvancedMultiSelectBubbleView: BubbleView {
         self.titleLbl.sizeToFit()
         
         let subView: [String: UIView] = ["titleLbl": titleLbl]
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
+        let metrics: [String: NSNumber] = ["textLabelMaxWidth": NSNumber(value: Float(kMaxTextWidth)), "textLabelMinWidth": NSNumber(value: Float(kMinTextWidth))]
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLbl]-10-|", options: [], metrics: metrics, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl(>=textLabelMinWidth,<=textLabelMaxWidth)]-10-|", options: [], metrics: metrics, views: subView))
         setCornerRadiousToTitleView()
         
     }
@@ -158,13 +165,15 @@ class AdvancedMultiSelectBubbleView: BubbleView {
         if (components.count > 0) {
             let component: KREComponent = components.firstObject as! KREComponent
             if (component.message != nil) {
-                let jsonString = component.message?.messageId
-                print(jsonString!)
+                //let jsonString = component.message?.messageId
+                //print(jsonString!)
                 
             }
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
+                componentDescDic = jsonObject as! [String : Any]
+                messageId = component.message?.messageId ?? ""
                 let jsonDecoder = JSONDecoder()
                  guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObject as Any , options: .prettyPrinted),
                 let allItems = try? jsonDecoder.decode(Componentss.self, from: jsonData) else {
@@ -172,15 +181,66 @@ class AdvancedMultiSelectBubbleView: BubbleView {
                 }
                 self.titleLbl.text = allItems.heading ?? ""
                 isSliderView = allItems.sliderView  ?? false
-                arrayOfSeletedValues = []
+               
                 arrayOfElements = allItems.elements ?? []
                 arrayOfButtons = allItems.buttons ?? []
-                if !isShowMoreIsHidden{
+//                if !isShowMoreIsHidden{
+//                    arrayOfSeletedValues = []
+//                    checkboxIndexPath = [IndexPath]()
+//                    arrayOfSeletedValues = [String]()
+//                    sectionLimit = allItems.limit ?? arrayOfElements.count
+//                    for _ in 0..<arrayOfElements.count{
+//                        arrayOfHeaderCheck.append("Uncheck")
+//                    }
+//                }
+
+                checkboxIndexPath = []
+                if let slectedValue = jsonObject["selectedValue"] as? [String: Any]{
+                    //print(slectedValue)
+                    if let isShow = slectedValue["isSelectedShowMore"] as? Bool, isShow == true{
+                        isShowMoreIsHidden = isShow
+                        sectionLimit = arrayOfElements.count
+                    }else{
+                        isShowMoreIsHidden = false
+                        sectionLimit = 1
+                    }
+                    if let value = slectedValue["value"] as? [[String: Any]]{
+                        arrayOfHeaderCheck = []
+                        checkboxIndexPath = []
+                        arrayOfSeletedValues = []
+                        arrayOfSeletedTitles = []
+                        for i in 0..<value.count{
+                            let selectedIndexpath = value[i]
+                            let section = selectedIndexpath["section"] as! Int
+                            let row = selectedIndexpath["row"] as! Int
+                            let indexPath = IndexPath(row: row , section: section)
+                            checkboxIndexPath.append(indexPath)
+                        }
+                        for i in 0..<arrayOfElements.count{
+                            let elementsCollection = arrayOfElements[i]
+                            let section = i
+                            let rowCountInSection = checkboxIndexPath.filter { $0.section == section }.count
+                            if elementsCollection.collection?.count == rowCountInSection{
+                                arrayOfHeaderCheck.append("Check")
+                            }else{
+                                arrayOfHeaderCheck.append("Uncheck")
+                            }
+                        }
+                    }
+                    
+                }else{
+                    sectionLimit = 1
+                    isShowMoreIsHidden = false
+                    arrayOfHeaderCheck = []
+                    checkboxIndexPath = []
+                    arrayOfSeletedValues = []
+                    arrayOfSeletedTitles = []
                     sectionLimit = allItems.limit ?? arrayOfElements.count
                     for _ in 0..<arrayOfElements.count{
                         arrayOfHeaderCheck.append("Uncheck")
                     }
                 }
+                
                 self.tableView.reloadData()
                 
             }
@@ -195,7 +255,7 @@ class AdvancedMultiSelectBubbleView: BubbleView {
             textSize.height = self.titleLbl.font.pointSize
         }
         if isSliderView{
-            return CGSize(width: 0.0, height: textSize.height + 0.0)
+            return CGSize(width: 0.0, height: textSize.height + 20.0)
         }else{
             var cellHeight : CGFloat = 0.0
             var finalHeight: CGFloat = 0.0
@@ -218,9 +278,23 @@ class AdvancedMultiSelectBubbleView: BubbleView {
                     }
                 }
             }
-            return CGSize(width: 0.0, height: textSize.height+40+finalHeight+HeaderVHeight+footerHeight)
+            return CGSize(width: 0.0, height: textSize.height+30+finalHeight+HeaderVHeight+footerHeight)
         }
         
+    }
+    
+    func insertSelectedValueIntoComponectDesc(value: [IndexPath]){
+        var indexPathArry: [[String: Any]] = []
+        var indexpathDic:[String:Any] = [:]
+        for indexPath in value {
+            //print("Selected section: \(indexPath.section), row: \(indexPath.row)")
+            indexpathDic["section"] = indexPath.section
+            indexpathDic["row"] = indexPath.row
+            indexPathArry.append(indexpathDic)
+        }
+        let dic = ["value": indexPathArry,"isSelectedShowMore": isShowMoreIsHidden] as [String : Any]
+        componentDescDic["selectedValue"] = dic
+        self.updateMessage?(messageId, Utilities.stringFromJSONObject(object: componentDescDic))
     }
 }
 
@@ -259,11 +333,11 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
         if checkboxIndexPath.contains(indexPath) {
             let imgV = UIImage.init(named: "check", in: bundle, compatibleWith: nil)
             cell.checkImage.image = imgV?.withRenderingMode(.alwaysTemplate)
-            cell.checkImage.tintColor = themeColor
+            cell.checkImage.tintColor = BubbleViewRightTint
         }else{
             let imgV = UIImage.init(named: "uncheck", in: bundle, compatibleWith: nil)
             cell.checkImage.image = imgV?.withRenderingMode(.alwaysTemplate)
-            cell.checkImage.tintColor = themeColor
+            cell.checkImage.tintColor = BubbleViewLeftTint
         }
         return cell
         
@@ -272,12 +346,13 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
         let elements = arrayOfElements[indexPath.section]
         let elementsCollection = elements.collection?[indexPath.row]
         if checkboxIndexPath.contains(indexPath) {
-            removeSelectedValues(value: elementsCollection?.value ?? "")
+            removeSelectedValues(value: elementsCollection?.value ?? "", titles: elementsCollection?.title ?? "")
             checkboxIndexPath.remove(at: checkboxIndexPath.firstIndex(of: indexPath)!)
         }else{
             checkboxIndexPath.append(indexPath)
             let value = "\(elementsCollection?.value ?? "")"
             arrayOfSeletedValues.append(value)
+            arrayOfSeletedTitles.append("\(elementsCollection?.title ?? "")")
         }
         var zzz = 0
         if let collectionCount = elements.collection?.count{
@@ -298,10 +373,19 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
             }
         }
         tableView.reloadData()
+        hideDoneButton()
     }
-    func removeSelectedValues(value:String){
+    func hideDoneButton(){
+        if arrayOfSeletedValues.count > 0{
+            doneButton.isHidden = false
+        }else{
+            doneButton.isHidden = false
+        }
+    }
+    func removeSelectedValues(value:String,titles:String){
         arrayOfSeletedValues = arrayOfSeletedValues.filter(){$0 != value}
-        print(arrayOfSeletedValues)
+        arrayOfSeletedTitles = arrayOfSeletedTitles.filter(){$0 != titles}
+        //print(arrayOfSeletedValues)
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let elements = arrayOfElements[section]
@@ -334,7 +418,7 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
             let menuImage = UIImage(named: "check", in: bundle, compatibleWith: nil)
             let tintedMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
             headerSubView.headerCheckBtn.setImage(tintedMenuImage, for: .normal)
-            headerSubView.headerCheckBtn.tintColor = themeColor
+            headerSubView.headerCheckBtn.tintColor = BubbleViewRightTint
         }else{
             let menuImage = UIImage(named: "uncheck", in: bundle, compatibleWith: nil)
             let tintedMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
@@ -356,7 +440,7 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
                     let indexPath = IndexPath(row: i , section: sender.tag)
                     let elementsCollection = elements.collection?[i]
                     if checkboxIndexPath.contains(indexPath) {
-                        removeSelectedValues(value: elementsCollection?.value ?? "")
+                        removeSelectedValues(value: elementsCollection?.value ?? "", titles: elementsCollection?.title ?? "")
                         checkboxIndexPath.remove(at: checkboxIndexPath.firstIndex(of: indexPath)!)
                     }
                 }
@@ -373,6 +457,8 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
                         checkboxIndexPath.append(indexPath)
                         let value = "\(elementsCollection?.value ?? "")"
                         arrayOfSeletedValues.append(value)
+                        arrayOfSeletedTitles.append(elementsCollection?.title ?? "")
+                        
                     }
                 }
             }
@@ -408,7 +494,7 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
         showMoreButton.addTarget(self, action: #selector(self.showMoreButtonAction(_:)), for: .touchUpInside)
         showMoreButton.isHidden = isShowMoreIsHidden
         
-        let doneButton = UIButton(frame: CGRect.zero)
+        doneButton = UIButton(frame: CGRect.zero)
         doneButton.backgroundColor = themeColor
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.clipsToBounds = true
@@ -419,6 +505,7 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
         doneButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
         view.addSubview(doneButton)
         doneButton.addTarget(self, action: #selector(self.doneButtonButtonAction(_:)), for: .touchUpInside)
+        hideDoneButton()
         
         if arrayOfButtons.count>0{
             let btnTitle: String = arrayOfButtons[0].title!
@@ -435,16 +522,24 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
         return view
     }
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {
-            isShowMoreIsHidden = true
-            sectionLimit = arrayOfElements.count
-            NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+            let dic = ["isSelectedShowMore": true]
+            componentDescDic["selectedValue"] = dic
+            self.updateMessage?(messageId, Utilities.stringFromJSONObject(object: componentDescDic))
+          Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { (_) in
+                self.isShowMoreIsHidden = true
+                self.sectionLimit = self.arrayOfElements.count
+               NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+           }
     }
     
     @objc fileprivate func doneButtonButtonAction(_ sender: AnyObject!) {
         if arrayOfSeletedValues.count > 0{
-            let joined = arrayOfSeletedValues.joined(separator: ", ")
-            print(joined)
-            self.optionsAction?("Here are selected items: \(joined)",joined)
+            self.maskview.isHidden = false
+            insertSelectedValueIntoComponectDesc(value: checkboxIndexPath)
+            let joinedValues = arrayOfSeletedValues.joined(separator: ", ")
+            let joinedTitles = arrayOfSeletedTitles.joined(separator: ", ")
+
+            self.optionsAction?("Here are selected items: \(joinedTitles)",joinedValues)
         }
     }
 }

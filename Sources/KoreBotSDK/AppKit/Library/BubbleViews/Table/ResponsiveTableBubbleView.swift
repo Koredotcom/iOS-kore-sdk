@@ -220,7 +220,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
             }
             else{
                 let cell : ResponsiveCustonCell = self.tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! ResponsiveCustonCell
-                print(rows[indexPath.section][indexPath.row])
+                //print(rows[indexPath.section][indexPath.row])
                 let row = rows[indexPath.section]
                 if(row.count > indexPath.row*2){
                     cell.headerLabel.text = row[indexPath.row*2]
@@ -240,7 +240,7 @@ class ResponsiveTableBubbleView: BubbleView, UITableViewDelegate, UITableViewDat
             }
         }else{
             let cell : ResponsiveCustonCell = self.tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! ResponsiveCustonCell
-            print(rows[indexPath.section][indexPath.row])
+            //print(rows[indexPath.section][indexPath.row])
             let row = rows[indexPath.section]
             if(row.count > indexPath.row*2){
                 cell.headerLabel.text = row[indexPath.row*2]

@@ -574,6 +574,15 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
                 }
+                bubbleView.updateMessage = {[weak self] (messageId, componentDesc) in
+                    self?.viewDelegate?.updateMessage(messageId: messageId ?? "", componentDesc: componentDesc ?? "")
+                }
+                let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                if firstIndexPath.isEqual(indexPath) {
+                    bubbleView.maskview.isHidden = true
+                }else{
+                    bubbleView.maskview.isHidden = false
+                }
                 break
             case .radioOptionTemplate:
                 let bubbleView: RadioOptionBubbleView = cell.bubbleView as! RadioOptionBubbleView

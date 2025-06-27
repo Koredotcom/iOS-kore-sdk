@@ -38,7 +38,9 @@ class AdvancedMultiSelectViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        if #available(iOS 15.0, *){
+            self.tabV.sectionHeaderTopPadding = 0.0
+        }
         headerLbl.textColor = BubbleViewBotChatTextColor
         headerLbl.font = UIFont.init(name: boldCustomFont, size: 15.0)
         // Do any additional setup after loading the view.
@@ -114,7 +116,6 @@ class AdvancedMultiSelectViewController: UIViewController {
     @IBAction func dontButtonAction(_ sender: Any) {
     }
     
-
 }
 
 extension AdvancedMultiSelectViewController: UITableViewDataSource, UITableViewDelegate{
@@ -152,7 +153,7 @@ extension AdvancedMultiSelectViewController: UITableViewDataSource, UITableViewD
         if checkboxIndexPath.contains(indexPath) {
             let imgV = UIImage.init(named: "check", in: bundle, compatibleWith: nil)
             cell.checkImage.image = imgV?.withRenderingMode(.alwaysTemplate)
-            cell.checkImage.tintColor = themeColor
+            cell.checkImage.tintColor = BubbleViewRightTint
         }else{
             let imgV = UIImage.init(named: "uncheck", in: bundle, compatibleWith: nil)
             cell.checkImage.image = imgV?.withRenderingMode(.alwaysTemplate)
@@ -237,7 +238,7 @@ extension AdvancedMultiSelectViewController: UITableViewDataSource, UITableViewD
             let menuImage = UIImage(named: "check", in: bundle, compatibleWith: nil)
             let tintedMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
             headerSubView.headerCheckBtn.setImage(tintedMenuImage, for: .normal)
-            headerSubView.headerCheckBtn.tintColor = themeColor
+            headerSubView.headerCheckBtn.tintColor = BubbleViewRightTint
         }else{
             let menuImage = UIImage(named: "uncheck", in: bundle, compatibleWith: nil)
             let tintedMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
