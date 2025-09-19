@@ -33,7 +33,7 @@ Kore Bot SDK for iOS enables you to talk to Kore bots over a web socket. This re
 
 * If you are using Cocoapods project Setting up clientId, clientSecret, botId, chatBotName and identity in Examples/CocoapodsDemo/KoreBotSDKDemo/ViewController.swift
 
-![SDKConfiguration setup](https://github.com/Koredotcom/iOS-kore-sdk/blob/Appkit/sdk_configuration.png)
+![SDKConfiguration setup](https://github.com/Koredotcom/iOS-kore-sdk/blob/master/sdk_configuration.png)
 
 
 Client id - Copy this id from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
