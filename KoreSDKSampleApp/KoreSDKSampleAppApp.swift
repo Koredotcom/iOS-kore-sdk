@@ -26,7 +26,7 @@ struct KoreSDKSampleAppApp: App {
     func botConnectButtonAction(){
         
         let customData: [String : Any] = ["user_id": "", "language": "", "platform": "ios"]
-        botConnect.initialize("cs-16267e93-ae50-58f3-852a-6034d89b1cfa", clientSecret: "MARMSzQORkdqUvNiyV9dmFkYf73DfqoXrOEJ1o1n6Cw=", botId: "st-ab5a9721-28ec-5a68-9bd5-ccab1641bd66", chatBotName: "SDKBot", identity: "abc@kore.com", isAnonymous: true, isWebhookEnabled: false, JWTServerUrl: "https://gw.dev.baraq.com/koreai/api/", BOTServerUrl: "https://koreai.dev.baraq.com", BrandingUrl: "https://koreai.dev.baraq.com", customData: customData)
+        botConnect.initialize("<client-id>", clientSecret: "<client-secret>", botId: "<bot-id>", chatBotName: "bot-name", identity: "<identity-email> or <random-id>", isAnonymous: true, isWebhookEnabled: false, JWTServerUrl: "http://<jwt-server-host>/", BOTServerUrl: "https://bots.kore.ai", BrandingUrl: "https://bots.kore.ai", customData: customData)
         
         botConnect.show()
         
