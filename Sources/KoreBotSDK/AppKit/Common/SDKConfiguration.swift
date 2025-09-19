@@ -16,13 +16,13 @@ class SDKConfiguration: NSObject {
     }
     
     struct botConfig {
-        public static var clientId = "<client-id>" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
+        public static var clientId = "<client-id>" // Copy this value from Bot Builder SDK Settings.
         
-        public static var clientSecret = "<client-secret>" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
+        public static var clientSecret = "<client-secret>" // Copy this value from Bot Builder SDK Settings.
         
-        public static var botId =  "<bot-id>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
+        public static var botId =  "<bot-id>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client.
 
-        public static var chatBotName = "bot-name" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
+        public static var chatBotName = "bot-name" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client.
         
         public static var identity = "<identity-email> or <random-id>"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
         
@@ -58,13 +58,13 @@ class SDKConfiguration: NSObject {
     }
    
     struct widgetConfig {
-        static let clientId = "<client-id>" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
+        static let clientId = "<client-id>" // Copy this value from Bot Builder SDK Settings.
         
-        static let clientSecret = "<client-secret>" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
+        static let clientSecret = "<client-secret>" // Copy this value from Bot Builder SDK Settings.
         
-        static let botId =  "<bot-id>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
+        static let botId =  "<bot-id>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client.
 
-        static let chatBotName = "bot-name" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
+        static let chatBotName = "bot-name" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client.
         
         static let identity = "<identity-email> or <random-id>"// This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
         

@@ -32,10 +32,10 @@ class ViewController: UIViewController {
     */
     
     @IBAction func connectBtnAction(_ sender: Any) {
-        let clientId = "<client-id>" // Copy this value from Bot Builder SDK Settings ex. cs-5250bdc9-6bfe-5ece-92c9-ab54aa2d4285
-        let clientSecret = "<client-secret>" // Copy this value from Bot Builder SDK Settings ex. Wibn3ULagYyq0J10LCndswYycHGLuIWbwHvTRSfLwhs=
-        let botId =  "<bot-id>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
-        let chatBotName = "bot-name" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. "Demo Bot"
+        let clientId = "<client-id>" // Copy this value from Bot Builder SDK Settings.
+        let clientSecret = "<client-secret>" // Copy this value from Bot Builder SDK Settings.
+        let botId =  "<bot-id>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client.
+        let chatBotName = "bot-name" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client.
         let identity = "<identity-email> or <random-id>" // This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
         let isAnonymous = true // This should be either true (in case of known-user) or false (in-case of anonymous user).
         let isWebhookEnabled = false // This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
