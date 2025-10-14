@@ -136,7 +136,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[titleLbl(>=textLabelMinWidth,<=textLabelMaxWidth)]-16-|", options: [], metrics: metrics, views: subView))
         
         if isReloadBtnLink {
-            print("yeReload")
+            //print("yeReload")
             isReloadBtnLink = false
             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
               NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)

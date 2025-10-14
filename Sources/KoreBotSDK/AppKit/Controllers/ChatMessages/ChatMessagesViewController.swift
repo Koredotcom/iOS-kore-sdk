@@ -576,8 +576,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         }
         else if (templateType == "dropdown_template") {
             return .dropdown_template
-        }else if (templateType == "custom_table")
-        {
+        }else if (templateType == "custom_table"){
             return .custom_table
         }else if (templateType == "advancedListTemplate"){
             return .advancedListTemplate
@@ -591,8 +590,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             return .radioOptionTemplate
         }else if templateType == "quick_replies_top"{
             return .quick_replies_top
-        }
-        else if templateType == "articleTemplate"{
+        }else if templateType == "articleTemplate"{
             return .articleTemplate
         }else if templateType == "answerTemplate"{
             return .answerTemplate
@@ -600,17 +598,15 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             return .OtpOrResetTemplate
         }else if templateType == "link" || templateType == "pdfdownload"{
             return .linkDownload
-        }
-        else if templateType == "video"{
+        }else if templateType == "video"{
             return .video
-        }
-        else if templateType == "image"{
+        }else if templateType == "image"{
             return .image
-        }
-        else if templateType == "audio"{
+        }else if templateType == "audio"{
             return .audio
-        }
-        else if templateType == "text"{
+        }else if templateType == "digitalForm"{
+            return .digital_form
+        }else if templateType == "text"{
             return .text
         }
         return .noTemplate
@@ -1565,7 +1561,10 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                 NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
                 let url: URL = URL(string: urlString)!
                 let webViewController = SFSafariViewController(url: url)
-                present(webViewController, animated: true, completion:nil)
+                if isPopUpWebV{
+                    webViewController.modalPresentationStyle = .overFullScreen
+                }
+                present(webViewController, animated: true, completion: nil)
             }
         }
         

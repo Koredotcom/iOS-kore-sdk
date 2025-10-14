@@ -108,6 +108,7 @@ var isEmojiDispaly = false
 var recentHistoryBatchSize = 10
 var isPaginatedScrollEnable = SDKConfiguration.botConfig.isShowChatHistory
 var paginatedScrollBatchSize = 10
+var isPopUpWebV = false
 
 var toastMessageStr = "Saved successfully under Files"
 var videoDownloadAlertTitle = "Download"
@@ -437,6 +438,8 @@ open class Utilities: NSObject {
                     return .image
         }else if templateType == "audio"{
                     return .audio
+        }else if templateType == "digitalForm"{
+            return .digital_form
         }
         return .noTemplate
     }

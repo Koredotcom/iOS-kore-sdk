@@ -423,6 +423,8 @@ open class KABotClient: NSObject {
             return .answerTemplate
         }else if templateType == "otpValidationTemplate" || templateType == "resetPinTemplate"{
             return .OtpOrResetTemplate
+        }else if templateType == "digitalForm"{
+            return .digital_form
         }else if templateType == "text"{
             return .text
         }
@@ -564,8 +566,13 @@ open class KABotClient: NSObject {
                                 }else{
                                     //OTPValidationRemoveCount += 1
                                 }
-                        }
-
+                            }else if templateType == "button"{
+                                if let formDataDic = payload["formData"] as? [String: Any] {
+                                    if let formLink = formDataDic["formLink"] as? String{
+                                        templateType = "digitalForm"
+                                    }
+                                }
+                            }
                             let componentType = getComponentType(templateType, tabledesign)
                             if componentType != .quickReply {
                                 
@@ -598,7 +605,11 @@ open class KABotClient: NSObject {
                                message.addComponent(textComponent)
                            }else{
                             let optionsComponent: Component = Component(componentType)
-                            optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                               if templateType == "digitalForm"{
+                                   optionsComponent.payload = Utilities.stringFromJSONObject(object: payload)
+                               }else{
+                                   optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                               }
                             message.sentDate = object?.createdOn
                             message.addComponent(optionsComponent)
                            }

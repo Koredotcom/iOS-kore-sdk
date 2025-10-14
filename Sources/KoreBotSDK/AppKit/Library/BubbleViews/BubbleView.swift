@@ -184,6 +184,9 @@ open class BubbleView: UIView {
             case .OtpOrResetTemplate:
                 bubbleView = OTPorResetBubbleView()
                 break
+            case .digital_form:
+                bubbleView = DigitalFormBubbleView()
+                break
             case .noTemplate:
                 bubbleView = EmptyBubbleView()
                 break

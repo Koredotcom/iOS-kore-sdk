@@ -1054,3 +1054,23 @@ class OTPorResetBubbleCell : MessageBubbleCell {
         }
     }
 }
+class DigitalFormBubbleCel : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .digital_form
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleLeadingConstraint.constant = defaultSpacing
+            self.bubbleTrailingConstraint.constant = defaultSpacing
+            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+    
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        self.senderImageView.isHidden = true
+    }
+}
+
