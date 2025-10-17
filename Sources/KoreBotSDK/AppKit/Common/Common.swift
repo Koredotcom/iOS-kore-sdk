@@ -82,7 +82,7 @@ var arrayOfSelectedBtnIndex:NSMutableArray = NSMutableArray()
 
 var notDeliverdMsgsArray = [String]()
 var historyLimit = 0
-var RemovedTemplateCount = 0
+var removedTemplateCount = 0
 var isCallingHistoryApi = true
 var close_AgentChat_EventName = "close_agent_chat"
 var close_Button_EventName = "close_button_event"
@@ -90,7 +90,7 @@ var minimize_Button_EventName = "minimize_button_event"
 var isZenDesk_Event = false
 
 
-var isOTPValidationTemplate = false
+var isRemoveTemplate = false
 var OTPValidationRemoveCount = 0
 var otpValidationTemplateNotification = "OTPvalidationTemplateNotificationName"
 var resetpinTemplateNotification = "ResetPinTemplateNotificationName"

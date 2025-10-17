@@ -90,7 +90,7 @@ open class KABotClient: NSObject {
         }
         var limit = 0
         if isShowWelcomeMsg{
-            RemovedTemplateCount = 0
+            removedTemplateCount = 0
             historyLimit = 0
             limit = 0
         }else{
@@ -250,7 +250,7 @@ open class KABotClient: NSObject {
             history = false
             isShowWelcomeMsg = false
             let message = self?.onReceiveMessage(object: object)
-            if !isOTPValidationTemplate{
+            if !isRemoveTemplate{
                 self?.addMessages(message?.0, message?.1)
             }
         }
@@ -433,7 +433,7 @@ open class KABotClient: NSObject {
     
     
     func onReceiveMessage(object: BotMessageModel?) -> (Message?, String?) {
-        isOTPValidationTemplate = false
+        isRemoveTemplate = false
         NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil) //hideTypingStatusForBot()
         var ttsBody: String?
         var textMessage: Message! = nil
@@ -498,8 +498,9 @@ open class KABotClient: NSObject {
                     textComponent.payload = text
                     ttsBody = text
                     
-                    if text.contains("use a web form")  {
-
+                    if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty  {
+                        isRemoveTemplate = true
+                        removedTemplateCount  += 1
                     }
                     message.addComponent(textComponent)
                     return (message, ttsBody)
@@ -552,7 +553,7 @@ open class KABotClient: NSObject {
                                     feedBackTemplateSelectedValue = ""
                                 }
                             }else if templateType == "otpValidationTemplate" || templateType == "resetPinTemplate"{
-                                //isOTPValidationTemplate = true
+                                //isRemoveTemplate = true
                                 if !history{
                                     let otpStr = Utilities.stringFromJSONObject(object: dictionary)
                                     let otptemplateType = templateType
@@ -1011,9 +1012,9 @@ open class KABotClient: NSObject {
                             }
                         }
                     }
-                    if jsonString == "Welpro"{
+                    if jsonString == "Welpro" || jsonString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty{
                         removeTemplate = true
-                        RemovedTemplateCount  += 1
+                        removedTemplateCount  += 1
                     }
                 }
                 
@@ -1039,7 +1040,7 @@ open class KABotClient: NSObject {
                 let messageTuple = onReceiveMessage(object: botMessage)
                 if let object = messageTuple.0 {
                     if !removeTemplate{
-                        if !isOTPValidationTemplate{
+                        if !isRemoveTemplate{
                             arrayOfSelectedBtnIndex.insert(1001, at: 0)
                             allMessages.append(object)
                         }

@@ -613,7 +613,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }
     
     func onReceiveMessage(object: BotMessageModel?) -> (Message?, String?) {
-        isOTPValidationTemplate = false
+        isRemoveTemplate = false
         var ttsBody: String?
         var textMessage: Message! = nil
         let message: Message = Message()
@@ -719,7 +719,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                         
                     }
                     if templateType == "otpValidationTemplate" || templateType == "resetPinTemplate"{
-                        //isOTPValidationTemplate = true
+                        //isRemoveTemplate = true
                         //OTPValidationRemoveCount += 1
                     }
                     
@@ -2122,9 +2122,9 @@ extension ChatMessagesViewController {
                            }
                        }
                    }
-                    if jsonString == "Welpro"{
+                    if jsonString == "Welpro" || jsonString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty{
                         removeTemplate = true
-                        RemovedTemplateCount  += 1
+                        removedTemplateCount  += 1
                     }
                 }
                 
@@ -2134,7 +2134,7 @@ extension ChatMessagesViewController {
                 let messageTuple = onReceiveMessage(object: botMessage)
                 if let object = messageTuple.0 {
                     if !removeTemplate{
-                        if !isOTPValidationTemplate{
+                        if !isRemoveTemplate{
                             arrayOfSelectedBtnIndex.add(1001)
                             allMessages.append(object)
                         }
@@ -2157,7 +2157,7 @@ extension ChatMessagesViewController {
             if count == 0 {
                 self?.getMessages(offset: 0)
             }else{
-                self?.offSet =  count + RemovedTemplateCount + OTPValidationRemoveCount
+                self?.offSet =  count + removedTemplateCount + OTPValidationRemoveCount
                 if (self?.botMessagesView.spinner.isHidden)!{
                     self?.getMessages(offset: self!.offSet)
                 }
