@@ -364,10 +364,18 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
         }
         
         if isFullWidth{
+            if isLandscape{
+                return CGSize(width: BubbleViewMaxWidth - 20  , height: 40)
+            }
             return CGSize(width: BubbleViewMaxWidth - 5  , height: 40)
         }else{
             return CGSize(width: min(Int(maxContentWidth()) - 10 , textWidth + 28) , height: 40)
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        collectionView.collectionViewLayout.invalidateLayout()
     }
     
     func maxContentWidth() -> CGFloat {

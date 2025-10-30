@@ -32,6 +32,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     var kaBotClient: KABotClient!
     
     @IBOutlet weak var backBtn: UIButton!
+    @IBOutlet weak var backBtnLeadingConstarint: NSLayoutConstraint!
     @IBOutlet weak var threadContainerView: UIView!
     @IBOutlet weak var quickSelectContainerView: UIView!
     @IBOutlet weak var composeBarContainerView: UIView!
@@ -64,6 +65,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     @IBOutlet weak var attachmentCollectionView: UICollectionView!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var headerViewTopConstraint: NSLayoutConstraint!
     var composeBarContainerHeightConstraint: NSLayoutConstraint!
     var composeViewBottomConstraint: NSLayoutConstraint!
     var audioComposeContainerHeightConstraint: NSLayoutConstraint!
@@ -217,6 +219,13 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
+        if view.bounds.width > view.bounds.height {
+            backBtnLeadingConstarint.constant = 20.0
+            headerViewTopConstraint.constant = 18.0
+        }else{
+            backBtnLeadingConstarint.constant = 15.0
+            headerViewTopConstraint.constant = 10.0
+        }
     }
     
 //    override var preferredStatusBarStyle: UIStatusBarStyle {

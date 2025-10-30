@@ -28,7 +28,7 @@ class CarouselBubbleView: BubbleView {
         super.initialize()
         
         self.carouselView = KRECarouselView()
-        self.carouselView.maxCardWidth = BubbleViewMaxWidth
+        self.carouselView.maxCardWidth = portraitCardWidth()
         self.carouselView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.carouselView)
         
@@ -45,6 +45,24 @@ class CarouselBubbleView: BubbleView {
             if(self?.linkAction != nil){
                 self?.linkAction?(text)
             }
+        }
+    }
+    
+    private func portraitCardWidth() -> CGFloat {
+        let portraitBase = min(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
+        return max(0.0, portraitBase - 90.0)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let newWidth = portraitCardWidth()
+        if abs(newWidth - self.carouselView.maxCardWidth) > 0.5 {
+            self.carouselView.maxCardWidth = newWidth
+            // Trigger height recomputation for new width
+            let currentCards = self.carouselView.cards
+            self.carouselView.cards = currentCards
+            self.carouselView.collectionViewLayout.invalidateLayout()
+            self.invalidateIntrinsicContentSize()
         }
     }
     
@@ -95,6 +113,8 @@ class CarouselBubbleView: BubbleView {
                 }
                 
                 self.carouselView.cards.removeAll()
+                // Ensure width is portrait-based before computing heights
+                self.carouselView.maxCardWidth = portraitCardWidth()
                 self.carouselView.cards = cards
             }
         }

@@ -14,7 +14,7 @@ class NewListBubbleView: BubbleView {
     var titleLbl: UILabel!
     var tableView: UITableView!
     var cardView: UIView!
-    let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
+    let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 32.0
     let kMinTextWidth: CGFloat = 20.0
     fileprivate let listCellIdentifier = "NewListTableViewCell"
     var rowsDataLimit = 4
@@ -82,7 +82,7 @@ class NewListBubbleView: BubbleView {
 
         let views: [String: UIView] = ["tileBgv": tileBgv, "tableView": tableView]
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[tileBgv]-5-[tableView]-0-|", options: [], metrics: nil, views: views))
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: views))
 
         self.titleLbl = UILabel(frame: CGRect.zero)
@@ -101,8 +101,9 @@ class NewListBubbleView: BubbleView {
         self.titleLbl.sizeToFit()
         
         let subView: [String: UIView] = ["titleLbl": titleLbl]
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl]-10-|", options: [], metrics: nil, views: subView))
+        let metrics: [String: NSNumber] = ["textLabelMaxWidth": NSNumber(value: Float(kMaxTextWidth)), "textLabelMinWidth": NSNumber(value: Float(kMinTextWidth))]
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLbl]-10-|", options: [], metrics: metrics, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[titleLbl(>=textLabelMinWidth,<=textLabelMaxWidth)]-16-|", options: [], metrics: metrics, views: subView))
         setCornerRadiousToTitleView()
     }
     

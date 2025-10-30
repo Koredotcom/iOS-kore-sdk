@@ -94,6 +94,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
     var CollectionVBgv: UIView!
     var titleLbl: UILabel!
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 32.0
+    let kMinTextWidth: CGFloat = 20.0
     var isExpandTableview = false
     
     var showMore = false
@@ -157,7 +158,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-5-[CollectionVBgv]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[CollectionVBgv]-0-|", options: [], metrics: nil, views: views))
         
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]-0-|", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]", options: [], metrics: nil, views: views))
         
         let collectionViewLayout = CustomCollectionViewLayout()
         self.collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewLayout)
@@ -211,8 +212,6 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         self.CollectionVBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[showMoreButton(0.0)]-5-|", options: [], metrics: nil, views: collectionViews))
         self.CollectionVBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[showMoreButton(130)]-25-|", options: [], metrics: nil, views: collectionViews))
         
-        
-        
         self.titleLbl = UILabel(frame: CGRect.zero)
         self.titleLbl.textColor = BubbleViewBotChatTextColor
         self.titleLbl.font = UIFont(name: mediumCustomFont, size: 16.0)
@@ -229,9 +228,9 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         self.titleLbl.sizeToFit()
         
         let subView: [String: UIView] = ["titleLbl": titleLbl]
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[titleLbl(>=31)]-5-|", options: [], metrics: nil, views: subView))
-        
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[titleLbl]-16-|", options:[], metrics:nil, views:subView))
+        let metrics: [String: NSNumber] = ["textLabelMaxWidth": NSNumber(value: Float(kMaxTextWidth)), "textLabelMinWidth": NSNumber(value: Float(kMinTextWidth))]
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLbl]-10-|", options: [], metrics: metrics, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[titleLbl(>=textLabelMinWidth,<=textLabelMaxWidth)]-16-|", options: [], metrics: metrics, views: subView))
         setCornerRadiousToTitleView()
     }
     
@@ -259,9 +258,8 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
     
     //MARK: collection view delegate methods
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        //let rows = self.rows
         print("tableRowsss: \(self.rows.count)")
-        return rowsDataLimit + 2  //rows.count
+        return rowsDataLimit + 2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -271,15 +269,12 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         } else if section == 1 {
             return 1
         } else {
-            //            let row = rows[section - 2]
-            //            return row.count
             let headers = self.data.headers
             return headers.count
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // swiftlint:disable force_cast
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! CustomCollectionViewCell
         cell.backgroundColor = .clear
         cell.bgView.backgroundColor = .white
@@ -289,9 +284,6 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         cell.bgView.layer.cornerRadius = 0.0
         
         cell.underLineLbl.backgroundColor = .white
-        
-        //let bgColor = self.data.elementsStyle[indexPath.row]
-        //cell.bgView.backgroundColor = UIColor.init(hexString: bgColor)
         if indexPath.section == 0 {
             cell.textLabel.numberOfLines = 2
             cell.textLabel.text = header.title
@@ -342,18 +334,16 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         let percentage = header.percentage
         let count = CGFloat(headers.count)
         
-        let viewWidth = UIScreen.main.bounds.size.width - 66
-        let maxWidth: CGFloat = viewWidth //- 5*(count-1)
-        if(data.headers.count<5){
-            itemWidth = floor((maxWidth/count)) //floor((maxWidth*CGFloat(percentage)/100))
-        }
-        else{
-            let width : CGFloat = (header.title as NSString).size(withAttributes: [NSAttributedString.Key.font : UIFont(name: boldCustomFont, size: 10.0) as Any]).width //*2.0
-//            if width > 85.0{
-                itemWidth = 85.0
-//            }else{
-//                itemWidth = width
-//            }
+        // Determine available width from the collection view (handles portrait/landscape automatically)
+        let availableWidth = collectionView.bounds.width
+        let isLandscape = UIScreen.main.bounds.width > UIScreen.main.bounds.height
+        let maxWidth: CGFloat = availableWidth
+        if data.headers.count < 5 {
+            itemWidth = floor(maxWidth / count)
+        } else {
+            // Use a larger cap in landscape to show more content per cell
+            let cap: CGFloat = isLandscape ? 140.0 : 85.0
+            itemWidth = cap
         }
         
         if indexPath.section == 0 {
@@ -367,7 +357,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
             if text == "---" {
                 return CGSize(width: 0, height: 1)
             }
-            return CGSize(width: itemWidth - 2, height: 50)//kk 4 6
+            return CGSize(width: itemWidth - 2, height: 50)
         }
     }
     
@@ -449,7 +439,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         if self.showMore {
             height += 0.0
         }
-        return CGSize(width: 0.0, height: textSize.height  + height + 32)
+        return CGSize(width: 0.0, height: textSize.height  + height + 42)
     }
     
     @objc fileprivate func showMoreButtonAction(_ sender: AnyObject!) {

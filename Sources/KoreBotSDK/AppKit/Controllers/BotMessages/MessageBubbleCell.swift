@@ -263,6 +263,13 @@ class ImageBubbleCell : MessageBubbleCell {
     override func bubbleType() -> ComponentType {
         return .image
     }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
 }
 
 class AudioBubbleCell : MessageBubbleCell {
