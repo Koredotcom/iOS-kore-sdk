@@ -15,9 +15,19 @@ class TextBubbleView : BubbleView {
     func kTextColor() -> UIColor {
         return (self.tailPosition == BubbleMaskTailPosition.left ? Common.UIColorRGB(0x484848) : Common.UIColorRGB(0xFFFFFF))
     }
-    let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
+    var kMaxTextWidth: CGFloat {
+        // Maintain the same percentage of screen width as portrait across orientations
+        let windowWidth = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.bounds.width ?? UIScreen.main.bounds.size.width
+        let portraitBase = min(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
+        let portraitMax = portraitBase - 90.0
+        let ratio = portraitBase > 0 ? (portraitMax / portraitBase) : 1.0
+        let bubbleMaxWidth = ratio * windowWidth
+        // Subtract internal horizontal padding (10 + 10)
+        return bubbleMaxWidth - 20.0
+    }
     let kMinTextWidth: CGFloat = 20.0
     var textLabel: KREAttributedLabel!
+    private var textLabelMaxWidthConstraint: NSLayoutConstraint?
     
     override func initialize() {
         super.initialize()
@@ -43,6 +53,13 @@ class TextBubbleView : BubbleView {
         let metrics: [String: NSNumber] = ["textLabelMaxWidth": NSNumber(value: Float(kMaxTextWidth)), "textLabelMinWidth": NSNumber(value: Float(kMinTextWidth))]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[textLabel]-10-|", options: [], metrics: metrics, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[textLabel(>=textLabelMinWidth,<=textLabelMaxWidth)]-10-|", options: [], metrics: metrics, views: views))
+        // Capture the lessThanOrEqual width constraint created by VFL for dynamic updates
+        for constraint in self.constraints {
+            if constraint.firstItem as? UIView === self.textLabel && constraint.firstAttribute == .width && constraint.relation == .lessThanOrEqual {
+                self.textLabelMaxWidthConstraint = constraint
+                break
+            }
+        }
     }
     
     func setTextColor() {
@@ -108,6 +125,19 @@ class TextBubbleView : BubbleView {
         }
         
         return output
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        // Update the max width constraint to maintain portrait-based margins across orientations
+        if let c = textLabelMaxWidthConstraint {
+            let newMax = kMaxTextWidth
+            if abs(c.constant - newMax) > 0.5 {
+                c.constant = newMax
+                self.textLabel.preferredMaxLayoutWidth = newMax
+                self.invalidateIntrinsicContentSize()
+            }
+        }
     }
 }
 

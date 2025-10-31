@@ -25,6 +25,7 @@
                 <outlet property="headerTitileLbl" destination="hck-M1-PCS" id="V7G-b2-v4x"/>
                 <outlet property="headerView" destination="vYq-Dl-sqx" id="3el-ya-tOH"/>
                 <outlet property="headerViewHeightConstraint" destination="x0K-6Q-nrN" id="3ef-Cu-0e3"/>
+                <outlet property="headerViewTopConstraint" destination="YnG-y1-dgT" id="uka-KK-e9a"/>
                 <outlet property="incomingCallContainerView" destination="SKk-W9-nAS" id="ika-fm-JUJ"/>
                 <outlet property="leftMenuBackBtn" destination="iCg-HH-CcN" id="ESU-kZ-mor"/>
                 <outlet property="leftMenuContainerSubView" destination="4AR-SW-pLo" id="1wg-PT-IPi"/>
@@ -231,7 +232,7 @@
                 <constraint firstItem="8ru-91-Smj" firstAttribute="top" secondItem="y23-6f-O9g" secondAttribute="bottom" id="5hp-Sg-7Qe"/>
                 <constraint firstItem="owa-n2-Opo" firstAttribute="top" secondItem="0uF-el-Vxb" secondAttribute="top" constant="-20" id="6Nm-2a-Oe3"/>
                 <constraint firstItem="Usv-h4-tDT" firstAttribute="top" secondItem="2zt-kD-ifH" secondAttribute="bottom" id="7c3-87-rr0"/>
-                <constraint firstItem="vYq-Dl-sqx" firstAttribute="leading" secondItem="0uF-el-Vxb" secondAttribute="leading" id="7mR-k4-Kd0"/>
+                <constraint firstItem="vYq-Dl-sqx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="7mR-k4-Kd0"/>
                 <constraint firstItem="ni7-ts-YyA" firstAttribute="leading" secondItem="0uF-el-Vxb" secondAttribute="leading" id="AJJ-sB-XPe"/>
                 <constraint firstItem="1AL-l9-D7Z" firstAttribute="top" secondItem="7Z6-mY-xVo" secondAttribute="bottom" id="Alp-Nh-zpt"/>
                 <constraint firstItem="IHl-t2-9Gj" firstAttribute="top" secondItem="z3x-8O-A97" secondAttribute="bottom" id="Bxl-0H-jQF"/>
@@ -256,12 +257,12 @@
                 <constraint firstItem="vYq-Dl-sqx" firstAttribute="top" secondItem="owa-n2-Opo" secondAttribute="bottom" constant="11" id="YnG-y1-dgT"/>
                 <constraint firstItem="h7Y-kP-4Xx" firstAttribute="top" secondItem="8ru-91-Smj" secondAttribute="bottom" id="Z1V-03-a8G"/>
                 <constraint firstItem="SKk-W9-nAS" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="ZJB-2K-1sk"/>
-                <constraint firstItem="vYq-Dl-sqx" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" id="cmi-qr-7Gt"/>
+                <constraint firstItem="vYq-Dl-sqx" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="cmi-qr-7Gt"/>
                 <constraint firstItem="owa-n2-Opo" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" constant="-5" id="fdx-Y4-hzb"/>
-                <constraint firstItem="bag-Ju-eJ9" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" id="fmj-nc-vQF"/>
+                <constraint firstItem="bag-Ju-eJ9" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="fmj-nc-vQF"/>
                 <constraint firstItem="Usv-h4-tDT" firstAttribute="top" secondItem="ni7-ts-YyA" secondAttribute="bottom" id="g5Z-nH-9DT"/>
                 <constraint firstAttribute="trailing" secondItem="1AL-l9-D7Z" secondAttribute="trailing" id="gxt-kU-Cmg"/>
-                <constraint firstItem="bag-Ju-eJ9" firstAttribute="leading" secondItem="0uF-el-Vxb" secondAttribute="leading" id="h4e-Xa-fIJ"/>
+                <constraint firstItem="bag-Ju-eJ9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="h4e-Xa-fIJ"/>
                 <constraint firstItem="2zt-kD-ifH" firstAttribute="leading" secondItem="0uF-el-Vxb" secondAttribute="leading" id="jRq-R2-qzO"/>
                 <constraint firstAttribute="trailing" secondItem="IHl-t2-9Gj" secondAttribute="trailing" id="jca-te-mEU"/>
                 <constraint firstItem="0uF-el-Vxb" firstAttribute="bottom" secondItem="7Z6-mY-xVo" secondAttribute="bottom" id="l2o-ug-Hr8"/>
@@ -287,7 +288,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

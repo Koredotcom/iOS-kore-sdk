@@ -14,7 +14,7 @@ class NewListBubbleView: BubbleView {
     var titleLbl: UILabel!
     var tableView: UITableView!
     var cardView: UIView!
-    let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
+    let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 32.0
     let kMinTextWidth: CGFloat = 20.0
     fileprivate let listCellIdentifier = "NewListTableViewCell"
     var rowsDataLimit = 4

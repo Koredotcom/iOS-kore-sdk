@@ -277,7 +277,7 @@ extension WelcomeScreenView: UITableViewDataSource, UITableViewDelegate, Welcome
         if arrayOfSectionsType[indexPath.section] == StartConversationStr{
             if welcomeScreenDic.starter_box?.quick_start_buttons?.style == "slack"{
                 let cell : WelcomeVGridCell = self.tableview.dequeueReusableCell(withIdentifier: "WelcomeVGridCell") as! WelcomeVGridCell
-                cell.backgroundColor = UIColor.clear
+                cell.backgroundColor = UIColor.white
                 cell.selectionStyle = .none
                 cell.viewDelegate = self
                 let StarterBoxBtns = welcomeScreenDic.starter_box?.quick_start_buttons?.buttons
@@ -335,7 +335,7 @@ extension WelcomeScreenView: UITableViewDataSource, UITableViewDelegate, Welcome
             
         }else if arrayOfSectionsType[indexPath.section] == TransactionStr{
             let cell : WelcomeVListTransactionsCell = self.tableview.dequeueReusableCell(withIdentifier: "WelcomeVListTransactionsCell") as! WelcomeVListTransactionsCell
-            cell.backgroundColor = UIColor.clear
+            cell.backgroundColor = UIColor.white
             cell.selectionStyle = .none
             cell.layer.cornerRadius = 0.0
             cell.clipsToBounds = false
@@ -347,7 +347,7 @@ extension WelcomeScreenView: UITableViewDataSource, UITableViewDelegate, Welcome
             return cell
         }else if arrayOfSectionsType[indexPath.section] == BannersStr{
             let cell : BannersCell = self.tableview.dequeueReusableCell(withIdentifier: "BannersCell") as! BannersCell
-            cell.backgroundColor = UIColor.clear
+            cell.backgroundColor = UIColor.white
             cell.selectionStyle = .none
             let promotios = BannersDic.promotions
             let details = promotios?[indexPath.row]

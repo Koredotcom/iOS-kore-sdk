@@ -56,7 +56,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }()
     
     @IBOutlet weak var quickSelectContainerHeightConstraint: NSLayoutConstraint!
-    
+    @IBOutlet weak var headerViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var attachmentContainerView: UIView!
     @IBOutlet weak var attachmentContainerHeightConstraint: NSLayoutConstraint!
     var attachmentArray = NSMutableArray()
@@ -185,6 +185,11 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
+        if view.bounds.width > view.bounds.height {
+            headerViewTopConstraint.constant = 18.0
+        }else{
+            headerViewTopConstraint.constant = 10.0
+        }
     }
     
 //    override var preferredStatusBarStyle: UIStatusBarStyle {

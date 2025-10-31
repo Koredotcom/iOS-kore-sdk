@@ -258,7 +258,7 @@ extension AdvancedMultiSelectBubbleView: UITableViewDataSource, UITableViewDeleg
         }else{
             let imgV = UIImage.init(named: "uncheck", in: bundle, compatibleWith: nil)
             cell.checkImage.image = imgV?.withRenderingMode(.alwaysTemplate)
-            cell.checkImage.tintColor = themeColor
+            cell.checkImage.tintColor = BubbleViewLeftTint
         }
         return cell
         

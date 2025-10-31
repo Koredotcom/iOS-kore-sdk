@@ -21,10 +21,39 @@ var BubbleViewUserChatTextColor: UIColor = UIColor.init(hexString: "#FFFFFF")
 var BubbleViewBotChatTextColor: UIColor = UIColor.init(hexString: "#000000")
 
 let BubbleViewCurveRadius: CGFloat = 20.0
-let BubbleViewMaxWidth: CGFloat = (UIScreen.main.bounds.size.width - 90.0)
+var BubbleViewMaxWidth: CGFloat {
+    let windowWidth = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.bounds.size.width ?? UIScreen.main.bounds.size.width
+    let portraitBase = min(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
+    let ratio = portraitBase > 0 ? (portraitBase - 90.0) / portraitBase : 1.0
+    return windowWidth * ratio
+}
 
 open class BubbleView: UIView {
     let brandingShared = BrandingSingleton.shared
+    private static var lastKnownMaxWidth: CGFloat = 0.0
+    private func updateMaxWidthConstraints(in view: UIView) {
+        for constraint in view.constraints {
+            if constraint.firstAttribute == .width && constraint.relation == .lessThanOrEqual {
+                // Default to the dynamic bubble max width; subclasses can still override if needed
+                let target = BubbleViewMaxWidth
+                if abs(constraint.constant - target) > 0.5 {
+                    constraint.constant = target
+                }
+            }
+        }
+        for subview in view.subviews {
+            updateMaxWidthConstraints(in: subview)
+        }
+    }
+
+    func bubbleWidthMaintainingPortraitRatio(margin: CGFloat) -> CGFloat {
+        let windowWidth = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.bounds.width ?? UIScreen.main.bounds.size.width
+        let portraitBase = min(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
+        let portraitMax = portraitBase - 90.0
+        let ratio = portraitBase > 0 ? (portraitMax / portraitBase) : 1.0
+        let bubbleMaxWidth = ratio * windowWidth
+        return max(0.0, bubbleMaxWidth - margin)
+    }
     var tailPosition: BubbleMaskTailPosition! {
         didSet {
             self.backgroundColor = self.borderColor()
@@ -34,7 +63,16 @@ open class BubbleView: UIView {
     var didSelectComponentAtIndex:((Int) -> Void)!
     var maskLayer: CAShapeLayer!
     var borderLayer: CAShapeLayer!
-    
+    var isLandscape: Bool! {
+            if #available(iOS 13.0, *) {
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                    return windowScene.interfaceOrientation.isLandscape
+                }
+            } else {
+                return UIApplication.shared.statusBarOrientation.isLandscape
+            }
+            return nil
+    }
     public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)?
     public var linkAction: ((_ text: String?) -> Void)?
     public var updateMessage: ((_ text: String?, _ componentDesc: String?) -> Void)?
@@ -220,6 +258,13 @@ open class BubbleView: UIView {
     open override func layoutSubviews() {
         super.layoutSubviews()
         self.applyBubbleMask()
+        // Update any width cap constraints to reflect current orientation
+        updateMaxWidthConstraints(in: self)
+        let currentWidth = BubbleViewMaxWidth
+        if abs(currentWidth - BubbleView.lastKnownMaxWidth) > 0.5 {
+            BubbleView.lastKnownMaxWidth = currentWidth
+            NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+        }
     }
     
     func contrastTintColor() -> UIColor {

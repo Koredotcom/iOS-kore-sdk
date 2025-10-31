@@ -184,6 +184,6 @@ class AnswerBubbleView: BubbleView {
             textSize.height = self.titleLbl.font?.pointSize ?? 0.0
         }
         
-        return CGSize(width: textSize.width, height: textSize.height)
+        return CGSize(width: 0, height: textSize.height)
     }
 }
