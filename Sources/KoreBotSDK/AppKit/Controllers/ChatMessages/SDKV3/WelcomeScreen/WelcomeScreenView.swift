@@ -50,6 +50,7 @@ class WelcomeScreenView: UIView {
     var mediumLayoutType = "medium"
     var arrayOfHideTableSections = [Bool]()
     var arrayOfSectionsType = [String]()
+    var bannerAspectRatios = [Int: CGFloat]()
     
     let StartConversationStr = "Start Conversation"
     let LinksStr = "Links"
@@ -89,6 +90,12 @@ class WelcomeScreenView: UIView {
         tableview.register(UINib(nibName: "WelcomeScreenStartConsvCell", bundle: bundle), forCellReuseIdentifier: "WelcomeScreenStartConsvCell")
         tableview.backgroundColor = UIColor(hexString: "#F8FAFC")
     
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        tableview.beginUpdates()
+        tableview.endUpdates()
     }
     
     func configure(with welcomeScreenDic: WelcomeScreen?, generalDic: General?) { //regular -- c, large -- bottom , medium  -- top
@@ -355,7 +362,17 @@ extension WelcomeScreenView: UITableViewDataSource, UITableViewDelegate, Welcome
             cell.bgV.clipsToBounds = true
             cell.bannerImagV.contentMode = .scaleAspectFill
             if let imageUrlStr = details?.banner, let url = URL(string: imageUrlStr){
-                cell.bannerImagV.af.setImage(withURL: url, placeholderImage: UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil))
+                cell.bannerImagV.af.setImage(withURL: url, placeholderImage: UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil)) { [weak self] response in
+                    guard let self = self else { return }
+                    if let image = try? response.result.get() {
+                        let ratio = image.size.height / max(image.size.width, 1.0)
+                        self.bannerAspectRatios[indexPath.row] = ratio
+                        DispatchQueue.main.async {
+                            self.tableview.beginUpdates()
+                            self.tableview.endUpdates()
+                        }
+                    }
+                }
             }
             return cell
         }else{
@@ -374,10 +391,16 @@ extension WelcomeScreenView: UITableViewDataSource, UITableViewDelegate, Welcome
                     let cell : WelcomeVGridCell = self.tableview.dequeueReusableCell(withIdentifier: "WelcomeVGridCell") as! WelcomeVGridCell
                     let StarterBoxBtns = welcomeScreenDic.starter_box?.quick_start_buttons?.buttons
                     cell.configure(with: StarterBoxBtns ?? [])
+                    // Ensure measurement uses current table width (especially important in landscape)
+                    let targetWidth = tableView.bounds.width
+                    cell.bounds = CGRect(x: 0, y: 0, width: targetWidth, height: CGFloat.greatestFiniteMagnitude)
+                    cell.contentView.bounds = cell.bounds
+                    cell.setNeedsLayout()
                     cell.layoutIfNeeded()
-                    cell.collectionV.reloadData()
+                    cell.collectionV.collectionViewLayout.invalidateLayout()
+                    cell.collectionV.layoutIfNeeded()
                     let collectionViewHeight = cell.collectionV.collectionViewLayout.collectionViewContentSize.height
-                        return collectionViewHeight
+                    return collectionViewHeight
                     }else{
                         return UITableView.automaticDimension
                     }
@@ -390,6 +413,11 @@ extension WelcomeScreenView: UITableViewDataSource, UITableViewDelegate, Welcome
             return UITableView.automaticDimension
         }
         else if arrayOfSectionsType[indexPath.section] == BannersStr{
+            if let ratio = bannerAspectRatios[indexPath.row] {
+                let width = tableView.bounds.width
+                let bottomPadding: CGFloat = 11.0 // from xib bottom constraint
+                return width * ratio + bottomPadding
+            }
             return 200.0
         }
         return UITableView.automaticDimension

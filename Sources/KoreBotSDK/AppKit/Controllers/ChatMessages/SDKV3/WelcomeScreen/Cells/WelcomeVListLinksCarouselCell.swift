@@ -25,15 +25,16 @@ class WelcomeVListLinksCarouselCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        leftLineLbl.backgroundColor = borderColor
+        leftLineLbl.backgroundColor = .clear
         underLineLbl.backgroundColor = borderColor
-        rightLineLbl.backgroundColor = borderColor
+        rightLineLbl.backgroundColor = .clear
         collectionV.register(UINib.init(nibName: "WelcomeVCarouselCell", bundle: bundle), forCellWithReuseIdentifier: "WelcomeVCarouselCell")
     }
     
     func configure(with arr: [Links]) {
         linksArray = arr
         collectionV.reloadData()
+        collectionV.collectionViewLayout.invalidateLayout()
         collectionV.layoutIfNeeded()
     }
 
@@ -41,6 +42,11 @@ class WelcomeVListLinksCarouselCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        collectionV.collectionViewLayout.invalidateLayout()
     }
     
 }
@@ -64,10 +70,12 @@ extension WelcomeVListLinksCarouselCell: UICollectionViewDataSource, UICollectio
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if linksArray.count > 1{
-            return CGSize(width: UIScreen.main.bounds.size.width - 90  , height: 95)
-        }
-        return CGSize(width: UIScreen.main.bounds.size.width - 50  , height: 95)
+        let flow = collectionViewLayout as? UICollectionViewFlowLayout
+        let insets = flow?.sectionInset ?? .zero
+        let availableWidth = max(collectionView.bounds.width - insets.left - insets.right, 1.0)
+        let peek: CGFloat = linksArray.count > 1 ? 80.0 : 40.0
+        let itemWidth = max(availableWidth - peek, 1.0)
+        return CGSize(width: itemWidth, height: 95)
         
     }
     

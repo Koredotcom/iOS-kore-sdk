@@ -26,8 +26,8 @@ class WelcomeVGridCell: UITableViewCell {
         layout.scrollDirection = .vertical
         collectionV.collectionViewLayout = layout
         collectionV.register(UINib.init(nibName: "ButtonLinkCell", bundle: bundle), forCellWithReuseIdentifier: "ButtonLinkCell")
-        leftLineLbl.backgroundColor = borderColor
-        rightLineLbl.backgroundColor = borderColor
+        leftLineLbl.backgroundColor = .clear
+        rightLineLbl.backgroundColor = .clear
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
