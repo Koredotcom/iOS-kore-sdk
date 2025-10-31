@@ -694,6 +694,18 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                         return (message, ttsBody)
                     }
                 }
+            }else if (componentModel.type == "message"){
+                if let payload = componentModel.payload as? [String: Any] {
+                    if let dictionary = payload["payload"] as? [String: Any],dictionary.keys.contains("audioUrl") {
+                        let optionsComponent: Component = Component(.audio)
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                        return (message, ttsBody)
+                    }else{
+                        return (nil, ttsBody)
+                    }
+                }
             }else if (componentModel.type == "template") {
                 let payload: NSDictionary = componentModel.payload! as! NSDictionary
                 let text: String = payload["text"] != nil ? payload["text"] as! String : ""

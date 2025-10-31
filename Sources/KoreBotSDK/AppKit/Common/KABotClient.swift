@@ -515,6 +515,18 @@ open class KABotClient: NSObject {
                         return (message, ttsBody)
                     }
                 }
+            case "message":
+                if let payload = componentModel.payload as? [String: Any] {
+                    if let dictionary = payload["payload"] as? [String: Any],dictionary.keys.contains("audioUrl") {
+                        let optionsComponent: Component = Component(.audio)
+                        optionsComponent.payload = Utilities.stringFromJSONObject(object: dictionary)
+                        message.sentDate = object?.createdOn
+                        message.addComponent(optionsComponent)
+                        return (message, ttsBody)
+                    }else{
+                        return (nil, ttsBody)
+                    }
+                }
             case "template":
                 if let payload = componentModel.payload as? [String: Any] {
                     let type = payload["type"] as? String ?? ""

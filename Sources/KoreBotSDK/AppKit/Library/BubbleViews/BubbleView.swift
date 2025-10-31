@@ -120,11 +120,11 @@ open class BubbleView: UIView {
                 bubbleView = TextBubbleView()
                 break
             case .image, .video:
-                //.sdkModule
                 bubbleView = Bundle.sdkModule.loadNibNamed("MultiImageBubbleView", owner: self, options: nil)![0] as? BubbleView
                 break
             case .audio:
-                bubbleView = Bundle.sdkModule.loadNibNamed("AudioBubbleView", owner: self, options: nil)![0] as? BubbleView
+                //bubbleView = Bundle.sdkModule.loadNibNamed("AudioBubbleView", owner: self, options: nil)![0] as? BubbleView
+                bubbleView = AudioNewBubbleView()
                 break
             case .options:
                 bubbleView = OptionsBubbleView()
