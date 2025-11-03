@@ -10,9 +10,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TaskMenuViewController" customModule="KoreBotSDK" customModuleProvider="target">
             <connections>
+                <outlet property="cancelBtnTrailingConstraint" destination="Khs-Hl-dnF" id="4vJ-uX-2Tt"/>
                 <outlet property="subView" destination="lCx-pM-Y2r" id="EsF-Ns-8Nl"/>
                 <outlet property="tableview" destination="lEl-2D-t7t" id="Zrn-dS-F3L"/>
                 <outlet property="titleLabel" destination="frE-69-b0f" id="fEp-hO-VcK"/>
+                <outlet property="titleLeadingConstraint" destination="4wr-Ov-gNR" id="o6s-Da-ldC"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -70,8 +72,8 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" white="0.0" alpha="0.30328455110000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="lCx-pM-Y2r" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="7Er-Se-vP7"/>
-                <constraint firstItem="lCx-pM-Y2r" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Z3y-QC-Nxh"/>
+                <constraint firstItem="lCx-pM-Y2r" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="7Er-Se-vP7"/>
+                <constraint firstItem="lCx-pM-Y2r" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Z3y-QC-Nxh"/>
                 <constraint firstAttribute="bottom" secondItem="lCx-pM-Y2r" secondAttribute="bottom" id="gKc-OL-k9s"/>
                 <constraint firstItem="lCx-pM-Y2r" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="tSb-aR-Mz8"/>
             </constraints>

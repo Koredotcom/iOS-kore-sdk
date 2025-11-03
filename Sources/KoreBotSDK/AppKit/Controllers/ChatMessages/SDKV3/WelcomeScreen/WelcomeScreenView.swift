@@ -94,8 +94,8 @@ class WelcomeScreenView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        tableview.beginUpdates()
-        tableview.endUpdates()
+//        tableview.beginUpdates()
+//        tableview.endUpdates()
     }
     
     func configure(with welcomeScreenDic: WelcomeScreen?, generalDic: General?) { //regular -- c, large -- bottom , medium  -- top
@@ -367,10 +367,10 @@ extension WelcomeScreenView: UITableViewDataSource, UITableViewDelegate, Welcome
                     if let image = try? response.result.get() {
                         let ratio = image.size.height / max(image.size.width, 1.0)
                         self.bannerAspectRatios[indexPath.row] = ratio
-                        DispatchQueue.main.async {
-                            self.tableview.beginUpdates()
-                            self.tableview.endUpdates()
-                        }
+//                        DispatchQueue.main.async {
+//                            self.tableview.beginUpdates()
+//                            self.tableview.endUpdates()
+//                        }
                     }
                 }
             }

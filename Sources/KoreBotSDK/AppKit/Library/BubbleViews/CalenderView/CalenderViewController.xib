@@ -20,6 +20,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CalenderViewController" customModule="KoreBotSDK" customModuleProvider="target">
             <connections>
                 <outlet property="bgView" destination="Djm-YW-F5N" id="Of8-7p-416"/>
+                <outlet property="closeBtnTrailingConstarint" destination="qhh-F8-jdq" id="YX1-tA-9Z6"/>
                 <outlet property="confirmButton" destination="Fyj-zI-ltK" id="Ybq-Tj-Ahf"/>
                 <outlet property="datePicker" destination="dbX-js-ngB" id="8NX-W9-CgJ"/>
                 <outlet property="dateRangeSubView" destination="3C6-vg-PbV" id="uQ0-Ex-get"/>
@@ -30,6 +31,7 @@
                 <outlet property="fromDateView" destination="vHH-LE-5vJ" id="57U-lq-zSC"/>
                 <outlet property="fromYearLabel" destination="8Lo-xW-nAC" id="erF-ax-51b"/>
                 <outlet property="headingLabel" destination="zCG-rQ-KY0" id="Uw6-bo-ecV"/>
+                <outlet property="titleLblLeadingConstarint" destination="snd-Py-qwB" id="MQU-zb-zcs"/>
                 <outlet property="toDateButton" destination="42a-XA-mJQ" id="kQt-hJ-phU"/>
                 <outlet property="toDateRangeLabel" destination="fJd-CR-P8q" id="tci-dd-OXt"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -220,8 +222,8 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.30328455110000002" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="Djm-YW-F5N" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Mbf-hQ-0G9"/>
-                <constraint firstItem="Djm-YW-F5N" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="NfN-OF-JoG"/>
+                <constraint firstItem="Djm-YW-F5N" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Mbf-hQ-0G9"/>
+                <constraint firstItem="Djm-YW-F5N" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="NfN-OF-JoG"/>
                 <constraint firstItem="Djm-YW-F5N" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="OQW-Hi-deW"/>
             </constraints>
             <point key="canvasLocation" x="138.40000000000001" y="107.49625187406298"/>

@@ -15,6 +15,8 @@ class TaskMenuViewController: UIViewController {
 
     @IBOutlet weak var subView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var cancelBtnTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableview: UITableView!
     var arrayOftasks = [Actions]()
     fileprivate let taskMenuCellIdentifier = "TaskMenuTablViewCell"
@@ -39,6 +41,20 @@ class TaskMenuViewController: UIViewController {
         subView?.layer.shadowRadius = 4
         getData()
         self.tableview.register(Bundle.xib(named: taskMenuCellIdentifier), forCellReuseIdentifier: taskMenuCellIdentifier)
+        updateTitleLeadingSpacing()
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        updateTitleLeadingSpacing()
+    }
+
+    private func updateTitleLeadingSpacing() {
+        // Treat landscape as width > height for robust behavior across devices
+        let isLandscape = view.bounds.width > view.bounds.height
+        // Default portrait spacing is 15 (as in XIB). Increase slightly in landscape for visual balance
+        titleLeadingConstraint?.constant = isLandscape ? 24 : 15
+        cancelBtnTrailingConstraint?.constant = isLandscape ? 10 : 1
     }
 
     func getData(){

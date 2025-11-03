@@ -22,6 +22,9 @@ class CalenderViewController: UIViewController {
     var selectedPayloadFromDate : String?
     var selectedPayloadToDate : String?
     
+    @IBOutlet weak var titleLblLeadingConstarint: NSLayoutConstraint!
+    
+    @IBOutlet weak var closeBtnTrailingConstarint: NSLayoutConstraint!
     var comp = NSDateComponents()
     var viewDelegate: calenderSelectDelegate?
     @IBOutlet weak var datePicker: UIDatePicker!
@@ -99,6 +102,20 @@ class CalenderViewController: UIViewController {
         dateRangeSubView.layer.borderWidth = 1.0
         dateRangeSubView.layer.borderColor = UIColor.lightGray.cgColor
         getData()
+        updateTitleLeadingSpacing()
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        updateTitleLeadingSpacing()
+    }
+
+    private func updateTitleLeadingSpacing() {
+        // Treat landscape as width > height for robust behavior across devices
+        let isLandscape = view.bounds.width > view.bounds.height
+        // Default portrait spacing is 15 (as in XIB). Increase slightly in landscape for visual balance
+        titleLblLeadingConstarint?.constant = isLandscape ? 24 : 10
+        closeBtnTrailingConstarint?.constant = isLandscape ? 25 : 1
     }
 
     @IBAction func clickOnCloseButton(_ sender: Any) {
