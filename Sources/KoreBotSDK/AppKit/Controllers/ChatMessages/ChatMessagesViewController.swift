@@ -76,6 +76,8 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     var typingStatusView: KRETypingStatusView!
     var webViewController: SFSafariViewController!
     @IBOutlet weak var backgroungImageView: UIImageView!
+    @IBOutlet weak var minimiseBtn: UIButton!
+    @IBOutlet weak var minimiseBtnTrailingConstraint: NSLayoutConstraint!
     
     var taskMenuKeyBoard = true
     @IBOutlet weak var taskMenuContainerView: UIView!
@@ -122,6 +124,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     public var closeAndMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
     @IBOutlet weak var headerViewHeightConstraint: NSLayoutConstraint!
     public var isShowHeaderView = true
+    public var isShowMinimiseButton = false
     
     @IBOutlet weak var footerStatusBarView: UIView!
     
@@ -147,6 +150,10 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             headerView.isHidden = false
         }
         
+        minimiseBtn.isHidden = true
+        if isShowMinimiseButton || isShowMiniMizeButton{
+            minimiseBtn.isHidden = false
+        }
         appDisplayName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? SDKConfiguration.botConfig.chatBotName
 
         linerProgressBar.frame = CGRect(x: 0, y: 0 , width: UIScreen.main.bounds.size.width, height:1)
@@ -222,9 +229,11 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         if view.bounds.width > view.bounds.height {
             backBtnLeadingConstarint.constant = 20.0
             headerViewTopConstraint.constant = 18.0
+            minimiseBtnTrailingConstraint.constant = 20.0
         }else{
             backBtnLeadingConstarint.constant = 15.0
             headerViewTopConstraint.constant = 10.0
+            minimiseBtnTrailingConstraint.constant = 15.0
         }
     }
     
