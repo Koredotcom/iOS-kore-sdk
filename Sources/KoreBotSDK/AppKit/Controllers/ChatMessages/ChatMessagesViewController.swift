@@ -125,7 +125,8 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     @IBOutlet weak var headerViewHeightConstraint: NSLayoutConstraint!
     public var isShowHeaderView = true
     public var isShowMinimiseButton = false
-    
+    public var isShowBackButton = true
+
     @IBOutlet weak var footerStatusBarView: UIView!
     
     @IBOutlet weak var statusBarView: UIView!
@@ -150,6 +151,10 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             headerView.isHidden = false
         }
         
+        self.backBtn.isHidden = false
+        if !isShowBackButton || !isShowBackBtn{
+            self.backBtn.isHidden = true
+        }
         minimiseBtn.isHidden = true
         if isShowMinimiseButton || isShowMiniMizeButton{
             minimiseBtn.isHidden = false
@@ -3324,6 +3329,11 @@ extension ChatMessagesViewController{
         let tintedBackImage = backImage?.withRenderingMode(.alwaysTemplate)
         self.backBtn.setBackgroundImage(tintedBackImage, for: .normal)
         self.backBtn.tintColor = widgetTxtColor
+    
+        let minimiseImage = UIImage(named: "minus", in: bundleImage, compatibleWith: nil)
+        let tintedMinimiseImage = minimiseImage?.withRenderingMode(.alwaysTemplate)
+        self.minimiseBtn.setBackgroundImage(tintedMinimiseImage, for: .normal)
+        self.minimiseBtn.tintColor = widgetTxtColor
         
     }
 }

@@ -45,6 +45,7 @@ open class BotConnect: NSObject {
     public var buttonsCornerRadious = 5.0
     public var buttonsTextBoraderColor: UIColor? = nil
     public var isShowMinimiseButton = false
+    public var isShowBackButton = true
     // MARK: - init
     public override init() {
         super.init()
@@ -90,6 +91,7 @@ open class BotConnect: NSObject {
         SDKConfiguration.botConfig.isShowChatHistory = history_enable
         SDKConfiguration.botConfig.history_batch_size = history_batch_size
         isShowMiniMizeButton = isShowMinimiseButton
+        isShowBackBtn = isShowBackButton
         laguageSettings()
         SDKConfiguration.botConfig.deviceToken = device_Token
         loadCustomFonts()

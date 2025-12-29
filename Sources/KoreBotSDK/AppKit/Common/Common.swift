@@ -71,6 +71,7 @@ var appDisplayName = "KoreBotSDK"
 var isShowQuickRepliesBottom = true
 var isShowVideoOption = false
 var isShowMiniMizeButton = false
+var isShowBackBtn = true
 var arrayOfSelectedBtnIndex:NSMutableArray = NSMutableArray()
 
 var close_AgentChat_EventName = "close_agent_chat"
