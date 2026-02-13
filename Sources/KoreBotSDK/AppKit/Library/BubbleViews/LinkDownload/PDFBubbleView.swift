@@ -61,6 +61,7 @@ class PDFBubbleView: BubbleView {
         self.titleLbl.mentionTextColor = .white
         self.titleLbl.hashtagTextColor = .white
         self.titleLbl.linkTextColor = .white
+        self.titleLbl.numberOfLines = 2
         self.titleLbl.font = UIFont(name: mediumCustomFont, size: 16.0)
         self.titleLbl.backgroundColor = .clear
         self.titleLbl.isUserInteractionEnabled = true
@@ -129,7 +130,7 @@ class PDFBubbleView: BubbleView {
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
-                let titleStr = jsonObject["fileName"] as? NSString ?? ".pdf"
+                let titleStr = jsonObject["fileName"] as? NSString ?? jsonObject["name"] as? NSString ?? ".pdf"
                 fileExtension = jsonObject["format"] as? String ?? titleStr.pathExtension ?? "pdf"
                 if fileExtension == ""{
                     fileExtension = "pdf"

@@ -621,7 +621,7 @@ class PDFDownloadCell : MessageBubbleCell {
     
     override var tailPosition: BubbleMaskTailPosition {
         didSet {
-            self.bubbleTrailingConstraint.constant = 150
+            self.bubbleTrailingConstraint.constant = 80
             self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
         }
     }
