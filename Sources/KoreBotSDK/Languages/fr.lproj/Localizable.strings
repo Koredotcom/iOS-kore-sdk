@@ -11,6 +11,7 @@
 "closeOrMinimizeMsg" = "Souhaitez-vous fermer la conversation ou la minimiser ?";
 "closeMsg" = "Fermer";
 "minimizeMsg" = "Minimiser";
+"cancelMsg" = "Annuler";
 "alertOk" = "OK";
 "leftMenuTitle" = "Menu";
 "confirm" = "Confirmer";

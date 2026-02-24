@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -20,6 +20,7 @@
                 <outlet property="backgroungImageView" destination="ni7-ts-YyA" id="AfI-X9-IDG"/>
                 <outlet property="bottomConstraint" destination="l2o-ug-Hr8" id="NEt-NH-Siu"/>
                 <outlet property="chatMaskview" destination="NJH-pd-1Go" id="EbM-Mk-zpq"/>
+                <outlet property="closeOrMinimizePopupContainerView" destination="lPV-7y-069" id="qAP-sz-dUq"/>
                 <outlet property="composeBarContainerView" destination="8ru-91-Smj" id="E4u-Wx-GOf"/>
                 <outlet property="dropDownBtn" destination="owa-n2-Opo" id="vvw-gq-jcH"/>
                 <outlet property="footerStatusBarView" destination="XfI-QW-FNS" id="dXp-DW-ejE"/>
@@ -224,6 +225,10 @@
                         <constraint firstAttribute="height" constant="59" id="vI8-b2-QOf"/>
                     </constraints>
                 </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lPV-7y-069">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="0uF-el-Vxb"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -242,6 +247,7 @@
                 <constraint firstItem="XfI-QW-FNS" firstAttribute="bottom" secondItem="0uF-el-Vxb" secondAttribute="bottom" constant="59" id="CMi-Ik-jFA"/>
                 <constraint firstItem="NJH-pd-1Go" firstAttribute="bottom" secondItem="0uF-el-Vxb" secondAttribute="bottom" id="Ddr-XX-ppJ"/>
                 <constraint firstItem="y23-6f-O9g" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="E8u-iv-Arc"/>
+                <constraint firstItem="lPV-7y-069" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="H4M-Sv-TQc"/>
                 <constraint firstAttribute="trailing" secondItem="z3x-8O-A97" secondAttribute="trailing" id="Hls-Eo-Deb"/>
                 <constraint firstItem="vYq-Dl-sqx" firstAttribute="top" secondItem="zFP-Mx-8qU" secondAttribute="bottom" id="JEv-Xk-FQZ"/>
                 <constraint firstItem="h7Y-kP-4Xx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="JWO-aq-HcR"/>
@@ -256,9 +262,11 @@
                 <constraint firstAttribute="trailing" secondItem="Usv-h4-tDT" secondAttribute="trailing" id="TCv-Jw-LtC"/>
                 <constraint firstItem="7Z6-mY-xVo" firstAttribute="top" secondItem="h7Y-kP-4Xx" secondAttribute="bottom" id="Uuu-Vc-Kho"/>
                 <constraint firstItem="z3x-8O-A97" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Wld-We-VMY"/>
+                <constraint firstItem="lPV-7y-069" firstAttribute="leading" secondItem="0uF-el-Vxb" secondAttribute="leading" id="XLT-VF-w8M"/>
                 <constraint firstItem="zFP-Mx-8qU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="YIS-24-nmk"/>
                 <constraint firstItem="vYq-Dl-sqx" firstAttribute="top" secondItem="owa-n2-Opo" secondAttribute="bottom" constant="10" id="YnG-y1-dgT"/>
                 <constraint firstItem="h7Y-kP-4Xx" firstAttribute="top" secondItem="8ru-91-Smj" secondAttribute="bottom" id="Z1V-03-a8G"/>
+                <constraint firstItem="lPV-7y-069" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" id="aRh-k0-CQM"/>
                 <constraint firstItem="vYq-Dl-sqx" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="cmi-qr-7Gt"/>
                 <constraint firstItem="owa-n2-Opo" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" constant="-5" id="fdx-Y4-hzb"/>
                 <constraint firstItem="Usv-h4-tDT" firstAttribute="top" secondItem="ni7-ts-YyA" secondAttribute="bottom" id="g5Z-nH-9DT"/>
@@ -269,6 +277,7 @@
                 <constraint firstItem="0uF-el-Vxb" firstAttribute="bottom" secondItem="Usv-h4-tDT" secondAttribute="bottom" constant="1" id="shv-iF-pyx"/>
                 <constraint firstItem="XfI-QW-FNS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="t9c-oK-t1l"/>
                 <constraint firstAttribute="trailing" secondItem="8ru-91-Smj" secondAttribute="trailing" id="v3q-WG-SDd"/>
+                <constraint firstAttribute="bottom" secondItem="lPV-7y-069" secondAttribute="bottom" id="vPl-Xu-hne"/>
                 <constraint firstItem="7Z6-mY-xVo" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" id="vSP-nQ-NDk"/>
                 <constraint firstAttribute="trailing" secondItem="y23-6f-O9g" secondAttribute="trailing" id="wvZ-jC-PT0"/>
                 <constraint firstAttribute="trailing" secondItem="h7Y-kP-4Xx" secondAttribute="trailing" id="xWX-Qb-rsK"/>

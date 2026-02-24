@@ -25,7 +25,8 @@
     "borderColor": "",
     "fontColor": "",
     "backgroundColor": "",
-    "placeHolderColor": ""
+    "placeHolderColor": "",
+    "placeHolderText": ""
   },
   "widgetHeader": {
     "backgroundColor": "",

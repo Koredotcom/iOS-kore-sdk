@@ -246,6 +246,7 @@ public class WidgetFooter: NSObject , Decodable {
       public var bordercolor: String?
       public var fontcolor: String?
       public var placeHolder: String?
+      public var placeHolderText: String?
      
     
     enum ColorCodeKeys: String, CodingKey {
@@ -253,6 +254,7 @@ public class WidgetFooter: NSObject , Decodable {
             case bordercolor = "borderColor"
             case fontcolor = "fontColor"
             case placeHolder = "placeHolder"
+            case placeHolderText = "placeHolderText"
        }
        
        // MARK: - init
@@ -266,6 +268,7 @@ public class WidgetFooter: NSObject , Decodable {
            bordercolor = try? container.decode(String.self, forKey: .bordercolor)
            fontcolor = try? container.decode(String.self, forKey: .fontcolor)
            placeHolder = try? container.decode(String.self, forKey: .placeHolder)
+           placeHolderText = try? container.decode(String.self, forKey: .placeHolderText)
        }
     
     public func updateWith(configModel: WidgetFooter) -> WidgetFooter{
@@ -273,6 +276,7 @@ public class WidgetFooter: NSObject , Decodable {
         self.bordercolor = (configModel.bordercolor == nil || configModel.bordercolor == "")  ? bordercolor : configModel.bordercolor
         self.fontcolor = (configModel.fontcolor == nil || configModel.fontcolor == "")  ? fontcolor : configModel.fontcolor
         self.placeHolder = (configModel.placeHolder == nil || configModel.placeHolder == "")  ? placeHolder : configModel.placeHolder
+        self.placeHolderText = (configModel.placeHolderText == nil || configModel.placeHolderText == "")  ? placeHolderText : configModel.placeHolderText
         return self
     }
 }

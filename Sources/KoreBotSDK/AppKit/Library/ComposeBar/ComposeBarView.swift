@@ -149,8 +149,8 @@ class ComposeBarView: UIView {
         var attachmentBtnWidth = 0
         attachmentBtnWidth = SDKConfiguration.botConfig.isShowAttachmentIcon == true ? 25 : 0
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[menuButton(\(menuBtnWidth))]-5-[growingTextView]-5-[sendButton(30)]-5-[attachmentButton(\(attachmentBtnWidth))]-10-|", options:[], metrics:nil, views:views))
-       self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[growingTextView]-5-[speechToTextButton]-5-[attachmentButton]-10-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[menuButton(\(menuBtnWidth))]-5-[attachmentButton(\(attachmentBtnWidth))]-8-[growingTextView]-5-[sendButton(30)]-10-|", options:[], metrics:nil, views:views))
+       self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[attachmentButton]-8-[growingTextView]-5-[speechToTextButton]-10-|", options:[], metrics:nil, views:views))
        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-7-[growingTextView]-7-|", options:[], metrics:nil, views:views))
        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=3-[sendButton]-3-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[menuButton]-6-|", options:[], metrics:nil, views:views))
@@ -177,7 +177,7 @@ class ComposeBarView: UIView {
         self.growingTextView.layer.borderWidth = 1.0
         self.growingTextView.clipsToBounds = true
         
-        let buttonBgColor = UIColor.init(hexString: "#a9acb0")
+        let buttonBgColor = UIColor.init(hexString: brandingShared.botchatTextColor ?? "#a9acb0")//UIColor.init(hexString: "#a9acb0")
         let attachmentImage = UIImage(named: "attach", in: bundle, compatibleWith: nil)
         let tintedAttachmentImage = attachmentImage?.withRenderingMode(.alwaysTemplate)
         attachmentButton.setBackgroundImage(tintedAttachmentImage, for: .normal)
@@ -242,7 +242,7 @@ class ComposeBarView: UIView {
     }
     @objc fileprivate func taskMenuButtonAction(_ sender: UIButton!) {
         self.delegate?.composeBarTaskMenuButtonAction(self)
-        self.menuButton.setImage(UIImage(named: "Menu", in: bundle, compatibleWith: nil), for: .normal)
+        //self.menuButton.setImage(UIImage(named: "Menu", in: bundle, compatibleWith: nil), for: .normal)
         self.growingTextView.isUserInteractionEnabled = true
         self.sendButton.isUserInteractionEnabled = true
         self.speechToTextButton.isUserInteractionEnabled = true

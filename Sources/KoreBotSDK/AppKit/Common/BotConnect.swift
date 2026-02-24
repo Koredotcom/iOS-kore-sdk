@@ -14,7 +14,7 @@ import CoreData
 open class BotConnect: NSObject {
     let bundle = Bundle.sdkModule
     public var showQuickRepliesBottom = true
-    public var showVideoOption = false
+    public var showVideoOption = true
     public var closeAgentChatEventName = "close_agent_chat"
     public var closeButtonEventName = "close_button_event"
     public var minimizeButtonEventName = "minimize_button_event"
@@ -31,6 +31,7 @@ open class BotConnect: NSObject {
     public var close_Or_MinimizeTitle = ""
     public var close_Btn = ""
     public var minimize_Btn = ""
+    public var cancel_Btn = ""
     public var alert_Ok = ""
     public var leftMenu_Title = ""
     public var confirm_Title = ""
@@ -235,6 +236,12 @@ open class BotConnect: NSObject {
             minimizeMsg = minimize_Btn
         }else{
             minimizeMsg = bundle.localizedString(forKey: "minimizeMsg", value: "", table: nil)
+        }
+        
+        if cancel_Btn != ""{
+            cancelMsg = cancel_Btn
+        }else{
+            cancelMsg = bundle.localizedString(forKey: "cancelMsg", value: "", table: nil)
         }
         
         if alert_Ok != ""{
