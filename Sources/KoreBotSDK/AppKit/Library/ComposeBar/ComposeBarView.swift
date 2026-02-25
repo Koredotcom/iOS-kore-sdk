@@ -177,7 +177,7 @@ class ComposeBarView: UIView {
         self.growingTextView.layer.borderWidth = 1.0
         self.growingTextView.clipsToBounds = true
         
-        let buttonBgColor = UIColor.init(hexString: brandingShared.botchatTextColor ?? "#a9acb0")//UIColor.init(hexString: "#a9acb0")
+        let buttonBgColor = UIColor.init(hexString: brandingShared.botchatTextColor ?? "#a9acb0")
         let attachmentImage = UIImage(named: "attach", in: bundle, compatibleWith: nil)
         let tintedAttachmentImage = attachmentImage?.withRenderingMode(.alwaysTemplate)
         attachmentButton.setBackgroundImage(tintedAttachmentImage, for: .normal)

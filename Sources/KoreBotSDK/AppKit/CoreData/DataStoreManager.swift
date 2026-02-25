@@ -253,7 +253,11 @@ class DataStoreManager: NSObject {
             nMessage?.iconUrl = message.iconUrl
         }
         
-        if message.components.count > 0, let nMessage = nMessage {
+        if message.components.count > 0, let nMessage: KREMessage = nMessage {
+            let threadInContext: KREThread? = {
+                guard let thread = thread else { return nil }
+                return context.object(with: thread.objectID) as? KREThread
+            }()
             let components: NSArray = message.components
             for component in components as! [Component] {
                 let nComponent = NSEntityDescription.insertNewObject(forEntityName: "KREComponent", into: context) as! KREComponent
@@ -262,9 +266,8 @@ class DataStoreManager: NSObject {
                 nMessage.addComponentsObject(_value: nComponent)
                 nComponent.message = nMessage
                 nMessage.templateType = component.componentType.rawValue as NSNumber?
-                nMessage.thread = thread
-//                thread.addToMessages(_value: nMessage)
             }
+            nMessage.thread = threadInContext
         }
     }
 
