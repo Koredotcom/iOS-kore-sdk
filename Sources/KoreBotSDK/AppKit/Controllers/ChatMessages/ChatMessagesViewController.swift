@@ -3341,6 +3341,7 @@ extension ChatMessagesViewController{
         }
         composeView.brandingChnages()
         audioComposeView.backgroundColor = UIColor.init(hexString: (brandingShared.widgetFooterColor) ?? "#eaeaea")
+        audioComposeView.brandingChnages()
         
         BubbleViewRightTint = UIColor.init(hexString: (brandingShared.userchatBgColor) ?? "#2881DF")
         BubbleViewLeftTint = UIColor.init(hexString: (brandingShared.botchatBgColor) ?? "#FFFFFF")

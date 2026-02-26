@@ -121,6 +121,26 @@ class AudioComposeView: UIView {
         self.addConstraint(NSLayoutConstraint.init(item: self.playbackButton as Any, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
     }
     
+    func brandingChnages(){
+        let buttonBgColor = UIColor.init(hexString: brandingShared.botchatTextColor ?? "#a9acb0")
+        let imgV = UIImage.init(named: "audio_icon-1", in: bundle, compatibleWith: nil)
+        self.audioImageView.image = imgV?.withRenderingMode(.alwaysTemplate)
+        self.audioImageView.tintColor = buttonBgColor
+        self.audioImageView.contentMode = .scaleAspectFit
+        
+        let keyBoardImage = UIImage(named: "keyboard", in: bundle, compatibleWith: nil)
+        let tintedKeyboardImageImage = keyBoardImage?.withRenderingMode(.alwaysTemplate)
+        keyboardButton.setImage(tintedKeyboardImageImage, for: .normal)
+        keyboardButton.tintColor = buttonBgColor
+        
+        let playImage = UIImage(named: "mute", in: bundle, compatibleWith: nil)
+        let tintedPlayImage = playImage?.withRenderingMode(.alwaysTemplate)
+        playbackButton.setImage(tintedPlayImage, for: .normal)
+        playbackButton.tintColor = buttonBgColor
+        
+        self.audiolabel.textColor = buttonBgColor
+        
+    }
     override var intrinsicContentSize: CGSize {
         return CGSize(width: UIView.noIntrinsicMetric, height: 80.0)
     }
@@ -190,12 +210,19 @@ class AudioComposeView: UIView {
     }
     
     @objc fileprivate func playbackButtonAction() {
+        let buttonBgColor = UIColor.init(hexString: brandingShared.botchatTextColor ?? "#a9acb0")
         if isSpeakingEnabled {
-            self.playbackButton.setImage(UIImage(named: "mute", in: bundle, compatibleWith: nil), for: .normal)
+            let playImage = UIImage(named: "mute", in: bundle, compatibleWith: nil)
+            let tintedPlayImage = playImage?.withRenderingMode(.alwaysTemplate)
+            playbackButton.setImage(tintedPlayImage, for: .normal)
+            playbackButton.tintColor = buttonBgColor
             isSpeakingEnabled =  false
             NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
         }else{
-            self.playbackButton.setImage(UIImage(named: "unmute", in: bundle, compatibleWith: nil), for: .normal)
+            let playImage = UIImage(named: "unmute", in: bundle, compatibleWith: nil)
+            let tintedPlayImage = playImage?.withRenderingMode(.alwaysTemplate)
+            playbackButton.setImage(tintedPlayImage, for: .normal)
+            playbackButton.tintColor = buttonBgColor
             NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: nil)
             isSpeakingEnabled = true
         }
