@@ -2834,7 +2834,7 @@ extension ChatMessagesViewController{
                             }
                         }
                         if let bot_name = body["bot_name"] as? [String: Any]{
-                            if let name = bot_name["name"] as? String{
+                            if let name = bot_name["name"] as? String, name != ""{
                                 botName = name
                             }
                         }
