@@ -970,6 +970,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(willTerminate(_:)), name: UIApplication.willTerminateNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(tokenExpiry), name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showActivityViewController), name: NSNotification.Name(rawValue: activityViewControllerNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(streamingMessageDidUpdate(_:)), name: NSNotification.Name(rawValue: streamingMessageDidUpdateNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -1002,6 +1003,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: pdfcTemplateViewToastNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: streamingMessageDidUpdateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: activityViewControllerNotification), object: nil)
     }
     
@@ -1968,6 +1970,12 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         if botMessagesView != nil{
             botMessagesView.tableView.reloadData()
         }
+    }
+    
+    @objc func streamingMessageDidUpdate(_ notification: Notification) {
+        guard let messageId = notification.userInfo?["messageId"] as? String else { return }
+        let streamingText = notification.userInfo?["text"] as? String
+        botMessagesView?.reloadRowForMessageId(messageId, streamingText: streamingText)
     }
     
     // MARK: show NewListViewDetailsTemplateView

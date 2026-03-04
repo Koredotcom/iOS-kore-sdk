@@ -43,6 +43,12 @@ open class BotMessageModel: Mappable {
     open var botkey: String?
     open var timestamp: NSNumber?
     open var fromAgent: Bool?
+    /// `true` when this payload starts streaming text (sM). Stream continues until `endChunk` is true.
+    open var streamStart: Bool?
+    /// `true` when streaming ends; use `completeResponse` for full text when present.
+    open var endChunk: Bool?
+    /// Full response text when streaming ends; use when `endChunk` is true.
+    open var completeResponse: String?
     // MARK: -
     public init() {
         
@@ -59,6 +65,9 @@ open class BotMessageModel: Mappable {
         messageId <- map["messageId"]
         botkey <- map["key"]
         timestamp <- map["timestamp"]
+        streamStart <- map["sM"]
+        endChunk <- map["endChunk"]
+        completeResponse <- map["completeResponse"]
         
         let dateFormatter: DateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")

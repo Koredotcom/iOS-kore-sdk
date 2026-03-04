@@ -24,6 +24,8 @@ var pdfcTemplateViewToastNotification = "pdfToastNotification"
 var reloadVideoCellNotification = "ReloadVideoCellNotification"
 var tokenExipryNotification = "TokenExpiryNotification"
 var activityViewControllerNotification = "ActivityViewControllerNotificationName"
+/// Posted when a streaming message chunk is applied; userInfo["messageId"] = messageId. Reload that row to show text one-by-one.
+var streamingMessageDidUpdateNotification = "StreamingMessageDidUpdateNotification"
 
 var isSpeakingEnabled = false
 

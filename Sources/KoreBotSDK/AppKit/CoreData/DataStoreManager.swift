@@ -324,7 +324,7 @@ class DataStoreManager: NSObject {
             do {
                 let messages = try context.fetch(messageRequest)
                 guard let message = messages.first else {
-                    completion?(false)
+                    DispatchQueue.main.async { completion?(false) }
                     return
                 }
 
@@ -336,13 +336,43 @@ class DataStoreManager: NSObject {
                     }
                     try context.save()
                     self.coreDataManager.saveChanges()
-                    completion?(true)
+                    DispatchQueue.main.async { completion?(true) }
                 } else {
-                    completion?(false)
+                    DispatchQueue.main.async { completion?(false) }
                 }
             } catch {
                 print("Failed to update componentDesc: \(error)")
-                completion?(false)
+                DispatchQueue.main.async { completion?(false) }
+            }
+        }
+    }
+    
+    func updateComponentDescriptionOnMainContext(messageId: String, newDescription: String, completion: ((_ success: Bool) -> Void)? = nil) {
+        let context = coreDataManager.mainContext
+        context.perform {
+            let messageRequest: NSFetchRequest<KREMessage> = KREMessage.fetchRequest()
+            messageRequest.predicate = NSPredicate(format: "messageId == %@", messageId)
+            do {
+                let messages = try context.fetch(messageRequest)
+                guard let message = messages.first else {
+                    DispatchQueue.main.async { completion?(false) }
+                    return
+                }
+                if let componentsSet = message.components {
+                    for component in componentsSet {
+                        if let component = component as? KREComponent {
+                            component.componentDesc = newDescription
+                        }
+                    }
+                    try context.save()
+                    self.coreDataManager.saveChanges()
+                    DispatchQueue.main.async { completion?(true) }
+                } else {
+                    DispatchQueue.main.async { completion?(false) }
+                }
+            } catch {
+                print("Failed to update componentDesc on main: \(error)")
+                DispatchQueue.main.async { completion?(false) }
             }
         }
     }

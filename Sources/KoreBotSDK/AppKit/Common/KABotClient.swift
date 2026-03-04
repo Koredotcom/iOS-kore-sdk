@@ -75,6 +75,10 @@ open class KABotClient: NSObject {
     
     var lastReceivedMessageId: String  = ""
     var isAgentHisotryApi = false
+    /// Streaming state: messageId for the message being streamed (sM → endChunk).
+    private var streamingMessageId: String?
+    /// Accumulated text for the current streaming message.
+    private var streamingAccumulatedText: String = ""
     // MARK: - init
     public override init() {
         super.init()
@@ -253,10 +257,55 @@ open class KABotClient: NSObject {
         botClient.onMessage = { [weak self] (object) in
             history = false
             isShowWelcomeMsg = false
-            if self?.thread != nil{
-                let message = self?.onReceiveMessage(object: object)
-                self?.addMessages(message?.0, message?.1)
+            guard let self = self, self.thread != nil else { return }
+            let streamStart = object?.streamStart == true
+            let endChunk = object?.endChunk == true
+            let chunkText = self.chunkText(from: object)
+            let msgId = object?.messageId ?? ""
+            if streamStart {
+                self.streamingMessageId = msgId
+                self.streamingAccumulatedText += chunkText ?? ""
+                let message = self.streamingStartMessage(object: object, initialText: self.streamingAccumulatedText)
+                if let m = message {
+                    self.addStreamingMessage(m)
+                }
+                NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+                if let sid = self.streamingMessageId, sid == msgId {
+                    if endChunk {
+                        let finalText = object?.completeResponse ?? self.streamingAccumulatedText
+                        self.streamingMessageId = nil
+                        self.streamingAccumulatedText = ""
+                        if !finalText.isEmpty {
+                            DispatchQueue.main.async {
+                                DataStoreManager.sharedManager.updateComponentDescriptionOnMainContext(messageId: msgId, newDescription: finalText) { success in
+                                    if success {
+                                        NotificationCenter.default.post(name: Notification.Name(streamingMessageDidUpdateNotification), object: nil, userInfo: ["messageId": msgId, "text": finalText])
+                                    }
+                                    NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+                                    NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: finalText)
+                                }
+                            }
+                        }
+                        return
+                    }
+                    if let append = chunkText {
+                        self.streamingAccumulatedText += append
+                        let textToShow = self.streamingAccumulatedText
+                        DispatchQueue.main.async {
+                            DataStoreManager.sharedManager.updateComponentDescriptionOnMainContext(messageId: msgId, newDescription: textToShow) { success in
+                                if success {
+                                    NotificationCenter.default.post(name: Notification.Name(streamingMessageDidUpdateNotification), object: nil, userInfo: ["messageId": msgId, "text": textToShow])
+                                }
+                            }
+                        }
+                    }
+                    return
+                }
+                return
             }
+            
+            let message = self.onReceiveMessage(object: object)
+            self.addMessages(message.0, message.1)
         }
         
         botClient.onMessageAck = { (ack) in
@@ -304,13 +353,26 @@ open class KABotClient: NSObject {
                 if self.thread != nil{
                     let dataStoreManager = DataStoreManager.sharedManager
                     dataStoreManager.createNewMessageIn(thread: self.thread, message: m, completion: { (success) in
-                        
+
                     })
                 }
                 
                 if let tts = ttsBody {
                     NotificationCenter.default.post(name: Notification.Name(startSpeakingNotification), object: tts)
                 }
+            }
+        }
+    }
+    
+    private func addStreamingMessage(_ message: Message) {
+        guard message.components.count > 0, let thread = self.thread, let messageId = message.messageId else { return }
+        let dataStoreManager = DataStoreManager.sharedManager
+        let initialText = (message.components.firstObject as? Component)?.payload as? String ?? ""
+        dataStoreManager.createNewMessageIn(thread: thread, message: message) { _ in
+            DispatchQueue.main.async {
+                var userInfo: [String: Any] = ["messageId": messageId]
+                if !initialText.isEmpty { userInfo["text"] = initialText }
+                NotificationCenter.default.post(name: Notification.Name(streamingMessageDidUpdateNotification), object: nil, userInfo: userInfo)
             }
         }
     }
@@ -429,6 +491,39 @@ open class KABotClient: NSObject {
         return .noTemplate
     }
     
+    private func chunkText(from object: BotMessageModel?) -> String? {
+        guard let messages = object?.messages, let first = messages.first,
+              let payload = first.component?.payload as? [String: Any] else { return nil }
+        return payload["text"] as? String
+    }
+    
+    private func streamingStartMessage(object: BotMessageModel?, initialText: String) -> Message? {
+        guard let object = object else { return nil }
+        let message = Message()
+        message.messageType = .reply
+        if let type = object.type, type == "incoming" { message.messageType = .default }
+        message.sentDate = object.createdOn
+        message.messageId = object.messageId
+        if let iconUrl = object.iconUrl {
+            message.iconUrl = iconUrl
+            botHistoryIcon = iconUrl
+        } else {
+            message.iconUrl = botHistoryIcon
+        }
+        lastReceivedMessageId = object.messageId ?? ""
+        if !history { arrayOfSelectedBtnIndex.insert(1000, at: 0) }
+        if !history, SDKConfiguration.botConfig.enableAckDelivery, let key = object.botkey, let timeStamp = object.timestamp {
+            let ackDic: [String: Any] = [
+                "clientMessageId": timeStamp as Any, "type": "ack", "replyto": timeStamp as Any,
+                "status": "delivered", "key": key as Any, "id": timeStamp as Any]
+            botClient.sendACK(ackDic: ackDic)
+        }
+        if !history, !isAgentHisotryApi { historyLimit += 1 }
+        let textComponent = Component()
+        textComponent.payload = initialText
+        message.addComponent(textComponent)
+        return message
+    }
     
     func onReceiveMessage(object: BotMessageModel?) -> (Message?, String?) {
         NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil) //hideTypingStatusForBot()
