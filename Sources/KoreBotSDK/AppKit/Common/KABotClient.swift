@@ -289,7 +289,7 @@ open class KABotClient: NSObject {
                         return
                     }
                     if let append = chunkText {
-                        self.streamingAccumulatedText += append
+                        //self.streamingAccumulatedText += append
                         let textToShow = self.streamingAccumulatedText
                         DispatchQueue.main.async {
                             DataStoreManager.sharedManager.updateComponentDescriptionOnMainContext(messageId: msgId, newDescription: textToShow) { success in
