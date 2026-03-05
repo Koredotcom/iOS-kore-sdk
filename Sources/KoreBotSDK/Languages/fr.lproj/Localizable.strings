@@ -15,3 +15,4 @@
 "confirm" = "Confirmer";
 "pleaseTryAgain" = "Veuillez réessayer";
 "sessionExpiryMsg" =  "Votre session a expiré. Veuillez réessayer";
+"cancelBtnMsg" = "Annuler";

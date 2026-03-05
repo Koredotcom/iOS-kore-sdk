@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -19,6 +19,7 @@
                 <outlet property="bottomConstraint" destination="l2o-ug-Hr8" id="NEt-NH-Siu"/>
                 <outlet property="chatMaskview" destination="NJH-pd-1Go" id="EbM-Mk-zpq"/>
                 <outlet property="chatWelcomeScreenContainerView" destination="bag-Ju-eJ9" id="Kf6-5B-JSO"/>
+                <outlet property="closeOrMinimizePopupContainerView" destination="1vA-3e-h76" id="UI7-QS-msI"/>
                 <outlet property="composeBarContainerView" destination="8ru-91-Smj" id="E4u-Wx-GOf"/>
                 <outlet property="dropDownBtn" destination="owa-n2-Opo" id="vvw-gq-jcH"/>
                 <outlet property="footerStatusBarView" destination="1AL-l9-D7Z" id="0oc-zh-Nar"/>
@@ -220,6 +221,10 @@
                         <constraint firstAttribute="height" constant="59" id="tUj-GY-GJB"/>
                     </constraints>
                 </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1vA-3e-h76">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="726"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="0uF-el-Vxb"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -233,11 +238,14 @@
                 <constraint firstItem="owa-n2-Opo" firstAttribute="top" secondItem="0uF-el-Vxb" secondAttribute="top" constant="-20" id="6Nm-2a-Oe3"/>
                 <constraint firstItem="Usv-h4-tDT" firstAttribute="top" secondItem="2zt-kD-ifH" secondAttribute="bottom" id="7c3-87-rr0"/>
                 <constraint firstItem="vYq-Dl-sqx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="7mR-k4-Kd0"/>
+                <constraint firstAttribute="bottom" secondItem="1vA-3e-h76" secondAttribute="bottom" constant="-59" id="9j9-t4-xpQ"/>
                 <constraint firstItem="ni7-ts-YyA" firstAttribute="leading" secondItem="0uF-el-Vxb" secondAttribute="leading" id="AJJ-sB-XPe"/>
                 <constraint firstItem="1AL-l9-D7Z" firstAttribute="top" secondItem="7Z6-mY-xVo" secondAttribute="bottom" id="Alp-Nh-zpt"/>
+                <constraint firstItem="1vA-3e-h76" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="BCr-7C-Vqn"/>
                 <constraint firstItem="IHl-t2-9Gj" firstAttribute="top" secondItem="z3x-8O-A97" secondAttribute="bottom" id="Bxl-0H-jQF"/>
                 <constraint firstItem="NJH-pd-1Go" firstAttribute="bottom" secondItem="0uF-el-Vxb" secondAttribute="bottom" id="Ddr-XX-ppJ"/>
                 <constraint firstItem="y23-6f-O9g" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="E8u-iv-Arc"/>
+                <constraint firstItem="1vA-3e-h76" firstAttribute="leading" secondItem="0uF-el-Vxb" secondAttribute="leading" id="GEO-wB-nQH"/>
                 <constraint firstItem="1AL-l9-D7Z" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="HiR-4t-21D"/>
                 <constraint firstAttribute="trailing" secondItem="z3x-8O-A97" secondAttribute="trailing" id="Hls-Eo-Deb"/>
                 <constraint firstItem="EPs-HZ-gE6" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="IkH-yH-b8d"/>
@@ -245,6 +253,7 @@
                 <constraint firstItem="z3x-8O-A97" firstAttribute="top" secondItem="vYq-Dl-sqx" secondAttribute="bottom" constant="1" id="Jhu-OF-oKm"/>
                 <constraint firstItem="2zt-kD-ifH" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="LSH-Wi-Ie3"/>
                 <constraint firstItem="y23-6f-O9g" firstAttribute="top" secondItem="IHl-t2-9Gj" secondAttribute="bottom" id="M7q-GS-yrG"/>
+                <constraint firstItem="1vA-3e-h76" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" id="N5a-EF-WYc"/>
                 <constraint firstItem="NJH-pd-1Go" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" id="Neq-Fx-Luh"/>
                 <constraint firstItem="SKk-W9-nAS" firstAttribute="trailing" secondItem="0uF-el-Vxb" secondAttribute="trailing" id="PU4-TJ-2as"/>
                 <constraint firstItem="ni7-ts-YyA" firstAttribute="top" secondItem="vYq-Dl-sqx" secondAttribute="bottom" constant="1" id="RuW-fQ-agR"/>
@@ -288,7 +297,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGreenColor">
-            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

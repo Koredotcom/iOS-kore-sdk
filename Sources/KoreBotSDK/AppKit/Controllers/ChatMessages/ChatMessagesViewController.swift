@@ -129,6 +129,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     public var closeAndMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
     var quickReplyViewLeadingConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var closeOrMinimizePopupContainerView: UIView!
+    var closeOrMinimizePopupCardView: UIView?
+    
     @IBOutlet weak var footerStatusBarView: UIView!
 #if SWIFT_PACKAGE
     //let agentConnect = AgentConnect()
@@ -264,7 +267,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             }else{
                 //botClosed()
                 //isShowWelcomeMsg = true
-                showCloseOrMinimiseAlert()
+                //showCloseOrMinimiseAlert()
+                self.showCloseOrMinimizePopup()
+                self.dismissKeyboardManually()
             }
         }else{
             let dic = ["event_code": "BotClosed", "event_message": "Bot connection error"]
@@ -275,7 +280,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         }
     }
     
-    func showCloseOrMinimiseAlert(){
+   /* func showCloseOrMinimiseAlert(){
         let alertController = UIAlertController(title: "", message: closeOrMinimizeMsg, preferredStyle:.alert)
         alertController.addAction(UIAlertAction(title: closeBtnTitle, style: .default)
                                   { action -> Void in
@@ -309,15 +314,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             }
         })
         self.present(alertController, animated: true, completion: nil)
-//        self.present(alertController, animated: true) {
-//            // After alert is presented, add gesture recognizer to superview
-//            if let alertSuperview = alertController.view.superview?.superview {
-//                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissAlertOnTapOutside))
-//                alertSuperview.isUserInteractionEnabled = true
-//                alertSuperview.addGestureRecognizer(tapGesture)
-//            }
-//        }
-    }
+    }*/
     
     @objc func dismissAlertOnTapOutside() {
         self.dismiss(animated: true, completion: nil)
@@ -1217,6 +1214,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }
     
     @objc func dismissKeyboard(_ gesture: UITapGestureRecognizer) {
+        dismissKeyboardManually()
+    }
+    func dismissKeyboardManually() {
         self.bottomConstraint.constant = 0
         self.taskMenuContainerHeightConstant.constant = 0
         if (self.composeView.isFirstResponder) {
@@ -2838,6 +2838,7 @@ extension ChatMessagesViewController{
         self.configureAudioComposer()
         self.configureIncomingCallView()
         subscribeNotifications()
+        setupCloseOrMinimizePopup()
         if let footerDic = brandingValues.footer{
             if statusBarBottomBackgroundColor == nil{
                 footerStatusBarView.backgroundColor = UIColor.init(hexString: footerDic.bg_color ?? "#FFFFFF")
@@ -3505,7 +3506,187 @@ extension ChatMessagesViewController{
     @IBAction func tapsOnCloseBtnAct(_ sender: Any) {
         //botClosed()
         //isShowWelcomeMsg = true
-        showCloseOrMinimiseAlert()
+        //showCloseOrMinimiseAlert()
+        self.showCloseOrMinimizePopup()
+        self.dismissKeyboardManually()
+    }
+    
+    // MARK: - Close or Minimize Popup
+    func setupCloseOrMinimizePopup() {
+        closeOrMinimizePopupContainerView.isHidden = true
+        closeOrMinimizePopupContainerView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        
+        let dismissTap = UITapGestureRecognizer(target: self, action: #selector(dismissCloseOrMinimizePopup))
+        closeOrMinimizePopupContainerView.addGestureRecognizer(dismissTap)
+        
+        let cardView = UIView()
+        cardView.backgroundColor = .white
+        cardView.layer.cornerRadius = 14
+        cardView.layer.shadowColor = UIColor.black.cgColor
+        cardView.layer.shadowOpacity = 0.15
+        cardView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        cardView.layer.shadowRadius = 8
+        cardView.translatesAutoresizingMaskIntoConstraints = false
+        closeOrMinimizePopupContainerView.addSubview(cardView)
+        closeOrMinimizePopupCardView = cardView
+        
+        NSLayoutConstraint.activate([
+            cardView.centerXAnchor.constraint(equalTo: closeOrMinimizePopupContainerView.centerXAnchor),
+            cardView.centerYAnchor.constraint(equalTo: closeOrMinimizePopupContainerView.centerYAnchor),
+            cardView.leadingAnchor.constraint(greaterThanOrEqualTo: closeOrMinimizePopupContainerView.leadingAnchor, constant: 32),
+            cardView.trailingAnchor.constraint(lessThanOrEqualTo: closeOrMinimizePopupContainerView.trailingAnchor, constant: -32),
+            cardView.widthAnchor.constraint(lessThanOrEqualToConstant: 320)
+        ])
+        
+        let messageLabel = UILabel()
+        messageLabel.text = closeOrMinimizeMsg
+        messageLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        messageLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
+        messageLabel.numberOfLines = 0
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(messageLabel)
+        
+        let separator = UIView()
+        separator.backgroundColor = UIColor(red: 0.88, green: 0.88, blue: 0.88, alpha: 1.0)
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(separator)
+        
+        let buttonContainer = UIView()
+        buttonContainer.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(buttonContainer)
+        
+        let cancelButton = UIButton(type: .system)
+        cancelButton.setTitle(cancelBtnTitle, for: .normal)
+        cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        cancelButton.setTitleColor(.lightRoyalBlue, for: .normal)
+        cancelButton.addTarget(self, action: #selector(dismissCloseOrMinimizePopup), for: .touchUpInside)
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        buttonContainer.addSubview(cancelButton)
+        
+        let vertSep1 = UIView()
+        vertSep1.backgroundColor = UIColor(red: 0.88, green: 0.88, blue: 0.88, alpha: 1.0)
+        vertSep1.translatesAutoresizingMaskIntoConstraints = false
+        buttonContainer.addSubview(vertSep1)
+        
+        let closeButton = UIButton(type: .system)
+        closeButton.setTitle(closeBtnTitle, for: .normal)
+        closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        closeButton.setTitleColor(.lightRoyalBlue, for: .normal)
+        closeButton.addTarget(self, action: #selector(closePopupAction), for: .touchUpInside)
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        buttonContainer.addSubview(closeButton)
+        
+        let vertSep2 = UIView()
+        vertSep2.backgroundColor = UIColor(red: 0.88, green: 0.88, blue: 0.88, alpha: 1.0)
+        vertSep2.translatesAutoresizingMaskIntoConstraints = false
+        buttonContainer.addSubview(vertSep2)
+        
+        let minimizeButton = UIButton(type: .system)
+        minimizeButton.setTitle(minimizeBtnTitle, for: .normal)
+        minimizeButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        minimizeButton.setTitleColor(.lightRoyalBlue, for: .normal)
+        minimizeButton.addTarget(self, action: #selector(minimizePopupAction), for: .touchUpInside)
+        minimizeButton.translatesAutoresizingMaskIntoConstraints = false
+        buttonContainer.addSubview(minimizeButton)
+        
+        NSLayoutConstraint.activate([
+            messageLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 20),
+            messageLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 20),
+            messageLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20),
+            
+            separator.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 16),
+            separator.leadingAnchor.constraint(equalTo: cardView.leadingAnchor),
+            separator.trailingAnchor.constraint(equalTo: cardView.trailingAnchor),
+            separator.heightAnchor.constraint(equalToConstant: 0.5),
+            
+            buttonContainer.topAnchor.constraint(equalTo: separator.bottomAnchor),
+            buttonContainer.leadingAnchor.constraint(equalTo: cardView.leadingAnchor),
+            buttonContainer.trailingAnchor.constraint(equalTo: cardView.trailingAnchor),
+            buttonContainer.bottomAnchor.constraint(equalTo: cardView.bottomAnchor),
+            buttonContainer.heightAnchor.constraint(equalToConstant: 48),
+            
+            cancelButton.topAnchor.constraint(equalTo: buttonContainer.topAnchor),
+            cancelButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor),
+            cancelButton.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor),
+            
+            vertSep1.topAnchor.constraint(equalTo: buttonContainer.topAnchor, constant: 8),
+            vertSep1.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: -8),
+            vertSep1.leadingAnchor.constraint(equalTo: cancelButton.trailingAnchor),
+            vertSep1.widthAnchor.constraint(equalToConstant: 0.5),
+            
+            closeButton.topAnchor.constraint(equalTo: buttonContainer.topAnchor),
+            closeButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor),
+            closeButton.leadingAnchor.constraint(equalTo: vertSep1.trailingAnchor),
+            closeButton.widthAnchor.constraint(equalTo: cancelButton.widthAnchor),
+            
+            vertSep2.topAnchor.constraint(equalTo: buttonContainer.topAnchor, constant: 8),
+            vertSep2.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: -8),
+            vertSep2.leadingAnchor.constraint(equalTo: closeButton.trailingAnchor),
+            vertSep2.widthAnchor.constraint(equalToConstant: 0.5),
+            
+            minimizeButton.topAnchor.constraint(equalTo: buttonContainer.topAnchor),
+            minimizeButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor),
+            minimizeButton.leadingAnchor.constraint(equalTo: vertSep2.trailingAnchor),
+            minimizeButton.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor),
+            minimizeButton.widthAnchor.constraint(equalTo: cancelButton.widthAnchor)
+        ])
+    }
+    
+    func showCloseOrMinimizePopup() {
+        closeOrMinimizePopupContainerView.isHidden = false
+        closeOrMinimizePopupContainerView.alpha = 0
+        closeOrMinimizePopupCardView?.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        self.view.bringSubviewToFront(closeOrMinimizePopupContainerView)
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut) {
+            self.closeOrMinimizePopupContainerView.alpha = 1
+            self.closeOrMinimizePopupCardView?.transform = .identity
+        }
+    }
+    
+    @objc func dismissCloseOrMinimizePopup() {
+        UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseIn, animations: {
+            self.closeOrMinimizePopupContainerView.alpha = 0
+            self.closeOrMinimizePopupCardView?.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+        }) { _ in
+            self.closeOrMinimizePopupContainerView.isHidden = true
+            self.closeOrMinimizePopupCardView?.transform = .identity
+        }
+    }
+    
+    @objc func closePopupAction() {
+        dismissCloseOrMinimizePopup()
+        self.unsubscribeNotifications()
+        isShowWelcomeMsg = true
+        let dic = ["event_code": "BotClosed", "event_message": "Bot closed by the user"]
+        if self.closeAndMinimizeEvent != nil{
+            self.closeAndMinimizeEvent(dic)
+        }
+        if isAgentConnect{
+            self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
+            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                isAgentConnect = false
+                self.botClosed()
+            }
+        }else{
+            self.botClient.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
+            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                isAgentConnect = false
+                self.botClosed()
+            }
+        }
+    }
+    
+    @objc func minimizePopupAction() {
+        dismissCloseOrMinimizePopup()
+        isAgentConnect = false
+        let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
+        if self.closeAndMinimizeEvent != nil{
+            self.closeAndMinimizeEvent(dic)
+        }
+        self.botClient.sendEventToAgentChat(eventName: minimize_Button_EventName,messageId: "")
+        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+            self.botClosed()
+        }
     }
 }
 

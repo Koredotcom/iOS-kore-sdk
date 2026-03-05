@@ -146,7 +146,7 @@ class PDFBubbleView: BubbleView {
             if (component.componentDesc != nil) {
                 let jsonString = component.componentDesc
                 let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: jsonString!) as! NSDictionary
-                let titleStr = jsonObject["fileName"] as? NSString ?? ".pdf"
+                let titleStr = jsonObject["fileName"] as? NSString ?? jsonObject["name"] as? NSString ?? ".pdf"
                 fileExtension = jsonObject["format"] as? String ?? titleStr.pathExtension ?? "pdf"
                 if fileExtension == ""{
                     fileExtension = "pdf"

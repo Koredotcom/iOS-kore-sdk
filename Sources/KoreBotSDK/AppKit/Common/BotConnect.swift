@@ -26,6 +26,7 @@ open class BotConnect: NSObject {
     public var tap_To_Speak = ""
     public var close_Or_MinimizeTitle = ""
     public var close_Btn_Title = ""
+    public var cancel_Btn_Title = ""
     public var minimize_Btn_Title = ""
     public var alert_Ok = ""
     public var leftMenu_Title = ""
@@ -187,6 +188,12 @@ open class BotConnect: NSObject {
             closeBtnTitle = close_Btn_Title
         }else{
             closeBtnTitle = bundle.localizedString(forKey: "closeMsg", value: "", table: nil)
+        }
+        
+        if cancel_Btn_Title != ""{
+            cancelBtnTitle = cancel_Btn_Title
+        }else{
+            cancelBtnTitle = bundle.localizedString(forKey: "cancelBtnMsg", value: "", table: nil)
         }
         
         if minimize_Btn_Title != ""{
