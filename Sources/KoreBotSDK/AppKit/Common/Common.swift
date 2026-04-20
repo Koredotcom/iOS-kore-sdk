@@ -27,6 +27,9 @@ var reloadVideoCellNotification = "ReloadVideoCellNotification"
 var callFromAgentNotification = "callFromAgentNotification"
 var tokenExipryNotification = "TokenExpiryNotification"
 var activityViewControllerNotification = "ActivityViewControllerNotificationName"
+/// Posted when a streaming message chunk is applied; userInfo["messageId"] = messageId. Reload that row to show text one-by-one.
+var streamingMessageDidUpdateNotification = "StreamingMessageDidUpdateNotification"
+
 var isSpeakingEnabled = false
 
 let userColor: UIColor = UIColor(red: 38 / 255.0, green: 52 / 255.0, blue: 74 / 255.0, alpha: 1)

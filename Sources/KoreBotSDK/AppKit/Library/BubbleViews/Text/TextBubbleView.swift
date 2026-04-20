@@ -102,6 +102,25 @@ class TextBubbleView : BubbleView {
         }
     }
     
+    /// Updates the displayed text directly (e.g. for streaming). Use this when the same bubble should show new text without replacing components.
+    func updateStreamingText(_ text: String) {
+        guard !text.isEmpty else { return }
+        setTextColor()
+        let htmlStrippedString = KREUtilities.getHTMLStrippedString(from: text)
+        if let parsedString = KREUtilities.formatHTMLEscapedString(htmlStrippedString) {
+            var replaceStr = parsedString.replacingOccurrences(of: ":)", with: "😊")
+            replaceStr = replaceStr.replacingOccurrences(of: "&quot;", with: "\"")
+            textLabel.setHTMLString(replaceStr, withWidth: kMaxTextWidth)
+        } else {
+            var replaceStr = text.replacingOccurrences(of: ":)", with: "😊")
+            replaceStr = replaceStr.replacingOccurrences(of: "&quot;", with: "\"")
+            textLabel.text = replaceStr
+        }
+        setNeedsLayout()
+        layoutIfNeeded()
+    }
+
+    
     override var intrinsicContentSize : CGSize {
         let limitingSize: CGSize  = CGSize(width: kMaxTextWidth, height: CGFloat.greatestFiniteMagnitude)
         var textSize: CGSize = self.textLabel.sizeThatFits(limitingSize)

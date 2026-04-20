@@ -142,6 +142,25 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         }
     }
     
+    /// Updates the row for the given messageId. If streamingText is provided, updates the visible text bubble immediately so streaming text appears without delay; otherwise reloads the row.
+    func reloadRowForMessageId(_ messageId: String, streamingText: String? = nil) {
+        guard let controller = fetchedResultsController,
+              let objects = controller.fetchedObjects as? [KREMessage] else { return }
+        for (index, message) in objects.enumerated() {
+            if message.messageId == messageId {
+                let indexPath = IndexPath(row: index, section: 0)
+                if let text = streamingText, !text.isEmpty, let cell = tableView.cellForRow(at: indexPath) as? MessageBubbleCell, let textBubble = cell.bubbleView as? TextBubbleView {
+                    textBubble.updateStreamingText(text)
+                    return
+                }
+                tableView.reloadRows(at: [indexPath], with: .none)
+                return
+            }
+        }
+    }
+    
+
+    
     // MARK: UITable view data source
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
