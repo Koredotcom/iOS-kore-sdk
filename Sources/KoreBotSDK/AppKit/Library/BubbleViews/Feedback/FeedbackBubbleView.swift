@@ -151,6 +151,7 @@ class FeedbackBubbleView: BubbleView {
                 self.titleLbl.text = allItems.text ?? ""
                 feedBackview = ""
                 feedBackTemplateSelectedValue = ""
+                cardView.backgroundColor =  BubbleViewLeftTint
                 if allItems.feedbackView! == "emojis"{
                     collectionView.isHidden = false
                     floatRatingView.isHidden = true
@@ -175,7 +176,23 @@ class FeedbackBubbleView: BubbleView {
                             feedBackTemplateSelectedValue = value
                         }
                     }
+                }else if allItems.feedbackView! == "NPS"{
+                    cardView.backgroundColor =  .clear
+                    cardView.layer.borderWidth = 1.0
+                    cardView.layer.borderColor = BubbleViewLeftTint.cgColor
+                    collectionView.isHidden = false
+                    floatRatingView.isHidden = true
+                    arrayOfSmiley = allItems.numbersArrays ?? []
+                    feedBackview = "NPS"
+                    if let slectedValue = jsonObject["selectedValue"] as? [String: Any]{
+                        if let value = slectedValue["value"] as? String{
+                            feedBackTemplateSelectedValue = value
+                        }
+                    }
                 }else{
+                    if allItems.feedbackView! == "CSAT"{
+                        arrayOfSmiley = allItems.smileyArrays ?? []
+                    }
                     collectionView.isHidden = false
                     floatRatingView.isHidden = true
                 }
@@ -243,15 +260,32 @@ extension FeedbackBubbleView : UICollectionViewDelegate, UICollectionViewDataSou
                 }
             }
             return cell
+        }else if feedBackview == "NPS"{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! FeedbackCell
+            let elements = arrayOfSmiley[indexPath.item]
+            cell.imageView.isHidden = true
+            cell.feedbackLbl.isHidden = false
+            cell.backgroundColor = .clear
+            cell.feedbackLbl.layer.cornerRadius = 5
+            cell.feedbackLbl.clipsToBounds = true
+            cell.feedbackLbl.backgroundColor = UIColor.init(hexString: elements.feedBackcolor ?? "#000000")
+            cell.feedbackLbl.text = elements.numberId ?? ""
+            cell.feedbackLbl.font = UIFont(name: regularCustomFont, size: 14.0)
+            if feedBackTemplateSelectedValue == elements.value ?? ""{
+                cell.feedbackLbl.backgroundColor = themeColor
+            }
+            return cell
         }else{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! FeedbackCell
             cell.backgroundColor = .clear
+            cell.imageView.isHidden = false
+            cell.feedbackLbl.isHidden = true
             cell.imageView.image = UIImage(named: "rating_\(indexPath.item+1)", in: bundle, compatibleWith: nil)
             return cell
         }
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if feedBackview == "ThumbsUpDown"{
+        if feedBackview == "ThumbsUpDown" || feedBackview == "NPS"{
             let elements = arrayOfSmiley[indexPath.item]
             let value = elements.value ?? ""
             insertSelectedValueIntoComponectDesc(value: value)
@@ -293,6 +327,9 @@ extension FeedbackBubbleView : UICollectionViewDelegate, UICollectionViewDataSou
             let thumbWidth = 40
             width = textWidth + 10 + thumbWidth
             height = 50
+        }else if feedBackview == "NPS" {
+             width = 40
+             height = 40
         }
         return CGSize(width: width , height: height)
     }

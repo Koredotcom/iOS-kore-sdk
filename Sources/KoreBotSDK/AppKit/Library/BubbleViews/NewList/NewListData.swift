@@ -38,6 +38,7 @@ public class Componentss: NSObject, Decodable {
     public var displayLimit: Int?
     public var showmore: Bool?
     public var sliderView: Bool?
+    public var numbersArrays: [SmileyArraysAction]?
     
     enum ColorCodeKeys: String, CodingKey {
             case template_type = "template_type"
@@ -69,6 +70,7 @@ public class Componentss: NSObject, Decodable {
         case displayLimit = "displayLimit"
         case showmore = "showmore"
         case sliderView = "sliderView"
+        case numbersArrays = "numbersArrays"
        }
        
        // MARK: - init
@@ -107,6 +109,7 @@ public class Componentss: NSObject, Decodable {
            displayLimit = try? container.decode(Int.self, forKey: .displayLimit)
            showmore = try? container.decode(Bool.self, forKey: .showmore)
            sliderView = try? container.decode(Bool.self, forKey: .sliderView)
+           numbersArrays = try? container.decode([SmileyArraysAction].self, forKey: .numbersArrays)
        }
 }
 // MARK: - Elements
@@ -346,6 +349,8 @@ public class SmileyArraysAction: NSObject, Decodable {
     public var starId: Int?
     public var thumpUpId:String?
     public var reviewText:String?
+    public var feedBackcolor: String?
+    public var numberId : String?
     
     enum ColorCodeKeys: String, CodingKey {
         case value = "value"
@@ -353,6 +358,8 @@ public class SmileyArraysAction: NSObject, Decodable {
         case starId = "starId"
         case thumpUpId = "thumpUpId"
         case reviewText = "reviewText"
+        case feedBackcolor = "color"
+        case numberId = "numberId"
     }
     
     // MARK: - init
@@ -374,6 +381,15 @@ public class SmileyArraysAction: NSObject, Decodable {
         starId = try? container.decode(Int.self, forKey: .starId)
         thumpUpId = try? container.decode(String.self, forKey: .thumpUpId)
         reviewText = try? container.decode(String.self, forKey: .reviewText)
+        feedBackcolor = try? container.decode(String.self, forKey: .feedBackcolor)
+        if let numberIdInteger = try? container.decodeIfPresent(Int.self, forKey: .numberId) {
+            numberId = String(numberIdInteger ?? -00)
+            if numberId == "-00"{
+                numberId = ""
+            }
+        } else if let numberIdString = try? container.decodeIfPresent(String.self, forKey: .numberId) {
+            numberId = numberIdString
+        }
     }
 }
 

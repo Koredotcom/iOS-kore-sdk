@@ -10,6 +10,7 @@ import UIKit
 
 class FeedbackCell: UICollectionViewCell {
 
+    @IBOutlet weak var feedbackLbl: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()

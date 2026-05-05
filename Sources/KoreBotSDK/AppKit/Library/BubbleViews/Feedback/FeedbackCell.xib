@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,19 +20,30 @@
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rating_1" translatesAutoresizingMaskIntoConstraints="NO" id="vdu-qg-v5I">
                         <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                     </imageView>
+                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z7f-B5-Vyb">
+                        <rect key="frame" x="5" y="5" width="20" height="20"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="Z7f-B5-Vyb" secondAttribute="trailing" constant="5" id="Fun-pr-80X"/>
+                <constraint firstItem="Z7f-B5-Vyb" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="5" id="LQR-8p-ZR9"/>
+                <constraint firstItem="Z7f-B5-Vyb" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="PHI-MM-nvv"/>
                 <constraint firstItem="vdu-qg-v5I" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="W9i-BO-CJV"/>
                 <constraint firstAttribute="trailing" secondItem="vdu-qg-v5I" secondAttribute="trailing" id="iUB-b8-mhi"/>
                 <constraint firstItem="vdu-qg-v5I" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="nVP-jx-YWM"/>
                 <constraint firstAttribute="bottom" secondItem="vdu-qg-v5I" secondAttribute="bottom" id="raN-IT-lEN"/>
+                <constraint firstAttribute="bottom" secondItem="Z7f-B5-Vyb" secondAttribute="bottom" constant="5" id="wvB-GF-icR"/>
             </constraints>
             <connections>
+                <outlet property="feedbackLbl" destination="Z7f-B5-Vyb" id="Wtl-Jd-LCe"/>
                 <outlet property="imageView" destination="vdu-qg-v5I" id="Wz7-Je-nsN"/>
             </connections>
-            <point key="canvasLocation" x="139" y="108"/>
+            <point key="canvasLocation" x="137.68115942028987" y="107.8125"/>
         </collectionViewCell>
     </objects>
     <resources>
