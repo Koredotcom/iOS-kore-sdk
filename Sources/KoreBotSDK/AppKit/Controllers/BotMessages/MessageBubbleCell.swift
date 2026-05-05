@@ -15,6 +15,17 @@ class MessageBubbleCell : UITableViewCell {
     var senderImageView: UIImageView!
     var userImageView: UIImageView!
     var bubbleView: BubbleView!
+    // Failure status UI
+    private var statusContainerView: UIStackView!
+    private var statusLabel: UILabel!
+    private var resendButton: UIButton!
+    private var orLabel: UILabel!
+    private var deleteButton: UIButton!
+    private var statusBottomConstraint: NSLayoutConstraint?
+    private var statusHeightZeroConstraint: NSLayoutConstraint?
+    var onResend: ((String) -> Void)?
+    var onDelete: ((String) -> Void)?
+    private var currentMessageId: String?
 
     var bubbleLeadingConstraint: NSLayoutConstraint!
     var bubbleTrailingConstraint: NSLayoutConstraint!
@@ -68,6 +79,11 @@ class MessageBubbleCell : UITableViewCell {
         self.userImageView.image = nil
         self.bubbleView.prepareForReuse();
         self.bubbleView.invalidateIntrinsicContentSize()
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: updateUserImageNotification), object: nil)
+        onResend = nil
+        onDelete = nil
+        currentMessageId = nil
+        resetFailureVisualState()
     }
 
     func initialize() {
@@ -102,6 +118,7 @@ class MessageBubbleCell : UITableViewCell {
         self.bubbleContainerView = UIView()
         self.bubbleContainerView.backgroundColor = UIColor.clear
         self.bubbleContainerView.translatesAutoresizingMaskIntoConstraints = false
+        self.bubbleContainerView.setContentCompressionResistancePriority(.required, for: .vertical)
         self.contentView.addSubview(self.bubbleContainerView)
         //dateLabel
         self.contentView.addSubview(dateLabel)
@@ -140,6 +157,66 @@ class MessageBubbleCell : UITableViewCell {
         self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultLow
         
         self.contentView.addConstraints([self.bubbleTrailingConstraint, self.bubbleLeadingConstraint, self.bubbleBottomConstraint])
+        
+        // Status container (hidden by default)
+        statusLabel = UILabel()
+        statusLabel.font = UIFont(name: regularCustomFont, size: 12.0)
+        statusLabel.textColor = UIColor.red
+        statusLabel.text = "Sending failed."
+        statusLabel.numberOfLines = 0
+        statusLabel.lineBreakMode = .byWordWrapping
+        statusLabel.textAlignment = .right
+        //statusLabel.backgroundColor = UIColor.yellow
+        statusLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        resendButton = UIButton(type: .system)
+        resendButton.setTitle("Resend", for: .normal)
+        resendButton.titleLabel?.font = UIFont(name: mediumCustomFont, size: 12.0)
+        resendButton.setTitleColor(themeColor, for: .normal)
+        resendButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        resendButton.addTarget(self, action: #selector(didTapResend), for: .touchUpInside)
+        
+        orLabel = UILabel()
+        orLabel.font = UIFont(name: regularCustomFont, size: 12.0)
+        orLabel.textColor = themeColor
+        orLabel.text = "or"
+        orLabel.numberOfLines = 0
+        orLabel.lineBreakMode = .byWordWrapping
+        orLabel.textAlignment = .right
+        orLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        deleteButton = UIButton(type: .system)
+        deleteButton.setTitle("Delete", for: .normal)
+        deleteButton.titleLabel?.font = UIFont(name: mediumCustomFont, size: 12.0)
+        deleteButton.setTitleColor(themeColor, for: .normal)
+        deleteButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        deleteButton.addTarget(self, action: #selector(didTapDelete), for: .touchUpInside)
+        
+        let spacer = UIView()
+        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        statusContainerView = UIStackView(arrangedSubviews: [spacer,statusLabel, resendButton,orLabel, deleteButton])
+        statusContainerView.axis = .horizontal
+        statusContainerView.alignment = .center
+        statusContainerView.spacing = 2
+        statusContainerView.translatesAutoresizingMaskIntoConstraints = false
+        statusContainerView.setContentCompressionResistancePriority(.required, for: .vertical)
+        statusContainerView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        statusContainerView.isHidden = true
+        contentView.insertSubview(statusContainerView, belowSubview: bubbleContainerView)
+        
+        // Below bubble, trailing aligned with bubble; leading uses cell gutter — not bubble width — so short messages
+        // still leave enough horizontal space for "Sending failed." + Resend + Delete.
+        NSLayoutConstraint.activate([
+            statusContainerView.topAnchor.constraint(equalTo: bubbleContainerView.bottomAnchor, constant: 2),
+            statusContainerView.trailingAnchor.constraint(equalTo: bubbleContainerView.trailingAnchor),
+            statusContainerView.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: 45)
+        ])
+        statusBottomConstraint = contentView.bottomAnchor.constraint(equalTo: statusContainerView.bottomAnchor, constant: 4.0)
+        statusBottomConstraint?.priority = .defaultLow
+        statusBottomConstraint?.isActive = true
+        statusHeightZeroConstraint = statusContainerView.heightAnchor.constraint(equalToConstant: 0)
+        statusHeightZeroConstraint?.priority = .required
+        statusHeightZeroConstraint?.isActive = true
     }
 
     func bubbleType() -> ComponentType {
@@ -162,6 +239,7 @@ class MessageBubbleCell : UITableViewCell {
         if (self.bubbleView == nil) {
             self.bubbleView = BubbleView.bubbleWithType(bubbleType())
             self.bubbleContainerView.addSubview(self.bubbleView)
+            self.bubbleView.setContentCompressionResistancePriority(.required, for: .vertical)
             
             self.bubbleContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": self.bubbleView as Any]))
             self.bubbleContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[bubbleView]|", options:[], metrics:nil, views:["bubbleView": self.bubbleView as Any]))
@@ -172,6 +250,7 @@ class MessageBubbleCell : UITableViewCell {
         
         let component: KREComponent = components.first!
         let message: KREMessage = component.message!
+        currentMessageId = message.messageId
         
        
        //DateLabel
@@ -198,7 +277,47 @@ class MessageBubbleCell : UITableViewCell {
                 self.senderImageView.af.setImage(withURL: fileUrl, placeholderImage: placeHolderIcon)
             }
         }
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: updateUserImageNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(MessageBubbleCell.updateImage(notification:)), name: NSNotification.Name(rawValue: updateUserImageNotification), object: nil)
+    }
+    
+    // MARK: - Failure UI
+    private func resetFailureVisualState() {
+        statusContainerView.isHidden = true
+        statusContainerView.alpha = 0
+        statusHeightZeroConstraint?.isActive = true
+        if !bubbleBottomConstraint.isActive {
+            bubbleBottomConstraint.isActive = true
+        }
+        bubbleBottomConstraint.priority = UILayoutPriority.defaultHigh
+        statusBottomConstraint?.priority = .defaultLow
+    }
+
+    func setFailed(_ failed: Bool) {
+        // Show only for user (right) messages
+        let shouldShow = failed && (self.tailPosition == .right)
+        if shouldShow {
+            statusHeightZeroConstraint?.isActive = false
+            // Pin cell bottom to status row; bubble keeps intrinsic height (CR priority on bubble/container).
+            bubbleBottomConstraint.isActive = false
+            statusBottomConstraint?.priority = .required
+            statusContainerView.isHidden = false
+            statusContainerView.alpha = 1
+        } else {
+            resetFailureVisualState()
+        }
+    }
+    
+    @objc private func didTapResend() {
+        if let mid = currentMessageId {
+            onResend?(mid)
+        }
+    }
+    
+    @objc private func didTapDelete() {
+        if let mid = currentMessageId {
+            onDelete?(mid)
+        }
     }
 
     func components() -> NSArray {
@@ -218,6 +337,7 @@ class MessageBubbleCell : UITableViewCell {
     
     // MARK:- deinit
     deinit {
+        NotificationCenter.default.removeObserver(self)
         self.bubbleContainerView = nil
         self.senderImageView = nil
         self.userImageView = nil

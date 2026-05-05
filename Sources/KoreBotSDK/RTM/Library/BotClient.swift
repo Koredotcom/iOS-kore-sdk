@@ -76,6 +76,26 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         }
     }
     
+    /// Sends a message and forces the envelope/client id so that ACK `replyto` matches it.
+    open func sendMessage(_ message: String, clientMessageId: String, dictionary: [String: Any]? = nil, options: [String: Any]?) {
+        guard let connection = connection else {
+            NSLog("WebSocket connection not available")
+            return
+        }
+        
+        let isConnected = connection.isConnected
+        if isConnected {
+            var parameters = customData ?? [:]
+            if let botToken = authInfoModel?.accessToken {
+                parameters["botToken"] = botToken
+            }
+            dictionary?.forEach { (key, value) in parameters[key] = value }
+            connection.sendMessage(message, parameters: parameters, options: options, clientMessageId: clientMessageId)
+        } else {
+            notDeliverdMsgsArray.append(message)
+        }
+    }
+    
     fileprivate var successClosure: ((BotClient?) -> Void)?
     fileprivate var failureClosure: ((NSError) -> Void)?
     fileprivate var intermediaryClosure: ((BotClient?) -> Void)?

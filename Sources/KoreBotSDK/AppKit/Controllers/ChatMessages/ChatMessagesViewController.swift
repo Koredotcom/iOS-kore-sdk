@@ -134,6 +134,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     
     @IBOutlet weak var statusBarView: UIView!
     
+    // Track ACK timers per user-sent messageId
+    private var pendingAckTimers: [String: Timer] = [:]
+    
     // MARK: init
     public init() {
         super.init(nibName: "ChatMessagesViewController", bundle: .sdkModule)
@@ -971,6 +974,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(tokenExpiry), name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showActivityViewController), name: NSNotification.Name(rawValue: activityViewControllerNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(streamingMessageDidUpdate(_:)), name: NSNotification.Name(rawValue: streamingMessageDidUpdateNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(messageAckReceived(_:)), name: NSNotification.Name("MessageAckReceived"), object: nil)
     }
     
     func removeNotifications() {
@@ -1005,6 +1009,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: tokenExipryNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: streamingMessageDidUpdateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: activityViewControllerNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("MessageAckReceived"), object: nil)
     }
     
     // MARK: notification handlers
@@ -1232,7 +1237,10 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                     }
                 }else{
                     if let _ = self.botClient, let text = textComponent?.payload {
-                        self.botClient.sendMessage(text, dictionary: dictionary, options: options)
+                        // Use the UI messageId as the clientMessageId so that ACK.replyto matches this id
+                        let clientId = composedMessage.messageId ?? UUID().uuidString
+                        self.botClient.sendMessage(text, clientMessageId: clientId, dictionary: dictionary, options: options)
+                        self.startAckTimer(for: clientId)
                     }
                 }
                 historyLimit += 1
@@ -1592,6 +1600,30 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         }
     }
     
+    // MARK: - ACK tracking
+    private func startAckTimer(for messageId: String) {
+        cancelAckTimer(for: messageId)
+        let timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { [weak self] _ in
+            guard let self = self else { return }
+            self.botMessagesView?.markMessageFailed(messageId)
+        }
+        pendingAckTimers[messageId] = timer
+    }
+    
+    private func cancelAckTimer(for messageId: String) {
+        if let timer = pendingAckTimers.removeValue(forKey: messageId) {
+            timer.invalidate()
+        }
+    }
+    
+    @objc private func messageAckReceived(_ notification: Notification) {
+        guard let clientId = notification.userInfo?["clientId"] as? String else { return }
+        DispatchQueue.main.async {
+            self.cancelAckTimer(for: clientId)
+            self.botMessagesView?.clearMessageFailed(clientId)
+        }
+    }
+    
     func speechToTextButtonAction() {
         self.configureViewForKeyboard(false)
         _ = self.composeView.resignFirstResponder()
@@ -1692,6 +1724,22 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             self.quickReplyView.words = words
             self.closeQuickSelectViewConstraints()
         }
+    }
+    
+    // MARK: - BotMessagesViewDelegate (Resend/Delete)
+    func resendUserMessage(messageId: String) {
+        // Re-send using the existing message text; do not duplicate in datastore
+        DataStoreManager.sharedManager.messageText(withId: messageId) { [weak self] text in
+            guard let self = self, let text = text, !text.isEmpty, !SDKConfiguration.botConfig.isWebhookEnabled else { return }
+            self.botClient?.sendMessage(text, clientMessageId: messageId, dictionary: nil, options: nil)
+            self.startAckTimer(for: messageId)
+        }
+    }
+    
+    func deleteUserMessage(messageId: String) {
+        cancelAckTimer(for: messageId)
+        botMessagesView?.clearMessageFailed(messageId)
+        DataStoreManager.sharedManager.deleteMessage(withId: messageId, completion: nil)
     }
     
     func closeQuickReplyCards(){

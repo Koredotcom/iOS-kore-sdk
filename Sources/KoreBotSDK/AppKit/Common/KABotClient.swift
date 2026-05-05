@@ -309,7 +309,12 @@ open class KABotClient: NSObject {
         }
         
         botClient.onMessageAck = { (ack) in
-            
+            // Notify UI about ACKs so pending-state timers/UI can be cleared.
+            if let clientId = ack?.clientId {
+                NotificationCenter.default.post(name: Notification.Name("MessageAckReceived"),
+                                                object: nil,
+                                                userInfo: ["clientId": clientId])
+            }
         }
         
         botClient.onUserMessageReceived = { [weak self] (object) in

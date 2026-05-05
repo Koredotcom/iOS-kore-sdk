@@ -102,7 +102,15 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
                 connectionDelegate?.rtmConnectionReady()
             case "ok":
                 if let model = try? Ack(JSON: responseObject), let ack = model as? Ack {
-                    connectionDelegate?.didReceiveMessageAck(ack)
+                     //DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
+                         self.connectionDelegate?.didReceiveMessageAck(ack)
+                     //}
+                }
+            case "ack":
+                if let model = try? Ack(JSON: responseObject), let ack = model as? Ack {
+                     //DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
+                         self.connectionDelegate?.didReceiveMessageAck(ack)
+                  //}
                 }
             case "bot_response":
                 print("received: \(responseObject)")
@@ -273,6 +281,10 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
                 if let model = try? Ack(JSON: responseObject), let ack = model as? Ack {
                     connectionDelegate?.didReceiveMessageAck(ack)
                 }
+            case "ack":
+                if let model = try? Ack(JSON: responseObject), let ack = model as? Ack {
+                    connectionDelegate?.didReceiveMessageAck(ack)
+                }
             case "bot_response":
                 print("received: \(responseObject)")
                 guard let array = responseObject["message"] as? Array<[String: Any]>, array.count > 0 else {
@@ -334,32 +346,37 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
     }
     
     // MARK: sending message
-    open func sendMessage(_ message: String, parameters: [String: Any], options: [String: Any]?) {
+    /// Sends a message over the socket. If `clientMessageId` is provided, it will be used for both
+    /// the envelope `id` and `clientMessageId` so that a subsequent ACK's `replyto` matches the
+    /// caller-provided identifier (typically your UI messageId).
+    open func sendMessage(_ message: String,
+                          parameters: [String: Any],
+                          options: [String: Any]?,
+                          clientMessageId: String? = nil) {
         if (isConnected) {
-            
             print("Socket is in OPEN state")
             let dictionary: NSMutableDictionary = NSMutableDictionary()
             let messageObject: NSMutableDictionary = NSMutableDictionary()
-            messageObject.addEntries(from: ["body": message, "attachments":[], "customData": parameters] as [String : Any])
+            messageObject.addEntries(from: ["body": message, "attachments": [], "customData": parameters] as [String: Any])
             if let object = options {
                 messageObject.addEntries(from: object)
             }
-            
+
             dictionary.setObject(messageObject, forKey: "message" as NSCopying)
             dictionary.setObject("/bot.message", forKey: "resourceid" as NSCopying)
             if (self.botInfoParameters != nil) {
                 dictionary.setObject(self.botInfoParameters as Any, forKey: "botInfo" as NSCopying)
             }
-            let uuid: String = Constants.getUUID()
+            let uuid: String = clientMessageId ?? Constants.getUUID()
             dictionary.setObject(uuid, forKey: "id" as NSCopying)
             dictionary.setObject(uuid, forKey: "clientMessageId" as NSCopying)
             dictionary.setObject("iOS", forKey: "client" as NSCopying)
-            
+
             let meta = ["timezone": TimeZone.current.identifier, "locale": Locale.current.identifier]
             dictionary.setValue(meta, forKey: "meta")
-            
+
             debugPrint("send: \(dictionary)")
-            
+
             let jsonData = try! JSONSerialization.data(withJSONObject: dictionary, options: JSONSerialization.WritingOptions.prettyPrinted)
             self.websocket?.write(data: jsonData)
         } else {

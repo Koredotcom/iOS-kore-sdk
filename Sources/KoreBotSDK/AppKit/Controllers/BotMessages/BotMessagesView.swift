@@ -23,6 +23,9 @@ protocol BotMessagesViewDelegate {
     func tableviewScrollDidEnd()
     func updateMessage(messageId: String, componentDesc:String)
     func populateClockView(with message: KREMessage?)
+    // New for resend/delete
+    func resendUserMessage(messageId: String)
+    func deleteUserMessage(messageId: String)
 }
 
 class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFetchedResultsControllerDelegate {
@@ -30,6 +33,8 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     var tableView: UITableView
     var fetchedResultsController: KREFetchedResultsController!
     var viewDelegate: BotMessagesViewDelegate?
+    // Tracks messages that should display the "Resend/Delete" failure bar.
+    private var failedMessageIds = Set<String>()
     var shouldScrollToBottom: Bool = false
     var clearBackground = false
     var userActive = false
@@ -156,6 +161,48 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         }
     }
     
+    // MARK: - Public helpers for failure UI
+    private func indexPathForMessageId(_ messageId: String) -> IndexPath? {
+        guard let controller = fetchedResultsController,
+              let objects = controller.fetchedObjects as? [KREMessage] else { return nil }
+        for (index, message) in objects.enumerated() {
+            if message.messageId == messageId {
+                return IndexPath(row: index, section: 0)
+            }
+        }
+        return nil
+    }
+
+    /// Updates only the failure bar for this message. Avoids `reloadRows` when the cell is on-screen (reduces scroll flicker).
+    private func applyFailureUI(forMessageId messageId: String) {
+        guard let indexPath = indexPathForMessageId(messageId) else { return }
+        let message = fetchedResultsController?.object(at: indexPath) as? KREMessage
+        let isFailed = failedMessageIds.contains(messageId) && (message?.isSender == true)
+        if let cell = tableView.cellForRow(at: indexPath) as? MessageBubbleCell {
+            UIView.performWithoutAnimation {
+                cell.setFailed(isFailed)
+                cell.contentView.setNeedsLayout()
+                cell.contentView.layoutIfNeeded()
+                tableView.performBatchUpdates({}, completion: nil)
+            }
+            return
+        }
+        UIView.performWithoutAnimation {
+            tableView.reloadRows(at: [indexPath], with: .none)
+        }
+    }
+
+    func markMessageFailed(_ messageId: String) {
+        failedMessageIds.insert(messageId)
+        applyFailureUI(forMessageId: messageId)
+    }
+    
+    func clearMessageFailed(_ messageId: String) {
+        if failedMessageIds.remove(messageId) != nil {
+            applyFailureUI(forMessageId: messageId)
+        }
+    }
+    
     // MARK: UITable view data source
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -272,6 +319,16 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         cell.configureWithComponents(message.components?.array as! Array<KREComponent>)
         if self.clearBackground {
             cell.backgroundColor = .clear
+        }
+        // Configure failure UI state and actions
+        let messageId = message.messageId ?? ""
+        let isFailed = failedMessageIds.contains(messageId) && (message.isSender == true)
+        cell.setFailed(isFailed)
+        cell.onResend = { [weak self] _ in
+            self?.viewDelegate?.resendUserMessage(messageId: messageId)
+        }
+        cell.onDelete = { [weak self] _ in
+            self?.viewDelegate?.deleteUserMessage(messageId: messageId)
         }
         
         var isQuickReply = false

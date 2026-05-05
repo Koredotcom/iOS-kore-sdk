@@ -119,6 +119,48 @@ class DataStoreManager: NSObject {
         }
     }
     
+    // Delete a message by its messageId
+    public func deleteMessage(withId messageId: String, completion: ((_ success: Bool) -> Void)? = nil) {
+        let context: NSManagedObjectContext = coreDataManager.workerContext
+        context.perform { [weak self] in
+            let request: NSFetchRequest<KREMessage> = KREMessage.fetchRequest()
+            request.predicate = NSPredicate(format: "messageId == %@", messageId)
+            do {
+                if let message = try context.fetch(request).first {
+                    context.delete(message)
+                    try context.save()
+                    self?.coreDataManager.saveChanges()
+                    DispatchQueue.main.async { completion?(true) }
+                } else {
+                    DispatchQueue.main.async { completion?(false) }
+                }
+            } catch {
+                DispatchQueue.main.async { completion?(false) }
+            }
+        }
+    }
+    
+    // Fetch first text component's plain text for a messageId
+    public func messageText(withId messageId: String, completion: ((_ text: String?) -> Void)? = nil) {
+        let context: NSManagedObjectContext = coreDataManager.workerContext
+        context.perform {
+            let request: NSFetchRequest<KREMessage> = KREMessage.fetchRequest()
+            request.predicate = NSPredicate(format: "messageId == %@", messageId)
+            do {
+                if let message = try context.fetch(request).first,
+                   let components = message.components,
+                   let component = components.firstObject as? KREComponent {
+                    let text = component.componentDesc as String?
+                    DispatchQueue.main.async { completion?(text) }
+                } else {
+                    DispatchQueue.main.async { completion?(nil) }
+                }
+            } catch {
+                DispatchQueue.main.async { completion?(nil) }
+            }
+        }
+    }
+    
     // MARK:- threads
     func insertOrUpdateThread(dictionary: Dictionary<String, AnyObject>, withContext context: NSManagedObjectContext) -> KREThread {
         var thread: KREThread! = nil
