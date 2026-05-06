@@ -552,8 +552,10 @@ open class KABotClient: NSObject {
         
         if let fromAgent = object?.fromAgent, fromAgent == true{
             isAgentConnect = true
+            message.iconUrl = "Agent"
         }else{
             isAgentConnect = false
+            message.iconUrl = botHistoryIcon
         }
         lastReceivedMessageId = object?.messageId ?? "No message id"
         

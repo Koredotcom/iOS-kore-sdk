@@ -274,7 +274,13 @@ class MessageBubbleCell : UITableViewCell {
         
         if let iconurl = message.iconUrl {
             if let fileUrl = URL(string: iconurl) {
-                self.senderImageView.af.setImage(withURL: fileUrl, placeholderImage: placeHolderIcon)
+                if iconurl == "Agent"{
+                    self.senderImageView.image = UIImage(named: "agent_icon", in: bundle, compatibleWith: nil)
+                }else{
+                    self.senderImageView.af.setImage(withURL: fileUrl, placeholderImage: placeHolderIcon)
+                }
+            }else if iconurl == "Agent"{
+                self.senderImageView.image = UIImage(named: "agent_icon", in: bundle, compatibleWith: nil)
             }
         }
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: updateUserImageNotification), object: nil)
