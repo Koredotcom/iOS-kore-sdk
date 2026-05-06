@@ -47,6 +47,7 @@ open class BotConnect: NSObject {
     public var buttonsTextBoraderColor: UIColor? = nil
     public var isShowMinimiseButton = false
     public var isShowBackButton = true
+    public var isShowTokenExpiryAlertView = false
     // MARK: - init
     public override init() {
         super.init()
@@ -101,6 +102,7 @@ open class BotConnect: NSObject {
         isShowBotIconTop = setIsShowBotIconTop
         buttonTemplteBtnsCornerRadious = buttonsCornerRadious
         buttonTemplteBtnsTextBoraderColor = buttonsTextBoraderColor
+        isShowTokenExpiryAlertV = isShowTokenExpiryAlertView
         if !isIntialiseFileUpload{
             isIntialiseFileUpload = true
             filesUpload()
@@ -136,6 +138,11 @@ open class BotConnect: NSObject {
         }
     }
     
+    public func setCustom_JwToken(customJWToken: String, customData:[String: Any], queryParameters:[[String: Any]]){
+        SDKConfiguration.botConfig.customJWToken = customJWToken
+        SDKConfiguration.botConfig.customData = customData as [String: Any]
+        SDKConfiguration.botConfig.queryParameters = queryParameters as [[String: Any]]
+    }
     // MARK: MinimiseChatBot
     public func minimizeChatBot(){
         botViewController.minimizeChatBotWindow()

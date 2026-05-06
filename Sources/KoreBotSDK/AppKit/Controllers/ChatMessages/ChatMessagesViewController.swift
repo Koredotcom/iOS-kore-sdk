@@ -2000,18 +2000,25 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         }
     }
     @objc func tokenExpiry(notification:Notification){
-        let alertController = UIAlertController(title: appDisplayName, message: sessionExpiryMsg, preferredStyle: .alert)
-        // Create the actions
-        let okAction = UIAlertAction(title: alertOk, style: UIAlertAction.Style.default) {
-            UIAlertAction in
-            let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
+        if isShowTokenExpiryAlertV{
+            let alertController = UIAlertController(title: appDisplayName, message: sessionExpiryMsg, preferredStyle: .alert)
+            // Create the actions
+            let okAction = UIAlertAction(title: alertOk, style: UIAlertAction.Style.default) {
+                UIAlertAction in
+                let dic = ["event_code": "BotConnectionStatus", "event_message": "Token expired"]
+                if self.closeAndMinimizeEvent != nil{
+                    self.closeAndMinimizeEvent(dic)
+                }
+                self.botClosed()
+            }
+            alertController.addAction(okAction)
+            self.present(alertController, animated: true, completion: nil)
+        }else{
+            let dic = ["event_code": "BotConnectionStatus", "event_message": "Token expired"]
             if self.closeAndMinimizeEvent != nil{
                 self.closeAndMinimizeEvent(dic)
             }
-            self.botClosed()
         }
-        alertController.addAction(okAction)
-        self.present(alertController, animated: true, completion: nil)
     }
     
     @objc func reloadTable(notification:Notification){
@@ -3263,6 +3270,10 @@ extension ChatMessagesViewController{
         if isShowWelcomeMsg{
             NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
         }
+        let dic = ["event_code": "BotConnectionStatus", "event_message": "Bot connected successfully"]
+        if self.closeAndMinimizeEvent != nil{
+            self.closeAndMinimizeEvent(dic)
+        }
         if SDKConfiguration.botConfig.isWebhookEnabled{
             NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
             self.kaBotClient.webhookBotMetaApi(success: { (dictionary) in
@@ -3800,6 +3811,10 @@ extension ChatMessagesViewController: UIGestureRecognizerDelegate{
         isShowWelcomeMsg = true
         if(self.botClient != nil){
             kaBotClient.socketDisconnect()
+            let dic = ["event_code": "BotConnectionStatus", "event_message": "Bot disconnected successfully"]
+            if self.closeAndMinimizeEvent != nil{
+                    self.closeAndMinimizeEvent(dic)
+            }
         }
     }
     public func socketConnect(isReconnect:Bool){

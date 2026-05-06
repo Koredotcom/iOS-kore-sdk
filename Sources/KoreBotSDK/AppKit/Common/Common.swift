@@ -67,6 +67,7 @@ var notDeliverdMsgsArray = [String]()
 var historyLimit = 0
 var RemovedTemplateCount = 0
 var isCallingHistoryApi = true
+var isShowTokenExpiryAlertV = false
 
 var feedBackTemplateSelectedValue = ""
 var appDisplayName = "KoreBotSDK"
