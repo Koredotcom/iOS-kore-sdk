@@ -209,7 +209,7 @@ class MessageBubbleCell : UITableViewCell {
         NSLayoutConstraint.activate([
             statusContainerView.topAnchor.constraint(equalTo: bubbleContainerView.bottomAnchor, constant: 2),
             statusContainerView.trailingAnchor.constraint(equalTo: bubbleContainerView.trailingAnchor),
-            statusContainerView.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: 45)
+            statusContainerView.leadingAnchor.constraint(lessThanOrEqualTo: contentView.leadingAnchor, constant: 45)
         ])
         statusBottomConstraint = contentView.bottomAnchor.constraint(equalTo: statusContainerView.bottomAnchor, constant: 4.0)
         statusBottomConstraint?.priority = .defaultLow
