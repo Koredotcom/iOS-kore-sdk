@@ -13,7 +13,7 @@ class ButtonLinkNCell: UITableViewCell {
     @IBOutlet weak var underLineLbl: UILabel!
     @IBOutlet weak var titleBtn: UIButton!
     @IBOutlet var imagV: UIImageView!
-    let bundle = KREResourceLoader.shared.resourceBundle()
+    let bundle = Bundle.sdkModule
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -7,7 +7,9 @@
 //
 
 import UIKit
-import KoreBotSDK
+#if SWIFT_PACKAGE
+import ObjcSupport
+#endif
 class ButtonLinkNBubbleView: BubbleView {
     let bundle = Bundle.sdkModule
     var tileBgv: UIView!
