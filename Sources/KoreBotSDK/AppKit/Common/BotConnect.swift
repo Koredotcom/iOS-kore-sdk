@@ -43,6 +43,7 @@ open class BotConnect: NSObject {
     public var videoDownload_AlertCancelTitle = ""
     public var vileDownloadFailed_ToastMsg = ""
     public var closeOrMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
+    public var locaNotificationEvent: ((_ dic: [String:Any]?) -> Void)!
     public var buttonsCornerRadious = 5.0
     public var buttonsTextBoraderColor: UIColor? = nil
     public var isShowMinimiseButton = false
@@ -64,7 +65,8 @@ open class BotConnect: NSObject {
             return
         }
         
-         botViewController = ChatMessagesViewController()
+        botViewController = ChatMessagesViewController()
+        isChatMessageViewControllerPresent = true
         let navigationController = UINavigationController(rootViewController: botViewController)
         navigationController.isNavigationBarHidden = true
         navigationController.modalPresentationStyle = .fullScreen
@@ -74,13 +76,47 @@ open class BotConnect: NSObject {
         
          botViewController.closeAndMinimizeEvent = { [weak self] (Dic) in
             if let dic = Dic {
-                //let jsonString = Utilities.stringFromJSONObject(object: dic)
-                //NotificationCenter.default.post(name: Notification.Name("ChatbotCallBackNotification"), object: jsonString)
                 if self?.closeOrMinimizeEvent != nil{
                     self?.closeOrMinimizeEvent(dic)
                 }
             }
         }
+        
+        botViewController.locaNotificationEvent = { [weak self] (Dic) in
+           if let dic = Dic {
+               if self?.locaNotificationEvent != nil{
+                   self?.locaNotificationEvent(dic)
+               }
+           }
+       }
+    }
+    
+    public func show(in viewController: UIViewController){
+        customSettings()
+        botViewController = ChatMessagesViewController()
+        isChatMessageViewControllerPresent = false
+        botViewController.isShowHeaderView = true
+        let navigationController = UINavigationController(rootViewController: botViewController)
+        navigationController.isNavigationBarHidden = true
+        botViewController.title = SDKConfiguration.botConfig.chatBotName
+        botViewController.edgesForExtendedLayout =  []
+        viewController.navigationController?.show(botViewController, sender: nil)
+        
+        botViewController.closeAndMinimizeEvent = { [weak self] (Dic) in
+           if let dic = Dic {
+               if self?.closeOrMinimizeEvent != nil{
+                   self?.closeOrMinimizeEvent(dic)
+               }
+           }
+       }
+       
+       botViewController.locaNotificationEvent = { [weak self] (Dic) in
+          if let dic = Dic {
+              if self?.locaNotificationEvent != nil{
+                  self?.locaNotificationEvent(dic)
+              }
+          }
+      }
     }
     
     func customSettings(){

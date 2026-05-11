@@ -125,6 +125,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     public weak var account = KoraApplication.sharedInstance.account
     
     public var closeAndMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
+    public var locaNotificationEvent: ((_ dic: [String:Any]?) -> Void)!
     @IBOutlet weak var headerViewHeightConstraint: NSLayoutConstraint!
     public var isShowHeaderView = true
     public var isShowMinimiseButton = false
@@ -300,7 +301,11 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     func botClosed(){
         isTryConnect = false
         prepareForDeinit()
-        navigationController?.dismiss(animated: false)
+        if isChatMessageViewControllerPresent {
+            navigationController?.dismiss(animated: false)
+        }else{
+            navigationController?.popViewController(animated: false)
+        }
     }
     
     @IBAction func tapsOnBackBtnAct(_ sender: Any) {
@@ -975,6 +980,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(showActivityViewController), name: NSNotification.Name(rawValue: activityViewControllerNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(streamingMessageDidUpdate(_:)), name: NSNotification.Name(rawValue: streamingMessageDidUpdateNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(messageAckReceived(_:)), name: NSNotification.Name("MessageAckReceived"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(localNotificationMethod), name: NSNotification.Name(rawValue: localNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -1010,6 +1016,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: streamingMessageDidUpdateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: activityViewControllerNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("MessageAckReceived"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: localNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -1113,6 +1120,10 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                 }
                 break
             case .notReachable:
+                let dic = ["event_code": "BotConnectionLost", "event_message": "The bot was disconnected due to a network connectivity issue. Please check the internet connection and try reconnecting."]
+                if self.closeAndMinimizeEvent != nil{
+                    self.closeAndMinimizeEvent(dic)
+                }
                 if isTryConnect{
                     isInternetAvailable = false
                     self.showLoader()
@@ -2019,6 +2030,12 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                 self.closeAndMinimizeEvent(dic)
             }
         }
+    }
+    
+    @objc func localNotificationMethod(notification:Notification){
+        let dataString: String = notification.object as? String ?? ""
+        let dic = ["text": dataString]
+        self.locaNotificationEvent(dic)
     }
     
     @objc func reloadTable(notification:Notification){

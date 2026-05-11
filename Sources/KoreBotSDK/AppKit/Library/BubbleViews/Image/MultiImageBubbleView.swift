@@ -209,6 +209,7 @@ class MultiImageBubbleView : BubbleView, UICollectionViewDataSource, UICollectio
         let cell: ImageComponentCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageComponentCollectionViewCell", for:indexPath) as! ImageComponentCollectionViewCell
          
         cell.menuBtn.setImage(UIImage(named: "more", in: bundle, compatibleWith: nil), for: .normal)
+        cell.menuBtn.isHidden = true
         if  imageDataDic["type"] as? String == "video" { //componentItems.videoUrl
             cell.videoPlayerView.isHidden = false
             if let payload = imageDataDic["payload"] as? [String: Any]{

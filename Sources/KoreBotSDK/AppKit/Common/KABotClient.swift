@@ -689,6 +689,7 @@ open class KABotClient: NSObject {
                                ttsBody = text
                                 if templateType == "live_agent" || templateType == ""{
                                     isAgentConnect = true
+                                    NotificationCenter.default.post(name: Notification.Name(localNotification), object: text)
                                 }
                                message.addComponent(textComponent)
                            }else{

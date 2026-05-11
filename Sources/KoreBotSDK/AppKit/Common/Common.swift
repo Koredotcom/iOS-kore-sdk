@@ -26,6 +26,7 @@ var tokenExipryNotification = "TokenExpiryNotification"
 var activityViewControllerNotification = "ActivityViewControllerNotificationName"
 /// Posted when a streaming message chunk is applied; userInfo["messageId"] = messageId. Reload that row to show text one-by-one.
 var streamingMessageDidUpdateNotification = "StreamingMessageDidUpdateNotification"
+var localNotification = "LocalNotification"
 
 var isSpeakingEnabled = false
 
@@ -59,6 +60,7 @@ var isAgentConnect = false
 var isTryConnect = true
 var isInternetAvailable = true
 var isBotConnectSucessFully = false
+var isChatMessageViewControllerPresent = true
 
 var arrayOfViews = [BubbleView.Type]()
 var arrayOfTemplateTypes = [String]()
