@@ -44,9 +44,7 @@ public class KAAccount: NSObject {
     static let APIManager: Session = {
           let configuration = URLSessionConfiguration.default
           configuration.timeoutIntervalForRequest = 20
-          let delegate = Session.default.delegate
           let manager = Session.init(configuration: configuration,
-                                     delegate: delegate,
                                      startRequestsImmediately: true,
                                      cachedResponseHandler: nil)
           return manager
@@ -55,9 +53,7 @@ public class KAAccount: NSObject {
     var requestSessionManager: Session = {
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = 60
-        let delegate = Session.default.delegate
         let sessionManager = Session.init(configuration: configuration,
-                                   delegate: delegate,
                                    startRequestsImmediately: true,
                                    cachedResponseHandler: nil)
         return sessionManager
@@ -66,9 +62,7 @@ public class KAAccount: NSObject {
     var sessionManager: Session = {
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = 60
-        let delegate = Session.default.delegate
         let sessionManager = Session.init(configuration: configuration,
-                                   delegate: delegate,
                                    startRequestsImmediately: true,
                                    cachedResponseHandler: nil)
         return sessionManager
