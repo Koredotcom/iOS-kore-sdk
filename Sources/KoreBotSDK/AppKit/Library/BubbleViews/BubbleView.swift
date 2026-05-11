@@ -218,6 +218,9 @@ open class BubbleView: UIView {
             case .stackedCarousel:
                 bubbleView = StackedCarouselBubbleView()
                 break
+            case .buttonLinkTemplate:
+                 bubbleView = ButtonLinkNBubbleView()
+                 break
             case .noTemplate:
                 bubbleView = EmptyBubbleView()
                 break

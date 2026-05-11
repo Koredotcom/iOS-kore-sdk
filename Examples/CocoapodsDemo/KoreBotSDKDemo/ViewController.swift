@@ -78,4 +78,18 @@ class ViewController: UIViewController {
             }
         }
     }
+    
+    func koreSDKCustomMethods(){
+        // MARK: Disconnect bot
+        self.botConnect.socketDisconnect()
+        
+        // MARK: Update customData, queryParameters and customJWToken
+        let customData : [String: Any] = ["hello":"Ok"]
+        let queryParameters: [[String: Any]] = [] //[["ConnectionMode":"Start_New_Resume_Agent"],["q2":"ios"],["q3":"1"]]
+        let customJWToken: String = ""  //This should represent the subject for send own JWToken.
+        self.botConnect.setCustom_JwToken(customJWToken: customJWToken, customData: customData, queryParameters: queryParameters)
+        
+        // MARK: Reconnect Bot
+        self.botConnect.socketConnect(isReconnect: false)
+    }
 }

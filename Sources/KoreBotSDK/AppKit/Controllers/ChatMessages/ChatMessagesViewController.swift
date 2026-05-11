@@ -636,6 +636,8 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             return .radioOptionTemplate
         }else if (templateType == "stacked"){
             return .stackedCarousel
+        }else if (templateType == "buttonLinkTemplate"){
+            return .buttonLinkTemplate
         }
         else if templateType == "text"{
             return .text
@@ -980,6 +982,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(showActivityViewController), name: NSNotification.Name(rawValue: activityViewControllerNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(streamingMessageDidUpdate(_:)), name: NSNotification.Name(rawValue: streamingMessageDidUpdateNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(messageAckReceived(_:)), name: NSNotification.Name("MessageAckReceived"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deepLinkNotificationAction), name: NSNotification.Name(rawValue: deepLinkNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(localNotificationMethod), name: NSNotification.Name(rawValue: localNotification), object: nil)
     }
     
@@ -1016,6 +1019,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: streamingMessageDidUpdateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: activityViewControllerNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("MessageAckReceived"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: deepLinkNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: localNotification), object: nil)
     }
     
@@ -2031,7 +2035,19 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             }
         }
     }
-    
+    @objc func deepLinkNotificationAction(notification:Notification) {
+        if let message = notification.object as? String {
+            let dic = ["event_code": "DeepLinkClicked", "event_message": message]
+            if self.closeAndMinimizeEvent != nil{
+                self.closeAndMinimizeEvent(dic)
+            }
+            isAgentConnect = false
+            //self.botClient.sendEventToAgentChat(eventName: minimize_Button_EventName,messageId: "")
+            //Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                self.botClosed()
+            //}
+        }
+    }
     @objc func localNotificationMethod(notification:Notification){
         let dataString: String = notification.object as? String ?? ""
         let dic = ["text": dataString]

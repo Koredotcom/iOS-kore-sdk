@@ -489,6 +489,8 @@ open class KABotClient: NSObject {
             return .radioOptionTemplate
         }else if (templateType == "stacked"){
             return .stackedCarousel
+        }else if (templateType == "buttonLinkTemplate"){
+            return .buttonLinkTemplate
         }
         else if templateType == "text"{
             return .text

@@ -27,6 +27,7 @@ var activityViewControllerNotification = "ActivityViewControllerNotificationName
 /// Posted when a streaming message chunk is applied; userInfo["messageId"] = messageId. Reload that row to show text one-by-one.
 var streamingMessageDidUpdateNotification = "StreamingMessageDidUpdateNotification"
 var localNotification = "LocalNotification"
+var deepLinkNotification = "DeepLinkNotification"
 
 var isSpeakingEnabled = false
 
@@ -268,6 +269,8 @@ open class Utilities: NSObject {
             return .radioOptionTemplate
         }else if (templateType == "stacked"){
             return .stackedCarousel
+        }else if (templateType == "buttonLinkTemplate"){
+            return .buttonLinkTemplate
         }
         else if templateType == "text"{
             return .text

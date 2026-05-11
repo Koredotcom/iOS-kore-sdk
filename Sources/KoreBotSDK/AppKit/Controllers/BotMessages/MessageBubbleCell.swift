@@ -816,3 +816,16 @@ class StackedCarosuelCell : MessageBubbleCell {
         }
     }
 }
+
+class ButtonLinkBubbleVCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .buttonLinkTemplate
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleTrailingConstraint.constant = 45
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+        }
+    }
+}

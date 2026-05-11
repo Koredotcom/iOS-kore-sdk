@@ -113,6 +113,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(AdvancedMultiCell.self, forCellReuseIdentifier:"AdvancedMultiCell")
         self.tableView.register(RadioOptionTemplateCell.self, forCellReuseIdentifier: "RadioOptionTemplateCell")
         self.tableView.register(StackedCarosuelCell.self, forCellReuseIdentifier:"StackedCarosuelCell")
+        self.tableView.register(ButtonLinkBubbleVCell.self, forCellReuseIdentifier:"ButtonLinkBubbleVCell")
 
     }
     
@@ -309,6 +310,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 cellIdentifier = "RadioOptionTemplateCell"
             case .stackedCarousel:
                 cellIdentifier = "StackedCarosuelCell"
+            case .buttonLinkTemplate:
+                cellIdentifier = "ButtonLinkBubbleVCell"
+                break
             case .noTemplate:
                 cellIdentifier = "EmptyBubbleViewCell"
             }
@@ -683,6 +687,13 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 bubbleView.optionsAction = {[weak self] (text, payload) in
                     self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                break
+            case .buttonLinkTemplate:
+                let bubbleView: ButtonLinkNBubbleView = cell.bubbleView as! ButtonLinkNBubbleView
+                cell.bubbleView.drawBorder = true
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
                 }
