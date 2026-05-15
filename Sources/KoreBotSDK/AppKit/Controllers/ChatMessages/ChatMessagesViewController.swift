@@ -310,7 +310,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     
     @IBAction func tapsOnBackBtnAct(_ sender: Any) {
         if !chatMaskview.isHidden{
-            let dic = ["event_code": "BotClosed", "event_message": "Bot connection error"]
+            let dic: [String: Any] = ["event_code": "BotClosed", "event_message": "Bot connection error", "event_reason": 4]
             if self.closeAndMinimizeEvent != nil{
                 self.closeAndMinimizeEvent(dic)
             }
@@ -1108,6 +1108,10 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             case .reachable(.ethernetOrWiFi), .reachable(.cellular):
                 if isTryConnect{
                     isInternetAvailable = true
+                    let dic = ["event_code": "NetworkReconnected", "event_message": "Network connectivity has been restored.", "event_reason": 8]
+                        if self.closeAndMinimizeEvent != nil{
+                                self.closeAndMinimizeEvent(dic)
+                        }
                     if !SDKConfiguration.botConfig.isWebhookEnabled{
                         if isNetworkOnResumeCallingHistory{
                             loadReconnectionHistory = true
@@ -1124,7 +1128,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                 }
                 break
             case .notReachable:
-                let dic = ["event_code": "BotConnectionLost", "event_message": "The bot was disconnected due to a network connectivity issue. Please check the internet connection and try reconnecting."]
+                let dic: [String: Any] = ["event_code": "BotConnectionLost", "event_message": "The bot was disconnected due to a network connectivity issue. Please check the internet connection and try reconnecting.", "event_reason": 7]
                 if self.closeAndMinimizeEvent != nil{
                     self.closeAndMinimizeEvent(dic)
                 }
@@ -1155,6 +1159,10 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                     isInternetAvailable = true
                     if isBotConnectSucessFully{
                         if !self.isAppEnterBackground{
+                            let dic: [String: Any] = ["event_code": "NetworkReconnected", "event_message": "Network connectivity has been restored.", "event_reason": 8]
+                                if self.closeAndMinimizeEvent != nil{
+                                        self.closeAndMinimizeEvent(dic)
+                                }
                             if !SDKConfiguration.botConfig.isWebhookEnabled{
                                 if isNetworkOnResumeCallingHistory{
                                     loadReconnectionHistory = true
@@ -1167,6 +1175,10 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                 }
                 break
             case .notReachable:
+                let dic: [String: Any] = ["event_code": "BotConnectionLost", "event_message": "The bot was disconnected due to a network connectivity issue. Please check the internet connection and try reconnecting.", "event_reason": 7]
+                if self.closeAndMinimizeEvent != nil{
+                    self.closeAndMinimizeEvent(dic)
+                }
                 if isTryConnect{
                     isInternetAvailable = false
                     if isBotConnectSucessFully{
@@ -2020,7 +2032,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             // Create the actions
             let okAction = UIAlertAction(title: alertOk, style: UIAlertAction.Style.default) {
                 UIAlertAction in
-                let dic = ["event_code": "BotConnectionStatus", "event_message": "Token expired"]
+                let dic: [String: Any] = ["event_code": "BotConnectionStatus", "event_message": "Token expired", "event_reason": 2]
                 if self.closeAndMinimizeEvent != nil{
                     self.closeAndMinimizeEvent(dic)
                 }
@@ -2029,7 +2041,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             alertController.addAction(okAction)
             self.present(alertController, animated: true, completion: nil)
         }else{
-            let dic = ["event_code": "BotConnectionStatus", "event_message": "Token expired"]
+            let dic: [String : Any] = ["event_code": "BotConnectionStatus", "event_message": "Token expired", "event_reason": 2]
             if self.closeAndMinimizeEvent != nil{
                 self.closeAndMinimizeEvent(dic)
             }
@@ -2037,7 +2049,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }
     @objc func deepLinkNotificationAction(notification:Notification) {
         if let message = notification.object as? String {
-            let dic = ["event_code": "DeepLinkClicked", "event_message": message]
+            let dic: [String: Any] = ["event_code": "DeepLinkClicked", "event_message": message, "event_reason": 9]
             if self.closeAndMinimizeEvent != nil{
                 self.closeAndMinimizeEvent(dic)
             }
@@ -3303,7 +3315,7 @@ extension ChatMessagesViewController{
         if isShowWelcomeMsg{
             NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
         }
-        let dic = ["event_code": "BotConnectionStatus", "event_message": "Bot connected successfully"]
+        let dic: [String: Any] = ["event_code": "BotConnectionStatus", "event_message": "Bot connected successfully", "event_reason": 1]
         if self.closeAndMinimizeEvent != nil{
             self.closeAndMinimizeEvent(dic)
         }
@@ -3801,7 +3813,7 @@ extension ChatMessagesViewController {
         dismissCloseOrMinimizePopup()
         self.unsubscribeNotifications()
         isShowWelcomeMsg = true
-        let dic = ["event_code": "BotClosed", "event_message": "Bot closed by the user"]
+        let dic: [String: Any] = ["event_code": "BotClosed", "event_message": "Bot closed by the user", "event_reason": 5]
         if self.closeAndMinimizeEvent != nil{
             self.closeAndMinimizeEvent(dic)
         }
@@ -3823,7 +3835,7 @@ extension ChatMessagesViewController {
     @objc func minimizePopupAction() {
         dismissCloseOrMinimizePopup()
         isAgentConnect = false
-        let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
+        let dic: [String: Any] = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user", "event_reason": 6]
         if self.closeAndMinimizeEvent != nil{
             self.closeAndMinimizeEvent(dic)
         }
@@ -3844,7 +3856,7 @@ extension ChatMessagesViewController: UIGestureRecognizerDelegate{
         isShowWelcomeMsg = true
         if(self.botClient != nil){
             kaBotClient.socketDisconnect()
-            let dic = ["event_code": "BotConnectionStatus", "event_message": "Bot disconnected successfully"]
+            let dic: [String: Any] = ["event_code": "BotConnectionStatus", "event_message": "Bot disconnected successfully", "event_reason": 3]
             if self.closeAndMinimizeEvent != nil{
                     self.closeAndMinimizeEvent(dic)
             }
@@ -3859,7 +3871,7 @@ extension ChatMessagesViewController: UIGestureRecognizerDelegate{
     public func minimizeChatBotWindow(){
         isAgentConnect = false
         removeNotificationCenter()
-        let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
+        let dic: [String: Any] = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user", "event_reason": 6]
         if self.closeAndMinimizeEvent != nil{
                 self.closeAndMinimizeEvent(dic)
         }
