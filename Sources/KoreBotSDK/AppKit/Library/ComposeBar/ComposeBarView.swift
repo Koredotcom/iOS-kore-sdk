@@ -31,6 +31,8 @@ class ComposeBarView: UIView {
     fileprivate var speechToTextButton: UIButton!
 
     fileprivate var textViewTrailingConstraint: NSLayoutConstraint!
+    fileprivate var menuButtonWidthConstraint: NSLayoutConstraint!
+    fileprivate var attachmentButtonWidthConstraint: NSLayoutConstraint!
     fileprivate(set) public var isKeyboardEnabled: Bool = false
     
     convenience init() {
@@ -80,6 +82,7 @@ class ComposeBarView: UIView {
         self.menuButton.setTitleColor(Common.UIColorRGB(0xFFFFFF), for: .normal)
         self.menuButton.setTitleColor(Common.UIColorRGB(0x999999), for: .disabled)
         self.menuButton.setImage(UIImage(named: "Menu", in: bundle, compatibleWith: nil), for: .normal)
+        self.menuButton.imageView?.contentMode = .scaleAspectFit
         self.menuButton.titleLabel?.font = UIFont(name: boldCustomFont, size: 14.0) ?? UIFont.boldSystemFont(ofSize: 14.0)
         self.menuButton.addTarget(self, action: #selector(self.taskMenuButtonAction(_:)), for: .touchUpInside)
         self.menuButton.isHidden = false
@@ -143,13 +146,23 @@ class ComposeBarView: UIView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[bottomLineView]|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[bottomLineView(0.5)]|", options:[], metrics:nil, views:views))
         
-        var menuBtnWidth = 0
-        menuBtnWidth = isShowComposeMenuBtn == true ? 30 : 0
+        // Single width constraints — branding may toggle visibility after init (see apply*WidthConstant).
+        menuButton.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        menuButton.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        menuButtonWidthConstraint = menuButton.widthAnchor.constraint(equalToConstant: 0)
+        menuButtonWidthConstraint.priority = .required
+        menuButtonWidthConstraint.isActive = true
         
-        var attachmentBtnWidth = 0
-        attachmentBtnWidth = SDKConfiguration.botConfig.isShowAttachmentIcon == true ? 25 : 0
+        attachmentButton.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        attachmentButton.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        attachmentButtonWidthConstraint = attachmentButton.widthAnchor.constraint(equalToConstant: 0)
+        attachmentButtonWidthConstraint.priority = .required
+        attachmentButtonWidthConstraint.isActive = true
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[menuButton(\(menuBtnWidth))]-5-[attachmentButton(\(attachmentBtnWidth))]-8-[growingTextView]-5-[sendButton(30)]-10-|", options:[], metrics:nil, views:views))
+        applyMenuButtonWidthConstant()
+        applyAttachmentButtonWidthConstant()
+        
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[menuButton]-5-[attachmentButton]-8-[growingTextView]-5-[sendButton(30)]-10-|", options:[], metrics:nil, views:views))
        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[attachmentButton]-8-[growingTextView]-5-[speechToTextButton]-10-|", options:[], metrics:nil, views:views))
        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-7-[growingTextView]-7-|", options:[], metrics:nil, views:views))
        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=3-[sendButton]-3-|", options:[], metrics:nil, views:views))
@@ -199,6 +212,9 @@ class ComposeBarView: UIView {
         sendButton.setImage(tintedsendImage, for: .normal)
         sendButton.tintColor = buttonBgColor
         
+        // Footer branding / BotConnect may set compose footer flags after init — update constants only (do not add second width constraints).
+        applyMenuButtonWidthConstant()
+        applyAttachmentButtonWidthConstant()
     }
     
     //MARK: Public methods
@@ -220,6 +236,16 @@ class ComposeBarView: UIView {
     }
     
     //MARK: Private methods
+    
+    /// Keeps one active width constraint; `isShowComposeMenuBtn` is often applied after `setupViews` (branding JSON / `BotConnect`).
+    fileprivate func applyMenuButtonWidthConstant() {
+        menuButtonWidthConstraint.constant = isShowComposeMenuBtn ? 30 : 0
+    }
+    
+    /// Same pattern as menu — `SDKConfiguration.botConfig.isShowAttachmentIcon` may arrive with footer branding after init.
+    fileprivate func applyAttachmentButtonWidthConstant() {
+        attachmentButtonWidthConstraint.constant = SDKConfiguration.botConfig.isShowAttachmentIcon ? 25 : 0
+    }
     
     @objc fileprivate func clearButtonAction(_ sender: AnyObject!) {
         self.growingTextView.textView.text = "";
@@ -326,5 +352,7 @@ class ComposeBarView: UIView {
         self.sendButton = nil
         self.speechToTextButton = nil
         self.textViewTrailingConstraint = nil
+        self.menuButtonWidthConstraint = nil
+        self.attachmentButtonWidthConstraint = nil
     }
 }

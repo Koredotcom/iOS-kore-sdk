@@ -2984,6 +2984,23 @@ extension ChatMessagesViewController{
                                 widgetFooterPlaceholderText = placeholder
                             }
                         }
+                        if let footerButtons = footer["buttons"] as? [String: Any]{
+                            if let attachmentIcon = footerButtons["attachment"] as? [String: Any]{
+                                if let isShowAttachmentIcon = attachmentIcon["show"] as? Bool{
+                                    SDKConfiguration.botConfig.isShowAttachmentIcon = isShowAttachmentIcon
+                                }
+                            }
+                            if let menutIcon = footerButtons["menu"] as? [String: Any]{
+                                if let isShowMenuIcon = menutIcon["show"] as? Bool{
+                                    isShowComposeMenuBtn = isShowMenuIcon
+                                }
+                            }
+                            if let microPhoneIcon = footerButtons["microphone"] as? [String: Any]{
+                                if let isShowMicroPhoneIcon = microPhoneIcon["show"] as? Bool{
+                                    SDKConfiguration.botConfig.isShowSpeachToTextIcon = isShowMicroPhoneIcon
+                                }
+                            }
+                        }
                     }
                     if let header = v3Branding["header"] as? [String: Any]{
                         //print(header)
