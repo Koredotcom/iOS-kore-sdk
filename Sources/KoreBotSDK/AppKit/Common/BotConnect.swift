@@ -351,5 +351,17 @@ open class BotConnect: NSObject {
         print(arrayOfViews.count)
     }
     
+    public func addCustomHeaderView(headerView: KoreCustomHeaderView, headerViewHeight: Double? = 64.0){
+        customHeaderView = headerView
+        customHeaderViewHeight = headerViewHeight ?? 64.0
+    }
+    public func addCustomFooterComposeBarView(footerView: ComposeBarView, growingTxtV: KREGrowingTextView){
+        dynamicFooterview = footerView
+        dynamicGrowingTxtv = growingTxtV
+    }
+    
+    public func addCustomFooterAudioComposeBar(footerView: AudioComposeView){
+        dynamicAudioComposeFooterview = footerView
+    }
 }
 

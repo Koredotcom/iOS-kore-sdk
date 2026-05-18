@@ -17,6 +17,9 @@
 		95B56D3F2B45428B002A49D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95B56D3E2B45428B002A49D7 /* Assets.xcassets */; };
 		95C8FADE2BF5D9930069CDCA /* SampleView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C8FADC2BF5D9930069CDCA /* SampleView1.swift */; };
 		95C8FADF2BF5D9930069CDCA /* SearchGridTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C8FADD2BF5D9930069CDCA /* SearchGridTemplate.swift */; };
+		95FCA9AE2FBA971500C81E36 /* SampleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FCA9AD2FBA971500C81E36 /* SampleHeaderView.swift */; };
+		95FCA9B02FBA9D0400C81E36 /* SampleFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FCA9AF2FBA9D0400C81E36 /* SampleFooterView.swift */; };
+		95FCA9B22FBAA1DC00C81E36 /* SampleAudioComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FCA9B12FBAA1DC00C81E36 /* SampleAudioComposeView.swift */; };
 		9A3B19369ABDCDF5030E7B7E /* Pods_KoreBotSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE91BE4E497989D44D73FFB9 /* Pods_KoreBotSDKDemo.framework */; };
 		D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */; };
 		D175AD581CEF0CD500BB9442 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D175AD561CEF0CD500BB9442 /* LaunchScreen.storyboard */; };
@@ -35,6 +38,9 @@
 		95B56D3E2B45428B002A49D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		95C8FADC2BF5D9930069CDCA /* SampleView1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleView1.swift; sourceTree = "<group>"; };
 		95C8FADD2BF5D9930069CDCA /* SearchGridTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchGridTemplate.swift; sourceTree = "<group>"; };
+		95FCA9AD2FBA971500C81E36 /* SampleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleHeaderView.swift; sourceTree = "<group>"; };
+		95FCA9AF2FBA9D0400C81E36 /* SampleFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleFooterView.swift; sourceTree = "<group>"; };
+		95FCA9B12FBAA1DC00C81E36 /* SampleAudioComposeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleAudioComposeView.swift; sourceTree = "<group>"; };
 		BE91BE4E497989D44D73FFB9 /* Pods_KoreBotSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoreBotSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D175AD4A1CEF0CD500BB9442 /* Kore Bot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kore Bot.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D175AD4D1CEF0CD500BB9442 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -64,8 +70,11 @@
 			children = (
 				9587AD672D5C8C7900AB0BDD /* localbranding.json */,
 				95C8FADC2BF5D9930069CDCA /* SampleView1.swift */,
+				95FCA9B12FBAA1DC00C81E36 /* SampleAudioComposeView.swift */,
+				95FCA9AF2FBA9D0400C81E36 /* SampleFooterView.swift */,
 				95C8FADD2BF5D9930069CDCA /* SearchGridTemplate.swift */,
 				9507C89B2DDF068600317653 /* LinkTemplateBubbleview.swift */,
+				95FCA9AD2FBA971500C81E36 /* SampleHeaderView.swift */,
 			);
 			path = SampleTemplates;
 			sourceTree = "<group>";
@@ -266,7 +275,10 @@
 				9507C89C2DDF068600317653 /* LinkTemplateBubbleview.swift in Sources */,
 				95C8FADE2BF5D9930069CDCA /* SampleView1.swift in Sources */,
 				9516E0D42B4EA35C00A161D1 /* ViewController.swift in Sources */,
+				95FCA9AE2FBA971500C81E36 /* SampleHeaderView.swift in Sources */,
+				95FCA9B22FBAA1DC00C81E36 /* SampleAudioComposeView.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
+				95FCA9B02FBA9D0400C81E36 /* SampleFooterView.swift in Sources */,
 				95C8FADF2BF5D9930069CDCA /* SearchGridTemplate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

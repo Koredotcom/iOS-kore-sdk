@@ -193,9 +193,20 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         composeView.backgroundColor = UIColor.init(hexString: "#eaeaea")
         self.view.backgroundColor = UIColor.init(hexString: "#f3f3f5")
         self.view.bringSubviewToFront(chatMaskview)
-        
-        if isShowComposeMenuBtn{
-            leftMenuAddgesture()
+        customHeaderViewConfigure()
+    }
+    
+    func customHeaderViewConfigure(){
+        if customHeaderView != nil{
+            headerViewHeightConstraint.constant = customHeaderViewHeight
+            customHeaderView?.translatesAutoresizingMaskIntoConstraints = false
+            self.headerView.addSubview(customHeaderView!)
+            self.headerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[customHeaderView]|", options:[], metrics:nil, views:["customHeaderView" : customHeaderView]))
+            self.headerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[customHeaderView]|", options:[], metrics:nil, views:["customHeaderView" : customHeaderView]))
+            customHeaderView?.koreHeaderBackBtnAction = { [weak self]  in
+                self?.tapsOnBackBtnAct(self)
+            }
+            self.headerView.bringSubviewToFront(linerProgressBar)
         }
     }
     
@@ -1089,12 +1100,12 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         prepareForDeinit()
         sleep(1)
     }
-    func showTypingToAgent(_: ComposeBarView){
+    public func showTypingToAgent(_: ComposeBarView){
         if isAgentConnect{
             self.botClient.sendEventToAgentChat(eventName: "typing", messageId: "")
         }
     }
-    func stopTypingToAgent(_: ComposeBarView){
+    public func stopTypingToAgent(_: ComposeBarView){
         if isAgentConnect{
             self.botClient.sendEventToAgentChat(eventName: "stop_typing", messageId: "")
         }
@@ -1887,12 +1898,11 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }
     
     // MARK: ComposeBarViewDelegate methods
-    
-    func composeBarView(_: ComposeBarView, sendButtonAction text: String) {
+    public func composeBarView(_: ComposeBarView, sendButtonAction text: String) {
         self.sendTextMessage(text, options: nil)
     }
     
-    func composeBarViewSpeechToTextButtonAction(_: ComposeBarView) {
+    public func composeBarViewSpeechToTextButtonAction(_: ComposeBarView) {
         KoraASRService.shared.checkAudioRecordPermission({ [weak self] in
             self?.isShowAudioComposeView = true
             self?.speechToTextButtonAction()
@@ -1900,12 +1910,12 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         self.closeWidgetPanelView()
     }
     
-    func composeBarViewDidBecomeFirstResponder(_: ComposeBarView) {
+    public func composeBarViewDidBecomeFirstResponder(_: ComposeBarView) {
         self.audioComposeView.stopRecording()
         self.closeWidgetPanelView()
     }
     
-    func composeBarTaskMenuButtonAction(_: ComposeBarView) {
+    public func composeBarTaskMenuButtonAction(_: ComposeBarView) {
         self.closeWidgetPanelView()
         self.bottomConstraint.constant = 0
         self.taskMenuContainerHeightConstant.constant = 0
@@ -1926,7 +1936,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         self.leftMenuView.leftMenuTableviewReload()
         leftMenuTitleLbl.text = leftMenuTitle
     }
-    func composeBarAttachmentButtonAction(_: ComposeBarView) {
+    public func composeBarAttachmentButtonAction(_: ComposeBarView) {
         self.openAcionSheet()
     }
     
@@ -3329,6 +3339,9 @@ extension ChatMessagesViewController{
         chatMaskview.isHidden = true
         subscribeNotifications()
         setupCloseOrMinimizePopup()
+        if isShowComposeMenuBtn{
+            leftMenuAddgesture()
+        }
         if isShowWelcomeMsg{
             NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
         }
@@ -3462,15 +3475,20 @@ extension ChatMessagesViewController{
                 self.view.backgroundColor = UIColor.init(hexString: (brandingShared.widgetBodyColor) ?? "#f3f3f5")
             }
         }
-        composeView.backgroundColor = UIColor.init(hexString: (brandingShared.widgetFooterColor) ?? "#eaeaea")
+        //composeView.backgroundColor = UIColor.init(hexString: (brandingShared.widgetFooterColor) ?? "#eaeaea")
         if statusBarBottomBackgroundColor == nil{
             footerStatusBarView.backgroundColor = UIColor.init(hexString: (brandingShared.widgetFooterColor) ?? "#eaeaea")
         }else{
             footerStatusBarView.backgroundColor = statusBarBottomBackgroundColor
         }
-        composeView.brandingChnages()
-        audioComposeView.backgroundColor = UIColor.init(hexString: (brandingShared.widgetFooterColor) ?? "#eaeaea")
-        audioComposeView.brandingChnages()
+        if dynamicFooterview == nil{
+            composeView.backgroundColor = UIColor.init(hexString: (brandingShared.widgetFooterColor) ?? "#eaeaea")
+            composeView.brandingChnages()
+        }
+        if dynamicAudioComposeFooterview == nil{
+            audioComposeView.backgroundColor = UIColor.init(hexString: (brandingShared.widgetFooterColor) ?? "#eaeaea")
+            audioComposeView.brandingChnages()
+        }
         
         BubbleViewRightTint = UIColor.init(hexString: (brandingShared.userchatBgColor) ?? "#2881DF")
         BubbleViewLeftTint = UIColor.init(hexString: (brandingShared.botchatBgColor) ?? "#FFFFFF")
@@ -3866,6 +3884,9 @@ extension ChatMessagesViewController: UIGestureRecognizerDelegate{
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if touch.view?.isDescendant(of: botMessagesView.tableView) == true || touch.view?.isDescendant(of: quickReplyView) == true{
             return false
+        }
+        if customHeaderView != nil{
+            dismissKeyboardManually()
         }
         return true
     }

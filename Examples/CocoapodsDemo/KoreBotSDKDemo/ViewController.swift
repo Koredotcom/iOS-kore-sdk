@@ -68,6 +68,16 @@ class ViewController: UIViewController {
             }
         }
         
+//        //MARK: Add custom headerview
+//        botConnect.addCustomHeaderView(headerView: SampleHeaderView())
+//        
+//        //MARK: Add custom composebarview
+//        let customFooterView = SampleFooterView()
+//        botConnect.addCustomFooterComposeBarView(footerView: customFooterView, growingTxtV: customFooterView.textV)
+//        
+//        //MARK: Add custom Audiocomposebarview
+//        botConnect.addCustomFooterAudioComposeBar(footerView: SampleAudioComposeView())
+        
         // MARK: Show Bot window
         botConnect.show()
         
