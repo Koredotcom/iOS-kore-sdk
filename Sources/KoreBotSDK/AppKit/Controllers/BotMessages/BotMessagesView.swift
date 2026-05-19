@@ -776,25 +776,33 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             }
         }
         
-        let dateFormatter: DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEE, d MMMM YYYY"
-        let dateString = dateFormatter.string(from: date)
-        
+//        let dateFormatter: DateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "EEE, d MMMM YYYY"
+//        let dateString = dateFormatter.string(from: date)
+        let dateString = formattedDateText(from: date)
         let label = UILabel()
         label.transform = CGAffineTransform(scaleX: 1, y: -1)
         label.text = dateString
         label.textAlignment = .center
-        label.textColor = UIColor.darkGray.withAlphaComponent(0.8)
-        label.font = UIFont(name: regularCustomFont, size: 13)
+        label.textColor = BubbleViewBotChatTextColor
+        label.font = UIFont(name: regularCustomFont, size: 12)
         return label
     }
-    
+    func formattedDateText(from date: Date) -> String {
+        if Calendar.current.isDateInToday(date) {
+            return "Today"
+        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEE, d MMMM yyyy"
+        
+        return dateFormatter.string(from: date)
+    }
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 5.0
     }
     
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.0 //20
+        return 20.0 //20
     }
     
     // MARK:- KREFetchedResultsControllerDelegate methods

@@ -36,7 +36,7 @@ class MessageBubbleCell : UITableViewCell {
         dateLabel.numberOfLines = 0
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.font = UIFont(name: regularCustomFont, size: 10.0)
-        dateLabel.textColor = .lightGray
+        dateLabel.textColor = BubbleViewBotChatTextColor
         dateLabel.isHidden = false
         return dateLabel
     }()
@@ -256,7 +256,7 @@ class MessageBubbleCell : UITableViewCell {
        //DateLabel
         if let sentOn = message.sentOn as Date? {
                 let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
+                dateFormatter.dateFormat = bubbleView_DateFormat//"EE, MMM dd yyyy 'at' hh:mm:ss a"
                 dateLabel.text = dateFormatter.string(from: sentOn)
         }
         if self.tailPosition == .left{

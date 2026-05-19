@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 open class KoreCustomHeaderView: UIView {
     let bundle = Bundle.sdkModule
     public var koreHeaderBackBtnAction: (() -> Void)?

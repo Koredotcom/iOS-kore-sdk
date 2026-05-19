@@ -65,16 +65,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		95C38DEB2FBC67FE00ABE2B5 /* CustomHeaderFooterViews */ = {
+			isa = PBXGroup;
+			children = (
+				95FCA9AD2FBA971500C81E36 /* SampleHeaderView.swift */,
+				95FCA9B12FBAA1DC00C81E36 /* SampleAudioComposeView.swift */,
+				95FCA9AF2FBA9D0400C81E36 /* SampleFooterView.swift */,
+			);
+			path = CustomHeaderFooterViews;
+			sourceTree = "<group>";
+		};
 		95C8FADB2BF5D9930069CDCA /* SampleTemplates */ = {
 			isa = PBXGroup;
 			children = (
 				9587AD672D5C8C7900AB0BDD /* localbranding.json */,
 				95C8FADC2BF5D9930069CDCA /* SampleView1.swift */,
-				95FCA9B12FBAA1DC00C81E36 /* SampleAudioComposeView.swift */,
-				95FCA9AF2FBA9D0400C81E36 /* SampleFooterView.swift */,
 				95C8FADD2BF5D9930069CDCA /* SearchGridTemplate.swift */,
 				9507C89B2DDF068600317653 /* LinkTemplateBubbleview.swift */,
-				95FCA9AD2FBA971500C81E36 /* SampleHeaderView.swift */,
 			);
 			path = SampleTemplates;
 			sourceTree = "<group>";
@@ -119,6 +126,7 @@
 				95B56D3E2B45428B002A49D7 /* Assets.xcassets */,
 				D175AD561CEF0CD500BB9442 /* LaunchScreen.storyboard */,
 				D175AD591CEF0CD500BB9442 /* Info.plist */,
+				95C38DEB2FBC67FE00ABE2B5 /* CustomHeaderFooterViews */,
 				95C8FADB2BF5D9930069CDCA /* SampleTemplates */,
 			);
 			path = KoreBotSDKDemo;

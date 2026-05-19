@@ -68,15 +68,18 @@ class ViewController: UIViewController {
             }
         }
         
-//        //MARK: Add custom headerview
+        //MARK: Add custom headerview
 //        botConnect.addCustomHeaderView(headerView: SampleHeaderView())
-//        
-//        //MARK: Add custom composebarview
+        
+        //MARK: Add custom composebarview
 //        let customFooterView = SampleFooterView()
-//        botConnect.addCustomFooterComposeBarView(footerView: customFooterView, growingTxtV: customFooterView.textV)
-//        
-//        //MARK: Add custom Audiocomposebarview
+//       botConnect.addCustomFooterComposeBarView(footerView: customFooterView, growingTxtV: customFooterView.textV)
+        
+        //MARK: Add custom Audio composebarview
 //        botConnect.addCustomFooterAudioComposeBar(footerView: SampleAudioComposeView())
+        
+        //MARK: set bubbleview dateformat
+//        botConnect.setBubbleDateFormat = "MMMM d 'at' h:mm a"
         
         // MARK: Show Bot window
         botConnect.show()

@@ -30,7 +30,7 @@ var localNotification = "LocalNotification"
 var deepLinkNotification = "DeepLinkNotification"
 
 var isSpeakingEnabled = false
-
+var bubbleView_DateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
 let userColor: UIColor = UIColor(red: 38 / 255.0, green: 52 / 255.0, blue: 74 / 255.0, alpha: 1)
 let botColor: UIColor = UIColor(red: 237 / 255.0, green: 238 / 255.0, blue: 241 / 255.0, alpha: 1)
 

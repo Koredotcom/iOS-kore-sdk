@@ -49,6 +49,7 @@ open class BotConnect: NSObject {
     public var isShowMinimiseButton = false
     public var isShowBackButton = true
     public var isShowTokenExpiryAlertView = false
+    public var setBubbleDateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
     // MARK: - init
     public override init() {
         super.init()
@@ -139,6 +140,13 @@ open class BotConnect: NSObject {
         buttonTemplteBtnsCornerRadious = buttonsCornerRadious
         buttonTemplteBtnsTextBoraderColor = buttonsTextBoraderColor
         isShowTokenExpiryAlertV = isShowTokenExpiryAlertView
+        if setBubbleDateFormat.contains("y") ||
+            setBubbleDateFormat.contains("M") ||
+            setBubbleDateFormat.contains("d") {
+            bubbleView_DateFormat = setBubbleDateFormat
+        } else {
+            bubbleView_DateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
+        }
         if !isIntialiseFileUpload{
             isIntialiseFileUpload = true
             filesUpload()
