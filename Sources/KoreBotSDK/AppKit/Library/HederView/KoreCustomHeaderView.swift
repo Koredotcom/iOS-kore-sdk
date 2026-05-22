@@ -10,6 +10,8 @@ import UIKit
 open class KoreCustomHeaderView: UIView {
     let bundle = Bundle.sdkModule
     public var koreHeaderBackBtnAction: (() -> Void)?
+    public var koreCloseChatWindow: (() -> Void)?
+    public var koreMinimiseChatWindow: (() -> Void)?
     
     // MARK: init
     public init() {
@@ -25,7 +27,7 @@ open class KoreCustomHeaderView: UIView {
         
     }
     
-    @objc func backButtonActionHandler(_ sender: AnyObject) {
-        koreHeaderBackBtnAction?()
-    }
+//    @objc func backButtonActionHandler(_ sender: AnyObject) {
+//        koreHeaderBackBtnAction?()
+//    }
 }

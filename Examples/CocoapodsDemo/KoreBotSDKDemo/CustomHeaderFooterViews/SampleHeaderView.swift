@@ -49,7 +49,14 @@ class SampleHeaderView: KoreCustomHeaderView {
     }
     
     @objc func backButtonAction(_ sender: AnyObject) {
+        //MARK: Show popup actions for close, minimize, and cancel
         koreHeaderBackBtnAction?()
+        
+        //MARK: Show popup for closing the chat window
+        //koreCloseChatWindow?()
+        
+        //MARK: Show popup for minimizing the chat window
+        //koreMinimiseChatWindow?()
     }
     
 }

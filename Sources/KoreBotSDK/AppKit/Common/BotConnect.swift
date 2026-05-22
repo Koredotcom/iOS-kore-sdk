@@ -191,7 +191,10 @@ open class BotConnect: NSObject {
     public func minimizeChatBot(){
         botViewController.minimizeChatBotWindow()
     }
-        
+    // MARK: CloseChatBot
+    public func closeChatBot(){
+        botViewController.closeChatWindow()
+    }
     func loadCustomFonts(){
         regularCustomFont = "HelveticaNeue"
         mediumCustomFont = "HelveticaNeue-Medium"

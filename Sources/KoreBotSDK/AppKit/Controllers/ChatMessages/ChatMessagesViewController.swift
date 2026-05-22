@@ -206,6 +206,12 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             customHeaderView?.koreHeaderBackBtnAction = { [weak self]  in
                 self?.tapsOnBackBtnAct(self)
             }
+            customHeaderView?.koreCloseChatWindow = { [weak self]  in
+                self?.closeChatWindow()
+            }
+            customHeaderView?.koreMinimiseChatWindow = { [weak self]  in
+                self?.minimiseChatWindow()
+            }
             self.headerView.bringSubviewToFront(linerProgressBar)
         }
     }
@@ -3846,6 +3852,9 @@ extension ChatMessagesViewController {
     
     @objc func closePopupAction() {
         dismissCloseOrMinimizePopup()
+        closeChatWindow()
+    }
+    public func closeChatWindow(){
         self.unsubscribeNotifications()
         isShowWelcomeMsg = true
         let dic: [String: Any] = ["event_code": "BotClosed", "event_message": "Bot closed by the user", "event_reason": 5]
@@ -3866,9 +3875,11 @@ extension ChatMessagesViewController {
             }
         }
     }
-    
     @objc func minimizePopupAction() {
         dismissCloseOrMinimizePopup()
+        minimiseChatWindow()
+    }
+    public func minimiseChatWindow(){
         isAgentConnect = false
         let dic: [String: Any] = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user", "event_reason": 6]
         if self.closeAndMinimizeEvent != nil{
