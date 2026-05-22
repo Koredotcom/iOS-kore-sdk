@@ -25,7 +25,7 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
             var maxHeight: CGFloat = 0.0
             for i in 0..<self.numberOfItems {
                 let cardInfo = cards[i]
-                let height = getExpectedHeight(cardInfo: cardInfo, width: maxCardWidth - KRECarouselView.cardPadding)
+                let height = getExpectedHeight(cardInfo: cardInfo, width: maxCardWidth)
                 if height > maxHeight {
                     maxHeight = height
                 }
@@ -130,7 +130,7 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
     
     // MARK: - UICollectionViewDelegateContactFlowLayout
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: maxCardWidth, height: maxCardHeight - 1.0)
+        return CGSize(width: maxCardWidth, height: maxCardHeight)
     }
     
     public func prepareForReuse() {
@@ -169,22 +169,6 @@ public class KRECarouselView: UICollectionView, UICollectionViewDelegate, UIColl
     
     // MARK: - expected height of KRECard
     public func getExpectedHeight(cardInfo: KRECardInfo, width: CGFloat) -> CGFloat {
-        var height: CGFloat = 0.0
-        
-        // imageView height
-        if cardInfo.isImagePresent {
-            height += width * 0.5
-        }
-        
-        if let count = cardInfo.options?.count {
-            height += KRECardView.kMaxRowHeight * CGFloat(min(count, KRECardView.buttonLimit))
-        }
-        
-        let attrString: NSMutableAttributedString = KRECardView.getAttributedString(cardInfo: cardInfo)
-        let limitingSize: CGSize = CGSize(width: width - 20.0, height: CGFloat.greatestFiniteMagnitude)
-        let rect: CGRect = attrString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
-        height += rect.size.height + 32.0
-        
-        return height
+        return KRECarouselCardView.expectedCardHeight(cardInfo: cardInfo, width: width)
     }
 }

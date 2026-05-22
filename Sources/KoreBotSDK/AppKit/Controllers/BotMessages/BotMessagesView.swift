@@ -759,7 +759,14 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        guard let message = fetchedResultsController?.object(at: indexPath) as? KREMessage,
+              let templateType = message.templateType?.intValue,
+              let componentType = ComponentType(rawValue: templateType),
+              let components = message.components as? [KREComponent],
+              !components.isEmpty else {
+            return 100
+        }
+        return MessageBubbleCell().getEstimatedHeightForComponents(components, bubbleType: componentType)
     }
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

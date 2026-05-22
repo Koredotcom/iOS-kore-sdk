@@ -12,6 +12,9 @@ public class KRECarouselCardView: UIView, UIGestureRecognizerDelegate {
     let bundle = Bundle.sdkModule
     static let kMaxRowHeight: CGFloat = 44
     static let buttonLimit: Int = 3
+    /// Matches `V:[imageView]-[textLabel]-(>=10)-[optionsView]` spacing in `setup()`.
+    static let sectionSpacing: CGFloat = 10
+    static let cardVerticalPadding: CGFloat = 8
     var isFirst: Bool = false
     var isLast: Bool = false
     var urlString: String!
@@ -31,6 +34,7 @@ public class KRECarouselCardView: UIView, UIGestureRecognizerDelegate {
     public var userIntent: ((_ object: Any?) -> Void)?
     public var userIntentAction: ((_ title: String?, _ customData: [String: Any]?) -> Void)?
     var isImagePresent : Bool = true
+    private var configuredCardInfo: KRECardInfo?
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -104,6 +108,45 @@ public class KRECarouselCardView: UIView, UIGestureRecognizerDelegate {
         views = ["imageView": self.imageView, "textLabel": self.textLabel, "optionsView": self.optionsView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[imageView]-[textLabel]-(>=10@1)-[optionsView]", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[textLabel]-10-|", options: [], metrics: nil, views: views))
+        
+        textLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        optionsView.setContentCompressionResistancePriority(.required, for: .vertical)
+    }
+    
+    static func optionsHeight(for cardInfo: KRECardInfo, cardWidth: CGFloat) -> CGFloat {
+        guard let options = cardInfo.options, !options.isEmpty else { return 0 }
+        let count = min(options.count, buttonLimit)
+        var height = kMaxRowHeight * CGFloat(count)
+        if count > 1 {
+            height += CGFloat(count - 1)
+        }
+        return height
+    }
+    
+    /// Shared height used by the carousel collection view and table auto-layout.
+    public static func expectedCardHeight(cardInfo: KRECardInfo, width: CGFloat) -> CGFloat {
+        let layoutWidth = max(width, 1)
+        var height: CGFloat = cardVerticalPadding
+        
+        if cardInfo.isImagePresent {
+            height += layoutWidth * 0.5
+            height += sectionSpacing
+        }
+        
+        let attrString = getAttributedString(cardInfo: cardInfo)
+        let textWidth = layoutWidth - 20.0
+        let limitingSize = CGSize(width: textWidth, height: .greatestFiniteMagnitude)
+        let rect = attrString.boundingRect(with: limitingSize, options: .usesLineFragmentOrigin, context: nil)
+        height += ceil(rect.height)
+        height += sectionSpacing
+        height += optionsHeight(for: cardInfo, cardWidth: layoutWidth)
+        height += cardVerticalPadding
+        return ceil(height)
+    }
+    
+    func updateOptionsViewHeight(for cardWidth: CGFloat) {
+        guard let cardInfo = configuredCardInfo else { return }
+        optionsViewHeightConstraint.constant = KRECarouselCardView.optionsHeight(for: cardInfo, cardWidth: cardWidth)
     }
     
     static func getAttributedString(cardInfo: KRECardInfo) -> NSMutableAttributedString {
@@ -124,36 +167,19 @@ public class KRECarouselCardView: UIView, UIGestureRecognizerDelegate {
     }
     
     static func getExpectedHeight(cardInfo: KRECardInfo, width: CGFloat) -> CGFloat {
-        var height: CGFloat = 0.0
-        
-        // imageView height
-        if cardInfo.isImagePresent {
-            height += width * 0.5
-        }
-        
-        if let count = cardInfo.options?.count {
-            height += KRECardView.kMaxRowHeight * CGFloat(min(count, KRECardView.buttonLimit))
-        }
-        
-        let attrString: NSMutableAttributedString = KRECardView.getAttributedString(cardInfo: cardInfo)
-        let limitingSize: CGSize = CGSize(width: width - 20.0, height: CGFloat.greatestFiniteMagnitude)
-        let rect: CGRect = attrString.boundingRect(with: limitingSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
-        height += rect.size.height + 32.0
-        
-        return height
+        return expectedCardHeight(cardInfo: cardInfo, width: width)
     }
     
     public func configureForCardInfo(cardInfo: KRECardInfo) {
+        configuredCardInfo = cardInfo
         isImagePresent = cardInfo.isImagePresent
         if let imageUrlString = cardInfo.imageURL, let url = URL(string: imageUrlString) {
             imageView.af.setImage(withURL: url, placeholderImage: UIImage(named: "placeholder_image", in: bundle, compatibleWith: nil))
         }
-        self.textLabel.attributedText = KRECardView.getAttributedString(cardInfo: cardInfo)
+        self.textLabel.attributedText = KRECarouselCardView.getAttributedString(cardInfo: cardInfo)
         self.optionsView.options.removeAll()
         self.optionsView.options = cardInfo.options!
-        
-        let count: Int = min(cardInfo.options!.count, KRECardView.buttonLimit)
-        self.optionsViewHeightConstraint.constant = KRECardView.kMaxRowHeight*CGFloat(count)
+        updateOptionsViewHeight(for: bounds.width > 0 ? bounds.width : UIScreen.main.bounds.width)
     }
     
     public func updateLayer() {
@@ -167,6 +193,9 @@ public class KRECarouselCardView: UIView, UIGestureRecognizerDelegate {
         }else{
             self.textLabel.textAlignment = .center
             self.imageViewHeightConstraint.constant = 0
+        }
+        if frame.size.width > 0 {
+            updateOptionsViewHeight(for: frame.size.width)
         }
         super.layoutSubviews()
         self.applyBubbleMask()

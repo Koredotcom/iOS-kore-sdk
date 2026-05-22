@@ -302,10 +302,18 @@ open class KREOptionsView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard indexPath.row < options.count else { return kMaxRowHeight }
+        if options[indexPath.row].optionType == KREOptionType.button {
+            return kMaxRowHeight
+        }
         return UITableView.automaticDimension
     }
     
     public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard indexPath.row < options.count else { return kMaxRowHeight }
+        if options[indexPath.row].optionType == KREOptionType.button {
+            return kMaxRowHeight
+        }
         return UITableView.automaticDimension
     }
     

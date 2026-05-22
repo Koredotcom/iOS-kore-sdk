@@ -64,7 +64,7 @@ class ListBubbleView: BubbleView {
         
         //if !reloadTable{
            // reloadTable = true
-            NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
+           // NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
        // }
     }
     

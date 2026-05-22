@@ -116,12 +116,14 @@ class CarouselBubbleView: BubbleView {
                 // Ensure width is portrait-based before computing heights
                 self.carouselView.maxCardWidth = portraitCardWidth()
                 self.carouselView.cards = cards
+                self.invalidateIntrinsicContentSize()
             }
         }
     }
     
     override var intrinsicContentSize : CGSize {
-        return CGSize(width: 0.0, height: self.carouselView.maxCardHeight)
+        let extraPadding: CGFloat = 8.0
+        return CGSize(width: 0.0, height: self.carouselView.maxCardHeight + extraPadding)
     }
     
     override func prepareForReuse() {
