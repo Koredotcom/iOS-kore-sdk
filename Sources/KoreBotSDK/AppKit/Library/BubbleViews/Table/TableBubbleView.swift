@@ -96,7 +96,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 32.0
     let kMinTextWidth: CGFloat = 20.0
     var isExpandTableview = false
-    
+    var senderImageView: UIImageView!
     var showMore = false
     
     override func applyBubbleMask() {
@@ -122,7 +122,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         cardView.backgroundColor =  .clear //BubbleViewLeftTint
         let cardViews: [String: UIView] = ["cardView": cardView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[cardView]-0-|", options: [], metrics: nil, views: cardViews))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[cardView]-15-|", options: [], metrics: nil, views: cardViews))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[cardView]-10-|", options: [], metrics: nil, views: cardViews))
     }
     
     override func initialize() {
@@ -142,6 +142,13 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         self.cardView.addSubview(self.tileBgv)
         self.tileBgv.backgroundColor = BubbleViewLeftTint
         
+        self.senderImageView = UIImageView()
+        self.senderImageView.contentMode = .scaleAspectFit
+        self.senderImageView.clipsToBounds = true
+        self.senderImageView.layer.cornerRadius = 0.0//15
+        self.senderImageView.translatesAutoresizingMaskIntoConstraints = false
+        self.cardView.addSubview(self.senderImageView)
+        
         self.CollectionVBgv = UIView(frame:.zero)
         self.CollectionVBgv.translatesAutoresizingMaskIntoConstraints = false
         self.CollectionVBgv.layer.rasterizationScale =  UIScreen.main.scale
@@ -153,12 +160,12 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         self.cardView.addSubview(self.CollectionVBgv)
         self.CollectionVBgv.backgroundColor = BubbleViewLeftTint
         
-        let views: [String: UIView] = ["tileBgv": tileBgv, "CollectionVBgv": CollectionVBgv]
-        
+        let views: [String: UIView] = ["senderImageView": senderImageView,"tileBgv": tileBgv, "CollectionVBgv": CollectionVBgv]
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[senderImageView(28)]", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tileBgv]-5-[CollectionVBgv]-0-|", options: [], metrics: nil, views: views))
         self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[CollectionVBgv]-0-|", options: [], metrics: nil, views: views))
         
-        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tileBgv]", options: [], metrics: nil, views: views))
+        self.cardView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[senderImageView(28)]-8-[tileBgv]", options: [], metrics: nil, views: views))
         
         let collectionViewLayout = CustomCollectionViewLayout()
         self.collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewLayout)
@@ -230,7 +237,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         let subView: [String: UIView] = ["titleLbl": titleLbl]
         let metrics: [String: NSNumber] = ["textLabelMaxWidth": NSNumber(value: Float(kMaxTextWidth)), "textLabelMinWidth": NSNumber(value: Float(kMinTextWidth))]
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLbl]-10-|", options: [], metrics: metrics, views: subView))
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[titleLbl(>=textLabelMinWidth,<=textLabelMaxWidth)]-16-|", options: [], metrics: metrics, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl(>=textLabelMinWidth,<=textLabelMaxWidth)]-10-|", options: [], metrics: metrics, views: subView))
         setCornerRadiousToTitleView()
     }
     
@@ -406,6 +413,13 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
                 self.titleLbl.text = jsonObject["text"] as? String
                 self.showMoreButton.isHidden = self.showMore
                 self.collectionView.reloadData()
+                let placeHolderIcon = UIImage(named: "kora", in: Bundle.sdkModule, compatibleWith: nil)
+                self.senderImageView.image = placeHolderIcon
+                if (botHistoryIcon != nil) {
+                    if let fileUrl = URL(string: botHistoryIcon!) {
+                        self.senderImageView.af.setImage(withURL: fileUrl, placeholderImage: placeHolderIcon)
+                    }
+               }
             }
         }
     }
