@@ -197,6 +197,11 @@ open class Utilities: NSObject {
         return false
     }
     
+    public static func isBlank(_ string: String?) -> Bool {
+        guard let string = string else { return true }
+        return string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+    
     public static func getComponentTypes(_ templateType: String,_ tabledesign:String) -> ComponentType {
         if (templateType == "quick_replies") {
             return .quickReply

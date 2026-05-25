@@ -2262,7 +2262,7 @@ extension ChatMessagesViewController {
                             }
                         }
                     }
-                    if jsonString == "Welpro"{
+                    if jsonString == "Welpro" || Utilities.isBlank(jsonString){
                         removeTemplate = true
                         RemovedTemplateCount  += 1
                     }
