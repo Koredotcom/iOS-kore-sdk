@@ -3489,8 +3489,8 @@ extension ChatMessagesViewController{
         }
         if dynamicFooterview == nil{
             composeView.backgroundColor = UIColor.init(hexString: (brandingShared.widgetFooterColor) ?? "#eaeaea")
-            composeView.brandingChnages()
         }
+           composeView.brandingChnages()
         if dynamicAudioComposeFooterview == nil{
             audioComposeView.backgroundColor = UIColor.init(hexString: (brandingShared.widgetFooterColor) ?? "#eaeaea")
             audioComposeView.brandingChnages()

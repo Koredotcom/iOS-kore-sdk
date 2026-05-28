@@ -39,6 +39,7 @@ open class ComposeBarView: UIView {
     public var koreFooterViewSpechToTextButtonAction: (() -> Void)?
     public var koreFooterViewSendButtonAction: ((_ text: String?) -> Void)?
     public var koreFooterViewAttachmentButtonAction: (() -> Void)?
+    public var koreFooterViewBranding: ((_ dic: [String:Any]?) -> Void)?
     
     public convenience init() {
         self.init(frame: CGRect.zero)
@@ -255,7 +256,24 @@ open class ComposeBarView: UIView {
             // Footer branding / BotConnect may set compose footer flags after init — update constants only (do not add second width constraints).
             applyMenuButtonWidthConstant()
             applyAttachmentButtonWidthConstant()
+        }else{
+            // Custom footer: closure is set on `dynamicFooterview` (e.g. SampleFooterView), not on this wrapper.
+                let dic = footerBrandingDictionary()
+                dynamicFooterview?.koreFooterViewBranding?(dic)
         }
+    }
+    
+    /// Branding payload forwarded to custom footer views via `koreFooterViewBranding`.
+    func footerBrandingDictionary() -> [String: Any] {
+        var dic: [String: Any] = [:]
+        dic["footerBgColor"] = brandingShared.widgetFooterColor ?? "#eaeaea"
+        dic["footerTextColor"] = brandingShared.widgetFooterTextColor ?? "#26344A"
+        dic["footerPlaceholderColor"] = brandingShared.widgetFooterPlaceholderColor ?? "#B5B9BA"
+        dic["footerBorderColor"] = brandingShared.widgetFooterBorderColor ?? "#000000"
+        if let placeholder = brandingShared.widgetFooterPlaceholderText {
+            dic["footerPlaceholderText"] = placeholder
+        }
+        return dic
     }
     
     //MARK: Public methods
