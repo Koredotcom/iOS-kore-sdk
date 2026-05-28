@@ -305,7 +305,9 @@ open class KABotClient: NSObject {
             }
             
             let message = self.onReceiveMessage(object: object)
-            self.addMessages(message.0, message.1)
+            if !isEmptyBubbleView{
+                self.addMessages(message.0, message.1)
+            }
         }
         
         botClient.onMessageAck = { (ack) in
@@ -533,6 +535,7 @@ open class KABotClient: NSObject {
     }
     
     func onReceiveMessage(object: BotMessageModel?) -> (Message?, String?) {
+        isEmptyBubbleView = false
         NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil) //hideTypingStatusForBot()
         var ttsBody: String?
         var textMessage: Message! = nil
@@ -603,6 +606,10 @@ open class KABotClient: NSObject {
                     
                     if text.contains("use a web form")  {
 
+                    }
+                    if Utilities.isBlank(text){
+                        isEmptyBubbleView = true
+                        RemovedTemplateCount  += 1
                     }
                     message.addComponent(textComponent)
                     return (message, ttsBody)

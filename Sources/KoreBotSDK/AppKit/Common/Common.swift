@@ -36,6 +36,7 @@ let botColor: UIColor = UIColor(red: 237 / 255.0, green: 238 / 255.0, blue: 241 
 
 var themeColor: UIColor = UIColor.init(hexString: "#2881DF")
 var composebarTextVBgColor = "#FFFFFF"
+var isEmptyBubbleView = false
 var isShowUserIcon = false
 var isShowBotIconTop = false
 var AcccesssTokenn:String?
