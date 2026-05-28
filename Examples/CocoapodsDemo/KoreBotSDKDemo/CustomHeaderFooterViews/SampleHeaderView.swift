@@ -46,6 +46,21 @@ class SampleHeaderView: KoreCustomHeaderView {
         
         textLabel.heightAnchor.constraint(equalToConstant: 21).isActive = true
         textLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        
+        self.koreHeaderViewBranding = {[weak self] (brandingDic) in
+            guard let dic = brandingDic else {
+                return
+            }
+            if let text = dic["headerViewTitle"] as? String {
+                self?.textLabel.text = text
+            }
+            if let textColor = dic["headerViewTitleTextColor"] as? String {
+                self?.textLabel.textColor = UIColor.init(hexString: textColor)
+            }
+            if let headerViewBgColor = dic["headerViewBgColor"] as? String {
+                self?.backgroundColor = UIColor.init(hexString: headerViewBgColor)
+            }
+        }
     }
     
     @objc func backButtonAction(_ sender: AnyObject) {

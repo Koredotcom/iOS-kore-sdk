@@ -2999,6 +2999,9 @@ extension ChatMessagesViewController{
                             if let placeholder = composeBar["placeholder"] as? String{
                                 widgetFooterPlaceholderText = placeholder
                             }
+                            if let textVBgColor = composeBar["bg_color"] as? String{
+                                composebarTextVBgColor = textVBgColor
+                            }
                         }
                         if let footerButtons = footer["buttons"] as? [String: Any]{
                             if let attachmentIcon = footerButtons["attachment"] as? [String: Any]{
@@ -3515,7 +3518,13 @@ extension ChatMessagesViewController{
         let tintedMinimiseImage = minimiseImage?.withRenderingMode(.alwaysTemplate)
         self.minimiseBtn.setBackgroundImage(tintedMinimiseImage, for: .normal)
         self.minimiseBtn.tintColor = widgetTxtColor
-        
+        if customHeaderView != nil{
+            var dic: [String: Any] = [:]
+            dic["headerViewBgColor"] = brandingShared.widgetHeaderColor ?? "#FFFFFF"
+            dic["headerViewTitle"] = titleStr
+            dic["headerViewTitleTextColor"] = brandingShared.widgetTextColor ?? "#000000"
+            customHeaderView?.koreHeaderViewBranding?(dic)
+        }
     }
 }
 // MARK: - LeftMenu

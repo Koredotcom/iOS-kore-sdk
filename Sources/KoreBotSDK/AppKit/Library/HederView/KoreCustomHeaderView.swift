@@ -12,6 +12,7 @@ open class KoreCustomHeaderView: UIView {
     public var koreHeaderBackBtnAction: (() -> Void)?
     public var koreCloseChatWindow: (() -> Void)?
     public var koreMinimiseChatWindow: (() -> Void)?
+    public var koreHeaderViewBranding: ((_ dic: [String:Any]?) -> Void)?
     
     // MARK: init
     public init() {

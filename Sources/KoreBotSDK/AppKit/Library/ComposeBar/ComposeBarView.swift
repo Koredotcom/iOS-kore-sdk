@@ -270,6 +270,7 @@ open class ComposeBarView: UIView {
         dic["footerTextColor"] = brandingShared.widgetFooterTextColor ?? "#26344A"
         dic["footerPlaceholderColor"] = brandingShared.widgetFooterPlaceholderColor ?? "#B5B9BA"
         dic["footerBorderColor"] = brandingShared.widgetFooterBorderColor ?? "#000000"
+        dic["footerTextViewBgColor"] = composebarTextVBgColor
         if let placeholder = brandingShared.widgetFooterPlaceholderText {
             dic["footerPlaceholderText"] = placeholder
         }

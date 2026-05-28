@@ -78,7 +78,7 @@ class SampleFooterView: ComposeBarView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[attachmentButton(30)]-8-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[spechToTextButton(30)]-8-|", options:[], metrics:nil, views:views))
         
-        self.koreFooterViewBranding = { (brandingDic) in
+        self.koreFooterViewBranding = {[weak self] (brandingDic) in
             guard let dic = brandingDic else {
                 return
             }
@@ -88,27 +88,28 @@ class SampleFooterView: ComposeBarView {
             let footerPlaceholderColor = dic["footerPlaceholderColor"] as? String ?? "#999999"
             let footerPlaceholderText = dic["footerPlaceholderText"] as? String ?? "Type a message..."
             let footerBorderColor = dic["footerBorderColor"] as? String ?? "#E0E0E0"
+            let footerTextViewBgColor = dic["footerTextViewBgColor"] as? String ?? "#FFFFFF"
             
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: 14.0),
                 .foregroundColor: UIColor(hexString: footerPlaceholderColor)
             ]
             
-            self.textV.placeholderAttributedText = NSAttributedString(
+            self?.textV.placeholderAttributedText = NSAttributedString(
                 string: footerPlaceholderText,
                 attributes: attributes
             )
             
-            self.textV.textView.textColor = UIColor(hexString: footerTextColor)
-            self.textV.textView.tintColor = UIColor(hexString: footerTextColor)
+            self?.textV.textView.textColor = UIColor(hexString: footerTextColor)
+            self?.textV.textView.tintColor = UIColor(hexString: footerTextColor)
             
-            self.textV.layer.borderColor = UIColor(hexString: footerBorderColor).cgColor
-            self.textV.layer.borderWidth = 1.0
-            self.textV.layer.cornerRadius = 5.0
-            self.textV.clipsToBounds = true
+            self?.textV.layer.borderColor = UIColor(hexString: footerBorderColor).cgColor
+            self?.textV.layer.borderWidth = 1.0
+            self?.textV.layer.cornerRadius = 5.0
+            self?.textV.clipsToBounds = true
             
-            self.textV.backgroundColor = .white
-            self.backgroundColor = UIColor(hexString: footerBgColor)
+            self?.textV.backgroundColor = UIColor(hexString: footerTextViewBgColor)
+            self?.backgroundColor = UIColor(hexString: footerBgColor)
         }
     }
     
