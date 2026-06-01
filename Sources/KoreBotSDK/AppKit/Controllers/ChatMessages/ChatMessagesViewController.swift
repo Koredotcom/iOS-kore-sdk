@@ -1227,7 +1227,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     
     // MARK: - establish BotSDK connection
     func establishBotConnection() {
-        KABotClient.shared.tryConnect()
+        if isReconnectionBySdk{
+            KABotClient.shared.tryConnect()
+        }
     }
     
     @objc func keyboardDidShow(_ notification: Notification) {
@@ -2373,6 +2375,24 @@ extension ChatMessagesViewController: KABotClientDelegate {
         self.typingStatusView?.stopTypingStatus()
     }
     
+    @objc public func botConnectedSuccessfully(){
+        let dic: [String: Any] = ["event_code": "BotConnectionStatus", "event_message": "Bot connected successfully", "event_reason": 1]
+        if self.closeAndMinimizeEvent != nil{
+            self.closeAndMinimizeEvent(dic)
+        }
+    }
+    @objc public func botConnectionDidClose(){
+        let dic: [String: Any] = ["event_code": "BotConnectionStatus", "event_message": "Bot disconnected successfully", "event_reason": 3]
+        if self.closeAndMinimizeEvent != nil{
+                self.closeAndMinimizeEvent(dic)
+        }
+    }
+    @objc public func botConnectionDidFailWithError(){
+        let dic: [String: Any] = ["event_code": "BotConnectionStatus", "event_message": "Bot connection fail with error", "event_reason": 10]
+        if self.closeAndMinimizeEvent != nil{
+                self.closeAndMinimizeEvent(dic)
+        }
+    }
 }
 
 extension ChatMessagesViewController{
@@ -3354,10 +3374,6 @@ extension ChatMessagesViewController{
         if isShowWelcomeMsg{
             NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
         }
-        let dic: [String: Any] = ["event_code": "BotConnectionStatus", "event_message": "Bot connected successfully", "event_reason": 1]
-        if self.closeAndMinimizeEvent != nil{
-            self.closeAndMinimizeEvent(dic)
-        }
         if SDKConfiguration.botConfig.isWebhookEnabled{
             NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
             self.kaBotClient.webhookBotMetaApi(success: { (dictionary) in
@@ -3914,10 +3930,10 @@ extension ChatMessagesViewController: UIGestureRecognizerDelegate{
         isShowWelcomeMsg = true
         if(self.botClient != nil){
             kaBotClient.socketDisconnect()
-            let dic: [String: Any] = ["event_code": "BotConnectionStatus", "event_message": "Bot disconnected successfully", "event_reason": 3]
-            if self.closeAndMinimizeEvent != nil{
-                    self.closeAndMinimizeEvent(dic)
-            }
+//            let dic: [String: Any] = ["event_code": "BotConnectionStatus", "event_message": "Bot disconnected successfully", "event_reason": 3]
+//            if self.closeAndMinimizeEvent != nil{
+//                    self.closeAndMinimizeEvent(dic)
+//            }
         }
     }
     public func socketConnect(isReconnect:Bool){

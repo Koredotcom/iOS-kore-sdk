@@ -50,6 +50,7 @@ open class BotConnect: NSObject {
     public var isShowBackButton = true
     public var isShowTokenExpiryAlertView = false
     public var setBubbleDateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
+    public var reConnectionBySDK = true
     // MARK: - init
     public override init() {
         super.init()
@@ -147,6 +148,7 @@ open class BotConnect: NSObject {
         } else {
             bubbleView_DateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
         }
+        isReconnectionBySdk = reConnectionBySDK
         if !isIntialiseFileUpload{
             isIntialiseFileUpload = true
             filesUpload()

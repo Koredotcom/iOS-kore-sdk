@@ -19,6 +19,11 @@ public protocol KABotClientDelegate: AnyObject {
     
     func showTopLoader()
     func stopTopLoader()
+    
+    func botConnectedSuccessfully()
+    func botConnectionDidClose()
+    func botConnectionDidFailWithError()
+    
 }
 
 open class KABotClient: NSObject {
@@ -177,9 +182,13 @@ open class KABotClient: NSObject {
                     }, failure:{(error) in
                         self?.isConnecting = false
                         self?.isConnected = false
-                        if weakSelf.retryCount <= 4{
-                            if isTryConnect{
-                                self?.tryConnect()
+                        if isReconnectionBySdk{
+                            if weakSelf.retryCount <= 4{
+                                if isTryConnect{
+                                    self?.tryConnect()
+                                }
+                            }else{
+                                NotificationCenter.default.post(name: Notification.Name(tokenExipryNotification), object: nil)
                             }
                         }else{
                             NotificationCenter.default.post(name: Notification.Name(tokenExipryNotification), object: nil)
@@ -221,6 +230,7 @@ open class KABotClient: NSObject {
                 }
                 self?.getAgentRecentHistoryOrLoadReconnectionHistory()
                 self?.delegate?.stopTopLoader()
+                self?.delegate?.botConnectedSuccessfully()
             }
         }
         
@@ -239,6 +249,7 @@ open class KABotClient: NSObject {
             }
             NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
             self?.delegate?.showTopLoader()
+            self?.delegate?.botConnectionDidClose()
         }
         
         botClient.connectionDidFailWithError = { [weak self] (error) in
@@ -250,8 +261,11 @@ open class KABotClient: NSObject {
                     weakSelf.delegate?.botConnection(with: weakSelf.connectionState)
                 }
             }
-            self?.tryConnect()
+            if isReconnectionBySdk{
+                self?.tryConnect()
+            }
             NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+            self?.delegate?.botConnectionDidFailWithError()
         }
         
         botClient.onMessage = { [weak self] (object) in
