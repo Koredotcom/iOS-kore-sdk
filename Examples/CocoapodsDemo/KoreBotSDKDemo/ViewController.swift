@@ -81,6 +81,9 @@ class ViewController: UIViewController {
         //MARK: set bubbleview dateformat
 //        botConnect.setBubbleDateFormat = "MMMM d 'at' h:mm a"
         
+        //MARK: Set the variable to enable or disable reconnection inside the sdk
+//        self.botConnect.reConnectionBySDK = false
+        
         // MARK: Show Bot window
         botConnect.show()
         

@@ -28,6 +28,7 @@ var activityViewControllerNotification = "ActivityViewControllerNotificationName
 var streamingMessageDidUpdateNotification = "StreamingMessageDidUpdateNotification"
 var localNotification = "LocalNotification"
 var deepLinkNotification = "DeepLinkNotification"
+var botConnectionLostNotification = "BotConnectionLostNotification"
 
 var isSpeakingEnabled = false
 var bubbleView_DateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"

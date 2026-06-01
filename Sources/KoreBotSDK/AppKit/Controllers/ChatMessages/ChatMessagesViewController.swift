@@ -1001,6 +1001,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(messageAckReceived(_:)), name: NSNotification.Name("MessageAckReceived"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(deepLinkNotificationAction), name: NSNotification.Name(rawValue: deepLinkNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(localNotificationMethod), name: NSNotification.Name(rawValue: localNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(botConnectionDidFailWithError), name: NSNotification.Name(rawValue: botConnectionLostNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -1038,6 +1039,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("MessageAckReceived"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: deepLinkNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: localNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: botConnectionLostNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -2388,7 +2390,7 @@ extension ChatMessagesViewController: KABotClientDelegate {
         }
     }
     @objc public func botConnectionDidFailWithError(){
-        let dic: [String: Any] = ["event_code": "BotConnectionStatus", "event_message": "Bot connection fail with error", "event_reason": 10]
+        let dic: [String: Any] = ["event_code": "BotConnectionLost", "event_message": "Network connectivity issue.", "event_reason": 10]
         if self.closeAndMinimizeEvent != nil{
                 self.closeAndMinimizeEvent(dic)
         }

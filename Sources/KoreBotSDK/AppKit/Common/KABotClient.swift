@@ -230,7 +230,9 @@ open class KABotClient: NSObject {
                 }
                 self?.getAgentRecentHistoryOrLoadReconnectionHistory()
                 self?.delegate?.stopTopLoader()
-                self?.delegate?.botConnectedSuccessfully()
+                DispatchQueue.main.async {
+                    self?.delegate?.botConnectedSuccessfully()
+                }
             }
         }
         
@@ -249,7 +251,9 @@ open class KABotClient: NSObject {
             }
             NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
             self?.delegate?.showTopLoader()
-            self?.delegate?.botConnectionDidClose()
+            DispatchQueue.main.async {
+                self?.delegate?.botConnectionDidClose()
+            }
         }
         
         botClient.connectionDidFailWithError = { [weak self] (error) in
@@ -264,8 +268,8 @@ open class KABotClient: NSObject {
             if isReconnectionBySdk{
                 self?.tryConnect()
             }
+            NotificationCenter.default.post(name: Notification.Name(botConnectionLostNotification), object: nil)
             NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
-            self?.delegate?.botConnectionDidFailWithError()
         }
         
         botClient.onMessage = { [weak self] (object) in
