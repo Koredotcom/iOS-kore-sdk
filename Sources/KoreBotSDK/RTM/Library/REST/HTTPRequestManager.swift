@@ -30,7 +30,15 @@ open class HTTPRequestManager : NSObject {
         dataRequest.validate().responseJSON { (response) in
             if let _ = response.error {
                 let code = response.error?.responseCode ?? 0
-                let error: NSError = NSError(domain: "", code: code, userInfo: [:])
+                var message = "Unknown error"
+                if let data = response.data,
+                       let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                   let errors = json?["errors"] as? [[String: Any]],
+                       let firstError = errors.first {
+
+                        message = firstError["msg"] as? String ?? "Unknown error"
+                    }
+                let error: NSError = NSError(domain: "", code: code, userInfo: [NSLocalizedDescriptionKey: message])
                 failure?(error)
                 return
             }

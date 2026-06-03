@@ -1001,7 +1001,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(messageAckReceived(_:)), name: NSNotification.Name("MessageAckReceived"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(deepLinkNotificationAction), name: NSNotification.Name(rawValue: deepLinkNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(localNotificationMethod), name: NSNotification.Name(rawValue: localNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(botConnectionDidFailWithError), name: NSNotification.Name(rawValue: botConnectionLostNotification), object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(botConnectionDidFailWithError), name: NSNotification.Name(rawValue: botConnectionLostNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -1039,7 +1039,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("MessageAckReceived"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: deepLinkNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: localNotification), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: botConnectionLostNotification), object: nil)
+        //NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: botConnectionLostNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -1094,6 +1094,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     @objc func didEnterBackground(_ notification: Notification) {
         isAppEnterBackground = true
         stopMonitoringForReachability()
+        if !isReconnectionBySdk{
+            kaBotClient.socketStatusChanged()
+        }
     }
     
     @objc func willTerminate(_ notification: Notification) {
@@ -2052,7 +2055,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             // Create the actions
             let okAction = UIAlertAction(title: alertOk, style: UIAlertAction.Style.default) {
                 UIAlertAction in
-                let dic: [String: Any] = ["event_code": "BotConnectionStatus", "event_message": "Token expired", "event_reason": 2]
+                let dic: [String: Any] = ["event_code": "BotConnectionStatus", "event_message": jwtTokenErrorMsg, "event_reason": 2]
                 if self.closeAndMinimizeEvent != nil{
                     self.closeAndMinimizeEvent(dic)
                 }
@@ -2061,7 +2064,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             alertController.addAction(okAction)
             self.present(alertController, animated: true, completion: nil)
         }else{
-            let dic: [String : Any] = ["event_code": "BotConnectionStatus", "event_message": "Token expired", "event_reason": 2]
+            let dic: [String : Any] = ["event_code": "BotConnectionStatus", "event_message": jwtTokenErrorMsg, "event_reason": 2]
             if self.closeAndMinimizeEvent != nil{
                 self.closeAndMinimizeEvent(dic)
             }
@@ -2390,10 +2393,10 @@ extension ChatMessagesViewController: KABotClientDelegate {
         }
     }
     @objc public func botConnectionDidFailWithError(){
-        let dic: [String: Any] = ["event_code": "BotConnectionLost", "event_message": "Network connectivity issue.", "event_reason": 10]
-        if self.closeAndMinimizeEvent != nil{
-                self.closeAndMinimizeEvent(dic)
-        }
+//        let dic: [String: Any] = ["event_code": "BotConnectionLost", "event_message": "Network connectivity issue.", "event_reason": 10]
+//        if self.closeAndMinimizeEvent != nil{
+//                self.closeAndMinimizeEvent(dic)
+//        }
     }
 }
 

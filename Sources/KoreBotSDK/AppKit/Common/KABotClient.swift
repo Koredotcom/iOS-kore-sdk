@@ -157,7 +157,9 @@ open class KABotClient: NSObject {
         
         return status
     }
-    
+    func socketStatusChanged(){
+        self.isConnected = false
+    }
     // MARK: - connect/reconnect - tries to reconnect the bot when isConnected is false
     @objc func tryConnect() {
         let delayInMilliSeconds = 250
@@ -165,6 +167,9 @@ open class KABotClient: NSObject {
         botClientQueue.asyncAfter(deadline: .now() + .milliseconds(delayInMilliSeconds)) { [weak self] in
             if self?.isConnected == true {
                 self?.retryCount = 0
+                DispatchQueue.main.async {
+                    self?.delegate?.botConnectedSuccessfully()
+                }
             } else if let weakSelf = self {
                 if weakSelf.isConnecting == false  {
                     weakSelf.isConnecting = true
@@ -179,9 +184,14 @@ open class KABotClient: NSObject {
                     }
                     weakSelf.connect(block: {(client, thread) in
                         //print("BotConnnect")
+                        DispatchQueue.main.async {
+                            self?.delegate?.botConnectedSuccessfully()
+                        }
+                        
                     }, failure:{(error) in
                         self?.isConnecting = false
                         self?.isConnected = false
+                        jwtTokenErrorMsg = error.localizedDescription
                         if isReconnectionBySdk{
                             if weakSelf.retryCount <= 4{
                                 if isTryConnect{
@@ -268,7 +278,7 @@ open class KABotClient: NSObject {
             if isReconnectionBySdk{
                 self?.tryConnect()
             }
-            NotificationCenter.default.post(name: Notification.Name(botConnectionLostNotification), object: nil)
+            //NotificationCenter.default.post(name: Notification.Name(botConnectionLostNotification), object: nil)
             NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
         }
         

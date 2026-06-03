@@ -29,6 +29,7 @@ var streamingMessageDidUpdateNotification = "StreamingMessageDidUpdateNotificati
 var localNotification = "LocalNotification"
 var deepLinkNotification = "DeepLinkNotification"
 var botConnectionLostNotification = "BotConnectionLostNotification"
+var jwtTokenErrorMsg = "jwt token error"
 
 var isSpeakingEnabled = false
 var bubbleView_DateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
