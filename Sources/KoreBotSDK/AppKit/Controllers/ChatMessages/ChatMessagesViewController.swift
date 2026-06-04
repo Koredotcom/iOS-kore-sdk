@@ -212,6 +212,15 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             customHeaderView?.koreMinimiseChatWindow = { [weak self]  in
                 self?.minimiseChatWindow()
             }
+            customHeaderView?.startNewSession = { [weak self]  in
+                self?.socketDisconnect()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    let dic: [String : Any] = ["event_code": "StartNewSession", "event_message": "Reset the conversation and begin a new session.", "event_reason": 10]
+                    if self?.closeAndMinimizeEvent != nil{
+                        self?.closeAndMinimizeEvent(dic)
+                    }
+                }
+            }
             self.headerView.bringSubviewToFront(linerProgressBar)
         }
     }
@@ -3942,9 +3951,35 @@ extension ChatMessagesViewController: UIGestureRecognizerDelegate{
         }
     }
     public func socketConnect(isReconnect:Bool){
-        if(self.botClient != nil){
-            isShowWelcomeMsg = isReconnect
+        guard botClient != nil else { return }
+        isShowWelcomeMsg = isReconnect
+        if isShowWelcomeMsg {
+            clearChatHistory { [weak self] in
+                self?.kaBotClient.tryConnect()
+            }
+        } else {
             kaBotClient.tryConnect()
+        }
+    }
+    
+    func clearChatHistory(completion: (() -> Void)? = nil) {
+        let botId = SDKConfiguration.botConfig.botId
+        RemovedTemplateCount = 0
+        offSet = 0
+        historyLimit = 0
+        messagesRequestInProgress = false
+        historyRequestInProgress = false
+        arrayOfSelectedBtnIndex = []
+        closeQuickReplyCards()
+        
+        DataStoreManager.sharedManager.deleteMessages(for: botId) { [weak self] _ in
+            guard let self = self else {
+                completion?()
+                return
+            }
+            self.botMessagesView?.initializeFetchedResultsController()
+            self.botMessagesView?.tableView.reloadData()
+            completion?()
         }
     }
     public func minimizeChatBotWindow(){

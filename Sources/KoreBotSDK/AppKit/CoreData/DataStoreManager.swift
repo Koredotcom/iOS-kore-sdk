@@ -221,6 +221,30 @@ class DataStoreManager: NSObject {
         return context.object(with: id) as? KREThread
     }
     
+    /// Deletes all messages for a bot thread; the thread itself is kept.
+    public func deleteMessages(for threadId: String, completion: ((_ success: Bool) -> Void)? = nil) {
+        let context = coreDataManager.workerContext
+        context.perform { [weak self] in
+            var success = true
+            let request = NSFetchRequest<KREMessage>(entityName: "KREMessage")
+            request.predicate = NSPredicate(format: "thread.threadId == %@", threadId)
+            if let messages = try? context.fetch(request) {
+                for message in messages {
+                    context.delete(message)
+                }
+                do {
+                    try context.save()
+                    self?.coreDataManager.saveChanges()
+                } catch {
+                    success = false
+                }
+            }
+            DispatchQueue.main.async {
+                completion?(success)
+            }
+        }
+    }
+    
     // method delete or persist conversation history with bot based on 'SDKConfiguration.dataStoreConfig.resetDataStoreOnConnect'.
     func deleteThreadIfRequired(with threadId: String, completionBlock: ((_ staus: Bool) -> Void)?) {
         var success: Bool = false

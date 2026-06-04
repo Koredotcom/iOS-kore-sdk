@@ -19,6 +19,15 @@ class SampleHeaderView: KoreCustomHeaderView {
         return backButton
     }()
     
+    public var reConnectButton: UIButton = {
+      let backButton = UIButton(frame: .zero)
+      backButton.translatesAutoresizingMaskIntoConstraints = false
+      backButton.backgroundColor = UIColor.clear
+      backButton.setImage(UIImage(named: "retry", in: nil, compatibleWith: nil), for: .normal)
+        backButton.addTarget(self, action: #selector(reConnectButtonAction(_:)), for: .touchUpInside)
+      return backButton
+  }()
+    
     lazy var textLabel: UILabel = {
         let textLabel = UILabel(frame: .zero)
         textLabel.font = UIFont.systemFont(ofSize: 14)
@@ -36,9 +45,10 @@ class SampleHeaderView: KoreCustomHeaderView {
         self.backgroundColor = .lightGray
         self.addSubview(backButton)
         self.addSubview(textLabel)
+        self.addSubview(reConnectButton)
         textLabel.text = "Kore BotSDK"
         textLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        let views: [String: UIView] = ["backButton": backButton, "textLabel": textLabel]
+        let views: [String: UIView] = ["backButton": backButton, "textLabel": textLabel, "reConnectButton":reConnectButton]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[backButton(30)]", options: [], metrics: nil, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[textLabel]|", options: [], metrics: nil, views: views))
         backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
@@ -46,6 +56,10 @@ class SampleHeaderView: KoreCustomHeaderView {
         
         textLabel.heightAnchor.constraint(equalToConstant: 21).isActive = true
         textLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[reConnectButton(30)]-10-|", options: [], metrics: nil, views: views))
+        reConnectButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        reConnectButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
         self.koreHeaderViewBranding = {[weak self] (brandingDic) in
             guard let dic = brandingDic else {
@@ -73,5 +87,10 @@ class SampleHeaderView: KoreCustomHeaderView {
         //MARK: Show popup for minimizing the chat window
         //koreMinimiseChatWindow?()
     }
+    
+    @objc func reConnectButtonAction(_ sender: AnyObject) {
+        startNewSession?()
+    }
+    
     
 }

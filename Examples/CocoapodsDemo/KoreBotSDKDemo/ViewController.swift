@@ -12,6 +12,18 @@ import KoreBotSDK
 class ViewController: UIViewController {
     
     let botConnect = BotConnect()
+    enum BotEventReason: Int {
+        case connected = 1
+        case tokenExpired = 2
+        case disconnected = 3
+        case connectionError = 4
+        case closedByUser = 5
+        case minimizedByUser = 6
+        case connectionLost = 7
+        case networkReconnected = 8
+        case deepLink = 9
+        case startNewSession = 10
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,43 +81,72 @@ class ViewController: UIViewController {
         }
         
         //MARK: Add custom headerview
-//        botConnect.addCustomHeaderView(headerView: SampleHeaderView())
+        //        botConnect.addCustomHeaderView(headerView: SampleHeaderView())
         
         //MARK: Add custom composebarview
-//        let customFooterView = SampleFooterView()
-//       botConnect.addCustomFooterComposeBarView(footerView: customFooterView, growingTxtV: customFooterView.textV)
+        //        let customFooterView = SampleFooterView()
+        //       botConnect.addCustomFooterComposeBarView(footerView: customFooterView, growingTxtV: customFooterView.textV)
         
         //MARK: Add custom Audio composebarview
-//        botConnect.addCustomFooterAudioComposeBar(footerView: SampleAudioComposeView())
+        //        botConnect.addCustomFooterAudioComposeBar(footerView: SampleAudioComposeView())
         
         //MARK: set bubbleview dateformat
-//        botConnect.setBubbleDateFormat = "MMMM d 'at' h:mm a"
+        //        botConnect.setBubbleDateFormat = "MMMM d 'at' h:mm a"
         
         //MARK: Set the variable to enable or disable reconnection inside the sdk
-//        self.botConnect.reConnectionBySDK = false
+        //        self.botConnect.reConnectionBySDK = false
         
         // MARK: Show Bot window
         botConnect.show()
         
-        // MARK: Close Or Minimize Callbacks
-        botConnect.closeOrMinimizeEvent = { (eventDic) in
-            if let dic = eventDic {
-                print(dic)
+        // MARK: Callbacks Evetns
+        botConnect.closeOrMinimizeEvent = { eventDic in
+            guard
+                let dic = eventDic,
+                let reasonValue = dic["event_reason"] as? Int,
+                let reason = BotEventReason(rawValue: reasonValue)
+            else {
+                return
+            }
+            print(dic)
+            switch reason {
+            case .connected:
+                print("Bot connected successfully")
+            case .tokenExpired:
+                print("Token expired")
+                // Refresh token logic
+                
+            case .disconnected:
+                print("Bot disconnected successfully")
+                
+            case .connectionError:
+                print("Bot connection error")
+                
+            case .closedByUser:
+                print("Bot closed by the user")
+                
+            case .minimizedByUser:
+                print("Bot minimized by the user")
+                
+            case .connectionLost:
+                print("Network connectivity issue. Attempt reconnect if needed.")
+                
+            case .networkReconnected:
+                print("Network connectivity has been restored.")
+//                let customJWToken: String = ""  //This should represent the subject for send own JWToken.
+//                self.botConnect.setCustom_JwToken(customJWToken: customJWToken, customData: customData, queryParameters: queryParameters)
+//                self.botConnect.socketConnect(isReconnect: false)
+                
+            case .deepLink:
+                print("Deeplink")
+                
+            case .startNewSession:
+                print("startNewSession")
+//                let customJWToken: String = ""  //This should represent the subject for send own JWToken.
+//                self.botConnect.setCustom_JwToken(customJWToken: customJWToken, customData: customData, queryParameters: queryParameters)
+//                self.botConnect.socketConnect(isReconnect: true)
             }
         }
-    }
-    
-    func koreSDKCustomMethods(){
-        // MARK: Disconnect bot
-        self.botConnect.socketDisconnect()
         
-        // MARK: Update customData, queryParameters and customJWToken
-        let customData : [String: Any] = ["hello":"Ok"]
-        let queryParameters: [[String: Any]] = [] //[["ConnectionMode":"Start_New_Resume_Agent"],["q2":"ios"],["q3":"1"]]
-        let customJWToken: String = ""  //This should represent the subject for send own JWToken.
-        self.botConnect.setCustom_JwToken(customJWToken: customJWToken, customData: customData, queryParameters: queryParameters)
-        
-        // MARK: Reconnect Bot
-        self.botConnect.socketConnect(isReconnect: false)
     }
 }
