@@ -16,6 +16,7 @@ These callbacks are **not** separate delegate methods per event. They all flow t
 | `BotClosed` | UI / lifecycle | `4` connection error, `5` user closed |
 | `BotMinimized` | UI / lifecycle | `6` |
 | **`DeepLinkClicked`** | **In-app navigation** | **`9`** — URL/path in `event_message` |
+| **`StartNewSession`** | **Session / UI** | **`10`** — user requested a fresh conversation |
 
 ---
 
@@ -49,6 +50,9 @@ botConnect.closeOrMinimizeEvent = { eventDic in
         let path = dic["event_message"] as? String
         let reason = dic["event_reason"] as? Int  // always 9
         navigateInHostApp(to: path)
+    case "StartNewSession":
+        // User tapped Start New Session in custom header — see §4.7
+        botConnect.socketConnect(isReconnect: true)
     default:
         break
     }
@@ -105,6 +109,7 @@ Payload: `["text": "<message>"]` only. Posted from `localNotificationMethod` whe
 | `7` | `BotConnectionLost` | Network became unreachable |
 | `8` | `NetworkReconnected` | Network became reachable again |
 | `9` | `DeepLinkClicked` | User tapped an in-app (same-page) deeplink in a button/link template |
+| `10` | `StartNewSession` | User requested reset of the conversation and a new session |
 
 ---
 
@@ -358,6 +363,76 @@ Ensure the bot designer or JSON template sets:
 
 ---
 
+### 4.7 `StartNewSession`
+
+User-initiated reset of the current conversation so the bot can start a fresh session (typically with the welcome flow).
+
+#### Payload
+
+| Field | Value |
+|-------|-------|
+| `event_code` | `StartNewSession` |
+| `event_message` | `"Reset the conversation and begin a new session."` |
+| `event_reason` | `10` |
+
+**Example payload:**
+
+```json
+{
+  "event_code": "StartNewSession",
+  "event_message": "Reset the conversation and begin a new session.",
+  "event_reason": 10
+}
+```
+
+#### When fired
+
+1. Host app provides a **custom header** via `BotConnect.addCustomHeaderView(headerView:)`.
+2. The header view conforms to `KoreCustomHeaderView` and invokes the `startNewSession` closure (e.g. a **Start New Session** button in `SampleHeaderView`).
+3. `ChatMessagesViewController.customHeaderViewConfigure()` wires `customHeaderView?.startNewSession`:
+   - Calls `socketDisconnect()` immediately (sets `isShowWelcomeMsg = true`, tears down the WebSocket).
+   - After a **1 second** delay, invokes `closeAndMinimizeEvent` with the `StartNewSession` payload.
+
+**Source:** `ChatMessagesViewController.swift` (`customHeaderViewConfigure`, `startNewSession` closure).
+
+#### SDK behavior before callback
+
+- `socketDisconnect()` → `kaBotClient.socketDisconnect()`.
+- Chat UI **stays open**; the event is delivered to the host app only (not auto-reconnect).
+
+#### Host app guidance
+
+1. Handle **`StartNewSession`** in `closeOrMinimizeEvent` (check `event_code` or `event_reason == 10`).
+2. Optionally refresh JWT / `customData` / `queryParameters` via `setCustom_JwToken` if your bot requires a new identity or session context.
+3. Call **`BotConnect.socketConnect(isReconnect: true)`** to reconnect.
+
+**What `socketConnect(isReconnect: true)` does in the SDK:**
+
+- Sets `isShowWelcomeMsg = true`.
+- Clears **local chat messages** for the current bot (`clearChatHistory()` → `DataStoreManager.deleteMessages(for:)`); the Core Data **thread** is retained.
+- Calls `kaBotClient.tryConnect()` to re-establish the socket and load the welcome flow.
+
+**Example handler:**
+
+```swift
+botConnect.closeOrMinimizeEvent = { eventDic in
+    guard let dic = eventDic,
+          dic["event_code"] as? String == "StartNewSession" else { return }
+
+    // Optional: refresh token or session context
+    botConnect.setCustom_JwToken(customJWToken: newToken, customData: [:], queryParameters: [])
+    botConnect.socketConnect(isReconnect: true)
+}
+```
+
+**Demo reference:** `Examples/CocoapodsDemo/KoreBotSDKDemo/ViewController.swift` (`BotEventReason.startNewSession`).
+
+#### Custom header requirement
+
+This event is **only** emitted when a custom header is supplied and the header calls `startNewSession?()`. The default SDK header does not expose this action.
+
+---
+
 ## 5. Event flow diagrams
 
 ### 5.1 Callback pipeline
@@ -424,6 +499,26 @@ deepLinkNotificationAction
         Host app routes using event_message
 ```
 
+### 5.5 Start new session (custom header)
+
+```
+User taps Start New Session in custom header
+        │
+        ▼
+customHeaderView.startNewSession closure
+        │
+        ├─► socketDisconnect()  → isShowWelcomeMsg = true
+        │
+        ▼ (after 1s delay)
+closeAndMinimizeEvent → StartNewSession (reason 10)
+        │
+        ▼
+Host app: socketConnect(isReconnect: true)
+        │
+        ├─► clearChatHistory()  → delete local messages only
+        └─► kaBotClient.tryConnect()  → welcome / new session
+```
+
 ---
 
 ## 6. Reachability listeners (important)
@@ -473,6 +568,7 @@ Global flags (not on `BotConnect`):
 | `BotConnectionLost` | `7` | Network `.notReachable` |
 | `NetworkReconnected` | `8` | Network reachable |
 | `DeepLinkClicked` | `9` | Same-page navigation template link |
+| `StartNewSession` | `10` | Custom header **Start New Session** → `socketDisconnect`, then host calls `socketConnect(isReconnect: true)` |
 
 ---
 
@@ -484,6 +580,8 @@ Global flags (not on `BotConnect`):
 | Public callback wiring | `BotConnect.swift` |
 | Token expiry notification | `KABotClient.swift` (`tryConnect` failure) |
 | **`DeepLinkClicked` emission** | `ChatMessagesViewController.swift` (`deepLinkNotificationAction`) |
+| **`StartNewSession` emission** | `ChatMessagesViewController.swift` (`customHeaderViewConfigure`, `startNewSession` closure) |
+| Custom header `startNewSession` API | `KoreCustomHeaderView.swift` |
 | Deeplink notification post | `ButtonLinkNBubbleView.swift` (`didSelectRowAt`) |
 | Notification name constants | `Common.swift` (`tokenExipryNotification`, `deepLinkNotification`) |
 | Demo integration | `Examples/CocoapodsDemo/KoreBotSDKDemo/ViewController.swift` |

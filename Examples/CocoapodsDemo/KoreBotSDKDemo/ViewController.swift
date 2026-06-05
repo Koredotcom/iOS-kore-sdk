@@ -114,7 +114,6 @@ class ViewController: UIViewController {
                 print("Bot connected successfully")
             case .tokenExpired:
                 print("Token expired")
-                // Refresh token logic
                 
             case .disconnected:
                 print("Bot disconnected successfully")

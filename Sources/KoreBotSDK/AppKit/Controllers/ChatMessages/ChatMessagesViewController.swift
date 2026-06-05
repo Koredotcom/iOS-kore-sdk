@@ -2402,10 +2402,7 @@ extension ChatMessagesViewController: KABotClientDelegate {
         }
     }
     @objc public func botConnectionDidFailWithError(){
-//        let dic: [String: Any] = ["event_code": "BotConnectionLost", "event_message": "Network connectivity issue.", "event_reason": 10]
-//        if self.closeAndMinimizeEvent != nil{
-//                self.closeAndMinimizeEvent(dic)
-//        }
+
     }
 }
 
