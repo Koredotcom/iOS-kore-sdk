@@ -78,14 +78,18 @@ open class RTMTimer: NSObject {
 
 open class RTMPersistentConnection : NSObject, WebSocketDelegate {
     public func didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocketClient) {
-        
         switch event {
         case .connected(let headers):
+            didReportConnectionFailure = false
+            setupPingTimerIfNeeded()
+            receivedLastPong = true
+            timerSource.resume()
             connectionDelegate?.rtmConnectionDidOpen()
             isConnected = true
             isConnecting = false
             print("websocket is connected: \(headers)")
         case .disconnected(let reason, let code):
+            stopPingTimer()
             connectionDelegate?.rtmConnectionDidClose(code, reason: reason)
             isConnected = false
             isConnecting = false
@@ -139,44 +143,23 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
         case .reconnectSuggested(_):
             break
         case .cancelled:
+            stopPingTimer()
             isConnected = false
             isConnecting = false
             break
         case .error(let error):
-            isConnected = false
-            isConnecting = false
-            connectionDelegate?.rtmConnectionDidFailWithError(error)
+            reportConnectionFailure(error)
             break
         case .peerClosed:
             break
         }
-        
-        timerSource.eventHandler = { [weak self] in
-            if self?.receivedLastPong == false {
-                // we did not receive the last pong
-                // abort the socket so that we can spin up a new connection
-                self?.websocket?.disconnect()
-                self?.timerSource.suspend()
-                self?.connectionDelegate?.rtmConnectionDidFailWithError(NSError())
-            } else if self?.isConnected == false {
-                self?.websocket?.disconnect()
-                self?.timerSource.suspend()
-            } else if self?.isConnected == true {
-                
-                // we got a pong recently
-                // send another ping
-                self?.receivedLastPong = false
-                _ = try? self?.websocket?.write(ping: Data())
-            }
-        }
-        timerSource.resume()
     }
     
     var botInfo: BotInfoModel!
     fileprivate var botInfoParameters: [String: Any]?
     fileprivate var reWriteOptions: [String: Any]?
     
-    var isConnected = true // kkkk
+    var isConnected = false
     var isConnecting = false
     var websocket: WebSocket?
     var connectionDelegate: RTMPersistentConnectionDelegate?
@@ -184,6 +167,8 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
     fileprivate var timerSource = RTMTimer()
     //    fileprivate let pingInterval: TimeInterval
     fileprivate var receivedLastPong = true
+    fileprivate var isPingTimerConfigured = false
+    fileprivate var didReportConnectionFailure = false
     open var tryReconnect = false
     
     var queryParams: [[String: Any]] = []
@@ -242,7 +227,10 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
         }
         
         if let url = urlComponents?.url {
+            didReportConnectionFailure = false
             receivedLastPong = true
+            isConnected = false
+            isConnecting = true
             websocket = WebSocket(request: URLRequest(url: url))
             websocket?.delegate = self
             websocket?.connect()
@@ -250,99 +238,40 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
     }
     
     open func disconnect() {
+        stopPingTimer()
         self.websocket?.disconnect()
     }
     
-    // MARK: WebSocketDelegate methods
-    open func didReceive(event: WebSocketEvent, client: WebSocket) {
-        
-        switch event {
-        case .connected(let headers):
-            connectionDelegate?.rtmConnectionDidOpen()
-            isConnected = true
-            isConnecting = false
-            print("websocket is connected: \(headers)")
-        case .disconnected(let reason, let code):
-            connectionDelegate?.rtmConnectionDidClose(code, reason: reason)
-            isConnected = false
-            isConnecting = false
-            print("websocket is disconnected: \(reason) with code: \(code)")
-        case .text(let message):
-            print("Received text: \(message)")
-            guard let message = message as? String,
-                  let responseObject = convertStringToDictionary(message),
-                  let type = responseObject["type"] as? String else {
-                return
-            }
-            switch type {
-            case "ready":
-                connectionDelegate?.rtmConnectionReady()
-            case "ok":
-                if let model = try? Ack(JSON: responseObject), let ack = model as? Ack {
-                    connectionDelegate?.didReceiveMessageAck(ack)
-                }
-            case "ack":
-                if let model = try? Ack(JSON: responseObject), let ack = model as? Ack {
-                    connectionDelegate?.didReceiveMessageAck(ack)
-                }
-            case "bot_response":
-                print("received: \(responseObject)")
-                guard let array = responseObject["message"] as? Array<[String: Any]>, array.count > 0 else {
-                    return
-                }
-                if let model = try? BotMessageModel(JSON: responseObject), let botMessageModel = model as? BotMessageModel {
-                    connectionDelegate?.didReceiveMessage(botMessageModel)
-                }
-            case "user_message":
-                connectionDelegate?.didReceivedUserMessage(responseObject)
-            case "events":
-                connectionDelegate?.didReceivedUserMessage(responseObject)
-            default:
-                break
-            }
-        case .binary(let data):
-            print("Received data: \(data.count)")
-        case .ping(_):
-            break
-        case .pong(_):
-            receivedLastPong = true
-            break
-        case .viabilityChanged(_):
-            break
-        case .reconnectSuggested(_):
-            break
-        case .cancelled:
-            isConnected = false
-            isConnecting = false
-            break
-        case .error(let error):
-            isConnected = false
-            isConnecting = false
-            connectionDelegate?.rtmConnectionDidFailWithError(error)
-            break
-        case .peerClosed:
-            break
-        }
-        
+    fileprivate func setupPingTimerIfNeeded() {
+        guard !isPingTimerConfigured else { return }
+        isPingTimerConfigured = true
         timerSource.eventHandler = { [weak self] in
-            if self?.receivedLastPong == false {
-                // we did not receive the last pong
-                // abort the socket so that we can spin up a new connection
-                self?.websocket?.disconnect()
-                self?.timerSource.suspend()
-                self?.connectionDelegate?.rtmConnectionDidFailWithError(NSError())
-            } else if self?.isConnected == false {
-                self?.websocket?.disconnect()
-                self?.timerSource.suspend()
-            } else if self?.isConnected == true {
-                
-                // we got a pong recently
-                // send another ping
-                self?.receivedLastPong = false
-                _ = try? self?.websocket?.write(ping: Data())
+            guard let self = self else { return }
+            if self.receivedLastPong == false {
+                self.timerSource.suspend()
+                self.websocket?.disconnect()
+                self.reportConnectionFailure(NSError(domain: "RTM", code: -1, userInfo: [NSLocalizedDescriptionKey: "Ping timeout"]))
+            } else if !self.isConnected {
+                self.timerSource.suspend()
+                self.websocket?.disconnect()
+            } else {
+                self.receivedLastPong = false
+                _ = try? self.websocket?.write(ping: Data())
             }
         }
-        timerSource.resume()
+    }
+    
+    fileprivate func reportConnectionFailure(_ error: Error?) {
+        guard !didReportConnectionFailure else { return }
+        didReportConnectionFailure = true
+        stopPingTimer()
+        isConnected = false
+        isConnecting = false
+        connectionDelegate?.rtmConnectionDidFailWithError(error)
+    }
+    
+    fileprivate func stopPingTimer() {
+        timerSource.suspend()
     }
     
     // MARK: sending message

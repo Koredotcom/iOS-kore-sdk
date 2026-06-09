@@ -184,6 +184,16 @@ open class BotConnect: NSObject {
         }
     }
     
+    /// Current socket connection state. Returns `.NONE` if the chat UI is not open.
+    public func socketConnectionState() -> BotClientConnectionState {
+        return botViewController?.socketConnectionState() ?? .NONE
+    }
+    
+    /// Human-readable socket state (e.g. `"Connected"`, `"No Network"`).
+    public func socketConnectionStateDescription() -> String {
+        return botViewController?.socketConnectionStateDescription() ?? "None"
+    }
+    
     public func setCustom_JwToken(customJWToken: String, customData:[String: Any], queryParameters:[[String: Any]]){
         SDKConfiguration.botConfig.customJWToken = customJWToken
         SDKConfiguration.botConfig.customData = customData as [String: Any]

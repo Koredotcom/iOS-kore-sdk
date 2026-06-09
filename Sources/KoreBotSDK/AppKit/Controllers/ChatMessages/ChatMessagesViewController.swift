@@ -1010,7 +1010,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(messageAckReceived(_:)), name: NSNotification.Name("MessageAckReceived"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(deepLinkNotificationAction), name: NSNotification.Name(rawValue: deepLinkNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(localNotificationMethod), name: NSNotification.Name(rawValue: localNotification), object: nil)
-        //NotificationCenter.default.addObserver(self, selector: #selector(botConnectionDidFailWithError), name: NSNotification.Name(rawValue: botConnectionLostNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(botConnectionDidFailWithError), name: NSNotification.Name(rawValue: botConnectionLostNotification), object: nil)
     }
     
     func removeNotifications() {
@@ -1048,7 +1048,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("MessageAckReceived"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: deepLinkNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: localNotification), object: nil)
-        //NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: botConnectionLostNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: botConnectionLostNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -2402,7 +2402,10 @@ extension ChatMessagesViewController: KABotClientDelegate {
         }
     }
     @objc public func botConnectionDidFailWithError(){
-
+        let dic: [String: Any] = ["event_code": "BotConnectionLost", "event_message": "Bot disconnected", "event_reason": 11]
+        if self.closeAndMinimizeEvent != nil{
+                self.closeAndMinimizeEvent(dic)
+        }
     }
 }
 
@@ -3937,6 +3940,44 @@ extension ChatMessagesViewController: UIGestureRecognizerDelegate{
         }
         return true
     }
+    /// Returns the current RTM socket connection state.
+    /// For webhook bots, returns `.CONNECTED` when the session is active, otherwise `.NONE` / `.NO_NETWORK`.
+    public func socketConnectionState() -> BotClientConnectionState {
+        if SDKConfiguration.botConfig.isWebhookEnabled {
+            if isBotConnectSucessFully {
+                return isInternetAvailable ? .CONNECTED : .NO_NETWORK
+            }
+            return isInternetAvailable ? .NONE : .NO_NETWORK
+        }
+        if let botClient = botClient {
+            return botClient.connectionState
+        }
+        if let kaBotClient = kaBotClient {
+            return kaBotClient.connectionState ?? .NONE
+        }
+        return .NONE
+    }
+    
+    /// Human-readable label for `socketConnectionState()` (e.g. `"Connected"`, `"Connecting"`).
+    public func socketConnectionStateDescription() -> String {
+        switch socketConnectionState() {
+        case .NONE:
+            return "None"
+        case .CONNECTING:
+            return "Connecting"
+        case .CONNECTED:
+            return "Connected"
+        case .FAILED:
+            return "Failed"
+        case .CLOSED:
+            return "Closed"
+        case .CLOSING:
+            return "Closing"
+        case .NO_NETWORK:
+            return "No Network"
+        }
+    }
+    
     public func socketDisconnect(){
         isShowWelcomeMsg = true
         if(self.botClient != nil){

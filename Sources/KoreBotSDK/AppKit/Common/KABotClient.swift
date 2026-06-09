@@ -279,6 +279,9 @@ open class KABotClient: NSObject {
                 self?.tryConnect()
             }
             //NotificationCenter.default.post(name: Notification.Name(botConnectionLostNotification), object: nil)
+            DispatchQueue.main.async {
+                self?.delegate?.botConnectionDidFailWithError()
+            }
             NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
         }
         

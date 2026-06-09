@@ -33,6 +33,9 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     public var isNetworkAvailable: Bool?
     public var connectionState: BotClientConnectionState {
         get {
+            if !isInternetAvailable {
+                return .NO_NETWORK
+            }
             if let isNetworkAvailable = isNetworkAvailable, isNetworkAvailable == false {
                 return .NO_NETWORK
             }
@@ -117,23 +120,27 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     }
     
     // MARK: - start network monitoring
-        public func setReachabilityStatusChange(_ status: NetworkReachabilityManager.NetworkReachabilityStatus) {
+    public func setReachabilityStatusChange(_ status: NetworkReachabilityManager.NetworkReachabilityStatus) {
         if status == .reachable(.ethernetOrWiFi) || status == .reachable(.cellular) {
+            isInternetAvailable = true
             self.isNetworkAvailable = true
             guard let connection = self.connection else {
-                // webSocket connection not available
                 self.connectionWillOpen?()
                 return
             }
-            let isConnected = connection.isConnected
-            if isConnected {
+            if connection.isConnected {
                 self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: nil))
             } else {
                 self.connectionWillOpen?()
             }
         } else {
+            isInternetAvailable = false
             self.isNetworkAvailable = false
-            self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: ["descripiton": "Network is not available"]))
+            if let connection = self.connection {
+                connection.isConnected = false
+                connection.isConnecting = false
+            }
+            self.rtmConnectionDidFailWithError(NSError(domain: "RTM", code: 0, userInfo: [NSLocalizedDescriptionKey: "Network is not available"]))
         }
     }
     
