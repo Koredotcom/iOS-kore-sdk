@@ -13,7 +13,7 @@ public enum BotClientConnectionState : Int {
     case NONE
     case CONNECTING
     case CONNECTED
-    case FAILED
+    case DISCONNECTED
     case CLOSED
     case CLOSING
     case NO_NETWORK
@@ -34,14 +34,14 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     public var connectionState: BotClientConnectionState {
         get {
             if !isInternetAvailable {
-                return .NO_NETWORK
+                return .DISCONNECTED
             }
             if let isNetworkAvailable = isNetworkAvailable, isNetworkAvailable == false {
                 return .NO_NETWORK
             }
             
             guard let connection = connection else {
-                return .NONE
+                return .DISCONNECTED
             }
             
             let isConnecting = connection.isConnecting

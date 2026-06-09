@@ -23,6 +23,7 @@ class ViewController: UIViewController {
         case networkReconnected = 8
         case deepLink = 9
         case startNewSession = 10
+        case connectionClosed = 11
     }
     
     override func viewDidLoad() {
@@ -99,6 +100,10 @@ class ViewController: UIViewController {
         // MARK: Show Bot window
         botConnect.show()
         
+        // MARK: - Bot Connection State
+        //let botConnectionState = self.botConnect.socketConnectionStateDescription()
+        //print(botConnectionState)  // e.g. "Connected",Disconnected, "Closed" ,"None"
+        
         // MARK: Callbacks Evetns
         botConnect.closeOrMinimizeEvent = { eventDic in
             guard
@@ -144,6 +149,9 @@ class ViewController: UIViewController {
 //                let customJWToken: String = ""  //This should represent the subject for send own JWToken.
 //                self.botConnect.setCustom_JwToken(customJWToken: customJWToken, customData: customData, queryParameters: queryParameters)
 //                self.botConnect.socketConnect(isReconnect: true)
+                
+            case .connectionClosed:
+                  print("connectionClosed")
             }
         }
         

@@ -77,7 +77,7 @@ The bot connection establishment system provides a robust and secure way to esta
    - NONE: Initial state
    - CONNECTING: Connection in progress
    - CONNECTED: Successfully connected
-   - FAILED: Connection failed
+   - DISCONNECTED: Bot disconnected
    - CLOSED: Connection terminated
    - CLOSING: Connection terminating
    - NO_NETWORK: No network availability

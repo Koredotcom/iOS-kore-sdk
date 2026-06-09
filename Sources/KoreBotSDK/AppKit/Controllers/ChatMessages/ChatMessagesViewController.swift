@@ -957,8 +957,8 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                 self.navigationItem.prompt = nil
             })
             break
-        case .FAILED:
-            self.navigationItem.prompt = "Connection Failed"
+        case .DISCONNECTED:
+            self.navigationItem.prompt = "Disconnected"
             break
         case .CLOSED:
             self.navigationItem.prompt = "Connection Closed"
@@ -1105,6 +1105,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         stopMonitoringForReachability()
         if !isReconnectionBySdk{
             kaBotClient.socketStatusChanged()
+            socketDisconnect()
         }
     }
     
@@ -3967,8 +3968,8 @@ extension ChatMessagesViewController: UIGestureRecognizerDelegate{
             return "Connecting"
         case .CONNECTED:
             return "Connected"
-        case .FAILED:
-            return "Failed"
+        case .DISCONNECTED:
+            return "Disconnected"
         case .CLOSED:
             return "Closed"
         case .CLOSING:

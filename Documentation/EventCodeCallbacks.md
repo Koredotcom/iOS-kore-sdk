@@ -11,7 +11,7 @@ These callbacks are **not** separate delegate methods per event. They all flow t
 | `event_code` | Category | `event_reason` |
 |--------------|----------|----------------|
 | `BotConnectionStatus` | Connection | `1` connected, `2` token expired, `3` disconnected |
-| `BotConnectionLost` | Network | `7` |
+| `BotConnectionLost` | Network / connection | `7` network unreachable, `11` bot disconnected (socket failure) |
 | `NetworkReconnected` | Network | `8` |
 | `BotClosed` | UI / lifecycle | `4` connection error, `5` user closed |
 | `BotMinimized` | UI / lifecycle | `6` |
@@ -40,7 +40,9 @@ botConnect.closeOrMinimizeEvent = { eventDic in
         let reason = dic["event_reason"] as? Int ?? 0
         // handle connection status (see §4.1)
     case "BotConnectionLost":
-        // network lost (see §4.2)
+        let reason = dic["event_reason"] as? Int ?? 0
+        // reason 7: network lost (see §4.2.1)
+        // reason 11: bot disconnected / socket failure (see §4.2.2)
     case "NetworkReconnected":
         // network restored (see §4.3)
     case "BotClosed", "BotMinimized":
@@ -108,6 +110,7 @@ Payload: `["text": "<message>"]` only. Posted from `localNotificationMethod` whe
 | `6` | `BotMinimized` | User chose **Minimize** or `minimizeChatBot()` |
 | `7` | `BotConnectionLost` | Network became unreachable |
 | `8` | `NetworkReconnected` | Network became reachable again |
+| `11` | `BotConnectionLost` | Bot disconnected due to socket / RTM connection failure |
 | `9` | `DeepLinkClicked` | User tapped an in-app (same-page) deeplink in a button/link template |
 | `10` | `StartNewSession` | User requested reset of the conversation and a new session |
 
@@ -179,6 +182,10 @@ Connection lifecycle and authentication failures.
 
 ### 4.2 `BotConnectionLost`
 
+The SDK uses the same `event_code` for two distinct disconnect paths, distinguished by `event_reason`.
+
+#### 4.2.1 Network unreachable — `event_reason: 7`
+
 | Field | Value |
 |-------|-------|
 | `event_code` | `BotConnectionLost` |
@@ -199,6 +206,42 @@ Connection lifecycle and authentication failures.
 **Host app guidance:** Show offline UI; do not assume messages are delivered until `NetworkReconnected`.
 
 **Note:** This event can fire from **both** reachability listeners in some scenarios (e.g. foreground transition). Deduplicate in the host app if needed.
+
+---
+
+#### 4.2.2 Bot disconnected — `event_reason: 11`
+
+| Field | Value |
+|-------|-------|
+| `event_code` | `BotConnectionLost` |
+| `event_message` | `"Bot disconnected"` |
+| `event_reason` | `11` |
+
+**Example payload:**
+
+```json
+{
+  "event_code": "BotConnectionLost",
+  "event_message": "Bot disconnected",
+  "event_reason": 11
+}
+```
+
+**When fired:**
+
+1. RTM WebSocket reports a connection failure via `BotClient.connectionDidFailWithError`.
+2. `KABotClient` handles the failure, optionally calls `tryConnect()` when `isReconnectionBySdk` is `true`, and posts `BotConnectionLostNotification`.
+3. `ChatMessagesViewController.botConnectionDidFailWithError()` receives the notification and invokes `closeAndMinimizeEvent` with the payload above.
+
+**SDK behavior after callback:**
+
+- `isConnected` / `isConnecting` are cleared on the active `KABotClient`.
+- Delegate receives updated `connectionState` (e.g. `.DISCONNECTED`).
+- If `BotConnect.reConnectionBySDK` is `true` (default), the SDK may attempt automatic reconnection via `tryConnect()`.
+
+**Host app guidance:** Treat as an active socket/session failure (not only reachability). Inspect `socketConnectionState()` / `socketConnectionStateDescription()`; optionally call `socketConnect(isReconnect:)` after refreshing JWT if auto-reconnect is disabled.
+
+**Demo reference:** `Examples/CocoapodsDemo/KoreBotSDKDemo/ViewController.swift` (`BotEventReason.connectionClose`).
 
 ---
 
@@ -566,6 +609,7 @@ Global flags (not on `BotConnect`):
 | `BotClosed` | `5` | Close on popup |
 | `BotMinimized` | `6` | Minimize on popup or `minimizeChatBot()` |
 | `BotConnectionLost` | `7` | Network `.notReachable` |
+| `BotConnectionLost` | `11` | RTM socket failure → `BotConnectionLostNotification` |
 | `NetworkReconnected` | `8` | Network reachable |
 | `DeepLinkClicked` | `9` | Same-page navigation template link |
 | `StartNewSession` | `10` | Custom header **Start New Session** → `socketDisconnect`, then host calls `socketConnect(isReconnect: true)` |
@@ -577,6 +621,8 @@ Global flags (not on `BotConnect`):
 | Concern | File |
 |---------|------|
 | All `event_code` payloads | `ChatMessagesViewController.swift` |
+| **`BotConnectionLost` reason `11`** | `ChatMessagesViewController.swift` (`botConnectionDidFailWithError`) |
+| Socket failure → notification | `KABotClient.swift` (`connectionDidFailWithError` → `botConnectionLostNotification`) |
 | Public callback wiring | `BotConnect.swift` |
 | Token expiry notification | `KABotClient.swift` (`tryConnect` failure) |
 | **`DeepLinkClicked` emission** | `ChatMessagesViewController.swift` (`deepLinkNotificationAction`) |
