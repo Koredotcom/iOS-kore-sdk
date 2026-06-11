@@ -67,6 +67,7 @@ var isInternetAvailable = true
 var isBotConnectSucessFully = false
 var isChatMessageViewControllerPresent = true
 var isReconnectionBySdk = true
+var isSame_PageNavigation = false
 
 var arrayOfViews = [BubbleView.Type]()
 var arrayOfTemplateTypes = [String]()

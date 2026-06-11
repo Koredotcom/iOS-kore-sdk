@@ -1150,12 +1150,14 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                         }
                         self.establishBotConnection()
                     }
-                    if isAgentConnect{
-                        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (_) in
+                    if !isReconnectionBySdk{
+                        if isAgentConnect{
+                            Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (_) in
+                                self.stopLoader()
+                            }
+                        }else{
                             self.stopLoader()
                         }
-                    }else{
-                        self.stopLoader()
                     }
                 }
                 break
@@ -1202,7 +1204,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                                 self.establishBotConnection()
                             }
                         }
-                        self.stopLoader()
+                        if !isReconnectionBySdk{
+                            self.stopLoader()
+                        }
                     }
                 }
                 break
@@ -1724,15 +1728,18 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }
     
     func linkButtonTapAction(urlString: String) {
-        if verifyUrl(urlString: urlString){
-            if (urlString.count > 0) {
-                NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
-                let url: URL = URL(string: urlString)!
-                let webViewController = SFSafariViewController(url: url)
-                present(webViewController, animated: true, completion:nil)
+        if isSame_PageNavigation{
+            NotificationCenter.default.post(name: Notification.Name(deepLinkNotification), object: urlString)
+        }else{
+            if verifyUrl(urlString: urlString){
+                if (urlString.count > 0) {
+                    NotificationCenter.default.post(name: Notification.Name(stopSpeakingNotification), object: nil)
+                    let url: URL = URL(string: urlString)!
+                    let webViewController = SFSafariViewController(url: url)
+                    present(webViewController, animated: true, completion:nil)
+                }
             }
         }
-        
     }
     
     func verifyUrl(urlString: String?) -> Bool {
@@ -2391,6 +2398,7 @@ extension ChatMessagesViewController: KABotClientDelegate {
     }
     
     @objc public func botConnectedSuccessfully(){
+        self.stopLoader()
         let dic: [String: Any] = ["event_code": "BotConnectionStatus", "event_message": "Bot connected successfully", "event_reason": 1]
         if self.closeAndMinimizeEvent != nil{
             self.closeAndMinimizeEvent(dic)

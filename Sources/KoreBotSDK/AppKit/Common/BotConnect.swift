@@ -25,7 +25,7 @@ open class BotConnect: NSObject {
     public var networkOnResumeCallingHistory = true
     public var setIsShowBotIconTop = false
     public var device_Token: Data? = nil
-    var botViewController:ChatMessagesViewController!
+    public var botViewController:ChatMessagesViewController!
     public var composeBar_Placeholder = ""
     public var tap_To_Speak = ""
     public var close_Or_MinimizeTitle = ""
@@ -49,8 +49,9 @@ open class BotConnect: NSObject {
     public var isShowMinimiseButton = false
     public var isShowBackButton = true
     public var isShowTokenExpiryAlertView = false
-    public var setBubbleDateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
-    public var reConnectionBySDK = true
+    public var setBubbleDateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"  //set bubbleview dateformat
+    public var reConnectionBySDK = true //Set the variable to enable or disable reconnection inside the sdk
+    public var sendAllDeepLink: Bool = false //All clickable text and WebView URLs should navigate through the host app.
     // MARK: - init
     public override init() {
         super.init()
@@ -149,6 +150,7 @@ open class BotConnect: NSObject {
             bubbleView_DateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"
         }
         isReconnectionBySdk = reConnectionBySDK
+        isSame_PageNavigation = sendAllDeepLink
         if !isIntialiseFileUpload{
             isIntialiseFileUpload = true
             filesUpload()
@@ -201,10 +203,12 @@ open class BotConnect: NSObject {
     }
     // MARK: MinimiseChatBot
     public func minimizeChatBot(){
+        guard botViewController != nil else { return }
         botViewController.minimizeChatBotWindow()
     }
     // MARK: CloseChatBot
     public func closeChatBot(){
+        guard botViewController != nil else { return }
         botViewController.closeChatWindow()
     }
     func loadCustomFonts(){

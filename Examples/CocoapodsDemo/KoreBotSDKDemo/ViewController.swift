@@ -97,6 +97,9 @@ class ViewController: UIViewController {
         //MARK: Set the variable to enable or disable reconnection inside the sdk
         //        self.botConnect.reConnectionBySDK = false
         
+        //MARK: All clickable text and WebView URLs should navigate through the host app.
+        //        self.botConnect.sendAllDeepLink = true
+        
         // MARK: Show Bot window
         botConnect.show()
         
