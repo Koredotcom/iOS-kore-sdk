@@ -1,142 +1,294 @@
 # Push Notification API Documentation
 
-## Overview
-The Push Notification API in the Kore Bot SDK provides functionality to register and unregister devices for push notifications. This document details the implementation and usage of the push notification services.
+## 1. Overview
 
-## Notification Flow
+The Kore Bot SDK registers and unregisters iOS devices for push notifications against the Kore platform. The device token is passed as a **hex string** (`String`), not `Data`.
 
-### 1. Subscribe to Notifications
+### 1.1 Integration paths
+
+| Layer | API | Token type |
+|-------|-----|------------|
+| Host app (recommended) | `BotConnect.device_Token` | `String?` |
+| Internal config | `SDKConfiguration.botConfig.deviceToken` | `String?` |
+| Low-level RTM client | `BotClient.subscribeToNotifications` / `unsubscribeToNotifications` | `String!` |
+
+After a successful bot connection, the SDK **automatically subscribes** if `device_Token` is set. **Unsubscribe** runs when the user **closes** the chat or the app **terminates**, when `default_UnSubscribeNotifications` is `true` (default). Minimize does **not** trigger unsubscribe.
+
+---
+
+## 2. Host app setup
+
+### 2.1 Set device token on `BotConnect`
+
+Assign `device_Token` **before** calling `show()` or `show(in:)`. It is copied into `SDKConfiguration.botConfig.deviceToken` inside `customSettings()` (called at the start of `show()`).
+
+**Option A — assign a hex string directly:**
+
 ```swift
-func subscribeToNotifications(_ deviceToken: Data!, success:((Bool) -> Void)?, failure:((_ error: Error?) -> Void)?) {
-    let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-    requestManager.subscribeToNotifications(deviceToken as Data?, 
-                                         userInfo: userInfoModel, 
-                                         authInfo: authInfoModel, 
-                                         success: success, 
-                                         failure: failure)
-}
+let botConnect = BotConnect()
+
+botConnect.initialize(/* clientId, clientSecret, botId, ... */)
+botConnect.device_Token = "a1b2c3d4e5f6789012345678901234567890abcd"  // lowercase hex APNS token
+botConnect.show()
 ```
 
-### 2. HTTP Request Implementation
+Then call `show()` when opening the bot. No manual subscribe call is needed after connect.
+
+### 2.2 `BotConnect` properties
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `device_Token` | `String?` | `nil` | Hex APNS device token |
+| `default_UnSubscribeNotifications` | `Bool` | `true` | Unsubscribe on close / app terminate |
+
+### 2.3 Automatic subscribe / unsubscribe
+
+| Action | When | Condition |
+|--------|------|-----------|
+| **Subscribe** | Bot connects successfully (`sucessMethod`) | `SDKConfiguration.botConfig.deviceToken != nil` |
+| **Unsubscribe** | User taps **Close** on close/minimize popup (`closeChatWindow`) | `default_UnSubscribeNotifications == true` |
+| **Unsubscribe** | App will terminate (`willTerminate`) | `default_UnSubscribeNotifications == true` |
+| **Unsubscribe** | `BotConnect.unsubscribeNotifications()` | Chat UI is open (`botViewController != nil`) |
+
+**Does not unsubscribe:**
+
+- User taps **Minimize** (`minimizePopupAction`, `minimizeChatBotWindow`)
+- `socketDisconnect()` alone
+
+**Manual unsubscribe:**
+
 ```swift
-func subscribeToNotifications(_ deviceToken: Data!, 
-                            userInfo: UserModel!, 
-                            authInfo: AuthInfoModel!, 
-                            success:((_ staus: Bool) -> Void)?, 
-                            failure:((_ error: Error) -> Void)?) {
-    // 1. Construct URL
-    let urlString: String = Constants.URL.subscribeUrl(userInfo.userId)
-    
-    // 2. Set up authorization header
-    let accessToken = String(format: "%@ %@", authInfo.tokenType ?? "", authInfo.accessToken ?? "")
-    let headers: HTTPHeaders = [
-        "Authorization": accessToken,
-    ]
-    
-    // 3. Convert device token to hex string
-    let deviceId = deviceToken.hexadecimal()
-    guard deviceId != nil else {
-        failure?(NSError(domain: "KoreBotSDK", 
-                        code: 0, 
-                        userInfo: ["message": "deviceId is nil"]))
+botConnect.unsubscribeNotifications()
+```
+
+**Disable auto-unsubscribe on close:**
+
+```swift
+botConnect.default_UnSubscribeNotifications = false
+```
+
+---
+
+## 3. API reference
+
+### 3.1 `BotConnect`
+
+```swift
+public var device_Token: String? = nil
+public var default_UnSubscribeNotifications = true
+
+public func unsubscribeNotifications()
+```
+
+**Source:** `Sources/KoreBotSDK/AppKit/Common/BotConnect.swift`
+
+### 3.2 `BotClient` (RTM layer)
+
+```swift
+open func subscribeToNotifications(
+    _ deviceToken: String!,
+    success: ((Bool) -> Void)?,
+    failure: ((_ error: Error?) -> Void)?
+)
+
+open func unsubscribeToNotifications(
+    _ deviceToken: String!,
+    success: ((Bool) -> Void)?,
+    failure: ((_ error: Error?) -> Void)?
+)
+```
+
+Delegates to `HTTPRequestManager` using `userInfoModel` and `authInfoModel` from the active `BotClient` session.
+
+**Source:** `Sources/KoreBotSDK/RTM/Library/BotClient.swift`
+
+### 3.3 `HTTPRequestManager`
+
+```swift
+open func subscribeToNotifications(
+    _ deviceToken: String!,
+    userInfo: UserModel!,
+    authInfo: AuthInfoModel!,
+    success: ((_ staus: Bool) -> Void)?,
+    failure: ((_ error: Error) -> Void)?
+)
+
+open func unsubscribeToNotifications(
+    _ deviceToken: String!,
+    userInfo: UserModel!,
+    authInfo: AuthInfoModel!,
+    success: ((_ staus: Bool) -> Void)?,
+    failure: ((_ error: Error) -> Void)?
+)
+```
+
+**Source:** `Sources/KoreBotSDK/RTM/Library/REST/HTTPRequestManager.swift`
+
+---
+
+## 4. HTTP request details
+
+Base URL: `Constants.KORE_BOT_SERVER` (set via `BotConnect.initialize` → `BOTServerUrl`).
+
+### 4.1 Subscribe
+
+| Item | Value |
+|------|-------|
+| Method | `POST` |
+| URL | `{KORE_BOT_SERVER}/api/users/{userId}/sdknotifications/subscribe` |
+| Headers | `Authorization: {tokenType} {accessToken}` |
+| Body | `deviceId` (hex string), `osType: "ios"` |
+
+```swift
+// Constants.URL.subscribeUrl(userId)
+let parameters: [String: Any] = [
+    "deviceId": deviceToken,
+    "osType": "ios"
+]
+```
+
+### 4.2 Unsubscribe
+
+| Item | Value |
+|------|-------|
+| Method | `DELETE` |
+| URL | `{KORE_BOT_SERVER}/api/users/{userId}/sdknotifications/unsubscribe` |
+| Headers | `Authorization: {tokenType} {accessToken}` |
+| Body | `deviceId` (hex string) |
+
+```swift
+// Constants.URL.unSubscribeUrl(userId)
+let parameters: [String: Any] = ["deviceId": deviceToken]
+```
+
+### 4.3 Response handling (HTTP 200)
+
+Success requires **HTTP status code `200` exactly** (not any 2xx):
+
+```swift
+dataRequest.responseJSON { response in
+    if let statusCode = response.response?.statusCode, statusCode == 200 {
+        success?(true)
         return
     }
-    
-    // 4. Set up request parameters
-    let parameters: [String: Any] = [
-        "deviceId": deviceId, 
-        "osType": "ios"
-    ]
-    
-    // 5. Make API request
-    let dataRequest = sessionManager.request(urlString, 
-                                          method: .post, 
-                                          parameters: parameters, 
-                                          headers: headers)
-    
-    // 6. Handle response
-    dataRequest.validate().responseJSON { (response) in
-        if let _ = response.error {
-            let error = NSError(domain: "KoreBotSDK", code: 0, userInfo: [:])
-            failure?(error)
-            return
-        }
-        
-        if let _ = response.value {
-            success?(true)
-        } else {
-            failure?(NSError(domain: "KoreBotSDK", code: 0, userInfo: [:]))
-        }
-    }
+
+    let code = response.response?.statusCode ?? response.error?.responseCode ?? 0
+    failure?(NSError(domain: "KoreBotSDK", code: code, userInfo: [:]))
 }
 ```
 
-### 3. Unsubscribe from Notifications
+| Outcome | Behavior |
+|---------|----------|
+| `statusCode == 200` | `success?(true)` |
+| Any other status or network error | `failure?(error)` — HTTP code in `NSError.code` |
+
+---
+
+## 5. Implementation flow
+
+### 5.1 Subscribe
+
+```
+Host sets BotConnect.device_Token (hex string)
+        │
+        ▼
+show() → customSettings() → SDKConfiguration.botConfig.deviceToken
+        │
+        ▼
+Bot connects (sucessMethod)
+        │
+        ▼
+ChatMessagesViewController.subscribeNotifications()
+        │
+        ▼
+BotClient.subscribeToNotifications(deviceToken)
+        │
+        ▼
+HTTPRequestManager → POST .../sdknotifications/subscribe
+        │
+        ▼
+HTTP 200 → success
+```
+
+### 5.2 Unsubscribe
+
+```
+User closes chat OR app will terminate OR botConnect.unsubscribeNotifications()
+        │
+        ▼
+ChatMessagesViewController.unsubscribeNotifications()
+        │
+        ▼
+BotClient.unsubscribeToNotifications(deviceToken)
+        │
+        ▼
+HTTPRequestManager → DELETE .../sdknotifications/unsubscribe
+        │
+        ▼
+HTTP 200 → success
+```
+
+---
+
+## 6. Usage examples
+
+### 6.1 Recommended — via `BotConnect`
+
 ```swift
-func unsubscribeToNotifications(_ deviceToken: Data!, success:((Bool) -> Void)?, failure:((_ error: Error?) -> Void)?) {
-    let requestManager: HTTPRequestManager = HTTPRequestManager.sharedManager
-    requestManager.unsubscribeToNotifications(deviceToken as Data?, 
-                                           userInfo: userInfoModel, 
-                                           authInfo: authInfoModel, 
-                                           success: success, 
-                                           failure: failure)
+class ViewController: UIViewController {
+    let botConnect = BotConnect()
+
+    @IBAction func openBot(_ sender: Any) {
+        botConnect.initialize(/* ... */)
+
+        // Set before show()
+        botConnect.device_Token = "21123121212123d233"
+
+        botConnect.show()
+    }
 }
 ```
 
-### 4. Unsubscribe Implementation
+With APNS registration in `AppDelegate`:
+
 ```swift
-func unsubscribeToNotifications(_ deviceToken: Data!, 
-                              userInfo: UserModel!, 
-                              authInfo: AuthInfoModel!, 
-                              success:((_ staus: Bool) -> Void)?, 
-                              failure:((_ error: Error) -> Void)?) {
-    // 1. Construct URL
-    let urlString: String = Constants.URL.unSubscribeUrl(userInfo.userId)
-    
-    // 2. Set up authorization header
-    let accessToken = String(format: "%@ %@", authInfo.tokenType ?? "", authInfo.accessToken ?? "")
-    let headers: HTTPHeaders = [
-        "Authorization": accessToken,
-    ]
-    
-    // 3. Convert device token to hex string
-    let deviceId = deviceToken.hexadecimal()
-    guard deviceId != nil else {
-        failure?(NSError(domain: "KoreBotSDK", 
-                        code: 0, 
-                        userInfo: ["message": "deviceId is nil"]))
-        return
-    }
-    
-    // 4. Set up request parameters
-    let parameters: [String: Any] = ["deviceId": deviceId]
-    
-    // 5. Make API request
-    let dataRequest = sessionManager.request(urlString, 
-                                          method: .delete, 
-                                          parameters: parameters, 
-                                          headers: headers)
-    
-    // 6. Handle response
-    dataRequest.validate().responseJSON { (response) in
-        if let _ = response.error {
-            let error = NSError(domain: "KoreBotSDK", code: 0, userInfo: [:])
-            failure?(error)
-            return
-        }
-        
-        if let _ = response.value {
-            success?(true)
-        } else {
-            failure?(NSError(domain: "KoreBotSDK", code: 0, userInfo: [:]))
-        }
-    }
+func application(_ application: UIApplication,
+                 didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    let token = deviceToken.map { String(format: "%02x", $0) }.joined()
+    botConnect.device_Token = token
 }
 ```
 
-## Required Models
+### 6.2 Direct — via `BotClient` (advanced)
+
+Use only when you have an active `BotClient` with valid `userInfoModel` and `authInfoModel`:
+
+```swift
+let deviceToken = "a1b2c3d4e5f6..." // hex string
+
+botClient.subscribeToNotifications(deviceToken,
+    success: { _ in
+        print("Successfully subscribed to notifications")
+    },
+    failure: { error in
+        print("Failed to subscribe: \(error?.localizedDescription ?? "")")
+    })
+
+botClient.unsubscribeToNotifications(deviceToken,
+    success: { _ in
+        print("Successfully unsubscribed from notifications")
+    },
+    failure: { error in
+        print("Failed to unsubscribe: \(error?.localizedDescription ?? "")")
+    })
+```
+
+---
+
+## 7. Required models
 
 ### UserModel
+
 ```swift
 class UserModel {
     var userId: String
@@ -145,6 +297,7 @@ class UserModel {
 ```
 
 ### AuthInfoModel
+
 ```swift
 class AuthInfoModel {
     var accessToken: String?
@@ -153,107 +306,52 @@ class AuthInfoModel {
 }
 ```
 
-## Usage Example
+---
 
-### Subscribe to Notifications
-```swift
-// Get device token from APNS
-func application(_ application: UIApplication,
-                didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-    botClient.subscribeToNotifications(deviceToken,
-        success: { status in
-            print("Successfully subscribed to notifications")
-        },
-        failure: { error in
-            print("Failed to subscribe: \(error?.localizedDescription ?? "")")
-        })
-}
+## 8. Error handling
+
+### Common error cases
+
+| Case | Cause | SDK behavior |
+|------|-------|--------------|
+| Invalid device token | `nil` or empty string | Failure before request; `"deviceId is nil"` |
+| Non-200 HTTP response | 401, 404, 500, etc. | `failure` with status code in `NSError.code` |
+| Network error | Timeout, no connection | `failure` with `response.error?.responseCode` or `0` |
+| Missing auth | No `userInfoModel` / `authInfoModel` on `BotClient` | Request fails at API level |
+
+### Token format
+
+Lowercase hex string, no spaces or angle brackets:
+
+```
+a1b2c3d4e5f6789012345678901234567890abcd
 ```
 
-### Unsubscribe from Notifications
+Convert from APNS `Data`:
+
 ```swift
-func unsubscribeUser(deviceToken: Data) {
-    botClient.unsubscribeToNotifications(deviceToken,
-        success: { status in
-            print("Successfully unsubscribed from notifications")
-        },
-        failure: { error in
-            print("Failed to unsubscribe: \(error?.localizedDescription ?? "")")
-        })
-}
+deviceToken.map { String(format: "%02x", $0) }.joined()
 ```
 
-## Error Handling
+---
 
-### Common Error Cases
-1. **Invalid Device Token**
-   - Error when device token is nil or invalid
-   - Proper hex conversion failure
+## 9. Best practices
 
-2. **Authentication Errors**
-   - Invalid or expired access token
-   - Missing authorization headers
+1. **Set `device_Token` before `show()`** — `customSettings()` copies it once when the chat opens.
+2. **Update on token refresh** — If APNS issues a new token, update `device_Token` and reconnect or call subscribe again.
+3. **Handle non-200 responses** — Inspect `error` code in the failure closure (e.g. `401` → refresh JWT).
+4. **Keep registration on minimize** — Default behavior already keeps the device subscribed when the user minimizes; only close/terminate unsubscribes.
+5. **Disable auto-unsubscribe** — Set `default_UnSubscribeNotifications = false` if the device should stay registered after the user closes the chat.
 
-3. **Network Errors**
-   - Connection timeout
-   - Server unavailable
-   - Invalid response format
+---
 
-## Best Practices
+## 10. Source file index
 
-1. **Device Token Management**
-   - Store device token securely
-   - Update token when it changes
-   - Handle token refresh scenarios
-
-2. **Error Recovery**
-   - Implement retry mechanism
-   - Handle token expiry
-   - Log failures for debugging
-
-3. **Security**
-   - Secure token storage
-   - Proper authorization
-   - Data encryption
-
-## API Endpoints
-
-### Subscribe URL
-```swift
-/api/users/{userId}/subscribe
-```
-
-### Unsubscribe URL
-```swift
-/api/users/{userId}/unsubscribe
-```
-
-## Headers
-```swift
-Authorization: Bearer {access_token}
-Content-Type: application/json
-```
-
-## Request Parameters
-```swift
-{
-    "deviceId": "device_token_hex_string",
-    "osType": "ios"
-}
-```
-
-## Response Format
-```swift
-// Success
-{
-    "status": true
-}
-
-// Error
-{
-    "error": {
-        "code": "error_code",
-        "message": "error_message"
-    }
-}
-```
+| Concern | File |
+|---------|------|
+| Public `device_Token`, `unsubscribeNotifications()` | `BotConnect.swift` |
+| Internal token storage | `SDKConfiguration.swift` |
+| Auto subscribe / unsubscribe | `ChatMessagesViewController.swift` |
+| Subscribe URL constants | `Constants.swift` |
+| `BotClient` API | `BotClient.swift` |
+| HTTP requests & status `200` check | `HTTPRequestManager.swift` |
