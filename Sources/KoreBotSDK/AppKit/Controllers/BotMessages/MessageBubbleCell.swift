@@ -271,16 +271,28 @@ class MessageBubbleCell : UITableViewCell {
             
             self.userImageView.image = UIImage(named: "faceIcon", in: bundle, compatibleWith: nil)
         }
-        
+    
         if let iconurl = message.iconUrl {
             if let fileUrl = URL(string: iconurl) {
                 if iconurl == "Agent"{
-                    self.senderImageView.image = UIImage(named: "agent_icon", in: bundle, compatibleWith: nil)
+                    if agent_Image != nil{
+                        self.senderImageView.image = agent_Image
+                    }else if let urlStr = agent_Image_UrlString, let agentImageUrl = URL(string: urlStr){
+                        self.senderImageView.af.setImage(withURL: agentImageUrl, placeholderImage: placeHolderIcon)
+                    }else{
+                        self.senderImageView.image = UIImage(named: "agent_icon", in: bundle, compatibleWith: nil)
+                    }
                 }else{
                     self.senderImageView.af.setImage(withURL: fileUrl, placeholderImage: placeHolderIcon)
                 }
             }else if iconurl == "Agent"{
-                self.senderImageView.image = UIImage(named: "agent_icon", in: bundle, compatibleWith: nil)
+                if agent_Image != nil{
+                    self.senderImageView.image = agent_Image
+                }else if let urlStr = agent_Image_UrlString, let agentImageUrl = URL(string: urlStr){
+                    self.senderImageView.af.setImage(withURL: agentImageUrl, placeholderImage: placeHolderIcon)
+                }else{
+                    self.senderImageView.image = UIImage(named: "agent_icon", in: bundle, compatibleWith: nil)
+                }
             }
         }
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: updateUserImageNotification), object: nil)

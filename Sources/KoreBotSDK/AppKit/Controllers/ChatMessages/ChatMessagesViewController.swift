@@ -1110,7 +1110,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }
     
     @objc func willTerminate(_ notification: Notification) {
-        self.unsubscribeNotifications()
+        if default_UnSubscribe_Notifications{
+            self.unsubscribeNotifications()
+        }
         if(self.botClient != nil){
             if isAgentConnect{
                 self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
@@ -3369,7 +3371,7 @@ extension ChatMessagesViewController{
             }
         }
     }
-    func unsubscribeNotifications(){
+    public func unsubscribeNotifications(){
         if let deviceToken = SDKConfiguration.botConfig.deviceToken{
             self.botClient.unsubscribeToNotifications(deviceToken) { succes in
                 print("unsubscribe Notifications")
@@ -3903,7 +3905,9 @@ extension ChatMessagesViewController {
         closeChatWindow()
     }
     public func closeChatWindow(){
-        self.unsubscribeNotifications()
+        if default_UnSubscribe_Notifications{
+            self.unsubscribeNotifications()
+        }
         isShowWelcomeMsg = true
         let dic: [String: Any] = ["event_code": "BotClosed", "event_message": "Bot closed by the user", "event_reason": 5]
         if self.closeAndMinimizeEvent != nil{

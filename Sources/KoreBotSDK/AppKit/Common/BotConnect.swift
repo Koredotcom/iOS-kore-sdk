@@ -52,6 +52,9 @@ open class BotConnect: NSObject {
     public var setBubbleDateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"  //set bubbleview dateformat
     public var reConnectionBySDK = true //Set the variable to enable or disable reconnection inside the sdk
     public var sendAllDeepLink: Bool = false //All clickable text and WebView URLs should navigate through the host app.
+    public var agentImage: UIImage? = nil
+    public var agentImageUrlString: String? = nil
+    public var default_UnSubscribeNotifications = true
     // MARK: - init
     public override init() {
         super.init()
@@ -142,6 +145,9 @@ open class BotConnect: NSObject {
         buttonTemplteBtnsCornerRadious = buttonsCornerRadious
         buttonTemplteBtnsTextBoraderColor = buttonsTextBoraderColor
         isShowTokenExpiryAlertV = isShowTokenExpiryAlertView
+        agent_Image = agentImage
+        agent_Image_UrlString = agentImageUrlString
+        default_UnSubscribe_Notifications = default_UnSubscribeNotifications
         if setBubbleDateFormat.contains("y") ||
             setBubbleDateFormat.contains("M") ||
             setBubbleDateFormat.contains("d") {
@@ -183,6 +189,12 @@ open class BotConnect: NSObject {
     public func socketConnect(isReconnect:Bool){
         if botViewController != nil{
             botViewController.socketConnect(isReconnect: isReconnect)
+        }
+    }
+    
+    public func unsubscribeNotifications(){
+        if botViewController != nil{
+            botViewController.unsubscribeNotifications()
         }
     }
     
