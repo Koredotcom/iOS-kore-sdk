@@ -24,7 +24,7 @@ open class BotConnect: NSObject {
     public var koreSDkLanguage = "en"
     public var networkOnResumeCallingHistory = true
     public var setIsShowBotIconTop = false
-    public var device_Token: Data? = nil
+    public var device_Token: String? = nil
     public var botViewController:ChatMessagesViewController!
     public var composeBar_Placeholder = ""
     public var tap_To_Speak = ""

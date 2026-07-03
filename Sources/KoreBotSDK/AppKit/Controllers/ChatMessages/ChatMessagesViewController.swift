@@ -3367,7 +3367,7 @@ extension ChatMessagesViewController{
             self.botClient.subscribeToNotifications(deviceToken) { succes in
                 print("subscribe Notifications")
             } failure: { error in
-                print(error)
+                print("subscribe Notifications : \(error)")
             }
         }
     }
@@ -3376,7 +3376,7 @@ extension ChatMessagesViewController{
             self.botClient.unsubscribeToNotifications(deviceToken) { succes in
                 print("unsubscribe Notifications")
             } failure: { error in
-                print(error)
+                print("unsubscribe Notifications: \(error)")
             }
         }
     }

@@ -144,7 +144,7 @@ open class HTTPRequestManager : NSObject {
     }
 
     // MARK: subscribe/ unsubscribte for
-    open func subscribeToNotifications(_ deviceToken: Data!, userInfo: UserModel!, authInfo: AuthInfoModel!, success:((_ staus: Bool) -> Void)?, failure:((_ error: Error) -> Void)?) {
+    open func subscribeToNotifications(_ deviceToken: String!, userInfo: UserModel!, authInfo: AuthInfoModel!, success:((_ staus: Bool) -> Void)?, failure:((_ error: Error) -> Void)?) {
         let urlString: String = Constants.URL.subscribeUrl(userInfo.userId)
         
         let accessToken = String(format: "%@ %@", authInfo.tokenType ?? "", authInfo.accessToken ?? "")
@@ -152,30 +152,27 @@ open class HTTPRequestManager : NSObject {
             "Authorization": accessToken,
         ]
         
-        let deviceId = deviceToken.hexadecimal()
-        if (deviceId == nil) {
+        let deviceId = deviceToken
+        if deviceId == nil || deviceId?.isEmpty == true {
             failure?(NSError(domain: "KoreBotSDK", code: 0, userInfo: ["message": "deviceId is nil"]))
             return
         }
-        let parameters: [String: Any] = ["deviceId": deviceId, "osType": "ios"]
+        let parameters: [String: Any] = ["deviceId": deviceId!, "osType": "ios"]
         
         let dataRequest = sessionManager.request(urlString, method: .post, parameters: parameters, headers: headers)
-        dataRequest.validate().responseJSON { (response) in
-            if let _ = response.error {
-                let error: NSError = NSError(domain: "KoreBotSDK", code: 0, userInfo: [:])
-                failure?(error)
+        dataRequest.responseJSON { (response) in
+            if let statusCode = response.response?.statusCode, statusCode == 200 {
+                success?(true)
                 return
             }
             
-            if let _ = response.value {
-                success?(true)
-            } else {
-                failure?(NSError(domain: "KoreBotSDK", code: 0, userInfo: [:]))
-            }
+            let code = response.response?.statusCode ?? response.error?.responseCode ?? 0
+            let error = NSError(domain: "KoreBotSDK", code: code, userInfo: [:])
+            failure?(error)
         }
     }
     
-    open func unsubscribeToNotifications(_ deviceToken: Data!, userInfo: UserModel!, authInfo: AuthInfoModel!, success:((_ staus: Bool) -> Void)?, failure:((_ error: Error) -> Void)?) {
+    open func unsubscribeToNotifications(_ deviceToken: String!, userInfo: UserModel!, authInfo: AuthInfoModel!, success:((_ staus: Bool) -> Void)?, failure:((_ error: Error) -> Void)?) {
         let urlString: String = Constants.URL.unSubscribeUrl(userInfo.userId)
         
         let accessToken = String(format: "%@ %@", authInfo.tokenType ?? "", authInfo.accessToken ?? "")
@@ -183,27 +180,24 @@ open class HTTPRequestManager : NSObject {
             "Authorization": accessToken,
         ]
         
-        let deviceId = deviceToken.hexadecimal()
-        if (deviceId == nil) {
+        let deviceId = deviceToken
+        if deviceId == nil || deviceId?.isEmpty == true {
             failure?(NSError(domain: "KoreBotSDK", code: 0, userInfo: ["message": "deviceId is nil"]))
             return
         }
         
-        let parameters: [String: Any] = ["deviceId": deviceId]
+        let parameters: [String: Any] = ["deviceId": deviceId!]
         
         let dataRequest = sessionManager.request(urlString, method: .delete, parameters: parameters, headers: headers)
-        dataRequest.validate().responseJSON { (response) in
-            if let _ = response.error {
-                let error: NSError = NSError(domain: "KoreBotSDK", code: 0, userInfo: [:])
-                failure?(error)
+        dataRequest.responseJSON { (response) in
+            if let statusCode = response.response?.statusCode, statusCode == 200 {
+                success?(true)
                 return
             }
             
-            if let _ = response.value {
-                success?(true)
-            } else {
-                failure?(NSError(domain: "KoreBotSDK", code: 0, userInfo: [:]))
-            }
+            let code = response.response?.statusCode ?? response.error?.responseCode ?? 0
+            let error = NSError(domain: "KoreBotSDK", code: code, userInfo: [:])
+            failure?(error)
         }
     }
 }
