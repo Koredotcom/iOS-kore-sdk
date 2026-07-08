@@ -1110,7 +1110,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }
     
     @objc func willTerminate(_ notification: Notification) {
-        if default_UnSubscribe_Notifications{
+        if default_notifications{
             self.unsubscribeNotifications()
         }
         if(self.botClient != nil){
@@ -3362,7 +3362,7 @@ extension ChatMessagesViewController{
         }
     }
     
-    func subscribeNotifications(){
+    public func subscribeNotifications(){
         if let deviceToken = SDKConfiguration.botConfig.deviceToken{
             self.botClient.subscribeToNotifications(deviceToken) { succes in
                 print("subscribe Notifications")
@@ -3391,7 +3391,9 @@ extension ChatMessagesViewController{
         self.configureleftMenu()
         self.configureQuickReplyView()
         chatMaskview.isHidden = true
-        subscribeNotifications()
+        if default_notifications{
+            subscribeNotifications()
+        }
         setupCloseOrMinimizePopup()
         if isShowComposeMenuBtn{
             leftMenuAddgesture()
@@ -3905,7 +3907,7 @@ extension ChatMessagesViewController {
         closeChatWindow()
     }
     public func closeChatWindow(){
-        if default_UnSubscribe_Notifications{
+        if default_notifications{
             self.unsubscribeNotifications()
         }
         isShowWelcomeMsg = true

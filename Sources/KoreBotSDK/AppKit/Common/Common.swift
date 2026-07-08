@@ -79,7 +79,7 @@ var isCallingHistoryApi = true
 var isShowTokenExpiryAlertV = false
 var agent_Image: UIImage? = nil
 var agent_Image_UrlString: String? = nil
-var default_UnSubscribe_Notifications = true
+var default_notifications = true
 
 var feedBackTemplateSelectedValue = ""
 var appDisplayName = "KoreBotSDK"

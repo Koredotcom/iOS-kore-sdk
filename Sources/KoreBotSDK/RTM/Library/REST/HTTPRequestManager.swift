@@ -186,7 +186,7 @@ open class HTTPRequestManager : NSObject {
             return
         }
         
-        let parameters: [String: Any] = ["deviceId": deviceId!]
+        let parameters: [String: Any] = ["deviceId": deviceId!, "osType": "ios"]
         
         let dataRequest = sessionManager.request(urlString, method: .delete, parameters: parameters, headers: headers)
         dataRequest.responseJSON { (response) in
