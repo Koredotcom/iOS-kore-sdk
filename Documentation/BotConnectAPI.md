@@ -127,7 +127,7 @@ When `sendAllDeepLink == false`, only template elements with `isSamePageNavigati
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `device_Token` | `String?` | `nil` | Hex APNS device token. Set **before** `show()`. Auto-subscribes on successful bot connect. |
-| `default_UnSubscribeNotifications` | `Bool` | `true` | When `true`, unsubscribes push notifications when the user **closes** the chat or the app terminates. Does not unsubscribe on minimize. |
+| `default_Notifications` | `Bool` | `true` | When `true`, automatically subscribes on bot connect and unsubscribes when the user **closes** the chat or the app terminates. Does not unsubscribe on minimize. When `false`, push subscribe/unsubscribe must be handled manually. |
 
 See `PushNotificationAPI.md` for full push notification flow.
 
@@ -228,7 +228,7 @@ botConnect.closeOrMinimizeEvent = { eventDic in
 | `sendAllDeepLink` | `isSame_PageNavigation` |
 | `agentImage` | `agent_Image` |
 | `agentImageUrlString` | `agent_Image_UrlString` |
-| `default_UnSubscribeNotifications` | `default_UnSubscribe_Notifications` |
+| `default_Notifications` | `default_notifications` |
 | `koreSDkLanguage` + string overrides | `laguageSettings()` → global UI strings |
 
 ---
@@ -280,7 +280,7 @@ These are configured separately from the properties above but are commonly used 
 | `sendAllDeepLink` | `false` |
 | `agentImage` | `nil` |
 | `agentImageUrlString` | `nil` |
-| `default_UnSubscribeNotifications` | `true` |
+| `default_Notifications` | `true` |
 
 ---
 

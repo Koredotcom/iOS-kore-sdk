@@ -12,7 +12,7 @@ The Kore Bot SDK registers and unregisters iOS devices for push notifications ag
 | Internal config | `SDKConfiguration.botConfig.deviceToken` | `String?` |
 | Low-level RTM client | `BotClient.subscribeToNotifications` / `unsubscribeToNotifications` | `String!` |
 
-After a successful bot connection, the SDK **automatically subscribes** if `device_Token` is set. **Unsubscribe** runs when the user **closes** the chat or the app **terminates**, when `default_UnSubscribeNotifications` is `true` (default). Minimize does **not** trigger unsubscribe.
+After a successful bot connection, the SDK **automatically subscribes** if `device_Token` is set and `default_Notifications` is `true` (default). **Unsubscribe** runs when the user **closes** the chat or the app **terminates**, when `default_Notifications` is `true`. Minimize does **not** trigger unsubscribe.
 
 ---
 
@@ -39,15 +39,15 @@ Then call `show()` when opening the bot. No manual subscribe call is needed afte
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `device_Token` | `String?` | `nil` | Hex APNS device token |
-| `default_UnSubscribeNotifications` | `Bool` | `true` | Unsubscribe on close / app terminate |
+| `default_Notifications` | `Bool` | `true` | Enables automatic subscribe on connect and unsubscribe on close / app terminate |
 
 ### 2.3 Automatic subscribe / unsubscribe
 
 | Action | When | Condition |
 |--------|------|-----------|
-| **Subscribe** | Bot connects successfully (`sucessMethod`) | `SDKConfiguration.botConfig.deviceToken != nil` |
-| **Unsubscribe** | User taps **Close** on close/minimize popup (`closeChatWindow`) | `default_UnSubscribeNotifications == true` |
-| **Unsubscribe** | App will terminate (`willTerminate`) | `default_UnSubscribeNotifications == true` |
+| **Subscribe** | Bot connects successfully (`sucessMethod`) | `default_Notifications == true` **and** `SDKConfiguration.botConfig.deviceToken != nil` |
+| **Unsubscribe** | User taps **Close** on close/minimize popup (`closeChatWindow`) | `default_Notifications == true` |
+| **Unsubscribe** | App will terminate (`willTerminate`) | `default_Notifications == true` |
 | **Unsubscribe** | `BotConnect.unsubscribeNotifications()` | Chat UI is open (`botViewController != nil`) |
 
 **Does not unsubscribe:**
@@ -61,11 +61,13 @@ Then call `show()` when opening the bot. No manual subscribe call is needed afte
 botConnect.unsubscribeNotifications()
 ```
 
-**Disable auto-unsubscribe on close:**
+**Disable automatic push registration:**
 
 ```swift
-botConnect.default_UnSubscribeNotifications = false
+botConnect.default_Notifications = false
 ```
+
+When `false`, the SDK does not auto-subscribe on connect or auto-unsubscribe on close/terminate. Use `BotConnect.unsubscribeNotifications()` manually if needed.
 
 ---
 
@@ -75,7 +77,7 @@ botConnect.default_UnSubscribeNotifications = false
 
 ```swift
 public var device_Token: String? = nil
-public var default_UnSubscribeNotifications = true
+public var default_Notifications = true
 
 public func unsubscribeNotifications()
 ```
@@ -198,7 +200,10 @@ show() → customSettings() → SDKConfiguration.botConfig.deviceToken
 Bot connects (sucessMethod)
         │
         ▼
-ChatMessagesViewController.subscribeNotifications()
+default_notifications == true?
+        │
+        ├─ yes → ChatMessagesViewController.subscribeNotifications()
+        └─ no  → skip subscribe
         │
         ▼
 BotClient.subscribeToNotifications(deviceToken)
@@ -341,7 +346,7 @@ deviceToken.map { String(format: "%02x", $0) }.joined()
 2. **Update on token refresh** — If APNS issues a new token, update `device_Token` and reconnect or call subscribe again.
 3. **Handle non-200 responses** — Inspect `error` code in the failure closure (e.g. `401` → refresh JWT).
 4. **Keep registration on minimize** — Default behavior already keeps the device subscribed when the user minimizes; only close/terminate unsubscribes.
-5. **Disable auto-unsubscribe** — Set `default_UnSubscribeNotifications = false` if the device should stay registered after the user closes the chat.
+5. **Disable automatic push handling** — Set `default_Notifications = false` to skip auto-subscribe and auto-unsubscribe; manage push registration manually in the host app.
 
 ---
 
