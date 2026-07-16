@@ -1249,7 +1249,8 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     // MARK: - establish BotSDK connection
     func establishBotConnection() {
         if isReconnectionBySdk{
-            KABotClient.shared.tryConnect()
+            //KABotClient.shared.tryConnect()
+            kaBotClient.tryConnect()
         }
     }
     
@@ -1752,6 +1753,14 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         }
         return false
     }
+    
+    func phnoneNumberButtonTapAction(PhoneNoString:String) {
+        guard let url = URL(string: "tel:\(PhoneNoString)") else {
+                return
+            }
+        UIApplication.shared.open(url)
+    }
+    
     func updateMessage(messageId: String, componentDesc:String) {
         let dataStoreManager = DataStoreManager.sharedManager
         dataStoreManager.updateComponentDescription(messageId: messageId, newDescription: componentDesc)

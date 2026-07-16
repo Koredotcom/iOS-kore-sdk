@@ -28,10 +28,10 @@ open class BotConnect: NSObject {
     public var botViewController:ChatMessagesViewController!
     public var composeBar_Placeholder = ""
     public var tap_To_Speak = ""
-    public var close_Or_MinimizeTitle = ""
-    public var close_Btn = ""
-    public var minimize_Btn = ""
-    public var cancel_Btn = ""
+    public var close_Or_MinimizeTitle = "" //Title of the popup displayed when the back button is tapped.
+    public var close_Btn = "" // Title of the Close button in the popup
+    public var minimize_Btn = "" // Title of the Minimise button in the popup
+    public var cancel_Btn = "" // Title of the Cancel button in the popup
     public var alert_Ok = ""
     public var leftMenu_Title = ""
     public var confirm_Title = ""
@@ -55,6 +55,10 @@ open class BotConnect: NSObject {
     public var agentImage: UIImage? = nil
     public var agentImageUrlString: String? = nil
     public var default_Notifications = true
+    public var sendFailedMsgTitle = "Sending failed." // Message displayed when sending fails
+    public var resendMsgBtnTitle = "Resend" // Resend button title
+    public var orTitle = "or" // Separator between resend and delete actions
+    public var deleteMsgTitle = "Delete" // Delete button title
     // MARK: - init
     public override init() {
         super.init()
@@ -148,6 +152,10 @@ open class BotConnect: NSObject {
         agent_Image = agentImage
         agent_Image_UrlString = agentImageUrlString
         default_notifications = default_Notifications
+        sendFailedMsg_Title = sendFailedMsgTitle
+        resendMsgBtn_Title = resendMsgBtnTitle
+        or_Title = orTitle
+        deleteMsg_Title = deleteMsgTitle
         if setBubbleDateFormat.contains("y") ||
             setBubbleDateFormat.contains("M") ||
             setBubbleDateFormat.contains("d") {

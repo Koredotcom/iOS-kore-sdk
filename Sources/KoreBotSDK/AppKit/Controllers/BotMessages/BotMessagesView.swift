@@ -14,6 +14,7 @@ import ObjcSupport
 protocol BotMessagesViewDelegate {
     func optionsButtonTapAction(text:String)
     func linkButtonTapAction(urlString:String)
+    func phnoneNumberButtonTapAction(PhoneNoString:String)
     func populateQuickReplyCards(with message: KREMessage?)
     func closeQuickReplyCards()
     func optionsButtonTapNewAction(text:String, payload:String)
@@ -852,6 +853,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
             switch hotword {
             case KREAttributedHotWordLink:
                 self.viewDelegate?.linkButtonTapAction(urlString: string!)
+                break
+            case KREAttributedHotWordPhoneNumber:
+                self.viewDelegate?.phnoneNumberButtonTapAction(PhoneNoString: string!)
                 break
             default:
                 break

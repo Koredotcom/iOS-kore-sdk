@@ -94,9 +94,10 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             }
             dictionary?.forEach { (key, value) in parameters[key] = value }
             connection.sendMessage(message, parameters: parameters, options: options, clientMessageId: clientMessageId)
-        } else {
-            notDeliverdMsgsArray.append(message)
         }
+//        else {
+//            notDeliverdMsgsArray.append(message)
+//        }
     }
     
     fileprivate var successClosure: ((BotClient?) -> Void)?
@@ -283,9 +284,10 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             }
             dictionary?.forEach { (key, value) in parameters[key] = value }
             connection.sendMessage(message, parameters: parameters, options: options)
-        }else{
-            notDeliverdMsgsArray.append(message)
         }
+//        else{
+//            notDeliverdMsgsArray.append(message)
+//        }
     }
     
     open func sendEventToAgentChat(eventName: String?, messageId: String?) {

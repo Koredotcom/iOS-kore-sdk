@@ -162,7 +162,7 @@ class MessageBubbleCell : UITableViewCell {
         statusLabel = UILabel()
         statusLabel.font = UIFont(name: regularCustomFont, size: 12.0)
         statusLabel.textColor = UIColor.red
-        statusLabel.text = "Sending failed."
+        statusLabel.text = sendFailedMsg_Title
         statusLabel.numberOfLines = 0
         statusLabel.lineBreakMode = .byWordWrapping
         statusLabel.textAlignment = .right
@@ -170,7 +170,7 @@ class MessageBubbleCell : UITableViewCell {
         statusLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         resendButton = UIButton(type: .system)
-        resendButton.setTitle("Resend", for: .normal)
+        resendButton.setTitle(resendMsgBtn_Title, for: .normal)
         resendButton.titleLabel?.font = UIFont(name: mediumCustomFont, size: 12.0)
         resendButton.setTitleColor(themeColor, for: .normal)
         resendButton.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -179,14 +179,14 @@ class MessageBubbleCell : UITableViewCell {
         orLabel = UILabel()
         orLabel.font = UIFont(name: regularCustomFont, size: 12.0)
         orLabel.textColor = themeColor
-        orLabel.text = "or"
+        orLabel.text = or_Title
         orLabel.numberOfLines = 0
         orLabel.lineBreakMode = .byWordWrapping
         orLabel.textAlignment = .right
         orLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         deleteButton = UIButton(type: .system)
-        deleteButton.setTitle("Delete", for: .normal)
+        deleteButton.setTitle(deleteMsg_Title, for: .normal)
         deleteButton.titleLabel?.font = UIFont(name: mediumCustomFont, size: 12.0)
         deleteButton.setTitleColor(themeColor, for: .normal)
         deleteButton.setContentCompressionResistancePriority(.required, for: .horizontal)

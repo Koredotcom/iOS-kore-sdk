@@ -72,7 +72,7 @@ var isSame_PageNavigation = false
 var arrayOfViews = [BubbleView.Type]()
 var arrayOfTemplateTypes = [String]()
 
-var notDeliverdMsgsArray = [String]()
+//var notDeliverdMsgsArray = [String]()
 var historyLimit = 0
 var RemovedTemplateCount = 0
 var isCallingHistoryApi = true
@@ -111,6 +111,11 @@ var fileDownloadingToastMsg = "Downloading..."
 var fileSavedSuccessfullyToastMsg = "Saved successfully under Files"
 var videoDownloadAlertCancelTitle = "Cancel"
 var vileDownloadFailedToastMsg = "Download failed!"
+
+var sendFailedMsg_Title:String? = nil
+var resendMsgBtn_Title:String? = nil
+var or_Title:String? = nil
+var deleteMsg_Title:String? = nil
 
 var customHeaderView: KoreCustomHeaderView? = nil
 var customHeaderViewHeight = 64.0
