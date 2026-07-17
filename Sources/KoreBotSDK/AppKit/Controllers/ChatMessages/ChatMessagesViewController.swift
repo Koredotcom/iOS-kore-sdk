@@ -1249,8 +1249,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     // MARK: - establish BotSDK connection
     func establishBotConnection() {
         if isReconnectionBySdk{
-            //KABotClient.shared.tryConnect()
-            kaBotClient.tryConnect()
+             KABotClient.shared.tryConnect()
         }
     }
     
