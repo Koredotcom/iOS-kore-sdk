@@ -32,12 +32,13 @@ open class HTTPRequestManager : NSObject {
                 let code = response.error?.responseCode ?? 0
                 var message = "Unknown error"
                 if let data = response.data,
-                       let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-                   let errors = json?["errors"] as? [[String: Any]],
-                       let firstError = errors.first {
+                   let object = try? JSONSerialization.jsonObject(with: data),
+                   let json = object as? [String: Any],
+                   let errors = json["errors"] as? [[String: Any]],
+                   let firstError = errors.first {
 
-                        message = firstError["msg"] as? String ?? "Unknown error"
-                    }
+                    message = firstError["msg"] as? String ?? "Unknown error"
+                }
                 let error: NSError = NSError(domain: "", code: code, userInfo: [NSLocalizedDescriptionKey: message])
                 failure?(error)
                 return
