@@ -17,6 +17,7 @@ import MobileCoreServices
 import Alamofire
 import AlamofireImage
 import ObjectMapper
+import Network
 
 #if SWIFT_PACKAGE
 import ObjcSupport
@@ -138,6 +139,86 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     // Track ACK timers per user-sent messageId
     private var pendingAckTimers: [String: Timer] = [:]
     
+    private var monitor = NWPathMonitor()
+    private let monitorQueue = DispatchQueue(label: "NetworkMonitor")
+    private var wasConnected = true
+    private var isNWPathMonitorStarted = false
+    /// When false (chat closed / minimized), never notify parent of network path events.
+    private var shouldNotifyNetworkEvents = true
+    
+    private func networkReconnectedEventPayload() -> [String: Any] {
+        ["event_code": "NetworkReconnected", "event_message": "Network connectivity has been restored.", "event_reason": 8]
+    }
+    
+    private func botConnectionLostEventPayload() -> [String: Any] {
+        ["event_code": "BotConnectionLost", "event_message": "The bot was disconnected due to a network connectivity issue. Please check the internet connection and try reconnecting.", "event_reason": 7]
+    }
+    
+    private func notifyParentAppNetworkEvent(_ payload: [String: Any]) {
+        guard shouldNotifyNetworkEvents, isTryConnect else { return }
+        closeAndMinimizeEvent?(payload)
+    }
+    
+    /// Updates `wasConnected` and notifies the host app. When `forceNotify` is true, sends the event for the current path even if state did not change (foreground resume).
+    private func handleNetworkPathStatus(_ status: NWPath.Status, forceNotify: Bool = false) {
+        guard shouldNotifyNetworkEvents, isTryConnect else { return }
+        switch status {
+        case .satisfied:
+            if forceNotify || !wasConnected {
+                wasConnected = true
+                notifyParentAppNetworkEvent(networkReconnectedEventPayload())
+            }
+        case .unsatisfied:
+            if forceNotify || wasConnected {
+                wasConnected = false
+                notifyParentAppNetworkEvent(botConnectionLostEventPayload())
+            }
+        case .requiresConnection:
+            break
+        @unknown default:
+            break
+        }
+    }
+    
+    /// Reads the current path and notifies the host (used when returning from background).
+    private func reportNetworkPathToParentAppOnForeground() {
+        guard shouldNotifyNetworkEvents, isTryConnect else { return }
+        let status = monitor.currentPath.status
+        DispatchQueue.main.async { [weak self] in
+            self?.handleNetworkPathStatus(status, forceNotify: true)
+        }
+    }
+    
+    func nwPathMonitor() {
+        guard shouldNotifyNetworkEvents else { return }
+        if isNWPathMonitorStarted {
+            return
+        }
+        isNWPathMonitorStarted = true
+        
+        monitor.pathUpdateHandler = { [weak self] path in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.handleNetworkPathStatus(path.status, forceNotify: false)
+            }
+        }
+        monitor.start(queue: monitorQueue)
+    }
+    
+    /// Stops NWPathMonitor + Alamofire reachability and blocks further parent network events.
+    private func stopAllNetworkMonitoring() {
+        shouldNotifyNetworkEvents = false
+        monitor.pathUpdateHandler = nil
+        if isNWPathMonitorStarted {
+            monitor.cancel()
+            isNWPathMonitorStarted = false
+            // Cancelled NWPathMonitor cannot be restarted; recreate for a future chat session on same VC if any.
+            monitor = NWPathMonitor()
+        }
+        stopMonitoringForReachability()
+        removeNotificationCenter()
+    }
+    
     // MARK: init
     public init() {
         super.init(nibName: "ChatMessagesViewController", bundle: .sdkModule)
@@ -175,6 +256,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         }
         isAppEnterBackground = false
         isTryConnect = true
+        shouldNotifyNetworkEvents = true
         isBotConnectSucessFully = false
         networkMonitoringForReachability()
         //Initialize elements
@@ -194,6 +276,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         self.view.backgroundColor = UIColor.init(hexString: "#f3f3f5")
         self.view.bringSubviewToFront(chatMaskview)
         customHeaderViewConfigure()
+        if !isReconnectionBySdk{
+            nwPathMonitor()
+        }
     }
     
     func customHeaderViewConfigure(){
@@ -325,6 +410,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }
     
     func botClosed(){
+        stopAllNetworkMonitoring()
         isTryConnect = false
         prepareForDeinit()
         if isChatMessageViewControllerPresent {
@@ -1097,6 +1183,11 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }
     
     @objc func didBecomeActive(_ notification: Notification) {
+        guard shouldNotifyNetworkEvents, isTryConnect else { return }
+        if !isReconnectionBySdk {
+            nwPathMonitor()
+            reportNetworkPathToParentAppOnForeground()
+        }
         startMonitoringForReachability()
     }
     
@@ -1137,15 +1228,14 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     @objc func startMonitoringForReachability() {
         let networkReachabilityManager = NetworkReachabilityManager.default
         networkReachabilityManager?.startListening(onUpdatePerforming: { (status) in
-            print("Network reachability: \(status)")
+            //print("Network reachability: \(status)")
             switch status {
             case .reachable(.ethernetOrWiFi), .reachable(.cellular):
                 if isTryConnect{
                     isInternetAvailable = true
-                    let dic = ["event_code": "NetworkReconnected", "event_message": "Network connectivity has been restored.", "event_reason": 8]
-                        if self.closeAndMinimizeEvent != nil{
-                                self.closeAndMinimizeEvent(dic)
-                        }
+                    if isReconnectionBySdk{
+                        self.notifyParentAppNetworkEvent(self.networkReconnectedEventPayload())
+                    }
                     if !SDKConfiguration.botConfig.isWebhookEnabled{
                         if isNetworkOnResumeCallingHistory{
                             loadReconnectionHistory = true
@@ -1164,9 +1254,8 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                 }
                 break
             case .notReachable:
-                let dic: [String: Any] = ["event_code": "BotConnectionLost", "event_message": "The bot was disconnected due to a network connectivity issue. Please check the internet connection and try reconnecting.", "event_reason": 7]
-                if self.closeAndMinimizeEvent != nil{
-                    self.closeAndMinimizeEvent(dic)
+                if isReconnectionBySdk{
+                    self.notifyParentAppNetworkEvent(self.botConnectionLostEventPayload())
                 }
                 if isTryConnect{
                     isInternetAvailable = false
@@ -1188,17 +1277,16 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     @objc func networkMonitoringForReachability() {
         let networkReachabilityManager = NetworkReachabilityManager.default
         networkReachabilityManager?.startListening(onUpdatePerforming: { (status) in
-            print("Network reach \(status)")
+            //print("Network reach \(status)")
             switch status {
             case .reachable(.ethernetOrWiFi), .reachable(.cellular):
                 if isTryConnect{
                     isInternetAvailable = true
                     if isBotConnectSucessFully{
                         if !self.isAppEnterBackground{
-                            let dic: [String: Any] = ["event_code": "NetworkReconnected", "event_message": "Network connectivity has been restored.", "event_reason": 8]
-                                if self.closeAndMinimizeEvent != nil{
-                                        self.closeAndMinimizeEvent(dic)
-                                }
+                            if isReconnectionBySdk{
+                                self.notifyParentAppNetworkEvent(self.networkReconnectedEventPayload())
+                            }
                             if !SDKConfiguration.botConfig.isWebhookEnabled{
                                 if isNetworkOnResumeCallingHistory{
                                     loadReconnectionHistory = true
@@ -1213,9 +1301,8 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                 }
                 break
             case .notReachable:
-                let dic: [String: Any] = ["event_code": "BotConnectionLost", "event_message": "The bot was disconnected due to a network connectivity issue. Please check the internet connection and try reconnecting.", "event_reason": 7]
-                if self.closeAndMinimizeEvent != nil{
-                    self.closeAndMinimizeEvent(dic)
+                if isReconnectionBySdk{
+                    self.notifyParentAppNetworkEvent(self.botConnectionLostEventPayload())
                 }
                 if isTryConnect{
                     isInternetAvailable = false
@@ -4045,7 +4132,6 @@ extension ChatMessagesViewController: UIGestureRecognizerDelegate{
     }
     public func minimizeChatBotWindow(){
         isAgentConnect = false
-        removeNotificationCenter()
         let dic: [String: Any] = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user", "event_reason": 6]
         if self.closeAndMinimizeEvent != nil{
                 self.closeAndMinimizeEvent(dic)
