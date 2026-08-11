@@ -3459,19 +3459,24 @@ extension ChatMessagesViewController{
     
     public func subscribeNotifications(){
         if let deviceToken = SDKConfiguration.botConfig.deviceToken{
-            self.botClient.subscribeToNotifications(deviceToken) { succes in
-                print("subscribe Notifications")
-            } failure: { error in
-                print("subscribe Notifications : \(error)")
+            if self.botClient != nil {
+                self.botClient.subscribeToNotifications(deviceToken) { succes in
+                    print("subscribe Notifications")
+                } failure: { error in
+                    print("subscribe Notifications : \(error)")
+                }
             }
+            
         }
     }
     public func unsubscribeNotifications(){
         if let deviceToken = SDKConfiguration.botConfig.deviceToken{
-            self.botClient.unsubscribeToNotifications(deviceToken) { succes in
-                print("unsubscribe Notifications")
-            } failure: { error in
-                print("unsubscribe Notifications: \(error)")
+            if self.botClient != nil {
+                self.botClient.unsubscribeToNotifications(deviceToken) { succes in
+                    print("unsubscribe Notifications")
+                } failure: { error in
+                    print("unsubscribe Notifications: \(error)")
+                }
             }
         }
     }
