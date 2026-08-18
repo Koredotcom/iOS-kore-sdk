@@ -28,7 +28,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
     var thread: KREThread?
-    var botClient: BotClient!
+    var botClient: BotClient?
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
     var kaBotClient: KABotClient!
     
@@ -380,9 +380,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     
     //MARK:- removing refernces to elements
     func prepareForDeinit(){
-        if(self.botClient != nil){
-            self.botClient.disconnect()
-        }
+        self.botClient?.disconnect()
         
         KABotClient.shared.deConfigureBotClient()
         self.deConfigureSTTClient()
@@ -1032,7 +1030,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     
     func updateNavBarPrompt() {
         self.navigationItem.leftBarButtonItem?.isEnabled = true
-        switch self.botClient.connectionState {
+        switch self.botClient?.connectionState {
         case .CONNECTING:
             self.navigationItem.leftBarButtonItem?.isEnabled = false
             self.navigationItem.prompt = "Connecting..."
@@ -1052,7 +1050,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         case .NO_NETWORK:
             self.navigationItem.prompt = "No Network"
             break
-        case .NONE, .CLOSING:
+        case .NONE, .CLOSING, .none:
             self.navigationItem.prompt = nil
             break
         }
@@ -1204,24 +1202,22 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         if default_notifications{
             self.unsubscribeNotifications()
         }
-        if(self.botClient != nil){
-            if isAgentConnect{
-                self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
-            }else{
-                self.botClient.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
-            }
+        if isAgentConnect{
+            self.botClient?.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
+        }else{
+            self.botClient?.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
         }
         prepareForDeinit()
         sleep(1)
     }
     public func showTypingToAgent(_: ComposeBarView){
         if isAgentConnect{
-            self.botClient.sendEventToAgentChat(eventName: "typing", messageId: "")
+            self.botClient?.sendEventToAgentChat(eventName: "typing", messageId: "")
         }
     }
     public func stopTypingToAgent(_: ComposeBarView){
         if isAgentConnect{
-            self.botClient.sendEventToAgentChat(eventName: "stop_typing", messageId: "")
+            self.botClient?.sendEventToAgentChat(eventName: "stop_typing", messageId: "")
         }
     }
     
@@ -1390,10 +1386,10 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                         self.webhookSendMessage(text: text, attahment: dictionary ?? [:])
                     }
                 }else{
-                    if let _ = self.botClient, let text = textComponent?.payload {
+                    if let botClient = self.botClient, let text = textComponent?.payload {
                         // Use the UI messageId as the clientMessageId so that ACK.replyto matches this id
                         let clientId = composedMessage.messageId ?? UUID().uuidString
-                        self.botClient.sendMessage(text, clientMessageId: clientId, dictionary: dictionary, options: options)
+                        botClient.sendMessage(text, clientMessageId: clientId, dictionary: dictionary, options: options)
                         self.startAckTimer(for: clientId)
                     }
                 }
@@ -2277,7 +2273,7 @@ extension ChatMessagesViewController {
             return
         }
         
-        botClient.getHistory(offset: offset,limit: SDKConfiguration.botConfig.history_batch_size, success: { [weak self] (responseObj) in
+        botClient?.getHistory(offset: offset,limit: SDKConfiguration.botConfig.history_batch_size, success: { [weak self] (responseObj) in
             if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
                 self?.insertOrUpdateHistoryMessages(messages)
             }
@@ -2314,7 +2310,7 @@ extension ChatMessagesViewController {
                 return
             }
             
-            self?.botClient.getMessages(after: messageId, direction: 1, success: { (responseObj) in
+            self?.botClient?.getMessages(after: messageId, direction: 1, success: { (responseObj) in
                 if let responseObject = responseObj as? [String: Any]{
                     if let messages = responseObject["messages"] as? Array<[String: Any]> {
                         self?.insertOrUpdateHistoryMessages(messages)
@@ -3459,24 +3455,20 @@ extension ChatMessagesViewController{
     
     public func subscribeNotifications(){
         if let deviceToken = SDKConfiguration.botConfig.deviceToken{
-            if self.botClient != nil {
-                self.botClient.subscribeToNotifications(deviceToken) { succes in
-                    print("subscribe Notifications")
-                } failure: { error in
-                    print("subscribe Notifications : \(error)")
-                }
+            self.botClient?.subscribeToNotifications(deviceToken) { succes in
+                print("subscribe Notifications")
+            } failure: { error in
+                print("subscribe Notifications : \(error)")
             }
             
         }
     }
     public func unsubscribeNotifications(){
         if let deviceToken = SDKConfiguration.botConfig.deviceToken{
-            if self.botClient != nil {
-                self.botClient.unsubscribeToNotifications(deviceToken) { succes in
-                    print("unsubscribe Notifications")
-                } failure: { error in
-                    print("unsubscribe Notifications: \(error)")
-                }
+            self.botClient?.unsubscribeToNotifications(deviceToken) { succes in
+                print("unsubscribe Notifications")
+            } failure: { error in
+                print("unsubscribe Notifications: \(error)")
             }
         }
     }
@@ -4016,13 +4008,13 @@ extension ChatMessagesViewController {
             self.closeAndMinimizeEvent(dic)
         }
         if isAgentConnect{
-            self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
+            self.botClient?.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
                 isAgentConnect = false
                 self.botClosed()
             }
         }else{
-            self.botClient.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
+            self.botClient?.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
                 isAgentConnect = false
                 self.botClosed()
@@ -4039,7 +4031,7 @@ extension ChatMessagesViewController {
         if self.closeAndMinimizeEvent != nil{
             self.closeAndMinimizeEvent(dic)
         }
-        self.botClient.sendEventToAgentChat(eventName: minimize_Button_EventName,messageId: "")
+        self.botClient?.sendEventToAgentChat(eventName: minimize_Button_EventName,messageId: "")
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
             self.botClosed()
         }
