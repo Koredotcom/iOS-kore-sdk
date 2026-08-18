@@ -1238,7 +1238,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                         }
                         self.establishBotConnection()
                     }
-                    if !isReconnectionBySdk{
+                    if isReconnectionBySdk{
                         if isAgentConnect{
                             Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (_) in
                                 self.stopLoader()
@@ -1290,7 +1290,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                                 self.establishBotConnection()
                             }
                         }
-                        if !isReconnectionBySdk{
+                        if isReconnectionBySdk{
                             self.stopLoader()
                         }
                     }
