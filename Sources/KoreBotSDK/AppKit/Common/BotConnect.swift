@@ -55,10 +55,10 @@ open class BotConnect: NSObject {
     public var agentImage: UIImage? = nil
     public var agentImageUrlString: String? = nil
     public var default_Notifications = true
-    public var sendFailedMsgTitle = "Sending failed." // Message displayed when sending fails
-    public var resendMsgBtnTitle = "Resend" // Resend button title
-    public var orTitle = "or" // Separator between resend and delete actions
-    public var deleteMsgTitle = "Delete" // Delete button title
+    public var sendFailedMsgTitle = "" // Message displayed when sending fails; empty uses Localizable
+    public var resendMsgBtnTitle = "" // Resend button title; empty uses Localizable
+    public var orTitle = "" // Separator between resend and delete; empty uses Localizable
+    public var deleteMsgTitle = "" // Delete button title; empty uses Localizable
     // MARK: - init
     public override init() {
         super.init()
@@ -152,10 +152,6 @@ open class BotConnect: NSObject {
         agent_Image = agentImage
         agent_Image_UrlString = agentImageUrlString
         default_notifications = default_Notifications
-        sendFailedMsg_Title = sendFailedMsgTitle
-        resendMsgBtn_Title = resendMsgBtnTitle
-        or_Title = orTitle
-        deleteMsg_Title = deleteMsgTitle
         if setBubbleDateFormat.contains("y") ||
             setBubbleDateFormat.contains("M") ||
             setBubbleDateFormat.contains("d") {
@@ -372,23 +368,58 @@ open class BotConnect: NSObject {
         
         if videoDownload_AlertTitle != ""{
             videoDownloadAlertTitle = videoDownload_AlertTitle
+        }else{
+            videoDownloadAlertTitle = bundle.localizedString(forKey: "videoDownloadAlertTitle", value: videoDownloadAlertTitle, table: nil)
         }
         
         if fileDownloading_ToastMsg != ""{
             fileDownloadingToastMsg = fileDownloading_ToastMsg
+        }else{
+            fileDownloadingToastMsg = bundle.localizedString(forKey: "fileDownloadingToastMsg", value: fileDownloadingToastMsg, table: nil)
         }
         
         if fileSavedSuccessfully_ToastMsg != ""{
             fileSavedSuccessfullyToastMsg = fileSavedSuccessfully_ToastMsg
+        }else{
+            fileSavedSuccessfullyToastMsg = bundle.localizedString(forKey: "fileSavedSuccessfullyToastMsg", value: fileSavedSuccessfullyToastMsg, table: nil)
         }
         
         if videoDownload_AlertCancelTitle != ""{
             videoDownloadAlertCancelTitle = videoDownload_AlertCancelTitle
+        }else{
+            videoDownloadAlertCancelTitle = bundle.localizedString(forKey: "videoDownloadAlertCancelTitle", value: videoDownloadAlertCancelTitle, table: nil)
         }
         if vileDownloadFailed_ToastMsg != ""{
             vileDownloadFailedToastMsg = vileDownloadFailed_ToastMsg
+        }else{
+            vileDownloadFailedToastMsg = bundle.localizedString(forKey: "fileDownloadFailedToastMsg", value: vileDownloadFailedToastMsg, table: nil)
         }
         
+        copiedMsg = bundle.localizedString(forKey: "copiedMsg", value: copiedMsg, table: nil)
+        
+        if sendFailedMsgTitle != "" {
+            sendFailedMsg_Title = sendFailedMsgTitle
+        } else {
+            sendFailedMsg_Title = bundle.localizedString(forKey: "sendFailedMsgTitle", value: "Sending failed.", table: nil)
+        }
+        
+        if resendMsgBtnTitle != "" {
+            resendMsgBtn_Title = resendMsgBtnTitle
+        } else {
+            resendMsgBtn_Title = bundle.localizedString(forKey: "resendMsgBtnTitle", value: "Resend", table: nil)
+        }
+        
+        if orTitle != "" {
+            or_Title = orTitle
+        } else {
+            or_Title = bundle.localizedString(forKey: "orTitle", value: "or", table: nil)
+        }
+        
+        if deleteMsgTitle != "" {
+            deleteMsg_Title = deleteMsgTitle
+        } else {
+            deleteMsg_Title = bundle.localizedString(forKey: "deleteMsgTitle", value: "Delete", table: nil)
+        }
     }
     
     @available(*, deprecated, message: "Please use addCustomTemplates(numbersOfViews:[BubbleView], customerTemplaateTypes:[String])")

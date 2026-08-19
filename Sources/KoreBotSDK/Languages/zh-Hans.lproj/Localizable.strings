@@ -6,14 +6,24 @@
   Copyright © 2019 Rakesh Kumar. All rights reserved.
 */
 
-"composeBarPlaceholder" = "Message...";
-"tapToSpeak" = "Tap to speak";
-"closeOrMinimizeMsg" = "Would you like to close the conversation or minimize.";
-"closeMsg" = "Close";
-"minimizeMsg" = "Minimize";
-"cancelMsg" = "Cancel";
-"alertOk" = "OK";
-"leftMenuTitle" = "Menu";
-"confirm" = "Confirm";
-"pleaseTryAgain" = "Please try again";
-"sessionExpiryMsg" = "Your session has expired. Please try again";
+"composeBarPlaceholder" = "消息...";
+"tapToSpeak" = "点击说话";
+"closeOrMinimizeMsg" = "您想关闭对话还是最小化？";
+"closeMsg" = "关闭";
+"minimizeMsg" = "最小化";
+"cancelMsg" = "取消";
+"alertOk" = "确定";
+"leftMenuTitle" = "菜单";
+"confirm" = "确认";
+"pleaseTryAgain" = "请重试";
+"sessionExpiryMsg" = "您的会话已过期。请重试";
+"videoDownloadAlertTitle" = "下载";
+"fileDownloadingToastMsg" = "正在下载...";
+"fileSavedSuccessfullyToastMsg" = "已成功保存到文件";
+"videoDownloadAlertCancelTitle" = "取消";
+"fileDownloadFailedToastMsg" = "下载失败！";
+"copiedMsg" = "已复制";
+"sendFailedMsgTitle" = "发送失败。";
+"resendMsgBtnTitle" = "重新发送";
+"orTitle" = "或";
+"deleteMsgTitle" = "删除";

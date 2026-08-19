@@ -2232,7 +2232,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     @objc func showActivityViewController(notification:Notification){
         let dataString: String = notification.object as? String ?? ""
         if dataString == "Copy"{
-            self.toastMessage("Copied")
+            self.toastMessage(copiedMsg)
         }else{
             let activityItem: [Any] = [downloadFileURL as? Any, downloadImage as? Any]
             let activityViewController = UIActivityViewController(activityItems: activityItem, applicationActivities: nil)

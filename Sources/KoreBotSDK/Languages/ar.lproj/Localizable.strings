@@ -6,14 +6,24 @@
   Copyright © 2019 Rakesh Kumar. All rights reserved.
 */
 
-"composeBarPlaceholder" = "Message...";
-"tapToSpeak" = "Tap to speak";
-"closeOrMinimizeMsg" = "Would you like to close the conversation or minimize.";
-"closeMsg" = "Close";
-"minimizeMsg" = "Minimize";
-"cancelMsg" = "Cancel";
-"alertOk" = "OK";
-"leftMenuTitle" = "Menu";
-"confirm" = "Confirm";
-"pleaseTryAgain" = "Please try again";
-"sessionExpiryMsg" = "Your session has expired. Please try again";
+"composeBarPlaceholder" = "رسالة...";
+"tapToSpeak" = "اضغط للتحدث";
+"closeOrMinimizeMsg" = "هل تريد إغلاق المحادثة أم تصغيرها؟";
+"closeMsg" = "إغلاق";
+"minimizeMsg" = "تصغير";
+"cancelMsg" = "إلغاء";
+"alertOk" = "موافق";
+"leftMenuTitle" = "القائمة";
+"confirm" = "تأكيد";
+"pleaseTryAgain" = "يرجى المحاولة مرة أخرى";
+"sessionExpiryMsg" = "انتهت جلستك. يرجى المحاولة مرة أخرى";
+"videoDownloadAlertTitle" = "تنزيل";
+"fileDownloadingToastMsg" = "جارٍ التنزيل...";
+"fileSavedSuccessfullyToastMsg" = "تم الحفظ بنجاح في الملفات";
+"videoDownloadAlertCancelTitle" = "إلغاء";
+"fileDownloadFailedToastMsg" = "فشل التنزيل!";
+"copiedMsg" = "تم النسخ";
+"sendFailedMsgTitle" = "فشل الإرسال.";
+"resendMsgBtnTitle" = "إعادة الإرسال";
+"orTitle" = "أو";
+"deleteMsgTitle" = "حذف";

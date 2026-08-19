@@ -6,14 +6,24 @@
   Copyright © 2019 Rakesh Kumar. All rights reserved.
 */
 
-"composeBarPlaceholder" = "Message...";
-"tapToSpeak" = "Tap to speak";
-"closeOrMinimizeMsg" = "Would you like to close the conversation or minimize.";
-"closeMsg" = "Close";
-"minimizeMsg" = "Minimize";
-"cancelMsg" = "Cancel";
+"composeBarPlaceholder" = "Mensaje...";
+"tapToSpeak" = "Toca para hablar";
+"closeOrMinimizeMsg" = "¿Desea cerrar la conversación o minimizarla?";
+"closeMsg" = "Cerrar";
+"minimizeMsg" = "Minimizar";
+"cancelMsg" = "Cancelar";
 "alertOk" = "OK";
-"leftMenuTitle" = "Menu";
-"confirm" = "Confirm";
-"pleaseTryAgain" = "Please try again";
-"sessionExpiryMsg" = "Your session has expired. Please try again";
+"leftMenuTitle" = "Menú";
+"confirm" = "Confirmar";
+"pleaseTryAgain" = "Por favor, inténtelo de nuevo";
+"sessionExpiryMsg" = "Su sesión ha expirado. Por favor, inténtelo de nuevo";
+"videoDownloadAlertTitle" = "Descargar";
+"fileDownloadingToastMsg" = "Descargando...";
+"fileSavedSuccessfullyToastMsg" = "Guardado correctamente en Archivos";
+"videoDownloadAlertCancelTitle" = "Cancelar";
+"fileDownloadFailedToastMsg" = "Error al descargar";
+"copiedMsg" = "Copiado";
+"sendFailedMsgTitle" = "Error al enviar.";
+"resendMsgBtnTitle" = "Reenviar";
+"orTitle" = "o";
+"deleteMsgTitle" = "Eliminar";

@@ -16,4 +16,14 @@
 "leftMenuTitle" = "Menu";
 "confirm" = "Confirmer";
 "pleaseTryAgain" = "Veuillez réessayer";
-"sessionExpiryMsg" =  "Votre session a expiré. Veuillez réessayer";
+"sessionExpiryMsg" = "Votre session a expiré. Veuillez réessayer";
+"videoDownloadAlertTitle" = "Télécharger";
+"fileDownloadingToastMsg" = "Téléchargement...";
+"fileSavedSuccessfullyToastMsg" = "Enregistré avec succès dans Fichiers";
+"videoDownloadAlertCancelTitle" = "Annuler";
+"fileDownloadFailedToastMsg" = "Échec du téléchargement !";
+"copiedMsg" = "Copié";
+"sendFailedMsgTitle" = "Échec de l'envoi.";
+"resendMsgBtnTitle" = "Renvoyer";
+"orTitle" = "ou";
+"deleteMsgTitle" = "Supprimer";

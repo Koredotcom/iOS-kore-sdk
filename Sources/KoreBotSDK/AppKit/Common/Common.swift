@@ -112,10 +112,10 @@ var fileSavedSuccessfullyToastMsg = "Saved successfully under Files"
 var videoDownloadAlertCancelTitle = "Cancel"
 var vileDownloadFailedToastMsg = "Download failed!"
 
-var sendFailedMsg_Title:String? = nil
-var resendMsgBtn_Title:String? = nil
-var or_Title:String? = nil
-var deleteMsg_Title:String? = nil
+var sendFailedMsg_Title: String? = "Sending failed."
+var resendMsgBtn_Title: String? = "Resend"
+var or_Title: String? = "or"
+var deleteMsg_Title: String? = "Delete"
 
 var customHeaderView: KoreCustomHeaderView? = nil
 var customHeaderViewHeight = 64.0

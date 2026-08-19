@@ -17,3 +17,13 @@
 "confirm" = "Confirm";
 "pleaseTryAgain" = "Please try again";
 "sessionExpiryMsg" = "Your session has expired. Please try again";
+"videoDownloadAlertTitle" = "Download";
+"fileDownloadingToastMsg" = "Downloading...";
+"fileSavedSuccessfullyToastMsg" = "Saved successfully under Files";
+"videoDownloadAlertCancelTitle" = "Cancel";
+"fileDownloadFailedToastMsg" = "Download failed!";
+"copiedMsg" = "Copied";
+"sendFailedMsgTitle" = "Sending failed.";
+"resendMsgBtnTitle" = "Resend";
+"orTitle" = "or";
+"deleteMsgTitle" = "Delete";
