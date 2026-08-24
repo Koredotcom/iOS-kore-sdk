@@ -5,7 +5,10 @@ Pod::Spec.new do |s|
   s.homepage = 'https://kore.ai'
   s.license = { :type => 'MIT', :file => 'LICENSE' }
   s.author = { 'Kore.ai' => 'support@kore.ai' }
-  s.source = { :path => '.' }
+  s.source = {
+    :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git',
+    :branch => 'outSystems'
+  }
   s.platform = :ios, '13.0'
   s.swift_version = '5.0'
 
