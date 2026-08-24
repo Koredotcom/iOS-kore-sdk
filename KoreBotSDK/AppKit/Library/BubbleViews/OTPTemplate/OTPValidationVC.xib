@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Gilroy-Bold.otf">
+            <string>Gilroy-Bold</string>
+        </array>
+        <array key="Gilroy-Semibold.otf">
+            <string>Gilroy-Semibold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OTPValidationVC" customModule="KoreBotSDK" customModuleProvider="target">
+            <connections>
+                <outlet property="HeadingLbl" destination="r98-0L-5yT" id="Vuh-w5-jPF"/>
+                <outlet property="bgV" destination="DeV-ZE-vlc" id="7Ql-wx-B3M"/>
+                <outlet property="cellImgBg" destination="9pv-dy-9DA" id="ck5-TH-jnE"/>
+                <outlet property="cellImgv" destination="fzV-GY-kOG" id="t0i-VP-kZZ"/>
+                <outlet property="descLbl" destination="pCX-VP-4ib" id="2aR-q3-gab"/>
+                <outlet property="didNotGetaCodeLbl" destination="JwR-IV-wG6" id="9gu-Q6-Z7c"/>
+                <outlet property="fifthTF" destination="E7f-Zy-hyV" id="ato-5K-a9a"/>
+                <outlet property="firstTF" destination="UEg-Ke-s69" id="PhS-KF-OHA"/>
+                <outlet property="foruthTF" destination="x7k-Lq-LGs" id="klv-0M-mw4"/>
+                <outlet property="mobileNoLbl" destination="I4i-g5-S6M" id="Zo3-JW-qr7"/>
+                <outlet property="notRecivedotpLbl" destination="w7V-pX-pNG" id="vJV-04-KEs"/>
+                <outlet property="reSendLbl" destination="ImU-OE-MaP" id="pYu-as-GVX"/>
+                <outlet property="resendBtn" destination="gQJ-YP-gNU" id="Kn7-dE-ZAX"/>
+                <outlet property="resendOTPBtn" destination="wfu-mB-sQt" id="pWq-VH-NhT"/>
+                <outlet property="secondTF" destination="K0n-2D-TCy" id="msM-At-8KM"/>
+                <outlet property="secondsLbl" destination="ftC-7j-fhL" id="kS5-Q2-7MP"/>
+                <outlet property="sixthTF" destination="dlV-xO-O5D" id="FGB-6T-B7j"/>
+                <outlet property="submitBtn" destination="tbt-Qh-at9" id="0wv-lw-R4K"/>
+                <outlet property="textFeildsView" destination="d67-Jr-ehF" id="6qA-IE-RA1"/>
+                <outlet property="thirdTF" destination="JDp-bG-5L5" id="V3d-MA-zck"/>
+                <outlet property="underToplineLbl" destination="Khc-Zp-YR4" id="5fQ-Ye-ZqQ"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DeV-ZE-vlc">
+                    <rect key="frame" x="0.0" y="158" width="414" height="578"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please Choose" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="r98-0L-5yT">
+                            <rect key="frame" x="24" y="46" width="322" height="29.333333333333329"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="eqZ-n3-zNS"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Gilroy-Bold" family="Gilroy" pointSize="25"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter the 6 digit code sent to your registered mobile number" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCX-VP-4ib">
+                            <rect key="frame" x="24" y="85.333333333333343" width="374" height="37.333333333333343"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="35" id="vB2-w5-tfe"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+9183*****744" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="I4i-g5-S6M">
+                            <rect key="frame" x="72" y="147.33333333333331" width="326" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="viw-40-sFl"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J0c-XY-xTR">
+                            <rect key="frame" x="354" y="8" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="Azr-Mq-uuu"/>
+                                <constraint firstAttribute="width" constant="44" id="TvW-wa-Hcf"/>
+                            </constraints>
+                            <state key="normal" image="XButtonGray20"/>
+                            <connections>
+                                <action selector="closeBtnAct:" destination="-1" eventType="touchUpInside" id="9gR-hH-nnA"/>
+                            </connections>
+                        </button>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="otpVBg" translatesAutoresizingMaskIntoConstraints="NO" id="9pv-dy-9DA">
+                            <rect key="frame" x="24" y="137.66666666666669" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="FD7-Ug-VGV"/>
+                                <constraint firstAttribute="width" constant="40" id="pVA-87-S4l"/>
+                            </constraints>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="otpMobile" translatesAutoresizingMaskIntoConstraints="NO" id="fzV-GY-kOG">
+                            <rect key="frame" x="38.666666666666664" y="148.66666666666669" width="11" height="18"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="18" id="jQN-K4-kZU"/>
+                                <constraint firstAttribute="width" constant="11" id="ybr-gI-H10"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Haven’t received your OTP ?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="w7V-pX-pNG">
+                            <rect key="frame" x="24" y="177.66666666666669" width="374" height="0.0"/>
+                            <constraints>
+                                <constraint firstAttribute="height" id="RHR-dO-e0P"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                            <color key="textColor" red="1" green="0.36862745098039218" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d67-Jr-ehF">
+                            <rect key="frame" x="0.0" y="193.66666666666669" width="364" height="45"/>
+                            <subviews>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UEg-Ke-s69">
+                                    <rect key="frame" x="24" y="5" width="40" height="40"/>
+                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="40" id="Yiv-DK-DtP"/>
+                                        <constraint firstAttribute="height" constant="40" id="cTB-ur-3yE"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="0cf-i0-8bm"/>
+                                    </connections>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="K0n-2D-TCy">
+                                    <rect key="frame" x="80" y="5" width="40" height="40"/>
+                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="40" id="oTN-AG-X1u"/>
+                                        <constraint firstAttribute="height" constant="40" id="ruN-QG-C6Z"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="pSl-h5-TFE"/>
+                                    </connections>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JDp-bG-5L5">
+                                    <rect key="frame" x="136" y="5" width="40" height="40"/>
+                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="40" id="OTM-1p-LwA"/>
+                                        <constraint firstAttribute="height" constant="40" id="vMU-Hx-L2O"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="oda-Ub-KRD"/>
+                                    </connections>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="x7k-Lq-LGs">
+                                    <rect key="frame" x="192" y="5" width="40" height="40"/>
+                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="40" id="i60-gZ-Oua"/>
+                                        <constraint firstAttribute="height" constant="40" id="neA-bC-ZG2"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="BMX-Ol-5JQ"/>
+                                    </connections>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="E7f-Zy-hyV">
+                                    <rect key="frame" x="248" y="5" width="40" height="40"/>
+                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="X1h-Ar-tp3"/>
+                                        <constraint firstAttribute="width" constant="40" id="cOE-Q8-ebK"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="wS6-uU-GoV"/>
+                                    </connections>
+                                </textField>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dlV-xO-O5D">
+                                    <rect key="frame" x="304" y="5" width="40" height="40"/>
+                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="SG2-nK-LJH"/>
+                                        <constraint firstAttribute="width" constant="40" id="fDN-L8-mfd"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="V7t-zg-mpj"/>
+                                    </connections>
+                                </textField>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="E7f-Zy-hyV" firstAttribute="leading" secondItem="x7k-Lq-LGs" secondAttribute="trailing" constant="16" id="0TV-l2-fFw"/>
+                                <constraint firstItem="UEg-Ke-s69" firstAttribute="leading" secondItem="d67-Jr-ehF" secondAttribute="leading" constant="24" id="62U-aA-AYP"/>
+                                <constraint firstItem="JDp-bG-5L5" firstAttribute="top" secondItem="d67-Jr-ehF" secondAttribute="top" constant="5" id="EQw-MH-YJT"/>
+                                <constraint firstItem="UEg-Ke-s69" firstAttribute="top" secondItem="d67-Jr-ehF" secondAttribute="top" constant="5" id="Wg3-3V-0q8"/>
+                                <constraint firstItem="K0n-2D-TCy" firstAttribute="top" secondItem="d67-Jr-ehF" secondAttribute="top" constant="5" id="Xh0-AA-PU3"/>
+                                <constraint firstAttribute="height" constant="45" id="aae-g8-7s3"/>
+                                <constraint firstItem="x7k-Lq-LGs" firstAttribute="top" secondItem="d67-Jr-ehF" secondAttribute="top" constant="5" id="bqB-tn-YcW"/>
+                                <constraint firstItem="K0n-2D-TCy" firstAttribute="leading" secondItem="UEg-Ke-s69" secondAttribute="trailing" constant="16" id="hwa-X6-9b6"/>
+                                <constraint firstItem="dlV-xO-O5D" firstAttribute="leading" secondItem="E7f-Zy-hyV" secondAttribute="trailing" constant="16" id="kl2-nd-xZl"/>
+                                <constraint firstItem="x7k-Lq-LGs" firstAttribute="leading" secondItem="JDp-bG-5L5" secondAttribute="trailing" constant="16" id="ot0-X0-LZr"/>
+                                <constraint firstItem="dlV-xO-O5D" firstAttribute="top" secondItem="d67-Jr-ehF" secondAttribute="top" constant="5" id="sOx-ON-YxE"/>
+                                <constraint firstItem="JDp-bG-5L5" firstAttribute="leading" secondItem="K0n-2D-TCy" secondAttribute="trailing" constant="16" id="yHR-vV-Wpc"/>
+                                <constraint firstItem="E7f-Zy-hyV" firstAttribute="top" secondItem="d67-Jr-ehF" secondAttribute="top" constant="5" id="zAq-Lg-xw1"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Resend possible in" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ImU-OE-MaP">
+                            <rect key="frame" x="24" y="254.66666666666669" width="122" height="22"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="122" id="6b5-3U-sWe"/>
+                                <constraint firstAttribute="height" constant="22" id="yNh-Cj-Xif"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="14"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="90 sec.  " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="ftC-7j-fhL">
+                            <rect key="frame" x="148" y="254.66666666666669" width="86" height="22"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="86" id="9GD-gg-QG5"/>
+                                <constraint firstAttribute="height" constant="22" id="DHA-uu-qnl"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="14"/>
+                            <color key="textColor" red="1" green="0.36862745098039218" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Khc-Zp-YR4">
+                            <rect key="frame" x="183" y="12" width="48" height="4"/>
+                            <color key="backgroundColor" red="0.8666666666666667" green="0.8784313725490196" blue="0.9137254901960784" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="48" id="LRi-uH-y4k"/>
+                                <constraint firstAttribute="height" constant="4" id="xzI-lz-M7S"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gQJ-YP-gNU">
+                            <rect key="frame" x="24" y="254.66666666666669" width="97" height="35"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="35" id="KSM-Nn-vUc"/>
+                                <constraint firstAttribute="width" constant="97" id="SOT-BJ-Ed5"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                            <state key="normal" title="Resend OTP">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="resendBtnAct:" destination="-1" eventType="touchUpInside" id="aAA-F4-qin"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="btH-Ig-rcM">
+                            <rect key="frame" x="24" y="248.66666666666669" width="366" height="100"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Didn't get a code?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JwR-IV-wG6">
+                                    <rect key="frame" x="0.0" y="4" width="140" height="22"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="140" id="1fz-BP-jKJ"/>
+                                        <constraint firstAttribute="height" constant="22" id="9on-m4-ytu"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wfu-mB-sQt">
+                                    <rect key="frame" x="140" y="-3" width="97" height="35"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="97" id="GSH-Ga-b6z"/>
+                                        <constraint firstAttribute="height" constant="35" id="jB5-u4-IJV"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Gilroy-Semibold" family="Gilroy" pointSize="16"/>
+                                    <state key="normal" title="Resend OTP">
+                                        <color key="titleColor" systemColor="tintColor"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="resendOTPBtnAct:" destination="-1" eventType="touchUpInside" id="Xxd-7y-HB1"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tbt-Qh-at9">
+                                    <rect key="frame" x="0.0" y="50" width="366" height="40"/>
+                                    <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="vtW-U8-5Xp"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                    <state key="normal" title="Submit">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="submitBtnAct:" destination="-1" eventType="touchUpInside" id="czI-XB-IEl"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="JwR-IV-wG6" firstAttribute="top" secondItem="btH-Ig-rcM" secondAttribute="top" constant="4" id="86S-kW-gYZ"/>
+                                <constraint firstAttribute="trailing" secondItem="tbt-Qh-at9" secondAttribute="trailing" id="QGi-yr-W9b"/>
+                                <constraint firstItem="wfu-mB-sQt" firstAttribute="top" secondItem="btH-Ig-rcM" secondAttribute="top" constant="-3" id="cX7-zY-LOa"/>
+                                <constraint firstItem="wfu-mB-sQt" firstAttribute="leading" secondItem="JwR-IV-wG6" secondAttribute="trailing" id="evz-EP-0BZ"/>
+                                <constraint firstAttribute="height" constant="100" id="fn0-bf-HFz"/>
+                                <constraint firstItem="JwR-IV-wG6" firstAttribute="leading" secondItem="btH-Ig-rcM" secondAttribute="leading" id="gUI-fb-vwb"/>
+                                <constraint firstItem="tbt-Qh-at9" firstAttribute="leading" secondItem="btH-Ig-rcM" secondAttribute="leading" id="grr-TX-z7g"/>
+                                <constraint firstAttribute="bottom" secondItem="tbt-Qh-at9" secondAttribute="bottom" constant="10" id="kMl-bS-nFD"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="ImU-OE-MaP" firstAttribute="top" secondItem="d67-Jr-ehF" secondAttribute="bottom" constant="16" id="0XB-bu-O6F"/>
+                        <constraint firstItem="r98-0L-5yT" firstAttribute="leading" secondItem="DeV-ZE-vlc" secondAttribute="leading" constant="24" id="1IR-1n-Lkm"/>
+                        <constraint firstItem="pCX-VP-4ib" firstAttribute="leading" secondItem="DeV-ZE-vlc" secondAttribute="leading" constant="24" id="30P-GJ-Pw5"/>
+                        <constraint firstItem="w7V-pX-pNG" firstAttribute="top" secondItem="9pv-dy-9DA" secondAttribute="bottom" id="4XJ-vx-xfY"/>
+                        <constraint firstItem="I4i-g5-S6M" firstAttribute="centerY" secondItem="fzV-GY-kOG" secondAttribute="centerY" id="85E-Hk-uNm"/>
+                        <constraint firstItem="d67-Jr-ehF" firstAttribute="leading" secondItem="DeV-ZE-vlc" secondAttribute="leading" id="D2j-6u-XS8"/>
+                        <constraint firstItem="9pv-dy-9DA" firstAttribute="leading" secondItem="DeV-ZE-vlc" secondAttribute="leading" constant="24" id="GVa-Y7-YrF"/>
+                        <constraint firstItem="btH-Ig-rcM" firstAttribute="leading" secondItem="DeV-ZE-vlc" secondAttribute="leading" constant="24" id="I03-lO-NNA"/>
+                        <constraint firstItem="Khc-Zp-YR4" firstAttribute="top" secondItem="DeV-ZE-vlc" secondAttribute="top" constant="12" id="K6s-9t-JMA"/>
+                        <constraint firstAttribute="trailing" secondItem="btH-Ig-rcM" secondAttribute="trailing" constant="24" id="KMl-YI-ydh"/>
+                        <constraint firstItem="J0c-XY-xTR" firstAttribute="top" secondItem="DeV-ZE-vlc" secondAttribute="top" constant="8" id="LQb-bE-PxF"/>
+                        <constraint firstItem="Khc-Zp-YR4" firstAttribute="centerX" secondItem="DeV-ZE-vlc" secondAttribute="centerX" id="Pcf-7Y-bZr"/>
+                        <constraint firstItem="I4i-g5-S6M" firstAttribute="leading" secondItem="9pv-dy-9DA" secondAttribute="trailing" constant="8" symbolic="YES" id="SXy-XL-iEz"/>
+                        <constraint firstAttribute="trailing" secondItem="w7V-pX-pNG" secondAttribute="trailing" constant="16" id="UOQ-kE-05d"/>
+                        <constraint firstAttribute="trailing" secondItem="I4i-g5-S6M" secondAttribute="trailing" constant="16" id="UUx-A3-1dB"/>
+                        <constraint firstItem="ftC-7j-fhL" firstAttribute="leading" secondItem="ImU-OE-MaP" secondAttribute="trailing" constant="2" id="V3e-qb-fva"/>
+                        <constraint firstAttribute="trailing" secondItem="d67-Jr-ehF" secondAttribute="trailing" constant="50" id="W9e-tR-GwO"/>
+                        <constraint firstItem="btH-Ig-rcM" firstAttribute="top" secondItem="d67-Jr-ehF" secondAttribute="bottom" constant="10" id="XZO-lv-br3"/>
+                        <constraint firstAttribute="trailing" secondItem="J0c-XY-xTR" secondAttribute="trailing" constant="16" id="XvA-Ao-aDa"/>
+                        <constraint firstItem="ftC-7j-fhL" firstAttribute="top" secondItem="d67-Jr-ehF" secondAttribute="bottom" constant="16" id="Xwv-Aa-j9o"/>
+                        <constraint firstAttribute="trailing" secondItem="pCX-VP-4ib" secondAttribute="trailing" constant="16" id="Zj3-6j-2Zo"/>
+                        <constraint firstItem="r98-0L-5yT" firstAttribute="top" secondItem="DeV-ZE-vlc" secondAttribute="top" constant="46" id="azR-k3-cwa"/>
+                        <constraint firstItem="9pv-dy-9DA" firstAttribute="top" secondItem="pCX-VP-4ib" secondAttribute="bottom" constant="15" id="c5S-TW-S5I"/>
+                        <constraint firstItem="J0c-XY-xTR" firstAttribute="leading" secondItem="r98-0L-5yT" secondAttribute="trailing" constant="8" symbolic="YES" id="d4k-Fq-X5Y"/>
+                        <constraint firstItem="fzV-GY-kOG" firstAttribute="centerX" secondItem="9pv-dy-9DA" secondAttribute="centerX" id="iE4-Za-h8Y"/>
+                        <constraint firstItem="w7V-pX-pNG" firstAttribute="leading" secondItem="DeV-ZE-vlc" secondAttribute="leading" constant="24" id="og9-pG-FON"/>
+                        <constraint firstItem="d67-Jr-ehF" firstAttribute="top" secondItem="w7V-pX-pNG" secondAttribute="bottom" constant="16" id="pQA-Ic-W9J"/>
+                        <constraint firstItem="ImU-OE-MaP" firstAttribute="leading" secondItem="DeV-ZE-vlc" secondAttribute="leading" constant="24" id="ppC-so-D2S"/>
+                        <constraint firstItem="gQJ-YP-gNU" firstAttribute="top" secondItem="d67-Jr-ehF" secondAttribute="bottom" constant="16" id="sh6-MC-lO8"/>
+                        <constraint firstItem="fzV-GY-kOG" firstAttribute="centerY" secondItem="9pv-dy-9DA" secondAttribute="centerY" id="t63-rC-UdE"/>
+                        <constraint firstItem="pCX-VP-4ib" firstAttribute="top" secondItem="r98-0L-5yT" secondAttribute="bottom" constant="10" id="xY4-pZ-WYu"/>
+                        <constraint firstItem="gQJ-YP-gNU" firstAttribute="leading" secondItem="DeV-ZE-vlc" secondAttribute="leading" constant="24" id="ypp-p5-VDY"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" white="0.0" alpha="0.20079730308219179" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="DeV-ZE-vlc" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="BVB-iJ-iBx"/>
+                <constraint firstItem="DeV-ZE-vlc" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="138" id="Rrf-ml-Wd3"/>
+                <constraint firstItem="DeV-ZE-vlc" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="leN-Gd-VEl"/>
+                <constraint firstItem="DeV-ZE-vlc" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="nWl-IY-yf0"/>
+            </constraints>
+            <point key="canvasLocation" x="137.68115942028987" y="44.836956521739133"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="XButtonGray20" width="20" height="20"/>
+        <image name="otpMobile" width="12" height="18"/>
+        <image name="otpVBg" width="40" height="40"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="tintColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

@@ -1,7 +1,0 @@
-
-module ObjcSupport {
-        header "KREAttributedLabel.h"
-        header "KRELayoutManager.h"
-        header "KREUtilities.h"
-        header "NSMutableAttributedString+KREUtils.h"
-}
