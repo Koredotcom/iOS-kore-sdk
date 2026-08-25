@@ -43,7 +43,6 @@ open class KREQuickSelectView: UIView {
         let layout = TagFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: bounds, collectionViewLayout: layout)
-        //let collectionView = UICollectionView(frame: bounds, collectionViewLayout: flowLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = UIColor.clear
         collectionView.bounces = true
@@ -53,7 +52,6 @@ open class KREQuickSelectView: UIView {
         collectionView.dataSource = self
         collectionView.delegate = self
         addSubview(collectionView)
-        collectionView.semanticContentAttribute = isKoreSDKRTL ? .forceRightToLeft : .forceLeftToRight
         
         layout.minimumInteritemSpacing = 1.0
         layout.minimumLineSpacing = 10
@@ -62,12 +60,13 @@ open class KREQuickSelectView: UIView {
         return collectionView
     }()
     lazy var flowLayout: UICollectionViewFlowLayout = {
-        let flowLayout = UICollectionViewFlowLayout()
+        // Flip horizontal axis in Arabic so the first chip starts on the right.
+        let flowLayout = RTLAwareHorizontalFlowLayout()
         flowLayout.itemSize = CGSize(width: 1.0, height: cellHeight)
         flowLayout.scrollDirection = .horizontal
         flowLayout.minimumInteritemSpacing = 13.0
         flowLayout.minimumLineSpacing = 10
-        flowLayout.sectionInset = UIEdgeInsets(top: 4.0, left: 10.0, bottom: 8.0, right: 10.0)
+        flowLayout.sectionInset = UIEdgeInsets(top: 4.0, left: 10.0, bottom: 4.0, right: 10.0)
         return flowLayout
     }()
     
@@ -84,10 +83,12 @@ open class KREQuickSelectView: UIView {
     public var words: [Word]? {
         didSet {
             selectedIndex = -1
+            applyLanguageDirection()
             collectionView.performBatchUpdates({
                 self.collectionView.reloadSections([0])
-            }) { (success) in
+            }) { (_) in
                 self.collectionView.collectionViewLayout.invalidateLayout()
+                self.scrollToLeadingEdge(animated: false)
             }
         }
     }
@@ -128,14 +129,42 @@ open class KREQuickSelectView: UIView {
         addSubview(lineView)
         backgroundColor = .clear
         collectionView.register(KRETokenCollectionViewCell.self, forCellWithReuseIdentifier: "KRETokenCollectionViewCell")
+        applyLanguageDirection()
+    }
+
+    /// Arabic (`isKoreSDKRTL`): collection starts from the right.
+    public func applyLanguageDirection() {
+        let semanticDirection: UISemanticContentAttribute =
+            isKoreSDKRTL ? .forceRightToLeft : .forceLeftToRight
+        semanticContentAttribute = semanticDirection
+        collectionView.semanticContentAttribute = semanticDirection
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+
+    /// Keep the first quick-reply chip visible at the natural leading edge (right in Arabic).
+    private func scrollToLeadingEdge(animated: Bool) {
+        guard let count = words?.count, count > 0 else { return }
+        let indexPath = IndexPath(item: 0, section: 0)
+        let position: UICollectionView.ScrollPosition =
+            isKoreSDKRTL ? .right : .left
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.collectionView.layoutIfNeeded()
+            if self.collectionView.numberOfItems(inSection: 0) > 0 {
+                self.collectionView.scrollToItem(at: indexPath, at: position, animated: animated)
+            }
+        }
     }
     
     override open func layoutSubviews() {
         super.layoutSubviews()
-        if quickRepliesIsHorizontal{
+        if quickRepliesIsHorizontal {
             collectionView.isScrollEnabled = true
             flowLayout.scrollDirection = .horizontal
-            collectionView.collectionViewLayout = flowLayout
+            if collectionView.collectionViewLayout !== flowLayout {
+                collectionView.collectionViewLayout = flowLayout
+            }
+            applyLanguageDirection()
         }
         let views = ["collectionView": collectionView, "lineView": lineView]
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[collectionView]|", options: [], metrics: nil, views: views))
@@ -241,6 +270,8 @@ extension KREQuickSelectView{
     }
 
     class TagFlowLayout: UICollectionViewFlowLayout {
+        override var flipsHorizontallyInOppositeLayoutDirection: Bool { true }
+
         override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
             guard let attributes = super.layoutAttributesForElements(in: rect) else {
                 return nil
@@ -267,4 +298,9 @@ extension KREQuickSelectView{
         }
     }
 
+}
+
+/// Horizontal quick-reply strip that starts from the trailing edge when language is Arabic.
+private final class RTLAwareHorizontalFlowLayout: UICollectionViewFlowLayout {
+    override var flipsHorizontallyInOppositeLayoutDirection: Bool { true }
 }

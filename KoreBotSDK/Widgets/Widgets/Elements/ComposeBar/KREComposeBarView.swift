@@ -85,7 +85,7 @@ open class KREComposeBarView: UIView {
         growingTextView.textView.tintColor = UIColor.lightRoyalBlue
         growingTextView.textView.textColor = UIColor.charcoalGrey
         growingTextView.textView.textAlignment = .right
-        growingTextView.maxNumberOfLines = 10
+        growingTextView.maxNumberOfLines = 4
         growingTextView.font = UIFont.textFont(ofSize: 17.0, weight: .regular)
         growingTextView.textContainerInset = UIEdgeInsets(top: 7, left: 0, bottom: 7, right: 0)
         growingTextView.animateHeightChange = true

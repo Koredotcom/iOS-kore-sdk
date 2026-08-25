@@ -54,16 +54,28 @@ class SDKConfiguration: NSObject {
         
         public static var customJWToken : String = "" //This should represent the subject for send own JWToken.
 
+        public static var useMoeJwt = true
+
+        /// Extra HTTP headers for MOE JWT requests (from Flutter `customHeaders`).
+        public static var customHeaders: [String: String] = [
+            "Content-Type": "application/json"
+        ]
+
         static var isShowChatHistory = true // Set true to Show chat history or false hide chat history.
         
         public static var deviceToken:Data? =  nil
     }
     
     struct serverConfig {
-        public static var JWT_SERVER = String(format: "http://<jwt-server-host>/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
+        public static var JWT_SERVER = "http://<jwt-server-host>"
+        public static var MOE_JWT_SERVER = "http://<jwt-server-host>"
         
         static func koreJwtUrl() -> String {
             return JWT_SERVER
+        }
+
+        static func moeJwtUrl() -> String {
+            return MOE_JWT_SERVER
         }
         
         public static var BOT_SERVER = String(format: "https://bots.kore.ai")

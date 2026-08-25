@@ -16,6 +16,9 @@ class AnswerBubbleView: BubbleView {
     let kMaxTextWidth: CGFloat = (UIScreen.main.bounds.size.width - 74.0)
     let kMinTextWidth: CGFloat = 00.0
     var titleStr: String?
+    private var aiImageView: UIImageView!
+    private var aiLabel: UILabel!
+    private var aiFooterHorizontalConstraints: [NSLayoutConstraint] = []
 
     override func applyBubbleMask() {
         //nothing to put here
@@ -71,37 +74,57 @@ class AnswerBubbleView: BubbleView {
         self.tileBgv.addSubview(self.titleLbl)
         
         let aiColor = BubbleViewRightTint
-        var imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.clipsToBounds = true
+        aiImageView = UIImageView()
+        aiImageView.translatesAutoresizingMaskIntoConstraints = false
+        aiImageView.clipsToBounds = true
         let imgV = UIImage.init(named: "Ai", in: bundle, compatibleWith: nil)
-        imageView.image = imgV?.withRenderingMode(.alwaysTemplate)
-        imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = aiColor
-        imageView.layer.cornerRadius = 14
-        imageView.contentMode = UIView.ContentMode.scaleAspectFill
-        self.tileBgv.addSubview(imageView)
+        aiImageView.image = imgV?.withRenderingMode(.alwaysTemplate)
+        aiImageView.contentMode = .scaleAspectFit
+        aiImageView.tintColor = aiColor
+        aiImageView.layer.cornerRadius = 14
+        aiImageView.contentMode = UIView.ContentMode.scaleAspectFill
+        self.tileBgv.addSubview(aiImageView)
         
         
-        var ailabel = UILabel()
-        ailabel.text = "Answered by AI"
-        ailabel.translatesAutoresizingMaskIntoConstraints = false
-        ailabel.textColor = UIColor(red: 97/255, green: 104/255, blue: 231/255, alpha: 1)
-        ailabel.textAlignment = NSTextAlignment.left
-        ailabel.font = UIFont(name: regularCustomFont, size: 10.0)
-        ailabel.clipsToBounds = true
-        ailabel.textColor = aiColor
-        tileBgv.addSubview(ailabel)
+        aiLabel = UILabel()
+        aiLabel.text = answeredByAI
+        aiLabel.translatesAutoresizingMaskIntoConstraints = false
+        aiLabel.textColor = UIColor(red: 97/255, green: 104/255, blue: 231/255, alpha: 1)
+        aiLabel.font = UIFont(name: regularCustomFont, size: 10.0)
+        aiLabel.clipsToBounds = true
+        aiLabel.textColor = aiColor
+        aiLabel.setContentHuggingPriority(.required, for: .horizontal)
+        aiLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        tileBgv.addSubview(aiLabel)
         
-        let subView: [String: UIView] = ["titleLbl": titleLbl, "imageView": imageView, "ailabel": ailabel]
-        //let metrics: [String: NSNumber] = ["textLabelMaxWidth": NSNumber(value: Float(kMaxTextWidth)), "textLabelMinWidth": NSNumber(value: Float(kMinTextWidth))]
+        let subView: [String: UIView] = ["titleLbl": titleLbl, "imageView": aiImageView, "ailabel": aiLabel]
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[titleLbl]-10-[imageView(21)]-9-|", options: [], metrics: nil, views: subView))
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[titleLbl]-10-[ailabel(21)]-9-|", options: [], metrics: nil, views: subView))
-        //self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[titleLbl(>=textLabelMinWidth,<=textLabelMaxWidth)]-16-|", options: [], metrics: metrics, views: subView))
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[titleLbl]-16-|", options: [], metrics: nil, views: subView))
-        
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[imageView(21)]-5-[ailabel]-16-|", options: [], metrics: nil, views: subView))
-        
+        applyAiFooterLayout()
+    }
+
+    private func applyAiFooterLayout() {
+        guard aiImageView != nil, aiLabel != nil, tileBgv != nil else { return }
+        NSLayoutConstraint.deactivate(aiFooterHorizontalConstraints)
+        aiFooterHorizontalConstraints.removeAll()
+
+        let subView: [String: UIView] = ["imageView": aiImageView, "ailabel": aiLabel]
+        // For Arabic: "Answered by AI" then icon, pinned to the trailing (right) edge.
+        // For LTR: icon then "Answered by AI", pinned to the leading (left) edge.
+        let format = isKoreSDKRTL
+            ? "H:|-(>=16)-[ailabel]-5-[imageView(21)]-16-|"
+            : "H:|-16-[imageView(21)]-5-[ailabel]-(>=16)-|"
+        aiLabel.textAlignment = isKoreSDKRTL ? .right : .left
+        aiLabel.text = answeredByAI
+        let constraints = NSLayoutConstraint.constraints(
+            withVisualFormat: format,
+            options: [.directionLeftToRight],
+            metrics: nil,
+            views: subView
+        )
+        tileBgv.addConstraints(constraints)
+        aiFooterHorizontalConstraints = constraints
     }
     
     
@@ -116,6 +139,7 @@ class AnswerBubbleView: BubbleView {
     }
     
     override func populateComponents() {
+        applyAiFooterLayout()
         if (components.count > 0) {
             let component: KREComponent = components[0] as! KREComponent
             

@@ -879,7 +879,19 @@ open class KABotClient: NSObject {
                 })
             }
         }else{
-            self.getJwTokenWithClientId(clientId, clientSecret: clientSecret, identity: identity, isAnonymous: isAnonymous, success: { [weak self] (jwToken) in
+            let jwtTokenCall = SDKConfiguration.botConfig.useMoeJwt
+                ? self.moeJwtTokenCall
+                : { clientId, clientSecret, identity, success, failure in
+                    self.getJwTokenWithClientId(
+                        clientId,
+                        clientSecret: clientSecret,
+                        identity: identity,
+                        isAnonymous: isAnonymous,
+                        success: success,
+                        failure: failure
+                    )
+                }
+            jwtTokenCall(clientId, clientSecret, identity, { [weak self] (jwToken) in
                 
                 let dataStoreManager: DataStoreManager = DataStoreManager.sharedManager
                 let context = dataStoreManager.coreDataManager.workerContext
@@ -920,7 +932,7 @@ open class KABotClient: NSObject {
                         }
                     })
                 }
-                }, failure: { (error) in
+                }, { (error) in
                     print(error)
                     failure?(error)
             })
@@ -974,6 +986,52 @@ open class KABotClient: NSObject {
             
         }
         
+    }
+
+    func moeJwtTokenCall(_ clientId: String!, clientSecret: String!, identity: String!, success:((_ jwToken: String?) -> Void)?, failure:((_ error: Error) -> Void)?) {
+        let urlString = SDKConfiguration.serverConfig.moeJwtUrl()
+        var headers = HTTPHeaders()
+        let configuredHeaders = SDKConfiguration.botConfig.customHeaders
+        if configuredHeaders.isEmpty {
+            headers = [
+                "Content-Type": "application/json"
+            ]
+        } else {
+            for (key, value) in configuredHeaders {
+                headers.add(name: key, value: value)
+            }
+            if headers["Content-Type"] == nil {
+                headers.add(name: "Content-Type", value: "application/json")
+            }
+        }
+        //print(configuredHeaders)
+        let parameters: [String: Any] = [
+            "identity": identity as String,
+            "clientId": clientId as String,
+            "clientSecret": clientSecret as String
+        ]
+
+        let dataRequest = sessionManager.request(
+            urlString,
+            method: .post,
+            parameters: parameters,
+            encoding: JSONEncoding.default,
+            headers: headers
+        )
+        dataRequest.validate().responseJSON { response in
+            if response.error != nil {
+                failure?(NSError(domain: "bot", code: 100, userInfo: [:]))
+                return
+            }
+
+            if let dictionary = response.value as? [String: Any],
+               let jwToken = dictionary["jwt"] as? String {
+                jwtToken = jwToken
+                success?(jwToken)
+            } else {
+                failure?(NSError(domain: "bot", code: 100, userInfo: [:]))
+            }
+        }
     }
     
     func fetachWebhookHistory(){

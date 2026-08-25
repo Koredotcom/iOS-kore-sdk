@@ -129,6 +129,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     public var closeAndMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
     var preferredLanguageChangeHandler: ((String) -> Void)?
     var quickReplyViewLeadingConstraint: NSLayoutConstraint!
+    var quickReplyViewTrailingConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var closeOrMinimizePopupContainerView: UIView!
     var closeOrMinimizePopupCardView: UIView?
@@ -430,11 +431,11 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         self.quickReplyView.textColor = textColor
         self.quickReplyView.boarderColor = textColor
         self.quickReplyView.fontName = mediumCustomFont
-        self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-40-[quickReplyView]-15-|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
         self.quickSelectContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[quickReplyView]-5-|", options:[], metrics:nil, views:["quickReplyView" : self.quickReplyView as Any]))
         
         quickReplyViewLeadingConstraint = NSLayoutConstraint(item:self.quickReplyView as Any, attribute:.leading, relatedBy:.equal, toItem:self.quickSelectContainerView, attribute:.leading, multiplier:1.0, constant:40)
-        self.quickSelectContainerView.addConstraints([quickReplyViewLeadingConstraint])
+        quickReplyViewTrailingConstraint = NSLayoutConstraint(item:self.quickSelectContainerView as Any, attribute:.trailing, relatedBy:.equal, toItem:self.quickReplyView, attribute:.trailing, multiplier:1.0, constant:15)
+        self.quickSelectContainerView.addConstraints([quickReplyViewLeadingConstraint, quickReplyViewTrailingConstraint])
         self.quickReplyView.sendQuickReplyAction = { [weak self] (text, payload) in
             if let text = text, let payload = payload {
                 self?.sendTextMessage(text, options: ["body": payload])
@@ -528,7 +529,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         
         let views: [String: Any] = ["typingStatusView" : self.typingStatusView as Any, "composeBarContainerView" : self.composeBarContainerView as Any]
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(0)-[typingStatusView]", options:[], metrics:nil, views: views)) //-20
-        self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[typingStatusView(40)][composeBarContainerView]", options:[], metrics:nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[typingStatusView(28)][composeBarContainerView]", options:[], metrics:nil, views: views))
         
     }
     
@@ -1660,11 +1661,21 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     func updateQuickSelectViewConstraints() {
         if quickRepliesIsHorizontal{
             DispatchQueue.main.async {
-                self.quickReplyView.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: true)
-                }
+                guard self.quickReplyView.collectionView.numberOfItems(inSection: 0) > 0 else { return }
+                // Arabic: pin first chip to the right edge.
+                let position: UICollectionView.ScrollPosition =
+                    isKoreSDKRTL ? .right : .left
+                self.quickReplyView.applyLanguageDirection()
+                self.quickReplyView.collectionView.scrollToItem(
+                    at: IndexPath(item: 0, section: 0),
+                    at: position,
+                    animated: false
+                )
+            }
             self.quickReplyViewLeadingConstraint.constant = 0
-            if self.quickSelectContainerHeightConstraint.constant == 60.0 {return}
-            self.quickSelectContainerHeightConstraint.constant = 60.0
+            self.quickReplyViewTrailingConstraint.constant = 0
+            if self.quickSelectContainerHeightConstraint.constant == 44.0 {return}
+            self.quickSelectContainerHeightConstraint.constant = 44.0
             UIView.animate(withDuration: 0.25, delay: 0.05, options: [], animations: {
                 self.view.layoutIfNeeded()
             }) { (Bool) in
@@ -1672,6 +1683,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             }
         }else{
             self.quickReplyViewLeadingConstraint.constant = 40
+            self.quickReplyViewTrailingConstraint.constant = 15
             let height = self.quickReplyView.collectionView.collectionViewLayout.collectionViewContentSize.height
             let maxHeight = height > 198.0 ? 198.0 : height //248.0
             self.quickReplyView.collectionView.isScrollEnabled = false
@@ -1849,8 +1861,11 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }
     
     public func growingTextView(_: KREGrowingTextView, didChangeHeight height: CGFloat) {
-        // The SDK V3 composer is intentionally fixed: 40 pt input inside
-        // a 60 pt footer. Longer text scrolls within the text view.
+        composeView?.updateGrowingTextHeight(height)
+        let animated = composeView?.growingTextView.animateHeightChange == true
+        UIView.animate(withDuration: animated ? 0.25 : 0.0) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     // MARK: TTS Functionality
@@ -3085,7 +3100,7 @@ extension ChatMessagesViewController{
             overlay.backgroundColor = UIColor(hexString: "#F8FAFC")
             overlay.isUserInteractionEnabled = true
 
-            let startupLoadingColor = UIColor(hexString: "#1B8A5A")
+            let startupLoadingColor = UIColor(hexString: "#02618D")
             let indicator = UIActivityIndicatorView(style: .large)
             indicator.color = startupLoadingColor
             indicator.hidesWhenStopped = true

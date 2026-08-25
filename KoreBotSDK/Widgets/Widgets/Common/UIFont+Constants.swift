@@ -70,19 +70,19 @@ public class KREFontLoader: NSObject {
     // MARK: - init
     override init() {
         super.init()
-        loadIBMPlexSansArabicFonts()
+        loadNotoKufiArabicFonts()
         loadLatoFonts()
         loadBebasNeueFonts()
         loadSystemSymbols()
     }
 
-    func loadIBMPlexSansArabicFonts() {
+    func loadNotoKufiArabicFonts() {
         let bundle = Bundle.sdkModule
         let fontNames = [
-            "IBMPlexSansArabic-Regular",
-            "IBMPlexSansArabic-Medium",
-            "IBMPlexSansArabic-SemiBold",
-            "IBMPlexSansArabic-Bold"
+            "NotoKufiArabic-Regular",
+            "NotoKufiArabic-Medium",
+            "NotoKufiArabic-SemiBold",
+            "NotoKufiArabic-Bold"
         ]
 
         for fontName in fontNames {
@@ -91,7 +91,12 @@ public class KREFontLoader: NSObject {
                 ?? bundle.url(
                     forResource: fontName,
                     withExtension: "ttf",
-                    subdirectory: "Widgets/Resources/Fonts/IBMPlexSansArabic"
+                    subdirectory: "Widgets/Resources/Fonts/NotoKufiArabic"
+                )
+                ?? bundle.url(
+                    forResource: fontName,
+                    withExtension: "ttf",
+                    subdirectory: "Widgets/Resources/Fonts/"
                 )
             if let fontUrl {
                 loadFontFile(from: fontUrl)

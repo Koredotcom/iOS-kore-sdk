@@ -169,6 +169,10 @@ open class KREGrowingTextView: UIScrollView {
     // MARK: - Private Functions
     
     private func setup() {
+        // Height growth is driven by ComposeBar constraints; content scrolls in the inner text view.
+        isScrollEnabled = false
+        showsVerticalScrollIndicator = false
+        showsHorizontalScrollIndicator = false
         _textView.isScrollEnabled = false
         _textView.backgroundColor = UIColor.clear
         addSubview(_placeholderLabel)
@@ -217,27 +221,50 @@ open class KREGrowingTextView: UIScrollView {
         return _frame
     }
     
+    /// Recalculate height after programmatic text changes (clear / setText).
+    open func refreshHeight() {
+        fitToScrollView()
+    }
+
     private func fitToScrollView() {
-        
         let actualTextViewSize = measureTextViewSize()
-        
-        var _frame = bounds
-        _frame.origin = CGPoint.zero
-        _frame.size.height = actualTextViewSize.height
-        if !(_textView.frame.equalTo(_frame))
-        {
-            _textView.frame = _frame
+        let shouldScroll =
+            _maxHeight > 0 && actualTextViewSize.height > _maxHeight + 0.5
+
+        // Keep the text view at the visible height once max lines are reached so UITextView can scroll.
+        var textViewFrame = bounds
+        textViewFrame.origin = .zero
+        textViewFrame.size.height = shouldScroll
+            ? _maxHeight
+            : max(actualTextViewSize.height, _minHeight)
+        if !_textView.frame.equalTo(textViewFrame) {
+            _textView.frame = textViewFrame
         }
 
-        contentSize = _frame.size
-        
+        contentSize = textViewFrame.size
+
         let oldScrollViewFrame = frame
         let newScrollViewFrame = measureFrame(actualTextViewSize)
-        
-        if newScrollViewFrame.equalTo(oldScrollViewFrame) {
-            return
+
+        if _textView.isScrollEnabled != shouldScroll {
+            _textView.isScrollEnabled = shouldScroll
         }
-        self.viewDelegate?.growingTextView(self, didChangeHeight: newScrollViewFrame.height)
+
+        if !newScrollViewFrame.equalTo(oldScrollViewFrame) {
+            viewDelegate?.growingTextView(self, didChangeHeight: newScrollViewFrame.height)
+        }
+
+        if shouldScroll {
+            scrollToCaret()
+        }
+    }
+
+    private func scrollToCaret() {
+        let selectedRange = _textView.selectedRange
+        guard selectedRange.location != NSNotFound else { return }
+        // Layout must be current before scrolling the caret into view.
+        _textView.layoutManager.ensureLayout(for: _textView.textContainer)
+        _textView.scrollRangeToVisible(selectedRange)
     }
     private func updateMinimumAndMaximumHeight() {
         _minHeight = max(simulateHeight(1), minimumHeight)

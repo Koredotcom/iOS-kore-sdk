@@ -31,6 +31,8 @@ class ComposeBarView: UIView {
     fileprivate var textViewTrailingConstraint: NSLayoutConstraint!
     fileprivate var growingTextViewHeightConstraint: NSLayoutConstraint!
     fileprivate var composeBarHeightConstraint: NSLayoutConstraint!
+    fileprivate let minimumInputHeight: CGFloat = 34.0
+    fileprivate let composeBarVerticalPadding: CGFloat = 18.0
     fileprivate(set) public var isKeyboardEnabled: Bool = false
     var isHideSpeeachToTextBtn = false
     var footerDic = FooterModel()
@@ -114,10 +116,14 @@ class ComposeBarView: UIView {
         self.growingTextView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.growingTextView)
         self.growingTextView.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .horizontal)
-        self.growingTextView.minimumHeight = 34.0
-        self.growingTextViewHeightConstraint = self.growingTextView.heightAnchor.constraint(equalToConstant: 34.0)
+        self.growingTextView.minimumHeight = minimumInputHeight
+        self.growingTextViewHeightConstraint =
+            self.growingTextView.heightAnchor.constraint(equalToConstant: minimumInputHeight)
         self.growingTextViewHeightConstraint.isActive = true
-        self.composeBarHeightConstraint = self.heightAnchor.constraint(equalToConstant: 64.0)
+        self.composeBarHeightConstraint =
+            self.heightAnchor.constraint(
+                equalToConstant: minimumInputHeight + composeBarVerticalPadding
+            )
         self.composeBarHeightConstraint.isActive = true
         
         self.applyInputCursorColor()
@@ -126,9 +132,9 @@ class ComposeBarView: UIView {
         self.growingTextView.textView.semanticContentAttribute = semanticContentAttribute
         self.growingTextView.textView.textAlignment = isKoreSDKRTL ? .right : .left
         self.growingTextView.placeholderLabel.textAlignment = isKoreSDKRTL ? .right : .left
-        self.growingTextView.maxNumberOfLines = 10
+        self.growingTextView.maxNumberOfLines = 4
         self.growingTextView.font = UIFont(name: regularCustomFont, size: 14.0) ?? UIFont.systemFont(ofSize: 14.0)
-        let inputVerticalInset = max(0.0, (34.0 - self.growingTextView.font.lineHeight) / 2.0)
+        let inputVerticalInset = max(0.0, (minimumInputHeight - self.growingTextView.font.lineHeight) / 2.0)
         self.growingTextView.textContainerInset = UIEdgeInsets(
             top: inputVerticalInset,
             left: 3.0,
@@ -317,6 +323,18 @@ class ComposeBarView: UIView {
     public func setText(_ text: String) -> Void {
         self.growingTextView.textView.text = text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         self.textDidChangeNotification(Notification(name: UITextView.textDidChangeNotification))
+        self.growingTextView.refreshHeight()
+    }
+
+    /// Grows or shrinks the compose bar to match the measured input height.
+    public func updateGrowingTextHeight(_ height: CGFloat) {
+        let inputHeight = max(minimumInputHeight, height)
+        guard abs(growingTextViewHeightConstraint.constant - inputHeight) > 0.5 else {
+            return
+        }
+        growingTextViewHeightConstraint.constant = inputHeight
+        composeBarHeightConstraint.constant = inputHeight + composeBarVerticalPadding
+        setNeedsLayout()
     }
 
     //MARK: Private methods
@@ -324,6 +342,7 @@ class ComposeBarView: UIView {
     @objc fileprivate func clearButtonAction(_ sender: AnyObject!) {
         self.growingTextView.textView.text = "";
         self.textDidChangeNotification(Notification(name: UITextView.textDidChangeNotification))
+        self.growingTextView.refreshHeight()
     }
     
     @objc fileprivate func sendButtonAction(_ sender: AnyObject!) {

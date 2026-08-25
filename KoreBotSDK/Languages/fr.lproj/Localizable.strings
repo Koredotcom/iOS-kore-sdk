@@ -17,3 +17,4 @@
 "pleaseTryAgain" = "Veuillez réessayer";
 "sessionExpiryMsg" =  "Votre session a expiré. Veuillez réessayer";
 "cancelBtnMsg" = "Annuler";
+"answeredByAI" = "Répondu par l'IA";

@@ -78,11 +78,11 @@ open class BotConnect: NSObject {
     
     func loadCustomFonts(){
         let _ = KREFontLoader.shared
-        regularCustomFont = "IBMPlexSansArabic-Regular"
-        mediumCustomFont = "IBMPlexSansArabic-Regular"
-        boldCustomFont = "IBMPlexSansArabic-Bold"
-        semiBoldCustomFont = "IBMPlexSansArabic-SemiBold"
-        italicCustomFont = "IBMPlexSansArabic-Regular"
+        regularCustomFont = "NotoKufiArabic-Regular"
+        mediumCustomFont = "NotoKufiArabic-Regular"
+        boldCustomFont = "NotoKufiArabic-Bold"
+        semiBoldCustomFont = "NotoKufiArabic-SemiBold"
+        italicCustomFont = "NotoKufiArabic-Regular"
         
         let userDefaults = UserDefaults.standard
             userDefaults.set(regularCustomFont, forKey: "Regular")
@@ -152,7 +152,7 @@ open class BotConnect: NSObject {
             botViewController.minimizeChatBotWindow()
         }
     }
-    public func initialize(_ clientId: String, clientSecret: String, botId: String, chatBotName: String, identity: String, isAnonymous: Bool, isWebhookEnabled: Bool, JWTServerUrl: String, BOTServerUrl: String, BrandingUrl: String, customData: [String: Any], queryParameters:[[String: Any]], customJWToken: String){
+    public func initialize(_ clientId: String, clientSecret: String, botId: String, chatBotName: String, identity: String, isAnonymous: Bool, isWebhookEnabled: Bool, JWTServerUrl: String, MOEJWTServerUrl: String = "", BOTServerUrl: String, BrandingUrl: String, customData: [String: Any], queryParameters:[[String: Any]], customJWToken: String, useMoeJwt: Bool = true, customHeaders: [String: String] = [:]){
         customSettings()
         SDKConfiguration.botConfig.clientId = clientId as String
         SDKConfiguration.botConfig.clientSecret = clientSecret as String
@@ -162,11 +162,16 @@ open class BotConnect: NSObject {
         SDKConfiguration.botConfig.isAnonymous =  isAnonymous as Bool
         SDKConfiguration.botConfig.isWebhookEnabled =  isWebhookEnabled as Bool
         SDKConfiguration.serverConfig.JWT_SERVER = JWTServerUrl as String
+        SDKConfiguration.serverConfig.MOE_JWT_SERVER = MOEJWTServerUrl.isEmpty ? JWTServerUrl : MOEJWTServerUrl
         SDKConfiguration.serverConfig.BOT_SERVER = BOTServerUrl as String
         SDKConfiguration.serverConfig.Branding_SERVER = BrandingUrl as String
         SDKConfiguration.botConfig.customData = customData as [String: Any]
         SDKConfiguration.botConfig.queryParameters = queryParameters as [[String: Any]]
         SDKConfiguration.botConfig.customJWToken = customJWToken
+        SDKConfiguration.botConfig.useMoeJwt = useMoeJwt
+        if !customHeaders.isEmpty {
+            SDKConfiguration.botConfig.customHeaders = customHeaders
+        }
     }
     
     public func addCustomTemplates(numbersOfViews:[BubbleView.Type], customerTemplaateTypes:[String]){
@@ -259,6 +264,8 @@ open class BotConnect: NSObject {
         }else{
             sessionExpiryMsg = bundle.localizedString(forKey: "sessionExpiryMsg", value: "", table: nil)
         }
+
+        answeredByAI = bundle.localizedString(forKey: "answeredByAI", value: "Answered by AI", table: nil)
     }
     
 }

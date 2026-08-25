@@ -53,7 +53,7 @@ open class KRETypingStatusView: UIView {
         typingImageView.heightAnchor.constraint(equalToConstant: 30.0).isActive = true
         typingImageView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0.0).isActive = true
         dancingDots.heightAnchor.constraint(equalToConstant: 12.0).isActive = true
-        dancingDots.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0.0).isActive = true
+        dancingDots.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4.0).isActive = true
         updateDotsMargin()
     }
 
@@ -71,7 +71,7 @@ open class KRETypingStatusView: UIView {
     }
     
     override open var intrinsicContentSize: CGSize {
-        return CGSize(width: UIView.noIntrinsicMetric, height: 32.0)
+        return CGSize(width: UIView.noIntrinsicMetric, height: 28.0)
     }
     
     // MARK: -

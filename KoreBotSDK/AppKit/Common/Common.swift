@@ -55,11 +55,11 @@ var calenderCloseTag = true
 var isShowComposeMenuBtn = false
 var isShowComposeAttachmentBtn = true
 
-var regularCustomFont = "IBMPlexSansArabic-Regular"
-var mediumCustomFont = "IBMPlexSansArabic-Regular"
-var boldCustomFont = "IBMPlexSansArabic-Bold"
-var semiBoldCustomFont = "IBMPlexSansArabic-SemiBold"
-var italicCustomFont = "IBMPlexSansArabic-Regular"
+var regularCustomFont = "NotoKufiArabic-Regular"
+var mediumCustomFont = "NotoKufiArabic-Regular"
+var boldCustomFont = "NotoKufiArabic-Bold"
+var semiBoldCustomFont = "NotoKufiArabic-SemiBold"
+var italicCustomFont = "NotoKufiArabic-Regular"
 
 //SDKV3
 var brandingValues = BrandingModel()
