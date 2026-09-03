@@ -27,7 +27,24 @@ class TextBubbleView : BubbleView {
     }
     let kMinTextWidth: CGFloat = 20.0
     var textLabel: KREAttributedLabel!
+    private let answeredByAIStackView = UIStackView()
+    private let answeredByAIImageView = UIImageView()
+    private let answeredByAILabel = UILabel()
+    private var answeredByAIHeightConstraint: NSLayoutConstraint?
+    private var answeredByAIWidthConstraint: NSLayoutConstraint?
+    private var answeredByAISpacingConstraint: NSLayoutConstraint?
     private var textLabelMaxWidthConstraint: NSLayoutConstraint?
+
+    /// Shows the AI attribution below incoming message text when enabled.
+    var isShowAnswerdByAi = false {
+        didSet {
+            updateAnsweredByAIView()
+        }
+    }
+
+    private var shouldShowAnsweredByAI: Bool {
+        return isShowAnswerdByAi && tailPosition == .left
+    }
     
     override func initialize() {
         super.initialize()
@@ -48,11 +65,50 @@ class TextBubbleView : BubbleView {
         }
 
         self.addSubview(self.textLabel)
-        
-        let views: [String: UIView] = ["textLabel": textLabel]
+
+        answeredByAIImageView.contentMode = .scaleAspectFit
+        answeredByAIImageView.translatesAutoresizingMaskIntoConstraints = false
+        let imageWidthConstraint = answeredByAIImageView.widthAnchor.constraint(equalToConstant: 16.0)
+        imageWidthConstraint.priority = .defaultHigh
+        imageWidthConstraint.isActive = true
+        let imageHeightConstraint = answeredByAIImageView.heightAnchor.constraint(equalToConstant: 16.0)
+        imageHeightConstraint.priority = .defaultHigh
+        imageHeightConstraint.isActive = true
+        answeredByAIImageView.setContentHuggingPriority(.required, for: .horizontal)
+        answeredByAIImageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        answeredByAIImageView.clipsToBounds = true
+        let imgV = UIImage.init(named: "Ai", in: Bundle.sdkModule, compatibleWith: nil)
+        answeredByAIImageView.image = imgV?.withRenderingMode(.alwaysTemplate)
+        answeredByAIImageView.contentMode = .scaleAspectFit
+        answeredByAIImageView.tintColor = BubbleViewRightTint
+        answeredByAIImageView.contentMode = UIView.ContentMode.scaleAspectFill
+
+        answeredByAILabel.text = answeredByAI
+        answeredByAILabel.textColor = BubbleViewRightTint
+        answeredByAILabel.font = UIFont(name: regularCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0)
+        answeredByAILabel.numberOfLines = 1
+        answeredByAILabel.translatesAutoresizingMaskIntoConstraints = false
+
+        answeredByAIStackView.axis = .horizontal
+        answeredByAIStackView.alignment = .center
+        answeredByAIStackView.spacing = 4.0
+        answeredByAIStackView.addArrangedSubview(answeredByAIImageView)
+        answeredByAIStackView.addArrangedSubview(answeredByAILabel)
+        answeredByAIStackView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(answeredByAIStackView)
+
+        let views: [String: UIView] = ["textLabel": textLabel, "answeredByAI": answeredByAIStackView]
         let metrics: [String: NSNumber] = ["textLabelMaxWidth": NSNumber(value: Float(kMaxTextWidth)), "textLabelMinWidth": NSNumber(value: Float(kMinTextWidth))]
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[textLabel]-10-|", options: [], metrics: metrics, views: views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[textLabel]", options: [], metrics: metrics, views: views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[textLabel(>=textLabelMinWidth,<=textLabelMaxWidth)]-10-|", options: [], metrics: metrics, views: views))
+        answeredByAIStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8.0).isActive = true
+        answeredByAIStackView.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -10.0).isActive = true
+        answeredByAIWidthConstraint = answeredByAIStackView.widthAnchor.constraint(equalToConstant: 0.0)
+        answeredByAISpacingConstraint = answeredByAIStackView.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 0)
+        answeredByAISpacingConstraint?.isActive = true
+        answeredByAIHeightConstraint = answeredByAIStackView.heightAnchor.constraint(equalToConstant: 0)
+        answeredByAIHeightConstraint?.isActive = true
+        self.addConstraint(answeredByAIStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10))
         // Capture the lessThanOrEqual width constraint created by VFL for dynamic updates
         for constraint in self.constraints {
             if constraint.firstItem as? UIView === self.textLabel && constraint.firstAttribute == .width && constraint.relation == .lessThanOrEqual {
@@ -60,6 +116,22 @@ class TextBubbleView : BubbleView {
                 break
             }
         }
+        updateAnsweredByAIView()
+    }
+
+    private func updateAnsweredByAIView() {
+        answeredByAIStackView.isHidden = !shouldShowAnsweredByAI
+        answeredByAIWidthConstraint?.isActive = !shouldShowAnsweredByAI
+        answeredByAIHeightConstraint?.constant = shouldShowAnsweredByAI ? 18.0 : 0.0
+        answeredByAISpacingConstraint?.constant = shouldShowAnsweredByAI ? 6.0 : 0.0
+        answeredByAILabel.text = answeredByAI
+        invalidateIntrinsicContentSize()
+        setNeedsLayout()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        isShowAnswerdByAi = false
     }
     
     func setTextColor() {
@@ -122,7 +194,9 @@ class TextBubbleView : BubbleView {
         if textSize.height < self.textLabel.font.pointSize {
             textSize.height = self.textLabel.font.pointSize
         }
-        return CGSize(width: textSize.width + 20, height: textSize.height + 20)
+        let attributionWidth = shouldShowAnsweredByAI ? 16.0 + 4.0 + answeredByAILabel.intrinsicContentSize.width : 0.0
+        let attributionHeight = shouldShowAnsweredByAI ? 24.0 : 0.0
+        return CGSize(width: max(textSize.width, attributionWidth) + 20, height: textSize.height + 20 + attributionHeight)
     }
     
     override func layoutSubviews() {

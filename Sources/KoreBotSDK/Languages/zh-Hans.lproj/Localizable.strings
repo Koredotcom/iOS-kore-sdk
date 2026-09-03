@@ -8,6 +8,7 @@
 
 "composeBarPlaceholder" = "消息...";
 "tapToSpeak" = "点击说话";
+"answeredByAI" = "由 AI 回答";
 "closeOrMinimizeMsg" = "您想关闭对话还是最小化？";
 "closeMsg" = "关闭";
 "minimizeMsg" = "最小化";

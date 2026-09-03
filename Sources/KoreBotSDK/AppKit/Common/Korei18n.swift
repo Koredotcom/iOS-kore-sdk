@@ -9,6 +9,7 @@ import Foundation
 
 var composeBarPlaceholder = "Message..."
 var tapToSpeak = "Tap to speak"
+var answeredByAI = "Answered by AI"
 var closeOrMinimizeMsg = "Would you like to close the conversation or minimize."
 var closeMsg = "Close"
 var minimizeMsg = "Minimize"

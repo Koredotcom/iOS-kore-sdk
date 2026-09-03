@@ -48,6 +48,7 @@ var botHistoryIcon:String?
 var lastMessageID:String?
 var history = true
 var isShowWelcomeMsg = true
+var isShowAnswerdByAiGlobal = false
 
 var isShowComposeMenuBtn = false
 var isIntialiseFileUpload = false
@@ -303,4 +304,3 @@ open class Utilities: NSObject {
         return .noTemplate
     }
 }
-

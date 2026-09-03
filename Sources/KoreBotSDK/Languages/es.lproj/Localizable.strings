@@ -8,6 +8,7 @@
 
 "composeBarPlaceholder" = "Mensaje...";
 "tapToSpeak" = "Toca para hablar";
+"answeredByAI" = "Respondido por IA";
 "closeOrMinimizeMsg" = "¿Desea cerrar la conversación o minimizarla?";
 "closeMsg" = "Cerrar";
 "minimizeMsg" = "Minimizar";

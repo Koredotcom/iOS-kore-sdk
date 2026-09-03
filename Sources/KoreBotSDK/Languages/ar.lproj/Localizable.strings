@@ -8,6 +8,7 @@
 
 "composeBarPlaceholder" = "رسالة...";
 "tapToSpeak" = "اضغط للتحدث";
+"answeredByAI" = "تمت الإجابة بواسطة الذكاء الاصطناعي";
 "closeOrMinimizeMsg" = "هل تريد إغلاق المحادثة أم تصغيرها؟";
 "closeMsg" = "إغلاق";
 "minimizeMsg" = "تصغير";
