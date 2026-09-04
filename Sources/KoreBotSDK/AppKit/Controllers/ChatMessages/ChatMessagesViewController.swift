@@ -2519,6 +2519,12 @@ extension ChatMessagesViewController: KABotClientDelegate {
                 self.closeAndMinimizeEvent(dic)
         }
     }
+    @objc public func botSessionEndEventAction(){
+        let dic: [String: Any] = ["event_code": "SessionEnd", "event_message": "Bot session has expired", "event_reason": 12]
+        if self.closeAndMinimizeEvent != nil{
+                self.closeAndMinimizeEvent(dic)
+        }
+    }
 }
 
 extension ChatMessagesViewController{

@@ -183,7 +183,7 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         let metrics: [String: NSNumber] = ["textLabelMaxWidth": NSNumber(value: Float(kMaxTextWidth)), "textLabelMinWidth": NSNumber(value: Float(kMinTextWidth))]
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLbl]", options: [], metrics: metrics, views: subView))
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl(>=textLabelMinWidth,<=textLabelMaxWidth)]-10-|", options: [], metrics: metrics, views: subView))
-        answeredByAIStackView.leadingAnchor.constraint(equalTo: tileBgv.leadingAnchor, constant: 10.0).isActive = true
+        answeredByAIStackView.leadingAnchor.constraint(equalTo: tileBgv.leadingAnchor, constant: 8.0).isActive = true
         answeredByAIStackView.trailingAnchor.constraint(lessThanOrEqualTo: tileBgv.trailingAnchor, constant: -10.0).isActive = true
         answeredByAIWidthConstraint = answeredByAIStackView.widthAnchor.constraint(equalToConstant: 0.0)
         answeredByAIHeightConstraint = answeredByAIStackView.heightAnchor.constraint(equalToConstant: 0.0)

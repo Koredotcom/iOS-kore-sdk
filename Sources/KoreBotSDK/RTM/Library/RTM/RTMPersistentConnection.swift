@@ -128,6 +128,8 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
                 connectionDelegate?.didReceivedUserMessage(responseObject)
             case "events":
                 connectionDelegate?.didReceivedUserMessage(responseObject)
+            case "Session_End":
+                connectionDelegate?.didReceivedUserMessage(responseObject)
             default:
                 break
             }

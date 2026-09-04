@@ -234,11 +234,15 @@ class MessageBubbleCell : UITableViewCell {
         if let textBubbleView = bubbleView as? TextBubbleView {
             // Use this message's persisted agent marker, not the current global agent state.
             textBubbleView.isAgentConnectedMessage = component.message?.iconUrl == "Agent"
-            textBubbleView.isShowAnswerdByAi = bubbleView.bubbleType == .text && isShowAnswerdByAiGlobal
+            textBubbleView.isShowAnswerdByAi = isShowAnswerdByAiGlobal
         }
         if let quickReplyWelcomeView = bubbleView as? QuickReplyWelcomeBubbleView {
             quickReplyWelcomeView.isAgentConnectedMessage = component.message?.iconUrl == "Agent"
             quickReplyWelcomeView.isShowAnswerdByAi = isShowAnswerdByAiGlobal
+        }
+        if let calendarView = bubbleView as? CalenderBubbleView {
+            calendarView.isAgentConnectedMessage = component.message?.iconUrl == "Agent"
+            calendarView.isShowAnswerdByAi = isShowAnswerdByAiGlobal
         }
     
         bubbleView.components = components as NSArray?

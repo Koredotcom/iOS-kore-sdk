@@ -24,6 +24,7 @@ class ViewController: UIViewController {
         case deepLink = 9
         case startNewSession = 10
         case connectionClosed = 11
+        case sessionExpired = 12
     }
     
     override func viewDidLoad() {
@@ -100,6 +101,9 @@ class ViewController: UIViewController {
         //MARK: All clickable text and WebView URLs should navigate through the host app.
         //        self.botConnect.sendAllDeepLink = true
         
+        //MARK: Display the AI icon and text within the text bubble view.
+        //        self.botConnect.isShowAnswerdByAi = true
+        
         // MARK: Show Bot window
         botConnect.show()
         
@@ -155,6 +159,9 @@ class ViewController: UIViewController {
                 
             case .connectionClosed:
                   print("connectionClosed")
+                
+            case .sessionExpired:
+                  print("session expired")
             }
         }
         

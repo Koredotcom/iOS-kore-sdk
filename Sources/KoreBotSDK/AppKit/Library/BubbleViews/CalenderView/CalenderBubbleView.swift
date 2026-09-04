@@ -12,8 +12,24 @@ class CalenderBubbleView: BubbleView {
     var tileBgv: UIView!
     var titleLbl: UILabel!
     var cardView: UIView!
+    private let answeredByAIStackView = UIStackView()
+    private let answeredByAIImageView = UIImageView()
+    private let answeredByAILabel = UILabel()
+    private var answeredByAIWidthConstraint: NSLayoutConstraint!
+    private var answeredByAITopConstraint: NSLayoutConstraint!
+    private var answeredByAIBottomConstraint: NSLayoutConstraint!
+    private var titleLabelBottomConstraint: NSLayoutConstraint!
+    private var answeredByAIHeightConstraint: NSLayoutConstraint!
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
     let kMinTextWidth: CGFloat = 20.0
+
+    var isShowAnswerdByAi = false {
+        didSet { updateAnsweredByAIView() }
+    }
+
+    var isAgentConnectedMessage = false {
+        didSet { updateAnsweredByAIView() }
+    }
    
     override func applyBubbleMask() {
         //nothing to put here
@@ -67,12 +83,75 @@ class CalenderBubbleView: BubbleView {
         self.titleLbl.layer.cornerRadius = 6.0
         self.titleLbl.clipsToBounds = true
         self.titleLbl.sizeToFit()
+
+        answeredByAIImageView.translatesAutoresizingMaskIntoConstraints = false
+        let imageWidthConstraint = answeredByAIImageView.widthAnchor.constraint(equalToConstant: 16.0)
+        imageWidthConstraint.priority = .defaultHigh
+        imageWidthConstraint.isActive = true
+        let imageHeightConstraint = answeredByAIImageView.heightAnchor.constraint(equalToConstant: 16.0)
+        imageHeightConstraint.priority = .defaultHigh
+        imageHeightConstraint.isActive = true
+        answeredByAIImageView.image = UIImage(named: "Ai", in: Bundle.sdkModule, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+        answeredByAIImageView.tintColor = BubbleViewRightTint
+        answeredByAIImageView.contentMode = .scaleAspectFit
+
+        answeredByAILabel.text = answeredByAI
+        answeredByAILabel.textColor = BubbleViewRightTint
+        answeredByAILabel.font = UIFont(name: regularCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0)
+        answeredByAILabel.numberOfLines = 1
+
+        answeredByAIStackView.axis = .horizontal
+        answeredByAIStackView.alignment = .center
+        answeredByAIStackView.spacing = 4.0
+        answeredByAIStackView.translatesAutoresizingMaskIntoConstraints = false
+        self.tileBgv.addSubview(answeredByAIStackView)
         
         let subView: [String: UIView] = ["titleLbl": titleLbl]
         let metrics: [String: NSNumber] = ["textLabelMaxWidth": NSNumber(value: Float(kMaxTextWidth)), "textLabelMinWidth": NSNumber(value: Float(kMinTextWidth))]
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLbl]-10-|", options: [], metrics: metrics, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLbl]", options: [], metrics: metrics, views: subView))
         self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl(>=textLabelMinWidth,<=textLabelMaxWidth)]-10-|", options: [], metrics: metrics, views: subView))
+        answeredByAIStackView.leadingAnchor.constraint(equalTo: tileBgv.leadingAnchor, constant: 8.0).isActive = true
+        answeredByAIStackView.trailingAnchor.constraint(lessThanOrEqualTo: tileBgv.trailingAnchor, constant: -10.0).isActive = true
+        answeredByAIWidthConstraint = answeredByAIStackView.widthAnchor.constraint(equalToConstant: 0.0)
+        answeredByAIHeightConstraint = answeredByAIStackView.heightAnchor.constraint(equalToConstant: 0.0)
+        answeredByAITopConstraint = answeredByAIStackView.topAnchor.constraint(equalTo: titleLbl.bottomAnchor, constant: 10.0)
+        answeredByAIBottomConstraint = answeredByAIStackView.bottomAnchor.constraint(equalTo: tileBgv.bottomAnchor, constant: -10.0)
+        titleLabelBottomConstraint = titleLbl.bottomAnchor.constraint(equalTo: tileBgv.bottomAnchor, constant: -10.0)
+        answeredByAIHeightConstraint.isActive = true
+        updateAnsweredByAIView()
         setCornerRadiousToTitleView()
+    }
+
+    private func updateAnsweredByAIView() {
+        let shouldShow = isShowAnswerdByAi && !isAgentConnectedMessage && tailPosition == .left
+
+        if shouldShow {
+            answeredByAIWidthConstraint.isActive = false
+            if answeredByAIImageView.superview == nil {
+                answeredByAIStackView.addArrangedSubview(answeredByAIImageView)
+            }
+            if answeredByAILabel.superview == nil {
+                answeredByAIStackView.addArrangedSubview(answeredByAILabel)
+            }
+            titleLabelBottomConstraint.isActive = false
+            answeredByAIHeightConstraint.constant = 18.0
+            answeredByAITopConstraint.isActive = true
+            answeredByAIBottomConstraint.isActive = true
+        } else {
+            answeredByAITopConstraint.isActive = false
+            answeredByAIBottomConstraint.isActive = false
+            answeredByAIStackView.removeArrangedSubview(answeredByAIImageView)
+            answeredByAIImageView.removeFromSuperview()
+            answeredByAIStackView.removeArrangedSubview(answeredByAILabel)
+            answeredByAILabel.removeFromSuperview()
+            answeredByAIWidthConstraint.isActive = true
+            answeredByAIHeightConstraint.constant = 0.0
+            titleLabelBottomConstraint.isActive = true
+        }
+        answeredByAIStackView.isHidden = !shouldShow
+        answeredByAILabel.text = answeredByAI
+        invalidateIntrinsicContentSize()
+        setNeedsLayout()
     }
     
     func intializeCardLayout(){
@@ -134,7 +213,8 @@ class CalenderBubbleView: BubbleView {
         if textSize.height < self.titleLbl.font.pointSize {
             textSize.height = self.titleLbl.font.pointSize
         }
-        return CGSize(width: 0.0, height: textSize.height+20)
+        let attributionHeight = (isShowAnswerdByAi && !isAgentConnectedMessage && tailPosition == .left) ? 24.0 : 0.0
+        return CGSize(width: 0.0, height: textSize.height + 20 + attributionHeight)
     }
     
     @objc fileprivate func SelectAllButtonAction(_ sender: AnyObject!) {

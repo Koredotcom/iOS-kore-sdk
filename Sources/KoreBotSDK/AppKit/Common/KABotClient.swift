@@ -23,7 +23,7 @@ public protocol KABotClientDelegate: AnyObject {
     func botConnectedSuccessfully()
     func botConnectionDidClose()
     func botConnectionDidFailWithError()
-    
+    func botSessionEndEventAction()
 }
 
 open class KABotClient: NSObject {
@@ -357,6 +357,13 @@ open class KABotClient: NSObject {
                         NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
                     }else{
                         NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
+                    }
+                }
+            }
+            if let eventsType = object["type"] as? String{
+                if eventsType == "Session_End"{
+                    DispatchQueue.main.async {
+                        self?.botSessionEndEventAction()
                     }
                 }
             }
@@ -1000,6 +1007,9 @@ open class KABotClient: NSObject {
         self.delegate?.hideTypingStatusForBot()
     }
     
+    open func botSessionEndEventAction(){
+        self.delegate?.botSessionEndEventAction()
+    }
     
     // MARK: -
     open func datastorePath() -> URL {

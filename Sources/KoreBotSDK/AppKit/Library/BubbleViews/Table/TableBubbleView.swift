@@ -284,6 +284,7 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! CustomCollectionViewCell
         cell.backgroundColor = .clear
+        cell.setSpacerCell(indexPath.section == 1)
         cell.bgView.backgroundColor = .white
         cell.textLabel.textColor = .black
         let headers = self.data.headers
@@ -466,4 +467,3 @@ class TableBubbleView: BubbleView, UICollectionViewDataSource, UICollectionViewD
         }
     }
 }
-

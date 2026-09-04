@@ -17,6 +17,7 @@ These callbacks are **not** separate delegate methods per event. They all flow t
 | `BotMinimized` | UI / lifecycle | `6` |
 | **`DeepLinkClicked`** | **In-app navigation** | **`9`** — URL/path in `event_message` |
 | **`StartNewSession`** | **Session / UI** | **`10`** — user requested a fresh conversation |
+| **`SessionEnd`** | **Session** | **`12`** — bot session has expired |
 
 ---
 
@@ -55,6 +56,10 @@ botConnect.closeOrMinimizeEvent = { eventDic in
     case "StartNewSession":
         // User tapped Start New Session in custom header — see §4.7
         botConnect.socketConnect(isReconnect: true)
+    case "SessionEnd":
+        // Bot session has expired — see §4.8
+        let message = dic["event_message"] as? String
+        let reason = dic["event_reason"] as? Int
     default:
         break
     }
@@ -113,6 +118,7 @@ Payload: `["text": "<message>"]` only. Posted from `localNotificationMethod` whe
 | `11` | `BotConnectionLost` | Bot disconnected due to socket / RTM connection failure |
 | `9` | `DeepLinkClicked` | User tapped an in-app (same-page) deeplink in a button/link template |
 | `10` | `StartNewSession` | User requested reset of the conversation and a new session |
+| `12` | `SessionEnd` | Bot session has expired |
 
 ---
 
@@ -474,6 +480,32 @@ botConnect.closeOrMinimizeEvent = { eventDic in
 
 This event is **only** emitted when a custom header is supplied and the header calls `startNewSession?()`. The default SDK header does not expose this action.
 
+### 4.8 `SessionEnd`
+
+Indicates that the bot session has expired.
+
+#### Payload
+
+| Field | Value |
+|-------|-------|
+| `event_code` | `SessionEnd` |
+| `event_message` | `"Bot session has expired"` |
+| `event_reason` | `12` |
+
+**Example payload:**
+
+```json
+{
+  "event_code": "SessionEnd",
+  "event_message": "Bot session has expired",
+  "event_reason": 12
+}
+```
+
+#### Host app guidance
+
+Handle `SessionEnd` in `BotConnect.closeOrMinimizeEvent`. Refresh the JWT or session credentials as needed, then reconnect or ask the user to start a new session.
+
 ---
 
 ## 5. Event flow diagrams
@@ -613,6 +645,7 @@ Global flags (not on `BotConnect`):
 | `NetworkReconnected` | `8` | Network reachable |
 | `DeepLinkClicked` | `9` | Same-page navigation template link |
 | `StartNewSession` | `10` | Custom header **Start New Session** → `socketDisconnect`, then host calls `socketConnect(isReconnect: true)` |
+| `SessionEnd` | `12` | Bot session has expired |
 
 ---
 
