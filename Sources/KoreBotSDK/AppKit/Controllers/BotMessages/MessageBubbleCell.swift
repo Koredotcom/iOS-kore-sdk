@@ -232,6 +232,8 @@ class MessageBubbleCell : UITableViewCell {
         }
 
         if let textBubbleView = bubbleView as? TextBubbleView {
+            // Use this message's persisted agent marker, not the current global agent state.
+            textBubbleView.isAgentConnectedMessage = component.message?.iconUrl == "Agent"
             textBubbleView.isShowAnswerdByAi = bubbleView.bubbleType == .text && isShowAnswerdByAiGlobal
         }
     

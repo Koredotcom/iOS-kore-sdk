@@ -772,6 +772,10 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             message.iconUrl = botHistoryIcon
         }
         
+        if let fromAgent = object?.fromAgent, fromAgent == true{
+            message.iconUrl = "Agent"
+        }
+        
         if (webViewController != nil) {
             webViewController.dismiss(animated: true, completion: nil)
             webViewController = nil
@@ -2357,6 +2361,12 @@ extension ChatMessagesViewController {
                     payloadObj["payload"] = jsonObject["payload"] as! [String : Any]
                     payloadObj["type"] = jsonObject["type"]
                     componentModel.payload = payloadObj
+                    if let innerPayloadObj = payloadObj["payload"] as? [String : Any]{
+                        if let templateType = innerPayloadObj["template_type"] as? String,
+                           ["SYSTEM", "live_agent", ""].contains(templateType) {
+                            botMessage.fromAgent = true
+                        }
+                    }
                 } else{
                     var payloadObj: [String: Any] = [String: Any]()
                     payloadObj["text"] = jsonString

@@ -1116,6 +1116,12 @@ open class KABotClient: NSObject {
                     payloadObj["payload"] = jsonObject["payload"] as? [String : Any]
                     payloadObj["type"] = jsonObject["type"]
                     componentModel.payload = payloadObj
+                    if let innerPayloadObj = payloadObj["payload"] as? [String : Any]{
+                        if let templateType = innerPayloadObj["template_type"] as? String,
+                           ["SYSTEM", "live_agent", ""].contains(templateType) {
+                            botMessage.fromAgent = true
+                        }
+                    }
                     if isAgentHisotryApi{
                         historyLimit += 1
                     }

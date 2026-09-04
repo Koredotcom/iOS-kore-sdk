@@ -42,8 +42,15 @@ class TextBubbleView : BubbleView {
         }
     }
 
+    /// Indicates that this particular text bubble was sent by a live agent.
+    var isAgentConnectedMessage = false {
+        didSet {
+            updateAnsweredByAIView()
+        }
+    }
+
     private var shouldShowAnsweredByAI: Bool {
-        return isShowAnswerdByAi && tailPosition == .left
+        return isShowAnswerdByAi && tailPosition == .left && !isAgentConnectedMessage
     }
     
     override func initialize() {
@@ -132,6 +139,7 @@ class TextBubbleView : BubbleView {
     override func prepareForReuse() {
         super.prepareForReuse()
         isShowAnswerdByAi = false
+        isAgentConnectedMessage = false
     }
     
     func setTextColor() {
