@@ -111,11 +111,11 @@ class TextBubbleView : BubbleView {
         answeredByAIStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8.0).isActive = true
         answeredByAIStackView.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -10.0).isActive = true
         answeredByAIWidthConstraint = answeredByAIStackView.widthAnchor.constraint(equalToConstant: 0.0)
-        answeredByAISpacingConstraint = answeredByAIStackView.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 0)
+        answeredByAISpacingConstraint = answeredByAIStackView.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 10.0)
         answeredByAISpacingConstraint?.isActive = true
         answeredByAIHeightConstraint = answeredByAIStackView.heightAnchor.constraint(equalToConstant: 0)
         answeredByAIHeightConstraint?.isActive = true
-        self.addConstraint(answeredByAIStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10))
+        self.addConstraint(answeredByAIStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -12.0))
         // Capture the lessThanOrEqual width constraint created by VFL for dynamic updates
         for constraint in self.constraints {
             if constraint.firstItem as? UIView === self.textLabel && constraint.firstAttribute == .width && constraint.relation == .lessThanOrEqual {
@@ -127,10 +127,26 @@ class TextBubbleView : BubbleView {
     }
 
     private func updateAnsweredByAIView() {
+        if shouldShowAnsweredByAI {
+            answeredByAIWidthConstraint?.isActive = false
+            if answeredByAIImageView.superview == nil {
+                answeredByAIStackView.addArrangedSubview(answeredByAIImageView)
+            }
+            if answeredByAILabel.superview == nil {
+                answeredByAIStackView.addArrangedSubview(answeredByAILabel)
+            }
+            answeredByAIHeightConstraint?.constant = 18.0
+            answeredByAISpacingConstraint?.constant = 10.0
+        } else {
+            answeredByAIStackView.removeArrangedSubview(answeredByAIImageView)
+            answeredByAIImageView.removeFromSuperview()
+            answeredByAIStackView.removeArrangedSubview(answeredByAILabel)
+            answeredByAILabel.removeFromSuperview()
+            answeredByAIWidthConstraint?.isActive = true
+            answeredByAIHeightConstraint?.constant = 0.0
+            answeredByAISpacingConstraint?.constant = 0.0
+        }
         answeredByAIStackView.isHidden = !shouldShowAnsweredByAI
-        answeredByAIWidthConstraint?.isActive = !shouldShowAnsweredByAI
-        answeredByAIHeightConstraint?.constant = shouldShowAnsweredByAI ? 18.0 : 0.0
-        answeredByAISpacingConstraint?.constant = shouldShowAnsweredByAI ? 6.0 : 0.0
         answeredByAILabel.text = answeredByAI
         invalidateIntrinsicContentSize()
         setNeedsLayout()

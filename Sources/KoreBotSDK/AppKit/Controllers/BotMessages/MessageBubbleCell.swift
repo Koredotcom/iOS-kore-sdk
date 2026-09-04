@@ -236,6 +236,10 @@ class MessageBubbleCell : UITableViewCell {
             textBubbleView.isAgentConnectedMessage = component.message?.iconUrl == "Agent"
             textBubbleView.isShowAnswerdByAi = bubbleView.bubbleType == .text && isShowAnswerdByAiGlobal
         }
+        if let quickReplyWelcomeView = bubbleView as? QuickReplyWelcomeBubbleView {
+            quickReplyWelcomeView.isAgentConnectedMessage = component.message?.iconUrl == "Agent"
+            quickReplyWelcomeView.isShowAnswerdByAi = isShowAnswerdByAiGlobal
+        }
     
         bubbleView.components = components as NSArray?
         bubbleView.translatesAutoresizingMaskIntoConstraints = false

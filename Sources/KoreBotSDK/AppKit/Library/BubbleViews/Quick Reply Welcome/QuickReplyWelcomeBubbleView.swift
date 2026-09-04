@@ -17,6 +17,14 @@ class QuickReplyWelcomeBubbleView: BubbleView {
     public var maskview: UIView!
     var tileBgv: UIView!
     var titleLbl: KREAttributedLabel!
+    private let answeredByAIStackView = UIStackView()
+    private let answeredByAIImageView = UIImageView()
+    private let answeredByAILabel = UILabel()
+    private var answeredByAIWidthConstraint: NSLayoutConstraint!
+    private var answeredByAITopConstraint: NSLayoutConstraint!
+    private var answeredByAIBottomConstraint: NSLayoutConstraint!
+    private var titleLabelBottomConstraint: NSLayoutConstraint!
+    private var answeredByAIHeightConstraint: NSLayoutConstraint!
     var tableView: UITableView!
     var cardView: UIView!
     let kMaxTextWidth: CGFloat = BubbleViewMaxWidth - 20.0
@@ -43,7 +51,19 @@ class QuickReplyWelcomeBubbleView: BubbleView {
     var isFullWidth = false
     var variation = ""
     var quickReplyView: KREQuickSelectView!
-    
+
+    var isShowAnswerdByAi = false {
+        didSet {
+            updateAnsweredByAIView()
+        }
+    }
+
+    var isAgentConnectedMessage = false {
+        didSet {
+            updateAnsweredByAIView()
+        }
+    }
+
    // public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
    // public var linkAction: ((_ text: String?) -> Void)!
     public var selectBtnState: ((_ Index: Int?) -> Void)!
@@ -115,7 +135,10 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         self.cardView.addConstraint(self.titleBgvHeightConstraint)
         self.titleBgvHeightConstraint.isActive = false
         
-        self.collectionVTopConstraint = NSLayoutConstraint(item: collectionView as Any, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0.0)
+        // This constraint is installed on cardView, so both items must belong to
+        // cardView's hierarchy. Using self here creates an invalid constraint
+        // because self is the parent of cardView, not its descendant.
+        self.collectionVTopConstraint = NSLayoutConstraint(item: collectionView as Any, attribute: .top, relatedBy: .equal, toItem: cardView, attribute: .top, multiplier: 1.0, constant: 0.0)
         self.cardView.addConstraint(self.collectionVTopConstraint)
         self.collectionVTopConstraint.isActive = false
         
@@ -133,20 +156,83 @@ class QuickReplyWelcomeBubbleView: BubbleView {
         self.titleLbl.contentMode = UIView.ContentMode.topLeft
         self.titleLbl.translatesAutoresizingMaskIntoConstraints = false
         self.tileBgv.addSubview(self.titleLbl)
+
+        answeredByAIImageView.translatesAutoresizingMaskIntoConstraints = false
+        let imageWidthConstraint = answeredByAIImageView.widthAnchor.constraint(equalToConstant: 16.0)
+        imageWidthConstraint.priority = .defaultHigh
+        imageWidthConstraint.isActive = true
+        let imageHeightConstraint = answeredByAIImageView.heightAnchor.constraint(equalToConstant: 16.0)
+        imageHeightConstraint.priority = .defaultHigh
+        imageHeightConstraint.isActive = true
+        answeredByAIImageView.image = UIImage(named: "Ai", in: Bundle.sdkModule, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+        answeredByAIImageView.tintColor = BubbleViewRightTint
+        answeredByAIImageView.contentMode = .scaleAspectFit
+
+        answeredByAILabel.text = answeredByAI
+        answeredByAILabel.textColor = BubbleViewRightTint
+        answeredByAILabel.font = UIFont(name: regularCustomFont, size: 12.0) ?? UIFont.systemFont(ofSize: 12.0)
+        answeredByAILabel.numberOfLines = 1
+
+        answeredByAIStackView.axis = .horizontal
+        answeredByAIStackView.alignment = .center
+        answeredByAIStackView.spacing = 4.0
+        answeredByAIStackView.translatesAutoresizingMaskIntoConstraints = false
+        self.tileBgv.addSubview(answeredByAIStackView)
         
         let subView: [String: UIView] = ["titleLbl": titleLbl]
         let metrics: [String: NSNumber] = ["textLabelMaxWidth": NSNumber(value: Float(kMaxTextWidth)), "textLabelMinWidth": NSNumber(value: Float(kMinTextWidth))]
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[titleLbl]-16-|", options: [], metrics: metrics, views: subView))
-        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[titleLbl(>=textLabelMinWidth,<=textLabelMaxWidth)]-16-|", options: [], metrics: metrics, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[titleLbl]", options: [], metrics: metrics, views: subView))
+        self.tileBgv.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[titleLbl(>=textLabelMinWidth,<=textLabelMaxWidth)]-10-|", options: [], metrics: metrics, views: subView))
+        answeredByAIStackView.leadingAnchor.constraint(equalTo: tileBgv.leadingAnchor, constant: 10.0).isActive = true
+        answeredByAIStackView.trailingAnchor.constraint(lessThanOrEqualTo: tileBgv.trailingAnchor, constant: -10.0).isActive = true
+        answeredByAIWidthConstraint = answeredByAIStackView.widthAnchor.constraint(equalToConstant: 0.0)
+        answeredByAIHeightConstraint = answeredByAIStackView.heightAnchor.constraint(equalToConstant: 0.0)
+        answeredByAITopConstraint = answeredByAIStackView.topAnchor.constraint(equalTo: titleLbl.bottomAnchor, constant: 10.0)
+        answeredByAIBottomConstraint = answeredByAIStackView.bottomAnchor.constraint(equalTo: tileBgv.bottomAnchor, constant: -12.0)
+        titleLabelBottomConstraint = titleLbl.bottomAnchor.constraint(equalTo: tileBgv.bottomAnchor, constant: -10.0)
+        answeredByAIHeightConstraint.isActive = true
+        updateAnsweredByAIView()
         
         if isReloadBtnLink {
-            print("yeReload")
+            //print("yeReload")
             isReloadBtnLink = false
             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
               NotificationCenter.default.post(name: Notification.Name(reloadTableNotification), object: nil)
             }
         }
         setCornerRadiousToTitleView()
+    }
+
+    private func updateAnsweredByAIView() {
+        let shouldShow = isShowAnswerdByAi && !isAgentConnectedMessage && tailPosition == .left
+
+        if shouldShow {
+            answeredByAIWidthConstraint.isActive = false
+            if answeredByAIImageView.superview == nil {
+                answeredByAIStackView.addArrangedSubview(answeredByAIImageView)
+            }
+            if answeredByAILabel.superview == nil {
+                answeredByAIStackView.addArrangedSubview(answeredByAILabel)
+            }
+            titleLabelBottomConstraint.isActive = false
+            answeredByAIHeightConstraint.constant = 18.0
+            answeredByAITopConstraint.isActive = true
+            answeredByAIBottomConstraint.isActive = true
+        } else {
+            answeredByAITopConstraint.isActive = false
+            answeredByAIBottomConstraint.isActive = false
+            answeredByAIStackView.removeArrangedSubview(answeredByAIImageView)
+            answeredByAIImageView.removeFromSuperview()
+            answeredByAIStackView.removeArrangedSubview(answeredByAILabel)
+            answeredByAILabel.removeFromSuperview()
+            answeredByAIWidthConstraint.isActive = true
+            answeredByAIHeightConstraint.constant = 0.0
+            titleLabelBottomConstraint.isActive = true
+        }
+        answeredByAIStackView.isHidden = !shouldShow
+        answeredByAILabel.text = answeredByAI
+        invalidateIntrinsicContentSize()
+        setNeedsLayout()
     }
     
     func setCornerRadiousToTitleView(){
@@ -252,12 +338,14 @@ class QuickReplyWelcomeBubbleView: BubbleView {
             self.titleBgvHeightConstraint.isActive = true
             self.collectionVTopConstraint.isActive = true
             let collectionviewHeight  = Double(self.collectionView.collectionViewLayout.collectionViewContentSize.height)
-            return CGSize(width: 0.0, height: 5 + CGFloat(collectionviewHeight))
+            let attributionHeight = (isShowAnswerdByAi && !isAgentConnectedMessage && tailPosition == .left) ? 20.0 : 0.0
+            return CGSize(width: 0.0, height: 5 + attributionHeight + CGFloat(collectionviewHeight))
         }else{
             self.titleBgvHeightConstraint.isActive = false
             self.collectionVTopConstraint.isActive = false
             let collectionviewHeight  = Double(self.collectionView.collectionViewLayout.collectionViewContentSize.height)
-            return CGSize(width: 0.0, height: textSize.height + 47 + CGFloat(collectionviewHeight))
+            let attributionHeight = (isShowAnswerdByAi && !isAgentConnectedMessage && tailPosition == .left) ? 20.0 : 0.0
+            return CGSize(width: 0.0, height: textSize.height + 44.0 + attributionHeight + CGFloat(collectionviewHeight))
         }
     }
     
