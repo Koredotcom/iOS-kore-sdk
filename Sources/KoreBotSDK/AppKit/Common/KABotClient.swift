@@ -1157,7 +1157,7 @@ open class KABotClient: NSObject {
                             }
                         }
                     }
-                    if jsonString == "Welpro" || Utilities.isBlank(jsonString){
+                    if jsonString == "Welpro" || Utilities.isBlank(jsonString) || jsonString == "TRIGGER_DIALOG_ON_INACTIVITY" || jsonString == "TRIGGERDIALOGON_INACTIVITY"{
                         removeTemplate = true
                         RemovedTemplateCount  += 1
                     }
