@@ -10,7 +10,13 @@ import UIKit
 import CoreData
 import ObjectMapper
 import Alamofire
+import os
 
+@available(iOS 14.0, *)
+private let log = Logger(
+    subsystem: Bundle.main.bundleIdentifier ?? "KoreBotApp",
+    category: "korebotplugin"
+)
 
 public protocol KABotClientDelegate: AnyObject {
     func botConnection(with connectionState: BotClientConnectionState)
@@ -962,6 +968,10 @@ open class KABotClient: NSObject {
             "typ": "JWT"
         ]
         
+        if #available(iOS 14.0, *) {
+            log.info("korebotplugin bot Info: \(SDKConfiguration.botConfig.useMoeJwt , privacy: .public),\(urlString , privacy: .public),\(identity , privacy: .public),\(clientId , privacy: .public),\(clientSecret, privacy: .public),\(SDKConfiguration.botConfig.botId, privacy: .public)")
+        }
+        
         let parameters: [String: Any] = ["clientId": clientId as String,
                                          "clientSecret": clientSecret as String,
                                          "identity": identity as String,
@@ -970,6 +980,9 @@ open class KABotClient: NSObject {
         let dataRequest = sessionManager.request(urlString, method: .post, parameters: parameters, headers: headers)
         dataRequest.validate().responseJSON { (response) in
             if let _ = response.error {
+                if #available(iOS 14.0, *) {
+                    log.info("korebotplugin Jwt Failed:\("code: 100",privacy: .public)")
+                }
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
                 return
@@ -978,8 +991,14 @@ open class KABotClient: NSObject {
             if let dictionary = response.value as? [String: Any],
                let jwToken = dictionary["jwt"] as? String {
                 jwtToken = jwToken
+                if #available(iOS 14.0, *) {
+                    log.info("korebotplugin Jwt Token: \(jwToken, privacy: .public)")
+                }
                 success?(jwToken)
             } else {
+                if #available(iOS 14.0, *) {
+                    log.info("korebotplugin Jwt Failed:\("code: 100",privacy: .public)")
+                }
                 let error: NSError = NSError(domain: "bot", code: 100, userInfo: [:])
                 failure?(error)
             }
@@ -1010,7 +1029,9 @@ open class KABotClient: NSObject {
             "clientId": clientId as String,
             "clientSecret": clientSecret as String
         ]
-
+        if #available(iOS 14.0, *) {
+            log.info("korebotplugin bot Info: \(SDKConfiguration.botConfig.useMoeJwt , privacy: .public),\(urlString , privacy: .public),\(identity , privacy: .public),\(clientId , privacy: .public),\(clientSecret, privacy: .public),\(SDKConfiguration.botConfig.botId, privacy: .public)")
+        }
         let dataRequest = sessionManager.request(
             urlString,
             method: .post,
@@ -1020,6 +1041,9 @@ open class KABotClient: NSObject {
         )
         dataRequest.validate().responseJSON { response in
             if response.error != nil {
+                if #available(iOS 14.0, *) {
+                    log.info("korebotplugin Jwt Failed:\("code: 100",privacy: .public)")
+                }
                 failure?(NSError(domain: "bot", code: 100, userInfo: [:]))
                 return
             }
@@ -1027,8 +1051,14 @@ open class KABotClient: NSObject {
             if let dictionary = response.value as? [String: Any],
                let jwToken = dictionary["jwt"] as? String {
                 jwtToken = jwToken
+                if #available(iOS 14.0, *) {
+                    log.info("korebotplugin Jwt Token: \(jwToken,privacy: .public)")
+                }
                 success?(jwToken)
             } else {
+                if #available(iOS 14.0, *) {
+                    log.info("korebotplugin Jwt Failed:\("code: 100",privacy: .public)")
+                }
                 failure?(NSError(domain: "bot", code: 100, userInfo: [:]))
             }
         }

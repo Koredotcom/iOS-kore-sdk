@@ -8,7 +8,13 @@
 
 import Foundation
 import Alamofire
+import os
 
+@available(iOS 14.0, *)
+private let log = Logger(
+    subsystem: Bundle.main.bundleIdentifier ?? "KoreBotApp",
+    category: "korebotplugin"
+)
 public enum BotClientConnectionState : Int {
     case NONE
     case CONNECTING
@@ -150,9 +156,15 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                 self?.userInfoModel = user
                 self?.intermediaryClosure?(self)
             }) { (error) in
+                if #available(iOS 14.0, *) {
+                    log.info("korebotplugin WithJwToken:\(error,privacy: .public)")
+                }
                 failure?(error)
             }
         } else {
+            if #available(iOS 14.0, *) {
+                log.info("korebotplugin WithJwToken:\("getting nil",privacy: .public)")
+            }
             failure?(nil)
         }
     }
@@ -174,6 +186,9 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             }, success: { (client) in
                 self.successClosure?(client)
             }, failure: { (error) in
+                if #available(iOS 14.0, *) {
+                    log.info("korebotplugin failed:\("RTM code: 0",privacy: .public)")
+                }
                 self.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error?._userInfo as? [String : Any]))
             })
         } else if let authInfoModel = authInfoModel, let botInfoParameters = botInfoParameters {
@@ -184,9 +199,15 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
                     self?.successClosure?(self)
                 }
                 }, failure: { [weak self] (error) in
+                    if #available(iOS 14.0, *) {
+                        log.info("korebotplugin failed:\("RTM code: 0",privacy: .public)")
+                    }
                     self?.failureClosure?(NSError(domain: "RTM", code: 0, userInfo: error._userInfo as? [String : Any]))
             })
         } else {
+            if #available(iOS 14.0, *) {
+                log.info("korebotplugin failed:\("RTM code: 0",privacy: .public)")
+            }
             failureClosure?(NSError(domain: "RTM", code: 0, userInfo: nil))
         }
     }

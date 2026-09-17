@@ -106,6 +106,10 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
                 }
             case "bot_response":
                 print("received: \(responseObject)")
+                NSLog("received Nslog: \(responseObject)")
+                if #available(iOS 14.0, *) {
+                    log.info("korebotplugin bot resposnse: \(responseObject, privacy: .public)")
+                }
                 guard let array = responseObject["message"] as? Array<[String: Any]>, array.count > 0 else {
                     return
                 }
