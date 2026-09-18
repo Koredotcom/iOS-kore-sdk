@@ -1,0 +1,30 @@
+/* 
+  Localizable.strings
+  LanguageDemo
+
+  Created by Rakesh Kumar on 01/04/19.
+  Copyright © 2019 Rakesh Kumar. All rights reserved.
+*/
+
+"composeBarPlaceholder" = "Съобщение...";
+"tapToSpeak" = "Докоснете, за да говорите";
+"answeredByAI" = "Отговорено от AI";
+"closeOrMinimizeMsg" = "Искате ли да затворите разговора или да го минимизирате?";
+"closeMsg" = "Затвори";
+"minimizeMsg" = "Минимизирай";
+"cancelMsg" = "Отказ";
+"alertOk" = "OK";
+"leftMenuTitle" = "Меню";
+"confirm" = "Потвърди";
+"pleaseTryAgain" = "Моля, опитайте отново";
+"sessionExpiryMsg" = "Сесията ви изтече. Моля, опитайте отново";
+"videoDownloadAlertTitle" = "Изтегляне";
+"fileDownloadingToastMsg" = "Изтегляне...";
+"fileSavedSuccessfullyToastMsg" = "Запазено успешно във Файлове";
+"videoDownloadAlertCancelTitle" = "Отказ";
+"fileDownloadFailedToastMsg" = "Изтеглянето не бе успешно!";
+"copiedMsg" = "Копирано";
+"sendFailedMsgTitle" = "Изпращането не бе успешно.";
+"resendMsgBtnTitle" = "Изпрати отново";
+"orTitle" = "или";
+"deleteMsgTitle" = "Изтриване";

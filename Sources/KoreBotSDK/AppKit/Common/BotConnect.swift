@@ -50,7 +50,8 @@ open class BotConnect: NSObject {
     public var isShowBackButton = true
     public var isShowTokenExpiryAlertView = false
     /// Shows "Answered by AI" below incoming text messages.
-    public var isShowAnswerdByAi = false 
+    public var isShowAnswerdByAi = false
+    public var answerdByAiTitle = ""
     public var setBubbleDateFormat = "EE, MMM dd yyyy 'at' hh:mm:ss a"  //set bubbleview dateformat
     public var reConnectionBySDK = true //Set the variable to enable or disable reconnection inside the sdk
     public var sendAllDeepLink: Bool = false //All clickable text and WebView URLs should navigate through the host app.
@@ -314,7 +315,12 @@ open class BotConnect: NSObject {
         }else{
             tapToSpeak = bundle.localizedString(forKey: "tapToSpeak", value: "", table: nil)
         }
-        answeredByAI = bundle.localizedString(forKey: "answeredByAI", value: answeredByAI, table: nil)
+        
+        if answerdByAiTitle != ""{
+            answeredByAI = answerdByAiTitle
+        }else{
+            answeredByAI = bundle.localizedString(forKey: "answeredByAI", value: answeredByAI, table: nil)
+        }
         
         if close_Or_MinimizeTitle != ""{
             closeOrMinimizeMsg = close_Or_MinimizeTitle
