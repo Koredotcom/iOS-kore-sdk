@@ -2351,7 +2351,9 @@ extension ChatMessagesViewController {
                 botMessage.createdOn = message.createdOn
                 botMessage.messageId = message.messageId
                 botMessage.type = message.type
-                
+                if let isA = message.isA {
+                    botMessage.fromAgent = isA
+                }
                 let messageModel: MessageModel = MessageModel()
                 let componentModel: ComponentModel = ComponentModel()
                 if jsonString.contains("payload"), let jsonObject: [String: Any] = Utilities.jsonObjectFromString(jsonString: jsonString) as? [String : Any] {
@@ -2364,7 +2366,7 @@ extension ChatMessagesViewController {
                     if let innerPayloadObj = payloadObj["payload"] as? [String : Any]{
                         if let templateType = innerPayloadObj["template_type"] as? String,
                            ["SYSTEM", "live_agent", ""].contains(templateType) {
-                            botMessage.fromAgent = true
+                            //botMessage.fromAgent = true
                         }
                     }
                 } else{

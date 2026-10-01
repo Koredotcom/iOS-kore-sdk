@@ -108,7 +108,7 @@ open class BotMessages: Mappable {
     open var botId: String?
     open var messageId: String?
     open var tags: Tags?
-    
+    open var isA: Bool?
     // MARK: -
     public required init?(map: Map) {
         
@@ -130,6 +130,7 @@ open class BotMessages: Mappable {
         botId <- map["botId"]
         messageId <- map["_id"]
         tags <- map["tags"]
+        isA <- map["isA"]
     }
 }
 
