@@ -1,0 +1,118 @@
+# Artemis SDK Configuration
+# Example configuration for the iOS demo app
+
+artemis_sdk:
+  environment: dev
+
+  connection:
+    project_id: "019ebab0-737a-7661-9c02-d8d416320a1c"
+    api_key: "pk_3721dc52d9b95534fa402c680387afee04b9c9b569a9c508"
+    endpoint: "https://agents-dev.kore.ai"
+
+  channel:
+    channel_id: "019eee30-53a9-7961-afb1-e9303a8c989f"
+    channel_name: "iOS Demo App"
+
+  user_context:
+    user_id: null
+    custom_attributes: {}
+
+  websocket:
+    reconnection:
+      enabled: true
+      max_attempts: 5
+      base_delay_ms: 1000
+      max_delay_ms: 30000
+      exponential_backoff: true
+    idle_disconnect:
+      enabled: false
+      timeout_ms: 900000
+      behavior: "disconnect"
+
+  voice:
+    enabled: false
+    mode: "pipeline"
+    enable_barge_in: true
+    enable_vad: true
+    sample_rate: 16000
+    channels: 1
+
+  chat:
+    max_messages_local: 10000
+    history_page_size: 200
+    max_history_pages: 20
+    enable_typing_indicator: true
+    enable_thoughts: false
+    enable_file_upload: true
+    max_file_size_mb: 10
+    allowed_file_types:
+      - "image/jpeg"
+      - "image/png"
+      - "application/pdf"
+      - "text/plain"
+
+  storage:
+    enable_message_cache: true
+    enable_offline_queue: true
+    secure_storage_key_prefix: "artemis_sdk_demo"
+    cache_ttl_days: 30
+
+  performance:
+    low_power_mode: false
+    reduced_animations: false
+    image_quality: 0.8
+    enable_pagination: true
+    prefetch_avatars: true
+
+  accessibility:
+    screen_reader_enabled: true
+    min_touch_target_size: 44.0
+    high_contrast_mode: false
+    haptic_feedback: true
+
+  theme:
+    primary_color: "#0066FF"
+    text_color: "#1A1A1A"
+    background_color: "#FFFFFF"
+    surface_color: "#F5F5F5"
+    border_radius: 12.0
+    font_family: "System"
+    dark_mode: false
+
+  debug:
+    enabled: true
+    log_level: "debug"
+    log_network_requests: true
+    log_websocket_messages: true
+    print_logs: true
+
+  features:
+    enable_rich_content: true
+    enable_markdown: true
+    enable_carousel: true
+    enable_kpi_cards: true
+    enable_forms: true
+    enable_quick_replies: true
+    enable_voice: false
+    enable_file_upload: true
+    enable_feedback: true
+    enable_activity_updates: true
+
+  localization:
+    default_locale: "en"
+    supported_locales:
+      - "en"
+      - "es"
+      - "fr"
+    fallback_locale: "en"
+
+  security:
+    enforce_tls: false
+    validate_certificates: false
+    enable_certificate_pinning: false
+    certificate_pins: []
+
+  analytics:
+    enabled: false
+    provider: null
+    track_events: []

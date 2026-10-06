@@ -1,225 +1,258 @@
-# Kore Bot SDK
-Kore offers Bots SDKs as a set of platform-specific client libraries that provide a quick and convenient way to integrate Kore Bots chat capability into custom applications.
+# Artemis Socket Plugin (Native iOS)
 
-With just few lines of code, you can embed our Kore chat widget into your applications to enable end-users to interact with your applications using Natural Language. For more information, refer to https://developer.kore.ai/docs/bots/kore-web-sdk/ 
+Native Swift SDK for the Artemis agent platform. This package is a full port of the Flutter `artemis_socket_plugin` Dart SDK, providing WebSocket chat, token management, session handling, streaming responses, history hydration, and interactive actions.
 
-# Kore Bot SDK for iOS developers
+**Requirements:** iOS 15.0+, Swift 5.9+, Xcode 15+
 
-Kore Bot SDK for iOS enables you to talk to Kore bots over a web socket. This repo also comes with the code for sample application that developers can modify according to their Bot configuration.
+## Features
 
-# Requirements
+- YAML/JSON configuration loading with validation
+- SDK token bootstrap (`POST /api/v1/sdk/init`) and refresh
+- WebSocket connection with ticket-based auth (legacy token auth fallback)
+- Session lifecycle (`session_start`, `end_session`, reconnect with exponential backoff)
+- Chat messaging with streaming (`response_start`, `response_chunk`, `response_end`)
+- Persisted history hydration via REST API
+- Interactive actions and feedback submission
+- Combine publishers and delegate-based event delivery
+- Swift Package Manager and CocoaPods distribution
 
-* Mac OS (12.0 or later)
-* Minimum Xcode version 13.3.1
-* iOS 12.0+
+## Installation
 
-# Setting up
-### Prerequisites
-* Service to generate JWT (JSON Web Tokens)- SDK uses this to send the user identity to Kore Platform.
-* SDK app credentials 
-    * Login to the Bots platform
-    * Navigate to the Bot builder
-    * Search and click on the bot 
-    * Go to channels
-    * Enable *Web / Mobile Client* channel against the bot as shown in the screen below.    
-    ![Add bot to Web/Mobile Client channel](https://github.com/Koredotcom/iOS-kore-sdk/blob/master/channels.png)
-    
-    * create new or use existing SDK app to obtain client id and client secret
-    ![Obtain Client id and Client secret](https://github.com/Koredotcom/iOS-kore-sdk/blob/master/web-mobile-client-channel.png)
+### Swift Package Manager
 
-## Instructions
+Add the package in Xcode:
 
-### Configuration changes
+1. **File → Add Package Dependencies…**
+2. Enter the repository URL or choose **Add Local…** and select this directory
+3. Add the `ArtemisSocketPlugin` library to your target
 
-* If you are using Cocoapods project Setting up clientId, clientSecret, botId, chatBotName and identity in Examples/CocoapodsDemo/KoreBotSDKDemo/ViewController.swift
+Or add to `Package.swift`:
 
-![SDKConfiguration setup](https://github.com/Koredotcom/iOS-kore-sdk/blob/master/sdk_configuration.png)
-
-(or)
-
-If you are using SPM project Setting up clientId, clientSecret, botId, chatBotName and identity in Examples/SwiftPackageManagerDemo/KoreBotSDKDemo/ViewController.swift
-
-![SDKConfiguration setup](https://github.com/Koredotcom/iOS-kore-sdk/blob/master/sdk_configuration.png)
-
-Client id - Copy this id from Bot Builder SDK Settings.
- ```
-  let clientId = "<client-id>"
- ```
-
-Client secret - copy this value from Bot Builder SDK Settings.
- ```
- let clientSecret = "<client-secret>"
- ```
-
-User identity - this should represent the subject for JWT token that could be an email or phone number in case of known user. In case of anonymous user, this can be a randomly generated unique id.
- ```
- let identity = "<user@example.com>"
- ```
-
-Bot name - copy this value from Bot Builder -> Channels -> Web/Mobile SDK config  ex. "Demo Bot"
- ```
- let chatBotName = "<bot-name>"
- ```
-
-Bot Id - copy this value from Bot Builder -> Channels -> Web/Mobile SDK config.
- ```
- let botId = "<bot-id>"
- ```
-
-BOT_SERVER URL- replace it with your server URL, if required
- ```
- let BOT_SERVER = "https://bots.kore.ai";
- ```
-
-Anonymous user - if not anonymous, assign same identity (such as email or phone number) while making a connection
- ```
- bool isAnonymous = false; 
- ```
-
-JWT_SERVER URL - specify the server URL for JWT token generation. This token is used to authorize the SDK client. Refer to documentation on how to setup the JWT server for token generation - e.g. https://jwt-token-server.example.com/
- ```
- let JWT_SERVER = "<jwt-token-server-url>";
+```swift
+dependencies: [
+    .package(path: "../artemis_socket_plugin"),
+],
+targets: [
+    .target(
+        name: "YourApp",
+        dependencies: [
+            .product(name: "ArtemisSocketPlugin", package: "artemis_socket_plugin"),
+        ]
+    ),
+]
 ```
 
-Enable the webhook channel - This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
-  ```
-  bool isWebhookEnabled = false; 
-  ```
-  
-## Running the Demo app
-#### a. Using Cocoa Pods
-    * Download or clone the repository.
-    * Run "pod install" in the Examples/CocoapodsDemo project folder.
-    * Open Examples/CocoapodsDemo/KoreBotSDKDemo.xcworkspace in Xcode.
-    * Run the KoreBotSDKDemo.app in xcode
+### CocoaPods
 
-#### b. Using SPM
-    * Download or clone the repository.
-    * Open Examples/SwiftPackageManagerDemo/KoreBotSDKDemo.xcodeproj in Xcode.
-    * Run the KoreBotSDKDemo.app in Xcode
+Add to your `Podfile`:
 
-## Integrating into your app
-#### 1. Setup KoreBotSDK
-###### a. Using SPM
-        dependencies: [
-              .package(url: "https://github.com/Koredotcom/iOS-kore-sdk", .upToNextMajor(from: "0.2.7"))
-          ]
-###### b. In your ViewController add below lines
-        1. import KoreBotSDK 
-        2. let botConnect = BotConnect() 
-        3. Add below lines in button action method
-        
-        let clientId = "<client-id>" // Copy this value from Bot Builder SDK Settings.
-        let clientSecret = "<client-secret>" // Copy this value from Bot Builder SDK Settings.
-        let botId =  "<bot-id>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client.
-        let chatBotName = "bot-name" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client.
-        let identity = "<identity-email> or <random-id>" // This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
-        let isAnonymous = true // This should be either true (in case of known-user) or false (in-case of anonymous user).
-        let isWebhookEnabled = false // This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
-        let customData : [String: Any] = [:]
-        let queryParameters: [[String: Any]] = [] //[["ConnectionMode":"Start_New_Resume_Agent"],["q2":"ios"],["q3":"1"]]
-        let customJWToken: String = ""  //This should represent the subject for send own JWToken.
-        let JWT_SERVER = String(format: "http://<jwt-server-host>/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
-        let BOT_SERVER = String(format: "https://bots.kore.ai")
-        let Branding_SERVER = String(format: "https://bots.kore.ai")
-        
-        // MARK: Set Bot Config
-        botConnect.initialize(clientId, clientSecret: clientSecret, botId: botId, chatBotName: chatBotName, identity: identity, isAnonymous: isAnonymous, isWebhookEnabled: isWebhookEnabled, JWTServerUrl: JWT_SERVER, BOTServerUrl: BOT_SERVER, BrandingUrl: Branding_SERVER, customData: customData, queryParameters: queryParameters, customJWToken: customJWToken)
-        
-        // MARK: Show Bot window
-        botConnect.show()
-        
-###### c. Add below permissions in info.plist
-        Privacy - Camera Usage Description         ---      Allow access to camera.
-        Privacy - Microphone Usage Description     ---      Allow access to microphone.
-        Privacy - Photo Library Usage Description  ---      Allow access to photo library.
-        Privacy - Speech Recognition Usage Description  --- Speech recognition will be used to determine which words you speak into this device's microphone.
+```ruby
+pod 'artemis_socket_plugin', :path => '../artemis_socket_plugin'
+```
 
-###### a. Using CocoaPods
-         Add the following to your Podfile:
-         pod 'KoreBotSDK', :git => 'https://github.com/Koredotcom/iOS-kore-sdk.git’, :branch => 'SDKV3'
-    
-         post_install do |installer|
-         installer.pods_project.targets.each do |target|
-         target.build_configurations.each do |config|
-            config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
-               end
-            end
-         end
+Then run:
 
-        Run "pod install" in your project folder.
-    
-###### b. In your ViewController add below lines
-        1. import KoreBotSDK 
-        2. let botConnect = BotConnect() 
-        3. Add below lines in button action method
-        
-        let clientId = "<client-id>" // Copy this value from Bot Builder SDK Settings.
-        let clientSecret = "<client-secret>" // Copy this value from Bot Builder SDK Settings.
-        let botId =  "<bot-id>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client.
-        let chatBotName = "bot-name" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client.
-        let identity = "<identity-email> or <random-id>" // This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
-        let isAnonymous = true // This should be either true (in case of known-user) or false (in-case of anonymous user).
-        let isWebhookEnabled = false // This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
-        let customData : [String: Any] = [:]
-        let queryParameters: [[String: Any]] = [] //[["ConnectionMode":"Start_New_Resume_Agent"],["q2":"ios"],["q3":"1"]]
-        let customJWToken: String = ""  //This should represent the subject for send own JWToken.
-        let JWT_SERVER = String(format: "http://<jwt-server-host>/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
-        let BOT_SERVER = String(format: "https://bots.kore.ai")
-        let Branding_SERVER = String(format: "https://bots.kore.ai")
-        
-        // MARK: Set Bot Config
-        botConnect.initialize(clientId, clientSecret: clientSecret, botId: botId, chatBotName: chatBotName, identity: identity, isAnonymous: isAnonymous, isWebhookEnabled: isWebhookEnabled, JWTServerUrl: JWT_SERVER, BOTServerUrl: BOT_SERVER, BrandingUrl: Branding_SERVER, customData: customData, queryParameters: queryParameters, customJWToken: customJWToken)
-        
-        // MARK: Show Bot window
-        botConnect.show()
-        
-  ###### c. Add below permissions in info.plist
-        Privacy - Camera Usage Description         ---      Allow access to camera.
-        Privacy - Microphone Usage Description     ---      Allow access to microphone.
-        Privacy - Photo Library Usage Description  ---      Allow access to photo library.
-        Privacy - Speech Recognition Usage Description  --- Speech recognition will be used to determine which words you speak into this device's microphone.
-    
+```bash
+pod install --repo-update
+```
 
-## How to integrate KoreBotSDK withoutUI
-   * Use this branch https://github.com/Koredotcom/iOS-kore-sdk/tree/KoreLibrary
-   
-## How to enable API based (webhook channel) message communication
-###### a. Enable the webhook channel by following the below link
-          https://developer.kore.ai/docs/bots/channel-enablement/adding-webhook-channel/
-          
-###### b. In your ViewController add below lines
-        1. import KoreBotSDK 
-        2. let botConnect = BotConnect() 
-        3. Add below lines in button action method
-        
-        let clientId = "<client-id>" // Copy this value from Bot Builder SDK Settings.
-        let clientSecret = "<client-secret>" // Copy this value from Bot Builder SDK Settings.
-        let botId =  "<bot-id>" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client  ex. st-acecd91f-b009-5f3f-9c15-7249186d827d
-        let chatBotName = "bot-name" // Copy this value from Bot Builder -> Channels -> Web/Mobile Client.
-        let identity = "<identity-email> or <random-id>" // This should represent the subject for JWT token. This can be an email or phone number, in case of known user, and in case of anonymous user, this can be a randomly generated unique id.
-        let isAnonymous = true // This should be either true (in case of known-user) or false (in-case of anonymous user).
-        let isWebhookEnabled = true  // This should be either true (in case of Webhook connection) or false (in-case of Socket connection).
-        let customData : [String: Any] = [:]
-        let queryParameters: [[String: Any]] = [] //[["ConnectionMode":"Start_New_Resume_Agent"],["q2":"ios"],["q3":"1"]]
-        let customJWToken: String = ""  //This should represent the subject for send own JWToken.
-        let JWT_SERVER = String(format: "http://<jwt-server-host>/") // Replace it with the actual JWT server URL, if required. Refer to developer documentation for instructions on hosting JWT Server.
-        let BOT_SERVER = String(format: "https://bots.kore.ai")
-        let Branding_SERVER = String(format: "https://bots.kore.ai")
-        
-        // MARK: Set Bot Config
-        botConnect.initialize(clientId, clientSecret: clientSecret, botId: botId, chatBotName: chatBotName, identity: identity, isAnonymous: isAnonymous, isWebhookEnabled: isWebhookEnabled, JWTServerUrl: JWT_SERVER, BOTServerUrl: BOT_SERVER, BrandingUrl: Branding_SERVER, customData: customData, queryParameters: queryParameters, customJWToken: customJWToken)
-        
-        // MARK: Show Bot window
-        botConnect.show()
-        
-        // MARK: Close Or Minimize Callbacks
-        botConnect.closeOrMinimizeEvent = { (eventDic) in
-           if let dic = eventDic {
-               print(dic)
-           }
-       }
+> **Note:** CocoaPods trunk publishes Yams up to `5.0.6`. The podspec uses `~> 5.0` to match that. SPM resolves newer Yams releases directly from GitHub.
 
-License
-----
-Copyright © Kore, Inc. MIT License; see LICENSE for further details.
+## Quick Start
+
+### 1. Add configuration
+
+Copy `sdk_configurations.yaml` into your app bundle (same format as the Flutter plugin):
+
+```yaml
+artemis_sdk:
+  environment: dev
+  connection:
+    project_id: "your-project-id"
+    api_key: "your-api-key"
+    endpoint: "https://agents-dev.kore.ai"
+  channel:
+    channel_id: "your-channel-id"
+  debug:
+    enabled: true
+    print_logs: true
+```
+
+### 2. Initialize and connect
+
+```swift
+import ArtemisSocketPlugin
+
+@MainActor
+final class ChatManager: AgentSDKDelegate {
+    private var sdk: AgentSDK?
+
+    func start() async {
+        do {
+            let sdk = try AgentSDK.initialize(fromBundle: .main)
+            sdk.delegate = self
+            self.sdk = sdk
+
+            let sessionId = try await sdk.connect()
+            print("Connected: \(sessionId)")
+        } catch {
+            print("Connection failed: \(error)")
+        }
+    }
+
+    func agentSDK(_ sdk: AgentSDK, didReceive event: SDKEvent) {
+        switch event {
+        case .connected(let sessionId):
+            print("Connected: \(sessionId)")
+        case .disconnected(let reason):
+            print("Disconnected: \(reason ?? "")")
+        case .error(let error, let code):
+            print("[\(code)] \(error)")
+        default:
+            break
+        }
+    }
+
+    func agentSDK(_ sdk: AgentSDK, didReceive chatEvent: ChatEvent) {
+        switch chatEvent {
+        case .messageReceived(let message):
+            print("\(message.role): \(message.content)")
+        case .typingIndicator(let isTyping):
+            print("Typing: \(isTyping)")
+        default:
+            break
+        }
+    }
+}
+```
+
+### 3. Send messages
+
+```swift
+let messageId = try await sdk.sendMessage("Hello, Artemis!")
+```
+
+## API Reference
+
+### AgentSDK
+
+| Method | Description |
+|--------|-------------|
+| `initialize(fromBundle:)` | Load config from app bundle YAML |
+| `initialize(from:)` | Load config from file URL |
+| `initialize(yaml:)` | Load config from YAML string |
+| `create(with:)` | Create SDK with programmatic config |
+| `connect()` | Connect and return session ID |
+| `disconnect()` | Client-initiated disconnect |
+| `endSession()` | Send `end_session` and disconnect |
+| `isConnected()` | Whether session is active |
+| `getSessionId()` | Current session ID |
+| `getWidgetConfig()` | Server-provided widget theme |
+| `sendMessage(_:metadata:attachmentIds:)` | Send chat message |
+| `submitAction(_:value:formData:renderId:)` | Submit UI action |
+| `submitFeedback(...)` | Submit message feedback |
+| `getMessages()` | Local message store |
+| `updateCustomData(_:)` | Attach data to outgoing messages |
+| `clearHistory()` | Clear local messages |
+| `dispose()` | Release resources |
+
+### Events
+
+**SDKEvent:** `connected`, `disconnected`, `reconnecting`, `error`, `idleTimeout`
+
+**ChatEvent:** `messageReceived`, `historyLoaded`, `messageStart`, `messageChunk`, `messageEnd`, `typingIndicator`, `thought`, `error`
+
+**SDKErrorCode:** `tokenInit`, `tokenRefresh`, `wsTicket`, `socketConnection`, `sessionStartTimeout`, `sendFailed`, `historyFetch`, `unknown`
+
+### Combine Publishers
+
+```swift
+sdk.sdkEvents
+    .sink { event in /* handle SDK event */ }
+    .store(in: &cancellables)
+
+sdk.chatEvents
+    .sink { event in /* handle chat event */ }
+    .store(in: &cancellables)
+```
+
+## Example App
+
+A fully functional SwiftUI example is included:
+
+```bash
+open Example/ArtemisSocketExample.xcodeproj
+```
+
+The example demonstrates:
+
+- SDK initialization from bundled YAML config
+- Connect / disconnect / end session
+- Sending messages and displaying streaming responses
+- Typing indicators and connection state
+- Custom data attachment
+- Delegate and Combine event handling
+
+### CocoaPods Example
+
+```bash
+cd Example
+pod install
+open ArtemisSocketExample.xcworkspace
+```
+
+## Project Structure
+
+```
+artemis_socket_plugin/
+├── Package.swift                    # SPM manifest
+├── artemis_socket_plugin.podspec    # CocoaPods spec
+├── Sources/ArtemisSocketPlugin/
+│   ├── AgentSDK.swift               # Public facade
+│   ├── Config/                      # Configuration models & loader
+│   ├── Core/                        # Token & session managers
+│   ├── Chat/                        # Chat client
+│   ├── Events/                      # SDK & chat events
+│   ├── Models/                      # Message, WidgetConfig
+│   ├── Transport/                   # WebSocket protocol types
+│   └── Utils/                       # Logging, helpers
+├── Tests/ArtemisSocketPluginTests/  # Unit tests
+└── Example/ArtemisSocketExample/    # Demo iOS app
+```
+
+## Connection Flow
+
+```
+1. AgentSDK.connect()
+2. TokenManager → POST /api/v1/sdk/init (or /refresh)
+3. POST /api/v1/sdk/ws-ticket → WebSocket subprotocols
+4. WebSocket connect to {wssEndpoint}/ws/sdk
+5. Wait for session_start (10s timeout)
+6. Hydrate persisted history + resend pending messages
+```
+
+## Testing
+
+```bash
+swift test
+```
+
+## Parity with Flutter Plugin
+
+This native SDK ports all runtime functionality from the Flutter plugin's Dart layer:
+
+| Flutter (Dart) | iOS (Swift) |
+|----------------|-------------|
+| `AgentSDK` | `AgentSDK` |
+| `SDKConfigurationLoader` | `SDKConfigurationLoader` |
+| `TokenManager` | `TokenManager` |
+| `SessionManager` | `SessionManager` |
+| `ChatClient` | `ChatClient` |
+| `Stream<SDKEvent>` | `sdkEvents` publisher + delegate |
+| `Stream<ChatEvent>` | `chatEvents` publisher + delegate |
+
+Configuration-only features (voice, storage, analytics) are modeled but not wired into runtime, matching the Flutter plugin behavior.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
