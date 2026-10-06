@@ -1,0 +1,7 @@
+platform :ios, '15.0'
+
+target 'ArtemisUIExample' do
+  use_frameworks!
+  pod 'artemis_socket_plugin', :path => '/Users/Kartheek.Pagidimarri/Desktop/Git Codes/artemis_Native_iOS_Code/artemis_socket_plugin'
+  pod 'artemis_ui_sdk', :path => '..'
+end

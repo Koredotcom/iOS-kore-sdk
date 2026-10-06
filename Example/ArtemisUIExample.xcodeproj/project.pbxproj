@@ -1,0 +1,277 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 60;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5736DEB2822F4D4A9B96B952 /* Pods_ArtemisUIExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C3EDB739F3CEC458E70B3D1 /* Pods_ArtemisUIExample.framework */; };
+		A10000000000000000000001 /* ArtemisUIExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000002 /* ArtemisUIExampleApp.swift */; };
+		A10000000000000000000004 /* sdk_configurations.yaml in Resources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000005 /* sdk_configurations.yaml */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1C3EDB739F3CEC458E70B3D1 /* Pods_ArtemisUIExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ArtemisUIExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6C7329F2B5CFCDB023A985A6 /* Pods-ArtemisUIExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtemisUIExample.release.xcconfig"; path = "Target Support Files/Pods-ArtemisUIExample/Pods-ArtemisUIExample.release.xcconfig"; sourceTree = "<group>"; };
+		7FD7C88512345039D441334D /* Pods-ArtemisUIExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtemisUIExample.debug.xcconfig"; path = "Target Support Files/Pods-ArtemisUIExample/Pods-ArtemisUIExample.debug.xcconfig"; sourceTree = "<group>"; };
+		A10000000000000000000002 /* ArtemisUIExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtemisUIExampleApp.swift; sourceTree = "<group>"; };
+		A10000000000000000000003 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A10000000000000000000005 /* sdk_configurations.yaml */ = {isa = PBXFileReference; lastKnownFileType = text; path = sdk_configurations.yaml; sourceTree = "<group>"; };
+		A10000000000000000000015 /* ArtemisUIExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = ArtemisUIExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A10000000000000000000022 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5736DEB2822F4D4A9B96B952 /* Pods_ArtemisUIExample.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		284969DBECB55ED7CD9BE7F3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7FD7C88512345039D441334D /* Pods-ArtemisUIExample.debug.xcconfig */,
+				6C7329F2B5CFCDB023A985A6 /* Pods-ArtemisUIExample.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000012 /* ArtemisUIExample */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000002 /* ArtemisUIExampleApp.swift */,
+				A10000000000000000000003 /* Info.plist */,
+				A10000000000000000000016 /* Resources */,
+			);
+			name = ArtemisUIExample;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000013 = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000012 /* ArtemisUIExample */,
+				A10000000000000000000014 /* Products */,
+				284969DBECB55ED7CD9BE7F3 /* Pods */,
+				AF8232F9AAC42E0D7A118EC0 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		A10000000000000000000014 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000015 /* ArtemisUIExample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000016 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000005 /* sdk_configurations.yaml */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		AF8232F9AAC42E0D7A118EC0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1C3EDB739F3CEC458E70B3D1 /* Pods_ArtemisUIExample.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A10000000000000000000030 /* ArtemisUIExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10000000000000000000040 /* Build configuration list for PBXNativeTarget "ArtemisUIExample" */;
+			buildPhases = (
+				C5ECBA536DB61907846F2B36 /* [CP] Check Pods Manifest.lock */,
+				A10000000000000000000020 /* Sources */,
+				A10000000000000000000022 /* Frameworks */,
+				A10000000000000000000021 /* Resources */,
+				4590C28ABD33A92B405E8801 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ArtemisUIExample;
+			productName = ArtemisUIExample;
+			productReference = A10000000000000000000015 /* ArtemisUIExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A10000000000000000000031 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1600;
+				ORGANIZATIONNAME = Example;
+				TargetAttributes = {
+					A10000000000000000000030 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = A10000000000000000000041 /* Build configuration list for PBXProject "ArtemisUIExample" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A10000000000000000000013;
+			productRefGroup = A10000000000000000000014 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A10000000000000000000030 /* ArtemisUIExample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A10000000000000000000021 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000004 /* sdk_configurations.yaml in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4590C28ABD33A92B405E8801 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ArtemisUIExample/Pods-ArtemisUIExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ArtemisUIExample/Pods-ArtemisUIExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ArtemisUIExample/Pods-ArtemisUIExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C5ECBA536DB61907846F2B36 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ArtemisUIExample-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A10000000000000000000020 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000001 /* ArtemisUIExampleApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A10000000000000000000042 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7FD7C88512345039D441334D /* Pods-ArtemisUIExample.debug.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.ArtemisUIExample;
+				PRODUCT_NAME = ArtemisUIExample;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A10000000000000000000043 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6C7329F2B5CFCDB023A985A6 /* Pods-ArtemisUIExample.release.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.ArtemisUIExample;
+				PRODUCT_NAME = ArtemisUIExample;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A10000000000000000000044 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+			};
+			name = Debug;
+		};
+		A10000000000000000000045 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A10000000000000000000040 /* Build configuration list for PBXNativeTarget "ArtemisUIExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000042 /* Debug */,
+				A10000000000000000000043 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000000000000000000041 /* Build configuration list for PBXProject "ArtemisUIExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000044 /* Debug */,
+				A10000000000000000000045 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+
+	};
+	rootObject = A10000000000000000000031 /* Project object */;
+}

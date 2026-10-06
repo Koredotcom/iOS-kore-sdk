@@ -1,0 +1,16 @@
+artemis_sdk:
+  environment: dev
+  connection:
+    project_id: "your-project-id"
+    endpoint: "https://runtime.example.com"
+    api_key: "pk_your_public_key"
+  channel:
+    channel_id: "your-channel-id"
+  theme:
+    primaryColor: "#0066FF"
+    backgroundColor: "#FFFFFF"
+    surfaceColor: "#F5F5F5"
+    borderRadius: 16
+  features:
+    enable_markdown: true
+    enable_carousel: true
