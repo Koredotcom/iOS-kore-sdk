@@ -109,7 +109,7 @@ public struct AgentChatView: View {
         if let headerBuilder {
             headerBuilder(ChatHeaderContext(title: title, theme: model.theme, onMinimize: closeChat, onClose: closeChat))
         } else {
-            ChatHeader(title: title, theme: model.theme, onClose: closeChat)
+            ChatHeaderView(title: title, theme: model.theme, onClose: closeChat)
         }
     }
     private var closeChat: () -> Void { onClose ?? { dismiss() } }
@@ -117,7 +117,7 @@ public struct AgentChatView: View {
         if let footerBuilder {
             footerBuilder(ChatFooterContext(text: $model.composeText, enabled: model.canAttach, placeholder: "Type a message...", theme: model.theme, onSend: model.sendComposedText, onAttach: { showAttachmentOptions = true }, canSend: model.canSend, isUploading: model.isUploadingAttachment, pendingAttachments: model.pendingAttachments))
         } else {
-            Composer(text: $model.composeText, enabled: model.canAttach, canSend: model.canSend, placeholder: "Type a message...", font: fonts?.family, theme: model.theme, onSend: model.sendComposedText, onAttach: { showAttachmentOptions = true })
+            ChatFooterView(text: $model.composeText, enabled: model.canAttach, canSend: model.canSend, placeholder: "Type a message...", font: fonts?.family, theme: model.theme, onSend: model.sendComposedText, onAttach: { showAttachmentOptions = true })
         }
     }
     @ViewBuilder private var attachmentTray: some View {
@@ -150,8 +150,6 @@ private struct StatusBar: View {
     var body: some View { HStack(spacing: 8) { if status == .connecting { ProgressView().controlSize(.small) } else { Image(systemName: "exclamationmark.arrow.circlepath").font(.caption).foregroundStyle(status.color) }; Text(error ?? status.label).font(.caption).bold(); Spacer() }.padding(.horizontal, 16).padding(.vertical, 8).foregroundStyle(status.color == .orange ? Color.orange.opacity(0.85) : Color.blue).background(status.color.opacity(0.14)) }
 }
 private extension ConnectionStatus { var label: String { switch self { case .notConnected: "Disconnected from agent"; case .connecting: "Connecting…"; case .connected: "Connected" } }; var color: Color { switch self { case .notConnected: .orange; case .connecting: .blue; case .connected: .green } } }
-
-private struct ChatHeader: View { let title: String; let theme: ChatTheme?; let onClose: () -> Void; var body: some View { HStack(spacing: 12) { Text(String(title.trimmingCharacters(in: .whitespaces).first ?? "A")).font(.headline).foregroundStyle(headerText).frame(width: 40, height: 40).background(headerText.opacity(0.2)).clipShape(Circle()); Text(title).font(.system(size: 17, weight: .semibold)).foregroundStyle(headerText).lineLimit(1); Spacer(); Button(action: onClose) { Image(systemName: "xmark").font(.system(size: 15, weight: .bold)) }.foregroundStyle(headerText) }.padding(.horizontal, 12).frame(height: 72).background(headerColor).animation(.easeInOut, value: theme?.headerBackgroundColor) }; private var headerColor: Color { Color(hexString: theme?.headerBackgroundColor) }; private var headerText: Color { Color(hexString: theme?.headerTextColor) } }
 
 private struct EmptyState: View { let title: String; let subtitle: String; let theme: ChatTheme?; var body: some View { VStack(spacing: 16) { Image(systemName: "bubble.left.and.bubble.right").font(.system(size: 64)).foregroundStyle(Color(hexString: theme?.mutedTextColor)); Text(title).font(.system(size: 18, weight: .medium)).foregroundStyle(Color(hexString: theme?.textColor)); Text(subtitle).foregroundStyle(Color(hexString: theme?.mutedTextColor)) }.multilineTextAlignment(.center).frame(maxWidth: .infinity).padding(.vertical, 80) } }
 
@@ -313,27 +311,6 @@ private struct TypingBubble: View {
     }
 }
 
-private struct Composer: View {
-    @Binding var text: String
-    let enabled: Bool; let canSend: Bool; let placeholder: String; let font: String?; let theme: ChatTheme?
-    let onSend: () -> Void; let onAttach: () -> Void
-    var body: some View {
-        HStack(alignment: .center, spacing: 8) {
-            Button(action: onAttach) { Image(systemName: "paperclip").font(.system(size: 20)) }
-                .accessibilityLabel("Add attachment")
-                .foregroundStyle(Color(hexString: theme?.mutedTextColor)).disabled(!enabled)
-            TextField(placeholder, text: $text).font(font.map { .custom($0, size: 16) })
-                .textFieldStyle(.plain).disabled(!enabled).onSubmit(onSend)
-            Button(action: onSend) { Image(systemName: "arrow.up.circle.fill").font(.system(size: 32))
-                .foregroundStyle(canSend ? Color(hexString: theme?.primaryColor) : Color.secondary.opacity(0.4)) }
-                .accessibilityLabel("Send message").disabled(!canSend)
-        }.padding(.horizontal, 8).padding(.vertical, 6)
-            .background(Color(hexString: theme?.composeBarBackgroundColor))
-            .overlay(Capsule().stroke(Color(hexString: theme?.borderColor), lineWidth: 1)).clipShape(Capsule())
-            .padding(.horizontal, 16).padding(.vertical, 8).background(Color(hexString: theme?.backgroundColor))
-    }
-}
-
 private struct AttachmentMessageCard: View {
     let attachment: ChatAttachment
     let resolve: (ChatAttachment) async -> URL?
@@ -359,5 +336,3 @@ private struct AttachmentMessageCard: View {
         }.buttonStyle(.plain).disabled(isOpening).accessibilityLabel("Open \(attachment.filename)")
     }
 }
-
-private extension Color { init(hexString: String?) { guard let hex = hexString?.trimmingCharacters(in: CharacterSet.alphanumerics.inverted), let value = UInt64(hex, radix: 16) else { self = .accentColor; return }; let rgb = hex.count == 6 ? value : value & 0xFFFFFF; self.init(red: Double((rgb >> 16) & 0xFF) / 255, green: Double((rgb >> 8) & 0xFF) / 255, blue: Double(rgb & 0xFF) / 255) } }

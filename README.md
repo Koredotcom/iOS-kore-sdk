@@ -104,6 +104,16 @@ Host apps can still pass a `RichTemplateRegistry` for custom payloads. Register
 a renderer with the same type as a built-in, for example `RichTemplateTypes.kpi`,
 to suppress the default renderer and provide an app-specific one.
 
+### UI source organization
+
+Each built-in template has its own SwiftUI `View` struct and file under
+`Sources/ArtemisUISDK/Templates/`. `RichTemplateViews.swift` selects the templates
+for a message, while `Templates/Shared/` contains reusable cards, styles, and
+formatting helpers. The default header and message composer live in
+`Components/ChatHeaderView.swift` and `Components/ChatFooterView.swift`.
+These implementation types are internal; host apps customize the UI through
+the existing header/footer builders and `RichTemplateRegistry`.
+
 ## Build
 
 The package references the supplied local socket package at `/Users/Kartheek.Pagidimarri/Desktop/Git Codes/artemis_Native_iOS_Code/artemis_socket_plugin`. From this directory run:

@@ -301,6 +301,22 @@ public enum AgentChatUI {
         switch event { case .connected: status = .connected; case .reconnecting: status = .connecting; case .disconnected: status = .notConnected; case .error(let error, _): errorMessage = error.localizedDescription; if sdk?.isConnected() != true { status = .notConnected }; default: break }
     }
     private func handle(_ event: ChatEvent) {
+#if DEBUG
+        switch event {
+        case .messageReceived(let message):
+            print("[ArtemisUI] Response:", message.content)
+            print("[ArtemisUI] Metadata:", message.metadata?.mapValues { $0.value } ?? [:])
+        case .messageChunk(let messageId, let chunk):
+            print("[ArtemisUI] Chunk [\(messageId)]:", chunk)
+        case .messageEnd(let messageId, let message):
+            print("[ArtemisUI] Complete [\(messageId)]:", message.content)
+            print("[ArtemisUI] Metadata:", message.metadata?.mapValues { $0.value } ?? [:])
+        case .error(let error):
+            print("[ArtemisUI] Error:", error.localizedDescription)
+        default:
+            break
+        }
+#endif
         messages = sdk?.getMessages() ?? messages
         switch event {
         case .typingIndicator(let value):
