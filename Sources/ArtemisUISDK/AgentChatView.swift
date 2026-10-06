@@ -38,19 +38,19 @@ public struct AgentChatView: View {
         VStack(spacing: 0) {
             headerView
             if model.status != .connected { StatusBar(status: model.status, error: model.errorMessage) }
-            ScrollViewReader { proxy in
-                GeometryReader { geometry in
-                    ScrollView {
-                        LazyVStack(spacing: 12) {
-                            if model.messages.isEmpty && !model.isTyping { EmptyState(title: "No messages yet", subtitle: "Start a conversation with your AI assistant", theme: model.theme) }
-                            ForEach(model.messages) { message in MessageBubble(message: message, rowWidth: max(0, geometry.size.width - 30), fonts: fonts, theme: model.theme, templateRegistry: templateRegistry, onSubmitAction: model.submitAction, onSubmitFeedback: model.submitFeedback, attachments: model.attachments(for: message), resolveAttachment: model.attachmentDownloadURL).id(message.id) }
-                            if model.isTyping { TypingBubble(theme: model.theme).id("typing") }
-                        }
-                        .padding(.horizontal, 15)
-                        .padding(.vertical, 16)
-                    }.onChange(of: model.messages.count) { _ in scrollToBottom(proxy) }
-                      .onChange(of: model.isTyping) { _ in scrollToBottom(proxy) }
+            ChatHistoryScrollView(request: ChatHistoryScrollRequest(
+                messageCount: model.messages.count,
+                isTyping: model.isTyping,
+                revision: model.scrollToBottomRequest
+            )) { rowWidth in
+                if model.messages.isEmpty && !model.isTyping {
+                    EmptyState(title: "No messages yet", subtitle: "Start a conversation with your AI assistant", theme: model.theme)
                 }
+                ForEach(model.messages) { message in
+                    MessageBubble(message: message, rowWidth: rowWidth, fonts: fonts, theme: model.theme, templateRegistry: templateRegistry, onSubmitAction: model.submitAction, onSubmitFeedback: model.submitFeedback, attachments: model.attachments(for: message), resolveAttachment: model.attachmentDownloadURL)
+                        .id(message.id)
+                }
+                if model.isTyping { TypingBubble(theme: model.theme) }
             }
             attachmentTray
             footerView
@@ -139,10 +139,6 @@ public struct AgentChatView: View {
             }.padding(.horizontal, 16).padding(.vertical, 8)
         }
     }
-    private func scrollToBottom(_ proxy: ScrollViewProxy) {
-        guard let last = model.messages.last?.id else { return }
-        withAnimation { proxy.scrollTo(last, anchor: .bottom) }
-    }
 }
 
 private struct StatusBar: View {
@@ -153,7 +149,7 @@ private extension ConnectionStatus { var label: String { switch self { case .not
 
 private struct EmptyState: View { let title: String; let subtitle: String; let theme: ChatTheme?; var body: some View { VStack(spacing: 16) { Image(systemName: "bubble.left.and.bubble.right").font(.system(size: 64)).foregroundStyle(Color(hexString: theme?.mutedTextColor)); Text(title).font(.system(size: 18, weight: .medium)).foregroundStyle(Color(hexString: theme?.textColor)); Text(subtitle).foregroundStyle(Color(hexString: theme?.mutedTextColor)) }.multilineTextAlignment(.center).frame(maxWidth: .infinity).padding(.vertical, 80) } }
 
-private struct MessageBubble: View {
+struct MessageBubble: View {
     let message: Message; let rowWidth: CGFloat; let fonts: ChatFonts?; let theme: ChatTheme?; let templateRegistry: RichTemplateRegistry?; let onSubmitAction: (String, String?, [String: String]?, String?) -> Void; let onSubmitFeedback: (String, String, Int, String?) -> Void
     let attachments: [ChatAttachment]
     let resolveAttachment: (ChatAttachment) async -> URL?
@@ -290,7 +286,7 @@ private struct RichContentView: View {
 
 private struct CarouselCard: View { let card: [String: Any]; let theme: ChatTheme?; var body: some View { VStack(alignment: .leading, spacing: 0) { if let image = card["imageUrl"] as? String, let url = URL(string: image) { AsyncImage(url: url) { image in image.resizable().scaledToFill() } placeholder: { Color.secondary.opacity(0.12) }.frame(width: 200, height: 120).clipped() }; VStack(alignment: .leading, spacing: 4) { Text(card["title"] as? String ?? "").font(.headline).lineLimit(2); Text(card["subtitle"] as? String ?? card["description"] as? String ?? "").font(.caption).foregroundStyle(Color(hexString: theme?.mutedTextColor)).lineLimit(3); if let url = card["defaultActionUrl"] as? String, let target = URL(string: url), ["http", "https"].contains(target.scheme?.lowercased()) { Link("Open", destination: target).font(.caption.bold()).foregroundStyle(Color(hexString: theme?.primaryColor)).padding(.top, 4) } }.padding(12) }.frame(width: 200, alignment: .leading).background(.background).clipShape(RoundedRectangle(cornerRadius: theme?.borderRadius ?? 12)).shadow(color: .black.opacity(0.08), radius: 2) } }
 
-private struct TypingBubble: View {
+struct TypingBubble: View {
     let theme: ChatTheme?
     var body: some View {
         TimelineView(.animation(minimumInterval: 1.0 / 30.0)) { timeline in

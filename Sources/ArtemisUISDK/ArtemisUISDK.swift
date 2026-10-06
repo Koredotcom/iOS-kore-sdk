@@ -191,6 +191,7 @@ public enum AgentChatUI {
     @Published public private(set) var messages: [Message] = []
     @Published public private(set) var status: ConnectionStatus = .notConnected
     @Published public private(set) var isTyping = false
+    @Published private(set) var scrollToBottomRequest = 0
     @Published public private(set) var theme: ChatTheme?
     @Published public var errorMessage: String?
     public private(set) var sdk: AgentSDK?
@@ -237,6 +238,8 @@ public enum AgentChatUI {
     }
     public func send(_ text: String) {
         guard let sdk, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        isTyping = true
+        scrollToBottomRequest &+= 1
         Task { [weak self, weak sdk] in
             guard let self, let sdk else { return }
             do {
@@ -259,6 +262,8 @@ public enum AgentChatUI {
             return
         }
         isSending = true
+        isTyping = true
+        scrollToBottomRequest &+= 1
         Task { [weak self] in
             guard let self else { return }
             defer { self.isSending = false }
@@ -321,7 +326,11 @@ public enum AgentChatUI {
         switch event {
         case .typingIndicator(let value):
             isTyping = value && !Self.hasAssistantReply(messages)
-        case .messageReceived, .messageEnd, .messageChunk:
+        case .messageChunk, .messageEnd:
+            // Streaming replaces an existing message without changing its count.
+            scrollToBottomRequest &+= 1
+            if Self.hasAssistantReply(messages) { isTyping = false }
+        case .messageReceived:
             if Self.hasAssistantReply(messages) { isTyping = false }
         case .error(let error):
             isTyping = false
