@@ -1,12 +1,12 @@
 # Artemis Native iOS UI SDK
 
-SwiftUI implementation of the Artemis Flutter UI SDK contract. It uses the local `artemis_socket_plugin` package for the unchanged REST/WebSocket protocol, token lifecycle, streaming, reconnect, history, and events.
+SwiftUI implementation of the Artemis Flutter UI SDK contract. It uses the local `ArtemisSocketSDK` package for the unchanged REST/WebSocket protocol, token lifecycle, streaming, reconnect, history, and events.
 
 ## Integration
 
 ### Swift Package Manager
 
-In an iOS 15+ Xcode app target, choose **File → Add Package Dependencies → Add Local…**, select this repository's root directory, and add the `ArtemisUISDK` product to the app target. The UI package depends on the sibling socket package; its path is currently set in `Package.swift` to `/Users/Kartheek.Pagidimarri/Desktop/Git Codes/artemis_Native_iOS_Code/artemis_socket_plugin`. Update that path if the packages are checked out elsewhere.
+In an iOS 15+ Xcode app target, choose **File → Add Package Dependencies → Add Local…**, select this repository's root directory, and add the `ArtemisUISDK` product to the app target. The UI package depends on the sibling `ArtemisSocketSDK` package at `../artemis_socket_plugin`. Update the local path in `Package.swift` if the sibling checkout is elsewhere.
 
 ### UIKit project
 
@@ -145,15 +145,15 @@ three customization arguments.
 Add both pods to the host app's `Podfile`:
 
 ```ruby
-pod 'artemis_socket_plugin', :path => '/Users/Kartheek.Pagidimarri/Desktop/Git Codes/artemis_Native_iOS_Code/artemis_socket_plugin'
-pod 'artemis_ui_sdk', :path => '../artemis_ui_sdk'
+pod 'ArtemisSocketSDK', :path => '../artemis_socket_plugin'
+pod 'ArtemisUISDK', :path => '../artemis_ui_sdk'
 ```
 
 For published pods, use the normal version declarations instead:
 
 ```ruby
-pod 'artemis_socket_plugin', '~> 1.0'
-pod 'artemis_ui_sdk', '~> 1.0'
+pod 'ArtemisSocketSDK', '~> 1.0'
+pod 'ArtemisUISDK', '~> 1.0'
 ```
 
 Then run `pod install` and open the generated `.xcworkspace`.
@@ -185,7 +185,7 @@ the existing header/footer builders and `RichTemplateRegistry`.
 
 ## Build
 
-The package references the supplied local socket package at `/Users/Kartheek.Pagidimarri/Desktop/Git Codes/artemis_Native_iOS_Code/artemis_socket_plugin`. From this directory run:
+The package references the supplied local `ArtemisSocketSDK` checkout at `../artemis_socket_plugin`. From this directory run:
 
 ```sh
 swift test
@@ -195,6 +195,6 @@ swift test
 
 Open `Example/ArtemisUIExample.xcworkspace` for the native SwiftUI host after running `pod install` from `Example/`. It demonstrates the same one-button launch flow as the Flutter example, inline configuration, bundle YAML, themed chat UI, custom font injection, streaming, reconnect, Markdown, typing state, and carousel cards.
 
-The example uses CocoaPods exclusively. Its `Podfile` links both `artemis_ui_sdk` and the supplied `artemis_socket_plugin` reference package. Do not also add these SDKs through Swift Package Manager to the same target, because that loads duplicate class implementations.
+The example uses CocoaPods exclusively. Its `Podfile` links both `ArtemisUISDK` and `ArtemisSocketSDK`. Do not also add these SDKs through Swift Package Manager to the same target, because that loads duplicate class implementations.
 
 For a UIKit host, open `UIKitExample/ArtemisExample/ArtemisExample.xcodeproj` in Xcode and select the `ArtemisExample` scheme. This project uses the local Swift package. Replace the placeholder project, endpoint, API key, and channel ID in `ViewController.swift`, then run on an iOS 15+ simulator or device. The storyboard's **Connect to Artemis SDK** button calls `tapsOnConnectBtnAction(_:)`, and `SceneDelegate.swift` puts the root view controller in a navigation controller so `show(in:)` can push chat.

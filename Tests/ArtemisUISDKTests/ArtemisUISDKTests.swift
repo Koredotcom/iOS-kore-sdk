@@ -1,10 +1,6 @@
 import XCTest
 @testable import ArtemisUISDK
-#if canImport(ArtemisSocketPlugin)
-import ArtemisSocketPlugin
-#elseif canImport(artemis_socket_plugin)
-import artemis_socket_plugin
-#endif
+import ArtemisSocketSDK
 
 final class ArtemisUISDKTests: XCTestCase {
     func testCreateDefaultRequiresExactlyOneCredential() throws {

@@ -1,6 +1,6 @@
 import XCTest
 @testable import ArtemisUISDK
-@testable import ArtemisSocketPlugin
+@testable import ArtemisSocketSDK
 
 final class AttachmentTests: XCTestCase {
     func testMultipartPreservesBinaryAndEscapesFilename() throws {

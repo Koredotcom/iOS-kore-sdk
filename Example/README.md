@@ -28,9 +28,9 @@ pod install
 open ArtemisUIExample.xcworkspace
 ```
 
-The Podfile links both the UI SDK and the supplied `artemis_socket_plugin` reference package.
+The Podfile links both the UI SDK and the supplied `ArtemisSocketSDK` package.
 
-If switching from Swift Package Manager produces `Unable to find module dependency: CYaml`, remove this example's stale build products from its Derived Data folder, then rebuild the workspace. Old `Yams.swiftmodule`, `ArtemisSocketPlugin.swiftmodule`, and `ArtemisUISDK.swiftmodule` files can shadow the CocoaPods frameworks. Do not add a separate CYaml dependency to the CocoaPods target.
+If switching from Swift Package Manager produces `Unable to find module dependency: CYaml`, remove this example's stale build products from its Derived Data folder, then rebuild the workspace. Old `Yams.swiftmodule`, `ArtemisSocketSDK.swiftmodule`, and `ArtemisUISDK.swiftmodule` files can shadow the CocoaPods frameworks. Do not add a separate CYaml dependency to the CocoaPods target.
 
 ## Bundle YAML
 

@@ -3,7 +3,7 @@ import XCTest
 import SwiftUI
 import UIKit
 @testable import ArtemisUISDK
-import ArtemisSocketPlugin
+import ArtemisSocketSDK
 
 final class ChatHistoryScrollTests: XCTestCase {
     @MainActor

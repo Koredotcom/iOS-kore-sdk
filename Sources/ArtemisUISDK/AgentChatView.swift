@@ -3,11 +3,7 @@ import UniformTypeIdentifiers
 #if os(iOS)
 import UIKit
 #endif
-#if canImport(ArtemisSocketPlugin)
-import ArtemisSocketPlugin
-#elseif canImport(artemis_socket_plugin)
-import artemis_socket_plugin
-#endif
+import ArtemisSocketSDK
 
 public struct AgentChatView: View {
     @StateObject private var model: AgentChatViewModel

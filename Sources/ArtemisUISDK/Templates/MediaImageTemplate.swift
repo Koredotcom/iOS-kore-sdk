@@ -1,10 +1,6 @@
 import Foundation
 import SwiftUI
-#if canImport(ArtemisSocketPlugin)
-import ArtemisSocketPlugin
-#elseif canImport(artemis_socket_plugin)
-import artemis_socket_plugin
-#endif
+import ArtemisSocketSDK
 
 struct MediaImageTemplate: View {
     let image: MediaContent

@@ -1,10 +1,6 @@
 import Foundation
 import UniformTypeIdentifiers
-#if canImport(ArtemisSocketPlugin)
-import ArtemisSocketPlugin
-#elseif canImport(artemis_socket_plugin)
-import artemis_socket_plugin
-#endif
+import ArtemisSocketSDK
 
 public struct ChatAttachment: Identifiable, Equatable, Sendable {
     public let id: String

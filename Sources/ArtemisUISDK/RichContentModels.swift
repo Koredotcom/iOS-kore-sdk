@@ -1,9 +1,5 @@
 import Foundation
-#if canImport(ArtemisSocketPlugin)
-import ArtemisSocketPlugin
-#elseif canImport(artemis_socket_plugin)
-import artemis_socket_plugin
-#endif
+import ArtemisSocketSDK
 
 public struct CarouselButton: Sendable {
     public let id: String
