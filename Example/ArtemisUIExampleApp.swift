@@ -1,6 +1,5 @@
 import SwiftUI
 import ArtemisUISDK
-import ArtemisSocketPlugin
 
 @main
 struct ArtemisUIExampleApp: App {

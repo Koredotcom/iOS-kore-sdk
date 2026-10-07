@@ -1,10 +1,22 @@
 import Foundation
 import SwiftUI
 import Combine
+// Host apps need the socket module's initializers even with MemberImportVisibility enabled.
+// Public aliases alone expose the type names but not their members.
 #if canImport(ArtemisSocketPlugin)
-import ArtemisSocketPlugin
+@_exported import ArtemisSocketPlugin
+
+public typealias SDKConfiguration = ArtemisSocketPlugin.SDKConfiguration
+public typealias ConnectionConfig = ArtemisSocketPlugin.ConnectionConfig
+public typealias ChannelConfig = ArtemisSocketPlugin.ChannelConfig
+public typealias Message = ArtemisSocketPlugin.Message
 #elseif canImport(artemis_socket_plugin)
-import artemis_socket_plugin
+@_exported import artemis_socket_plugin
+
+public typealias SDKConfiguration = artemis_socket_plugin.SDKConfiguration
+public typealias ConnectionConfig = artemis_socket_plugin.ConnectionConfig
+public typealias ChannelConfig = artemis_socket_plugin.ChannelConfig
+public typealias Message = artemis_socket_plugin.Message
 #endif
 #if canImport(UIKit)
 import UIKit

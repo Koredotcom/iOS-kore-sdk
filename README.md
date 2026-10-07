@@ -10,12 +10,11 @@ In an iOS 15+ Xcode app target, choose **File → Add Package Dependencies → A
 
 ### UIKit project
 
-Import both modules in the view controller that opens chat. The socket module supplies `SDKConfiguration`, `ConnectionConfig`, and `ChannelConfig`:
+Import only `ArtemisUISDK` in the view controller that opens chat. It exposes `SDKConfiguration`, `ConnectionConfig`, and `ChannelConfig` for the parent app:
 
 ```swift
 import UIKit
 import ArtemisUISDK
-import ArtemisSocketPlugin
 
 final class ViewController: UIViewController {
     private let configuration = SDKConfiguration(
