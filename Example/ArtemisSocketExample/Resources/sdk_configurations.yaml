@@ -5,12 +5,12 @@ artemis_sdk:
   environment: dev
 
   connection:
-    project_id: "019ebab0-737a-7661-9c02-d8d416320a1c"
-    api_key: "pk_3721dc52d9b95534fa402c680387afee04b9c9b569a9c508"
-    endpoint: "https://agents-dev.kore.ai"
+    project_id: "your-project-id"
+    api_key: "pk_your_public_key"
+    endpoint: "https://runtime.example.com"
 
   channel:
-    channel_id: "019eee30-53a9-7961-afb1-e9303a8c989f"
+    channel_id: "your-channel-id"
     channel_name: "iOS Demo App"
 
   user_context:

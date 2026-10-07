@@ -1,5 +1,5 @@
 import XCTest
-@testable import ArtemisSocketPlugin
+@testable import ArtemisSocketSDK
 
 final class EndpointNormalizerTests: XCTestCase {
     func testNormalizeHttpEndpointStripsTrailingSlash() {

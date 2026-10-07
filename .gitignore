@@ -30,6 +30,7 @@ profile
 # CocoaPods
 Pods
 Podfile.lock
+!Example/ArtemisSocketExample.xcworkspace/contents.xcworkspacedata
 
 # Swift Package Manager
 .build/

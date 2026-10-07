@@ -2,9 +2,10 @@ source 'https://cdn.cocoapods.org/'
 
 platform :ios, '15.0'
 use_frameworks!
+project 'ArtemisSocketExample.xcodeproj'
 
 target 'ArtemisSocketExample' do
-  pod 'artemis_socket_plugin', :path => '..'
+  pod 'ArtemisSocketSDK', :path => '..'
 end
 
 post_install do |installer|

@@ -2,15 +2,15 @@
 import PackageDescription
 
 let package = Package(
-    name: "ArtemisSocketPlugin",
+    name: "ArtemisSocketSDK",
     platforms: [
         .iOS(.v15),
         .macOS(.v12),
     ],
     products: [
         .library(
-            name: "ArtemisSocketPlugin",
-            targets: ["ArtemisSocketPlugin"]
+            name: "ArtemisSocketSDK",
+            targets: ["ArtemisSocketSDK"]
         ),
     ],
     dependencies: [
@@ -18,17 +18,17 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "ArtemisSocketPlugin",
+            name: "ArtemisSocketSDK",
             dependencies: ["Yams"],
-            path: "Sources/ArtemisSocketPlugin",
+            path: "Sources/ArtemisSocketSDK",
             resources: [
                 .process("PrivacyInfo.xcprivacy"),
             ]
         ),
         .testTarget(
-            name: "ArtemisSocketPluginTests",
-            dependencies: ["ArtemisSocketPlugin"],
-            path: "Tests/ArtemisSocketPluginTests"
+            name: "ArtemisSocketSDKTests",
+            dependencies: ["ArtemisSocketSDK"],
+            path: "Tests/ArtemisSocketSDKTests"
         ),
     ]
 )

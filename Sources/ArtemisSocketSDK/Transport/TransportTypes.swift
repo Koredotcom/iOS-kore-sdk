@@ -28,7 +28,7 @@ enum TransportClientMessage {
         let dict = toDictionary()
         let data = try JSONSerialization.data(withJSONObject: dict)
         guard let json = String(data: data, encoding: .utf8) else {
-            throw NSError(domain: "ArtemisSocketPlugin", code: -1, userInfo: [
+            throw NSError(domain: "ArtemisSocketSDK", code: -1, userInfo: [
                 NSLocalizedDescriptionKey: "Failed to encode transport message",
             ])
         }
@@ -78,7 +78,7 @@ struct TransportServerMessage {
 
     static func fromJSONData(_ data: Data) throws -> TransportServerMessage {
         guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-            throw NSError(domain: "ArtemisSocketPlugin", code: -1, userInfo: [
+            throw NSError(domain: "ArtemisSocketSDK", code: -1, userInfo: [
                 NSLocalizedDescriptionKey: "Invalid WebSocket message JSON",
             ])
         }

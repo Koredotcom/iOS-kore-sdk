@@ -1,4 +1,4 @@
-// Artemis Socket Plugin for iOS
+// Artemis Socket SDK for iOS
 //
 // Native Swift SDK for Artemis agent WebSocket chat.
 

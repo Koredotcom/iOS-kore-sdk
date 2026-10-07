@@ -1,4 +1,4 @@
-# Artemis Socket Plugin (Native iOS)
+# Artemis Socket SDK (Native iOS)
 
 Native Swift SDK for the Artemis agent platform. This package is a full port of the Flutter `artemis_socket_plugin` Dart SDK, providing WebSocket chat, token management, session handling, streaming responses, history hydration, and interactive actions.
 
@@ -24,7 +24,7 @@ Add the package in Xcode:
 
 1. **File → Add Package Dependencies…**
 2. Enter the repository URL or choose **Add Local…** and select this directory
-3. Add the `ArtemisSocketPlugin` library to your target
+3. Add the `ArtemisSocketSDK` library to your target
 
 Or add to `Package.swift`:
 
@@ -36,7 +36,7 @@ targets: [
     .target(
         name: "YourApp",
         dependencies: [
-            .product(name: "ArtemisSocketPlugin", package: "artemis_socket_plugin"),
+            .product(name: "ArtemisSocketSDK", package: "artemis_socket_plugin"),
         ]
     ),
 ]
@@ -47,7 +47,7 @@ targets: [
 Add to your `Podfile`:
 
 ```ruby
-pod 'artemis_socket_plugin', :path => '../artemis_socket_plugin'
+pod 'ArtemisSocketSDK', :path => '../artemis_socket_plugin'
 ```
 
 Then run:
@@ -81,7 +81,7 @@ artemis_sdk:
 ### 2. Initialize and connect
 
 ```swift
-import ArtemisSocketPlugin
+import ArtemisSocketSDK
 
 @MainActor
 final class ChatManager: AgentSDKDelegate {
@@ -178,10 +178,12 @@ sdk.chatEvents
 
 ## Example App
 
-A fully functional SwiftUI example is included:
+A SwiftUI example using the local CocoaPods spec is included:
 
 ```bash
-open Example/ArtemisSocketExample.xcodeproj
+cd Example
+pod install
+open ArtemisSocketExample.xcworkspace
 ```
 
 The example demonstrates:
@@ -193,21 +195,13 @@ The example demonstrates:
 - Custom data attachment
 - Delegate and Combine event handling
 
-### CocoaPods Example
-
-```bash
-cd Example
-pod install
-open ArtemisSocketExample.xcworkspace
-```
-
 ## Project Structure
 
 ```
 artemis_socket_plugin/
 ├── Package.swift                    # SPM manifest
-├── artemis_socket_plugin.podspec    # CocoaPods spec
-├── Sources/ArtemisSocketPlugin/
+├── ArtemisSocketSDK.podspec         # CocoaPods spec
+├── Sources/ArtemisSocketSDK/
 │   ├── AgentSDK.swift               # Public facade
 │   ├── Config/                      # Configuration models & loader
 │   ├── Core/                        # Token & session managers
@@ -216,7 +210,7 @@ artemis_socket_plugin/
 │   ├── Models/                      # Message, WidgetConfig
 │   ├── Transport/                   # WebSocket protocol types
 │   └── Utils/                       # Logging, helpers
-├── Tests/ArtemisSocketPluginTests/  # Unit tests
+├── Tests/ArtemisSocketSDKTests/     # Unit tests
 └── Example/ArtemisSocketExample/    # Demo iOS app
 ```
 

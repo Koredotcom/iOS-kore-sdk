@@ -1,4 +1,4 @@
-import ArtemisSocketPlugin
+import ArtemisSocketSDK
 import Combine
 import SwiftUI
 
