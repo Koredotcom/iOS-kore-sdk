@@ -6,20 +6,47 @@ SwiftUI implementation of the Artemis Flutter UI SDK contract. It uses the local
 
 ### Swift Package Manager
 
-Add this package to the host app. `Package.swift` uses the supplied local socket package at `/Users/Kartheek.Pagidimarri/Desktop/Git Codes/artemis_Native_iOS_Code/artemis_socket_plugin`.
+In an iOS 15+ Xcode app target, choose **File → Add Package Dependencies → Add Local…**, select this repository's root directory, and add the `ArtemisUISDK` product to the app target. The UI package depends on the sibling socket package; its path is currently set in `Package.swift` to `/Users/Kartheek.Pagidimarri/Desktop/Git Codes/artemis_Native_iOS_Code/artemis_socket_plugin`. Update that path if the packages are checked out elsewhere.
 
-Add this package and the sibling socket package to the host app, then present the UI:
+### UIKit project
+
+Import both modules in the view controller that opens chat. The socket module supplies `SDKConfiguration`, `ConnectionConfig`, and `ChannelConfig`:
 
 ```swift
+import UIKit
 import ArtemisUISDK
+import ArtemisSocketPlugin
 
-let configuration = try SDKConfigurationLoader.createDefault(
-    projectId: "project-id", endpoint: "https://runtime.example.com", apiKey: "pk_..."
-)
+final class ViewController: UIViewController {
+    private let configuration = SDKConfiguration(
+        environment: "dev",
+        connection: ConnectionConfig(
+            projectId: "your-project-id",
+            endpoint: "https://runtime.example.com",
+            apiKey: "pk_your_public_key"
+        ),
+        channel: ChannelConfig(channelId: "your-channel-id")
+    )
+
+    @IBAction func tapsOnConnectBtnAction(_ sender: Any) {
+        AgentChatUI.show(in: self, configuration: configuration, title: "Support")
+    }
+}
+```
+
+Connect the action to a button and place the view controller in a `UINavigationController`. For a storyboard app, embed the initial view controller in a navigation controller; the [UIKit example](UIKitExample/ArtemisExample/ArtemisExample/ViewController.swift) wraps its root controller in `SceneDelegate.swift` instead. Replace the placeholder configuration with your project's values.
+
+`show(in:)` pushes chat onto that navigation stack, including a tab's navigation controller. It returns `false` if there is no navigation stack or chat is already on top. The close button pops back to the previous screen. The SDK hides the navigation bar while chat is visible and restores it afterward. The tab bar is hidden by default; pass `hidesBottomBarWhenPushed: false` to keep it visible. `animated` defaults to `true`.
+
+To open chat modally from any UIKit view controller, use:
+
+```swift
 AgentChatUI.present(from: self, configuration: configuration, title: "Support")
 ```
 
-For SwiftUI:
+The SDK starts the chat connection when the screen appears and stops it when the screen closes. Use either Swift Package Manager or CocoaPods for a given app target.
+
+For a SwiftUI host:
 
 ```swift
 NavigationStack { AgentChatUI.view(configuration: configuration) }
@@ -28,26 +55,35 @@ NavigationStack { AgentChatUI.view(configuration: configuration) }
 ### Host view and template injection
 
 The parent app can replace the header and footer and register message-specific
-rich-content renderers. Builders return `AnyView`, so they can contain any
-SwiftUI view hierarchy:
+rich-content renderers. Import `SwiftUI` in the host file. Builders return
+`AnyView`, so they can contain any SwiftUI view hierarchy. Add a registry property
+to the host view controller or SwiftUI view:
 
 ```swift
-var templates = RichTemplateRegistry()
-templates.register(RichTemplateRenderer(
-    type: "order_card",
-    matches: { message in
-        (message.metadata?["template"]?.value as? String) == "order_card"
-    },
-    build: { message, context in
-        AnyView(VStack(alignment: .leading) {
-            Text("Order card")
-            Button("Confirm") {
-                context.submitAction("confirm-order", "confirmed", nil, message.id)
-            }
-        })
-    }
-))
+private var templates: RichTemplateRegistry {
+    var registry = RichTemplateRegistry()
+    registry.register(RichTemplateRenderer(
+        type: "order_card",
+        matches: { message in
+            (message.metadata?["template"]?.value as? String) == "order_card" ||
+            (message.rawRichContent?["template"] as? String) == "order_card"
+        },
+        build: { message, context in
+            AnyView(VStack(alignment: .leading) {
+                Text("Order card")
+                Button("Confirm") {
+                    context.submitAction("confirm-order", "confirmed", nil, message.id)
+                }
+            })
+        }
+    ))
+    return registry
+}
+```
 
+Pass the registry and builders from a SwiftUI host:
+
+```swift
 NavigationStack {
     AgentChatUI.view(
         configuration: configuration,
@@ -61,7 +97,8 @@ NavigationStack {
         footerBuilder: { footer in
             AnyView(HStack {
                 TextField(footer.placeholder, text: footer.text)
-                Button("Send", action: footer.onSend).disabled(!footer.enabled)
+                    .disabled(!footer.enabled)
+                Button("Send", action: footer.onSend).disabled(!footer.canSend)
             }.padding())
         },
         templateRegistry: templates
@@ -69,8 +106,40 @@ NavigationStack {
 }
 ```
 
-`AgentChatUI.present` accepts the same `headerBuilder`, `footerBuilder`, and
-`templateRegistry` arguments.
+In a UIKit view controller, pass the same registry and builders to `show(in:)`
+inside the button action:
+
+```swift
+AgentChatUI.show(
+    in: self,
+    configuration: configuration,
+    title: "Support",
+    headerBuilder: { header in
+        AnyView(HStack {
+            Text(header.title)
+            Spacer()
+            Button("Close", action: header.onClose)
+        }.padding())
+    },
+    footerBuilder: { footer in
+        AnyView(HStack {
+            if let onAttach = footer.onAttach {
+                Button("Attach", action: onAttach).disabled(!footer.enabled)
+            }
+            TextField(footer.placeholder, text: footer.text)
+                .disabled(!footer.enabled)
+                .onSubmit(footer.onSend)
+            Button("Send", action: footer.onSend).disabled(!footer.canSend)
+        }.padding())
+    },
+    templateRegistry: templates
+)
+```
+
+The `templates` property is the `RichTemplateRegistry` created above. A matching
+`order_card` message renders the parent app's view, and its Confirm button sends
+an action through `RichTemplateContext`. `AgentChatUI.present` accepts the same
+three customization arguments.
 
 ### CocoaPods
 
@@ -89,6 +158,7 @@ pod 'artemis_ui_sdk', '~> 1.0'
 ```
 
 Then run `pod install` and open the generated `.xcworkspace`.
+Adjust each local `:path` relative to the host app's `Podfile`.
 
 The bundle configuration form is also supported with `AgentChatUI.view(configuration: nil)` and `sdk_configurations.yaml`. The native UI includes connection status, reconnect, streaming/typing state, Markdown text, carousel cards from `richContent`, auto-scroll, disabled input while offline, and lifecycle cleanup.
 
@@ -127,3 +197,5 @@ swift test
 Open `Example/ArtemisUIExample.xcworkspace` for the native SwiftUI host after running `pod install` from `Example/`. It demonstrates the same one-button launch flow as the Flutter example, inline configuration, bundle YAML, themed chat UI, custom font injection, streaming, reconnect, Markdown, typing state, and carousel cards.
 
 The example uses CocoaPods exclusively. Its `Podfile` links both `artemis_ui_sdk` and the supplied `artemis_socket_plugin` reference package. Do not also add these SDKs through Swift Package Manager to the same target, because that loads duplicate class implementations.
+
+For a UIKit host, open `UIKitExample/ArtemisExample/ArtemisExample.xcodeproj` in Xcode and select the `ArtemisExample` scheme. This project uses the local Swift package. Replace the placeholder project, endpoint, API key, and channel ID in `ViewController.swift`, then run on an iOS 15+ simulator or device. The storyboard's **Connect to Artemis SDK** button calls `tapsOnConnectBtnAction(_:)`, and `SceneDelegate.swift` puts the root view controller in a navigation controller so `show(in:)` can push chat.

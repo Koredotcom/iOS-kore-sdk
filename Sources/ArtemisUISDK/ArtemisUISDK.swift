@@ -173,6 +173,34 @@ public enum AgentChatUI {
     }
 
 #if canImport(UIKit)
+    /// Pushes chat onto an existing navigation stack. Returns false if no stack
+    /// is available or chat is already its top screen.
+    @MainActor @discardableResult
+    public static func show(in controller: UIViewController, configuration: SDKConfiguration? = nil,
+                            title: String = "Chat", fonts: ChatFonts? = nil, environment: String? = nil,
+                            configResource: String = "sdk_configurations", runtimeUserContext: SDKUserContext? = nil,
+                            headerBuilder: ChatHeaderBuilder? = nil, footerBuilder: ChatFooterBuilder? = nil,
+                            templateRegistry: RichTemplateRegistry? = nil,
+                            hidesBottomBarWhenPushed: Bool = true, animated: Bool = true) -> Bool {
+        guard let navigationController = (controller as? UINavigationController) ?? controller.navigationController,
+              let source = navigationController.topViewController,
+              !(source is ChatNavigationHostingController<AgentChatView>) else { return false }
+
+        let chat = view(configuration: configuration, title: title, fonts: fonts, environment: environment,
+                        configResource: configResource, runtimeUserContext: runtimeUserContext,
+                        headerBuilder: headerBuilder, footerBuilder: footerBuilder, templateRegistry: templateRegistry) { [weak navigationController, weak source] in
+            guard let navigationController, let source,
+                  navigationController.topViewController is ChatNavigationHostingController<AgentChatView>,
+                  navigationController.viewControllers.contains(where: { $0 === source }) else { return }
+            navigationController.popToViewController(source, animated: animated)
+        }
+        let host = ChatNavigationHostingController(rootView: chat)
+        host.title = title
+        host.hidesBottomBarWhenPushed = hidesBottomBarWhenPushed
+        navigationController.pushViewController(host, animated: animated)
+        return true
+    }
+
     @MainActor public static func present(from controller: UIViewController, configuration: SDKConfiguration? = nil,
                                           title: String = "Chat", fonts: ChatFonts? = nil, environment: String? = nil,
                                           configResource: String = "sdk_configurations", runtimeUserContext: SDKUserContext? = nil,
@@ -182,7 +210,11 @@ public enum AgentChatUI {
             controller?.dismiss(animated: true)
         }
         let host = UIHostingController(rootView: chat)
-        controller.present(UINavigationController(rootViewController: host), animated: true)
+        let navigationController = UINavigationController(rootViewController: host)
+        // AgentChatView provides its own header and close action.
+        navigationController.setNavigationBarHidden(true, animated: false)
+        navigationController.modalPresentationStyle = .fullScreen
+        controller.present(navigationController, animated: true)
     }
 #endif
 }

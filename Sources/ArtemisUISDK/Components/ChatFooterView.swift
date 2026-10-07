@@ -18,6 +18,8 @@ struct ChatFooterView: View {
             .accessibilityLabel("Add attachment")
             .foregroundStyle(Color(hexString: theme?.mutedTextColor))
             .disabled(!enabled)
+            .hidden()
+            .frame(width: 0)
             TextField(placeholder, text: $text)
                 .font(font.map { .custom($0, size: 16) })
                 .textFieldStyle(.plain)

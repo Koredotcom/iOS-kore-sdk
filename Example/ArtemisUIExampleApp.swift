@@ -9,18 +9,13 @@ struct ArtemisUIExampleApp: App {
 
 struct ContentView: View {
     @State private var showChat = false
+    
     // Replace these values with the host application's runtime configuration.
-//    private let configuration = SDKConfiguration(
-//        environment: "dev",
-//        connection: ConnectionConfig(projectId: "019ebab0-737a-7661-9c02-d8d416320a1c", endpoint: "https://agents-dev.kore.ai", apiKey: "pk_3721dc52d9b95534fa402c680387afee04b9c9b569a9c508"),
-//        channel: ChannelConfig(channelId: "019eee30-53a9-7961-afb1-e9303a8c989f")
-//    )
     private let configuration = SDKConfiguration(
         environment: "dev",
-        connection: ConnectionConfig(projectId: "019f1722-d26c-7b94-87c6-c7f92696b82e", endpoint: "https://agents-staging.kore.ai", apiKey: "pk_bf8b6594eaad472af132f344a10f1ef5b67aa984188c1446"),
-        channel: ChannelConfig(channelId: "019f1726-7bc7-779a-851e-5c2c69c1c635")
+        connection: ConnectionConfig(projectId: "your-project-id", endpoint: "https://runtime.example.com", apiKey: "pk_your_public_key"),
+        channel: ChannelConfig(channelId: "your-channel-id")
     )
-
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
@@ -34,10 +29,10 @@ struct ContentView: View {
                         configuration: configuration,
                         title: "Agent Chat",
                         fonts: ChatFonts(family: nil, monospaceFamily: "Menlo"),
-                        onClose: { showChat = false }
 //                        headerBuilder: { header in AnyView(ExampleChatHeader(context: header)) },
 //                        footerBuilder: { footer in AnyView(ExampleChatFooter(context: footer)) },
-//                        templateRegistry: exampleTemplateRegistry
+//                        templateRegistry: exampleTemplateRegistry,
+                        onClose: { showChat = false }
                     )
                 }
             }
