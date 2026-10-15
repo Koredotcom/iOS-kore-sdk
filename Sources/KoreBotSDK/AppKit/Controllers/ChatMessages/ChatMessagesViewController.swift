@@ -833,7 +833,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                 ttsBody = payload["speech_hint"] != nil ? payload["speech_hint"] as? String : nil
                 
                 if (type == "template") {
-                    let dictionary: NSDictionary = payload["payload"] as! NSDictionary
+                    var dictionary: [String: Any] = payload["payload"] as! [String: Any]
                     var templateType: String = dictionary["template_type"] as? String ?? ""
                     var tabledesign: String
                     
@@ -845,6 +845,15 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                         
                         if dictionary["carousel_type"] as? String ?? ""  == "stacked"{
                             templateType = "stacked"
+                        }
+                    }
+                    
+                    if templateType == "quick_replies_welcome" || templateType == "button"{
+                        if buttons_Remain_Clickable{
+                            if history{
+                                let dic = ["value": "history"]
+                                dictionary["selectedValue"] = dic
+                            }
                         }
                     }
                     

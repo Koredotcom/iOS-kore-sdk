@@ -498,12 +498,23 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 }
                 self.textLinkDetection(textLabel: bubbleView.titleLbl)
                 cell.bubbleView.drawBorder = true
-                let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
-                let secondIndexPath:NSIndexPath = NSIndexPath.init(row: 1, section: 0)
-                if firstIndexPath.isEqual(indexPath) || secondIndexPath.isEqual(indexPath) {
-                    bubbleView.maskview.isHidden = true
+               
+                if buttons_Remain_Clickable{
+                    bubbleView.updateMessage = {[weak self] (messageId, componentDesc) in
+                        self?.viewDelegate?.updateMessage(messageId: messageId ?? "", componentDesc: componentDesc ?? "")
+                    }
+                    let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                    if firstIndexPath.isEqual(indexPath) {
+                        bubbleView.maskview.isHidden = true
+                    }
                 }else{
-                    bubbleView.maskview.isHidden = false
+                    let firstIndexPath:NSIndexPath = NSIndexPath.init(row: 0, section: 0)
+                    let secondIndexPath:NSIndexPath = NSIndexPath.init(row: 1, section: 0)
+                    if firstIndexPath.isEqual(indexPath) || secondIndexPath.isEqual(indexPath) {
+                        bubbleView.maskview.isHidden = true
+                    }else{
+                        bubbleView.maskview.isHidden = false
+                    }
                 }
                 break
             case .notification:

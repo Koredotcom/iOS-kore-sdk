@@ -62,6 +62,7 @@ open class BotConnect: NSObject {
     public var resendMsgBtnTitle = "" // Resend button title; empty uses Localizable
     public var orTitle = "" // Separator between resend and delete; empty uses Localizable
     public var deleteMsgTitle = "" // Delete button title; empty uses Localizable
+    public var enableButtonClicksOnAnyPosition = false
     // MARK: - init
     public override init() {
         super.init()
@@ -165,6 +166,7 @@ open class BotConnect: NSObject {
         }
         isReconnectionBySdk = reConnectionBySDK
         isSame_PageNavigation = sendAllDeepLink
+        buttons_Remain_Clickable = enableButtonClicksOnAnyPosition
         if !isIntialiseFileUpload{
             isIntialiseFileUpload = true
             filesUpload()

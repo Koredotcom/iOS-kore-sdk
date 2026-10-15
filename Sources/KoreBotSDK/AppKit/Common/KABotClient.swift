@@ -680,7 +680,7 @@ open class KABotClient: NSObject {
                     
                     switch type {
                     case "template":
-                        if let dictionary = payload["payload"] as? [String: Any] {
+                        if var dictionary = payload["payload"] as? [String: Any] {
                             var templateType = dictionary["template_type"] as? String ?? ""
                             var tabledesign = "responsive"
                             if let value = dictionary["table_design"] as? String {
@@ -710,6 +710,15 @@ open class KABotClient: NSObject {
                             if templateType == "feedbackTemplate"{
                                 if !history{
                                     feedBackTemplateSelectedValue = ""
+                                }
+                            }
+                            
+                            if templateType == "quick_replies_welcome" || templateType == "button"{
+                                if buttons_Remain_Clickable{
+                                    if history{
+                                        let dic = ["value": "history"]
+                                        dictionary["selectedValue"] = dic
+                                    }
                                 }
                             }
                             
