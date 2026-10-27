@@ -268,9 +268,27 @@ class MessageBubbleCell : UITableViewCell {
                    self.userImageView.image = UIImage(named: "faceIcon", in: bundle, compatibleWith: nil)
                }
         
-        if (message.iconUrl != nil) {
-            if let fileUrl = URL(string: message.iconUrl!) {
-                self.senderImageView.af.setImage(withURL: fileUrl, placeholderImage: placeHolderIcon)
+        if let iconurl = message.iconUrl {
+            if let fileUrl = URL(string: iconurl) {
+                if iconurl == "Agent"{
+                    if agent_Image != nil{
+                        self.senderImageView.image = agent_Image
+                    }else if let urlStr = agent_Image_UrlString, let agentImageUrl = URL(string: urlStr){
+                        self.senderImageView.af.setImage(withURL: agentImageUrl, placeholderImage: placeHolderIcon)
+                    }else{
+                        self.senderImageView.image = UIImage(named: "agent_icon", in: bundle, compatibleWith: nil)
+                    }
+                }else{
+                    self.senderImageView.af.setImage(withURL: fileUrl, placeholderImage: placeHolderIcon)
+                }
+            }else if iconurl == "Agent"{
+                if agent_Image != nil{
+                    self.senderImageView.image = agent_Image
+                }else if let urlStr = agent_Image_UrlString, let agentImageUrl = URL(string: urlStr){
+                    self.senderImageView.af.setImage(withURL: agentImageUrl, placeholderImage: placeHolderIcon)
+                }else{
+                    self.senderImageView.image = UIImage(named: "agent_icon", in: bundle, compatibleWith: nil)
+                }
             }
         }
         NotificationCenter.default.addObserver(self, selector: #selector(MessageBubbleCell.updateImage(notification:)), name: NSNotification.Name(rawValue: updateUserImageNotification), object: nil)
@@ -1074,4 +1092,23 @@ class DigitalFormBubbleCel : MessageBubbleCell {
         self.senderImageView.isHidden = true
     }
 }
-
+class ButtonLinkBubbleVCell : MessageBubbleCell {
+    override func bubbleType() -> ComponentType {
+        return .buttonLinkTemplate
+    }
+    
+    override var tailPosition: BubbleMaskTailPosition {
+        didSet {
+            self.bubbleLeadingConstraint.constant = defaultSpacing
+            self.bubbleTrailingConstraint.constant = defaultSpacing
+            self.bubbleTrailingConstraint.priority = UILayoutPriority.defaultHigh
+            
+            self.dateLabelLeadingConstraint.constant = defaultDateSpacing
+        }
+        
+    }
+    override func configureWithComponents(_ components: Array<KREComponent>) {
+        super.configureWithComponents(components)
+        self.senderImageView.isHidden = true
+    }
+}

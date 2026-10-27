@@ -29,6 +29,7 @@ var tokenExipryNotification = "TokenExpiryNotification"
 var activityViewControllerNotification = "ActivityViewControllerNotificationName"
 /// Posted when a streaming message chunk is applied; userInfo["messageId"] = messageId. Reload that row to show text one-by-one.
 var streamingMessageDidUpdateNotification = "StreamingMessageDidUpdateNotification"
+var deepLinkNotification = "DeepLinkNotification"
 
 var isSpeakingEnabled = false
 
@@ -54,6 +55,9 @@ var calenderCloseTag = true
 
 var isShowComposeMenuBtn = false
 var isShowComposeAttachmentBtn = true
+
+var agent_Image: UIImage? = nil
+var agent_Image_UrlString: String? = nil
 
 var regularCustomFont = "HelveticaNeue"
 var mediumCustomFont = "HelveticaNeue-Medium"
@@ -443,6 +447,9 @@ open class Utilities: NSObject {
                     return .audio
         }else if templateType == "digitalForm"{
             return .digital_form
+        }
+        else if (templateType == "buttonLinkTemplate"){
+            return .buttonLinkTemplate
         }
         return .noTemplate
     }

@@ -33,6 +33,8 @@ open class BotConnect: NSObject {
     public var confirm_Title = ""
     public var please_Try_Again = ""
     public var sessionExpiry_Msg = ""
+    public var agentImage: UIImage? = nil
+    public var agentImageUrlString: String? = nil
     var botViewController:ChatMessagesViewController!
     
     // MARK: - init
@@ -84,6 +86,8 @@ open class BotConnect: NSObject {
         loadCustomFonts()
         laguageSettings()
         isCallingHistoryApi = true
+        agent_Image = agentImage
+        agent_Image_UrlString = agentImageUrlString
         if !isIntialiseFileUpload{
             isIntialiseFileUpload = true
             filesUpload()

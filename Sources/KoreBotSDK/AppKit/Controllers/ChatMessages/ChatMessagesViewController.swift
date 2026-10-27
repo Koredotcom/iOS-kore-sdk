@@ -608,6 +608,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             return .audio
         }else if templateType == "digitalForm"{
             return .digital_form
+        }
+        else if (templateType == "buttonLinkTemplate"){
+            return .buttonLinkTemplate
         }else if templateType == "text"{
             return .text
         }
@@ -630,6 +633,10 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             message.iconUrl = object?.iconUrl
         }else{
             message.iconUrl = botHistoryIcon
+        }
+        
+        if let fromAgent = object?.fromAgent, fromAgent == true{
+            message.iconUrl = "Agent"
         }
         
         if (webViewController != nil) {
@@ -984,6 +991,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(aAdvancedMultiSelectAction), name: NSNotification.Name(rawValue: advancedMultiSelectTemplateNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showActivityViewController), name: NSNotification.Name(rawValue: activityViewControllerNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(streamingMessageDidUpdate(_:)), name: NSNotification.Name(rawValue: streamingMessageDidUpdateNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deepLinkNotificationAction), name: NSNotification.Name(rawValue: deepLinkNotification), object: nil)
 
     }
     
@@ -1017,7 +1025,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: advancedMultiSelectTemplateNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: activityViewControllerNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: streamingMessageDidUpdateNotification), object: nil)
-
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: deepLinkNotification), object: nil)
     }
     
     // MARK: notification handlers
@@ -2019,7 +2027,16 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         botMessagesView?.reloadRowForMessageId(messageId, streamingText: streamingText)
     }
 
-    
+    @objc func deepLinkNotificationAction(notification:Notification) {
+        if let message = notification.object as? String {
+            let dic: [String: Any] = ["event_code": "DeepLinkClicked", "event_message": message, "event_reason": 9]
+            if self.closeAndMinimizeEvent != nil{
+                self.closeAndMinimizeEvent(dic)
+            }
+            isAgentConnect = false
+            self.botClosed()
+        }
+    }
     // MARK: -
     public func maximizePanelWindow() {
         
@@ -2116,7 +2133,9 @@ extension ChatMessagesViewController {
                 botMessage.createdOn = message.createdOn
                 botMessage.messageId = message.messageId
                 botMessage.type = message.type
-                
+                if let isA = message.isA {
+                    botMessage.fromAgent = isA
+                }
                 let messageModel: MessageModel = MessageModel()
                 let componentModel: ComponentModel = ComponentModel()
                 if jsonString.contains("payload"), let jsonObject: [String: Any] = Utilities.jsonObjectFromString(jsonString: jsonString) as? [String : Any] {

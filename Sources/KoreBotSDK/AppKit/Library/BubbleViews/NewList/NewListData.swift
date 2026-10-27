@@ -133,6 +133,9 @@ public class ComponentElements: NSObject, Decodable {
     public var updatedOn : String?
     public var iconStr : String?
     public var elementButton: ComponentItemAction?
+    public var isSamePageNavigation : Bool?
+    public var elementType: String?
+    public var elementUrl: String?
     
     enum ColorCodeKeys: String, CodingKey {
         case color = "color"
@@ -154,6 +157,9 @@ public class ComponentElements: NSObject, Decodable {
         case updatedOn = "updatedOn"
         case iconStr = "icon"
         case elementButton = "button"
+        case isSamePageNavigation = "isSamePageNavigation"
+        case elementType = "type"
+        case elementUrl = "url"
     }
     
     // MARK: - init
@@ -188,6 +194,9 @@ public class ComponentElements: NSObject, Decodable {
         updatedOn = try? container.decode(String.self, forKey: .updatedOn)
         iconStr = try? container.decode(String.self, forKey: .iconStr)
         elementButton = try? container.decode(ComponentItemAction.self, forKey: .elementButton)
+        isSamePageNavigation = try? container.decode(Bool.self, forKey: .isSamePageNavigation)
+        elementType = try? container.decode(String.self, forKey: .elementType)
+        elementUrl = try? container.decode(String.self, forKey: .elementUrl)
     }
 }
 

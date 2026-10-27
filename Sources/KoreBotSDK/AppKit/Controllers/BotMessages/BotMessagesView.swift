@@ -112,6 +112,7 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
         self.tableView.register(AnswerBubbleCell.self, forCellReuseIdentifier:"AnswerBubbleCell")
         self.tableView.register(OTPorResetBubbleCell.self, forCellReuseIdentifier:"OTPorResetBubbleCell")
         self.tableView.register(DigitalFormBubbleCel.self, forCellReuseIdentifier:"DigitalFormBubbleCel")
+        self.tableView.register(ButtonLinkBubbleVCell.self, forCellReuseIdentifier:"ButtonLinkBubbleVCell")
     }
     
     override func layoutSubviews() {
@@ -275,6 +276,9 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 cellIdentifier = "OTPorResetBubbleCell"
             case .digital_form:
                 cellIdentifier = "DigitalFormBubbleCel"
+            case .buttonLinkTemplate:
+                cellIdentifier = "ButtonLinkBubbleVCell"
+                break
             case .noTemplate:
                 cellIdentifier = "EmptyBubbleViewCell"
             }
@@ -653,6 +657,13 @@ class BotMessagesView: UIView, UITableViewDelegate, UITableViewDataSource, KREFe
                 bubbleView.optionsAction = {[weak self] (text, payload) in
                     self?.viewDelegate?.optionsButtonTapNewAction(text: text!, payload: payload ?? text!)
                 }
+                bubbleView.linkAction = {[weak self] (text) in
+                    self?.viewDelegate?.linkButtonTapAction(urlString: text!)
+                }
+                break
+            case .buttonLinkTemplate:
+                let bubbleView: ButtonLinkNBubbleView = cell.bubbleView as! ButtonLinkNBubbleView
+                cell.bubbleView.drawBorder = true
                 bubbleView.linkAction = {[weak self] (text) in
                     self?.viewDelegate?.linkButtonTapAction(urlString: text!)
                 }

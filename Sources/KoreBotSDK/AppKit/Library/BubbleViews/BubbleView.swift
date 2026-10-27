@@ -225,6 +225,9 @@ open class BubbleView: UIView {
             case .digital_form:
                 bubbleView = DigitalFormBubbleView()
                 break
+            case .buttonLinkTemplate:
+                 bubbleView = ButtonLinkNBubbleView()
+                 break
             case .noTemplate:
                 bubbleView = EmptyBubbleView()
                 break
