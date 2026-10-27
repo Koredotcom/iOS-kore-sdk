@@ -324,10 +324,11 @@ open class KABotClient: NSObject {
                 if let type = message["type"] as? String{
                     if type == "typing"{
                         NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
-                    }else if type == "call_agent_webrtc"{
-                        //callFromAgentData = message
+                    }else if ["call_agent_webrtc", "cancel_agent_webrtc", "terminate_agent_webrtc"].contains(type){
                         let jsonStr = Utilities.stringFromJSONObject(object: message)
-                        NotificationCenter.default.post(name: Notification.Name(callFromAgentNotification), object: jsonStr)
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: Notification.Name(callFromAgentNotification), object: jsonStr)
+                        }
                     } else{
                         NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
                     }

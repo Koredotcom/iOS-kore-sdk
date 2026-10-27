@@ -4034,14 +4034,18 @@ extension ChatMessagesViewController: inComingCallDelegate{
     }
     
     @objc func callFromAgent(notification:Notification){
-        view.endEditing(true) //KeyBoard Hide
-        guard agentCallMediaController == nil,
-            let dataString = notification.object as? String
+        guard let dataString = notification.object as? String,
+              let receivedData = Utilities.jsonObjectFromString(jsonString: dataString) as? [String: Any]
         else { return }
-        if let agentCallData = Utilities.jsonObjectFromString(jsonString: dataString){
-            callFromAgentData = agentCallData as? [String : Any]
+        let callData = receivedData["message"] as? [String: Any] ?? receivedData
+        if ["cancel_agent_webrtc", "terminate_agent_webrtc"].contains(callData["type"] as? String ?? "") {
+            incomingCallContainerView.isHidden = true
+            callFromAgentData = nil
+            return
         }
-        guard let callData = callFromAgentData else { return }
+        guard agentCallMediaController == nil else { return }
+        view.endEditing(true) //KeyBoard Hide
+        callFromAgentData = callData
         incomingCallContainerView.isHidden = false
         var imageStr = ""
         var nameStr = ""
