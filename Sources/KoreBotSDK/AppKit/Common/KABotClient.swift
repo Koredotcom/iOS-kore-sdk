@@ -36,6 +36,15 @@ open class KABotClient: NSObject {
     fileprivate var botClientQueue = DispatchQueue(label: "com.kora.botclient")
     public var canSpeakUtterance: Bool = false
     open var onCarouselMsgReceived: (( _ knowledgeArr : Array<Any>) -> Void)!
+    /// Called whenever the RTM socket opens, including reconnects.
+    open var onRTMConnectionDidOpen: (() -> Void)? {
+        didSet {
+            guard isConnected, let callback = onRTMConnectionDidOpen else { return }
+            DispatchQueue.main.async(execute: callback)
+        }
+    }
+    /// Receives raw RTM event envelopes before the SDK handles them.
+    open var onRTMEvent: (([String: Any]) -> Void)?
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
     private static var instance: KABotClient!
@@ -207,6 +216,7 @@ open class KABotClient: NSObject {
         botClient.connectionDidOpen = { [weak self] () in
             self?.isConnected = true
             self?.isConnecting = false
+            self?.onRTMConnectionDidOpen?()
             if !SDKConfiguration.botConfig.isWebhookEnabled{
                 //self?.sendMessage("Welpro", options: nil)
                 //NotificationCenter.default.post(name: Notification.Name("StartTyping"), object: nil)
@@ -309,6 +319,7 @@ open class KABotClient: NSObject {
             
         }
         botClient.onUserMessageReceived = {  (object) in
+            self.onRTMEvent?(object)
             if let message = object["message"] as? [String:Any]{
                 if let type = message["type"] as? String{
                     if type == "typing"{

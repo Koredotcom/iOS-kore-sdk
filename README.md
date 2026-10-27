@@ -141,6 +141,14 @@ botConnect.audioCodesSDKURL = "https://runtime.example.com/path/ac_webrtc-1.19.0
 
 The incoming `call_agent_webrtc` message must provide `sipURI`, `addresses`, and `domain`; `iceServers` is optional. The SDK authenticates the AudioCodes registration with the Kore user ID from the connected session, then calls the user from `sipURI`. Video calls send the same `X-botName`, `X-cId`, and `X-isVideoCall` SIP headers as the web SDK. The Runtime/SBC must allow the device to connect over secure WebSocket and WebRTC media. SIP call data is omitted from the call response messages.
 
+To enable the branded click-to-call button, set the flow ID on `BotConnect` before presenting the chat, and turn on `footer.buttons.click_to_call.show` in branding. Click-to-call uses the `botId` already supplied to `initialize` as its task bot:
+
+```swift
+botConnect.clickToCallFlowId = "<click-to-call-flow-id>"
+```
+
+The button becomes available after the RTM session is active and the Runtime returns SBC details. Continuing sends the web SDK's `close_agent_chat` event and starts an AudioCodes voice call with the call-flow and RTM headers. The native SDK uses the configured `BOTServerUrl` as the `X-RTM-URL` value because an iOS app has no browser page URL.
+
 ###### c. Add below permissions in info.plist
         Privacy - Camera Usage Description         ---      Allow access to camera.
         Privacy - Microphone Usage Description     ---      Allow access to microphone.

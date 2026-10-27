@@ -22,6 +22,7 @@ protocol ComposeBarViewDelegate {
 class ComposeBarView: UIView {
     let bundle = Bundle.sdkModule
     public var delegate: ComposeBarViewDelegate?
+    public var clickToCallAction: (() -> Void)?
     fileprivate var topLineView: UIView!
     fileprivate var bottomLineView: UIView!
     public var growingTextView: KREGrowingTextView!
@@ -29,6 +30,7 @@ class ComposeBarView: UIView {
     fileprivate var menuButton: UIButton!
     fileprivate var attachmentButton: UIButton!
     fileprivate var speechToTextButton: UIButton!
+    fileprivate var clickToCallButton: UIButton!
     fileprivate var textViewTrailingConstraint: NSLayoutConstraint!
     fileprivate(set) public var isKeyboardEnabled: Bool = false
     var isHideSpeeachToTextBtn = false
@@ -145,6 +147,25 @@ class ComposeBarView: UIView {
         self.attachmentButton.contentEdgeInsets = UIEdgeInsets(top: 9.0, left: 3.0, bottom: 7.0, right: 3.0)
         self.attachmentButton.clipsToBounds = true
         self.addSubview(self.attachmentButton)
+
+        let clickToCallWidth = footerDic.buttons?.click_to_call?.show == true ? 30 : 0
+        self.clickToCallButton = UIButton(type: .system)
+        self.clickToCallButton.translatesAutoresizingMaskIntoConstraints = false
+        self.clickToCallButton.backgroundColor = .clear
+        self.clickToCallButton.accessibilityLabel = "Call a voice agent"
+        self.clickToCallButton.addTarget(self, action: #selector(clickToCallButtonAction), for: .touchUpInside)
+        self.clickToCallButton.isHidden = clickToCallWidth == 0
+        self.clickToCallButton.isEnabled = false
+        if let icon = footerDic.buttons?.click_to_call?.icon,
+           !icon.isEmpty, let image = UIImage(named: icon, in: bundle, compatibleWith: nil) {
+            self.clickToCallButton.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
+        } else if #available(iOS 13.0, *) {
+            self.clickToCallButton.setImage(UIImage(systemName: "phone.fill"), for: .normal)
+        } else {
+            self.clickToCallButton.setTitle("☎", for: .normal)
+        }
+        self.clickToCallButton.imageView?.contentMode = .scaleAspectFit
+        self.addSubview(self.clickToCallButton)
         
         self.topLineView = UIView.init(frame: CGRect.zero)
         self.topLineView.backgroundColor = .clear
@@ -156,7 +177,7 @@ class ComposeBarView: UIView {
         self.bottomLineView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.bottomLineView)
         
-        let views: [String : Any] = ["topLineView": self.topLineView as Any, "bottomLineView": self.bottomLineView as Any,"menuButton": self.menuButton as Any, "growingTextView": self.growingTextView as Any, "sendButton": self.sendButton as Any, "speechToTextButton": self.speechToTextButton as Any, "attachmentButton": attachmentButton as Any]
+        let views: [String : Any] = ["topLineView": self.topLineView as Any, "bottomLineView": self.bottomLineView as Any,"menuButton": self.menuButton as Any, "growingTextView": self.growingTextView as Any, "sendButton": self.sendButton as Any, "speechToTextButton": self.speechToTextButton as Any, "attachmentButton": attachmentButton as Any, "clickToCallButton": clickToCallButton as Any]
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[topLineView]|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[topLineView(0.5)]", options:[], metrics:nil, views:views))
@@ -164,12 +185,15 @@ class ComposeBarView: UIView {
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[bottomLineView(0.5)]|", options:[], metrics:nil, views:views))
         
 
-         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[menuButton(\(menuBtnWidth))]-2-[attachmentButton(\(attachmentBtnWidth))]-5-[growingTextView]-8-[sendButton(35)]-8-|", options:[], metrics:nil, views:views))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[attachmentButton]-5-[growingTextView]-8-[speechToTextButton(\(speeachToTextBtnWidth))]-13-|", options:[], metrics:nil, views:views))
+        let callToTextSpacing = clickToCallWidth > 0 ? 5 : 0
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[menuButton(\(menuBtnWidth))]-2-[attachmentButton(\(attachmentBtnWidth))]-5-[clickToCallButton(\(clickToCallWidth))]-\(callToTextSpacing)-[growingTextView]-8-[sendButton(35)]-8-|", options:[], metrics:nil, views:views))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[attachmentButton]-5-[clickToCallButton(\(clickToCallWidth))]-\(callToTextSpacing)-[growingTextView]-8-[speechToTextButton(\(speeachToTextBtnWidth))]-13-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-7-[growingTextView]-7-|", options:[], metrics:nil, views:views))
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[sendButton]-6-|", options:[], metrics:nil, views:views))
          self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[menuButton]-6-|", options:[], metrics:nil, views:views))
          self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|->=6-[attachmentButton(25)]-10-|", options:[], metrics:nil, views:views))
+        self.addConstraint(NSLayoutConstraint.init(item: clickToCallButton as Any, attribute: .centerY, relatedBy: .equal, toItem: growingTextView as Any, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint.init(item: clickToCallButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 30.0))
         self.addConstraint(NSLayoutConstraint.init(item: self.sendButton as Any, attribute: .centerY, relatedBy: .equal, toItem: self.speechToTextButton as Any, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         self.addConstraint(NSLayoutConstraint.init(item: self.sendButton as Any, attribute: .height, relatedBy: .equal, toItem: self.speechToTextButton as Any, attribute: .height, multiplier: 1.0, constant: 0.0))
         self.speechToTextButton.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .horizontal)
@@ -181,6 +205,21 @@ class ComposeBarView: UIView {
         self.addConstraint(self.textViewTrailingConstraint)
         
         self.setButtonIconColor()
+    }
+
+    func setClickToCallAvailability(_ available: Bool) {
+        guard footerDic.buttons?.click_to_call?.show == true else {
+            clickToCallButton.isHidden = true
+            clickToCallButton.isEnabled = false
+            return
+        }
+        clickToCallButton.isHidden = false
+        clickToCallButton.isEnabled = available
+        clickToCallButton.alpha = available ? 1.0 : 0.45
+    }
+
+    @objc private func clickToCallButtonAction() {
+        clickToCallAction?()
     }
     
     func setButtonIconColor(){
@@ -204,6 +243,7 @@ class ComposeBarView: UIView {
         let tintedSpeachTxtImageImage = speachTxtImage?.withRenderingMode(.alwaysTemplate)
         speechToTextButton.setImage(tintedSpeachTxtImageImage, for: .normal)
         speechToTextButton.tintColor = UIColor.init(hexString: footerIconColor)
+        clickToCallButton.tintColor = UIColor.init(hexString: footerIconColor)
         
         
         let menuImage = UIImage(named: "Menu", in: bundle, compatibleWith: nil)

@@ -38,6 +38,8 @@ open class BotConnect: NSObject {
     /// Optional absolute URL for a self-hosted AudioCodes WebRTC JavaScript client.
     /// When unset, the SDK loads the versioned client from BOTServerUrl.
     public var audioCodesSDKURL: String? = nil
+    /// Click-to-call flow ID configured for the contact-center voice flow.
+    public var clickToCallFlowId: String? = nil
     var botViewController:ChatMessagesViewController!
     
     // MARK: - init
@@ -81,6 +83,7 @@ open class BotConnect: NSObject {
     func customSettings(){
         isNetworkOnResumeCallingHistory = networkOnResumeCallingHistory
         SDKConfiguration.serverConfig.AUDIOCODES_SDK_URL = audioCodesSDKURL
+        SDKConfiguration.botConfig.clickToCallFlowId = clickToCallFlowId
         SDKConfiguration.botConfig.deviceToken = device_Token
         isShowQuickRepliesBottom = showQuickRepliesBottom
         close_AgentChat_EventName = closeAgentChatEventName

@@ -128,6 +128,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     private var agentCallOverlayView: UIView?
     private var agentCallPreviousViewBackgroundColor: UIColor?
     private var agentCallWasAccepted = false
+    private var clickToCallSessionId: String?
+    private var clickToCallServerConfig: [String: Any]?
+    private var activeCallUsesClickToCall = false
     var appDisplayName = "Kore Bot SDK"
     var isAppEnterBackground = false
     public var closeAndMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
@@ -381,6 +384,86 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         self.composeBarContainerHeightConstraint = NSLayoutConstraint.init(item: self.composeBarContainerView as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.0)
         self.view.addConstraint(self.composeBarContainerHeightConstraint)
     }
+
+    private func configureClickToCall() {
+        composeView.clickToCallAction = { [weak self] in
+            self?.confirmClickToCall()
+        }
+        updateClickToCallButtonAvailability()
+        if botClient?.connectionState == .CONNECTED {
+            requestClickToCallServerDetails()
+        }
+    }
+
+    private func configureClickToCallRTMObservers() {
+        kaBotClient.onRTMEvent = { [weak self] event in
+            DispatchQueue.main.async {
+                self?.handleClickToCallRTMEvent(event)
+            }
+        }
+        kaBotClient.onRTMConnectionDidOpen = { [weak self] in
+            self?.requestClickToCallServerDetails()
+        }
+    }
+
+    private func requestClickToCallServerDetails() {
+        guard brandingValues.footer?.buttons?.click_to_call?.show == true else { return }
+        botClient?.sendBotEventMessage(body: "", eventName: "sbc_details_request")
+    }
+
+    private func handleClickToCallRTMEvent(_ event: [String: Any]) {
+        let nestedEvents = nestedDictionaries(in: event)
+        for payload in nestedEvents {
+            guard let type = payload["type"] as? String else { continue }
+            if type == "Session_Start", let sessionId = stringValue(payload["sessionId"]) {
+                clickToCallSessionId = sessionId
+            } else if type == "Bot_Active",
+                      let recentSession = payload["recentSessionInfo"] as? [String: Any],
+                      recentSession["isActive"] as? Bool == true,
+                      let sessionId = stringValue(recentSession["sessionId"]) {
+                clickToCallSessionId = sessionId
+            } else if type == "sbc_details_response",
+                      let serverConfig = payload["responseData"] as? [String: Any],
+                      !Self.stringArray(serverConfig["addresses"]).isEmpty,
+                      stringValue(serverConfig["domain"]) != nil {
+                clickToCallServerConfig = serverConfig
+            }
+        }
+        updateClickToCallButtonAvailability()
+    }
+
+    private func nestedDictionaries(in value: Any) -> [[String: Any]] {
+        if let dictionary = value as? [String: Any] {
+            return [dictionary] + dictionary.values.flatMap { nestedDictionaries(in: $0) }
+        }
+        if let array = value as? [Any] {
+            return array.flatMap { nestedDictionaries(in: $0) }
+        }
+        return []
+    }
+
+    private func stringValue(_ value: Any?) -> String? {
+        guard let string = value as? String else { return nil }
+        let result = string.trimmingCharacters(in: .whitespacesAndNewlines)
+        return result.isEmpty ? nil : result
+    }
+
+    private static func stringArray(_ value: Any?) -> [String] {
+        (value as? [String] ?? []).filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    }
+
+    private func updateClickToCallButtonAvailability() {
+        let configured = stringValue(SDKConfiguration.botConfig.clickToCallFlowId) != nil
+            && stringValue(SDKConfiguration.botConfig.botId) != nil
+        let hasIdentity = stringValue(botClient?.userInfoModel?.userId) != nil
+        let isAvailable = brandingValues.footer?.buttons?.click_to_call?.show == true
+            && clickToCallServerConfig != nil
+            && clickToCallSessionId != nil
+            && configured
+            && hasIdentity
+            && agentCallMediaController == nil
+        composeView?.setClickToCallAvailability(isAvailable)
+    }
     
     func configureAudioComposer()  {
         self.audioComposeView = AudioComposeView()
@@ -519,6 +602,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         
         kaBotClient = KABotClient()
         kaBotClient.delegate = self
+        configureClickToCallRTMObservers()
         
         self.typingStatusView = KRETypingStatusView()
         self.typingStatusView?.isHidden = true
@@ -2871,6 +2955,7 @@ extension ChatMessagesViewController{
         
         self.configureThreadView()
         self.configureComposeBar()
+        self.configureClickToCall()
         self.configureAudioComposer()
         self.configureIncomingCallView()
         subscribeNotifications()
@@ -3739,6 +3824,126 @@ extension ChatMessagesViewController: inComingCallDelegate{
         let screenTopConstraint = UIScreen.main.bounds.height/2 - inComingCallViewHeight
         self.incomingCallContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-\(screenTopConstraint)-[inComingCallView]|", options:[], metrics:nil, views:["inComingCallView" : self.inComingCallView!]))
     }
+
+    private func confirmClickToCall() {
+        guard agentCallMediaController == nil else { return }
+        guard clickToCallServerConfig != nil else {
+            showAgentCallError("Click-to-call is still connecting. Please try again shortly.")
+            return
+        }
+        let confirmation = UIAlertController(
+            title: "Connect to Voice Agent?",
+            message: "Your current conversation will end before connecting you to a live voice agent. Do you want to continue?",
+            preferredStyle: .alert)
+        confirmation.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        confirmation.addAction(UIAlertAction(title: "Continue", style: .default) { [weak self] _ in
+            self?.startClickToCall()
+        })
+        present(confirmation, animated: true)
+    }
+
+    private func startClickToCall() {
+        guard #available(iOS 15.0, *) else {
+            showAgentCallError("AudioCodes voice calls require iOS 15 or later.")
+            return
+        }
+        guard agentCallMediaController == nil,
+              let serverConfig = clickToCallServerConfig,
+              let sessionId = clickToCallSessionId,
+              let userId = stringValue(botClient?.userInfoModel?.userId),
+              let flowId = stringValue(SDKConfiguration.botConfig.clickToCallFlowId),
+              let botId = stringValue(SDKConfiguration.botConfig.botId)
+        else {
+            showAgentCallError("Click-to-call is not fully configured. Check the call-flow ID, bot ID, and RTM session.")
+            return
+        }
+
+        botClient?.sendBotEventMessage(
+            body: "",
+            eventName: "close_agent_chat",
+            messageType: "click_to_call",
+            additionalFields: ["isClickToCallEnabled": true])
+
+        do {
+            let controller = try AudioCodesCallMediaController(
+                runtimeURL: SDKConfiguration.serverConfig.BOT_SERVER,
+                scriptURLOverride: SDKConfiguration.serverConfig.AUDIOCODES_SDK_URL)
+            agentCallMediaController = controller
+            updateClickToCallButtonAvailability()
+            agentCallWasAccepted = false
+            activeCallUsesClickToCall = true
+            configureAgentCallOverlay(
+                controller: controller,
+                callData: ["firstName": "Live voice agent"],
+                isVideo: false,
+                clickToCall: true)
+            controller.onEvent = { [weak self, weak controller] event in
+                DispatchQueue.main.async {
+                    guard let strongSelf = self, let activeController = controller,
+                        strongSelf.agentCallMediaController === activeController else { return }
+                    switch event {
+                    case .ready, .connected:
+                        break
+                    case .terminated:
+                        strongSelf.finishAgentCall(responseType: nil, reason: nil)
+                    case .failed(let message):
+                        strongSelf.finishAgentCall(responseType: nil, reason: message)
+                        strongSelf.showAgentCallError(message)
+                    case .muteChanged(let muted):
+                        activeController.setMuted(muted)
+                    case .cameraChanged(let enabled):
+                        activeController.setCameraEnabled(enabled)
+                    case .endRequested:
+                        strongSelf.endAgentCall()
+                    }
+                }
+            }
+            controller.waitUntilReady { [weak self, weak controller] readinessError in
+                DispatchQueue.main.async {
+                    guard let strongSelf = self, let activeController = controller,
+                        strongSelf.agentCallMediaController === activeController else { return }
+                    if let error = readinessError {
+                        strongSelf.finishAgentCall(responseType: nil, reason: error.localizedDescription)
+                        strongSelf.showAgentCallError(error.localizedDescription)
+                    } else {
+                        activeController.requestPermissions(forVideo: false) { [weak self, weak controller] permissionResult in
+                            DispatchQueue.main.async {
+                                guard let strongSelf = self, let activeController = controller,
+                                    strongSelf.agentCallMediaController === activeController else { return }
+                                if let error = permissionResult {
+                                    strongSelf.finishAgentCall(responseType: nil, reason: error.localizedDescription)
+                                    strongSelf.showAgentCallError(error.localizedDescription)
+                                    return
+                                }
+                                let serverURL = SDKConfiguration.serverConfig.BOT_SERVER
+                                let rtmURL = serverURL.hasSuffix("/") ? serverURL : serverURL + "/"
+                                let headers = [
+                                    "X-CALLFLOW-ID: \(flowId)",
+                                    "X-CALLFLOW-STATE: published",
+                                    "X-RTM-SESSION-ID: \(sessionId)",
+                                    "X-RTM-USER-ID: \(userId)",
+                                    "X-RTM-URL: \(rtmURL)",
+                                ]
+                                do {
+                                    try activeController.startClickToCall(
+                                        serverConfig: serverConfig,
+                                        sipIdentity: userId,
+                                        botId: botId,
+                                        headers: headers)
+                                } catch {
+                                    strongSelf.finishAgentCall(responseType: nil, reason: error.localizedDescription)
+                                    strongSelf.showAgentCallError(error.localizedDescription)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch {
+            activeCallUsesClickToCall = false
+            showAgentCallError(error.localizedDescription)
+        }
+    }
     
     func acceptCallIncomingCall() {
         guard let callData = callFromAgentData else {
@@ -3756,6 +3961,7 @@ extension ChatMessagesViewController: inComingCallDelegate{
                 scriptURLOverride: SDKConfiguration.serverConfig.AUDIOCODES_SDK_URL)
             let isVideo = callData["videoCall"] as? Bool == true || callData["callType"] as? String == "video"
             agentCallMediaController = controller
+            updateClickToCallButtonAvailability()
             agentCallWasAccepted = false
             incomingCallContainerView.isHidden = true
             configureAgentCallOverlay(controller: controller, callData: callData, isVideo: isVideo)
@@ -3850,7 +4056,8 @@ extension ChatMessagesViewController: inComingCallDelegate{
     }
 
     private func configureAgentCallOverlay(
-        controller: AudioCodesCallMediaController, callData: [String: Any], isVideo: Bool
+        controller: AudioCodesCallMediaController, callData: [String: Any], isVideo: Bool,
+        clickToCall: Bool = false
     ) {
         let overlay = UIView()
         overlay.translatesAutoresizingMaskIntoConstraints = false
@@ -3867,9 +4074,10 @@ extension ChatMessagesViewController: inComingCallDelegate{
         agentCallOverlayView = overlay
 
         let mediaView = controller.makeWebView(
-            agentName: callData["firstName"] as? String ?? "Agent",
+            agentName: callData["firstName"] as? String ?? (clickToCall ? "Live voice agent" : "Agent"),
             profileIcon: callData["profileIcon"] as? String,
-            videoCall: isVideo)
+            videoCall: isVideo,
+            clickToCall: clickToCall)
         mediaView.translatesAutoresizingMaskIntoConstraints = false
         overlay.addSubview(mediaView)
         NSLayoutConstraint.activate([
@@ -3915,7 +4123,9 @@ extension ChatMessagesViewController: inComingCallDelegate{
     }
 
     private func finishAgentCall(responseType: String?, reason: String?) {
-        if let responseType = responseType { sendAgentCallResponse(type: responseType, reason: reason) }
+        if !activeCallUsesClickToCall, let responseType = responseType {
+            sendAgentCallResponse(type: responseType, reason: reason)
+        }
         agentCallMediaController?.stopCall()
         agentCallMediaController = nil
         agentCallOverlayView?.removeFromSuperview()
@@ -3925,8 +4135,10 @@ extension ChatMessagesViewController: inComingCallDelegate{
         }
         agentCallPreviousViewBackgroundColor = nil
         agentCallWasAccepted = false
+        activeCallUsesClickToCall = false
         callFromAgentData = nil
         incomingCallContainerView.isHidden = true
+        updateClickToCallButtonAvailability()
     }
 
     private func showAgentCallError(_ message: String) {

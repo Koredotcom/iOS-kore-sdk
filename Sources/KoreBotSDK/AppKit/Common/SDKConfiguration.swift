@@ -43,6 +43,7 @@ class SDKConfiguration: NSObject {
         static var isShowChatHistory = true // Set true to Show chat history or false hide chat history.
         
         public static var deviceToken:Data? =  nil
+        public static var clickToCallFlowId: String? = nil // Click-to-call
     }
     
     struct serverConfig {

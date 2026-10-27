@@ -375,12 +375,21 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
 
     /// Sends a bot event in the same envelope used by the web SDK's sendMessage API.
     open func sendBotEventMessage(_ body: [String: Any]) {
+        sendBotEventMessage(body: body, eventName: "event")
+    }
+
+    open func sendBotEventMessage(
+        body: Any,
+        eventName: String,
+        messageType: String = "",
+        additionalFields: [String: Any] = [:]
+    ) {
         guard isConnected, let websocket = websocket else { return }
 
-        let message: [String: Any] = ["body": body, "type": ""]
+        let message: [String: Any] = ["body": body, "type": messageType]
         let messageId = Constants.getUUID()
         var event: [String: Any] = [
-            "event": "event",
+            "event": eventName,
             "message": message,
             "resourceid": "/bot.message",
             "client": "iOS",
@@ -388,6 +397,7 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
             "clientMessageId": messageId,
             "meta": ["timezone": TimeZone.current.identifier, "locale": Locale.current.identifier],
         ]
+        additionalFields.forEach { event[$0.key] = $0.value }
         if let botInfoParameters = botInfoParameters {
             event["botInfo"] = botInfoParameters
         }

@@ -481,6 +481,7 @@ public class Buttons: NSObject , Decodable {
     public var emoji : Emoji?
     public var microphone : Microphone?
     public var attachment : Attachment?
+    public var click_to_call: Close?
     
     enum CodingKeys: String, CodingKey {
         case title = "title"
@@ -496,6 +497,7 @@ public class Buttons: NSObject , Decodable {
         case emoji = "emoji"
         case microphone = "microphone"
         case attachment = "attachment"
+        case click_to_call = "click_to_call"
     }
     // MARK: - init
     public override init() {
@@ -517,6 +519,7 @@ public class Buttons: NSObject , Decodable {
         emoji = try? container.decode(Emoji.self, forKey: .emoji)
         microphone = try? container.decode(Microphone.self, forKey: .microphone)
         attachment = try? container.decode(Attachment.self, forKey: .attachment)
+        click_to_call = try? container.decode(Close.self, forKey: .click_to_call)
     }
     
     public func updateWith(configModel: Buttons) -> Buttons{
@@ -532,6 +535,9 @@ public class Buttons: NSObject , Decodable {
         self.emoji = configModel.emoji != nil ? emoji?.updateWith(configModel: configModel.emoji!) : emoji
         self.microphone = configModel.microphone != nil ? microphone?.updateWith(configModel: configModel.microphone!) : microphone
         self.attachment = configModel.attachment != nil ? attachment?.updateWith(configModel: configModel.attachment!) : attachment
+        if let clickToCall = configModel.click_to_call {
+            self.click_to_call = self.click_to_call?.updateWith(configModel: clickToCall) ?? clickToCall
+        }
         return self
     }
 
