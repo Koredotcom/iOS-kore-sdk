@@ -129,6 +129,18 @@ Enable the webhook channel - This should be either true (in case of Webhook conn
         // MARK: Show Bot window
         botConnect.show()
         
+### Audio and video calls with an agent
+
+The SDK handles `call_agent_webrtc` invitations with the AudioCodes WebRTC client in a `WKWebView`. Calls require iOS 15 or later, an HTTPS Runtime URL, and microphone access. Video calls also require camera access. Apps that embed this SDK must declare `NSMicrophoneUsageDescription` and `NSCameraUsageDescription` in their own `Info.plist`.
+
+The SDK bundles AudioCodes WebRTC v1.19.0 from the web SDK's `agentDesktop` plugin, so calls do not depend on a Runtime asset route. If your deployment hosts a different compatible build, set the optional override on `BotConnect` before showing the chat:
+
+```swift
+botConnect.audioCodesSDKURL = "https://runtime.example.com/path/ac_webrtc-1.19.0.min.js"
+```
+
+The incoming `call_agent_webrtc` message must provide `sipURI`, `addresses`, and `domain`; `iceServers` is optional. The SDK authenticates the AudioCodes registration with the Kore user ID from the connected session, then calls the user from `sipURI`. Video calls send the same `X-botName`, `X-cId`, and `X-isVideoCall` SIP headers as the web SDK. The Runtime/SBC must allow the device to connect over secure WebSocket and WebRTC media. SIP call data is omitted from the call response messages.
+
 ###### c. Add below permissions in info.plist
         Privacy - Camera Usage Description         ---      Allow access to camera.
         Privacy - Microphone Usage Description     ---      Allow access to microphone.

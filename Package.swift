@@ -32,7 +32,7 @@ let package = Package(
         .target(
             name: "KoreBotSDK",
             dependencies: ["Starscream", "Alamofire", "AlamofireImage", "ObjectMapper", .product(name: "DGCharts", package: "Charts"), "GhostTypewriter", .product(name: "Emoji", package: "Emoji-swift"), "FMPhotoPicker", "SwiftUTI","ObjcSupport"],
-            resources: [.copy("BrandindFiles"),.copy("Languages")]),
+            resources: [.copy("BrandindFiles"),.copy("Languages"),.copy("AudioCodes")]),
         .target(name: "ObjcSupport", path: "Sources/ObjcSupport"),
         //.testTarget(name: "KoreBotSDKTests", dependencies: ["KoreBotSDK"]),
     ]

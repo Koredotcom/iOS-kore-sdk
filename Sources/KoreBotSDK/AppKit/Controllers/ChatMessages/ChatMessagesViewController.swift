@@ -124,6 +124,10 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     @IBOutlet weak var incomingCallContainerView: UIView!
     var inComingCallView: InComingCallView!
     var callFromAgentData: [String: Any]? = [:]
+    private var agentCallMediaController: AudioCodesCallMediaController?
+    private var agentCallOverlayView: UIView?
+    private var agentCallPreviousViewBackgroundColor: UIColor?
+    private var agentCallWasAccepted = false
     var appDisplayName = "Kore Bot SDK"
     var isAppEnterBackground = false
     public var closeAndMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
@@ -202,6 +206,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     //MARK:- deinit
     deinit {
         NSLog("ChatMessagesViewController dealloc")
+        agentCallMediaController?.stopCall()
         self.thread = nil
         self.botClient = nil
         self.speechSynthesizer = nil
@@ -215,6 +220,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     
     //MARK:- removing refernces to elements
     func prepareForDeinit(){
+        finishAgentCall(
+            responseType: agentCallWasAccepted ? "call_agent_webrtc_terminated" : "call_agent_webrtc_rejected",
+            reason: "chat_closed")
         if(self.botClient != nil){
             self.botClient.disconnect()
         }
@@ -3733,53 +3741,198 @@ extension ChatMessagesViewController: inComingCallDelegate{
     }
     
     func acceptCallIncomingCall() {
-        guard let window = UIApplication.shared.keyWindow else {
+        guard let callData = callFromAgentData else {
             return
         }
-        incomingCallContainerView.isHidden = true
-        if let domain = callFromAgentData?["domain"] as? String{
-            let dynamicRemotePort = 5080
-            guard let sipUser = callFromAgentData?["sipUser"] as? String else {
-               return
-            }
-            guard let videoCall = callFromAgentData?["videoCall"] as? Bool else{
-                return
-            }
-            #if SWIFT_PACKAGE
-            //agentConnect.showAgentWindow(window:window, domain: domain, dynamicRemoteHost: domain, port: dynamicRemotePort, sipUser: sipUser, isVideoCall: videoCall)
-            #endif
-           
+        guard #available(iOS 15.0, *) else {
+            showAgentCallError("AudioCodes voice and video calls require iOS 15 or later.")
+            return
         }
-        
+
+        guard agentCallMediaController == nil else { return }
+        do {
+            let controller = try AudioCodesCallMediaController(
+                runtimeURL: SDKConfiguration.serverConfig.BOT_SERVER,
+                scriptURLOverride: SDKConfiguration.serverConfig.AUDIOCODES_SDK_URL)
+            let isVideo = callData["videoCall"] as? Bool == true || callData["callType"] as? String == "video"
+            agentCallMediaController = controller
+            agentCallWasAccepted = false
+            incomingCallContainerView.isHidden = true
+            configureAgentCallOverlay(controller: controller, callData: callData, isVideo: isVideo)
+            controller.onEvent = { [weak self, weak controller] event in
+                DispatchQueue.main.async {
+                    guard let strongSelf = self, let activeController = controller,
+                        strongSelf.agentCallMediaController === activeController else { return }
+                    switch event {
+                    case .ready, .connected:
+                        break
+                    case .terminated:
+                        strongSelf.finishAgentCall(responseType: nil, reason: nil)
+                    case .failed(let message):
+                        let responseType = strongSelf.agentCallWasAccepted
+                            ? "call_agent_webrtc_terminated" : "call_agent_webrtc_rejected"
+                        strongSelf.finishAgentCall(responseType: responseType, reason: message)
+                        strongSelf.showAgentCallError(message)
+                    case .muteChanged(let muted):
+                        activeController.setMuted(muted)
+                    case .cameraChanged(let enabled):
+                        activeController.setCameraEnabled(enabled)
+                    case .endRequested:
+                        strongSelf.endAgentCall()
+                    }
+                }
+            }
+            controller.waitUntilReady { [weak self, weak controller] readinessError in
+                DispatchQueue.main.async {
+                    guard let strongSelf = self, let activeController = controller,
+                        strongSelf.agentCallMediaController === activeController else { return }
+                    if let error = readinessError {
+                        strongSelf.finishAgentCall(responseType: "call_agent_webrtc_rejected", reason: error.localizedDescription)
+                        strongSelf.showAgentCallError(error.localizedDescription)
+                    } else {
+                        activeController.requestPermissions(forVideo: isVideo) { [weak self, weak controller] permissionResult in
+                            DispatchQueue.main.async {
+                                guard let strongSelf = self, let activeController = controller,
+                                    strongSelf.agentCallMediaController === activeController else { return }
+                                if let error = permissionResult {
+                                    strongSelf.finishAgentCall(responseType: "call_agent_webrtc_rejected", reason: error.localizedDescription)
+                                    strongSelf.showAgentCallError(error.localizedDescription)
+                                } else {
+                                    strongSelf.sendAgentCallResponse(type: "call_agent_webrtc_accepted")
+                                    strongSelf.agentCallWasAccepted = true
+                                    do {
+                                        try activeController.startCall(
+                                            with: callData,
+                                            sipIdentity: self?.botClient?.userInfoModel?.userId)
+                                    } catch {
+                                        strongSelf.finishAgentCall(
+                                            responseType: "call_agent_webrtc_terminated",
+                                            reason: error.localizedDescription)
+                                        strongSelf.showAgentCallError(error.localizedDescription)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch {
+            showAgentCallError(error.localizedDescription)
+        }
     }
     
     func rejectIncomingCall() {
+        sendAgentCallResponse(type: "call_agent_webrtc_rejected")
         incomingCallContainerView.isHidden = true
-        var typeDic = callFromAgentData
-        typeDic?["type"] = "call_agent_webrtc_rejected"
-        self.botClient.sendMessage("", options: ["body": typeDic ?? [:]])
+        callFromAgentData = nil
     }
     
     @objc func callFromAgent(notification:Notification){
         view.endEditing(true) //KeyBoard Hide
-        
-        let dataString: String = notification.object as! String
+        guard agentCallMediaController == nil,
+            let dataString = notification.object as? String
+        else { return }
         if let agentCallData = Utilities.jsonObjectFromString(jsonString: dataString){
             callFromAgentData = agentCallData as? [String : Any]
         }
+        guard let callData = callFromAgentData else { return }
         incomingCallContainerView.isHidden = false
         var imageStr = ""
         var nameStr = ""
-        var isVideoCall = false
-        if let imgStr = callFromAgentData?["profileIcon"] as? String{
+        let isVideoCall = callData["videoCall"] as? Bool == true || callData["callType"] as? String == "video"
+        if let imgStr = callData["profileIcon"] as? String{
             imageStr = imgStr
         }
-        if let firstName = callFromAgentData?["firstName"] as? String{
+        if let firstName = callData["firstName"] as? String{
             nameStr = firstName
         }
-        if let videoCall = callFromAgentData?["videoCall"] as? Bool{
-            isVideoCall = videoCall
-        }
         self.inComingCallView.configure(imageUrlStr: imageStr, nameStr: nameStr, isVideoCall: isVideoCall)
+    }
+
+    private func configureAgentCallOverlay(
+        controller: AudioCodesCallMediaController, callData: [String: Any], isVideo: Bool
+    ) {
+        let overlay = UIView()
+        overlay.translatesAutoresizingMaskIntoConstraints = false
+        overlay.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        agentCallPreviousViewBackgroundColor = view.backgroundColor
+        view.backgroundColor = .clear
+        view.addSubview(overlay)
+        NSLayoutConstraint.activate([
+            overlay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            overlay.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            overlay.topAnchor.constraint(equalTo: view.topAnchor),
+            overlay.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+        agentCallOverlayView = overlay
+
+        let mediaView = controller.makeWebView(
+            agentName: callData["firstName"] as? String ?? "Agent",
+            profileIcon: callData["profileIcon"] as? String,
+            videoCall: isVideo)
+        mediaView.translatesAutoresizingMaskIntoConstraints = false
+        overlay.addSubview(mediaView)
+        NSLayoutConstraint.activate([
+            mediaView.leadingAnchor.constraint(equalTo: overlay.leadingAnchor),
+            mediaView.trailingAnchor.constraint(equalTo: overlay.trailingAnchor),
+            mediaView.topAnchor.constraint(equalTo: overlay.topAnchor),
+            mediaView.bottomAnchor.constraint(equalTo: overlay.bottomAnchor),
+        ])
+        view.bringSubviewToFront(overlay)
+    }
+
+    @objc private func endAgentCall() {
+        let responseType = agentCallWasAccepted
+            ? "call_agent_webrtc_terminated" : "call_agent_webrtc_rejected"
+        finishAgentCall(responseType: responseType, reason: "user_ended")
+    }
+
+    private func sendAgentCallResponse(type: String, reason: String? = nil) {
+        guard var callData = callFromAgentData, !callData.isEmpty else { return }
+        callData["type"] = type
+        if let reason = reason, !reason.isEmpty { callData["reason"] = reason }
+        botClient?.sendBotEventMessage(removingSIPSecrets(from: callData))
+    }
+
+    private func removingSIPSecrets(from source: [String: Any]) -> [String: Any] {
+        let secretKeys: Set<String> = [
+            "password", "authpassword", "sippassword", "sip_password", "sipauthpassword",
+            "customersippassword", "customer_sip_password",
+        ]
+        var sanitized: [String: Any] = [:]
+        for key in source.keys {
+            if secretKeys.contains(key.lowercased()) { continue }
+            guard let value = source[key] else { continue }
+            if let nested = value as? [String: Any] {
+                sanitized[key] = removingSIPSecrets(from: nested)
+            } else if let nestedArray = value as? [[String: Any]] {
+                sanitized[key] = nestedArray.map { removingSIPSecrets(from: $0) }
+            } else {
+                sanitized[key] = value
+            }
+        }
+        return sanitized
+    }
+
+    private func finishAgentCall(responseType: String?, reason: String?) {
+        if let responseType = responseType { sendAgentCallResponse(type: responseType, reason: reason) }
+        agentCallMediaController?.stopCall()
+        agentCallMediaController = nil
+        agentCallOverlayView?.removeFromSuperview()
+        agentCallOverlayView = nil
+        if let previousBackgroundColor = agentCallPreviousViewBackgroundColor {
+            view.backgroundColor = previousBackgroundColor
+        }
+        agentCallPreviousViewBackgroundColor = nil
+        agentCallWasAccepted = false
+        callFromAgentData = nil
+        incomingCallContainerView.isHidden = true
+    }
+
+    private func showAgentCallError(_ message: String) {
+        guard isViewLoaded, presentedViewController == nil else { return }
+        let alert = UIAlertController(title: "Call unavailable", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 }

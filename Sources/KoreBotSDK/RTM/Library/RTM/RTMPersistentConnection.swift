@@ -372,6 +372,29 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
             print("Socket is in CONNECTING / CLOSING / CLOSED state")
         }
     }
+
+    /// Sends a bot event in the same envelope used by the web SDK's sendMessage API.
+    open func sendBotEventMessage(_ body: [String: Any]) {
+        guard isConnected, let websocket = websocket else { return }
+
+        let message: [String: Any] = ["body": body, "type": ""]
+        let messageId = Constants.getUUID()
+        var event: [String: Any] = [
+            "event": "event",
+            "message": message,
+            "resourceid": "/bot.message",
+            "client": "iOS",
+            "id": messageId,
+            "clientMessageId": messageId,
+            "meta": ["timezone": TimeZone.current.identifier, "locale": Locale.current.identifier],
+        ]
+        if let botInfoParameters = botInfoParameters {
+            event["botInfo"] = botInfoParameters
+        }
+
+        guard let data = try? JSONSerialization.data(withJSONObject: event) else { return }
+        websocket.write(data: data)
+    }
     
     // MARK: AgentChat Events
     open func sendEventToAgentChat(_ message: String, parameters: [String: Any], options: [String: Any]?, eventName: String?, messageId: String?) {

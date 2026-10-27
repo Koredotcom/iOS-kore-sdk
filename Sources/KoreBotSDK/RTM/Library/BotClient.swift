@@ -259,6 +259,15 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             notDeliverdMsgsArray.append(message)
         }
     }
+
+    /// Sends a structured bot event rather than a user chat message.
+    open func sendBotEventMessage(_ body: [String: Any]) {
+        guard let connection = connection else {
+            NSLog("WebSocket connection not available")
+            return
+        }
+        connection.sendBotEventMessage(body)
+    }
     
     open func sendEventToAgentChat(eventName: String?, messageId: String?) {
         guard let connection = connection else {

@@ -35,6 +35,9 @@ open class BotConnect: NSObject {
     public var sessionExpiry_Msg = ""
     public var agentImage: UIImage? = nil
     public var agentImageUrlString: String? = nil
+    /// Optional absolute URL for a self-hosted AudioCodes WebRTC JavaScript client.
+    /// When unset, the SDK loads the versioned client from BOTServerUrl.
+    public var audioCodesSDKURL: String? = nil
     var botViewController:ChatMessagesViewController!
     
     // MARK: - init
@@ -77,6 +80,7 @@ open class BotConnect: NSObject {
     }
     func customSettings(){
         isNetworkOnResumeCallingHistory = networkOnResumeCallingHistory
+        SDKConfiguration.serverConfig.AUDIOCODES_SDK_URL = audioCodesSDKURL
         SDKConfiguration.botConfig.deviceToken = device_Token
         isShowQuickRepliesBottom = showQuickRepliesBottom
         close_AgentChat_EventName = closeAgentChatEventName

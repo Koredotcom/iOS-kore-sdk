@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
     s.swift_version = '4.2'
     s.ios.deployment_target = '12.0'
     s.source_files = 'Sources/**/*.{h,m,swift}'
-    s.resources = ['Sources/**/*.{xcdatamodeld}', 'Sources/**/*.{xcassets}','Sources/**/*.xib','Sources/Widgets/**/**/*.xib','Sources/**/*.json','Sources/**/*.lproj']
+    s.resources = ['Sources/**/*.{xcdatamodeld}', 'Sources/**/*.{xcassets}','Sources/**/*.xib','Sources/Widgets/**/**/*.xib','Sources/**/*.json','Sources/**/*.lproj','Sources/KoreBotSDK/AudioCodes/*.js']
     s.dependency 'Alamofire'
     s.dependency 'AlamofireImage'
     s.dependency 'Starscream'
@@ -26,5 +26,5 @@ Pod::Spec.new do |s|
     s.dependency 'FMPhotoPicker'
     s.dependency 'SwiftUTI'
     s.dependency 'Emoji-swift'
-    s.ios.frameworks = 'SystemConfiguration'
+    s.ios.frameworks = 'SystemConfiguration', 'AVFoundation', 'WebKit'
 end

@@ -55,6 +55,9 @@ class SDKConfiguration: NSObject {
         public static var BOT_SERVER = String(format: "https://bots.kore.ai")
         public static var Branding_SERVER = String(format: "https://bots.kore.ai")
         public static var WIDGET_SERVER = String(format: "https://bots.kore.ai")
+        /// Optional absolute URL for a self-hosted AudioCodes WebRTC client.
+        /// By default the SDK loads the versioned client from BOT_SERVER.
+        public static var AUDIOCODES_SDK_URL: String? = nil
     }
    
     struct widgetConfig {
