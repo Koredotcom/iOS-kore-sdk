@@ -16,6 +16,7 @@ public protocol KABotClientDelegate: AnyObject {
     func botConnection(with connectionState: BotClientConnectionState)
     func showTypingStatusForBot()
     func hideTypingStatusForBot()
+    func sendCallBackActionToCustomHeaderView()
 }
 
 open class KABotClient: NSObject {
@@ -402,6 +403,10 @@ open class KABotClient: NSObject {
         botClient.onUserMessageReceived = nil
     }
     
+    func socketDisconnect() {
+        botClient.disconnect()
+    }
+    
     // MARK: -
     func getTemplateType(_ templateType: String) -> ComponentType {
         switch templateType {
@@ -573,6 +578,13 @@ open class KABotClient: NSObject {
             isAgentConnect = false
             message.iconUrl = botHistoryIcon
         }
+        
+        if customHeaderView != nil{
+            DispatchQueue.main.async {
+                self.delegate?.sendCallBackActionToCustomHeaderView()
+            }
+        }
+        
         lastReceivedMessageId = object?.messageId ?? "No message id"
         
         if !history{

@@ -172,6 +172,41 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         isSpeakingEnabled = false
         self.speechSynthesizer = AVSpeechSynthesizer()
         self.view.bringSubviewToFront(chatMaskview)
+        customHeaderViewConfigure()
+    }
+    func customHeaderViewConfigure(){
+        if customHeaderView != nil{
+            headerViewHeightConstraint.constant = customHeaderViewHeight
+            customHeaderView?.translatesAutoresizingMaskIntoConstraints = false
+            self.headerView.addSubview(customHeaderView!)
+            self.headerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[customHeaderView]|", options:[], metrics:nil, views:["customHeaderView" : customHeaderView]))
+            self.headerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[customHeaderView]|", options:[], metrics:nil, views:["customHeaderView" : customHeaderView]))
+            customHeaderView?.koreHeaderBackBtnAction = { [weak self]  in
+                self?.tapsOnBackBtnAct(self)
+            }
+            customHeaderView?.koreCloseChatWindow = { [weak self]  in
+                self?.closeChatWindow()
+            }
+            customHeaderView?.koreMinimiseChatWindow = { [weak self]  in
+                self?.minimiseChatWindow()
+            }
+            customHeaderView?.sendAgentChatCloseEvent = { [weak self]  in
+                self?.botClient?.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
+            }
+            customHeaderView?.koreAgentIsConnected = {
+                isAgentConnect
+            }
+            customHeaderView?.startNewSession = { [weak self]  in
+                self?.socketDisconnect()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    let dic: [String : Any] = ["event_code": "StartNewSession", "event_message": "Reset the conversation and begin a new session.", "event_reason": 10]
+                    if self?.closeAndMinimizeEvent != nil{
+                        self?.closeAndMinimizeEvent(dic)
+                    }
+                }
+            }
+            self.headerView.bringSubviewToFront(linerProgressBar)
+        }
     }
     
     override open func viewWillAppear(_ animated: Bool) {
@@ -2141,6 +2176,12 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             })
         }
     }
+    
+    @objc public func sendCallBackActionToCustomHeaderView(){
+        if customHeaderView != nil{
+            customHeaderView?.callBackFromKoreSDK?(isAgentConnect)
+        }
+    }
 }
 
 // MARK: -
@@ -3378,6 +3419,9 @@ extension ChatMessagesViewController: UIGestureRecognizerDelegate{
         if touch.view?.isDescendant(of: botMessagesView.tableView) == true || touch.view?.isDescendant(of: quickReplyView) == true{
             return false
         }
+        if customHeaderView != nil{
+            dismissKeyboardManually()
+        }
         return true
     }
     public func minimizeChatBotWindow(){
@@ -3519,12 +3563,15 @@ extension ChatMessagesViewController{
             }
         }
     
-        if let headerDic = brandingValues.header{
-            configureHeaderView(headerDic: headerDic)
+        if customHeaderView != nil{ //verify CustomHeaderView
+            customHeaderView?.koreHeaderViewBranding?(brandingValues.header)
+        }else{
+            if let headerDic = brandingValues.header{
+                configureHeaderView(headerDic: headerDic)
+            }
+            headerView.bringSubviewToFront(linerProgressBar)
         }
-        headerView.bringSubviewToFront(linerProgressBar)
     }
-    
     func configureHeaderView(headerDic: HeaderModel){
         self.headerDic = headerDic
         var titleTxt = headerDic.title?.name
@@ -3776,6 +3823,9 @@ extension ChatMessagesViewController{
     
     @objc func closePopupAction() {
         dismissCloseOrMinimizePopup()
+        closeChatWindow()
+    }
+    public func closeChatWindow(){
         self.unsubscribeNotifications()
         isShowWelcomeMsg = true
         let dic = ["event_code": "BotClosed", "event_message": "Bot closed by the user"]
@@ -3799,6 +3849,9 @@ extension ChatMessagesViewController{
     
     @objc func minimizePopupAction() {
         dismissCloseOrMinimizePopup()
+        minimiseChatWindow()
+    }
+    public func minimiseChatWindow(){
         isAgentConnect = false
         let dic = ["event_code": "BotMinimized", "event_message": "Bot Minimized by the user"]
         if self.closeAndMinimizeEvent != nil{
@@ -3807,6 +3860,12 @@ extension ChatMessagesViewController{
         self.botClient.sendEventToAgentChat(eventName: minimize_Button_EventName,messageId: "")
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
             self.botClosed()
+        }
+    }
+    public func socketDisconnect(){
+        isShowWelcomeMsg = true
+        if(self.botClient != nil){
+            kaBotClient.socketDisconnect()
         }
     }
 }

@@ -244,5 +244,10 @@ open class BotConnect: NSObject {
         }
     }
     
+    public func addCustomHeaderView(headerView: KoreCustomHeaderView, headerViewHeight: Double? = 64.0){
+        customHeaderView = headerView
+        customHeaderViewHeight = headerViewHeight ?? 64.0
+    }
+    
 }
 

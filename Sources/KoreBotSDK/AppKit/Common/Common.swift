@@ -126,6 +126,9 @@ var vileDownloadFailedToastMsg = "Download failed!"
 var downloadImage: UIImage?
 var downloadFileURL: URL?
 
+var customHeaderView: KoreCustomHeaderView? = nil
+var customHeaderViewHeight = 64.0
+
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)
