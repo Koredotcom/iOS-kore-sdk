@@ -248,6 +248,13 @@ open class BotConnect: NSObject {
         customHeaderView = headerView
         customHeaderViewHeight = headerViewHeight ?? 64.0
     }
+    public func addCustomFooterComposeBarView(footerView: ComposeBarView, growingTxtV: KREGrowingTextView){
+        dynamicFooterview = footerView
+        dynamicGrowingTxtv = growingTxtV
+    }
+    public func addCustomFooterAudioComposeBar(footerView: AudioComposeView){
+        dynamicAudioComposeFooterview = footerView
+    }
     
 }
 

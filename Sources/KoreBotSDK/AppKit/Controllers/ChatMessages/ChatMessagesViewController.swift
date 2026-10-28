@@ -497,7 +497,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             && configured
             && hasIdentity
             && agentCallMediaController == nil
-        composeView?.setClickToCallAvailability(isAvailable)
+        if dynamicFooterview == nil{
+            composeView?.setClickToCallAvailability(isAvailable)
+        }
     }
     
     func configureAudioComposer()  {
@@ -1299,12 +1301,12 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         prepareForDeinit()
         sleep(1)
     }
-    func showTypingToAgent(_: ComposeBarView){
+    public func showTypingToAgent(_: ComposeBarView){
         if isAgentConnect{
             self.botClient.sendEventToAgentChat(eventName: "typing", messageId: "")
         }
     }
-    func stopTypingToAgent(_: ComposeBarView){
+    public func stopTypingToAgent(_: ComposeBarView){
         if isAgentConnect{
             self.botClient.sendEventToAgentChat(eventName: "stop_typing", messageId: "")
         }
@@ -1910,11 +1912,11 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     
     // MARK: ComposeBarViewDelegate methods
     
-    func composeBarView(_: ComposeBarView, sendButtonAction text: String) {
+    public func composeBarView(_: ComposeBarView, sendButtonAction text: String) {
         self.sendTextMessage(text, options: nil)
     }
     
-    func composeBarViewSpeechToTextButtonAction(_: ComposeBarView) {
+    public func composeBarViewSpeechToTextButtonAction(_: ComposeBarView) {
         KoraASRService.shared.checkAudioRecordPermission({ [weak self] in
             self?.isShowAudioComposeView = true
             self?.speechToTextButtonAction()
@@ -1922,12 +1924,12 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         self.closeWidgetPanelView()
     }
     
-    func composeBarViewDidBecomeFirstResponder(_: ComposeBarView) {
+    public func composeBarViewDidBecomeFirstResponder(_: ComposeBarView) {
         self.audioComposeView.stopRecording()
         self.closeWidgetPanelView()
     }
     
-    func composeBarTaskMenuButtonAction(_: ComposeBarView) {
+    public func composeBarTaskMenuButtonAction(_: ComposeBarView) {
         self.closeWidgetPanelView()
         self.bottomConstraint.constant = 0
         self.taskMenuContainerHeightConstant.constant = 0
@@ -1957,7 +1959,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         }
         
     }
-    func composeBarAttachmentButtonAction(_: ComposeBarView) {
+    public func composeBarAttachmentButtonAction(_: ComposeBarView) {
         self.openAcionSheet()
     }
     

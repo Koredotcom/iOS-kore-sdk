@@ -128,6 +128,9 @@ var downloadFileURL: URL?
 
 var customHeaderView: KoreCustomHeaderView? = nil
 var customHeaderViewHeight = 64.0
+var dynamicFooterview : ComposeBarView? = nil
+var dynamicGrowingTxtv: KREGrowingTextView? = nil
+var dynamicAudioComposeFooterview : AudioComposeView? = nil
 
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
