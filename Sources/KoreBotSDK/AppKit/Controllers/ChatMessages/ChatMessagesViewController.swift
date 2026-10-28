@@ -291,7 +291,13 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         botClosed()
     }
     
+    private func stopAllNetworkMonitoring() {
+        stopMonitoringForReachability()
+        removeNotificationCenter()
+    }
+    
     func botClosed(){
+        stopAllNetworkMonitoring()
         isTryConnect = false
         //isShowWelcomeMsg = true // Set fasle here.. when you go back and come chat sceen new welcome message not displied.
         if isAgentConnect{
@@ -1290,7 +1296,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }
     
     @objc func willTerminate(_ notification: Notification) {
-        self.unsubscribeNotifications()
+        if default_notifications{
+            self.unsubscribeNotifications()
+        }
         if(self.botClient != nil){
             if isAgentConnect{
                 self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
@@ -3001,7 +3009,9 @@ extension ChatMessagesViewController{
         self.configureClickToCall()
         self.configureAudioComposer()
         self.configureIncomingCallView()
-        subscribeNotifications()
+        if default_notifications{
+            subscribeNotifications()
+        }
         setupCloseOrMinimizePopup()
         if let footerDic = brandingValues.footer{
             if statusBarBottomBackgroundColor == nil{
@@ -3093,21 +3103,22 @@ extension ChatMessagesViewController{
         addMessages(message, "")
     }
 
-    func subscribeNotifications(){
+    public func subscribeNotifications(){
         if let deviceToken = SDKConfiguration.botConfig.deviceToken{
-            self.botClient.subscribeToNotifications(deviceToken) { succes in
+            self.botClient?.subscribeToNotifications(deviceToken) { succes in
                 print("subscribe Notifications")
             } failure: { error in
-                print(error)
+                print("subscribe Notifications : \(error)")
             }
+            
         }
     }
-    func unsubscribeNotifications(){
+    public func unsubscribeNotifications(){
         if let deviceToken = SDKConfiguration.botConfig.deviceToken{
-            self.botClient.unsubscribeToNotifications(deviceToken) { succes in
+            self.botClient?.unsubscribeToNotifications(deviceToken) { succes in
                 print("unsubscribe Notifications")
             } failure: { error in
-                print(error)
+                print("unsubscribe Notifications: \(error)")
             }
         }
     }
@@ -3828,7 +3839,9 @@ extension ChatMessagesViewController{
         closeChatWindow()
     }
     public func closeChatWindow(){
-        self.unsubscribeNotifications()
+        if default_notifications{
+            self.unsubscribeNotifications()
+        }
         isShowWelcomeMsg = true
         let dic = ["event_code": "BotClosed", "event_message": "Bot closed by the user"]
         if self.closeAndMinimizeEvent != nil{

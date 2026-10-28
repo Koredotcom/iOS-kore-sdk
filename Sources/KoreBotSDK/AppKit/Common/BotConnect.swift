@@ -19,7 +19,7 @@ open class BotConnect: NSObject {
     public var closeButtonEventName = "close_button_event"
     public var minimizeButtonEventName = "minimize_button_event"
     public var isZenDeskEvent = false
-    public var device_Token: Data? = nil
+    public var device_Token: String? = nil
     public var networkOnResumeCallingHistory = true
     public var koreSDkLanguage = "en"
     public var composeBar_Placeholder = ""
@@ -41,6 +41,7 @@ open class BotConnect: NSObject {
     /// Click-to-call flow ID configured for the contact-center voice flow.
     public var clickToCallFlowId: String? = nil
     var botViewController:ChatMessagesViewController!
+    public var default_Notifications = true
     
     // MARK: - init
     public override init() {
@@ -57,12 +58,31 @@ open class BotConnect: NSObject {
         }
         customSettings()
         botViewController = ChatMessagesViewController()
+        isChatMessageViewControllerPresent = true
         let navigationController = UINavigationController(rootViewController: botViewController)
         navigationController.isNavigationBarHidden = true
         navigationController.modalPresentationStyle = .fullScreen
         botViewController.title = SDKConfiguration.botConfig.chatBotName
         botViewController.modalPresentationStyle = .fullScreen
         rootViewController.present(navigationController, animated: false)
+        
+        botViewController.closeAndMinimizeEvent = { [weak self] (Dic) in
+           if let dic = Dic {
+               if self?.closeOrMinimizeEvent != nil{
+                   self?.closeOrMinimizeEvent(dic)
+               }
+           }
+       }
+    }
+    public func show(in viewController: UIViewController){
+        customSettings()
+        botViewController = ChatMessagesViewController()
+        isChatMessageViewControllerPresent = false
+        let navigationController = UINavigationController(rootViewController: botViewController)
+        navigationController.isNavigationBarHidden = true
+        botViewController.title = SDKConfiguration.botConfig.chatBotName
+        botViewController.edgesForExtendedLayout =  []
+        viewController.navigationController?.show(botViewController, sender: nil)
         
         botViewController.closeAndMinimizeEvent = { [weak self] (Dic) in
            if let dic = Dic {
@@ -95,6 +115,7 @@ open class BotConnect: NSObject {
         isCallingHistoryApi = true
         agent_Image = agentImage
         agent_Image_UrlString = agentImageUrlString
+        default_notifications = default_Notifications
         if !isIntialiseFileUpload{
             isIntialiseFileUpload = true
             filesUpload()
@@ -256,5 +277,16 @@ open class BotConnect: NSObject {
         dynamicAudioComposeFooterview = footerView
     }
     
+    public func subscribeNotifications(){
+        if botViewController != nil{
+            botViewController.subscribeNotifications()
+        }
+    }
+    
+    public func unsubscribeNotifications(){
+        if botViewController != nil{
+            botViewController.unsubscribeNotifications()
+        }
+    }
 }
 

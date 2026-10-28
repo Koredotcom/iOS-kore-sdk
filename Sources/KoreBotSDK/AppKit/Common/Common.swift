@@ -132,6 +132,10 @@ var dynamicFooterview : ComposeBarView? = nil
 var dynamicGrowingTxtv: KREGrowingTextView? = nil
 var dynamicAudioComposeFooterview : AudioComposeView? = nil
 
+var isChatMessageViewControllerPresent = true
+var default_notifications = true
+
+
 open class Common : NSObject {
     public static func UIColorRGB(_ rgb: Int) -> UIColor {
         let blue = CGFloat(rgb & 0xFF)
