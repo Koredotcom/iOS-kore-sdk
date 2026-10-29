@@ -27,7 +27,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     var messagesRequestInProgress: Bool = false
     var historyRequestInProgress: Bool = false
     var thread: KREThread?
-    var botClient: BotClient!
+    var botClient: BotClient?
     var tapToDismissGestureRecognizer: UITapGestureRecognizer!
     var kaBotClient: KABotClient!
     
@@ -261,9 +261,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         finishAgentCall(
             responseType: agentCallWasAccepted ? "call_agent_webrtc_terminated" : "call_agent_webrtc_rejected",
             reason: "chat_closed")
-        if(self.botClient != nil){
-            self.botClient.disconnect()
-        }
+        self.botClient?.disconnect()
         
         KABotClient.shared.deConfigureBotClient()
         self.deConfigureSTTClient()
@@ -301,7 +299,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         isTryConnect = false
         //isShowWelcomeMsg = true // Set fasle here.. when you go back and come chat sceen new welcome message not displied.
         if isAgentConnect{
-            self.botClient.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
+            self.botClient?.sendEventToAgentChat(eventName: "close_agent_chat",messageId: "")
             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
                 self.prepareForDeinit()
                 self.navigationController?.dismiss(animated: false)
@@ -343,9 +341,9 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                 self.closeAndMinimizeEvent(dic)
             }
             if isAgentConnect{
-                self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
+                self.botClient?.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
             }else{
-                self.botClient.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
+                self.botClient?.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
             }
             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
                 isAgentConnect = false
@@ -359,7 +357,7 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             if self.closeAndMinimizeEvent != nil{
                 self.closeAndMinimizeEvent(dic)
             }
-            self.botClient.sendEventToAgentChat(eventName: minimize_Button_EventName,messageId: "")
+            self.botClient?.sendEventToAgentChat(eventName: minimize_Button_EventName,messageId: "")
             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
                 isAgentConnect = false
                 self.botClosed()
@@ -1066,7 +1064,11 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     
     func updateNavBarPrompt() {
         self.navigationItem.leftBarButtonItem?.isEnabled = true
-        switch self.botClient.connectionState {
+        guard let botClient = self.botClient else {
+            self.navigationItem.prompt = nil
+            return
+        }
+        switch botClient.connectionState {
         case .CONNECTING:
             self.navigationItem.leftBarButtonItem?.isEnabled = false
             self.navigationItem.prompt = "Connecting..."
@@ -1308,24 +1310,22 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
         if default_notifications{
             self.unsubscribeNotifications()
         }
-        if(self.botClient != nil){
-            if isAgentConnect{
-                self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
-            }else{
-                self.botClient.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
-            }
+        if isAgentConnect{
+            self.botClient?.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
+        }else{
+            self.botClient?.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
         }
         prepareForDeinit()
         sleep(1)
     }
     public func showTypingToAgent(_: ComposeBarView){
         if isAgentConnect{
-            self.botClient.sendEventToAgentChat(eventName: "typing", messageId: "")
+            self.botClient?.sendEventToAgentChat(eventName: "typing", messageId: "")
         }
     }
     public func stopTypingToAgent(_: ComposeBarView){
         if isAgentConnect{
-            self.botClient.sendEventToAgentChat(eventName: "stop_typing", messageId: "")
+            self.botClient?.sendEventToAgentChat(eventName: "stop_typing", messageId: "")
         }
     }
     
@@ -1395,8 +1395,8 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
                         self.webhookSendMessage(text: text, attahment: dictionary ?? [:])
                     }
                 }else{
-                    if let _ = self.botClient, let text = textComponent?.payload {
-                        self.botClient.sendMessage(text, dictionary: dictionary, options: options)
+                    if let botClient = self.botClient, let text = textComponent?.payload {
+                        botClient.sendMessage(text, dictionary: dictionary, options: options)
                     }
                 }
                 arrayOfSelectedBtnIndex.insert(1000, at: 0)
@@ -2210,6 +2210,7 @@ extension ChatMessagesViewController {
         guard historyRequestInProgress == false else {
             return
         }
+        guard let botClient = botClient else { return }
         
         botClient.getHistory(offset: offset,limit: paginatedScrollBatchSize, success: { [weak self] (responseObj) in
             if let responseObject = responseObj as? [String: Any], let messages = responseObject["messages"] as? Array<[String: Any]> {
@@ -2226,6 +2227,7 @@ extension ChatMessagesViewController {
         guard messagesRequestInProgress == false else {
             return
         }
+        guard let botClient = botClient else { return }
         
         let dataStoreManager = DataStoreManager.sharedManager
         let context = dataStoreManager.coreDataManager.workerContext
@@ -2248,7 +2250,7 @@ extension ChatMessagesViewController {
                 return
             }
             
-            self?.botClient.getMessages(after: messageId, direction: 1, success: { (responseObj) in
+            botClient.getMessages(after: messageId, direction: 1, success: { (responseObj) in
                 if let responseObject = responseObj as? [String: Any]{
                     if let messages = responseObject["messages"] as? Array<[String: Any]> {
                         self?.insertOrUpdateHistoryMessages(messages)
@@ -2319,7 +2321,7 @@ extension ChatMessagesViewController {
                            }
                        }
                    }
-                    if jsonString == "Welpro" || jsonString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty{
+                    if jsonString == "Welpro" || Utilities.isBlank(jsonString) || jsonString == "TRIGGER_DIALOG_ON_INACTIVITY" || jsonString == "TRIGGERDIALOGON_INACTIVITY"{
                         removeTemplate = true
                         removedTemplateCount  += 1
                     }
@@ -3857,13 +3859,13 @@ extension ChatMessagesViewController{
             self.closeAndMinimizeEvent(dic)
         }
         if isAgentConnect{
-            self.botClient.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
+            self.botClient?.sendEventToAgentChat(eventName: close_AgentChat_EventName,messageId: "")
             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
                 isAgentConnect = false
                 self.botClosed()
             }
         }else{
-            self.botClient.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
+            self.botClient?.sendEventToAgentChat(eventName: close_Button_EventName,messageId: "")
             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
                 isAgentConnect = false
                 self.botClosed()
@@ -3881,7 +3883,7 @@ extension ChatMessagesViewController{
         if self.closeAndMinimizeEvent != nil{
             self.closeAndMinimizeEvent(dic)
         }
-        self.botClient.sendEventToAgentChat(eventName: minimize_Button_EventName,messageId: "")
+        self.botClient?.sendEventToAgentChat(eventName: minimize_Button_EventName,messageId: "")
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
             self.botClosed()
         }
