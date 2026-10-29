@@ -662,7 +662,7 @@ open class KABotClient: NSObject {
                     
                     switch type {
                     case "template":
-                        if let dictionary = payload["payload"] as? [String: Any] {
+                        if var dictionary = payload["payload"] as? [String: Any] {
                             var templateType = dictionary["template_type"] as? String ?? ""
                             
                             if templateType == "carousel"{
@@ -713,6 +713,16 @@ open class KABotClient: NSObject {
                                     }
                                 }
                             }
+                            
+                            if templateType == "quick_replies_welcome" || templateType == "button"{
+                                if buttons_Remain_Clickable{
+                                    if history{
+                                        let dic = ["value": "history"]
+                                        dictionary["selectedValue"] = dic
+                                    }
+                                }
+                            }
+                            
                             let componentType = getComponentType(templateType, tabledesign)
                             if componentType != .quickReply {
                                 

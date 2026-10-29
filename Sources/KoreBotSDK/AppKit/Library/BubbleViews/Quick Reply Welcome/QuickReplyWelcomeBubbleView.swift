@@ -42,6 +42,10 @@ class QuickReplyWelcomeBubbleView: BubbleView {
     var variation = ""
     var quickReplyView: KREQuickSelectView!
     
+    var seletedButton = ""
+    var messageId = ""
+    var componentDescDic:[String:Any] = [:]
+    
     //public var optionsAction: ((_ text: String?, _ payload: String?) -> Void)!
     //public var linkAction: ((_ text: String?) -> Void)!
     public var selectBtnState: ((_ Index: Int?) -> Void)!
@@ -181,6 +185,9 @@ class QuickReplyWelcomeBubbleView: BubbleView {
                 if ((component.componentDesc) != nil) {
                     let jsonObject: NSDictionary = Utilities.jsonObjectFromString(jsonString: component.componentDesc!) as! NSDictionary
                     
+                    componentDescDic = jsonObject as! [String : Any]
+                    messageId = component.message?.messageId ?? ""
+                    
                     let titleStr = jsonObject["text"] as? String
                     let newString = titleStr?.replacingOccurrences(of: ":)", with: "\u{1f642}")
                     
@@ -212,6 +219,17 @@ class QuickReplyWelcomeBubbleView: BubbleView {
                     variation = ""
                     if let variationBg = jsonObject["variation"] as? String{
                         variation = variationBg
+                    }
+                    if buttons_Remain_Clickable{
+                        seletedButton = ""
+                        if let slectedValue = jsonObject["selectedValue"] as? [String: Any]{
+                            if let value = slectedValue["value"] as? String{
+                                seletedButton = value
+                                if value == "history"{
+                                    self.maskview.isHidden = false
+                                }
+                            }
+                        }
                     }
                     self.collectionView.collectionViewLayout.invalidateLayout()
                     self.collectionView.reloadData()
@@ -310,14 +328,26 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
             if elements.type == "web_url" || elements.type == "url"{
                     self.linkAction?(elements.url)
             }else{
-                self.optionsAction?(elements.title, elements.payload)
+                if let title = elements.title{
+                    self.optionsAction?(title, elements.payload ?? title)
+                    self.maskview.isHidden = false
+                    if buttons_Remain_Clickable{
+                        insertSelectedValueIntoComponectDesc(value: elements.payload ?? title)
+                    }
+                }
             }
         }else{
             let elements = arrayOfButtons[indexPath.row]
             if elements.type == "web_url" || elements.type == "url"{
                 self.linkAction?(elements.url)
             }else{
-                self.optionsAction?(elements.title, elements.payload)
+                if let title = elements.title{
+                    self.optionsAction?(title, elements.payload ?? title)
+                    self.maskview.isHidden = false
+                    if buttons_Remain_Clickable{
+                        insertSelectedValueIntoComponectDesc(value: elements.payload ?? title)
+                    }
+                }
             }
         }
         
@@ -372,6 +402,11 @@ extension QuickReplyWelcomeBubbleView : UICollectionViewDelegate, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 10.0
+    }
+    func insertSelectedValueIntoComponectDesc(value: String){
+        let dic = ["value": value]
+        componentDescDic["selectedValue"] = dic
+        self.updateMessage?(messageId, Utilities.stringFromJSONObject(object: componentDescDic))
     }
     
 }

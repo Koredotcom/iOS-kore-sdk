@@ -42,6 +42,7 @@ open class BotConnect: NSObject {
     public var clickToCallFlowId: String? = nil
     var botViewController:ChatMessagesViewController!
     public var default_Notifications = true
+    public var enableButtonClicksOnAnyPosition = false
     
     // MARK: - init
     public override init() {
@@ -116,6 +117,7 @@ open class BotConnect: NSObject {
         agent_Image = agentImage
         agent_Image_UrlString = agentImageUrlString
         default_notifications = default_Notifications
+        buttons_Remain_Clickable = enableButtonClicksOnAnyPosition
         if !isIntialiseFileUpload{
             isIntialiseFileUpload = true
             filesUpload()

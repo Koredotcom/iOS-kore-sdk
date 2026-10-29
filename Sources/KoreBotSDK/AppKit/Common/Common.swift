@@ -134,6 +134,7 @@ var dynamicAudioComposeFooterview : AudioComposeView? = nil
 
 var isChatMessageViewControllerPresent = true
 var default_notifications = true
+var buttons_Remain_Clickable = false
 
 
 open class Common : NSObject {
