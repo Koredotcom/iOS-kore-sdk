@@ -4,6 +4,7 @@ import WebKit
 
 enum AudioCodesCallMediaEvent {
     case ready
+    case mediaReady
     case connected
     case terminated(String?)
     case failed(String)
@@ -143,6 +144,13 @@ final class AudioCodesCallMediaController: NSObject, WKScriptMessageHandler, WKU
         }
     }
 
+    func prepareVideoMedia() throws {
+        guard isReady, let webView else { throw AudioCodesCallMediaError.stackNotReady }
+        webView.evaluateJavaScript("void window.prepareContactCenterVideoMedia();") { [weak self] _, error in
+            if let error = error { self?.emit(.failed(error.localizedDescription)) }
+        }
+    }
+
     func startCall(with rawCallData: [String: Any], sipIdentity: String?) throws {
         guard isReady, let webView else { throw AudioCodesCallMediaError.stackNotReady }
         let input = try Self.makeCallInput(rawCallData, sipIdentity: sipIdentity)
@@ -229,6 +237,7 @@ final class AudioCodesCallMediaController: NSObject, WKScriptMessageHandler, WKU
             readinessTimeout = nil
             resumeReadiness()
             emit(.ready)
+        case "mediaReady": emit(.mediaReady)
         case "connected": emit(.connected)
         case "terminated": emit(.terminated(body["reason"] as? String))
         case "error": emit(.failed(body["message"] as? String ?? "The call could not connect"))
@@ -505,10 +514,11 @@ final class AudioCodesCallMediaController: NSObject, WKScriptMessageHandler, WKU
             <script>
             (() => {
               const post = (type, value = {}) => { try { window.webkit.messageHandlers.contactCenter.postMessage({type, ...value}); } catch (_) {} };
-              let phone = null, activeCall = null, loginPromise = null, loginResolve = null, loginReject = null, stopping = false, callTimer = null, callSeconds = 0;
+              let phone = null, activeCall = null, pendingMediaStream = null, loginPromise = null, loginResolve = null, loginReject = null, stopping = false, callTimer = null, callSeconds = 0;
               const presentation = JSON.parse(atob('\(presentationBase64)'));
               const remote = document.getElementById('remote'), local = document.getElementById('local');
               const localPanel = document.getElementById('localPanel');
+              const stopPendingMediaStream = () => { if (pendingMediaStream) { pendingMediaStream.getTracks().forEach((track) => track.stop()); pendingMediaStream = null; } };
               const setMuteUI = (muted) => document.querySelectorAll('.mute-control').forEach((button) => { button.classList.toggle('is-active', muted); button.setAttribute('aria-pressed', String(Boolean(muted))); button.querySelector('.control-label').textContent = muted ? 'Unmute' : 'Mute'; });
               const setCameraUI = (enabled) => { localPanel.classList.toggle('camera-off', !enabled); const button = document.querySelector('.camera-control'); if (button) { button.classList.toggle('is-active', !enabled); button.setAttribute('aria-pressed', String(!enabled)); button.querySelector('.control-label').textContent = enabled ? 'Video off' : 'Video on'; } };
               document.body.classList.add(presentation.videoCall ? 'video' : 'audio');
@@ -592,7 +602,14 @@ final class AudioCodesCallMediaController: NSObject, WKScriptMessageHandler, WKU
                       }
                       post('connected');
                     },
-                    callTerminated: (_call, _message, cause) => { activeCall = null; if (callTimer) clearInterval(callTimer); callTimer = null; if (!stopping) post('terminated', {reason: typeof cause === 'string' ? cause : undefined}); },
+                    callTerminated: (_call, message, cause) => {
+                      activeCall = null; if (callTimer) clearInterval(callTimer); callTimer = null;
+                      if (!stopping) {
+                        const reason = typeof cause === 'string' && cause.trim() ? cause : (message && typeof message.reason_phrase === 'string' ? message.reason_phrase : undefined);
+                        if (document.body.classList.contains('connected')) post('terminated', {reason});
+                        else post('error', {message: reason || 'The call ended before it connected'});
+                      }
+                    },
                     callShowStreams: (_call, localStream, remoteStream) => { if (localStream instanceof MediaStream) { local.srcObject = localStream; localPanel.hidden = input.callType !== 'video'; } if (remoteStream instanceof MediaStream) { remote.srcObject = remoteStream; remote.volume = 0.5; } },
                     outgoingCallProgress: () => {}, incomingCall: (call) => call && call.reject && call.reject(),
                     callHoldStateChanged: () => {}, callScreenSharingEnded: () => {}
@@ -603,9 +620,30 @@ final class AudioCodesCallMediaController: NSObject, WKScriptMessageHandler, WKU
                   }
                   phone.init(true);
                   await Promise.race([loginPromise, new Promise((_resolve, reject) => setTimeout(() => reject(new Error('Timed out connecting to the Contact Center SBC')), 15000))]);
-                  if (input.callType === 'video') activeCall = phone.call(phone.VIDEO, input.target, input.headers);
-                  else activeCall = phone.call(phone.AUDIO, input.target, input.headers || []);
-                } catch (error) { post('error', {message: error && error.message ? error.message : String(error)}); }
+                  if (stopping) return;
+                  if (input.callType === 'video') {
+                    if (!pendingMediaStream) {
+                      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error('WebRTC video is not available on this device');
+                      pendingMediaStream = await phone.getWR().getUserMedia({audio: {echoCancellation: true}, video: true});
+                    }
+                    if (stopping) { stopPendingMediaStream(); return; }
+                    if (!pendingMediaStream.getAudioTracks().some((track) => track.readyState === 'live') || !pendingMediaStream.getVideoTracks().some((track) => track.readyState === 'live')) throw new Error('The camera or microphone did not provide a live media stream');
+                    const callMediaStream = pendingMediaStream;
+                    activeCall = phone.call(phone.VIDEO, input.target, input.headers, {mediaStream: callMediaStream});
+                    pendingMediaStream = null;
+                  } else {
+                    activeCall = phone.call(phone.AUDIO, input.target, input.headers || []);
+                  }
+                } catch (error) { stopPendingMediaStream(); if (!stopping) post('error', {message: error && error.message ? error.message : String(error)}); }
+              };
+              window.prepareContactCenterVideoMedia = async () => {
+                try {
+                  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error('WebRTC video is not available on this device');
+                  pendingMediaStream = await navigator.mediaDevices.getUserMedia({audio: {echoCancellation: true}, video: true});
+                  if (stopping) { stopPendingMediaStream(); return; }
+                  if (!pendingMediaStream.getAudioTracks().some((track) => track.readyState === 'live') || !pendingMediaStream.getVideoTracks().some((track) => track.readyState === 'live')) throw new Error('The camera or microphone did not provide a live media stream');
+                  post('mediaReady');
+                } catch (error) { stopPendingMediaStream(); if (!stopping) post('error', {message: error && error.message ? error.message : String(error)}); }
               };
               window.setContactCenterMuted = (muted) => { if (activeCall && activeCall.muteAudio) activeCall.muteAudio(Boolean(muted)); setMuteUI(Boolean(muted)); };
               window.setContactCenterCameraEnabled = (enabled) => { if (activeCall && activeCall.muteVideo) activeCall.muteVideo(!enabled); setCameraUI(Boolean(enabled)); };
@@ -613,6 +651,7 @@ final class AudioCodesCallMediaController: NSObject, WKScriptMessageHandler, WKU
                 stopping = true;
                 if (callTimer) clearInterval(callTimer);
                 callTimer = null;
+                stopPendingMediaStream();
                 try { if (activeCall && activeCall.terminate) activeCall.terminate(); } catch (_) {}
                 try { if (phone && phone.logout) phone.logout(); } catch (_) {}
                 try { if (phone && phone.deinit) phone.deinit(); } catch (_) {}

@@ -3967,7 +3967,7 @@ extension ChatMessagesViewController: inComingCallDelegate{
                     guard let strongSelf = self, let activeController = controller,
                         strongSelf.agentCallMediaController === activeController else { return }
                     switch event {
-                    case .ready, .connected:
+                    case .ready, .mediaReady, .connected:
                         break
                     case .terminated:
                         strongSelf.finishAgentCall(responseType: nil, reason: nil)
@@ -4057,6 +4057,8 @@ extension ChatMessagesViewController: inComingCallDelegate{
                     switch event {
                     case .ready, .connected:
                         break
+                    case .mediaReady:
+                        strongSelf.startAcceptedAgentCall(controller: activeController, callData: callData)
                     case .terminated:
                         strongSelf.finishAgentCall(responseType: nil, reason: nil)
                     case .failed(let message):
@@ -4088,19 +4090,17 @@ extension ChatMessagesViewController: inComingCallDelegate{
                                 if let error = permissionResult {
                                     strongSelf.finishAgentCall(responseType: "call_agent_webrtc_rejected", reason: error.localizedDescription)
                                     strongSelf.showAgentCallError(error.localizedDescription)
-                                } else {
-                                    strongSelf.sendAgentCallResponse(type: "call_agent_webrtc_accepted")
-                                    strongSelf.agentCallWasAccepted = true
+                                } else if isVideo {
                                     do {
-                                        try activeController.startCall(
-                                            with: callData,
-                                            sipIdentity: self?.botClient?.userInfoModel?.userId)
+                                        try activeController.prepareVideoMedia()
                                     } catch {
                                         strongSelf.finishAgentCall(
-                                            responseType: "call_agent_webrtc_terminated",
+                                            responseType: "call_agent_webrtc_rejected",
                                             reason: error.localizedDescription)
                                         strongSelf.showAgentCallError(error.localizedDescription)
                                     }
+                                } else {
+                                    strongSelf.startAcceptedAgentCall(controller: activeController, callData: callData)
                                 }
                             }
                         }
@@ -4108,6 +4108,23 @@ extension ChatMessagesViewController: inComingCallDelegate{
                 }
             }
         } catch {
+            showAgentCallError(error.localizedDescription)
+        }
+    }
+
+    private func startAcceptedAgentCall(
+        controller: AudioCodesCallMediaController, callData: [String: Any]
+    ) {
+        sendAgentCallResponse(type: "call_agent_webrtc_accepted")
+        agentCallWasAccepted = true
+        do {
+            try controller.startCall(
+                with: callData,
+                sipIdentity: botClient?.userInfoModel?.userId)
+        } catch {
+            finishAgentCall(
+                responseType: "call_agent_webrtc_terminated",
+                reason: error.localizedDescription)
             showAgentCallError(error.localizedDescription)
         }
     }
@@ -4124,8 +4141,12 @@ extension ChatMessagesViewController: inComingCallDelegate{
         else { return }
         let callData = receivedData["message"] as? [String: Any] ?? receivedData
         if ["cancel_agent_webrtc", "terminate_agent_webrtc"].contains(callData["type"] as? String ?? "") {
-            incomingCallContainerView.isHidden = true
-            callFromAgentData = nil
+            if agentCallMediaController != nil {
+                finishAgentCall(responseType: nil, reason: nil)
+            } else {
+                incomingCallContainerView.isHidden = true
+                callFromAgentData = nil
+            }
             return
         }
         guard agentCallMediaController == nil else { return }
