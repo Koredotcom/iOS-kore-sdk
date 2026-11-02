@@ -423,7 +423,7 @@ final class AudioCodesCallMediaController: NSObject, WKScriptMessageHandler, WKU
         return """
             <!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
             <style>
-            :root{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;color:#101828}
+            :root{--call-selected-red:#e52b20;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;color:#101828}
             *{box-sizing:border-box}html,body,#stage{margin:0;width:100%;height:100%;overflow:hidden}
             body{background:transparent}#stage{position:relative;width:100%;height:100%;background:transparent}
             video{background:rgba(0,0,0,.5)}#remote{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
@@ -442,8 +442,9 @@ final class AudioCodesCallMediaController: NSObject, WKScriptMessageHandler, WKU
             body.click-to-call:not(.connected) #audioControls{display:flex}
             body.click-to-call:not(.connected) #audioControls .mute-control,body.click-to-call:not(.connected) #audioControls .keypad-control{display:none}
             .control{display:flex;flex-direction:column;align-items:center;gap:7px;min-width:54px;border:0;background:transparent;color:#344054;font:inherit;padding:0}
-            .control-button{width:52px;height:44px;border:1px solid #d4d4d4;border-radius:50px;background:#fff;color:#344054;display:grid;place-items:center}
+            .control-button{width:52px;height:52px;border:1px solid #d4d4d4;border-radius:50%;background:#fff;color:#344054;display:grid;place-items:center;transition:background-color .15s,border-color .15s,color .15s}
             .control-button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+            .control-button .control-slash{display:none}
             .control-label{font-size:12px;line-height:16px;white-space:nowrap}
             .keypad-control{display:none}
             body.click-to-call .keypad-control{display:flex}
@@ -452,8 +453,10 @@ final class AudioCodesCallMediaController: NSObject, WKScriptMessageHandler, WKU
             .dtmf-value{min-height:20px;margin-bottom:8px;font-size:16px;letter-spacing:2px;color:#344054}
             .dtmf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:210px;margin:0 auto}
             .dtmf-key{height:34px;border:1px solid #d0d5dd;border-radius:9px;background:#fff;color:#344054;font:500 16px -apple-system,BlinkMacSystemFont,sans-serif}
-            .control.is-active .control-button{background:#4b4ede;border-color:#4b4ede;color:#fff}
-            .control.end .control-button{background:#ef4444;border-color:#ef4444;color:#fff}
+            .control.is-active .control-button{background:var(--call-selected-red);border-color:var(--call-selected-red);color:#fff}
+            .control.is-active .control-button .control-slash{display:block}
+            .control.end .control-button{background:var(--call-selected-red);border-color:var(--call-selected-red);color:#fff}
+            .control.end .control-button svg{width:20px;height:20px;stroke-width:1.8}
             #localPanel{display:none;position:absolute;z-index:2;top:calc(env(safe-area-inset-top) + 62px);right:16px;width:158px;height:92px;border:1px solid #ffffff77;border-radius:10px;background:#1d2939;box-shadow:0 8px 26px #0005;overflow:visible}
             body.video.connected #localPanel:not([hidden]){display:block}
             #localPanel[hidden],#showPreview[hidden]{display:none}
@@ -467,7 +470,7 @@ final class AudioCodesCallMediaController: NSObject, WKScriptMessageHandler, WKU
             #videoControls{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 26px);margin:0;gap:22px;align-items:center}
             body.audio #videoControls,body.video #audioControls{display:none!important}
             body.video .control{color:#fff}body.video .control-button{width:56px;height:56px;border:0;background:#ffffff45;color:#fff;backdrop-filter:blur(8px)}
-            body.video .control.end .control-button{background:#ef4444}
+            body.video .control.end .control-button{background:var(--call-selected-red)}
             </style>
             </head><body><div id="stage">
             <video id="remote" autoplay playsinline></video>
@@ -478,9 +481,9 @@ final class AudioCodesCallMediaController: NSObject, WKScriptMessageHandler, WKU
               <div class="call-timer" id="callTimer" hidden>00:00</div>
               <p class="call-note" id="audioNote">Disconnecting audio call doesn't end conversation</p>
               <div class="controls" id="audioControls">
-                <button class="control mute-control" type="button"><span class="control-button"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg></span><span class="control-label">Mute</span></button>
+                <button class="control mute-control" type="button" aria-pressed="false"><span class="control-button"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/><path class="control-slash" d="M4 4 20 20"/></svg></span><span class="control-label">Mute</span></button>
                 <button class="control keypad-control" id="keypadToggle" type="button" aria-label="Show keypad"><span class="control-button"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="1"/><circle cx="12" cy="6" r="1"/><circle cx="18" cy="6" r="1"/><circle cx="6" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="18" cy="12" r="1"/><circle cx="6" cy="18" r="1"/><circle cx="12" cy="18" r="1"/><circle cx="18" cy="18" r="1"/></svg></span><span class="control-label">Keypad</span></button>
-                <button class="control end" type="button"><span class="control-button"><svg viewBox="0 0 24 24"><path d="M4.5 15.5c4.6-3.4 10.4-3.4 15 0l-1.2 4a1.5 1.5 0 0 1-1.9 1l-2.5-.8a1.5 1.5 0 0 1-1-1.4v-1.1a8 8 0 0 0-2 0v1.1a1.5 1.5 0 0 1-1 1.4l-2.5.8a1.5 1.5 0 0 1-1.9-1z"/></svg></span><span class="control-label">End</span></button>
+                <button class="control end" type="button"><span class="control-button"><svg viewBox="0 0 24 24"><path d="M2 17V14.5C2 11.8 6.5 9.5 12 9.5s10 2.3 10 5V17H18V14.5c-2.7-.8-8.7-.8-12 0V17H2Z"/></svg></span><span class="control-label">End</span></button>
               </div>
               <div class="dtmf-panel" id="dtmfPanel" hidden>
                 <div class="dtmf-value" id="dtmfValue"></div>
@@ -495,9 +498,9 @@ final class AudioCodesCallMediaController: NSObject, WKScriptMessageHandler, WKU
             <div id="localPanel" hidden><video id="local" autoplay muted playsinline></video><div id="localFallback">YOU</div><button class="preview-action" type="button" aria-label="Hide preview">×</button></div>
             <button id="showPreview" type="button" aria-label="Show preview" hidden><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/></svg></button>
             <div class="controls" id="videoControls">
-              <button class="control mute-control" type="button"><span class="control-button"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg></span><span class="control-label">Mute</span></button>
-              <button class="control camera-control" type="button"><span class="control-button"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/></svg></span><span class="control-label">Video off</span></button>
-              <button class="control end" type="button"><span class="control-button"><svg viewBox="0 0 24 24"><path d="M4.5 15.5c4.6-3.4 10.4-3.4 15 0l-1.2 4a1.5 1.5 0 0 1-1.9 1l-2.5-.8a1.5 1.5 0 0 1-1-1.4v-1.1a8 8 0 0 0-2 0v1.1a1.5 1.5 0 0 1-1 1.4l-2.5.8a1.5 1.5 0 0 1-1.9-1z"/></svg></span><span class="control-label">End</span></button>
+              <button class="control mute-control" type="button" aria-pressed="false"><span class="control-button"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/><path class="control-slash" d="M4 4 20 20"/></svg></span><span class="control-label">Mute</span></button>
+              <button class="control camera-control" type="button" aria-pressed="false"><span class="control-button"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/><path class="control-slash" d="M4 4 20 20"/></svg></span><span class="control-label">Video off</span></button>
+              <button class="control end" type="button"><span class="control-button"><svg viewBox="0 0 24 24"><path d="M2 17V14.5C2 11.8 6.5 9.5 12 9.5s10 2.3 10 5V17H18V14.5c-2.7-.8-8.7-.8-12 0V17H2Z"/></svg></span><span class="control-label">End</span></button>
             </div></div>
             <script>
             (() => {
@@ -506,8 +509,8 @@ final class AudioCodesCallMediaController: NSObject, WKScriptMessageHandler, WKU
               const presentation = JSON.parse(atob('\(presentationBase64)'));
               const remote = document.getElementById('remote'), local = document.getElementById('local');
               const localPanel = document.getElementById('localPanel');
-              const setMuteUI = (muted) => document.querySelectorAll('.mute-control').forEach((button) => { button.classList.toggle('is-active', muted); button.querySelector('.control-label').textContent = muted ? 'Unmute' : 'Mute'; });
-              const setCameraUI = (enabled) => { localPanel.classList.toggle('camera-off', !enabled); const button = document.querySelector('.camera-control'); if (button) { button.classList.toggle('is-active', !enabled); button.querySelector('.control-label').textContent = enabled ? 'Video off' : 'Video on'; } };
+              const setMuteUI = (muted) => document.querySelectorAll('.mute-control').forEach((button) => { button.classList.toggle('is-active', muted); button.setAttribute('aria-pressed', String(Boolean(muted))); button.querySelector('.control-label').textContent = muted ? 'Unmute' : 'Mute'; });
+              const setCameraUI = (enabled) => { localPanel.classList.toggle('camera-off', !enabled); const button = document.querySelector('.camera-control'); if (button) { button.classList.toggle('is-active', !enabled); button.setAttribute('aria-pressed', String(!enabled)); button.querySelector('.control-label').textContent = enabled ? 'Video off' : 'Video on'; } };
               document.body.classList.add(presentation.videoCall ? 'video' : 'audio');
               if (presentation.clickToCall) document.body.classList.add('click-to-call');
               const agentName = presentation.clickToCall ? 'Live voice agent' : (presentation.agentName || 'Agent');
