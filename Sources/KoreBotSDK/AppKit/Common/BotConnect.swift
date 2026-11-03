@@ -265,6 +265,15 @@ open class BotConnect: NSObject {
         }else{
             sessionExpiryMsg = bundle.localizedString(forKey: "sessionExpiryMsg", value: "", table: nil)
         }
+
+        clickToCallConfirmationTitle = bundle.localizedString(
+            forKey: "clickToCallConfirmationTitle",
+            value: "Connect to Voice Agent?",
+            table: nil)
+        clickToCallConfirmationMessage = bundle.localizedString(
+            forKey: "clickToCallConfirmationMessage",
+            value: "Your current conversation will end before connecting you to a live voice agent. Do you want to continue?",
+            table: nil)
     }
     
     public func addCustomHeaderView(headerView: KoreCustomHeaderView, headerViewHeight: Double? = 64.0){

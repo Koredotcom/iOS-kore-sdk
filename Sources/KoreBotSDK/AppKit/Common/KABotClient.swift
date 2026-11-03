@@ -44,6 +44,8 @@ open class KABotClient: NSObject {
             DispatchQueue.main.async(execute: callback)
         }
     }
+    /// Called when the RTM socket closes or fails, including before a reconnect.
+    open var onRTMConnectionDidClose: (() -> Void)?
     /// Receives raw RTM event envelopes before the SDK handles them.
     open var onRTMEvent: (([String: Any]) -> Void)?
     var messagesRequestInProgress: Bool = false
@@ -205,6 +207,10 @@ open class KABotClient: NSObject {
     //NotificationCenter.default.post(name: Notification.Name("StopTyping"), object: nil)
     // methods
     func configureBotClient() {
+        botClient.onRTMEvent = { [weak self] event in
+            self?.onRTMEvent?(event)
+        }
+
         // events
         botClient.connectionWillOpen =  { [weak self] () in
             if let weakSelf = self {
@@ -239,6 +245,7 @@ open class KABotClient: NSObject {
         botClient.connectionDidClose = { [weak self] (code, reason) in
             self?.isConnected = false
             self?.isConnecting = false
+            self?.onRTMConnectionDidClose?()
             
             if let weakSelf = self {
                 DispatchQueue.main.async {
@@ -252,6 +259,7 @@ open class KABotClient: NSObject {
         botClient.connectionDidFailWithError = { [weak self] (error) in
             self?.isConnected = false
             self?.isConnecting = false
+            self?.onRTMConnectionDidClose?()
             
             if let weakSelf = self {
                 DispatchQueue.main.async {
@@ -320,7 +328,6 @@ open class KABotClient: NSObject {
             
         }
         botClient.onUserMessageReceived = {  (object) in
-            self.onRTMEvent?(object)
             if let message = object["message"] as? [String:Any]{
                 if let type = message["type"] as? String{
                     if type == "typing"{
@@ -401,6 +408,7 @@ open class KABotClient: NSObject {
         botClient.onMessage = nil
         botClient.onMessageAck = nil
         botClient.onUserMessageReceived = nil
+        botClient.onRTMEvent = nil
     }
     
     func socketDisconnect() {

@@ -131,6 +131,8 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     private var clickToCallSessionId: String?
     private var clickToCallServerConfig: [String: Any]?
     private var activeCallUsesClickToCall = false
+    private var clickToCallRTMSocketOpen = false
+    private var clickToCallSBCRequestSent = false
     var appDisplayName = "Kore Bot SDK"
     var isAppEnterBackground = false
     public var closeAndMinimizeEvent: ((_ dic: [String:Any]?) -> Void)!
@@ -441,33 +443,68 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
             }
         }
         kaBotClient.onRTMConnectionDidOpen = { [weak self] in
-            self?.requestClickToCallServerDetails()
+            DispatchQueue.main.async {
+                self?.clickToCallRTMSocketOpen = true
+                self?.requestClickToCallServerDetails()
+            }
+        }
+        kaBotClient.onRTMConnectionDidClose = { [weak self] in
+            DispatchQueue.main.async {
+                self?.clickToCallRTMSocketOpen = false
+                self?.resetClickToCallRTMState()
+            }
         }
     }
 
     private func requestClickToCallServerDetails() {
-        guard brandingValues.footer?.buttons?.click_to_call?.show == true else { return }
-        botClient?.sendBotEventMessage(body: "", eventName: "sbc_details_request")
+        guard brandingValues.footer?.buttons?.click_to_call?.show == true,
+              stringValue(SDKConfiguration.botConfig.clickToCallFlowId) != nil,
+              clickToCallRTMSocketOpen,
+              let botClient = botClient,
+              !clickToCallSBCRequestSent
+        else { return }
+        clickToCallSBCRequestSent = true
+        print("[ClickToCall] request=sbc_details_request")
+        botClient.sendClickToCallEvent("sbc_details_request")
     }
 
     private func handleClickToCallRTMEvent(_ event: [String: Any]) {
         let nestedEvents = nestedDictionaries(in: event)
         for payload in nestedEvents {
             guard let type = payload["type"] as? String else { continue }
-            if type == "Session_Start", let sessionId = stringValue(payload["sessionId"]) {
+            if ["session_start", "bot_active", "sbc_details_response", "call_agent_webrtc"].contains(type.lowercased()) {
+                print("[ClickToCall] rtm_event=\(type)")
+            }
+            if type.caseInsensitiveCompare("Session_Start") == .orderedSame,
+               let sessionId = stringValue(payload["sessionId"]) {
                 clickToCallSessionId = sessionId
-            } else if type == "Bot_Active",
+            } else if type.caseInsensitiveCompare("Bot_Active") == .orderedSame,
                       let recentSession = payload["recentSessionInfo"] as? [String: Any],
                       recentSession["isActive"] as? Bool == true,
                       let sessionId = stringValue(recentSession["sessionId"]) {
                 clickToCallSessionId = sessionId
-            } else if type == "sbc_details_response",
+            } else if type.caseInsensitiveCompare("sbc_details_response") == .orderedSame,
                       let serverConfig = payload["responseData"] as? [String: Any],
                       !Self.stringArray(serverConfig["addresses"]).isEmpty,
                       stringValue(serverConfig["domain"]) != nil {
                 clickToCallServerConfig = serverConfig
+            } else if type.caseInsensitiveCompare("call_agent_webrtc") == .orderedSame,
+                      let domain = stringValue(payload["domain"]),
+                      !Self.stringArray(payload["addresses"]).isEmpty {
+                clickToCallServerConfig = [
+                    "domain": domain,
+                    "addresses": Self.stringArray(payload["addresses"]),
+                    "iceServers": payload["iceServers"] as? [[String: Any]] ?? [],
+                ]
             }
         }
+        updateClickToCallButtonAvailability()
+    }
+
+    private func resetClickToCallRTMState() {
+        clickToCallSBCRequestSent = false
+        clickToCallSessionId = nil
+        clickToCallServerConfig = nil
         updateClickToCallButtonAvailability()
     }
 
@@ -492,15 +529,42 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }
 
     private func updateClickToCallButtonAvailability() {
-        let configured = stringValue(SDKConfiguration.botConfig.clickToCallFlowId) != nil
-            && stringValue(SDKConfiguration.botConfig.botId) != nil
-        let hasIdentity = stringValue(botClient?.userInfoModel?.userId) != nil
+        let brandingShow = brandingValues.footer?.buttons?.click_to_call?.show == true
+        let flowId = stringValue(SDKConfiguration.botConfig.clickToCallFlowId)
+        let botId = stringValue(SDKConfiguration.botConfig.botId)
+        let configured = flowId != nil && botId != nil
+        let sessionId = clickToCallSessionId
+        let serverDomain = stringValue(clickToCallServerConfig?["domain"])
+        let serverAddresses = Self.stringArray(clickToCallServerConfig?["addresses"])
+        let iceServers = clickToCallServerConfig?["iceServers"] as? [[String: Any]] ?? []
+        let userId = stringValue(botClient?.userInfoModel?.userId)
+        let hasIdentity = userId != nil
+        let callControllerIsNil = agentCallMediaController == nil
         let isAvailable = brandingValues.footer?.buttons?.click_to_call?.show == true
             && clickToCallServerConfig != nil
-            && clickToCallSessionId != nil
+            && sessionId != nil
             && configured
             && hasIdentity
-            && agentCallMediaController == nil
+            && callControllerIsNil
+
+        print("""
+        [ClickToCall] availability evaluation
+          brandingShow: \(brandingShow)
+          rtmSocketOpen: \(clickToCallRTMSocketOpen)
+          sbcRequestSent: \(clickToCallSBCRequestSent)
+          clickToCallServerConfigPresent: \(clickToCallServerConfig != nil)
+          serverDomain: \(serverDomain ?? "nil")
+          serverAddresses: \(serverAddresses)
+          iceServerCount: \(iceServers.count) (credentials omitted)
+          clickToCallSessionId: \(sessionId ?? "nil")
+          configured: \(configured)
+          flowId: \(flowId ?? "nil")
+          botId: \(botId ?? "nil")
+          hasIdentity: \(hasIdentity)
+          userId: \(userId ?? "nil")
+          agentCallMediaControllerIsNil: \(callControllerIsNil)
+          availability: \(isAvailable)
+        """)
         if dynamicFooterview == nil{
             composeView?.setClickToCallAvailability(isAvailable)
         }
@@ -3916,9 +3980,10 @@ extension ChatMessagesViewController: inComingCallDelegate{
             showAgentCallError("Click-to-call is still connecting. Please try again shortly.")
             return
         }
+        dismissKeyboardManually()
         let confirmation = UIAlertController(
-            title: "Connect to Voice Agent?",
-            message: "Your current conversation will end before connecting you to a live voice agent. Do you want to continue?",
+            title: clickToCallConfirmationTitle,
+            message: clickToCallConfirmationMessage,
             preferredStyle: .alert)
         confirmation.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         confirmation.addAction(UIAlertAction(title: "Continue", style: .default) { [weak self] _ in
@@ -3943,11 +4008,10 @@ extension ChatMessagesViewController: inComingCallDelegate{
             return
         }
 
-        botClient?.sendBotEventMessage(
-            body: "",
-            eventName: "close_agent_chat",
+        botClient?.sendClickToCallEvent(
+            "close_agent_chat",
             messageType: "click_to_call",
-            additionalFields: ["isClickToCallEnabled": true])
+            clickToCallEnabled: true)
 
         do {
             let controller = try AudioCodesCallMediaController(

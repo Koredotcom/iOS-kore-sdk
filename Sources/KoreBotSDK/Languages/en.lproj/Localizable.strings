@@ -16,3 +16,5 @@
 "pleaseTryAgain" = "Please try again";
 "sessionExpiryMsg" = "Your session has expired. Please try again";
 "cancelBtnMsg" = "Cancel";
+"clickToCallConfirmationTitle" = "Connect to Voice Agent?";
+"clickToCallConfirmationMessage" = "Your current conversation will end before connecting you to a live voice agent. Do you want to continue?";

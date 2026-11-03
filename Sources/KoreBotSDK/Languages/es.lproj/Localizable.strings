@@ -5,14 +5,16 @@
  Created by Pagidimarri Kartheek on 28/02/25.
 */
 
-"composeBarPlaceholder" = "Message...";
-"tapToSpeak" = "Tap to speak";
-"closeOrMinimizeMsg" = "Would you like to close the conversation or minimize.";
-"closeMsg" = "Close";
-"minimizeMsg" = "Minimize";
-"alertOk" = "OK";
-"leftMenuTitle" = "Menu";
-"confirm" = "Confirm";
-"pleaseTryAgain" = "Please try again";
-"sessionExpiryMsg" = "Your session has expired. Please try again";
-"cancelBtnMsg" = "Cancel";
+"composeBarPlaceholder" = "Escribe un mensaje...";
+"tapToSpeak" = "Pulsa para hablar";
+"closeOrMinimizeMsg" = "¿Quieres cerrar la conversación o minimizarla?";
+"closeMsg" = "Cerrar";
+"minimizeMsg" = "Minimizar";
+"alertOk" = "Aceptar";
+"leftMenuTitle" = "Menú";
+"confirm" = "Confirmar";
+"pleaseTryAgain" = "Inténtalo de nuevo";
+"sessionExpiryMsg" = "Tu sesión ha caducado. Inténtalo de nuevo.";
+"cancelBtnMsg" = "Cancelar";
+"clickToCallConfirmationTitle" = "¿Conectarse con un agente de voz?";
+"clickToCallConfirmationMessage" = "Tu conversación actual finalizará antes de conectarte con un agente de voz en directo. ¿Quieres continuar?";

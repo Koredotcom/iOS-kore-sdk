@@ -5,7 +5,7 @@
  Created by Pagidimarri Kartheek on 28/02/25.
 */
 
-"composeBarPlaceholder" = "Message...";
+"composeBarPlaceholder" = "Saisissez un message...";
 "tapToSpeak" = "Appuyez pour parler";
 "closeOrMinimizeMsg" = "Souhaitez-vous fermer la conversation ou la minimiser ?";
 "closeMsg" = "Fermer";
@@ -16,3 +16,5 @@
 "pleaseTryAgain" = "Veuillez réessayer";
 "sessionExpiryMsg" =  "Votre session a expiré. Veuillez réessayer";
 "cancelBtnMsg" = "Annuler";
+"clickToCallConfirmationTitle" = "Se connecter à un agent vocal ?";
+"clickToCallConfirmationMessage" = "Votre conversation actuelle prendra fin avant que vous soyez mis en relation avec un agent vocal. Voulez-vous continuer ?";

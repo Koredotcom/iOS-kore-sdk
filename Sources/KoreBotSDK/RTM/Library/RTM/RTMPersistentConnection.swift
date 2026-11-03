@@ -19,6 +19,11 @@ public protocol RTMPersistentConnectionDelegate {
     func didReceiveMessage(_ message: BotMessageModel)
     func didReceiveMessageAck(_ ack: Ack)
     func didReceivedUserMessage(_ userMessageDict:[String:Any])
+    func didReceiveRTMEvent(_ event: [String: Any])
+}
+
+public extension RTMPersistentConnectionDelegate {
+    func didReceiveRTMEvent(_ event: [String: Any]) { }
 }
 
 open class RTMTimer: NSObject {
@@ -97,6 +102,7 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
                   let type = responseObject["type"] as? String else {
                 return
             }
+            connectionDelegate?.didReceiveRTMEvent(responseObject)
             switch type {
             case "ready":
                 connectionDelegate?.rtmConnectionReady()
@@ -264,6 +270,7 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
                   let type = responseObject["type"] as? String else {
                 return
             }
+            connectionDelegate?.didReceiveRTMEvent(responseObject)
             switch type {
             case "ready":
                 connectionDelegate?.rtmConnectionReady()
@@ -382,11 +389,15 @@ open class RTMPersistentConnection : NSObject, WebSocketDelegate {
         body: Any,
         eventName: String,
         messageType: String = "",
+        messageCustomData: [String: Any] = [:],
         additionalFields: [String: Any] = [:]
     ) {
         guard isConnected, let websocket = websocket else { return }
 
-        let message: [String: Any] = ["body": body, "type": messageType]
+        var message: [String: Any] = ["body": body, "type": messageType]
+        if !messageCustomData.isEmpty {
+            message["customData"] = messageCustomData
+        }
         let messageId = Constants.getUUID()
         var event: [String: Any] = [
             "event": eventName,

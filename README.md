@@ -141,13 +141,15 @@ botConnect.audioCodesSDKURL = "https://runtime.example.com/path/ac_webrtc-1.19.0
 
 The incoming `call_agent_webrtc` message must provide `sipURI`, `addresses`, and `domain`; `iceServers` is optional. The SDK authenticates the AudioCodes registration with the Kore user ID from the connected session, then calls the user from `sipURI`. Video calls send the same `X-botName`, `X-cId`, and `X-isVideoCall` SIP headers as the web SDK. The Runtime/SBC must allow the device to connect over secure WebSocket and WebRTC media. SIP call data is omitted from the call response messages.
 
-To enable the branded click-to-call button, set the flow ID on `BotConnect` before presenting the chat, and turn on `footer.buttons.click_to_call.show` in branding. Click-to-call uses the `botId` already supplied to `initialize` as its task bot:
+To enable the branded click-to-call button, configure a click-to-call flow ID on `BotConnect` before presenting the chat, and set `footer.buttons.click_to_call.show` to `true` in the Runtime branding configuration. Click-to-call requires RTM/socket mode; it is not available in webhook mode. The SDK uses the `botId` supplied to `initialize` as the task bot, so no separate task-bot ID is needed:
 
 ```swift
 botConnect.clickToCallFlowId = "<click-to-call-flow-id>"
 ```
 
-The button becomes available after the RTM session is active and the Runtime returns SBC details. Continuing sends the web SDK's `close_agent_chat` event and starts an AudioCodes voice call with the call-flow and RTM headers. The native SDK uses the configured `BOTServerUrl` as the `X-RTM-URL` value because an iOS app has no browser page URL.
+The button remains disabled until the branding flag and flow ID are configured, the RTM connection has an authenticated user and active session ID, and the Runtime provides SBC details with a domain and signaling addresses. The SDK requests SBC details after RTM connects and accepts them from either `sbc_details_response` or a `call_agent_webrtc` event. If the button stays disabled, use the `[ClickToCall]` readiness and event entries in the Xcode console to identify the missing state.
+
+When the user taps the button, the SDK asks for confirmation because continuing ends the current conversation. It then sends the `close_agent_chat` event and starts an AudioCodes audio call using the configured call-flow and RTM headers. The SDK uses `BOTServerUrl` as the `X-RTM-URL` value because the native app has no browser page URL. Calls require iOS 15 or later, microphone permission, and Runtime/SBC access to secure WebSocket and WebRTC media.
 
 ###### c. Add below permissions in info.plist
         Privacy - Camera Usage Description         ---      Allow access to camera.

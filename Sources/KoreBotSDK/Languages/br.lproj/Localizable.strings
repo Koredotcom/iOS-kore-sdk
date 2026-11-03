@@ -1,0 +1,18 @@
+/*
+  Localizable.strings
+  KoreBotSDK
+*/
+
+"composeBarPlaceholder" = "Digite uma mensagem...";
+"tapToSpeak" = "Toque para falar";
+"closeOrMinimizeMsg" = "Deseja fechar ou minimizar a conversa?";
+"closeMsg" = "Fechar";
+"minimizeMsg" = "Minimizar";
+"alertOk" = "OK";
+"leftMenuTitle" = "Menu";
+"confirm" = "Confirmar";
+"pleaseTryAgain" = "Tente novamente";
+"sessionExpiryMsg" = "Sua sessão expirou. Tente novamente.";
+"cancelBtnMsg" = "Cancelar";
+"clickToCallConfirmationTitle" = "Conectar a um agente de voz?";
+"clickToCallConfirmationMessage" = "Sua conversa atual será encerrada antes de você se conectar a um agente de voz ao vivo. Deseja continuar?";

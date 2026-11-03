@@ -300,6 +300,11 @@ open class ComposeBarView: UIView {
         sendButton.setImage(tintedsendImage, for: .normal)
         sendButton.tintColor = BubbleViewUserChatTextColor//UIColor.init(hexString: footerIconColor)
         
+        let clickTocallBtnImage = UIImage(named: "click2call", in: bundle, compatibleWith: nil)
+        let tintedclickTocallBtnImage = clickTocallBtnImage?.withRenderingMode(.alwaysTemplate)
+        clickToCallButton.setImage(tintedclickTocallBtnImage, for: .normal)
+        clickToCallButton.tintColor = UIColor.init(hexString: footerIconColor)
+        
     }
     
     //MARK: Public methods

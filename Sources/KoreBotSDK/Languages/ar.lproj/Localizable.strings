@@ -5,14 +5,16 @@
   Created by Pagidimarri Kartheek on 28/02/25.
 */
 
-"composeBarPlaceholder" = "Message...";
-"tapToSpeak" = "Tap to speak";
-"closeOrMinimizeMsg" = "Would you like to close the conversation or minimize.";
-"closeMsg" = "Close";
-"minimizeMsg" = "Minimize";
-"alertOk" = "OK";
-"leftMenuTitle" = "Menu";
-"confirm" = "Confirm";
-"pleaseTryAgain" = "Please try again";
-"sessionExpiryMsg" = "Your session has expired. Please try again";
-"cancelBtnMsg" = "Cancel";
+"composeBarPlaceholder" = "اكتب رسالة...";
+"tapToSpeak" = "اضغط للتحدث";
+"closeOrMinimizeMsg" = "هل ترغب في إغلاق المحادثة أم تصغيرها؟";
+"closeMsg" = "إغلاق";
+"minimizeMsg" = "تصغير";
+"alertOk" = "موافق";
+"leftMenuTitle" = "القائمة";
+"confirm" = "تأكيد";
+"pleaseTryAgain" = "يرجى المحاولة مرة أخرى";
+"sessionExpiryMsg" = "انتهت صلاحية جلستك. يرجى المحاولة مرة أخرى.";
+"cancelBtnMsg" = "إلغاء";
+"clickToCallConfirmationTitle" = "هل تريد الاتصال بوكيل صوتي؟";
+"clickToCallConfirmationMessage" = "ستنتهي محادثتك الحالية قبل الاتصال بوكيل صوتي مباشر. هل تريد المتابعة؟";

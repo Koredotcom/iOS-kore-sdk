@@ -12,6 +12,9 @@
 		0590F8461DED7A1B00107721 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0590F8421DED7A1B00107721 /* CoreAudio.framework */; };
 		9516E0D42B4EA35C00A161D1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9516E0D22B4EA35C00A161D1 /* ViewController.swift */; };
 		9516E0D52B4EA35C00A161D1 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9516E0D32B4EA35C00A161D1 /* ViewController.xib */; };
+		953364B03099DF3E00FA4C1A /* SampleFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953364AD3099DF3E00FA4C1A /* SampleFooterView.swift */; };
+		953364B13099DF3E00FA4C1A /* SampleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953364AE3099DF3E00FA4C1A /* SampleHeaderView.swift */; };
+		953364B23099DF3E00FA4C1A /* SampleAudioComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953364AC3099DF3E00FA4C1A /* SampleAudioComposeView.swift */; };
 		959541692BF379DE001B8D18 /* SampleView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959541672BF379DE001B8D18 /* SampleView1.swift */; };
 		9595416A2BF379DE001B8D18 /* SearchGridTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959541682BF379DE001B8D18 /* SearchGridTemplate.swift */; };
 		95B56D3F2B45428B002A49D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95B56D3E2B45428B002A49D7 /* Assets.xcassets */; };
@@ -29,6 +32,9 @@
 		0590F8431DED7A1B00107721 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		9516E0D22B4EA35C00A161D1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		9516E0D32B4EA35C00A161D1 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
+		953364AC3099DF3E00FA4C1A /* SampleAudioComposeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleAudioComposeView.swift; sourceTree = "<group>"; };
+		953364AD3099DF3E00FA4C1A /* SampleFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleFooterView.swift; sourceTree = "<group>"; };
+		953364AE3099DF3E00FA4C1A /* SampleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleHeaderView.swift; sourceTree = "<group>"; };
 		959541672BF379DE001B8D18 /* SampleView1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleView1.swift; sourceTree = "<group>"; };
 		959541682BF379DE001B8D18 /* SearchGridTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchGridTemplate.swift; sourceTree = "<group>"; };
 		95B56D3E2B45428B002A49D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -57,6 +63,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		953364AF3099DF3E00FA4C1A /* CustomHeaderFooterViews */ = {
+			isa = PBXGroup;
+			children = (
+				953364AC3099DF3E00FA4C1A /* SampleAudioComposeView.swift */,
+				953364AD3099DF3E00FA4C1A /* SampleFooterView.swift */,
+				953364AE3099DF3E00FA4C1A /* SampleHeaderView.swift */,
+			);
+			path = CustomHeaderFooterViews;
+			sourceTree = "<group>";
+		};
 		9595416B2BF37C25001B8D18 /* SampleTemplates */ = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +123,7 @@
 				95B56D3E2B45428B002A49D7 /* Assets.xcassets */,
 				D175AD561CEF0CD500BB9442 /* LaunchScreen.storyboard */,
 				D175AD591CEF0CD500BB9442 /* Info.plist */,
+				953364AF3099DF3E00FA4C1A /* CustomHeaderFooterViews */,
 				9595416B2BF37C25001B8D18 /* SampleTemplates */,
 			);
 			path = KoreBotSDKDemo;
@@ -262,6 +279,9 @@
 			files = (
 				959541692BF379DE001B8D18 /* SampleView1.swift in Sources */,
 				9516E0D42B4EA35C00A161D1 /* ViewController.swift in Sources */,
+				953364B03099DF3E00FA4C1A /* SampleFooterView.swift in Sources */,
+				953364B13099DF3E00FA4C1A /* SampleHeaderView.swift in Sources */,
+				953364B23099DF3E00FA4C1A /* SampleAudioComposeView.swift in Sources */,
 				D175AD4E1CEF0CD500BB9442 /* AppDelegate.swift in Sources */,
 				9595416A2BF379DE001B8D18 /* SearchGridTemplate.swift in Sources */,
 			);

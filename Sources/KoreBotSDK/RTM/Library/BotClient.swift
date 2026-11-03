@@ -67,6 +67,8 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     open var onMessage: ((BotMessageModel?) -> Void)?
     open var onMessageAck: ((Ack?) -> Void)?
     open var onUserMessageReceived:(([String:Any])-> Void)?
+    /// Receives every parsed RTM text envelope before normal message routing.
+    open var onRTMEvent: (([String: Any]) -> Void)?
     open var botsUrl: String {
         get {
             return Constants.KORE_BOT_SERVER
@@ -217,6 +219,11 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     open func didReceivedUserMessage(_ usrMessage:[String:Any]) {
         onUserMessageReceived?(usrMessage)
     }
+
+    open func didReceiveRTMEvent(_ event: [String: Any]) {
+        onRTMEvent?(event)
+    }
+
     open func didReceiveMessage(_ message: BotMessageModel) {
         onMessage?(message)
     }
@@ -270,6 +277,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
         body: Any,
         eventName: String,
         messageType: String = "",
+        messageCustomData: [String: Any] = [:],
         additionalFields: [String: Any] = [:]
     ) {
         guard let connection = connection else {
@@ -280,7 +288,28 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
             body: body,
             eventName: eventName,
             messageType: messageType,
+            messageCustomData: messageCustomData,
             additionalFields: additionalFields)
+    }
+
+    /// Sends an RTM control event using the custom data expected by the mobile click-to-call flow.
+    open func sendClickToCallEvent(
+        _ eventName: String,
+        messageType: String = "",
+        clickToCallEnabled: Bool = false
+    ) {
+        var eventCustomData = customData ?? [:]
+        if let botToken = authInfoModel?.accessToken {
+            eventCustomData["botToken"] = botToken
+        }
+        eventCustomData["rtmType"] = "mobile"
+
+        sendBotEventMessage(
+            body: "",
+            eventName: eventName,
+            messageType: messageType,
+            messageCustomData: eventCustomData,
+            additionalFields: clickToCallEnabled ? ["isClickToCallEnabled": true] : [:])
     }
     
     open func sendEventToAgentChat(eventName: String?, messageId: String?) {

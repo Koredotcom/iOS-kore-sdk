@@ -5,14 +5,16 @@
  Created by Pagidimarri Kartheek on 28/02/25.
 */
 
-"composeBarPlaceholder" = "Message...";
-"tapToSpeak" = "Tap to speak";
-"closeOrMinimizeMsg" = "Would you like to close the conversation or minimize.";
-"closeMsg" = "Close";
-"minimizeMsg" = "Minimize";
-"alertOk" = "OK";
-"leftMenuTitle" = "Menu";
-"confirm" = "Confirm";
-"pleaseTryAgain" = "Please try again";
-"sessionExpiryMsg" = "Your session has expired. Please try again";
-"cancelBtnMsg" = "Cancel";
+"composeBarPlaceholder" = "输入消息...";
+"tapToSpeak" = "轻点说话";
+"closeOrMinimizeMsg" = "您想关闭对话还是将其最小化？";
+"closeMsg" = "关闭";
+"minimizeMsg" = "最小化";
+"alertOk" = "确定";
+"leftMenuTitle" = "菜单";
+"confirm" = "确认";
+"pleaseTryAgain" = "请重试";
+"sessionExpiryMsg" = "会话已过期，请重试。";
+"cancelBtnMsg" = "取消";
+"clickToCallConfirmationTitle" = "连接语音客服？";
+"clickToCallConfirmationMessage" = "连接实时语音客服前，当前对话将结束。是否继续？";
