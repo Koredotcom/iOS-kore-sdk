@@ -397,6 +397,9 @@
     result = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
     [result enumerateObjectsUsingBlock:^(NSTextCheckingResult *match, NSUInteger idx, BOOL *stop) {
         [attributedString addAttribute:NSForegroundColorAttributeName value:weakSelf.linkTextColor range:match.range];
+        NSUnderlineStyle underlineStyle = match.resultType == NSTextCheckingTypePhoneNumber && weakSelf.disabledNumbersHyperlink
+            ? NSUnderlineStyleNone
+            : NSUnderlineStyleSingle;
         [attributedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:match.range];
         
         CGRect pos = [layoutManager boundingRectForCharacterRange:match.range];
@@ -404,6 +407,7 @@
             [weakSelf.touchableWords addObject:[[match URL] absoluteString]];
             [weakSelf.touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordLink]];
         } else if ([match resultType] == NSTextCheckingTypePhoneNumber) {
+            [attributedString addAttribute:NSUnderlineStyleAttributeName value:@(underlineStyle) range:match.range];
             [weakSelf.touchableWords addObject:[match phoneNumber]];
             [weakSelf.touchableWordsType addObject:[NSNumber numberWithInteger:KREAttributedHotWordPhoneNumber]];
         }

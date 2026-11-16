@@ -34,6 +34,7 @@ typedef enum {
 @property (nonatomic, assign) BOOL focusedHighlighting;
 @property (nonatomic, assign) BOOL enableHashtags;
 @property (nonatomic, assign) BOOL enableCopy;
+@property (nonatomic, assign) BOOL disabledNumbersHyperlink;
 
 @property (nonatomic, copy) void (^detectionBlock)(KREAttributedHotWord hotWord, NSString *string);
 @property (nonatomic, copy) void (^imageDetectionBlock)(BOOL reload);

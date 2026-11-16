@@ -70,6 +70,7 @@ var isChatMessageViewControllerPresent = true
 var isReconnectionBySdk = true
 var isSame_PageNavigation = false
 var buttons_Remain_Clickable = false
+var disabledNumbersHyper_link = false
 
 var arrayOfViews = [BubbleView.Type]()
 var arrayOfTemplateTypes = [String]()

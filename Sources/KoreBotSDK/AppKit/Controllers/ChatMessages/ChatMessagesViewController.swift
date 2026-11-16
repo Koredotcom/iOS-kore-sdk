@@ -1850,10 +1850,12 @@ public class ChatMessagesViewController: UIViewController, BotMessagesViewDelega
     }
     
     func phnoneNumberButtonTapAction(PhoneNoString:String) {
-        guard let url = URL(string: "tel:\(PhoneNoString)") else {
+        if !disabledNumbersHyper_link{
+            guard let url = URL(string: "tel:\(PhoneNoString)") else {
                 return
             }
-        UIApplication.shared.open(url)
+            UIApplication.shared.open(url)
+        }
     }
     
     func updateMessage(messageId: String, componentDesc:String) {
